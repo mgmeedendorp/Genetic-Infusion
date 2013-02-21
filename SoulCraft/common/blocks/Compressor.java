@@ -94,8 +94,14 @@ public class Compressor extends SCBlock {
 	
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
 		TileCompressor tile = (TileCompressor)(world.getBlockTileEntity(x, y, z));
-		if(tile == null) {return true;}
-		return tile.getContent(player, 0);
+		if(tile == null || CommonProxy.proxy.isRenderWorld(world)) {return true;}
+		ItemStack cont = tile.getStackInSlot(0);
+		if(cont != null) {
+			player.addChatMessage("This Compressor contains " + cont.stackSize + " " + cont.getItem().getItemDisplayName(cont));
+		} else {
+			player.addChatMessage("This Compressor does not contain anything.");
+		}
+		return true;
     }
 	
 	@Override
