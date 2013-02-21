@@ -20,12 +20,11 @@ import voidrunner101.SoulCraft.common.proxy.CommonProxy;
 import voidrunner101.SoulCraft.common.tileentity.TileCompressor;
 
 public class Compressor extends SCBlock {
-	
-	public TileCompressor tile;
 
+	TileEntity tile;
+	
 	public Compressor(int ID, Material material) {
 		super(ID, 0, material);
-		tile = new TileCompressor();
 		setBlockName("compressor");
 	}
 	
@@ -55,7 +54,6 @@ public class Compressor extends SCBlock {
         this.setBlockBounds(0.0F, 0.0F, 1.0F - var8, 1.0F, 1.0F, 1.0F);
         super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
         this.setBlockBoundsForItemRender();
-        this.setBlockBounds(0F, 0F, 0F, 1F, var8, 0F);
     }
     
     public void setBlockBoundsForItemRender() {
@@ -71,6 +69,11 @@ public class Compressor extends SCBlock {
 		}
 	}
 	
+//	@Override
+//	public void onBlockAdded(World world, int x, int y, int z) {
+//		tile.reset();
+//	}
+	
 	@Override
 	public boolean isCollidable()
 	{
@@ -79,7 +82,7 @@ public class Compressor extends SCBlock {
 	
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-		if(CommonProxy.proxy.isRenderWorld(world)){return;} 
+		TileCompressor tile = (TileCompressor)(world.getBlockTileEntity(x, y, z));
 		if(tile != null && entity != null && entity instanceof EntityItem){
 			if(tile.insertItemInSlot(((EntityItem) entity).getEntityItem(), 0)) {
 				CommonProxy.proxy.removeEntity(entity);
@@ -90,12 +93,14 @@ public class Compressor extends SCBlock {
 	}
 	
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
-        return tile.getContent(player, 0);
+		TileCompressor tile = (TileCompressor)(world.getBlockTileEntity(x, y, z));
+		if(tile == null) {return true;}
+		return tile.getContent(player, 0);
     }
 	
 	@Override
 	public TileEntity createTileEntity(World world, int metadata) {
-		return tile;
+		return new TileCompressor();
 	}
 	
 	@Override
