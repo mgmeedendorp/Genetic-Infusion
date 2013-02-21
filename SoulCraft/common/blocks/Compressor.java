@@ -69,11 +69,6 @@ public class Compressor extends SCBlock {
 		}
 	}
 	
-//	@Override
-//	public void onBlockAdded(World world, int x, int y, int z) {
-//		tile.reset();
-//	}
-	
 	@Override
 	public boolean isCollidable()
 	{

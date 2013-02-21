@@ -138,17 +138,6 @@ public class TileCompressor extends SCTileEntity implements IInventory {
 		}
 		return false;
 	}
-	
-//	public boolean getContent(EntityPlayer player, int slot) {
-//		if(CommonProxy.proxy.isServerWorld(player.worldObj)){return true;}
-//		if(inv[slot] != null) {
-//			ItemStack currStack = getStackInSlot(slot);
-//			player.addChatMessage("This Compressor contains " + currStack.stackSize + " " + currStack.getItem().getItemDisplayName(currStack));
-//		} else {
-//			player.addChatMessage("This Compressor does not contain anything.");
-//		}
-//		return true;
-//	}
 
 	@Override
 	public void openChest() {}
