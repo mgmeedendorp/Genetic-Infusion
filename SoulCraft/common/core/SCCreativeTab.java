@@ -1,6 +1,6 @@
 package voidrunner101.SoulCraft.common.core;
 
-import voidrunner101.SoulCraft.mod_SoulCraft;
+import voidrunner101.SoulCraft.common.mod_SoulCraft;
 import voidrunner101.SoulCraft.common.blocks.ModBlocks;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;

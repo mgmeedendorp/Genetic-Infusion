@@ -1,7 +1,7 @@
 package voidrunner101.SoulCraft.common.core;
 
 import net.minecraftforge.common.Configuration;
-import voidrunner101.SoulCraft.mod_SoulCraft;
+import voidrunner101.SoulCraft.common.mod_SoulCraft;
 
 public class SCConfig {
 

@@ -2,7 +2,7 @@ package voidrunner101.SoulCraft.common.world;
 
 import java.util.Random;
 
-import voidrunner101.SoulCraft.mod_SoulCraft;
+import voidrunner101.SoulCraft.common.mod_SoulCraft;
 import voidrunner101.SoulCraft.common.blocks.ModBlocks;
 import voidrunner101.SoulCraft.common.core.DefaultProps;
 

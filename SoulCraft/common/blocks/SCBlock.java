@@ -9,7 +9,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import voidrunner101.SoulCraft.mod_SoulCraft;
+import voidrunner101.SoulCraft.common.mod_SoulCraft;
 import voidrunner101.SoulCraft.common.core.DefaultProps;
 
 public class SCBlock extends BlockContainer {

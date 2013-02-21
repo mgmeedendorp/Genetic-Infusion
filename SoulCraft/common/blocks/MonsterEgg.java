@@ -2,7 +2,7 @@ package voidrunner101.SoulCraft.common.blocks;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLiving;
-import voidrunner101.SoulCraft.mod_SoulCraft;
+import voidrunner101.SoulCraft.common.mod_SoulCraft;
 import voidrunner101.SoulCraft.common.core.DefaultProps;
 
 public class MonsterEgg extends SCBlock {
