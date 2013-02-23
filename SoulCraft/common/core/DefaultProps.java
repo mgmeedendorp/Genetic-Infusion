@@ -17,7 +17,6 @@ public class DefaultProps {
 	 * The texture file for the items.
 	 */
 	public static final String ITEMS_TEXTURE_FILE = "/voidrunner101/SoulCraft/gfx/items.png";
-	public static final String COMPRESSOR_TEXTURE_FILE = "/voidrunner101/SoulCraft/gfx/tileCompressorModel.png";
 	
 	public static final int MonsterEggRenderID = RenderingRegistry.getNextAvailableRenderId();
 	public static final int CompressorRenderID = RenderingRegistry.getNextAvailableRenderId();

@@ -3,6 +3,7 @@ package voidrunner101.SoulCraft.common.blocks;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -16,6 +17,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import voidrunner101.SoulCraft.common.mod_SoulCraft;
 import voidrunner101.SoulCraft.common.core.DefaultProps;
+import voidrunner101.SoulCraft.common.items.ModItems;
 import voidrunner101.SoulCraft.common.proxy.CommonProxy;
 import voidrunner101.SoulCraft.common.tileentity.TileCompressor;
 
@@ -70,17 +72,15 @@ public class Compressor extends SCBlock {
 	}
 	
 	@Override
-	public boolean isCollidable()
-	{
-	        return true;
-	}
-	
-	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
+		if(CommonProxy.proxy.isRenderWorld(world)){return;}
 		TileCompressor tile = (TileCompressor)(world.getBlockTileEntity(x, y, z));
-		if(tile != null && entity != null && entity instanceof EntityItem){
-			if(tile.insertItemInSlot(((EntityItem) entity).getEntityItem(), 0)) {
-				CommonProxy.proxy.removeEntity(entity);
+		ItemStack currStack = tile.getStackInSlot(0);
+		if(tile != null && entity instanceof EntityItem){
+			if(((EntityItem) entity).getEntityItem().itemID == ModItems.ShardIsolatzium.itemID) {
+				if(tile.setInventorySlot(0, ((EntityItem) entity).getEntityItem())) {
+					CommonProxy.proxy.removeEntity(entity);
+				}
 			}
 		} else if(entity instanceof EntityLiving) {
 			entity.attackEntityFrom(mod_SoulCraft.damageCompressor, 3);
@@ -91,7 +91,7 @@ public class Compressor extends SCBlock {
 		TileCompressor tile = (TileCompressor)(world.getBlockTileEntity(x, y, z));
 		if(tile == null || CommonProxy.proxy.isRenderWorld(world)) {return true;}
 		ItemStack cont = tile.getStackInSlot(0);
-		if(cont != null) {
+		if(cont != null && cont.stackSize != 0) {
 			player.addChatMessage("This Compressor contains " + cont.stackSize + " " + cont.getItem().getItemDisplayName(cont));
 		} else {
 			player.addChatMessage("This Compressor does not contain anything.");
@@ -143,5 +143,56 @@ public class Compressor extends SCBlock {
                             item.stackSize = 0;
                     }
             }
+    }
+    
+    public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
+    {
+        if (par5 > 0 && Block.blocksList[par5].canProvidePower())
+        {
+            boolean var6 = par1World.isBlockIndirectlyGettingPowered(par2, par3, par4) || par1World.isBlockIndirectlyGettingPowered(par2, par3 + 1, par4);
+
+            if (var6)
+            {
+                par1World.scheduleBlockUpdate(par2, par3, par4, this.blockID, this.tickRate());
+            }
+        }
+    }
+    
+    @Override
+    public int tickRate()
+    {
+        return 3;
+    }
+    
+    @Override
+    public void updateTick(World world, int x, int y, int z, Random random)
+    {
+        if (CommonProxy.proxy.isServerWorld(world) && (world.isBlockIndirectlyGettingPowered(x, y, z) || world.isBlockIndirectlyGettingPowered(x, y + 1, z)))
+        {
+            this.dispense(world, x, y, z, random);
+        }
+    }
+    
+    public void dispense(World world, int x, int y, int z, Random random) {
+    	TileCompressor tile = (TileCompressor)(world.getBlockTileEntity(x, y, z));
+    	ItemStack currStack = tile.getStackInSlot(0);
+    	ItemStack dropStack;
+    	int dropStackSize = Math.abs(currStack.stackSize);
+    	if(currStack == null || currStack.stackSize <= 0) {return;}
+    	tile.decrInvSlot(0, 64);
+    	currStack.stackSize -= 64;
+    	if(currStack.stackSize <= 0) {
+    		currStack.stackSize = 0;
+    	}
+    	if(dropStackSize > 64) {
+    		dropStackSize = 64;
+    	}
+    	dropStack = new ItemStack(currStack.getItem(), dropStackSize, currStack.getItemDamage());
+    	System.out.println(dropStack);
+    	world.spawnEntityInWorld(new EntityItem(world, x+0.5, y+1, z+0.5, dropStack));
+    	tile.setInventorySlot(0, currStack);
+    	if(currStack.stackSize <= 0) {
+    		currStack = null;
+    	}
     }
 }

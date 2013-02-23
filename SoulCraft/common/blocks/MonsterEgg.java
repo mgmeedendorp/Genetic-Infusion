@@ -1,6 +1,7 @@
 package voidrunner101.SoulCraft.common.blocks;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLiving;
 import voidrunner101.SoulCraft.common.mod_SoulCraft;
 import voidrunner101.SoulCraft.common.core.DefaultProps;
@@ -18,8 +19,6 @@ public class MonsterEgg extends SCBlock {
 		setLightValue(0.375F);
 		setHardness(3.0F);
 		setResistance(15.0F);
-		setCreativeTab(mod_SoulCraft.CreativeTab);
-		setRequiresSelfNotify();
 	}
 	
 	@Override

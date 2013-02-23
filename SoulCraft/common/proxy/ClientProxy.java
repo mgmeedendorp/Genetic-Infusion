@@ -15,7 +15,6 @@ public class ClientProxy extends CommonProxy
 	public void registerRendering() {
 		MinecraftForgeClient.preloadTexture(DefaultProps.BLOCKS_TEXTURE_FILE);
 		MinecraftForgeClient.preloadTexture(DefaultProps.ITEMS_TEXTURE_FILE);
-		MinecraftForgeClient.preloadTexture(DefaultProps.COMPRESSOR_TEXTURE_FILE);
 		
 		RenderingRegistry.registerBlockHandler(DefaultProps.MonsterEggRenderID, new BlockMonsterEggRenderer());
 		RenderingRegistry.registerBlockHandler(DefaultProps.CompressorRenderID, new BlockCompressorRenderer());

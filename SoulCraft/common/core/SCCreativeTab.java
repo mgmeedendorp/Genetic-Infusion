@@ -9,13 +9,13 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class SCCreativeTab extends CreativeTabs {
-	public SCCreativeTab(String par1) {
-		super(par1);
+	public SCCreativeTab(String name) {
+		super(name);
 	}
 	
 	@Override
-	public ItemStack getIconItemStack() {
-	    return new ItemStack(ModBlocks.MonsterEgg);
+	public int getTabIconItemIndex() {
+	    return ModBlocks.Compressor.blockID;
 	}
 
 }

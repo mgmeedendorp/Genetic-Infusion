@@ -118,27 +118,34 @@ public class TileCompressor extends SCTileEntity implements IInventory {
                 var2.appendTag(var4);
             }
         }
-
         par1NBTTagCompound.setTag("Items", var2);
     }
 	
-	public boolean insertItemInSlot(ItemStack stack, int slot) {
-		if(slot < inv.length) {
-			ItemStack currStack = this.getStackInSlot(slot);
-			if(stack == null) {return false;}
-			if(currStack == null) {
-				setInventorySlotContents(slot, stack);
-				return true;
-			}
-			if(currStack.stackSize == 0){currStack = null; insertItemInSlot(stack, slot);}
-			if(currStack.getItem().itemID == stack.getItem().itemID && currStack.getItemDamage() == stack.getItemDamage()) {
-				currStack.stackSize += stack.stackSize;
-				return true;
-			}
+	public void decrInvSlot(int slot, int amount) {
+		if(slot >= inv.length) {return;}
+		ItemStack currStack = getStackInSlot(slot);
+		if(currStack == null) {return;}
+		if(currStack.stackSize >= amount) {
+			inv[slot].stackSize = currStack.stackSize - amount;
+		} else {
+			inv[slot] = null;
+		}
+	}
+	
+	public boolean setInventorySlot(int slot, ItemStack stack) {
+		ItemStack currStack = getStackInSlot(slot);
+		if(currStack == null) {
+			inv[0] = stack;
+			return true;
+		} else if(currStack.getItem() == stack.getItem() && currStack.getItemDamage() == stack.getItemDamage() && currStack.stackSize >= stack.stackSize) {
+			inv[0].stackSize += stack.stackSize;
+ 			return true;
+		} else {
+			inv[0] = null;
 		}
 		return false;
 	}
-
+	
 	@Override
 	public void openChest() {}
 

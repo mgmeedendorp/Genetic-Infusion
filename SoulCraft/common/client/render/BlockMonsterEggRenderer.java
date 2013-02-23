@@ -14,8 +14,6 @@ import voidrunner101.SoulCraft.common.helper.RenderHelper;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class BlockMonsterEggRenderer implements ISimpleBlockRenderingHandler{
-
-	private MonsterEgg monsterEgg;
 	
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
@@ -25,10 +23,8 @@ public class BlockMonsterEggRenderer implements ISimpleBlockRenderingHandler{
 
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-		block.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 1.0F, 0.9375F);
 		renderMonsterEgg(block, x, y, z, renderer, false);
-		renderer.renderStandardBlock(block, x, y, z);
-		renderer.setRenderBounds(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+		block.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 1.0F, 0.9375F);
 		return true;
 	}
 
@@ -106,7 +102,7 @@ public class BlockMonsterEggRenderer implements ISimpleBlockRenderingHandler{
             if(item){
             	block.setBlockBounds((float)(0.5F - var10), (float)var12, (float)(0.5F - var10), (float)(0.5F + var10), (float)var11, (float)(0.5F + var10));
                 renderer.setRenderBoundsFromBlock(block);
-                RenderHelper.renderAllFaces(block, renderer, block.getBlockTextureFromSide(0), true);
+                RenderHelper.renderAllFaces(block, renderer, 1, true);
             }
         }
 
