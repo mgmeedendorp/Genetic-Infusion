@@ -9,10 +9,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ShardIsolatzium extends SCItem {
 
+	private String[] subNames = {"ShardIsolatziumRed", "ShardIsolatziumGreen", "ShardIsolatziumBlue", "ShardIsolatziumBlack"};
+	
 	public ShardIsolatzium(int ID, int texture) {
 		super(ID, texture);
 		setHasSubtypes(true);
 		setMaxDamage(0);
+		setItemName("isolatziumShard");
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -21,14 +24,8 @@ public class ShardIsolatzium extends SCItem {
 	}
 
 	@Override
-	public String getItemNameIS(ItemStack is){
-		switch(is.getItemDamage()){
-			case 0:return "Red Isolatzium Shard"; 
-			case 1:return "Blue Isolatzium Shard";
-			case 2:return "Green Isolatzium Shard";
-			case 3:return "Black Isolatzium Shard";
-			default:return "error in SoulCraft";
-		}
+	public String getItemNameIS(ItemStack itemstack) {
+		return getItemName() + "." + subNames[itemstack.getItemDamage()];
 	}
 
 	@Override

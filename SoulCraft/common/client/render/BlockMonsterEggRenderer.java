@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11;
 
 import voidrunner101.SoulCraft.common.blocks.MonsterEgg;
 import voidrunner101.SoulCraft.common.core.DefaultProps;
-import voidrunner101.SoulCraft.common.helper.RenderHelper;
+import voidrunner101.SoulCraft.common.helper.SCRenderHelper;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class BlockMonsterEggRenderer implements ISimpleBlockRenderingHandler{
@@ -102,7 +102,7 @@ public class BlockMonsterEggRenderer implements ISimpleBlockRenderingHandler{
             if(item){
             	block.setBlockBounds((float)(0.5F - var10), (float)var12, (float)(0.5F - var10), (float)(0.5F + var10), (float)var11, (float)(0.5F + var10));
                 renderer.setRenderBoundsFromBlock(block);
-                RenderHelper.renderAllFaces(block, renderer, 1, true);
+                SCRenderHelper.renderAllFaces(block, renderer, 1, true);
             }
         }
 

@@ -18,6 +18,7 @@ public class OreIsolatzium extends SCBlock {
 		setHardness(1.0F);
 		setStepSound(Block.soundStoneFootstep);
 		setRequiresSelfNotify();
+		setBlockName("oreIsolatzium");
 	}
 	
 	@SideOnly(Side.CLIENT)

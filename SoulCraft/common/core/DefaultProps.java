@@ -23,6 +23,7 @@ public class DefaultProps {
 	
 	public static boolean spawnTitanium;
 	public static boolean spawnOreSoulCrystal;
+	public static boolean fancyCompressorRenderer;
 	
 	public static int OreTitaniumID;
 	public static int OreIsolatziumID;
@@ -31,4 +32,6 @@ public class DefaultProps {
 	
 	public static int TitaniumIngotID;
 	public static int ShardIsolatziumID;
+	
+	public static int CompressorRenderDistance;
 }

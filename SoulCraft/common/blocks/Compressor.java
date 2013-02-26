@@ -55,11 +55,6 @@ public class Compressor extends SCBlock {
         super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
         this.setBlockBounds(0.0F, 0.0F, 1.0F - var8, 1.0F, 1.0F, 1.0F);
         super.addCollidingBlockToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
-        this.setBlockBoundsForItemRender();
-    }
-    
-    public void setBlockBoundsForItemRender() {
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
 	
 	@Override
@@ -177,22 +172,16 @@ public class Compressor extends SCBlock {
     	TileCompressor tile = (TileCompressor)(world.getBlockTileEntity(x, y, z));
     	ItemStack currStack = tile.getStackInSlot(0);
     	ItemStack dropStack;
-    	int dropStackSize = Math.abs(currStack.stackSize);
+    	int dropStackSize;
+    	
     	if(currStack == null || currStack.stackSize <= 0) {return;}
-    	tile.decrInvSlot(0, 64);
-    	currStack.stackSize -= 64;
-    	if(currStack.stackSize <= 0) {
-    		currStack.stackSize = 0;
-    	}
-    	if(dropStackSize > 64) {
+    	if(currStack.stackSize >= 64) {
     		dropStackSize = 64;
+    	} else {
+    		dropStackSize = currStack.stackSize;
     	}
-    	dropStack = new ItemStack(currStack.getItem(), dropStackSize, currStack.getItemDamage());
-    	System.out.println(dropStack);
-    	world.spawnEntityInWorld(new EntityItem(world, x+0.5, y+1, z+0.5, dropStack));
-    	tile.setInventorySlot(0, currStack);
-    	if(currStack.stackSize <= 0) {
-    		currStack = null;
-    	}
+    	dropStack = new ItemStack(currStack.itemID, dropStackSize, currStack.getItemDamage());
+    	currStack = tile.decrStackSize(0, 64);
+    	world.spawnEntityInWorld(new EntityItem(world, x, y+1, z, dropStack));
     }
 }

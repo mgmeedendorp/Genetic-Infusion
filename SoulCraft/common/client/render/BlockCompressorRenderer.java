@@ -1,17 +1,18 @@
 package voidrunner101.SoulCraft.common.client.render;
 
-import voidrunner101.SoulCraft.common.core.DefaultProps;
-import voidrunner101.SoulCraft.common.helper.RenderHelper;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockCauldron;
-import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import voidrunner101.SoulCraft.common.core.DefaultProps;
+import voidrunner101.SoulCraft.common.helper.SCRenderHelper;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class BlockCompressorRenderer implements ISimpleBlockRenderingHandler {
-
+	
+	private World world;
+	
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
 		renderBlockCompressor(block, 0, 0, 0, renderer, true);
@@ -21,7 +22,7 @@ public class BlockCompressorRenderer implements ISimpleBlockRenderingHandler {
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 		renderBlockCompressor(block, x, y, z, renderer, false);
-		block.setBlockBounds(0f, 0f, 0f, 1f, 1f, 1f);
+		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 		return true;
 	}
 
@@ -125,10 +126,9 @@ public class BlockCompressorRenderer implements ISimpleBlockRenderingHandler {
         	if(item){
             	block.setBlockBounds((float)var8, (float)var9, (float)var10, (float)var11, (float)var12, (float)var13);
             	renderer.setRenderBoundsFromBlock(block);
-            	RenderHelper.renderAllFaces(block, renderer, 6, 6, 5, 5, 5, 5, false);
+            	SCRenderHelper.renderAllFaces(block, renderer, 6, 6, 5, 5, 5, 5, false);
         	}
 		}
         return true;
     }
-
 }

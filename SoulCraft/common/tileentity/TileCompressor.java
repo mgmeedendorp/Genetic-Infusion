@@ -1,17 +1,22 @@
 package voidrunner101.SoulCraft.common.tileentity;
 
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
-import voidrunner101.SoulCraft.common.proxy.CommonProxy;
+import voidrunner101.SoulCraft.common.core.DefaultProps;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileCompressor extends SCTileEntity implements IInventory {
 
 	private ItemStack[] inv;
+    private int requiredPlayerRange = DefaultProps.CompressorRenderDistance;
 	
 	public TileCompressor() {
 		inv = new ItemStack[1];
@@ -24,9 +29,7 @@ public class TileCompressor extends SCTileEntity implements IInventory {
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		if(slot > getSizeInventory()) {
-			return null;
-		}
+		this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 		return inv[slot];
 	}
 
@@ -42,7 +45,7 @@ public class TileCompressor extends SCTileEntity implements IInventory {
 			else
 			{
 				stack = stack.splitStack(amount);
-				if(stack.stackSize == 0)
+				if(stack.stackSize <= 0)
 				{
 					setInventorySlotContents(slot, null);
 				}
@@ -76,7 +79,7 @@ public class TileCompressor extends SCTileEntity implements IInventory {
 
 	@Override
 	public int getInventoryStackLimit() {
-		return 1024;
+		return 4096;
 	}
 	
 	@Override
@@ -121,31 +124,50 @@ public class TileCompressor extends SCTileEntity implements IInventory {
         par1NBTTagCompound.setTag("Items", var2);
     }
 	
-	public void decrInvSlot(int slot, int amount) {
-		if(slot >= inv.length) {return;}
-		ItemStack currStack = getStackInSlot(slot);
-		if(currStack == null) {return;}
-		if(currStack.stackSize >= amount) {
-			inv[slot].stackSize = currStack.stackSize - amount;
-		} else {
-			inv[slot] = null;
-		}
-	}
-	
 	public boolean setInventorySlot(int slot, ItemStack stack) {
 		ItemStack currStack = getStackInSlot(slot);
 		if(currStack == null) {
 			inv[0] = stack;
+			this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 			return true;
-		} else if(currStack.getItem() == stack.getItem() && currStack.getItemDamage() == stack.getItemDamage() && currStack.stackSize >= stack.stackSize) {
+		}
+		if(currStack.stackSize > getInventoryStackLimit()) {
+			ItemStack tooMuch = new ItemStack(getStackInSlot(0).itemID, currStack.stackSize-getInventoryStackLimit(), currStack.getItemDamage());
+			this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.xCoord, this.yCoord, this.zCoord, tooMuch));
+			currStack.stackSize = getInventoryStackLimit();
+			return false;
+		}
+		if(currStack.stackSize < 0) {
+			inv[0] = null;
+		}
+		if(currStack.getItem() == stack.getItem() && currStack.getItemDamage() == stack.getItemDamage()) {
 			inv[0].stackSize += stack.stackSize;
  			return true;
-		} else {
-			inv[0] = null;
 		}
 		return false;
 	}
 	
+	/**
+     * Returns true if there is a player in range (using World.getClosestPlayer)
+     */
+    public boolean anyPlayerInRange()
+    {
+        return this.worldObj.getClosestPlayer((double)this.xCoord + 0.5D, (double)this.yCoord + 0.5D, (double)this.zCoord + 0.5D, (double)this.requiredPlayerRange) != null;
+    }
+    
+    @Override
+    public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
+    	readFromNBT(packet.customParam1);
+    }
+    
+    @Override
+    public Packet getDescriptionPacket()
+    {
+        NBTTagCompound var1 = new NBTTagCompound();
+        writeToNBT(var1);
+        return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 1, var1);
+    }
+    
 	@Override
 	public void openChest() {}
 
