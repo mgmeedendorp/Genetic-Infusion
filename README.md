@@ -1,4 +1,4 @@
 SoulCraft
 =========
 
-The W.I.P. mod SoulCraft by seremis
+The W.I.P. mod SoulCraft by Seremis
