@@ -1,5 +1,6 @@
 package SoulCraft.proxy;
 
+import SoulCraft.core.lib.Localizations;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -8,7 +9,7 @@ import cpw.mods.fml.common.network.IGuiHandler;
 
 public class CommonProxy implements IGuiHandler
 {
-	@SidedProxy(clientSide = "SoulCraft.proxy.ClientProxy", serverSide = "SoulCraft.proxy.CommonProxy")
+	@SidedProxy(clientSide = Localizations.LOC_CLIENTPROXY, serverSide = Localizations.LOC_COMMONPROXY)
 	public static CommonProxy proxy;
 	
 	public void registerRendering(){}//client only

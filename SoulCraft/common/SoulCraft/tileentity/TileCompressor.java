@@ -10,6 +10,7 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import SoulCraft.core.DefaultProps;
+import SoulCraft.items.ModItems;
 
 public class TileCompressor extends SCTileEntity implements IInventory {
 
@@ -27,7 +28,6 @@ public class TileCompressor extends SCTileEntity implements IInventory {
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
 		return inv[slot];
 	}
 
@@ -54,12 +54,7 @@ public class TileCompressor extends SCTileEntity implements IInventory {
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) {
-		ItemStack stack = getStackInSlot(slot);
-		if(stack != null)
-		{
-			setInventorySlotContents(slot, null);
-		}
-		return stack;
+		return null;
 	}
 
 	@Override
@@ -174,4 +169,17 @@ public class TileCompressor extends SCTileEntity implements IInventory {
 
 	@Override
 	public void closeChest() {}
+
+	@Override
+	public boolean isInvNameLocalized() {
+		return false;
+	}
+
+	@Override
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		if(itemstack.itemID == ModItems.ShardIsolatzium.itemID) {
+			return true;
+		}
+		return false;
+	}
 }

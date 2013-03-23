@@ -13,8 +13,8 @@ public class ModItems {
 	public static Item ShardIsolatzium;
 	
 	public static void init() {
-		IngotTitanium = new SCItem(DefaultProps.TitaniumIngotID, 0).setItemName("ingotTitanium");
-		ShardIsolatzium = new ShardIsolatzium(DefaultProps.ShardIsolatziumID, 1);
+		IngotTitanium = new SCItem(DefaultProps.TitaniumIngotID).setUnlocalizedName("ingotTitanium");
+		ShardIsolatzium = new ShardIsolatzium(DefaultProps.ShardIsolatziumID);
 		
 		LanguageRegistry.addName(IngotTitanium, "Titanium Ingot");
 		LanguageRegistry.addName(new ItemStack(ShardIsolatzium, 1, 0), "Red Isolatzium shard");

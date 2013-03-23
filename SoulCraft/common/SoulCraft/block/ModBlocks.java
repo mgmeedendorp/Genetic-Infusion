@@ -1,14 +1,13 @@
 package SoulCraft.block;
 
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import SoulCraft.core.DefaultProps;
-import SoulCraft.items.OreSoulCrystalItem;
 import SoulCraft.tileentity.TileCompressor;
+import SoulCraft.tileentity.TileCrystalStand;
+import SoulCraft.tileentity.TileIsolatziumCrystal;
 import SoulCraft.world.SCWorldGenerator;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -16,25 +15,29 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 public class ModBlocks {
 	
 	public static Block OreTitanium;
-	public static OreIsolatzium OreIsolatzium;
-	public static Compressor Compressor;
-	public static MonsterEgg MonsterEgg;
+	public static BlockOreIsolatzium OreIsolatzium;
+	public static BlockCompressor Compressor;
+	public static BlockCrystal Crystal;
+	public static BlockCrystalStand CrystalStand;
+	public static BlockMonsterEgg MonsterEgg;
 	
 	public static SCWorldGenerator WorldGen;
 	
-	private static Random rnd = new Random();
-	
 	public static void init() {		
-		OreTitanium =  new SCBlock(DefaultProps.OreTitaniumID, 0, Material.rock).setHardness(20F);
-		OreIsolatzium = new OreIsolatzium(DefaultProps.OreIsolatziumID, 1, Material.rock);
-		Compressor =  new Compressor(DefaultProps.CompressorID, Material.rock);
-		MonsterEgg = new MonsterEgg(DefaultProps.MonsterEggID, 1, Material.dragonEgg);
+		OreTitanium =  new SCBlock(DefaultProps.OreTitaniumID, Material.rock).setHardness(20F).setUnlocalizedName("oreTitanium");
+		OreIsolatzium = new BlockOreIsolatzium(DefaultProps.OreIsolatziumID, Material.rock);
+		Compressor =  new BlockCompressor(DefaultProps.CompressorID, Material.rock);
+		Crystal = new BlockCrystal(DefaultProps.IsolatziumCrystalID, Material.coral);
+		CrystalStand = new BlockCrystalStand(DefaultProps.CrystalStandID, Material.wood);
+		MonsterEgg = new BlockMonsterEgg(DefaultProps.MonsterEggID, Material.dragonEgg);
 		
 		
 		
 		GameRegistry.registerBlock(OreTitanium, "Titanium Ore");
-		GameRegistry.registerBlock(OreIsolatzium, OreSoulCrystalItem.class, "Isolatzium Crystal Ore");
+		GameRegistry.registerBlock(OreIsolatzium, BlockOreIsolatziumItem.class, "Isolatzium Crystal Ore");
 		GameRegistry.registerBlock(Compressor, "Compressor");
+		GameRegistry.registerBlock(Crystal, "Isolazium Crystal");
+		GameRegistry.registerBlock(CrystalStand, "Crystal Stand");
 		GameRegistry.registerBlock(MonsterEgg, "Monster Egg");
 		
 		LanguageRegistry.addName(OreTitanium, "Titanium Ore");
@@ -43,6 +46,8 @@ public class ModBlocks {
 		LanguageRegistry.addName(new ItemStack(OreIsolatzium, 1, 2), "Blue Isolatzium Crystal Ore");
 		LanguageRegistry.addName(new ItemStack(OreIsolatzium, 1, 3), "Black Isolatzium Crystal Ore");
 		LanguageRegistry.addName(Compressor, "Atomic Compressor");
+		LanguageRegistry.addName(Crystal, "Isolatzium Crystal");
+		LanguageRegistry.addName(CrystalStand, "Isolatzium Crystal Stand");
 		LanguageRegistry.addName(MonsterEgg, "Monster Egg");
 
 		WorldGen = new SCWorldGenerator();
@@ -58,6 +63,8 @@ public class ModBlocks {
 	
 	public static void tileEntity() {
 		GameRegistry.registerTileEntity(TileCompressor.class, "TileCompressor");
+		GameRegistry.registerTileEntity(TileIsolatziumCrystal.class, "TileIsolatziumCrystal");
+		GameRegistry.registerTileEntity(TileCrystalStand.class, "TileCrystalStand");
 	}
 
 }

@@ -46,7 +46,7 @@ public class TileCompressorRenderer extends TileEntitySpecialRenderer {
         
         EntityItem entityItem = new EntityItem(tile.worldObj);
         if(item != null && item.stackSize>0) {
-        	entityItem.func_92013_a(item);
+        	entityItem.setEntityItemStack(item);
         	entityItem.hoverStart = 0.0F;
         	item.stackSize=1;
         	renderItems.doRenderItem(entityItem, 0, 0, 0, 0, 0);

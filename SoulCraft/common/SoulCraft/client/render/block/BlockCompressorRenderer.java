@@ -3,7 +3,7 @@ package SoulCraft.client.render.block;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
-import SoulCraft.core.DefaultProps;
+import SoulCraft.core.lib.RenderIds;
 import SoulCraft.helper.SCRenderHelper;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
@@ -12,7 +12,6 @@ public class BlockCompressorRenderer implements ISimpleBlockRenderingHandler {
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
 		renderBlockCompressor(block, 0, 0, 0, renderer, true);
-		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	@Override
@@ -28,7 +27,7 @@ public class BlockCompressorRenderer implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public int getRenderId() {
-		return DefaultProps.CompressorRenderID;
+		return RenderIds.CompressorRenderID;
 	}
 	
 	public boolean renderBlockCompressor(Block block, int x, int y, int z, RenderBlocks renderer, boolean item) {
@@ -115,15 +114,16 @@ public class BlockCompressorRenderer implements ISimpleBlockRenderingHandler {
 			float var13 = var6/16;
 		
 			if(!item){
-            	renderer.setRenderBounds((double)var8, (double)var9, (double)var10, (double)var11, (double)var12, (double)var13);
+            	renderer.setRenderBounds(var8, var9, var10, var11, var12, var13);
             	renderer.renderStandardBlock(block, x, y, z);
         	}
         	if(item){
             	block.setBlockBounds((float)var8, (float)var9, (float)var10, (float)var11, (float)var12, (float)var13);
             	renderer.setRenderBoundsFromBlock(block);
-            	SCRenderHelper.renderAllFaces(block, renderer, 6, 6, 5, 5, 5, 5);
+            	SCRenderHelper.renderAllFaces(block, renderer, block.getBlockTextureFromSide(0), block.getBlockTextureFromSide(1), block.getBlockTextureFromSide(2), block.getBlockTextureFromSide(3), block.getBlockTextureFromSide(4), block.getBlockTextureFromSide(5));
         	}
 		}
+		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         return true;
     }
 }

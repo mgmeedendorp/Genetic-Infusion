@@ -3,7 +3,8 @@ package SoulCraft.client.render.block;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
-import SoulCraft.core.DefaultProps;
+import SoulCraft.block.ModBlocks;
+import SoulCraft.core.lib.RenderIds;
 import SoulCraft.helper.SCRenderHelper;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
@@ -11,7 +12,7 @@ public class BlockMonsterEggRenderer implements ISimpleBlockRenderingHandler{
 	
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
-		renderMonsterEgg(block, 0, 0, 0, renderer, true);
+		renderMonsterEgg( block, 0, 0, 0, renderer, true);
         block.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 1.0F, 0.9375F);
 	}
 
@@ -28,7 +29,7 @@ public class BlockMonsterEggRenderer implements ISimpleBlockRenderingHandler{
 
 	@Override
 	public int getRenderId() {
-		return DefaultProps.MonsterEggRenderID;
+		return RenderIds.MonsterEggRenderID;
 	}
 	
 	public boolean renderMonsterEgg(Block block, int x, int y, int z, RenderBlocks renderer, boolean item) {
@@ -95,7 +96,7 @@ public class BlockMonsterEggRenderer implements ISimpleBlockRenderingHandler{
             if(item){
             	block.setBlockBounds((float)(0.5F - var10), (float)var12, (float)(0.5F - var10), (float)(0.5F + var10), (float)var11, (float)(0.5F + var10));
             	renderer.setRenderBoundsFromBlock(block);
-            	SCRenderHelper.renderAllFaces(block, renderer, 1);
+            	SCRenderHelper.renderAllFaces(block, renderer, block.getBlockTextureFromSide(0));
             }
         }
 

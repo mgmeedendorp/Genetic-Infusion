@@ -11,21 +11,17 @@ public class ShardIsolatzium extends SCItem {
 
 	private String[] subNames = {"ShardIsolatziumRed", "ShardIsolatziumGreen", "ShardIsolatziumBlue", "ShardIsolatziumBlack"};
 	
-	public ShardIsolatzium(int ID, int texture) {
-		super(ID, texture);
+	public ShardIsolatzium(int ID) {
+		super(ID);
 		setHasSubtypes(true);
 		setMaxDamage(0);
-		setItemName("isolatziumShard");
-	}
-	
-	@SideOnly(Side.CLIENT)
-	public int getIconFromDamage(int i){
-		return i + 1;
+		setUnlocalizedName("isolatziumShard");
+		setNumbersofMetadata(4);
 	}
 
 	@Override
-	public String getItemNameIS(ItemStack itemstack) {
-		return getItemName() + "." + subNames[itemstack.getItemDamage()];
+	public String getUnlocalizedName(ItemStack itemstack) {
+		return getUnlocalizedName() + "." + subNames[itemstack.getItemDamage()];
 	}
 
 	@Override

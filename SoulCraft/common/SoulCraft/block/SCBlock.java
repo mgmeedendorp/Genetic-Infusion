@@ -1,35 +1,53 @@
 package SoulCraft.block;
 
-import java.util.Random;
-
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import SoulCraft.mod_SoulCraft;
 import SoulCraft.core.DefaultProps;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class SCBlock extends BlockContainer {
-
-	public SCBlock(int ID, int texture, Material material) {
-		super(ID, texture, material);
-		setBlockName("");
+	
+	private Icon[] iconBuffer;
+	private int metadata = 0;
+	
+	public SCBlock(int ID, Material material) {
+		super(ID, material);
+		setUnlocalizedName("");
 		setCreativeTab(mod_SoulCraft.CreativeTab);
 	}
 	
-	public int quantityDropped(Random par1Random) {
-		return 1;
+	@Override
+	public void registerIcons(IconRegister iconRegister) {
+		if(this.metadata == 0) {
+			 blockIcon = iconRegister.registerIcon(DefaultProps.ID+":"+this.getUnlocalizedName().substring(5));
+		} else {
+			iconBuffer = new Icon[metadata+1];
+			for(int x = 1; x<metadata+1; x++) {
+				iconBuffer[x] = iconRegister.registerIcon(DefaultProps.ID+":" + this.getUnlocalizedName().substring(5)+x);
+			}
+		}
 	}
-	 
-	public int idDropped(int par1, Random random, int par2) {
-		return this.blockID;
-	}
-	
-	@SideOnly(Side.CLIENT)
-    public String getTextureFile () {
-            return DefaultProps.BLOCKS_TEXTURE_FILE;
+
+	@Override
+    public Icon getBlockTextureFromSideAndMetadata(int side, int metadata)
+    {
+    	if(this.metadata != 0)
+		{
+    		blockIcon = iconBuffer[metadata+1];
+		}
+    	return this.blockIcon;
+    }
+    
+    public int getNumbersofMetadata() {
+    	return this.metadata;
+    }
+    
+    public void setNumbersofMetadata(int metadata) {
+    	this.metadata = metadata;
     }
 
 	@Override

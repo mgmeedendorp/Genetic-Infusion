@@ -3,16 +3,22 @@ package SoulCraft.helper;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.util.Icon;
 
 import org.lwjgl.opengl.GL11;
 
+import SoulCraft.block.SCBlock;
+import SoulCraft.core.DefaultProps;
+import SoulCraft.items.SCItem;
+
 public class SCRenderHelper {
 	
-	public static void renderAllFaces(Block block, RenderBlocks renderer, int tex) {
+	public static void renderAllFaces(Block block, RenderBlocks renderer, Icon tex) {
 		renderAllFaces(block, renderer, tex,  tex,  tex, tex, tex, tex);
 	}
 	
-	public static void renderAllFaces(Block block, RenderBlocks renderer, int tex1, int tex2, int tex3, int tex4, int tex5, int tex6) {
+	public static void renderAllFaces(Block block, RenderBlocks renderer, Icon tex1, Icon tex2, Icon tex3, Icon tex4, Icon tex5, Icon tex6) {
 		Tessellator var4 = Tessellator.instance;
 		try{
 			GL11.glTranslatef(-0.5F, -0.5F, -0.5F);

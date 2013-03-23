@@ -1,5 +1,6 @@
 package SoulCraft.core;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 
@@ -10,8 +11,8 @@ public class DamageCompressor extends DamageSource {
 	}
 	
 	@Override
-	public String getDeathMessage(EntityPlayer player) {
-		return player.username + " was compressed in a compressor.";	
+	public String getDeathMessage(EntityLiving entity) {
+		return ((EntityPlayer)entity).username + " was compressed in a compressor.";	
 	}
 	
 }
