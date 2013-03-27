@@ -1,0 +1,141 @@
+package Seremis.SoulCraft.tileentity;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet132TileEntityData;
+
+public class TileCrystalStand extends SCTileEntity implements IInventory {
+
+	private ItemStack[] inv = new ItemStack[1];
+	
+	@Override
+	public int getSizeInventory() {
+		return inv.length;
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int slot) {
+		return inv[slot];
+	}
+
+	@Override
+	public ItemStack decrStackSize(int slot, int amount) {
+		ItemStack stack = getStackInSlot(slot);
+		if(stack != null)
+		{
+			if(stack.stackSize <= amount)
+			{
+				setInventorySlotContents(slot, null);
+			} 
+			else
+			{
+				stack = stack.splitStack(amount);
+				if(stack.stackSize <= 0)
+				{
+					setInventorySlotContents(slot, null);
+				}
+			}
+		}
+		return stack;
+	}
+
+	@Override
+	public ItemStack getStackInSlotOnClosing(int slot) {
+		return null;
+	}
+
+	@Override
+	public void setInventorySlotContents(int slot, ItemStack stack) {
+		inv[slot] = stack;
+		if(stack != null && stack.stackSize > getInventoryStackLimit()) {
+			stack.stackSize = getInventoryStackLimit();
+		}
+	}
+
+	@Override
+	public String getInvName() {
+		return "Crystal Stand";
+	}
+
+	@Override
+	public int getInventoryStackLimit() {
+		return 1;
+	}
+
+	@Override
+	public void openChest() {}
+
+	@Override
+	public void closeChest() {}
+	
+	@Override
+	public boolean isUseableByPlayer(EntityPlayer player) {
+		return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == this && player.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64;
+	}
+	
+	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.readFromNBT(par1NBTTagCompound);
+        NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
+        this.inv = new ItemStack[this.getSizeInventory()];
+
+        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+        {
+            NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
+            int var5 = var4.getByte("Slot") & 255;
+
+            if (var5 >= 0 && var5 < this.inv.length)
+            {
+                this.inv[var5] = ItemStack.loadItemStackFromNBT(var4);
+            }
+        }
+    }
+
+	@Override
+	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    {
+        super.writeToNBT(par1NBTTagCompound);
+        NBTTagList var2 = new NBTTagList();
+
+        for (int var3 = 0; var3 < this.inv.length; ++var3)
+        {
+            if (this.inv[var3] != null)
+            {
+                NBTTagCompound var4 = new NBTTagCompound();
+                var4.setByte("Slot", (byte)var3);
+                this.inv[var3].writeToNBT(var4);
+                var2.appendTag(var4);
+            }
+        }
+        par1NBTTagCompound.setTag("Items", var2);
+    }
+	
+	@Override
+    public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
+    	readFromNBT(packet.customParam1);
+    }
+    
+    @Override
+    public Packet getDescriptionPacket()
+    {
+        NBTTagCompound var1 = new NBTTagCompound();
+        writeToNBT(var1);
+        return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 1, var1);
+    }
+
+	@Override
+	public boolean isInvNameLocalized() {
+		return false;
+	}
+
+	@Override
+	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+		return false;
+	}
+
+}
