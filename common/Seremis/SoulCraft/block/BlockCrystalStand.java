@@ -76,7 +76,7 @@ public class BlockCrystalStand extends SCBlock {
     public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
             dropItems(world, x, y, z);
             if(((TileCrystalStand)world.getBlockTileEntity(x, y, z)).getNetwork() != null) {
-             ((TileCrystalStand)world.getBlockTileEntity(x, y, z)).getNetwork().invalidate((TileCrystalStand)world.getBlockTileEntity(x, y, z));
+                ((TileCrystalStand)world.getBlockTileEntity(x, y, z)).getNetwork().invalidate((TileCrystalStand)world.getBlockTileEntity(x, y, z));
             }
             super.breakBlock(world, x, y, z, par5, par6);
     }

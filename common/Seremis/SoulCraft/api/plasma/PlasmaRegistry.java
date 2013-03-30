@@ -13,6 +13,10 @@ public class PlasmaRegistry implements IPlasmaRegistry {
         plasmaRegistry.put(id, net);
     }
     
+    public HashMap<Integer, IPlasmaNetwork> getRegisteredMap() {
+        return plasmaRegistry;
+    }
+    
     @Override
     public IPlasmaNetwork getNetworkFromID(int id) {
         return plasmaRegistry.get(id);

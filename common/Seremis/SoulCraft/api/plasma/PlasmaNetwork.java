@@ -21,6 +21,7 @@ public class PlasmaNetwork implements IPlasmaNetwork {
 
     @Override
     public void addConnectorToNetwork(IPlasmaConnector connector, PlasmaPacket pack) {
+        connector.setNetwork(this);
         this.connected.put(connector, pack);
     }
     

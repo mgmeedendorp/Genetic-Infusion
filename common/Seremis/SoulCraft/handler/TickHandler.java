@@ -2,6 +2,7 @@ package Seremis.SoulCraft.handler;
 
 import java.util.EnumSet;
 
+import Seremis.SoulCraft.api.plasma.PlasmaRegistry;
 import Seremis.SoulCraft.core.lib.Strings;
 
 import cpw.mods.fml.common.ITickHandler;
@@ -16,7 +17,9 @@ public class TickHandler implements ITickHandler {
 
 	@Override
 	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
-		
+//		for(int i = 0; i>PlasmaRegistry.instance.getNextID(); i++) {
+//		    PlasmaRegistry.instance.getNetworkFromID(i).dividePlasma();
+//		}
 	}
 
 	@Override

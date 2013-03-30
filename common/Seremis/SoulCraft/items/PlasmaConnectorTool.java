@@ -23,21 +23,27 @@ public class PlasmaConnectorTool extends SCItem {
             connector1 = connector;
         } else if(connector2 == null) {
             connector2 = connector;
-        } else if(connector1 != null && connector2 != null) {
+        }
+        if(connector1 != null && connector2 != null) {
             IPlasmaNetwork net1 = connector1.getNetwork();
             IPlasmaNetwork net2 = connector2.getNetwork();
             if(net1 != null) {
                 net1.addConnectorToNetwork(connector2, new PlasmaPacket());
+                net1.dividePlasma();
                 System.out.println(net1.toString());
             }
             if(net2 != null) {
                 net2.addConnectorToNetwork(connector1, new PlasmaPacket());
+                net2.dividePlasma();
                 System.out.println(net2.toString());
             }
             if(net1 != null && net2 != null) {
                 net1.merge(net2);
-            } else {
+                net1.dividePlasma();
+            } 
+            if(net1 == null && net2 == null) {
                 IPlasmaNetwork network = new PlasmaNetwork(connector1, connector2);
+                network.dividePlasma();
                 PlasmaRegistry.instance.registerPlasmaNetwork(network, network.getNetworkId());
                 System.out.println(network.toString());
             }
