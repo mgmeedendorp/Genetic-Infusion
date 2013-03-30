@@ -19,7 +19,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class TileCompressorRenderer extends TileEntitySpecialRenderer {
 
 	private RenderItem renderItems;
-	private Minecraft    mc;
+	private Minecraft mc;
 	public boolean renderItemShrink = false;
 	
 	public TileCompressorRenderer() {
