@@ -8,10 +8,15 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.ForgeDirection;
+import Seremis.SoulCraft.api.plasma.IPlasmaNetwork;
+import Seremis.SoulCraft.api.plasma.block.IPlasmaConnector;
 
-public class TileCrystalStand extends SCTileEntity implements IInventory {
+public class TileCrystalStand extends SCTileEntity implements IInventory, IPlasmaConnector {
 
 	private ItemStack[] inv = new ItemStack[1];
+	private IPlasmaNetwork network = null;
 	
 	@Override
 	public int getSizeInventory() {
@@ -138,4 +143,23 @@ public class TileCrystalStand extends SCTileEntity implements IInventory {
 		return false;
 	}
 
+    @Override
+    public TileEntity getTile() {
+        return this;
+    }
+
+    @Override
+    public boolean connect(ForgeDirection side) {
+        return side != ForgeDirection.DOWN;
+    }
+
+    @Override
+    public IPlasmaNetwork getNetwork() {
+        return network;
+    }
+    
+    @Override
+    public void setNetwork(IPlasmaNetwork network) {
+        this.network = network;
+    }
 }

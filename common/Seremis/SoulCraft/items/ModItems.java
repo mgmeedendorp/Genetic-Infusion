@@ -10,11 +10,13 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 public class ModItems {
 
 	public static Item IngotTitanium;
-	public static Item ShardIsolatzium;
+	public static ShardIsolatzium ShardIsolatzium;
+	public static PlasmaConnectorTool PlasmaConnectorTool;
 	
 	public static void init() {
 		IngotTitanium = new SCItem(DefaultProps.TitaniumIngotID).setUnlocalizedName("ingotTitanium");
 		ShardIsolatzium = new ShardIsolatzium(DefaultProps.ShardIsolatziumID);
+		PlasmaConnectorTool = new PlasmaConnectorTool(DefaultProps.PlasmaConnectorToolID);
 		
 		LanguageRegistry.addName(IngotTitanium, "Titanium Ingot");
 		LanguageRegistry.addName(new ItemStack(ShardIsolatzium, 1, 0), "Red Isolatzium shard");

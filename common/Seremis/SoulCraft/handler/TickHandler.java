@@ -11,7 +11,7 @@ public class TickHandler implements ITickHandler {
 
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData) {
-		System.out.println("ticked!");
+		
 	}
 
 	@Override
@@ -21,7 +21,7 @@ public class TickHandler implements ITickHandler {
 
 	@Override
 	public EnumSet<TickType> ticks() {
-		return EnumSet.of(TickType.WORLD);
+		return EnumSet.of(TickType.CLIENT);
 	}
 
 	@Override

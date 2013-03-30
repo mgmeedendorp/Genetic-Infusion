@@ -10,8 +10,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import Seremis.SoulCraft.api.plasma.block.IPlasmaConnector;
 import Seremis.SoulCraft.core.lib.RenderIds;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
+import Seremis.SoulCraft.items.ModItems;
+import Seremis.SoulCraft.items.PlasmaConnectorTool;
 import Seremis.SoulCraft.tileentity.TileCrystalStand;
 
 public class BlockCrystalStand extends SCBlock {
@@ -38,22 +41,30 @@ public class BlockCrystalStand extends SCBlock {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
     {
-			TileCrystalStand tile = (TileCrystalStand)(world.getBlockTileEntity(x, y, z));
-			ItemStack currStack = tile.getStackInSlot(0);
-			if(player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().itemID == ModBlocks.Crystal.blockID) {
-				if(tile != null && currStack == null) {
-					tile.setInventorySlotContents(0, new ItemStack(ModBlocks.Crystal, 1));
-					player.getCurrentEquippedItem().stackSize--;
-					world.markBlockForRenderUpdate(x, y, z);
-				}
-			} else if(tile != null && currStack != null) {
-				tile.setInventorySlotContents(0, null);
-				if(CommonProxy.proxy.isServerWorld(world)){
-					world.spawnEntityInWorld(new EntityItem(world, x, y, z, currStack));
-				}
-				world.markBlockForRenderUpdate(x, y, z);
-			}
-			return true;
+	    TileCrystalStand tile = (TileCrystalStand)(world.getBlockTileEntity(x, y, z));
+	    ItemStack currPlayerItem = player.getCurrentEquippedItem();
+    	if(currPlayerItem != null && currPlayerItem.itemID == ModItems.PlasmaConnectorTool.itemID) {
+    	    ((PlasmaConnectorTool)currPlayerItem.getItem()).setConnector((IPlasmaConnector)tile, world);
+    	}
+	    ItemStack currStack = tile.getStackInSlot(0);
+    			
+    	if(currPlayerItem != null && currPlayerItem.itemID == ModBlocks.Crystal.blockID) {
+    		if(tile != null && currStack == null) {
+    			tile.setInventorySlotContents(0, new ItemStack(ModBlocks.Crystal, 1));
+    			player.getCurrentEquippedItem().stackSize--;
+    			world.markBlockForRenderUpdate(x, y, z);
+    		}  
+    		if(tile != null && currStack != null) {
+    				
+    		    tile.setInventorySlotContents(0, null);
+    				
+    		    if(CommonProxy.proxy.isServerWorld(world)){
+    		        world.spawnEntityInWorld(new EntityItem(world, x, y, z, currStack));
+    		    }
+    			world.markBlockForRenderUpdate(x, y, z);
+    		}	
+    	}
+    	return true;
     }
 	
 	@Override
@@ -64,6 +75,7 @@ public class BlockCrystalStand extends SCBlock {
 	@Override
     public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
             dropItems(world, x, y, z);
+            ((TileCrystalStand)world.getBlockTileEntity(x, y, z)).getNetwork().invalidate((TileCrystalStand)world.getBlockTileEntity(x, y, z));
             super.breakBlock(world, x, y, z, par5, par6);
     }
 
