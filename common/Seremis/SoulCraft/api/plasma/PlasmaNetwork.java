@@ -63,7 +63,10 @@ public class PlasmaNetwork implements IPlasmaNetwork {
     @Override
     public void dividePlasma() {
         PlasmaPacket totalPlasma = getTotalPlasmaInNetwork();
-        
+        if(totalPlasma == null || totalPlasma.getAmount() == 0) {
+            return;
+        }
+          
         Iterator it = this.connected.entrySet().iterator();
         
         while(it.hasNext()) {
@@ -80,7 +83,7 @@ public class PlasmaNetwork implements IPlasmaNetwork {
 
     @Override
     public void addPlasmaToConnector(IPlasmaConnector connector, PlasmaPacket pack) {
-        if(connected.containsKey(connector)) {
+        if(connected.containsKey(connector) && pack != null) {
             connected.get(connector).mergePackets(pack);
         }
         

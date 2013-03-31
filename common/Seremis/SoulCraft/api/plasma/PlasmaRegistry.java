@@ -1,19 +1,19 @@
 package Seremis.SoulCraft.api.plasma;
 
-import java.util.HashMap;
+import java.util.WeakHashMap;
 
 public class PlasmaRegistry implements IPlasmaRegistry {
 
     public static PlasmaRegistry instance = new PlasmaRegistry();
     
-    private HashMap<Integer, IPlasmaNetwork> plasmaRegistry = new HashMap<Integer, IPlasmaNetwork>();
+    private WeakHashMap<Integer, IPlasmaNetwork> plasmaRegistry = new WeakHashMap<Integer, IPlasmaNetwork>();
     
     @Override
     public void registerPlasmaNetwork(IPlasmaNetwork net,  int id) {
         plasmaRegistry.put(id, net);
     }
     
-    public HashMap<Integer, IPlasmaNetwork> getRegisteredMap() {
+    public WeakHashMap<Integer, IPlasmaNetwork> getRegisteredMap() {
         return plasmaRegistry;
     }
     

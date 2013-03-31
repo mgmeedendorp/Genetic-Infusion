@@ -1,6 +1,10 @@
 package Seremis.SoulCraft.items;
 
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import Seremis.SoulCraft.api.plasma.ConnectorRegistry;
 import Seremis.SoulCraft.api.plasma.IPlasmaNetwork;
 import Seremis.SoulCraft.api.plasma.PlasmaNetwork;
 import Seremis.SoulCraft.api.plasma.PlasmaPacket;
@@ -15,6 +19,16 @@ public class PlasmaConnectorTool extends SCItem {
     
     public PlasmaConnectorTool(int ID) {
         super(ID);
+        setUnlocalizedName("toolPlasmaConnector");
+    }
+    
+    @Override
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int metadata, float par8, float par9, float par10) {
+        TileEntity tile = world.getBlockTileEntity(x, y, z);
+        if(tile instanceof IPlasmaConnector && ConnectorRegistry.instance.isRegisteredConnector((IPlasmaConnector)tile)) {
+            setConnector((IPlasmaConnector)tile, world);
+        }
+        return false;
     }
     
     public void setConnector(IPlasmaConnector connector, World world) {

@@ -10,11 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import Seremis.SoulCraft.api.plasma.block.IPlasmaConnector;
 import Seremis.SoulCraft.core.lib.RenderIds;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
-import Seremis.SoulCraft.items.ModItems;
-import Seremis.SoulCraft.items.PlasmaConnectorTool;
 import Seremis.SoulCraft.tileentity.TileCrystalStand;
 
 public class BlockCrystalStand extends SCBlock {
@@ -43,9 +40,6 @@ public class BlockCrystalStand extends SCBlock {
     {
 	    TileCrystalStand tile = (TileCrystalStand)(world.getBlockTileEntity(x, y, z));
 	    ItemStack currPlayerItem = player.getCurrentEquippedItem();
-    	if(currPlayerItem != null && currPlayerItem.itemID == ModItems.PlasmaConnectorTool.itemID) {
-    	    ((PlasmaConnectorTool)currPlayerItem.getItem()).setConnector((IPlasmaConnector)tile, world);
-    	}
 	    ItemStack currStack = tile.getStackInSlot(0);
     			
     	if(currPlayerItem != null && currPlayerItem.itemID == ModBlocks.Crystal.blockID) {

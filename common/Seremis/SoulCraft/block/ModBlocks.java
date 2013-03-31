@@ -4,6 +4,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+import Seremis.SoulCraft.api.plasma.ConnectorRegistry;
+import Seremis.SoulCraft.api.plasma.block.IPlasmaConnector;
 import Seremis.SoulCraft.core.DefaultProps;
 import Seremis.SoulCraft.tileentity.TileCompressor;
 import Seremis.SoulCraft.tileentity.TileCrystalStand;
@@ -65,6 +67,10 @@ public class ModBlocks {
 		GameRegistry.registerTileEntity(TileCompressor.class, "TileCompressor");
 		GameRegistry.registerTileEntity(TileIsolatziumCrystal.class, "TileIsolatziumCrystal");
 		GameRegistry.registerTileEntity(TileCrystalStand.class, "TileCrystalStand");
+	}
+	
+	public static void registerConnectors() {
+	    ConnectorRegistry.instance.registerPlasmaConnector((IPlasmaConnector)(new TileIsolatziumCrystal()), ConnectorRegistry.instance.getNextID());
 	}
 
 }
