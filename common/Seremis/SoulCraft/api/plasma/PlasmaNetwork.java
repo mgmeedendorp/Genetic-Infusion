@@ -8,12 +8,11 @@ import Seremis.SoulCraft.api.plasma.block.IPlasmaConnector;
 
 public class PlasmaNetwork implements IPlasmaNetwork {
     
-    private int networkID;
+    private int networkID = PlasmaRegistry.instance.getNextID();;
     
     private HashMap<IPlasmaConnector, PlasmaPacket> connected = new HashMap<IPlasmaConnector, PlasmaPacket>();
     
     public PlasmaNetwork(IPlasmaConnector... connected) {
-        networkID = PlasmaRegistry.instance.getNextID();
         for(IPlasmaConnector tmp: connected) {
             addConnectorToNetwork(tmp, null);
         }

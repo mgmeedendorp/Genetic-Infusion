@@ -35,7 +35,7 @@ public class TileCrystalRenderer extends TileEntitySpecialRenderer {
 		
 		TileIsolatziumCrystal tco = (TileIsolatziumCrystal)tile;
 		
-		bindTextureByName(Localizations.LOC_MODLE_TEXTURES + Localizations.BLANK);
+		bindTextureByName(Localizations.LOC_MODEL_TEXTURES + Localizations.BLANK);
 		Random rand = new Random(tco.xCoord + tco.yCoord * tco.zCoord);
 		renderCrystal((float)x, (float)y, (float)z, rand, 1F);
 	}

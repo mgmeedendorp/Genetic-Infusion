@@ -2,7 +2,7 @@ package Seremis.SoulCraft.core.lib;
 
 public class Localizations {
 	
-    public static final String LOC_MODLE_TEXTURES = "/mods/SC/textures/models/";
+    public static final String LOC_MODEL_TEXTURES = "/mods/SC/textures/models/";
 	
     public static final String BLANK = "blank.png";
     public static final String CRYSTAL = "crystal.png";

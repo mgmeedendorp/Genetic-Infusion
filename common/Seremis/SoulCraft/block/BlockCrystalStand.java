@@ -12,6 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import Seremis.SoulCraft.core.lib.RenderIds;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
+import Seremis.SoulCraft.items.ModItems;
 import Seremis.SoulCraft.tileentity.TileCrystalStand;
 
 public class BlockCrystalStand extends SCBlock {
@@ -57,6 +58,9 @@ public class BlockCrystalStand extends SCBlock {
     		    }
     			world.markBlockForRenderUpdate(x, y, z);
     		}	
+    	}
+    	if(currPlayerItem != null && currPlayerItem.itemID == ModItems.PlasmaConnectorTool.itemID) {
+    	    return false;
     	}
     	return true;
     }

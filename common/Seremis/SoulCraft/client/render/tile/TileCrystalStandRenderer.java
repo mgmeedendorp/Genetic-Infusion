@@ -42,7 +42,7 @@ public class TileCrystalStandRenderer extends TileEntitySpecialRenderer {
 	@Override
 	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f) {
 		TileCrystalStand tco = (TileCrystalStand)tile;
-		bindTextureByName(Localizations.LOC_MODLE_TEXTURES + Localizations.BLANK);
+		bindTextureByName(Localizations.LOC_MODEL_TEXTURES + Localizations.BLANK);
 		Random rand = new Random(tco.xCoord + tco.yCoord * tco.zCoord);
 		if(tco.getStackInSlot(0) != null) {
 			renderCrystal(tco, (float)x, (float)y + 0.5F, (float)z, rand, 0.6F);

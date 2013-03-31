@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import Seremis.SoulCraft.api.plasma.ConnectorRegistry;
+import net.minecraftforge.common.ForgeDirection;
 import Seremis.SoulCraft.api.plasma.IPlasmaNetwork;
 import Seremis.SoulCraft.api.plasma.PlasmaNetwork;
 import Seremis.SoulCraft.api.plasma.PlasmaPacket;
@@ -23,10 +23,12 @@ public class PlasmaConnectorTool extends SCItem {
     }
     
     @Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int metadata, float par8, float par9, float par10) {
-        TileEntity tile = world.getBlockTileEntity(x, y, z);
-        if(tile instanceof IPlasmaConnector && ConnectorRegistry.instance.isRegisteredConnector((IPlasmaConnector)tile)) {
-            setConnector((IPlasmaConnector)tile, world);
+    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int sideHit, float par8, float par9, float par10) {
+        if(CommonProxy.proxy.isServerWorld(world)) {
+            TileEntity tile = world.getBlockTileEntity(x, y, z);
+            if(tile instanceof IPlasmaConnector && ((IPlasmaConnector)tile).connect(ForgeDirection.getOrientation(sideHit))) {
+                setConnector((IPlasmaConnector)tile, world);
+            }
         }
         return false;
     }

@@ -150,7 +150,10 @@ public class TileCrystalStand extends SCTileEntity implements IInventory, IPlasm
 
     @Override
     public boolean connect(ForgeDirection side) {
-        return side != ForgeDirection.DOWN;
+        if(side != ForgeDirection.DOWN) {
+            return true;
+        }
+        return false;
     }
 
     @Override
