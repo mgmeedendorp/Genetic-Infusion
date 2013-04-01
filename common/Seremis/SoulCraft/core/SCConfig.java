@@ -17,6 +17,7 @@ public class SCConfig {
 		DefaultProps.TitaniumIngotID = config.getItem("Titanium Ingot", 4520).getInt();
 		DefaultProps.ShardIsolatziumID = config.getItem("Isolatzium Shards", 4521).getInt();
 		DefaultProps.PlasmaConnectorToolID = config.getItem("Plasma Tool", 4522).getInt();
+		DefaultProps.PlasmaID = config.getItem("Plasma Item", 4523).getInt();
 		//Booleans
 		DefaultProps.fancyCompressorRenderer = config.get(Configuration.CATEGORY_GENERAL, "Fancy Compressor rendering", true).getBoolean(true);
 		DefaultProps.spawnTitanium = config.get(Configuration.CATEGORY_GENERAL, "Spawn Titanium Ore in the world", true).getBoolean(true);

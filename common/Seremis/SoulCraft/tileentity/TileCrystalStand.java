@@ -12,6 +12,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import Seremis.SoulCraft.api.plasma.IPlasmaNetwork;
 import Seremis.SoulCraft.api.plasma.block.IPlasmaConnector;
+import Seremis.SoulCraft.block.ModBlocks;
+import Seremis.SoulCraft.items.ModItems;
 
 public class TileCrystalStand extends SCTileEntity implements IInventory, IPlasmaConnector {
 
@@ -150,7 +152,7 @@ public class TileCrystalStand extends SCTileEntity implements IInventory, IPlasm
 
     @Override
     public boolean connect(ForgeDirection side) {
-        if(side != ForgeDirection.DOWN) {
+        if(side != ForgeDirection.DOWN && inv[0].getItem().itemID == ModBlocks.Crystal.blockID) {
             return true;
         }
         return false;

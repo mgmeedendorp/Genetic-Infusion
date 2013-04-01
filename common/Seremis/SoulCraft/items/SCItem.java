@@ -16,6 +16,11 @@ public class SCItem extends Item {
 		setMaxStackSize(64);
 		setCreativeTab(mod_SoulCraft.CreativeTab);
 	}
+
+	@Override
+	public SCItem setUnlocalizedName(String par1Str) {
+	    return (SCItem) super.setUnlocalizedName(par1Str);
+	}
 	
 	@Override
 	public void updateIcons(IconRegister iconRegister) {

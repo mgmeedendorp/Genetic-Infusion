@@ -10,9 +10,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import Seremis.SoulCraft.api.plasma.block.IPlasmaContainerItem;
 import Seremis.SoulCraft.core.lib.RenderIds;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
-import Seremis.SoulCraft.items.ModItems;
 import Seremis.SoulCraft.tileentity.TileCrystalStand;
 
 public class BlockCrystalStand extends SCBlock {
@@ -48,19 +48,16 @@ public class BlockCrystalStand extends SCBlock {
     			tile.setInventorySlotContents(0, new ItemStack(ModBlocks.Crystal, 1));
     			player.getCurrentEquippedItem().stackSize--;
     			world.markBlockForRenderUpdate(x, y, z);
-    		}  
-    		if(tile != null && currStack != null) {
-    				
-    		    tile.setInventorySlotContents(0, null);
-    				
-    		    if(CommonProxy.proxy.isServerWorld(world)){
-    		        world.spawnEntityInWorld(new EntityItem(world, x, y, z, currStack));
-    		    }
-    			world.markBlockForRenderUpdate(x, y, z);
-    		}	
+    		}
     	}
-    	if(currPlayerItem != null && currPlayerItem.itemID == ModItems.PlasmaConnectorTool.itemID) {
-    	    return false;
+    	if(tile != null && currStack != null && !(currPlayerItem.getItem() instanceof IPlasmaContainerItem)) {
+    			
+    	    tile.setInventorySlotContents(0, null);
+    				
+    	    if(CommonProxy.proxy.isServerWorld(world)){
+    	        world.spawnEntityInWorld(new EntityItem(world, x, y, z, currStack));
+    	    }
+    		world.markBlockForRenderUpdate(x, y, z);	
     	}
     	return true;
     }

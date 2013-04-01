@@ -5,9 +5,6 @@ import java.util.HashMap;
 import Seremis.SoulCraft.api.plasma.block.IPlasmaConnector;
 
 public interface IPlasmaNetwork {
-    
-    public int getNetworkId();
-//    public void setNetworkId(int id);
 
     public void addConnectorToNetwork(IPlasmaConnector connector, PlasmaPacket pack);
     

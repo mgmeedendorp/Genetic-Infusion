@@ -1,9 +1,11 @@
 package Seremis.SoulCraft.api.plasma;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 
 public class PlasmaPacket {
     
-    private int amount;
+    public int amount;
     
     public PlasmaPacket(int amount) {
         this.amount = amount;
@@ -25,7 +27,7 @@ public class PlasmaPacket {
      * @return The packet requested, or a packet with the maximum amount of plasma available.
      */
     public PlasmaPacket decreasePacket(PlasmaPacket pack) {
-        if(this.containsEnergy(pack)) {
+        if(this.amount >= pack.getAmount()) {
             this.amount -= pack.getAmount();
             return pack;
         } else {
@@ -33,19 +35,36 @@ public class PlasmaPacket {
         }
     }
     
-    public boolean containsEnergy(PlasmaPacket pack) {
-        return this.amount >= pack.getAmount();
+    public PlasmaPacket decreasePacket(int amount) {
+        return decreasePacket(new PlasmaPacket(amount));
     }
     
     public int getAmount() {
         return amount;
     }
     
-    public void addAmount(int amountToAdd ) {
+    public void addAmount(int amountToAdd) {
         this.amount += amountToAdd;
     }
     
     public PlasmaPacket clone() {
         return new PlasmaPacket(amount);
+    }
+    
+    public void writeToNBT(NBTTagCompound nbt) {
+        if(nbt != null) {
+            nbt.setInteger("amount", amount);
+        }
+    }
+    
+    public PlasmaPacket readFromNBT(NBTTagCompound nbt) {
+        if(nbt != null && nbt.hasKey("amount")) {
+            amount = nbt.getInteger("amount");
+        }
+        return this;
+    }
+    
+    public void empty() {
+        amount = 0;
     }
 }

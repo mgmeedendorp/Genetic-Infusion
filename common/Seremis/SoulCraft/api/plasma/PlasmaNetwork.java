@@ -8,8 +8,6 @@ import Seremis.SoulCraft.api.plasma.block.IPlasmaConnector;
 
 public class PlasmaNetwork implements IPlasmaNetwork {
     
-    private int networkID = PlasmaRegistry.instance.getNextID();;
-    
     private HashMap<IPlasmaConnector, PlasmaPacket> connected = new HashMap<IPlasmaConnector, PlasmaPacket>();
     
     public PlasmaNetwork(IPlasmaConnector... connected) {
@@ -21,7 +19,11 @@ public class PlasmaNetwork implements IPlasmaNetwork {
     @Override
     public void addConnectorToNetwork(IPlasmaConnector connector, PlasmaPacket pack) {
         connector.setNetwork(this);
+        if(pack == null) {
+            pack = new PlasmaPacket();
+        }
         this.connected.put(connector, pack);
+        this.dividePlasma();
     }
     
     @Override
@@ -66,7 +68,7 @@ public class PlasmaNetwork implements IPlasmaNetwork {
             return;
         }
           
-        Iterator it = this.connected.entrySet().iterator();
+        Iterator<?> it = this.connected.entrySet().iterator();
         
         while(it.hasNext()) {
             Map.Entry pairs = (Map.Entry) it.next();
@@ -82,7 +84,7 @@ public class PlasmaNetwork implements IPlasmaNetwork {
 
     @Override
     public void addPlasmaToConnector(IPlasmaConnector connector, PlasmaPacket pack) {
-        if(connected.containsKey(connector) && pack != null) {
+        if(connector != null && connected.containsKey(connector) && pack != null) {
             connected.get(connector).mergePackets(pack);
         }
         
@@ -95,16 +97,16 @@ public class PlasmaNetwork implements IPlasmaNetwork {
 
     @Override
     public void merge(IPlasmaNetwork network) {
-        this.connected.putAll(network.getConnectors());
+        if(network != null && network != this) {
+            PlasmaNetwork newNetwork = new PlasmaNetwork();
+            newNetwork.getConnectors().putAll(this.getConnectors());
+            newNetwork.getConnectors().putAll(network.getConnectors());
+            newNetwork.dividePlasma();
+        }
     }
     
     @Override
     public String toString() {
-        return "PlasmaNetwork[id: " + networkID + ", conductors: " + connected + "]";
-    }
-
-    @Override
-    public int getNetworkId() {
-        return networkID;
+        return "PlasmaNetwork[," + " conductors: " + connected + "]";
     }
 }

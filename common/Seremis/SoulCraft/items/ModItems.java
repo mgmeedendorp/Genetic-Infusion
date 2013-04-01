@@ -23,6 +23,7 @@ public class ModItems {
 		LanguageRegistry.addName(new ItemStack(ShardIsolatzium, 1, 1), "Green Isolatzium shard");
 		LanguageRegistry.addName(new ItemStack(ShardIsolatzium, 1, 2), "Blue Isolatzium shard");
 		LanguageRegistry.addName(new ItemStack(ShardIsolatzium, 1, 3), "Black Isolatzium shard");
+		LanguageRegistry.addName(PlasmaConnectorTool, "Plasma Tool");
 		
 		oreDictionary();
 		registerItems();
@@ -37,7 +38,8 @@ public class ModItems {
 	}
 	
 	public static void registerItems() {
-		GameRegistry.registerItem(IngotTitanium, "Titanium Ingot", DefaultProps.ID);
-		GameRegistry.registerItem(ShardIsolatzium, "Isolatzium shard", DefaultProps.ID);
+		GameRegistry.registerItem(IngotTitanium, "Titanium Ingot");
+		GameRegistry.registerItem(ShardIsolatzium, "Isolatzium shard");
+		GameRegistry.registerItem(PlasmaConnectorTool, "Plasma Connector tool");
 	}
 }
