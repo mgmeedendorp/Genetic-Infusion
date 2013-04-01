@@ -50,7 +50,7 @@ public class BlockCrystalStand extends SCBlock {
     			world.markBlockForRenderUpdate(x, y, z);
     		}
     	}
-    	if(tile != null && currStack != null && !(currPlayerItem.getItem() instanceof IPlasmaContainerItem)) {
+    	if(tile != null && currStack != null && (currPlayerItem == null ||!(currPlayerItem.getItem() instanceof IPlasmaContainerItem))) {
     			
     	    tile.setInventorySlotContents(0, null);
     				
