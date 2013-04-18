@@ -50,12 +50,12 @@ public class BlockCompressor extends SCBlock {
     }
 	
 	public boolean isOpaqueCube() {
-		return false;
-	}
+        return false;
+    }
 
-	public boolean renderAsNormalBlock() {
-		return false;
-	}
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
 	
 	public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
 		return true;

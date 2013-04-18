@@ -15,14 +15,13 @@ public class BlockCrystalStandRenderer implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
-		GL11.glPushMatrix();
-		GL11.glRotatef(10.0F, 0.0F, 1.0F, 0.0F);
-	    GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-	    GL11.glScalef(1.2F, 1.2F, 1.2F);
-	    TileCrystalStand tile = new TileCrystalStand();
-	    tile.inv = null;
-	    TileEntityRenderer.instance.renderTileEntityAt(tile, 0.0D, 0.0D, 0.0D, 0.0F);
-	    GL11.glPopMatrix();
+        GL11.glPushMatrix();
+        GL11.glRotatef(10.0F, 0.0F, 1.0F, 0.0F);
+        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+        GL11.glScalef(1.2F, 1.2F, 1.2F);
+        TileCrystalStand tile = new TileCrystalStand();
+        TileEntityRenderer.instance.renderTileEntityAt(tile, 0.0D, 0.0D, 0.0D, 0.0F);
+        GL11.glPopMatrix();
 	}
 
 	@Override
