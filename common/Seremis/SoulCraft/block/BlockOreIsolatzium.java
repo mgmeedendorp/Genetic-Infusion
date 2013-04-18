@@ -12,7 +12,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockOreIsolatzium extends SCBlock {
-	
+
 	public BlockOreIsolatzium(int ID, Material material) {
 		super(ID, material);
 		setHardness(1.0F);
@@ -28,12 +28,6 @@ public class BlockOreIsolatzium extends SCBlock {
  		}
     }
 	
-//	@Override
-//	public int getRenderColor(int metadata) {
-//		//TODO add rendercolors
-//		return 0;
-//	}
-	
 	@Override
 	public int damageDropped (int metadata) {
 		return metadata;
@@ -41,6 +35,6 @@ public class BlockOreIsolatzium extends SCBlock {
 	
 	@Override
 	public int idDropped(int par1, Random random, int par2) {
-		return ModItems.ShardIsolatzium.itemID;
+		return ModItems.shardIsolatzium.itemID;
 	}
 }

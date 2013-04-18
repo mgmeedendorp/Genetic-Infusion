@@ -4,10 +4,10 @@ import java.util.Random;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import Seremis.SoulCraft.block.ModBlocks;
 import Seremis.SoulCraft.core.lib.Localizations;
 import Seremis.SoulCraft.tileentity.TileCrystalStand;
 
@@ -44,8 +44,8 @@ public class TileCrystalStandRenderer extends TileEntitySpecialRenderer {
 		TileCrystalStand tco = (TileCrystalStand)tile;
 		bindTextureByName(Localizations.LOC_MODEL_TEXTURES + Localizations.BLANK);
 		Random rand = new Random(tco.xCoord + tco.yCoord * tco.zCoord);
-		if(tco.getStackInSlot(0) != null) {
-			renderCrystal(tco, (float)x, (float)y + 0.5F, (float)z, rand, 0.6F);
+		if(tco.inv != null && tco.getStackInSlot(0).itemID == ModBlocks.Crystal.blockID) {
+			renderCrystal(tco, (float)x, (float)y, (float)z, rand, 0.6F);
 		}
 		renderCrystalStand(tco, (float)x, (float)y, (float)z, rand, 1F);
 	}

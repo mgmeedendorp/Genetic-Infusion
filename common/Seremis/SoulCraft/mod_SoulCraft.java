@@ -44,14 +44,13 @@ public class mod_SoulCraft {
 	
 	@Init
 	public void init(FMLInitializationEvent event) {
-		CommonProxy.proxy.registerRendering();
-		CommonProxy.proxy.registerTickHandlers();
+		CommonProxy.proxy.registerHandlers();
 		ModBlocks.init();
 		ModItems.init();
+        CommonProxy.proxy.registerRendering();
 		RecipeHelper.initRecipes();
 		RecipeHelper.initSmelting();
 		LanguageRegistry.instance().addStringLocalization("itemGroup.SoulCraft", "en_US", "SoulCraft");
-//		MinecraftForge.EVENT_BUS.register(new SoulLinker());
 	}
 	
 	@PostInit

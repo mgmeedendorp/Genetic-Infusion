@@ -4,9 +4,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
+import net.minecraft.tileentity.TileEntity;
 
 
-public class TileIsolatziumCrystal extends SCTileEntity {
+public class TileIsolatziumCrystal extends TileEntity {
 	
 	@Override
     public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {

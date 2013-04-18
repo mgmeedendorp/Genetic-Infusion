@@ -8,9 +8,9 @@ import Seremis.SoulCraft.core.DefaultProps;
 
 public class SCItem extends Item {
 
-	private Icon iconBuffer[];
-	private int metadata = 0;
-	
+    private Icon iconBuffer[];
+    private int metadata = 0;
+    
 	public SCItem(int ID) {
 		super(ID);
 		setMaxStackSize(64);
@@ -23,33 +23,33 @@ public class SCItem extends Item {
 	}
 	
 	@Override
-	public void updateIcons(IconRegister iconRegister) {
-		if(this.metadata == 0) {
-			 iconIndex = iconRegister.registerIcon(DefaultProps.ID+":"+this.getUnlocalizedName().substring(5));
-		} else {
-			iconBuffer = new Icon[metadata+1];
-			for(int x = 1; x<metadata+1; x++) {
-				iconBuffer[x] = iconRegister.registerIcon(DefaultProps.ID+":"+this.getUnlocalizedName().substring(5)+x);
-			}
-		}
-	}
+    public void updateIcons(IconRegister iconRegister) {
+        if(this.metadata == 0) {
+             iconIndex = iconRegister.registerIcon(DefaultProps.ID+":"+this.getUnlocalizedName().substring(5));
+        } else {
+            iconBuffer = new Icon[metadata+1];
+            for(int x = 1; x<metadata+1; x++) {
+                iconBuffer[x] = iconRegister.registerIcon(DefaultProps.ID+":"+this.getUnlocalizedName().substring(5)+x);
+            }
+        }
+    }
 
-	@Override
+    @Override
     public Icon getIconFromDamage(int metadata)
     {
-    	if(this.metadata != 0)
-		{
-    		iconIndex = iconBuffer[metadata+1];
-		}
-    	return this.iconIndex;
+        if(this.metadata != 0)
+        {
+            iconIndex = iconBuffer[metadata+1];
+        }
+        return this.iconIndex;
     }
     
     public int getNumbersofMetadata() {
-    	return this.metadata;
+        return this.metadata;
     }
     
     public void setNumbersofMetadata(int metadata) {
-    	this.metadata = metadata;
+        this.metadata = metadata;
     }
 
 }

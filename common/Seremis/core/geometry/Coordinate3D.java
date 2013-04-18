@@ -5,7 +5,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class Coordinate3D {
 	
-	private double x, y, z;
+	public double x, y, z;
 	
 	public Coordinate3D() {
 		
@@ -41,10 +41,11 @@ public class Coordinate3D {
 		this.z = z;
 	}
 	
-	public void setCoordsFromTile(TileEntity tile) {
+	public Coordinate3D setCoordsFromTile(TileEntity tile) {
 		this.x = tile.xCoord;
 		this.y = tile.yCoord;
 		this.z = tile.zCoord;
+		return this;
 	}
 	
 	public void writeToNBT(NBTTagCompound nbtTagCompound) {

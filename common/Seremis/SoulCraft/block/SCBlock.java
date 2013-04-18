@@ -10,10 +10,10 @@ import Seremis.SoulCraft.mod_SoulCraft;
 import Seremis.SoulCraft.core.DefaultProps;
 
 public class SCBlock extends BlockContainer {
-	
-	private Icon[] iconBuffer;
-	private int metadata = 0;
-	
+    
+    private Icon[] iconBuffer;
+    private int metadata = 0;
+    
 	public SCBlock(int ID, Material material) {
 		super(ID, material);
 		setUnlocalizedName("");
@@ -21,38 +21,34 @@ public class SCBlock extends BlockContainer {
 	}
 	
 	@Override
-	public void registerIcons(IconRegister iconRegister) {
-		if(this.metadata == 0) {
-			 blockIcon = iconRegister.registerIcon(DefaultProps.ID+":"+this.getUnlocalizedName().substring(5));
-		} else {
-			iconBuffer = new Icon[metadata+1];
-			for(int x = 1; x<metadata+1; x++) {
-				iconBuffer[x] = iconRegister.registerIcon(DefaultProps.ID+":" + this.getUnlocalizedName().substring(5)+x);
-			}
-		}
-	}
+    public void registerIcons(IconRegister iconRegister) {
+        if(this.metadata == 0) {
+             blockIcon = iconRegister.registerIcon(DefaultProps.ID+":"+this.getUnlocalizedName().substring(5));
+        } else {
+            iconBuffer = new Icon[metadata+1];
+            for(int x = 1; x<metadata+1; x++) {
+                iconBuffer[x] = iconRegister.registerIcon(DefaultProps.ID+":" + this.getUnlocalizedName().substring(5)+x);
+            }
+        }
+    }
 
-	@Override
+    @Override
     public Icon getBlockTextureFromSideAndMetadata(int side, int metadata)
     {
-    	if(this.metadata != 0)
-		{
-    		blockIcon = iconBuffer[metadata+1];
-		}
-    	return this.blockIcon;
-    }
-    
-    public int getNumbersofMetadata() {
-    	return this.metadata;
+        if(this.metadata > 0)
+        {
+            blockIcon = iconBuffer[metadata+1];
+        }
+        return this.blockIcon;
     }
     
     public void setNumbersofMetadata(int metadata) {
-    	this.metadata = metadata;
+        this.metadata = metadata;
     }
+
 
 	@Override
 	public TileEntity createNewTileEntity(World var1) {
 		return null;
 	}
-
 }

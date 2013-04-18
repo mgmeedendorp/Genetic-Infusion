@@ -2,15 +2,18 @@ package Seremis.SoulCraft.core.proxy;
 
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
+import net.minecraftforge.client.MinecraftForgeClient;
 import Seremis.SoulCraft.client.render.block.BlockCompressorRenderer;
 import Seremis.SoulCraft.client.render.block.BlockCrystalRenderer;
 import Seremis.SoulCraft.client.render.block.BlockCrystalStandRenderer;
 import Seremis.SoulCraft.client.render.block.BlockMonsterEggRenderer;
+import Seremis.SoulCraft.client.render.item.PlasmaToolRenderer;
 import Seremis.SoulCraft.client.render.tile.TileCompressorRenderer;
 import Seremis.SoulCraft.client.render.tile.TileCrystalRenderer;
 import Seremis.SoulCraft.client.render.tile.TileCrystalStandRenderer;
 import Seremis.SoulCraft.core.lib.RenderIds;
 import Seremis.SoulCraft.handler.TickHandler;
+import Seremis.SoulCraft.items.ModItems;
 import Seremis.SoulCraft.tileentity.TileCompressor;
 import Seremis.SoulCraft.tileentity.TileCrystalStand;
 import Seremis.SoulCraft.tileentity.TileIsolatziumCrystal;
@@ -22,12 +25,16 @@ import cpw.mods.fml.relauncher.Side;
 
 public class ClientProxy extends CommonProxy
 {	
+    private static PlasmaToolRenderer plasmaToolRenderer = new PlasmaToolRenderer();
+    
 	@Override
 	public void registerRendering() {
 		RenderingRegistry.registerBlockHandler(RenderIds.MonsterEggRenderID, new BlockMonsterEggRenderer());
 		RenderingRegistry.registerBlockHandler(RenderIds.CompressorRenderID, new BlockCompressorRenderer());
 		RenderingRegistry.registerBlockHandler(RenderIds.IsolatziumCrystalRenderID, new BlockCrystalRenderer());
 		RenderingRegistry.registerBlockHandler(RenderIds.CrystalStandRenderID, new BlockCrystalStandRenderer());
+		
+		MinecraftForgeClient.registerItemRenderer(ModItems.plasmaTool.itemID, plasmaToolRenderer);
 		
 		ClientRegistry.bindTileEntitySpecialRenderer(TileCompressor.class, new TileCompressorRenderer());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileIsolatziumCrystal.class, new TileCrystalRenderer());
@@ -49,7 +56,7 @@ public class ClientProxy extends CommonProxy
 	}
 	
 	@Override
-	public void registerTickHandlers() {
+	public void registerHandlers() {
 		TickRegistry.registerTickHandler(new TickHandler(), Side.CLIENT);
 	}
 			

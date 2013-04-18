@@ -2,7 +2,9 @@ package Seremis.SoulCraft.core.proxy;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import Seremis.SoulCraft.core.lib.Localizations;
+import Seremis.SoulCraft.handler.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 
 public class CommonProxy
@@ -27,8 +29,8 @@ public class CommonProxy
 	public String playerName() {
 		return "";
 	}
-
-	public void registerTickHandlers() {
-		
+	
+	public void registerHandlers() {
+	    MinecraftForge.EVENT_BUS.register(new EventHandler());
 	}
 }

@@ -20,6 +20,7 @@ public class BlockCrystalStandRenderer implements ISimpleBlockRenderingHandler {
 	    GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 	    GL11.glScalef(1.2F, 1.2F, 1.2F);
 	    TileCrystalStand tile = new TileCrystalStand();
+	    tile.inv = null;
 	    TileEntityRenderer.instance.renderTileEntityAt(tile, 0.0D, 0.0D, 0.0D, 0.0F);
 	    GL11.glPopMatrix();
 	}

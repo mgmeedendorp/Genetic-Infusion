@@ -10,8 +10,9 @@ public class BlockCrystal extends SCBlock {
 
 	public BlockCrystal(int ID, Material material) {
 		super(ID, material);
-		setUnlocalizedName("IsolatziumCrystal");
+		setUnlocalizedName("crystal");
 		setBlockBounds(0.3F, 0.0F, 0.3F, 0.6F, 0.83F, 0.6F);
+		setNumbersofMetadata(-1);
 	}
 	
 	public boolean isOpaqueCube() {

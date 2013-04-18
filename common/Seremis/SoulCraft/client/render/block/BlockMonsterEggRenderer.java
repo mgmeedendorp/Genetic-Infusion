@@ -3,7 +3,6 @@ package Seremis.SoulCraft.client.render.block;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
-import Seremis.SoulCraft.block.ModBlocks;
 import Seremis.SoulCraft.core.lib.RenderIds;
 import Seremis.SoulCraft.helper.SCRenderHelper;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;

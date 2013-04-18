@@ -9,13 +9,13 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
-import Seremis.SoulCraft.core.DefaultProps;
+import net.minecraft.tileentity.TileEntity;
 import Seremis.SoulCraft.items.ModItems;
 
-public class TileCompressor extends SCTileEntity implements IInventory {
+public class TileCompressor extends TileEntity implements IInventory {
 
 	private ItemStack[] inv;
-    private int requiredPlayerRange = DefaultProps.CompressorRenderDistance;
+    private int requiredPlayerRange = 16;
 	
 	public TileCompressor() {
 		inv = new ItemStack[1];
@@ -80,41 +80,42 @@ public class TileCompressor extends SCTileEntity implements IInventory {
 		return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == this && player.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64;
 	}
 	
-	public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+	@Override
+	public void readFromNBT(NBTTagCompound compound)
     {
-        super.readFromNBT(par1NBTTagCompound);
-        NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
+        super.readFromNBT(compound);
+        NBTTagList nbtTagList = compound.getTagList("Items");
         this.inv = new ItemStack[this.getSizeInventory()];
 
-        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+        for (int i = 0; i < nbtTagList.tagCount(); ++i)
         {
-            NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
-            int var5 = var4.getByte("Slot") & 255;
+            NBTTagCompound compound2 = (NBTTagCompound)nbtTagList.tagAt(i);
+            int var5 = compound2.getByte("Slot") & 255;
 
             if (var5 >= 0 && var5 < this.inv.length)
             {
-                this.inv[var5] = ItemStack.loadItemStackFromNBT(var4);
+                this.inv[var5] = ItemStack.loadItemStackFromNBT(compound2);
             }
         }
     }
 
 	@Override
-	public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+	public void writeToNBT(NBTTagCompound compound)
     {
-        super.writeToNBT(par1NBTTagCompound);
-        NBTTagList var2 = new NBTTagList();
+        super.writeToNBT(compound);
+        NBTTagList nbtTagList = new NBTTagList();
 
-        for (int var3 = 0; var3 < this.inv.length; ++var3)
+        for (int i = 0; i < this.inv.length; ++i)
         {
-            if (this.inv[var3] != null)
+            if (this.inv[i] != null)
             {
-                NBTTagCompound var4 = new NBTTagCompound();
-                var4.setByte("Slot", (byte)var3);
-                this.inv[var3].writeToNBT(var4);
-                var2.appendTag(var4);
+                NBTTagCompound compound2 = new NBTTagCompound();
+                compound2.setByte("Slot", (byte)i);
+                this.inv[i].writeToNBT(compound2);
+                nbtTagList.appendTag(compound2);
             }
         }
-        par1NBTTagCompound.setTag("Items", var2);
+        compound.setTag("Items", nbtTagList);
     }
 	
 	public boolean setInventorySlot(int slot, ItemStack stack) {
@@ -177,7 +178,7 @@ public class TileCompressor extends SCTileEntity implements IInventory {
 
 	@Override
 	public boolean isStackValidForSlot(int i, ItemStack itemstack) {
-		if(itemstack.itemID == ModItems.ShardIsolatzium.itemID) {
+		if(itemstack.itemID == ModItems.shardIsolatzium.itemID) {
 			return true;
 		}
 		return false;

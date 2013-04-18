@@ -31,8 +31,6 @@ public class ModBlocks {
 		CrystalStand = new BlockCrystalStand(DefaultProps.CrystalStandID, Material.wood);
 		MonsterEgg = new BlockMonsterEgg(DefaultProps.MonsterEggID, Material.dragonEgg);
 		
-		
-		
 		GameRegistry.registerBlock(OreTitanium, "Titanium Ore");
 		GameRegistry.registerBlock(OreIsolatzium, BlockOreIsolatziumItem.class, "Isolatzium Crystal Ore");
 		GameRegistry.registerBlock(Compressor, "Compressor");
