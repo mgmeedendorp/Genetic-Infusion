@@ -9,10 +9,10 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class RecipeHelper {
 	
 	public static void initRecipes() {
-			GameRegistry.addRecipe(new ItemStack(ModBlocks.MonsterEgg), "xyx", "xzx", "xxx", Character.valueOf('z'), Item.egg, Character.valueOf('x'), ModItems.IngotTitanium, Character.valueOf('z'), ModBlocks.Crystal);
+			GameRegistry.addRecipe(new ItemStack(ModBlocks.MonsterEgg), "xyx", "xzx", "xxx", Character.valueOf('z'), Item.egg, Character.valueOf('x'), ModItems.ingotTitanium, Character.valueOf('z'), ModBlocks.Crystal);
 	}
 	
 	public static void initSmelting() {
-			GameRegistry.addSmelting(ModBlocks.OreTitanium.blockID, new ItemStack(ModItems.IngotTitanium), 0.4f);
+			GameRegistry.addSmelting(ModBlocks.OreTitanium.blockID, new ItemStack(ModItems.ingotTitanium), 0.4f);
 	}
 }

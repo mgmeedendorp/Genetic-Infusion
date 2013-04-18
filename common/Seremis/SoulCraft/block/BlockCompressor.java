@@ -95,7 +95,7 @@ public class BlockCompressor extends SCBlock {
 		if(CommonProxy.proxy.isRenderWorld(world)){return;}
 		TileCompressor tile = (TileCompressor)(world.getBlockTileEntity(x, y, z));
 		if(tile != null && entity instanceof EntityItem){
-			if(((EntityItem) entity).getEntityItem().itemID == ModItems.ShardIsolatzium.itemID) {
+			if(((EntityItem) entity).getEntityItem().itemID == ModItems.shardIsolatzium.itemID) {
 				if(tile.setInventorySlot(0, ((EntityItem) entity).getEntityItem())) {
 					CommonProxy.proxy.removeEntity(entity);
 				}
