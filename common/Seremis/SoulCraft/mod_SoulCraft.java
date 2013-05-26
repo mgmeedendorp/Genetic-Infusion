@@ -3,12 +3,14 @@ package Seremis.SoulCraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.MinecraftForge;
 import Seremis.SoulCraft.block.ModBlocks;
 import Seremis.SoulCraft.core.DamageCompressor;
 import Seremis.SoulCraft.core.DefaultProps;
 import Seremis.SoulCraft.core.SCConfig;
 import Seremis.SoulCraft.core.SCCreativeTab;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
+import Seremis.SoulCraft.handler.EventHandler;
 import Seremis.SoulCraft.helper.RecipeHelper;
 import Seremis.SoulCraft.helper.SCLogger;
 import Seremis.SoulCraft.items.ModItems;
@@ -40,11 +42,12 @@ public class mod_SoulCraft {
 		SCLogger.init();
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		SCConfig.configure(config);
+		CommonProxy.proxy.registerHandlers();
+		MinecraftForge.EVENT_BUS.register(new EventHandler());
 	}
 	
 	@Init
 	public void init(FMLInitializationEvent event) {
-		CommonProxy.proxy.registerHandlers();
 		ModBlocks.init();
 		ModItems.init();
         CommonProxy.proxy.registerRendering();

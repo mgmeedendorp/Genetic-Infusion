@@ -14,49 +14,49 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class ModBlocks {
 	
-	public static Block OreTitanium;
-	public static BlockOreIsolatzium OreIsolatzium;
-	public static BlockCompressor Compressor;
-	public static BlockCrystal Crystal;
-	public static BlockCrystalStand CrystalStand;
-	public static BlockMonsterEgg MonsterEgg;
+	public static Block oreTitanium;
+	public static BlockOreIsolatzium oreIsolatzium;
+	public static BlockCompressor compressor;
+	public static BlockCrystal crystal;
+	public static BlockCrystalStand crystalStand;
+	public static BlockMonsterEgg monsterEgg;
 	
-	public static SCWorldGenerator WorldGen;
+	public static SCWorldGenerator worldGen;
 	
 	public static void init() {		
-		OreTitanium =  new SCBlock(DefaultProps.OreTitaniumID, Material.rock).setHardness(20F).setUnlocalizedName("oreTitanium");
-		OreIsolatzium = new BlockOreIsolatzium(DefaultProps.OreIsolatziumID, Material.rock);
-		Compressor =  new BlockCompressor(DefaultProps.CompressorID, Material.rock);
-		Crystal = new BlockCrystal(DefaultProps.IsolatziumCrystalID, Material.coral);
-		CrystalStand = new BlockCrystalStand(DefaultProps.CrystalStandID, Material.wood);
-		MonsterEgg = new BlockMonsterEgg(DefaultProps.MonsterEggID, Material.dragonEgg);
+		oreTitanium =  new SCBlock(DefaultProps.OreTitaniumID, Material.rock).setHardness(20F).setUnlocalizedName("oreTitanium");
+		oreIsolatzium = new BlockOreIsolatzium(DefaultProps.OreIsolatziumID, Material.rock);
+		compressor =  new BlockCompressor(DefaultProps.CompressorID, Material.rock);
+		crystal = new BlockCrystal(DefaultProps.IsolatziumCrystalID, Material.coral);
+		crystalStand = new BlockCrystalStand(DefaultProps.CrystalStandID, Material.wood);
+		monsterEgg = new BlockMonsterEgg(DefaultProps.MonsterEggID, Material.dragonEgg);
 		
-		GameRegistry.registerBlock(OreTitanium, "Titanium Ore");
-		GameRegistry.registerBlock(OreIsolatzium, BlockOreIsolatziumItem.class, "Isolatzium Crystal Ore");
-		GameRegistry.registerBlock(Compressor, "Compressor");
-		GameRegistry.registerBlock(Crystal, "Isolazium Crystal");
-		GameRegistry.registerBlock(CrystalStand, "Crystal Stand");
-		GameRegistry.registerBlock(MonsterEgg, "Monster Egg");
+		GameRegistry.registerBlock(oreTitanium, "Titanium Ore");
+		GameRegistry.registerBlock(oreIsolatzium, BlockOreIsolatziumItem.class, "Isolatzium Crystal Ore");
+		GameRegistry.registerBlock(compressor, "Compressor");
+		GameRegistry.registerBlock(crystal, "Isolazium Crystal");
+		GameRegistry.registerBlock(crystalStand, "Crystal Stand");
+		GameRegistry.registerBlock(monsterEgg, "Monster Egg");
 		
-		LanguageRegistry.addName(OreTitanium, "Titanium Ore");
-		LanguageRegistry.addName(new ItemStack(OreIsolatzium, 1, 0), "Red Isolatzium Crystal Ore");
-		LanguageRegistry.addName(new ItemStack(OreIsolatzium, 1, 1), "Green Isolatzium Crystal Ore");
-		LanguageRegistry.addName(new ItemStack(OreIsolatzium, 1, 2), "Blue Isolatzium Crystal Ore");
-		LanguageRegistry.addName(new ItemStack(OreIsolatzium, 1, 3), "Black Isolatzium Crystal Ore");
-		LanguageRegistry.addName(Compressor, "Atomic Compressor");
-		LanguageRegistry.addName(Crystal, "Isolatzium Crystal");
-		LanguageRegistry.addName(CrystalStand, "Isolatzium Crystal Stand");
-		LanguageRegistry.addName(MonsterEgg, "Monster Egg");
+		LanguageRegistry.addName(oreTitanium, "Titanium Ore");
+		LanguageRegistry.addName(new ItemStack(oreIsolatzium, 1, 0), "Red Isolatzium Crystal Ore");
+		LanguageRegistry.addName(new ItemStack(oreIsolatzium, 1, 1), "Green Isolatzium Crystal Ore");
+		LanguageRegistry.addName(new ItemStack(oreIsolatzium, 1, 2), "Blue Isolatzium Crystal Ore");
+		LanguageRegistry.addName(new ItemStack(oreIsolatzium, 1, 3), "Black Isolatzium Crystal Ore");
+		LanguageRegistry.addName(compressor, "Atomic Compressor");
+		LanguageRegistry.addName(crystal, "Isolatzium Crystal");
+		LanguageRegistry.addName(crystalStand, "Isolatzium Crystal Stand");
+		LanguageRegistry.addName(monsterEgg, "Monster Egg");
 
-		WorldGen = new SCWorldGenerator();
-		GameRegistry.registerWorldGenerator(WorldGen);
+		worldGen = new SCWorldGenerator();
+		GameRegistry.registerWorldGenerator(worldGen);
 		oreDictionary();
 		tileEntity();
 	}
 	
 	public static void oreDictionary() {
-		OreDictionary.registerOre("oreTitanium", ModBlocks.OreTitanium);
-		OreDictionary.registerOre("oreIsolatzium", ModBlocks.OreIsolatzium);
+		OreDictionary.registerOre("oreTitanium", ModBlocks.oreTitanium);
+		OreDictionary.registerOre("oreIsolatzium", ModBlocks.oreIsolatzium);
 	}
 	
 	public static void tileEntity() {

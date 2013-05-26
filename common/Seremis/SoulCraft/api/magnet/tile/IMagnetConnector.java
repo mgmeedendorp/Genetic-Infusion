@@ -11,13 +11,10 @@ public interface IMagnetConnector {
     
     TileEntity getTile();
     
-    double getMaxConnectionLength();
-    int getMaxLinks();
+    double getRange();
     
     boolean connect(ForgeDirection direction);
-    void disconnect();
+    void invalidate();
     
-    void addLink(MagnetLink link);
-    void removeLink(MagnetLink link);
     List<MagnetLink> getLinks();
 }

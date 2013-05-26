@@ -26,7 +26,7 @@ public class SCWorldGenerator implements IWorldGenerator {
 				int Xcoord = blockX + random.nextInt(1);
 				int Ycoord = random.nextInt(60);
 				int Zcoord = blockZ + random.nextInt(1);
-				(new WorldGenMinable(ModBlocks.OreTitanium.blockID, 10)).generate(world, random, Xcoord, Ycoord, Zcoord);
+				(new WorldGenMinable(ModBlocks.oreTitanium.blockID, 10)).generate(world, random, Xcoord, Ycoord, Zcoord);
 			}
 		}
 		if(DefaultProps.spawnOreSoulCrystal) {
@@ -34,7 +34,7 @@ public class SCWorldGenerator implements IWorldGenerator {
 				int Xcoord = blockX + random.nextInt(2);
 				int Ycoord = random.nextInt(256);
 				int Zcoord = blockZ + random.nextInt(2);
-				(new WorldGenMinable(ModBlocks.OreIsolatzium.blockID, 100)).generate(world, random, Xcoord, Ycoord, Zcoord);
+				(new WorldGenMinable(ModBlocks.oreIsolatzium.blockID, 100)).generate(world, random, Xcoord, Ycoord, Zcoord);
 				}
 		}
 	}

@@ -2,5 +2,6 @@ package Seremis.SoulCraft.core.lib;
 
 public class Strings {
 	
-	public static final String nameTickHandler = "SoulCraft.client.tickHandler";
+	public static final String nameWorldTickHandler = "SoulCraft.worldTickHandler";
+	public static final String nameRenderTickHandler = "SoulCraft.renderTickHandler";
 }

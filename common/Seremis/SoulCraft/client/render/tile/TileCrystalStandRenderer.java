@@ -24,7 +24,7 @@ public class TileCrystalStandRenderer extends TileEntitySpecialRenderer {
 	public void renderCrystal(TileCrystalStand tile, float x, float y, float z, Random rand, float size) {
 	    GL11.glPushMatrix();
 	    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-	    GL11.glTranslatef(x + 0.45F, y - 0.87F*size, z + 0.45F);
+	    GL11.glTranslatef(x + 0.43F, y - 0.05F*size, z + 0.43F);
 	    GL11.glScalef((0.15F + rand.nextFloat() * 0.075F) * size, (0.5F + rand.nextFloat() * 0.1F) * size, (0.15F + rand.nextFloat() * 0.05F) * size);
 	    crystal.render();
 	    GL11.glScalef(1.0F, 1.0F, 1.0F);
@@ -41,12 +41,19 @@ public class TileCrystalStandRenderer extends TileEntitySpecialRenderer {
 
 	@Override
 	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f) {
-		TileCrystalStand tco = (TileCrystalStand)tile;
-		bindTextureByName(Localizations.LOC_MODEL_TEXTURES + Localizations.BLANK);
-		Random rand = new Random(tco.xCoord + tco.yCoord * tco.zCoord);
-		if(tco.inv != null && tco.getStackInSlot(0).itemID == ModBlocks.Crystal.blockID) {
-			renderCrystal(tco, (float)x, (float)y, (float)z, rand, 0.6F);
-		}
-		renderCrystalStand(tco, (float)x, (float)y, (float)z, rand, 1F);
+		if(tile != null && tile instanceof TileCrystalStand) {
+		    TileCrystalStand tco = (TileCrystalStand)tile;
+		    bindTextureByName(Localizations.LOC_MODEL_TEXTURES + Localizations.BLANK);
+	        Random rand = new Random(tco.xCoord + tco.yCoord * tco.zCoord);
+	        try {
+    	        if(tco.inv != null && tco.getStackInSlot(0) != null && tco.getStackInSlot(0).itemID == ModBlocks.crystal.blockID) {
+    	            renderCrystal(tco, (float)x, (float)y, (float)z, rand, 0.6F);
+    	        }
+    	        } catch(Exception ex) {
+    	            ex.printStackTrace();
+    	        }
+	        renderCrystalStand(tco, (float)x, (float)y, (float)z, rand, 1F);
+		}	
+		
 	}
 }

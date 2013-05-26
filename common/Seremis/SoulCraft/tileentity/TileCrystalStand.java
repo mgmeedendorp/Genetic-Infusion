@@ -13,15 +13,16 @@ import Seremis.SoulCraft.api.magnet.tile.TileMagnetConnector;
 
 public class TileCrystalStand extends TileMagnetConnector implements IInventory {
 
-    public ItemStack[] inv;
-
     public TileCrystalStand() {
-        inv = new ItemStack[1];
+        super(10);
     }
+
+    public ItemStack[] inv = new ItemStack[1];
     
     @Override
     public boolean connect(ForgeDirection direction) {
-        return direction != ForgeDirection.DOWN;
+ //       return direction != ForgeDirection.DOWN && inv[0].itemID == ModBlocks.crystal.blockID;
+        return true;
     }
 
     @Override
@@ -52,7 +53,7 @@ public class TileCrystalStand extends TileMagnetConnector implements IInventory 
 
     @Override
     public ItemStack getStackInSlotOnClosing(int slot) {
-        return null;
+        return inv[slot];
     }
 
     @Override
@@ -136,5 +137,4 @@ public class TileCrystalStand extends TileMagnetConnector implements IInventory 
     public boolean isStackValidForSlot(int i, ItemStack itemstack) {
         return false;
     }
-
 }

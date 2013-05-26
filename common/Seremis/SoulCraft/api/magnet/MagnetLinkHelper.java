@@ -2,7 +2,9 @@ package Seremis.SoulCraft.api.magnet;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import Seremis.SoulCraft.api.magnet.tile.IMagnetConnector;
 import Seremis.core.geometry.Line3D;
@@ -13,7 +15,12 @@ public class MagnetLinkHelper {
     
     public HashMap<IMagnetConnector, List<MagnetLink>> registeredMap = new HashMap<IMagnetConnector, List<MagnetLink>>();
     
-    public void addLink(IMagnetConnector connector, MagnetLink link) {
+    public void addLink(MagnetLink link) {
+        addLink(link.connector1, link);
+        addLink(link.connector2, link);
+    }
+    
+    private void addLink(IMagnetConnector connector, MagnetLink link) {
         if(connector != null && link != null && registeredMap.containsKey(connector)) {
             if(!registeredMap.get(connector).contains(link)) {
                 registeredMap.get(connector).add(link);
@@ -26,18 +33,28 @@ public class MagnetLinkHelper {
         }
     }
     
-    public void removeLink(IMagnetConnector connector, MagnetLink link) {
-        if(connector != null && link != null) {
-            if(registeredMap.containsKey(connector) && registeredMap.get(connector).contains(link)) {
-                registeredMap.get(connector).remove(link);
+    public void removeLink(MagnetLink link) {
+        Set<IMagnetConnector> connectorList = registeredMap.keySet();
+        Iterator<IMagnetConnector> it = connectorList.iterator();
+        while(it.hasNext()) {
+            IMagnetConnector connector = it.next();
+            if(registeredMap.get(connector).contains(link)) {
+                System.out.println(connector);
+                it.remove();
             }
         }
     }
     
     public void removeAllLinksFrom(IMagnetConnector connector) {
-        for(MagnetLink link : registeredMap.get(connector)) {
-            for(List<MagnetLink> tempList : registeredMap.values()) {
-                tempList.remove(link);
+        if(registeredMap.containsKey(connector)) {
+            List<MagnetLink> links = connector.getLinks();
+            List<MagnetLink> clone = new ArrayList<MagnetLink>();
+            for(MagnetLink link : links) {
+                clone.add(link);
+            }
+            Iterator<MagnetLink> it = clone.iterator();
+            while(it.hasNext()) {
+                removeLink(it.next());
             }
         }
     }
@@ -54,16 +71,35 @@ public class MagnetLinkHelper {
         return tempList;
     }
     
+    public boolean checkConditions(MagnetLink link) {
+        return checkConditions(link.connector1, link.connector2);
+    }
+    
     public boolean checkConditions(IMagnetConnector connector1, IMagnetConnector connector2) {
-        if(connector1 == null || connector2 == null) return false;
+        if(connector1 == null || connector2 == null || connector1 == connector2) return false;
         Line3D line = new Line3D();
         line.setLineFromTile(connector1.getTile(), connector2.getTile());
-        if(line.getLength() <= connector1.getMaxConnectionLength() && line.getLength() <= connector2.getMaxConnectionLength()) {
-            if(registeredMap.containsKey(connector1) && registeredMap.get(connector1).size() < connector1.getMaxLinks()) {
-                if(registeredMap.containsKey(connector2) && registeredMap.get(connector2).size() < connector2.getMaxLinks()) {
-                    if(connector1.connect(line.getSide(connector1.getTile())) && connector2.connect(line.getSide(connector2.getTile()))) {
-                        return true;
-                    }
+        if(line.getLength() <= connector1.getRange() && line.getLength() <= connector2.getRange()) {
+            if(!doesLinkExist(connector1, connector2)) {
+                if(connector1.connect(line.getSide(connector1.getTile())) && connector2.connect(line.getSide(connector2.getTile()))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    public boolean doesLinkExist(MagnetLink link) {
+        return doesLinkExist(link.connector1, link.connector2);
+    }
+
+    public boolean doesLinkExist(IMagnetConnector connector1, IMagnetConnector connector2) {
+        if(connector1 == null || connector2 == null || connector1 == connector2) return false;
+        List<MagnetLink> links = getAllLinks();
+        for(MagnetLink link : links) {
+            if(link.connector1.equals(connector1) || link.connector2.equals(connector1)) {
+                if(link.connector1.equals(connector2) || link.connector2.equals(connector2)) {
+                    return true;
                 }
             }
         }

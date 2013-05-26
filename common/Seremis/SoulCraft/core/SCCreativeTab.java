@@ -10,7 +10,7 @@ public class SCCreativeTab extends CreativeTabs {
 	
 	@Override
 	public int getTabIconItemIndex() {
-	    return ModBlocks.Compressor.blockID;
+	    return ModBlocks.compressor.blockID;
 	}
 
 }

@@ -9,19 +9,16 @@ public class ModItems {
 
 	public static SCItem ingotTitanium;
 	public static ShardIsolatzium shardIsolatzium;
-	public static PlasmaTool plasmaTool;
 	
 	public static void init() {
 		ingotTitanium = new SCItem(DefaultProps.TitaniumIngotID).setUnlocalizedName("ingotTitanium");
 		shardIsolatzium = new ShardIsolatzium(DefaultProps.ShardIsolatziumID);
-		plasmaTool = new PlasmaTool(DefaultProps.PlasmaConnectorToolID);
 		
 		LanguageRegistry.addName(ingotTitanium, "Titanium Ingot");
 		LanguageRegistry.addName(new ItemStack(shardIsolatzium, 1, 0), "Red Isolatzium shard");
 		LanguageRegistry.addName(new ItemStack(shardIsolatzium, 1, 1), "Green Isolatzium shard");
 		LanguageRegistry.addName(new ItemStack(shardIsolatzium, 1, 2), "Blue Isolatzium shard");
 		LanguageRegistry.addName(new ItemStack(shardIsolatzium, 1, 3), "Black Isolatzium shard");
-		LanguageRegistry.addName(plasmaTool, "Plasma Tool");
 		
 		oreDictionary();
 	}
