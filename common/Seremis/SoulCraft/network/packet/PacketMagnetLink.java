@@ -77,6 +77,7 @@ public class PacketMagnetLink extends PacketSC {
                 MagnetLink link = new MagnetLink(connector1, connector2);
                 if(MagnetLinkHelper.instance.checkConditions(link)) {
                     MagnetLinkHelper.instance.addLink(link);
+                    System.out.println(world + " link: " + link);
                 }
             }
         }

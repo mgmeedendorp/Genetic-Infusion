@@ -36,7 +36,7 @@ public class FXBeam extends EntityFX
     private float endModifier = 1.0F;
     private boolean reverse = false;
     private boolean pulse = true;
-    private int rotationSpeed = 0;
+    private int rotationSpeed = 20;
     private float prevSize = 0.0F;
 
     public FXBeam(World world, Coordinate3D position, Coordinate3D target, float red, float green, float blue, int age)

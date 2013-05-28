@@ -18,7 +18,7 @@ import Seremis.core.geometry.Coordinate3D;
 public class TileCrystalStand extends TileMagnetConnector implements IInventory {
 
     public TileCrystalStand() {
-        super(10);
+        super(5);
     }
 
     public ItemStack[] inv = new ItemStack[1];
@@ -31,7 +31,9 @@ public class TileCrystalStand extends TileMagnetConnector implements IInventory 
     @Override
     @SideOnly(Side.CLIENT)
     public Coordinate3D applyBeamRenderOffset(Coordinate3D position, ForgeDirection side) {
-        return null;
+        Coordinate3D finalPosition = super.applyBeamRenderOffset(position, side);
+        finalPosition.y += 0.2D;
+        return finalPosition;
     }
 
     @Override
