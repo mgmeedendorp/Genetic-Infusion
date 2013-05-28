@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import Seremis.SoulCraft.block.ModBlocks;
-import Seremis.SoulCraft.core.DefaultProps;
+import Seremis.SoulCraft.core.lib.DefaultProps;
 import cpw.mods.fml.common.IWorldGenerator;
 
 public class SCWorldGenerator implements IWorldGenerator {

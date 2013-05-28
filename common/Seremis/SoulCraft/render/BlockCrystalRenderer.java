@@ -1,4 +1,4 @@
-package Seremis.SoulCraft.client.render.block;
+package Seremis.SoulCraft.render;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -7,21 +7,20 @@ import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
 
-import Seremis.SoulCraft.core.lib.RenderIds;
-import Seremis.SoulCraft.tileentity.TileCrystalStand;
+import Seremis.SoulCraft.tileentity.TileIsolatziumCrystal;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
-public class BlockCrystalStandRenderer implements ISimpleBlockRenderingHandler {
+public class BlockCrystalRenderer implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
-        GL11.glPushMatrix();
-        GL11.glRotatef(10.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        GL11.glScalef(1.2F, 1.2F, 1.2F);
-        TileCrystalStand tile = new TileCrystalStand();
-        TileEntityRenderer.instance.renderTileEntityAt(tile, 0.0D, 0.0D, 0.0D, 0.0F);
-        GL11.glPopMatrix();
+		GL11.glPushMatrix();
+		GL11.glRotatef(10.0F, 0.0F, 1.0F, 0.0F);
+	    GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+	    GL11.glScalef(1.2F, 1.2F, 1.2F);
+	    TileIsolatziumCrystal tile = new TileIsolatziumCrystal();
+	    TileEntityRenderer.instance.renderTileEntityAt(tile, 0.0D, 0.0D, 0.0D, 0.0F);
+	    GL11.glPopMatrix();
 	}
 
 	@Override
@@ -36,7 +35,7 @@ public class BlockCrystalStandRenderer implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public int getRenderId() {
-		return RenderIds.CrystalStandRenderID;
+		return 0;
 	}
 
 }

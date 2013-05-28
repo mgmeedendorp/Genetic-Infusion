@@ -1,5 +1,7 @@
 package Seremis.SoulCraft.tileentity;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -10,6 +12,8 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraftforge.common.ForgeDirection;
 import Seremis.SoulCraft.api.magnet.tile.TileMagnetConnector;
+import Seremis.SoulCraft.block.ModBlocks;
+import Seremis.core.geometry.Coordinate3D;
 
 public class TileCrystalStand extends TileMagnetConnector implements IInventory {
 
@@ -21,8 +25,13 @@ public class TileCrystalStand extends TileMagnetConnector implements IInventory 
     
     @Override
     public boolean connect(ForgeDirection direction) {
- //       return direction != ForgeDirection.DOWN && inv[0].itemID == ModBlocks.crystal.blockID;
-        return true;
+        return direction != ForgeDirection.DOWN && inv[0].itemID == ModBlocks.crystal.blockID;
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Coordinate3D applyBeamRenderOffset(Coordinate3D position, ForgeDirection side) {
+        return null;
     }
 
     @Override

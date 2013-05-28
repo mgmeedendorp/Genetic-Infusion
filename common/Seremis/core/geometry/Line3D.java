@@ -1,7 +1,6 @@
 package Seremis.core.geometry;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 
@@ -42,8 +41,8 @@ public class Line3D {
 	}
 	
 	public void setLineFromTile(TileEntity tile1, TileEntity tile2) {
-	    this.head = new Coordinate3D().setCoordsFromTile(tile1);
-	    this.tail = new Coordinate3D().setCoordsFromTile(tile2);
+	    this.head = new Coordinate3D(tile1);
+	    this.tail = new Coordinate3D(tile2);
 	}
 	
 	public double getLength() {

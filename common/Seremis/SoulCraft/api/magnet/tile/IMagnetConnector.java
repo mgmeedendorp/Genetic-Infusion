@@ -5,6 +5,9 @@ import java.util.List;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import Seremis.SoulCraft.api.magnet.MagnetLink;
+import Seremis.core.geometry.Coordinate3D;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 
 public interface IMagnetConnector {
@@ -17,4 +20,7 @@ public interface IMagnetConnector {
     void invalidate();
     
     List<MagnetLink> getLinks();
+    
+    @SideOnly(Side.CLIENT)
+    Coordinate3D applyBeamRenderOffset(Coordinate3D position, ForgeDirection side);
 }

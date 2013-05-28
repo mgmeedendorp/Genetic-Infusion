@@ -2,18 +2,21 @@ package Seremis.SoulCraft.core.proxy;
 
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
-import Seremis.SoulCraft.client.render.block.BlockCompressorRenderer;
-import Seremis.SoulCraft.client.render.block.BlockCrystalRenderer;
-import Seremis.SoulCraft.client.render.block.BlockCrystalStandRenderer;
-import Seremis.SoulCraft.client.render.block.BlockMonsterEggRenderer;
-import Seremis.SoulCraft.client.render.tile.TileCompressorRenderer;
-import Seremis.SoulCraft.client.render.tile.TileCrystalRenderer;
-import Seremis.SoulCraft.client.render.tile.TileCrystalStandRenderer;
+import net.minecraft.world.World;
 import Seremis.SoulCraft.core.lib.RenderIds;
 import Seremis.SoulCraft.handler.RenderTickHandler;
+import Seremis.SoulCraft.render.BlockCompressorRenderer;
+import Seremis.SoulCraft.render.BlockCrystalRenderer;
+import Seremis.SoulCraft.render.BlockCrystalStandRenderer;
+import Seremis.SoulCraft.render.BlockMonsterEggRenderer;
+import Seremis.SoulCraft.render.FXBeam;
+import Seremis.SoulCraft.render.TileCompressorRenderer;
+import Seremis.SoulCraft.render.TileCrystalRenderer;
+import Seremis.SoulCraft.render.TileCrystalStandRenderer;
 import Seremis.SoulCraft.tileentity.TileCompressor;
 import Seremis.SoulCraft.tileentity.TileCrystalStand;
 import Seremis.SoulCraft.tileentity.TileIsolatziumCrystal;
+import Seremis.core.geometry.Coordinate3D;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -52,5 +55,11 @@ public class ClientProxy extends CommonProxy
 	public void registerHandlers() {
 		TickRegistry.registerTickHandler(new RenderTickHandler(), Side.CLIENT);
 	}
+	
+	@Override
+    public void renderBeam(World world, Coordinate3D position, Coordinate3D target, float red, float green, float blue, int age)
+    {
+	        FMLClientHandler.instance().getClient().effectRenderer.addEffect(new FXBeam(world, position, target, red, green, blue, age));
+    }
 			
 }

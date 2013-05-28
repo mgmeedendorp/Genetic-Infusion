@@ -4,7 +4,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.util.Icon;
 import Seremis.SoulCraft.mod_SoulCraft;
-import Seremis.SoulCraft.core.DefaultProps;
+import Seremis.SoulCraft.core.lib.DefaultProps;
 
 public class SCItem extends Item {
 

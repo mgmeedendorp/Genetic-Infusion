@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import Seremis.SoulCraft.core.DefaultProps;
+import Seremis.SoulCraft.core.lib.DefaultProps;
 import Seremis.SoulCraft.tileentity.TileCompressor;
 import Seremis.SoulCraft.tileentity.TileCrystalStand;
 import Seremis.SoulCraft.tileentity.TileIsolatziumCrystal;

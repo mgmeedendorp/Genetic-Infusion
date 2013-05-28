@@ -1,5 +1,6 @@
 package Seremis.SoulCraft.core;
 
+import Seremis.SoulCraft.core.lib.DefaultProps;
 import net.minecraftforge.common.Configuration;
 
 public class SCConfig {

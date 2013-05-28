@@ -6,14 +6,15 @@ import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import Seremis.SoulCraft.block.ModBlocks;
 import Seremis.SoulCraft.core.DamageCompressor;
-import Seremis.SoulCraft.core.DefaultProps;
 import Seremis.SoulCraft.core.SCConfig;
 import Seremis.SoulCraft.core.SCCreativeTab;
+import Seremis.SoulCraft.core.lib.DefaultProps;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
 import Seremis.SoulCraft.handler.EventHandler;
 import Seremis.SoulCraft.helper.RecipeHelper;
 import Seremis.SoulCraft.helper.SCLogger;
 import Seremis.SoulCraft.items.ModItems;
+import Seremis.SoulCraft.network.PacketHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -27,7 +28,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 
 @Mod(modid = DefaultProps.ID, name = DefaultProps.name, version = DefaultProps.version, acceptedMinecraftVersions = DefaultProps.acceptedMinecraftVersions)
-@NetworkMod(clientSideRequired = true, serverSideRequired = false)
+@NetworkMod(clientSideRequired = true, serverSideRequired = false, channels = {DefaultProps.PACKET_CHANNEL}, packetHandler = PacketHandler.class)
 public class mod_SoulCraft {
 	
 	@Instance(DefaultProps.ID)

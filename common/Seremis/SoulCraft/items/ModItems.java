@@ -2,7 +2,7 @@ package Seremis.SoulCraft.items;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import Seremis.SoulCraft.core.DefaultProps;
+import Seremis.SoulCraft.core.lib.DefaultProps;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class ModItems {

@@ -1,11 +1,12 @@
-package Seremis.SoulCraft.core;
+package Seremis.SoulCraft.core.lib;
 
 
 public class DefaultProps {
 	public static final String ID = "SC";
 	public static final String name = "SoulCraft";
 	public static final String version = "SoulCraft Pr1";
-	public static final String acceptedMinecraftVersions = "1.4.6";
+	public static final String acceptedMinecraftVersions = "1.5.2";
+	public static final String PACKET_CHANNEL = ID;
 	
 	public static boolean spawnTitanium;
 	public static boolean spawnOreSoulCrystal;

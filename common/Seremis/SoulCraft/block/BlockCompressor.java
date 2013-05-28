@@ -19,7 +19,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import Seremis.SoulCraft.mod_SoulCraft;
-import Seremis.SoulCraft.core.DefaultProps;
+import Seremis.SoulCraft.core.lib.DefaultProps;
 import Seremis.SoulCraft.core.lib.RenderIds;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
 import Seremis.SoulCraft.items.ModItems;

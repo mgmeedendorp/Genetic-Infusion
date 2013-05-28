@@ -7,7 +7,12 @@ import java.util.List;
 import java.util.Set;
 
 import Seremis.SoulCraft.api.magnet.tile.IMagnetConnector;
+import Seremis.SoulCraft.network.PacketTypeHandler;
+import Seremis.SoulCraft.network.packet.PacketMagnetLink;
 import Seremis.core.geometry.Line3D;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class MagnetLinkHelper {
     
@@ -24,12 +29,15 @@ public class MagnetLinkHelper {
         if(connector != null && link != null && registeredMap.containsKey(connector)) {
             if(!registeredMap.get(connector).contains(link)) {
                 registeredMap.get(connector).add(link);
+                PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketMagnetLink(link)));
+                System.out.println("packet sent");
             }
-        }
-        if(connector != null && link != null && !registeredMap.containsKey(connector)) {
+        } else if(connector != null && link != null && !registeredMap.containsKey(connector)) {
             List<MagnetLink> tempList = new ArrayList<MagnetLink>();
             tempList.add(link);
             registeredMap.put(connector, tempList);
+            PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketMagnetLink(link)));
+            System.out.println("packet sent");
         }
     }
     
@@ -39,7 +47,6 @@ public class MagnetLinkHelper {
         while(it.hasNext()) {
             IMagnetConnector connector = it.next();
             if(registeredMap.get(connector).contains(link)) {
-                System.out.println(connector);
                 it.remove();
             }
         }
@@ -104,5 +111,13 @@ public class MagnetLinkHelper {
             }
         }
         return false;
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public void renderLinks() {
+        List<MagnetLink> links = this.getAllLinks();
+        for(MagnetLink link : links) {
+            link.render();
+        }
     }
 }

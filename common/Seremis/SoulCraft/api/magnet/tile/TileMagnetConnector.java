@@ -4,9 +4,13 @@ import java.util.List;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import Seremis.SoulCraft.api.magnet.MagnetLink;
 import Seremis.SoulCraft.api.magnet.MagnetLinkHelper;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
+import Seremis.core.geometry.Coordinate3D;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class TileMagnetConnector extends TileEntity implements IMagnetConnector {
     
@@ -43,7 +47,6 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
                         if(MagnetLinkHelper.instance.checkConditions(link)) {
                             MagnetLinkHelper.instance.addLink(link);
                         }
-                        System.out.println(link.toString());
                     }
                 }
             }
@@ -71,5 +74,13 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
     public void invalidate() {
         MagnetLinkHelper.instance.removeAllLinksFrom(this);
         MagnetLinkHelper.instance.registeredMap.remove(this);
+        super.invalidate();
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Coordinate3D applyBeamRenderOffset(Coordinate3D position, ForgeDirection side) {
+        Coordinate3D centerPosition = new Coordinate3D(position.x + 0.5D, position.y + 0.5D, position.z +0.5D);
+        return centerPosition;
     }
 }
