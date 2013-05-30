@@ -21,7 +21,5 @@ public class DefaultProps {
 	
 	public static int TitaniumIngotID;
 	public static int ShardIsolatziumID;
-	public static int PlasmaConnectorToolID;
-    public static int PlasmaID;
-    public static int PlasmaBucketID;
+    public static int TitaniumPlateID;
 }

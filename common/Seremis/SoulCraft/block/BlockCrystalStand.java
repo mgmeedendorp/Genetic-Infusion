@@ -22,7 +22,7 @@ public class BlockCrystalStand extends BlockMagnetConnector {
 		setUnlocalizedName("crystalStand");
 		setHardness(0.5F);
 		setCreativeTab(mod_SoulCraft.CreativeTab);
-		setBlockBounds(0.375F, 0.0F, 0.375F, 0.8125F, 0.75F, 0.8125F);
+		setBlockBounds(0.25F, 0.0F, 0.25F, 0.8125F, 0.75F, 0.8125F);
 	}
 	
 	@Override

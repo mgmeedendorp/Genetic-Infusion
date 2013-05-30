@@ -61,7 +61,6 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
             for(MagnetLink link : links) {
                 if(!link.isConnectionPossible()) {
                     MagnetLinkHelper.instance.removeLink(link);
-                    System.out.println("jslfj");
                 }
             }
         }
