@@ -38,16 +38,30 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
     
     public void linkUpdate() {
         World world = worldObj;
-        for(int x=(int) (-10); x<=range; x++) {
-            for(int y=(int) (-1*range); y<=range; y++) {
-                for(int z=(int) (-1*range); z<=range; z++) {
-                    TileEntity tile = world.getBlockTileEntity(xCoord + x, yCoord + y, zCoord + z);
-                    if(tile != null && tile instanceof IMagnetConnector && tile != this && !MagnetLinkHelper.instance.doesLinkExist(this, (IMagnetConnector)tile)) {
-                        MagnetLink link = new MagnetLink(this, (IMagnetConnector)tile);
-                        if(MagnetLinkHelper.instance.checkConditions(link)) {
-                            MagnetLinkHelper.instance.addLink(link);
+        if(canConnect()) {
+            for(int x=(int) (-1*range); x<=range; x++) {
+                for(int y=(int) (-1*range); y<=range; y++) {
+                    for(int z=(int) (-1*range); z<=range; z++) {
+                        TileEntity tile = world.getBlockTileEntity(xCoord + x, yCoord + y, zCoord + z);
+                        if(tile != null && tile instanceof IMagnetConnector && tile != this && !MagnetLinkHelper.instance.doesLinkExist(this, (IMagnetConnector)tile)) {
+                            MagnetLink link = new MagnetLink(this, (IMagnetConnector)tile);
+                            if(MagnetLinkHelper.instance.checkConditions(link)) {
+                                MagnetLinkHelper.instance.addLink(link);
+                            }
                         }
                     }
+                }
+            }
+        } else {
+            MagnetLinkHelper.instance.removeAllLinksFrom(this);
+            return;
+        }
+        List<MagnetLink> links = this.getLinks();
+        if(links != null) {
+            for(MagnetLink link : links) {
+                if(!link.isConnectionPossible()) {
+                    MagnetLinkHelper.instance.removeLink(link);
+                    System.out.println("jslfj");
                 }
             }
         }
@@ -58,6 +72,11 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
     @Override
     public TileEntity getTile() {
         return this;
+    }
+    
+    @Override
+    public boolean canConnect() {
+        return true;
     }
 
     @Override

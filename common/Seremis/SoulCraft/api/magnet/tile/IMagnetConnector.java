@@ -16,7 +16,18 @@ public interface IMagnetConnector {
     
     double getRange();
     
-    boolean connect(ForgeDirection direction);
+    /**
+     * This gets checked every 20 ticks, so use it for dynamic checking like inventories.
+     * @return
+     */
+    boolean canConnect();
+    
+    /**
+     * Use this to determine if the link can be made to this side of the connector.
+     * This is only called once.
+     * @param direction
+     */
+    boolean connectToSide(ForgeDirection direction);
     void invalidate();
     
     List<MagnetLink> getLinks();

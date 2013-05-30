@@ -24,8 +24,13 @@ public class TileCrystalStand extends TileMagnetConnector implements IInventory 
     public ItemStack[] inv = new ItemStack[1];
     
     @Override
-    public boolean connect(ForgeDirection direction) {
-        return direction != ForgeDirection.DOWN && inv[0].itemID == ModBlocks.crystal.blockID;
+    public boolean connectToSide(ForgeDirection direction) {
+        return direction != ForgeDirection.DOWN && inv[0] != null && inv[0].itemID == ModBlocks.crystal.blockID;
+    }
+    
+    @Override
+    public boolean canConnect() {
+        return inv[0] != null && inv[0].itemID == ModBlocks.crystal.blockID;
     }
     
     @Override

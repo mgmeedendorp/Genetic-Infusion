@@ -6,13 +6,11 @@ import java.io.DataInputStream;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import Seremis.SoulCraft.core.lib.DefaultProps;
-import Seremis.SoulCraft.network.packet.PacketMagnetLink;
 import Seremis.SoulCraft.network.packet.PacketSC;
 
 public enum PacketTypeHandler 
 {
-    MAGNETLINK(PacketMagnetLink.class);
-    
+    ;
     private Class<? extends PacketSC> clazz;
 
     PacketTypeHandler(Class<? extends PacketSC> clazz) 

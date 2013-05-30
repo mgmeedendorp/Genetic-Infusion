@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import net.minecraft.entity.player.EntityPlayer;
 import Seremis.SoulCraft.api.magnet.tile.IMagnetConnector;
 import Seremis.core.geometry.Line3D;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -25,25 +24,15 @@ public class MagnetLinkHelper {
     }
     
     private void addLink(IMagnetConnector connector, MagnetLink link) {
+        if(!checkConditions(link)) return;
         if(connector != null && link != null && registeredMap.containsKey(connector)) {
             if(!registeredMap.get(connector).contains(link)) {
                 registeredMap.get(connector).add(link);
-                sendMagnetLinkPacket(link);
             }
         } else if(connector != null && link != null && !registeredMap.containsKey(connector)) {
             List<MagnetLink> tempList = new ArrayList<MagnetLink>();
             tempList.add(link);
             registeredMap.put(connector, tempList);
-            sendMagnetLinkPacket(link);
-        }
-    }
-    
-    public void sendMagnetLinkPacket(MagnetLink link) {
-        EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
-        if (player != null) 
-        {
-//            PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketMagnetLink(link))); 
-            System.out.println("packet sent");
         }
     }
     
@@ -67,7 +56,8 @@ public class MagnetLinkHelper {
             }
             Iterator<MagnetLink> it = clone.iterator();
             while(it.hasNext()) {
-                removeLink(it.next());
+                MagnetLink link = it.next();
+                removeLink(link);
             }
         }
     }
@@ -92,10 +82,12 @@ public class MagnetLinkHelper {
         if(connector1 == null || connector2 == null || connector1 == connector2) return false;
         Line3D line = new Line3D();
         line.setLineFromTile(connector1.getTile(), connector2.getTile());
-        if(line.getLength() <= connector1.getRange() && line.getLength() <= connector2.getRange()) {
-            if(!doesLinkExist(connector1, connector2)) {
-                if(connector1.connect(line.getSide(connector1.getTile())) && connector2.connect(line.getSide(connector2.getTile()))) {
-                    return true;
+        if(connector1.canConnect() && connector2.canConnect()) {
+            if(line.getLength() <= connector1.getRange() && line.getLength() <= connector2.getRange()) {
+                if(!doesLinkExist(connector1, connector2)) {
+                    if(connector1.connectToSide(line.getSide(connector1.getTile())) && connector2.connectToSide(line.getSide(connector2.getTile()))) {
+                        return true;
+                    }
                 }
             }
         }

@@ -21,6 +21,13 @@ public class MagnetLink {
         line.setLineFromTile(connector1.getTile(), connector2.getTile());
     }
     
+    public boolean isConnectionPossible() {
+        if(connector1.canConnect() && connector2.canConnect() && !connector1.getTile().isInvalid() && !connector2.getTile().isInvalid()) {
+            return true;
+        }
+        return false;
+    }
+    
     @SideOnly(Side.CLIENT)
     public void render() {
         Coordinate3D from = new Coordinate3D(connector1.getTile());
