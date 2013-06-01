@@ -1,4 +1,4 @@
-package Seremis.SoulCraft.render;
+package Seremis.SoulCraft.client.render;
 
 import java.util.Random;
 
@@ -7,6 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
 
+import Seremis.SoulCraft.client.model.ModelCrystal;
 import Seremis.SoulCraft.core.lib.Localizations;
 import Seremis.SoulCraft.tileentity.TileIsolatziumCrystal;
 

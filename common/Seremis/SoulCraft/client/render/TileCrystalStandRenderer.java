@@ -1,4 +1,4 @@
-package Seremis.SoulCraft.render;
+package Seremis.SoulCraft.client.render;
 
 import java.util.Random;
 
@@ -8,6 +8,8 @@ import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
 
 import Seremis.SoulCraft.block.ModBlocks;
+import Seremis.SoulCraft.client.model.ModelCrystal;
+import Seremis.SoulCraft.client.model.ModelCrystalStand;
 import Seremis.SoulCraft.core.lib.Localizations;
 import Seremis.SoulCraft.tileentity.TileCrystalStand;
 

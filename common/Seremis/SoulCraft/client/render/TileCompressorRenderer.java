@@ -1,4 +1,4 @@
-package Seremis.SoulCraft.render;
+package Seremis.SoulCraft.client.render;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;

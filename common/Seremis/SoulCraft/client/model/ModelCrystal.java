@@ -1,4 +1,4 @@
-package Seremis.SoulCraft.render;
+package Seremis.SoulCraft.client.model;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
