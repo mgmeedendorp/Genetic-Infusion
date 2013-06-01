@@ -10,11 +10,13 @@ public class ModItems {
 	public static SCItem ingotTitanium;
 	public static ShardIsolatzium shardIsolatzium;
 	public static SCItem plateTitanium;
+	public static SCItem alloyIsolatzium;
 	
 	public static void init() {
 		ingotTitanium = new SCItem(DefaultProps.TitaniumIngotID).setUnlocalizedName("ingotTitanium");
 		shardIsolatzium = new ShardIsolatzium(DefaultProps.ShardIsolatziumID);
 		plateTitanium = new SCItem(DefaultProps.TitaniumPlateID).setUnlocalizedName("plateTitanium");
+		alloyIsolatzium = new AlloyIsolatzium(DefaultProps.IsolatziumAlloyID);
 		
 		LanguageRegistry.addName(ingotTitanium, "Titanium Ingot");
 		LanguageRegistry.addName(new ItemStack(shardIsolatzium, 1, 0), "Red Isolatzium shard");
@@ -22,6 +24,10 @@ public class ModItems {
 		LanguageRegistry.addName(new ItemStack(shardIsolatzium, 1, 2), "Blue Isolatzium shard");
 		LanguageRegistry.addName(new ItemStack(shardIsolatzium, 1, 3), "Black Isolatzium shard");
 		LanguageRegistry.addName(plateTitanium, "Titanium Plate");
+		LanguageRegistry.addName(new ItemStack(alloyIsolatzium, 1, 0), "Red Isolatzium Alloy");
+		LanguageRegistry.addName(new ItemStack(alloyIsolatzium, 1, 1), "Green Isolatzium Alloy");
+		LanguageRegistry.addName(new ItemStack(alloyIsolatzium, 1, 2), "Blue Isolatzium Alloy");
+		LanguageRegistry.addName(new ItemStack(alloyIsolatzium, 1, 3), "Black Isolatzium Alloy");
 		
 		oreDictionary();
 	}
@@ -33,5 +39,9 @@ public class ModItems {
 		OreDictionary.registerOre("shardIsolatziumBlue", new ItemStack(shardIsolatzium, 1, 2));
 		OreDictionary.registerOre("shardIsolatziumBlack", new ItemStack(shardIsolatzium, 1, 3));
 		OreDictionary.registerOre("plateTitanium", plateTitanium);
+		OreDictionary.registerOre("alloyIsolatziumRed", new ItemStack(alloyIsolatzium, 1, 0));
+		OreDictionary.registerOre("alloyIsolatziumGreen", new ItemStack(alloyIsolatzium, 1, 1));
+		OreDictionary.registerOre("alloyIsolatziumBlue", new ItemStack(alloyIsolatzium, 1, 2));
+		OreDictionary.registerOre("alloyIsolatziumBlack", new ItemStack(alloyIsolatzium, 1, 3));
 	}
 }

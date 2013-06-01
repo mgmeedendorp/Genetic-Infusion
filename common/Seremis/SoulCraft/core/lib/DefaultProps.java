@@ -22,4 +22,5 @@ public class DefaultProps {
 	public static int TitaniumIngotID;
 	public static int ShardIsolatziumID;
     public static int TitaniumPlateID;
+    public static int IsolatziumAlloyID;
 }

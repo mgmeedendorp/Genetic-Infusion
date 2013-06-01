@@ -11,6 +11,7 @@ import Seremis.SoulCraft.core.SCCreativeTab;
 import Seremis.SoulCraft.core.lib.DefaultProps;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
 import Seremis.SoulCraft.handler.EventHandler;
+import Seremis.SoulCraft.handler.GuiHandler;
 import Seremis.SoulCraft.helper.RecipeHelper;
 import Seremis.SoulCraft.helper.SCLogger;
 import Seremis.SoulCraft.items.ModItems;
@@ -24,6 +25,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 
@@ -52,6 +54,7 @@ public class mod_SoulCraft {
 		ModBlocks.init();
 		ModItems.init();
         CommonProxy.proxy.registerRendering();
+        NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
 		RecipeHelper.initRecipes();
 		RecipeHelper.initSmelting();
 		LanguageRegistry.instance().addStringLocalization("itemGroup.SoulCraft", "en_US", "SoulCraft");
