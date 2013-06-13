@@ -10,6 +10,7 @@ import Seremis.SoulCraft.core.SCConfig;
 import Seremis.SoulCraft.core.SCCreativeTab;
 import Seremis.SoulCraft.core.lib.DefaultProps;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
+import Seremis.SoulCraft.entity.ModEntity;
 import Seremis.SoulCraft.handler.EventHandler;
 import Seremis.SoulCraft.handler.GuiHandler;
 import Seremis.SoulCraft.helper.RecipeHelper;
@@ -53,6 +54,7 @@ public class mod_SoulCraft {
 	public void init(FMLInitializationEvent event) {
 		ModBlocks.init();
 		ModItems.init();
+		ModEntity.init();
         CommonProxy.proxy.registerRendering();
         NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
 		RecipeHelper.initRecipes();

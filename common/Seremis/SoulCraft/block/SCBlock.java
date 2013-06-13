@@ -5,9 +5,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import Seremis.SoulCraft.mod_SoulCraft;
 import Seremis.SoulCraft.core.lib.DefaultProps;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class SCBlock extends BlockContainer {
     
@@ -21,6 +24,7 @@ public class SCBlock extends BlockContainer {
 	}
 	
 	@Override
+	@SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister iconRegister) {
         if(this.metadata == 0) {
              blockIcon = iconRegister.registerIcon(DefaultProps.ID+":"+this.getUnlocalizedName().substring(5));
@@ -33,8 +37,7 @@ public class SCBlock extends BlockContainer {
     }
 
     @Override
-    public Icon getBlockTextureFromSideAndMetadata(int side, int metadata)
-    {
+    public Icon getIcon(int side, int metadata) {
         if(this.metadata > 0)
         {
             blockIcon = iconBuffer[metadata+1];

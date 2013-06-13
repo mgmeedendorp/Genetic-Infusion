@@ -120,7 +120,7 @@ public class BlockCompressorRenderer implements ISimpleBlockRenderingHandler {
         	if(item){
             	block.setBlockBounds((float)var8, (float)var9, (float)var10, (float)var11, (float)var12, (float)var13);
             	renderer.setRenderBoundsFromBlock(block);
-            	SCRenderHelper.renderAllFaces(block, renderer, block.getBlockTextureFromSide(0), block.getBlockTextureFromSide(1), block.getBlockTextureFromSide(2), block.getBlockTextureFromSide(3), block.getBlockTextureFromSide(4), block.getBlockTextureFromSide(5));
+            	SCRenderHelper.renderAllFaces(block, renderer, block.getIcon(0, 0), block.getIcon(1, 0), block.getIcon(2, 0), block.getIcon(3, 0), block.getIcon(4, 0) ,block.getIcon(5, 0));
         	}
 		}
 		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);

@@ -8,15 +8,17 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 public class ModItems {
 
 	public static SCItem ingotTitanium;
-	public static ShardIsolatzium shardIsolatzium;
+	public static SCItem shardIsolatzium;
 	public static SCItem plateTitanium;
 	public static SCItem alloyIsolatzium;
+	public static SCItem itemTransporter;
 	
 	public static void init() {
 		ingotTitanium = new SCItem(DefaultProps.TitaniumIngotID).setUnlocalizedName("ingotTitanium");
 		shardIsolatzium = new ShardIsolatzium(DefaultProps.ShardIsolatziumID);
 		plateTitanium = new SCItem(DefaultProps.TitaniumPlateID).setUnlocalizedName("plateTitanium");
 		alloyIsolatzium = new AlloyIsolatzium(DefaultProps.IsolatziumAlloyID);
+		itemTransporter = new ItemTransporter(DefaultProps.TransporterItemID);
 		
 		LanguageRegistry.addName(ingotTitanium, "Titanium Ingot");
 		LanguageRegistry.addName(new ItemStack(shardIsolatzium, 1, 0), "Red Isolatzium shard");
@@ -28,6 +30,7 @@ public class ModItems {
 		LanguageRegistry.addName(new ItemStack(alloyIsolatzium, 1, 1), "Green Isolatzium Alloy");
 		LanguageRegistry.addName(new ItemStack(alloyIsolatzium, 1, 2), "Blue Isolatzium Alloy");
 		LanguageRegistry.addName(new ItemStack(alloyIsolatzium, 1, 3), "Black Isolatzium Alloy");
+		LanguageRegistry.addName(itemTransporter, "Plasma Transporter");
 		
 		oreDictionary();
 	}

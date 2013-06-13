@@ -23,9 +23,9 @@ public class SCItem extends Item {
 	}
 	
 	@Override
-    public void updateIcons(IconRegister iconRegister) {
+    public void registerIcons(IconRegister iconRegister) {
         if(this.metadata == 0) {
-             iconIndex = iconRegister.registerIcon(DefaultProps.ID+":"+this.getUnlocalizedName().substring(5));
+             itemIcon = iconRegister.registerIcon(DefaultProps.ID+":"+this.getUnlocalizedName().substring(5));
         } else {
             iconBuffer = new Icon[metadata+1];
             for(int x = 1; x<metadata+1; x++) {
@@ -39,9 +39,9 @@ public class SCItem extends Item {
     {
         if(this.metadata != 0)
         {
-            iconIndex = iconBuffer[metadata+1];
+            itemIcon = iconBuffer[metadata+1];
         }
-        return this.iconIndex;
+        return this.itemIcon;
     }
     
     public int getNumbersofMetadata() {

@@ -82,7 +82,7 @@ public class BlockCompressor extends SCBlock {
     }
 	
 	@Override
-	public Icon getBlockTextureFromSideAndMetadata(int side, int metadata) {
+	public Icon getIcon(int side, int metadata) {
 		switch(side) {
 		case 0: return top;
 		case 1: return top;

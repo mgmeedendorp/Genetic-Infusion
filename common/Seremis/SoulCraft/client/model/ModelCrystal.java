@@ -12,11 +12,10 @@ public class ModelCrystal extends ModelBase {
 		int textureHeight = 256;
 		int textureWidth = 256;
 		
-		crystal = new ModelRenderer(this, 0, 0);
+		crystal = new ModelRenderer(this);
 		crystal.addBox(0.0F, 0.0F, 0.0F, 16, 16, 16);
 		crystal.setRotationPoint(0.0F, 32.0F, 0.0F);
-		crystal.setTextureSize(textureHeight, textureWidth);
-		crystal.mirror = true;
+		crystal.setTextureSize(textureWidth, textureHeight);
 		setRotation(crystal, 0.7F, 0.0F, 0.7F);
 	}
 	
