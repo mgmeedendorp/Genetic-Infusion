@@ -20,7 +20,8 @@ public class SCConfig {
 		DefaultProps.ShardIsolatziumID = config.getItem("Isolatzium Shards", 4521).getInt();
 		DefaultProps.TitaniumPlateID = config.getItem("Titanium Plate", 4522).getInt();
 		DefaultProps.IsolatziumAlloyID = config.getItem("Isolatzium Alloy", 4523).getInt();
-		DefaultProps.TransporterItemID = config.getItem("Plasmatic Transporter", 4534).getInt();
+		DefaultProps.TransporterEnginesID = config.getItem("Engine Module", 4534).getInt();
+		DefaultProps.TransporterStorageID = config.getItem("Storage Module", 4535).getInt();
 		//Booleans
 		DefaultProps.fancyCompressorRenderer = config.get(Configuration.CATEGORY_GENERAL, "Fancy Compressor rendering", true).getBoolean(true);
 		DefaultProps.spawnTitanium = config.get(Configuration.CATEGORY_GENERAL, "Spawn Titanium Ore in the world", true).getBoolean(true);

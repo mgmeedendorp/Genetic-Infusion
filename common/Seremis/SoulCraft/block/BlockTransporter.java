@@ -5,10 +5,12 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import Seremis.SoulCraft.core.lib.RenderIds;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
+import Seremis.SoulCraft.item.ModItems;
 import Seremis.SoulCraft.tileentity.TileTransporter;
 import Seremis.SoulCraft.util.UtilBlock;
 
@@ -40,12 +42,19 @@ public class BlockTransporter extends SCBlock {
     
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
-        if(CommonProxy.proxy.isRenderWorld(world)){return false;}
+        if(player.isSneaking()) {return false;}
+        
         TileTransporter tile = (TileTransporter)(world.getBlockTileEntity(x, y, z));
-        if(tile != null && player.getItemInUse().itemID == 0) {
-            
+        ItemStack playerItem = player.getItemInUse();
+        if(tile != null && playerItem != null && playerItem.itemID == ModItems.transporterEngines.itemID) {
+            if(CommonProxy.proxy.isRenderWorld(world)){return false;}
+            tile.setHasEngine(true);
         }
-        return false;
+        if(tile != null && playerItem != null && playerItem.itemID == ModItems.transporterStorage.itemID) {
+            if(CommonProxy.proxy.isRenderWorld(world)){return false;}
+            tile.setHasInventory(true);
+        }
+        return true;
     }
     
     @Override
@@ -72,6 +81,6 @@ public class BlockTransporter extends SCBlock {
     
     @Override
     public TileEntity createTileEntity(World world, int metadata) {
-        return new TileTransporter(true, false);
+        return new TileTransporter();
     }
 }

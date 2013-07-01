@@ -6,6 +6,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.ForgeDirection;
 
 public class TileTransporter extends SCTileEntity implements IInventory, ISidedInventory {
 
@@ -14,6 +15,11 @@ public class TileTransporter extends SCTileEntity implements IInventory, ISidedI
     private boolean hasEngine;
     private boolean hasInventory;
     private float speed = 1.0F;
+    public ForgeDirection direction = ForgeDirection.NORTH;
+    
+    public TileTransporter() {
+        this(false, false);
+    }
     
     public TileTransporter(boolean engine, boolean inventory) {
         hasEngine = engine;
@@ -170,6 +176,7 @@ public class TileTransporter extends SCTileEntity implements IInventory, ISidedI
         super.readFromNBT(compound);
         hasInventory = compound.getBoolean("hasInventory");
         hasEngine = compound.getBoolean("hasEngine");
+        direction = ForgeDirection.values()[compound.getInteger("direction")];
         if(hasInventory) {
             NBTTagList nbtTagList = compound.getTagList("Items");
             this.inv = new ItemStack[this.getSizeInventory()];
@@ -193,6 +200,7 @@ public class TileTransporter extends SCTileEntity implements IInventory, ISidedI
         super.writeToNBT(compound);
         compound.setBoolean("hasInventory", hasInventory);
         compound.setBoolean("hasEngine", hasEngine);
+        compound.setInteger("direction", direction.ordinal());
         if(hasInventory) {
             NBTTagList nbtTagList = new NBTTagList();
     
