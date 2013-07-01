@@ -6,6 +6,9 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraftforge.common.ForgeDirection;
 
 public class TileTransporter extends SCTileEntity implements IInventory, ISidedInventory {
@@ -31,12 +34,15 @@ public class TileTransporter extends SCTileEntity implements IInventory, ISidedI
     
     public void setHasInventory(boolean inventory) {
         this.hasInventory = inventory;
-        worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
     
     public void setHasEngine(boolean engine) {
         this.hasEngine = engine;
-        worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+        if(hasEngine) {
+            speed = 5.0F;
+        }
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
     
     public float getSpeed() {
@@ -49,6 +55,18 @@ public class TileTransporter extends SCTileEntity implements IInventory, ISidedI
     
     public boolean hasInventory() {
         return hasInventory;
+    }
+    
+    @Override
+    public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
+        readFromNBT(packet.customParam1);
+    }
+    
+    @Override
+    public Packet getDescriptionPacket() {
+        NBTTagCompound var1 = new NBTTagCompound();
+        writeToNBT(var1);
+        return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 1, var1);
     }
     
     @Override

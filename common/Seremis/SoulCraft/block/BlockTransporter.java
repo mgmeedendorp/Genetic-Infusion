@@ -45,13 +45,21 @@ public class BlockTransporter extends SCBlock {
         if(player.isSneaking()) {return false;}
         
         TileTransporter tile = (TileTransporter)(world.getBlockTileEntity(x, y, z));
-        ItemStack playerItem = player.getItemInUse();
+        ItemStack playerItem = player.getCurrentEquippedItem();
         if(tile != null && playerItem != null && playerItem.itemID == ModItems.transporterEngines.itemID) {
             if(CommonProxy.proxy.isRenderWorld(world)){return false;}
+            if(tile.hasEngine()) {
+                player.sendChatToPlayer("This transporter already has engines");
+                return true;
+            }
             tile.setHasEngine(true);
         }
         if(tile != null && playerItem != null && playerItem.itemID == ModItems.transporterStorage.itemID) {
             if(CommonProxy.proxy.isRenderWorld(world)){return false;}
+            if(tile.hasInventory()) {
+                player.sendChatToPlayer("This transporter already has a storage module");
+                return true;
+            }
             tile.setHasInventory(true);
         }
         return true;
@@ -76,6 +84,16 @@ public class BlockTransporter extends SCBlock {
     @Override
     public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
         UtilBlock.dropItemsFromTile(world, x, y, z);
+        if(CommonProxy.proxy.isRenderWorld(world)){return;}
+        TileTransporter tile = (TileTransporter)world.getBlockTileEntity(x, y, z);
+        if(tile.hasEngine()) {
+            EntityItem item = new EntityItem(world, x, y, z, new ItemStack(ModItems.transporterEngines, 1));
+            world.spawnEntityInWorld(item);
+        }
+        if(tile.hasInventory()) {
+            EntityItem item = new EntityItem(world, x, y, z, new ItemStack(ModItems.transporterStorage, 1));
+            world.spawnEntityInWorld(item);
+        }
         super.breakBlock(world, x, y, z, par5, par6);
     }
     
