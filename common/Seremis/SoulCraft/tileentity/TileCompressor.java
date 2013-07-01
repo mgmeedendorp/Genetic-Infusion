@@ -10,7 +10,7 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
-import Seremis.SoulCraft.items.ModItems;
+import Seremis.SoulCraft.item.ModItems;
 
 public class TileCompressor extends TileEntity implements IInventory {
 
@@ -118,31 +118,31 @@ public class TileCompressor extends TileEntity implements IInventory {
         compound.setTag("Items", nbtTagList);
     }
 	
-	public boolean setInventorySlot(int slot, ItemStack stack) {
-		ItemStack currStack = getStackInSlot(slot);
-		if(currStack == null) {
-			inv[0] = stack;
-			this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-			return true;
-		}
-		if(currStack.stackSize > getInventoryStackLimit()) {
-			ItemStack tooMuch = new ItemStack(getStackInSlot(0).itemID, currStack.stackSize-getInventoryStackLimit(), currStack.getItemDamage());
-			this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.xCoord, this.yCoord, this.zCoord, tooMuch));
-			currStack.stackSize = getInventoryStackLimit();
-			this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-			return false;
-		}
-		if(currStack.stackSize < 0) {
-			inv[0] = null;
-			this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-		}
-		if(currStack.getItem() == stack.getItem() && currStack.getItemDamage() == stack.getItemDamage()) {
-			inv[0].stackSize += stack.stackSize;
-			this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
- 			return true;
-		}
-		return false;
-	}
+    public boolean setInventorySlot(int slot, ItemStack stack) {
+        ItemStack currStack = getStackInSlot(slot);
+        if(currStack == null) {
+            inv[slot] = stack;
+            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            return true;
+        }
+        if(currStack.stackSize > getInventoryStackLimit()) {
+            ItemStack tooMuch = new ItemStack(getStackInSlot(slot).itemID, currStack.stackSize-getInventoryStackLimit(), currStack.getItemDamage());
+            this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.xCoord, this.yCoord, this.zCoord, tooMuch));
+            currStack.stackSize = getInventoryStackLimit();
+            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            return false;
+        }
+        if(currStack.stackSize < 0) {
+            inv[slot] = null;
+            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+        }
+        if(currStack.getItem() == stack.getItem() && currStack.getItemDamage() == stack.getItemDamage()) {
+            inv[slot].stackSize += stack.stackSize;
+            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            return true;
+        }
+        return false;
+    }
 	
 	/**
      * Returns true if there is a player in range (using World.getClosestPlayer)

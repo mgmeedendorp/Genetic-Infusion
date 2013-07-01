@@ -8,6 +8,7 @@ import Seremis.SoulCraft.core.lib.DefaultProps;
 import Seremis.SoulCraft.tileentity.TileCompressor;
 import Seremis.SoulCraft.tileentity.TileCrystalStand;
 import Seremis.SoulCraft.tileentity.TileIsolatziumCrystal;
+import Seremis.SoulCraft.tileentity.TileTransporter;
 import Seremis.SoulCraft.world.SCWorldGenerator;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -19,6 +20,7 @@ public class ModBlocks {
 	public static BlockCompressor compressor;
 	public static BlockCrystal crystal;
 	public static BlockCrystalStand crystalStand;
+	public static BlockTransporter transporter;
 	public static BlockMonsterEgg monsterEgg;
 	
 	public static SCWorldGenerator worldGen;
@@ -29,6 +31,7 @@ public class ModBlocks {
 		compressor =  new BlockCompressor(DefaultProps.CompressorID, Material.rock);
 		crystal = new BlockCrystal(DefaultProps.IsolatziumCrystalID, Material.coral);
 		crystalStand = new BlockCrystalStand(DefaultProps.CrystalStandID, Material.wood);
+		transporter = new BlockTransporter(DefaultProps.TransporterID, Material.iron);
 		monsterEgg = new BlockMonsterEgg(DefaultProps.MonsterEggID, Material.dragonEgg);
 		
 		GameRegistry.registerBlock(oreTitanium, "Titanium Ore");
@@ -36,6 +39,7 @@ public class ModBlocks {
 		GameRegistry.registerBlock(compressor, "Compressor");
 		GameRegistry.registerBlock(crystal, "Isolazium Crystal");
 		GameRegistry.registerBlock(crystalStand, "Crystal Stand");
+		GameRegistry.registerBlock(transporter, "Plasma Transporter");
 		GameRegistry.registerBlock(monsterEgg, "Monster Egg");
 		
 		LanguageRegistry.addName(oreTitanium, "Titanium Ore");
@@ -46,6 +50,7 @@ public class ModBlocks {
 		LanguageRegistry.addName(compressor, "Atomic Compressor");
 		LanguageRegistry.addName(crystal, "Isolatzium Crystal");
 		LanguageRegistry.addName(crystalStand, "Isolatzium Crystal Stand");
+		LanguageRegistry.addName(transporter, "Plasmatic Transporter");
 		LanguageRegistry.addName(monsterEgg, "Monster Egg");
 
 		worldGen = new SCWorldGenerator();
@@ -63,5 +68,6 @@ public class ModBlocks {
 		GameRegistry.registerTileEntity(TileCompressor.class, "TileCompressor");
 		GameRegistry.registerTileEntity(TileIsolatziumCrystal.class, "TileIsolatziumCrystal");
 		GameRegistry.registerTileEntity(TileCrystalStand.class, "TileCrystalStand");
+		GameRegistry.registerTileEntity(TileTransporter.class, "TileTransporter");
 	}
 }

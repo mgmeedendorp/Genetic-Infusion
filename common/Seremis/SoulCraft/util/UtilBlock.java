@@ -12,7 +12,6 @@ import net.minecraft.world.World;
 public class UtilBlock {
     
     public static void dropItemsFromTile(World world, int x, int y, int z){
-        Random rand = new Random();
 
         TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
         if (!(tileEntity instanceof IInventory)) {
@@ -22,6 +21,7 @@ public class UtilBlock {
 
         for (int i = 0; i < inventory.getSizeInventory(); i++) {
             ItemStack item = inventory.getStackInSlot(i);
+            Random rand = new Random();
 
             if (item != null && item.stackSize > 0) {
                 float rx = rand.nextFloat() * 0.8F + 0.1F;

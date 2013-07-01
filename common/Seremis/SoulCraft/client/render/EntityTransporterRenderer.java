@@ -18,7 +18,7 @@ public class EntityTransporterRenderer extends Render {
         GL11.glPushMatrix();
         GL11.glTranslatef((float)x - 0.5f, (float)y, (float)z - 0.5f);
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(Localizations.LOC_MODEL_TEXTURES + Localizations.ENTITY_TRANSPORTER);
-        model.render(0);
+//        model.render();
         GL11.glPopMatrix();
     }
 

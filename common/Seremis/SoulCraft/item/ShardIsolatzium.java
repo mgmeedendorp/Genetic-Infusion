@@ -1,4 +1,4 @@
-package Seremis.SoulCraft.items;
+package Seremis.SoulCraft.item;
 
 import java.util.List;
 

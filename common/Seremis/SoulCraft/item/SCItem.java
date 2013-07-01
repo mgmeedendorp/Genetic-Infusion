@@ -1,4 +1,4 @@
-package Seremis.SoulCraft.items;
+package Seremis.SoulCraft.item;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.Item;

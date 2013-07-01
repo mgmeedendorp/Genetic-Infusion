@@ -22,7 +22,7 @@ import Seremis.SoulCraft.mod_SoulCraft;
 import Seremis.SoulCraft.core.lib.DefaultProps;
 import Seremis.SoulCraft.core.lib.RenderIds;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
-import Seremis.SoulCraft.items.ModItems;
+import Seremis.SoulCraft.item.ModItems;
 import Seremis.SoulCraft.tileentity.TileCompressor;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

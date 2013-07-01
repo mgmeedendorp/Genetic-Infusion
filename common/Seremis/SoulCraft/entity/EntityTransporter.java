@@ -6,37 +6,57 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import Seremis.SoulCraft.core.lib.Localizations;
-import Seremis.SoulCraft.core.proxy.CommonProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityTransporter extends Entity implements IInventory {
 
+    protected double yaw;
+    protected double pitch;
+    @SideOnly(Side.CLIENT)
+    protected double velocityX;
+    @SideOnly(Side.CLIENT)
+    protected double velocityY;
+    @SideOnly(Side.CLIENT)
+    protected double velocityZ;
+    
     public boolean isOpen = true;
+    public int openPhase = 0;
     public ItemStack[] inv = new ItemStack[4];
     
     public EntityTransporter(World par1World) {
         super(par1World);
+        setSize(1.5F, 0.6F);
+        isImmuneToFire = true;
     }
     
     public EntityTransporter(World world, double x, double y, double z) {
-        this(world);
-        setPosition(x, y + 0.5, z);
-        System.out.println("transporter spawned at: " + x + " " + y + " "+ z);
-    }
-
-    @Override
-    protected void entityInit() {
-        
+        super(world);
+        setPosition(x, y+0.5F, z);
+        motionX = 0.0D;
+        motionY = 1.0D;
+        motionZ = 0.0D;
     }
     
     @Override
-    public boolean attackEntityFrom(DamageSource source, int i) {
-        this.kill();
-        return false;
+    protected void entityInit() {
+
+    }
+    
+    @Override
+    public AxisAlignedBB getCollisionBox(Entity entity)
+    {
+        return entity.boundingBox;
+    }
+    
+    @Override
+    public AxisAlignedBB getBoundingBox()
+    {
+        return boundingBox;
     }
     
     @Override
@@ -57,18 +77,16 @@ public class EntityTransporter extends Entity implements IInventory {
     
     @Override
     public boolean interact(EntityPlayer player) {
-        if(CommonProxy.proxy.isServerWorld(worldObj)) {
-            if(isOpen) {
-                for(int i = 0; i < inv.length; i++) {
-                    if(inv[i] == null || inv[i].stackSize == 0) {
-                        isOpen = false;
-                        return true;
-                    }
+        if(isOpen) {
+            for(int i = 0; i < inv.length; i++) {
+                if(inv[i] == null || inv[i].stackSize == 0) {
+                    isOpen = false;
+                    return true;
                 }
-            } else {
-                isOpen = true;
-                return true;
             }
+        } else {
+            isOpen = true;
+            return true;
         }
         return false;
     }
@@ -77,9 +95,15 @@ public class EntityTransporter extends Entity implements IInventory {
     public void onUpdate() {
         extinguish();
     }
+    
+    @Override
+    public boolean attackEntityFrom(DamageSource source, int i) {
+        this.kill();
+        return true;
+    }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound compound) {
+    public void readEntityFromNBT(NBTTagCompound compound) {
         isOpen = compound.getBoolean("isOpen");
         
         NBTTagList var2 = compound.getTagList("Items");
@@ -96,7 +120,7 @@ public class EntityTransporter extends Entity implements IInventory {
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound compound) {
+    public void writeEntityToNBT(NBTTagCompound compound) {
         compound.setBoolean("isOpen", isOpen);
         
         NBTTagList var2 = new NBTTagList();

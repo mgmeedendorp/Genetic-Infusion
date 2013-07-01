@@ -9,15 +9,17 @@ import Seremis.SoulCraft.client.render.BlockCrystalStandRenderer;
 import Seremis.SoulCraft.client.render.BlockMonsterEggRenderer;
 import Seremis.SoulCraft.client.render.EntityTransporterRenderer;
 import Seremis.SoulCraft.client.render.FXBeam;
-import Seremis.SoulCraft.client.render.TileCompressorRenderer;
-import Seremis.SoulCraft.client.render.TileCrystalRenderer;
-import Seremis.SoulCraft.client.render.TileCrystalStandRenderer;
+import Seremis.SoulCraft.client.render.RenderTileCompressor;
+import Seremis.SoulCraft.client.render.RenderTileCrystal;
+import Seremis.SoulCraft.client.render.RenderTileCrystalStand;
+import Seremis.SoulCraft.client.render.RenderTileTransporter;
 import Seremis.SoulCraft.core.lib.RenderIds;
 import Seremis.SoulCraft.entity.EntityTransporter;
 import Seremis.SoulCraft.handler.RenderTickHandler;
 import Seremis.SoulCraft.tileentity.TileCompressor;
 import Seremis.SoulCraft.tileentity.TileCrystalStand;
 import Seremis.SoulCraft.tileentity.TileIsolatziumCrystal;
+import Seremis.SoulCraft.tileentity.TileTransporter;
 import Seremis.core.geometry.Coordinate3D;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -36,9 +38,10 @@ public class ClientProxy extends CommonProxy
 		
 		RenderingRegistry.registerEntityRenderingHandler(EntityTransporter.class, new EntityTransporterRenderer());
 		
-		ClientRegistry.bindTileEntitySpecialRenderer(TileCompressor.class, new TileCompressorRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileIsolatziumCrystal.class, new TileCrystalRenderer());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileCrystalStand.class, new TileCrystalStandRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileCompressor.class, new RenderTileCompressor());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileIsolatziumCrystal.class, new RenderTileCrystal());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileCrystalStand.class, new RenderTileCrystalStand());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileTransporter.class, new RenderTileTransporter());
 	}
 	
 	@Override

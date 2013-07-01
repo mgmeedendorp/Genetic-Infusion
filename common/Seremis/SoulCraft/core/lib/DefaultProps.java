@@ -17,6 +17,7 @@ public class DefaultProps {
 	public static int CompressorID;
 	public static int IsolatziumCrystalID;
 	public static int CrystalStandID;
+    public static int TransporterID;
 	public static int MonsterEggID;
 	
 	public static int TitaniumIngotID;

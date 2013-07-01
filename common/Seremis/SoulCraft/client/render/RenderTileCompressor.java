@@ -16,13 +16,13 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileCompressorRenderer extends TileEntitySpecialRenderer {
+public class RenderTileCompressor extends TileEntitySpecialRenderer {
 
 	private RenderItem renderItems;
 	private Minecraft    mc;
 	public boolean renderItemShrink = false;
 	
-	public TileCompressorRenderer() {
+	public RenderTileCompressor() {
 		mc = FMLClientHandler.instance().getClient();
 		new RenderBlocks();
 	    renderItems = new RenderItem();

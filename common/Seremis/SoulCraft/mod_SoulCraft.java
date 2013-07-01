@@ -15,7 +15,7 @@ import Seremis.SoulCraft.handler.EventHandler;
 import Seremis.SoulCraft.handler.GuiHandler;
 import Seremis.SoulCraft.helper.RecipeHelper;
 import Seremis.SoulCraft.helper.SCLogger;
-import Seremis.SoulCraft.items.ModItems;
+import Seremis.SoulCraft.item.ModItems;
 import Seremis.SoulCraft.network.PacketHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;

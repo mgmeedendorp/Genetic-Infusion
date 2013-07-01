@@ -3,7 +3,7 @@ package Seremis.SoulCraft.helper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import Seremis.SoulCraft.block.ModBlocks;
-import Seremis.SoulCraft.items.ModItems;
+import Seremis.SoulCraft.item.ModItems;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class RecipeHelper {
