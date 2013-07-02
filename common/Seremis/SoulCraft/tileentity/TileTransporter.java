@@ -1,5 +1,6 @@
 package Seremis.SoulCraft.tileentity;
 
+import Seremis.SoulCraft.item.ModItems;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -13,12 +14,12 @@ import net.minecraftforge.common.ForgeDirection;
 
 public class TileTransporter extends SCTileEntity implements IInventory, ISidedInventory {
 
-    private ItemStack[] inv = new ItemStack[9];
+    private ItemStack[] inv = new ItemStack[12];
     
     private boolean hasEngine;
     private boolean hasInventory;
     private float speed = 1.0F;
-    public ForgeDirection direction = ForgeDirection.NORTH;
+    public ForgeDirection direction = ForgeDirection.WEST;
     
     public TileTransporter() {
         this(false, false);
@@ -34,11 +35,37 @@ public class TileTransporter extends SCTileEntity implements IInventory, ISidedI
     
     public void setHasInventory(boolean inventory) {
         this.hasInventory = inventory;
+        if(inventory) {
+            for(int i = 0; i<3; i++) {
+                if(getStackInSlot(i) == null) {
+                    setInventorySlotContents(i, new ItemStack(ModItems.transporterStorage, 1));
+                }
+            }
+        } else {
+            for(int i = 0; i<3; i++) {
+                if(getStackInSlot(i).itemID == ModItems.transporterStorage.itemID) {
+                    setInventorySlotContents(i, null);
+                }
+            }
+        }
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
     
     public void setHasEngine(boolean engine) {
         this.hasEngine = engine;
+        if(engine) {
+            for(int i = 0; i<3; i++) {
+                if(getStackInSlot(i) == null) {
+                    setInventorySlotContents(i, new ItemStack(ModItems.transporterEngines, 1));
+                }
+            }
+        } else {
+            for(int i = 0; i<3; i++) {
+                if(getStackInSlot(i).itemID == ModItems.transporterEngines.itemID) {
+                    setInventorySlotContents(i, null);
+                }
+            }
+        }
         if(hasEngine) {
             speed = 5.0F;
         }
@@ -47,6 +74,10 @@ public class TileTransporter extends SCTileEntity implements IInventory, ISidedI
     
     public float getSpeed() {
         return speed;
+    }
+    
+    public void setSpeed(float speed) {
+        this.speed = speed;
     }
     
     public boolean hasEngine() {

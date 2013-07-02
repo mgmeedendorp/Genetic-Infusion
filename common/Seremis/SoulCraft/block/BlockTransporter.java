@@ -1,5 +1,7 @@
 package Seremis.SoulCraft.block;
 
+import java.util.Random;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
@@ -8,6 +10,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
+import Seremis.SoulCraft.mod_SoulCraft;
+import Seremis.SoulCraft.core.lib.DefaultProps;
+import Seremis.SoulCraft.core.lib.GuiIds;
 import Seremis.SoulCraft.core.lib.RenderIds;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
 import Seremis.SoulCraft.item.ModItems;
@@ -24,6 +30,53 @@ public class BlockTransporter extends SCBlock {
     
     @Override
     public void registerIcons(IconRegister iconRegister) {}
+    
+    @Override
+    public void randomDisplayTick(World world, int x, int y, int z, Random random) {
+        double xx = x+0.5+random.nextFloat()/10;
+        double yy = y+0.7+random.nextFloat()/10;
+        double zz = z+0.5+random.nextFloat()/10;
+        
+        TileTransporter tile = (TileTransporter)world.getBlockTileEntity(x, y, z);
+        ForgeDirection direction = tile.direction;
+        
+        float offsetX = 0.0F;
+        float offsetZ = 0.0F;
+        float offsetX2 = 0.0F;
+        float offsetZ2 = 0.0F;
+        double velocityX = 0.0D;
+        double velocityZ = 0.0D;
+        switch(direction.ordinal()) {
+            case 2: offsetX = -0.30F;
+                    offsetZ = 0.40F;
+                    offsetX2 = 0.25F;
+                    offsetZ2 = 0.30F;
+                    velocityZ = 0.05D*random.nextDouble();
+                    break;
+            case 3: offsetX = 0.23F;
+                    offsetZ = -0.40F;
+                    offsetX2 = -0.30F;
+                    offsetZ2 = -0.40F;
+                    velocityZ = -0.05D*random.nextDouble();
+                    break;
+            case 4: offsetX = 0.30F;
+                    offsetZ = 0.30F;
+                    offsetX2 = 0.30F;
+                    offsetZ2 = -0.40F;
+                    velocityX = 0.05D*random.nextDouble();
+                    break;
+            case 5: offsetX = -0.45F;
+                    offsetZ = -0.30F;
+                    offsetX2 = -0.45F;
+                    offsetZ2 = 0.25F;
+                    velocityX = -0.05D*random.nextDouble();
+                    break;
+        }
+        world.spawnParticle("smoke", xx + offsetX2, yy, zz + offsetZ2, velocityX, 0.0D, velocityZ);
+        world.spawnParticle("smoke", xx + offsetX, yy, zz + offsetZ, velocityX, 0.0D, velocityZ);
+        world.spawnParticle("flame", xx + offsetX2, yy, zz + offsetZ2, velocityX, 0.0D, velocityZ);
+        world.spawnParticle("flame", xx + offsetX, yy, zz + offsetZ, velocityX, 0.0D, velocityZ);
+    }
     
     @Override
     public boolean isOpaqueCube() {
@@ -53,6 +106,7 @@ public class BlockTransporter extends SCBlock {
                 return true;
             }
             tile.setHasEngine(true);
+            playerItem.stackSize--;
         }
         if(tile != null && playerItem != null && playerItem.itemID == ModItems.transporterStorage.itemID) {
             if(CommonProxy.proxy.isRenderWorld(world)){return false;}
@@ -61,6 +115,10 @@ public class BlockTransporter extends SCBlock {
                 return true;
             }
             tile.setHasInventory(true);
+            playerItem.stackSize--;
+        }
+        if(tile != null && playerItem == null) {
+            player.openGui(mod_SoulCraft.instance, GuiIds.GUI_TRANSPORTER_ID, world, x, y, z);
         }
         return true;
     }

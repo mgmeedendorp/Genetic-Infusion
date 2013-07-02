@@ -17,7 +17,6 @@ public class ModelTransporter extends ModelBase {
         
         base = new ModelRenderer(this);
         base.addBox(-6.0F, 0.0F, -3.0F, 12, 1, 6);
-        base.setTextureSize(textureWidth, textureHeight);
         base.setRotationPoint(8.0F, 8.0F, 8.0F);
         side1 = new ModelRenderer(this);
         side1.addBox(-6.0F, 1.0F, -3.0F, 12, 4, 1);

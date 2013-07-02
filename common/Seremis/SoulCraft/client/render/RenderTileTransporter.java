@@ -2,7 +2,6 @@ package Seremis.SoulCraft.client.render;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
@@ -24,10 +23,10 @@ public class RenderTileTransporter extends TileEntitySpecialRenderer {
         GL11.glPushMatrix();
         GL11.glTranslatef((float)x, (float)y, (float)z);
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(Localizations.LOC_MODEL_TEXTURES + Localizations.ENTITY_TRANSPORTER);
-        model.render(ForgeDirection.EAST);
+        model.render(transporter.direction);
         if(transporter.hasEngine()) {
             FMLClientHandler.instance().getClient().renderEngine.bindTexture(Localizations.LOC_MODEL_TEXTURES + Localizations.ENTITY_TRANSPORTER_ENGINE);
-            engine.render(ForgeDirection.EAST);
+            engine.render(transporter.direction);
         }
         GL11.glPopMatrix();
     }

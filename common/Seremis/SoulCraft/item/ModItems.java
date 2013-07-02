@@ -1,5 +1,8 @@
 package Seremis.SoulCraft.item;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import Seremis.SoulCraft.core.lib.DefaultProps;
@@ -7,6 +10,8 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class ModItems {
 
+    public static List<SCItem> transporterUpgrades = new ArrayList<SCItem>();
+    
 	public static SCItem ingotTitanium;
 	public static SCItem shardIsolatzium;
 	public static SCItem plateTitanium;
@@ -34,6 +39,9 @@ public class ModItems {
 		LanguageRegistry.addName(new ItemStack(alloyIsolatzium, 1, 3), "Black Isolatzium Alloy");
 		LanguageRegistry.addName(transporterEngines, "Engine Module");
 		LanguageRegistry.addName(transporterStorage, "Storage Module");
+		
+		transporterUpgrades.add(transporterEngines);
+		transporterUpgrades.add(transporterStorage);
 		
 		oreDictionary();
 	}
