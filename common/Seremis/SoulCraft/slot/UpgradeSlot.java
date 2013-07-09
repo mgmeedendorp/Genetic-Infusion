@@ -2,8 +2,7 @@ package Seremis.SoulCraft.slot;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import Seremis.SoulCraft.item.ModItems;
-import Seremis.SoulCraft.item.SCItem;
+import Seremis.SoulCraft.item.ItemTransporterModules;
 
 public class UpgradeSlot extends SCSlot {
 
@@ -13,10 +12,11 @@ public class UpgradeSlot extends SCSlot {
     
     @Override
     public boolean isItemValid(ItemStack stack) {
-        for(SCItem item : ModItems.transporterUpgrades) {
-            if(stack.itemID == item.itemID) {
-                return true;
-            }
+        if(stack.itemID == ItemTransporterModules.engine().itemID && stack.getItemDamage() == ItemTransporterModules.engine().getItemDamage()) {
+            return true;
+        }
+        if(stack.itemID == ItemTransporterModules.storage().itemID && stack.getItemDamage() == ItemTransporterModules.storage().getItemDamage()) {
+            return true;
         }
         return false;
     }

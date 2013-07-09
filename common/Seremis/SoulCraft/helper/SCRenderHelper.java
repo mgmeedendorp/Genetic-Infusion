@@ -7,6 +7,8 @@ import net.minecraft.util.Icon;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.client.FMLClientHandler;
+
 public class SCRenderHelper {
 	
 	public static void renderAllFaces(Block block, RenderBlocks renderer, Icon tex) {
@@ -46,5 +48,9 @@ public class SCRenderHelper {
     			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
     		}catch(Exception ex){ex.printStackTrace();}	
     	}
+	}
+	
+	public static void bindTexture(String tex) {
+	    FMLClientHandler.instance().getClient().renderEngine.bindTexture(tex);
 	}
 }

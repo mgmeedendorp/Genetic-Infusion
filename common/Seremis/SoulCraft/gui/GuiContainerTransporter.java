@@ -6,29 +6,18 @@ import net.minecraft.inventory.IInventory;
 import org.lwjgl.opengl.GL11;
 
 import Seremis.SoulCraft.core.lib.Localizations;
-import Seremis.SoulCraft.inventory.container.ContainerTransporter;
+import Seremis.SoulCraft.inventory.ContainerTransporter;
 
 public class GuiContainerTransporter extends SCGui {
     
     public GuiContainerTransporter(InventoryPlayer playerInv, IInventory tile) {
         super(new ContainerTransporter(playerInv.player, tile));
     }
-    
-    @Override
-    public void initGui() {
-        super.initGui();
-    }
-    
-    @Override
-    public void updateScreen() {
-        super.updateScreen();
-        
-    }
-    
+
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) {
         super.drawGuiContainerForegroundLayer(x, y);
-        fontRenderer.drawString("Plasmatic Transporter", 58, 5, 4210752);
+        fontRenderer.drawString("Plasmatic Transporter", this.xSize/2-50, 5, 4210752);
     }
 
     @Override

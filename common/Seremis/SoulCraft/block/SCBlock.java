@@ -30,9 +30,9 @@ public class SCBlock extends BlockContainer {
         } else if(metadata < 0) {
             blockIcon = null;
         } else {
-            iconBuffer = new Icon[metadata+1];
-            for(int x = 1; x<metadata+1; x++) {
-                iconBuffer[x] = iconRegister.registerIcon(DefaultProps.ID+":" + this.getUnlocalizedName().substring(5)+x);
+            iconBuffer = new Icon[metadata];
+            for(int x = 0; x<iconBuffer.length; x++) {
+                iconBuffer[x] = iconRegister.registerIcon(DefaultProps.ID+":" + this.getUnlocalizedName().substring(5)+(x+1));
             }
         }
     }
@@ -41,9 +41,13 @@ public class SCBlock extends BlockContainer {
     public Icon getIcon(int side, int metadata) {
         if(this.metadata > 0)
         {
-            blockIcon = iconBuffer[metadata+1];
+            blockIcon = iconBuffer[metadata];
         }
         return this.blockIcon;
+    }
+    
+    public int getNumbersOfMetadata() {
+        return metadata;
     }
     
     public void setNumbersofMetadata(int metadata) {

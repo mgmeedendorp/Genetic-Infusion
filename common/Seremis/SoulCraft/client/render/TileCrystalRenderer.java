@@ -11,11 +11,11 @@ import Seremis.SoulCraft.client.model.ModelCrystal;
 import Seremis.SoulCraft.core.lib.Localizations;
 import Seremis.SoulCraft.tileentity.TileIsolatziumCrystal;
 
-public class RenderTileCrystal extends TileEntitySpecialRenderer {
+public class TileCrystalRenderer extends TileEntitySpecialRenderer {
 
 	private ModelCrystal model;
 	
-	public RenderTileCrystal() {
+	public TileCrystalRenderer() {
 		model = new ModelCrystal();
 	}
 	

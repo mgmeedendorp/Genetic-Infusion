@@ -21,6 +21,7 @@ public class ModBlocks {
 	public static BlockCrystal crystal;
 	public static BlockCrystalStand crystalStand;
 	public static BlockTransporter transporter;
+	public static BlockBushBerry bushBerry;
 	public static BlockMonsterEgg monsterEgg;
 	
 	public static SCWorldGenerator worldGen;
@@ -32,6 +33,7 @@ public class ModBlocks {
 		crystal = new BlockCrystal(DefaultProps.IsolatziumCrystalID, Material.coral);
 		crystalStand = new BlockCrystalStand(DefaultProps.CrystalStandID, Material.wood);
 		transporter = new BlockTransporter(DefaultProps.TransporterID, Material.iron);
+		bushBerry = new BlockBushBerry(DefaultProps.BerryBushID, Material.plants);
 		monsterEgg = new BlockMonsterEgg(DefaultProps.MonsterEggID, Material.dragonEgg);
 		
 		GameRegistry.registerBlock(oreTitanium, "Titanium Ore");
@@ -40,6 +42,7 @@ public class ModBlocks {
 		GameRegistry.registerBlock(crystal, "Isolazium Crystal");
 		GameRegistry.registerBlock(crystalStand, "Crystal Stand");
 		GameRegistry.registerBlock(transporter, "Plasma Transporter");
+	//	GameRegistry.registerBlock(bushBerry, "Berry Bush");
 		GameRegistry.registerBlock(monsterEgg, "Monster Egg");
 		
 		LanguageRegistry.addName(oreTitanium, "Titanium Ore");
@@ -51,6 +54,7 @@ public class ModBlocks {
 		LanguageRegistry.addName(crystal, "Isolatzium Crystal");
 		LanguageRegistry.addName(crystalStand, "Isolatzium Crystal Stand");
 		LanguageRegistry.addName(transporter, "Plasmatic Transporter");
+		LanguageRegistry.addName(bushBerry, "Berry Bush");
 		LanguageRegistry.addName(monsterEgg, "Monster Egg");
 
 		worldGen = new SCWorldGenerator();
@@ -60,8 +64,12 @@ public class ModBlocks {
 	}
 	
 	public static void oreDictionary() {
-		OreDictionary.registerOre("oreTitanium", ModBlocks.oreTitanium);
-		OreDictionary.registerOre("oreIsolatzium", ModBlocks.oreIsolatzium);
+		OreDictionary.registerOre("oreTitanium", oreTitanium);
+        OreDictionary.registerOre("oreIsolatziumRed", new ItemStack(oreIsolatzium, 1, 0));
+        OreDictionary.registerOre("oreIsolatziumGreen", new ItemStack(oreIsolatzium, 1, 1));
+        OreDictionary.registerOre("oreIsolatziumBlue", new ItemStack(oreIsolatzium, 1, 2));
+        OreDictionary.registerOre("oreIsolatziumBlack", new ItemStack(oreIsolatzium, 1, 3));
+		OreDictionary.registerOre("berryBush", bushBerry);
 	}
 	
 	public static void tileEntity() {

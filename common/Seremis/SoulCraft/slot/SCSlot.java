@@ -20,7 +20,7 @@ public class SCSlot extends Slot {
     
     @Override
     public int getSlotStackLimit() {
-        ItemStack itemStack = tile.getStackInSlot(slotNumber);
+        ItemStack itemStack = tile.getStackInSlot(this.slotNumber);
 
         if (itemStack != null) {
             return itemStack.getMaxStackSize();

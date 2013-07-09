@@ -18,9 +18,28 @@ public class UtilBlock {
             return;
         }
         IInventory inventory = (IInventory) tileEntity;
+        for(int i=0; i<inventory.getSizeInventory(); i++) {
+            dropItemsFromTile(world, x, y, z, i);
+        }
+    }
+    
+    /**
+     * Drop all items in the specified slot from the TileEntity.
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @param slot
+     */
+    public static void dropItemsFromTile(World world, int x, int y, int z, int slot) {
 
-        for (int i = 0; i < inventory.getSizeInventory(); i++) {
-            ItemStack item = inventory.getStackInSlot(i);
+        TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+        if (!(tileEntity instanceof IInventory)) {
+            return;
+        }
+        IInventory inventory = (IInventory) tileEntity;
+
+            ItemStack item = inventory.getStackInSlot(slot);
             Random rand = new Random();
 
             if (item != null && item.stackSize > 0) {
@@ -41,6 +60,5 @@ public class UtilBlock {
                 world.spawnEntityInWorld(entityItem);
                 item.stackSize = 0;
             }
-        }
     }
 }

@@ -7,12 +7,13 @@ import Seremis.SoulCraft.client.render.BlockCompressorRenderer;
 import Seremis.SoulCraft.client.render.BlockCrystalRenderer;
 import Seremis.SoulCraft.client.render.BlockCrystalStandRenderer;
 import Seremis.SoulCraft.client.render.BlockMonsterEggRenderer;
+import Seremis.SoulCraft.client.render.BlockTransporterRenderer;
 import Seremis.SoulCraft.client.render.EntityTransporterRenderer;
 import Seremis.SoulCraft.client.render.FXBeam;
-import Seremis.SoulCraft.client.render.RenderTileCompressor;
-import Seremis.SoulCraft.client.render.RenderTileCrystal;
-import Seremis.SoulCraft.client.render.RenderTileCrystalStand;
-import Seremis.SoulCraft.client.render.RenderTileTransporter;
+import Seremis.SoulCraft.client.render.TileCompressorRenderer;
+import Seremis.SoulCraft.client.render.TileCrystalRenderer;
+import Seremis.SoulCraft.client.render.TileCrystalStandRenderer;
+import Seremis.SoulCraft.client.render.TileTransporterRenderer;
 import Seremis.SoulCraft.core.lib.RenderIds;
 import Seremis.SoulCraft.entity.EntityTransporter;
 import Seremis.SoulCraft.handler.RenderTickHandler;
@@ -35,13 +36,14 @@ public class ClientProxy extends CommonProxy
 		RenderingRegistry.registerBlockHandler(RenderIds.CompressorRenderID, new BlockCompressorRenderer());
 		RenderingRegistry.registerBlockHandler(RenderIds.IsolatziumCrystalRenderID, new BlockCrystalRenderer());
 		RenderingRegistry.registerBlockHandler(RenderIds.CrystalStandRenderID, new BlockCrystalStandRenderer());
+		RenderingRegistry.registerBlockHandler(RenderIds.TransporterRenderID, new BlockTransporterRenderer());
 		
 		RenderingRegistry.registerEntityRenderingHandler(EntityTransporter.class, new EntityTransporterRenderer());
 		
-		ClientRegistry.bindTileEntitySpecialRenderer(TileCompressor.class, new RenderTileCompressor());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileIsolatziumCrystal.class, new RenderTileCrystal());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileCrystalStand.class, new RenderTileCrystalStand());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileTransporter.class, new RenderTileTransporter());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileCompressor.class, new TileCompressorRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileIsolatziumCrystal.class, new TileCrystalRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileCrystalStand.class, new TileCrystalStandRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileTransporter.class, new TileTransporterRenderer());
 	}
 	
 	@Override

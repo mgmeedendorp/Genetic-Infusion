@@ -1,10 +1,11 @@
-package Seremis.SoulCraft.inventory.container;
+package Seremis.SoulCraft.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 
 public class SCContainer extends Container {
 
@@ -29,6 +30,6 @@ public class SCContainer extends Container {
     
     @Override
     public boolean canInteractWith(EntityPlayer player) {
-        return tile.isUseableByPlayer(player);
+        return true;
     }
 }

@@ -7,16 +7,16 @@ import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class AlloyIsolatzium extends SCItem {
-    
-    private String[] subNames = {"AlloyIsolatziumRed", "AlloyIsolatziumGreen", "AlloyIsolatziumBlue", "AlloyIsolatziumBlack"};
+public class ItemTransporterModules extends SCItem {
 
-    public AlloyIsolatzium(int ID) {
+    private String[] subNames = {"transporterStorage", "transporterEngine"};
+    
+    public ItemTransporterModules(int ID) {
         super(ID);
         setHasSubtypes(true);
         setMaxDamage(0);
-        setUnlocalizedName("isolatziumAlloy");
-        setNumbersofMetadata(4);
+        setUnlocalizedName("transporterModules");
+        setNumbersofMetadata(2);
     }
     
     @Override
@@ -27,8 +27,16 @@ public class AlloyIsolatzium extends SCItem {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(int par1, CreativeTabs creativetab, List list) {
-        for(int var4 = 0; var4 < 4; ++var4) {
+        for(int var4 = 0; var4 < this.getNumbersofMetadata(); ++var4) {
             list.add(new ItemStack(par1, 1, var4));
         }
+    }
+    
+    public static ItemStack engine() {
+        return new ItemStack(ModItems.transporterModules, 1, 1);
+    }
+    
+    public static ItemStack storage() {
+        return new ItemStack(ModItems.transporterModules, 1, 0);
     }
 }

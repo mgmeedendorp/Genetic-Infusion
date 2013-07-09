@@ -27,9 +27,9 @@ public class SCItem extends Item {
         if(this.metadata == 0) {
              itemIcon = iconRegister.registerIcon(DefaultProps.ID+":"+this.getUnlocalizedName().substring(5));
         } else {
-            iconBuffer = new Icon[metadata+1];
-            for(int x = 1; x<metadata+1; x++) {
-                iconBuffer[x] = iconRegister.registerIcon(DefaultProps.ID+":"+this.getUnlocalizedName().substring(5)+x);
+            iconBuffer = new Icon[metadata];
+            for(int x = 0; x<iconBuffer.length; x++) {
+                iconBuffer[x] = iconRegister.registerIcon(DefaultProps.ID+":"+this.getUnlocalizedName().substring(5)+(x+1));
             }
         }
     }
@@ -39,7 +39,7 @@ public class SCItem extends Item {
     {
         if(this.metadata != 0)
         {
-            itemIcon = iconBuffer[metadata+1];
+            itemIcon = iconBuffer[metadata];
         }
         return this.itemIcon;
     }

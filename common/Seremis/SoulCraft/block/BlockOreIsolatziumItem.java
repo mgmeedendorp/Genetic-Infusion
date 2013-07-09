@@ -10,7 +10,7 @@ public class BlockOreIsolatziumItem extends ItemBlock {
 	public BlockOreIsolatziumItem(int ID) {
 		super(ID);
 		setHasSubtypes(true);
-		setUnlocalizedName("OreSoulCrystalItem");
+		setUnlocalizedName("oreIsolatziumItem");
 	}
 	
 	@Override

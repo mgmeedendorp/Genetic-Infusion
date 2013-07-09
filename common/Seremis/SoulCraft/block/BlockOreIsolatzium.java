@@ -23,7 +23,7 @@ public class BlockOreIsolatzium extends SCBlock {
 	
 	@SideOnly(Side.CLIENT)
     public void getSubBlocks(int blockID, CreativeTabs tab, List subItems)  {
-    	for (int ix = 0; ix < 4; ix++) {
+    	for (int ix = 0; ix < this.getNumbersOfMetadata(); ix++) {
     		subItems.add(new ItemStack(this, 1, ix));
  		}
     }

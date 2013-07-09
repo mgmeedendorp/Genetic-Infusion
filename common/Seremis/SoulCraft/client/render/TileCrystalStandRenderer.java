@@ -13,12 +13,12 @@ import Seremis.SoulCraft.client.model.ModelCrystalStand;
 import Seremis.SoulCraft.core.lib.Localizations;
 import Seremis.SoulCraft.tileentity.TileCrystalStand;
 
-public class RenderTileCrystalStand extends TileEntitySpecialRenderer {
+public class TileCrystalStandRenderer extends TileEntitySpecialRenderer {
 
 	private ModelCrystal crystal;
 	private ModelCrystalStand crystalStand;
 	
-	public RenderTileCrystalStand() {
+	public TileCrystalStandRenderer() {
 		crystal =  new ModelCrystal();
 		crystalStand = new ModelCrystalStand();
 	}

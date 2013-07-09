@@ -18,12 +18,14 @@ public class DefaultProps {
 	public static int IsolatziumCrystalID;
 	public static int CrystalStandID;
     public static int TransporterID;
+    public static int BerryBushID;
 	public static int MonsterEggID;
 	
 	public static int TitaniumIngotID;
 	public static int ShardIsolatziumID;
     public static int TitaniumPlateID;
     public static int IsolatziumAlloyID;
-    public static int TransporterEnginesID;
+    public static int TransporterModulesID;
     public static int TransporterStorageID;
+    public static int BerryID;
 }

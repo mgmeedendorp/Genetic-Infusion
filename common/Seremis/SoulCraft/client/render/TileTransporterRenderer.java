@@ -11,7 +11,7 @@ import Seremis.SoulCraft.core.lib.Localizations;
 import Seremis.SoulCraft.tileentity.TileTransporter;
 import cpw.mods.fml.client.FMLClientHandler;
 
-public class RenderTileTransporter extends TileEntitySpecialRenderer {
+public class TileTransporterRenderer extends TileEntitySpecialRenderer {
 
     ModelTransporter model = new ModelTransporter();
     ModelTransporterEngine engine = new ModelTransporterEngine();

@@ -1,6 +1,5 @@
 package Seremis.SoulCraft.tileentity;
 
-import Seremis.SoulCraft.item.ModItems;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -11,13 +10,15 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraftforge.common.ForgeDirection;
+import Seremis.SoulCraft.item.ItemTransporterModules;
+import Seremis.SoulCraft.item.ModItems;
 
 public class TileTransporter extends SCTileEntity implements IInventory, ISidedInventory {
 
     private ItemStack[] inv = new ItemStack[12];
     
-    private boolean hasEngine;
-    private boolean hasInventory;
+    private boolean hasEngine = false;
+    private boolean hasInventory = false;
     private float speed = 1.0F;
     public ForgeDirection direction = ForgeDirection.WEST;
     
@@ -26,54 +27,40 @@ public class TileTransporter extends SCTileEntity implements IInventory, ISidedI
     }
     
     public TileTransporter(boolean engine, boolean inventory) {
-        hasEngine = engine;
         hasInventory = inventory;
+        hasEngine = engine;
         if(hasEngine) {
             speed = 5.0F;
         }
+        validateModules();
     }
     
     public void setHasInventory(boolean inventory) {
-        this.hasInventory = inventory;
-        if(inventory) {
-            for(int i = 0; i<3; i++) {
-                if(getStackInSlot(i) == null) {
-                    setInventorySlotContents(i, new ItemStack(ModItems.transporterStorage, 1));
-                }
-            }
-        } else {
-            for(int i = 0; i<3; i++) {
-                if(getStackInSlot(i).itemID == ModItems.transporterStorage.itemID) {
-                    setInventorySlotContents(i, null);
-                }
+        for(int i=0; i<3; i++) {
+            if(getStackInSlot(i+9) == null) {
+                setInventorySlotContents(i+9, new ItemStack(ModItems.transporterModules, 1, 0));
+                break;
             }
         }
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        this.hasInventory = inventory;
     }
     
     public void setHasEngine(boolean engine) {
-        this.hasEngine = engine;
-        if(engine) {
-            for(int i = 0; i<3; i++) {
-                if(getStackInSlot(i) == null) {
-                    setInventorySlotContents(i, new ItemStack(ModItems.transporterEngines, 1));
-                }
-            }
-        } else {
-            for(int i = 0; i<3; i++) {
-                if(getStackInSlot(i).itemID == ModItems.transporterEngines.itemID) {
-                    setInventorySlotContents(i, null);
-                }
+        for(int i=0; i<3; i++) {
+            if(getStackInSlot(i+9) == null) {
+                setInventorySlotContents(i+9, new ItemStack(ModItems.transporterModules, 1, 1));
+                break;
             }
         }
-        if(hasEngine) {
+        if(engine) {
             speed = 5.0F;
         }
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        this.hasEngine = engine;
+        worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
     }
     
     public float getSpeed() {
-        return speed;
+        return hasEngine ? 5.0F : 1.0F;
     }
     
     public void setSpeed(float speed) {
@@ -86,6 +73,33 @@ public class TileTransporter extends SCTileEntity implements IInventory, ISidedI
     
     public boolean hasInventory() {
         return hasInventory;
+    }
+    
+    @Override
+    public void onInventoryChanged() {
+        super.onInventoryChanged();
+        validateModules();
+    }
+    
+    public void validateModules() {
+        boolean engine = false;
+        boolean inventory = false;
+        for(int i=0; i<3; i++) {
+            if(getStackInSlot(i+9) != null && getStackInSlot(i+9).itemID == ItemTransporterModules.engine().itemID && getStackInSlot(i+9).getItemDamage() == ItemTransporterModules.engine().getItemDamage()) {
+                engine = true;
+                hasEngine = true;
+            }
+            if(getStackInSlot(i+9) != null && getStackInSlot(i+9).itemID == ItemTransporterModules.storage().itemID && getStackInSlot(i+9).getItemDamage() == ItemTransporterModules.storage().getItemDamage()) {
+                inventory = true;
+                hasInventory = true;
+            }
+        }
+        if(!engine) {
+            hasEngine = false;
+        }
+        if(!inventory) {
+            hasInventory = false;
+        }
     }
     
     @Override
@@ -117,12 +131,12 @@ public class TileTransporter extends SCTileEntity implements IInventory, ISidedI
 
     @Override
     public int getSizeInventory() {
-        return hasInventory ? inv.length : 0;
+        return inv.length;
     }
 
     @Override
     public ItemStack getStackInSlot(int slot) {
-        return hasInventory ? inv[slot] : null;
+        return inv[slot];
     }
 
     @Override
@@ -151,22 +165,20 @@ public class TileTransporter extends SCTileEntity implements IInventory, ISidedI
 
     @Override
     public ItemStack getStackInSlotOnClosing(int slot) {
-        return null;
+        return hasInventory ? null : inv[slot];
     }
 
     @Override
     public void setInventorySlotContents(int slot, ItemStack stack) {
-        if(hasInventory) {
-            inv[slot] = stack;
-            if(stack != null && stack.stackSize > getInventoryStackLimit()) {
-                stack.stackSize = getInventoryStackLimit();
-            }
+        inv[slot] = stack;
+        if(stack != null && stack.stackSize > getInventoryStackLimit()) {
+            stack.stackSize = getInventoryStackLimit();
         }
     }
 
     @Override
     public String getInvName() {
-        return hasInventory ? "plasmaticTransporter" : null;
+        return "plasmaticTransporter";
     }
 
     @Override
@@ -187,34 +199,31 @@ public class TileTransporter extends SCTileEntity implements IInventory, ISidedI
 
     @Override
     public boolean isStackValidForSlot(int slot, ItemStack stack) {
-        return hasInventory ? inv[slot].itemID == stack.itemID : null;
+        return true;
     }
     
     public boolean setInventorySlot(int slot, ItemStack stack) {
-        if(hasInventory) {
-            ItemStack currStack = getStackInSlot(slot);
-            if(currStack == null) {
-                inv[slot] = stack;
-                this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-                return true;
-            }
-            if(currStack.stackSize > getInventoryStackLimit()) {
-                ItemStack tooMuch = new ItemStack(getStackInSlot(slot).itemID, currStack.stackSize-getInventoryStackLimit(), currStack.getItemDamage());
-                this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.xCoord, this.yCoord, this.zCoord, tooMuch));
-                currStack.stackSize = getInventoryStackLimit();
-                this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-                return false;
-            }
-            if(currStack.stackSize < 0) {
-                inv[slot] = null;
-                this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-            }
-            if(currStack.getItem() == stack.getItem() && currStack.getItemDamage() == stack.getItemDamage()) {
-                inv[slot].stackSize += stack.stackSize;
-                this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-                return true;
-            }
+        ItemStack currStack = getStackInSlot(slot);
+        if(currStack == null) {
+            inv[slot] = stack;
+            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            return true;
+        }
+        if(currStack.stackSize > getInventoryStackLimit()) {
+            ItemStack tooMuch = new ItemStack(getStackInSlot(slot).itemID, currStack.stackSize-getInventoryStackLimit(), currStack.getItemDamage());
+            this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.xCoord, this.yCoord, this.zCoord, tooMuch));
+            currStack.stackSize = getInventoryStackLimit();
+            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
             return false;
+        }
+        if(currStack.stackSize < 0) {
+            inv[slot] = null;
+            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+        }
+        if(currStack.getItem() == stack.getItem() && currStack.getItemDamage() == stack.getItemDamage()) {
+            inv[slot].stackSize += stack.stackSize;
+            this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
+            return true;
         }
         return false;
     }
@@ -264,6 +273,13 @@ public class TileTransporter extends SCTileEntity implements IInventory, ISidedI
                 }
             }
             compound.setTag("Items", nbtTagList);
+        }
+    }
+    
+    public void emptyInventory() {
+        inv = new ItemStack[12];
+        if(hasEngine) {
+            inv[10] = new ItemStack(ModItems.transporterModules, 1, 1);
         }
     }
 }

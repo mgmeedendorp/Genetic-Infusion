@@ -6,7 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import Seremis.SoulCraft.core.lib.GuiIds;
 import Seremis.SoulCraft.gui.GuiContainerTransporter;
-import Seremis.SoulCraft.inventory.container.ContainerTransporter;
+import Seremis.SoulCraft.inventory.ContainerTransporter;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 public class GuiHandler implements IGuiHandler {

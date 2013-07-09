@@ -12,10 +12,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Seremis.SoulCraft.mod_SoulCraft;
-import Seremis.SoulCraft.core.lib.DefaultProps;
 import Seremis.SoulCraft.core.lib.GuiIds;
 import Seremis.SoulCraft.core.lib.RenderIds;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
+import Seremis.SoulCraft.item.ItemTransporterModules;
 import Seremis.SoulCraft.item.ModItems;
 import Seremis.SoulCraft.tileentity.TileTransporter;
 import Seremis.SoulCraft.util.UtilBlock;
@@ -33,12 +33,14 @@ public class BlockTransporter extends SCBlock {
     
     @Override
     public void randomDisplayTick(World world, int x, int y, int z, Random random) {
+        TileTransporter tile = (TileTransporter)world.getBlockTileEntity(x, y, z);
+        ForgeDirection direction = tile.direction;
+        if(!tile.hasEngine()) {return;}
         double xx = x+0.5+random.nextFloat()/10;
         double yy = y+0.7+random.nextFloat()/10;
         double zz = z+0.5+random.nextFloat()/10;
         
-        TileTransporter tile = (TileTransporter)world.getBlockTileEntity(x, y, z);
-        ForgeDirection direction = tile.direction;
+
         
         float offsetX = 0.0F;
         float offsetZ = 0.0F;
@@ -99,7 +101,7 @@ public class BlockTransporter extends SCBlock {
         
         TileTransporter tile = (TileTransporter)(world.getBlockTileEntity(x, y, z));
         ItemStack playerItem = player.getCurrentEquippedItem();
-        if(tile != null && playerItem != null && playerItem.itemID == ModItems.transporterEngines.itemID) {
+        if(tile != null && playerItem != null && playerItem.itemID == ModItems.transporterModules.itemID && playerItem.getItemDamage() == ItemTransporterModules.engine().getItemDamage()) {
             if(CommonProxy.proxy.isRenderWorld(world)){return false;}
             if(tile.hasEngine()) {
                 player.sendChatToPlayer("This transporter already has engines");
@@ -108,7 +110,7 @@ public class BlockTransporter extends SCBlock {
             tile.setHasEngine(true);
             playerItem.stackSize--;
         }
-        if(tile != null && playerItem != null && playerItem.itemID == ModItems.transporterStorage.itemID) {
+        if(tile != null && playerItem != null && playerItem.itemID == ModItems.transporterModules.itemID && playerItem.getItemDamage() == ItemTransporterModules.storage().getItemDamage()) {
             if(CommonProxy.proxy.isRenderWorld(world)){return false;}
             if(tile.hasInventory()) {
                 player.sendChatToPlayer("This transporter already has a storage module");
@@ -117,7 +119,7 @@ public class BlockTransporter extends SCBlock {
             tile.setHasInventory(true);
             playerItem.stackSize--;
         }
-        if(tile != null && playerItem == null) {
+        if(tile != null && playerItem == null && tile.hasInventory()) {
             player.openGui(mod_SoulCraft.instance, GuiIds.GUI_TRANSPORTER_ID, world, x, y, z);
         }
         return true;
@@ -145,11 +147,11 @@ public class BlockTransporter extends SCBlock {
         if(CommonProxy.proxy.isRenderWorld(world)){return;}
         TileTransporter tile = (TileTransporter)world.getBlockTileEntity(x, y, z);
         if(tile.hasEngine()) {
-            EntityItem item = new EntityItem(world, x, y, z, new ItemStack(ModItems.transporterEngines, 1));
+            EntityItem item = new EntityItem(world, x, y, z, new ItemStack(ModItems.transporterModules, 1, 1));
             world.spawnEntityInWorld(item);
         }
         if(tile.hasInventory()) {
-            EntityItem item = new EntityItem(world, x, y, z, new ItemStack(ModItems.transporterStorage, 1));
+            EntityItem item = new EntityItem(world, x, y, z, new ItemStack(ModItems.transporterModules, 1, 0));
             world.spawnEntityInWorld(item);
         }
         super.breakBlock(world, x, y, z, par5, par6);
