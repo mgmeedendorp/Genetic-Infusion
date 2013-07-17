@@ -16,7 +16,7 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
 
     public double range;
     private long lastUpdateTick;
-    public long ticksBeforeUpdate = 10;
+    public long ticksBeforeUpdate = 20;
 
     public TileMagnetConnector(double range) {
         this.range = range;
@@ -44,7 +44,7 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
                 for(int y = (int) (-1 * range); y <= range; y++) {
                     for(int z = (int) (-1 * range); z <= range; z++) {
                         TileEntity tile = world.getBlockTileEntity(xCoord + x, yCoord + y, zCoord + z);
-                        if(tile != null && tile instanceof IMagnetConnector && tile != this && !MagnetLinkHelper.instance.doesLinkExist(this, (IMagnetConnector) tile)) {
+                        if(tile != null && tile instanceof IMagnetConnector && tile != this) {
                             MagnetLink link = new MagnetLink(this, (IMagnetConnector) tile);
                             if(MagnetLinkHelper.instance.checkConditions(link)) {
                                 MagnetLinkHelper.instance.addLink(link);
@@ -101,5 +101,10 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
     public Coordinate3D applyBeamRenderOffset(Coordinate3D position, ForgeDirection side) {
         Coordinate3D centerPosition = new Coordinate3D(position.x + 0.5D, position.y + 0.5D, position.z + 0.5D);
         return centerPosition;
+    }
+    
+    @Override
+    public int getHeat() {
+        return 2000;
     }
 }

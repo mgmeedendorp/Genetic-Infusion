@@ -70,8 +70,8 @@ public class ClientProxy extends CommonProxy {
     }
 
     @Override
-    public void renderBeam(World world, Coordinate3D position, Coordinate3D target, float red, float green, float blue, int age) {
-        FMLClientHandler.instance().getClient().effectRenderer.addEffect(new FXBeam(world, position, target, red, green, blue, age));
+    public void renderBeam(World world, Coordinate3D position, Coordinate3D target, int heatAtCoord1, int heatAtCoord2) {
+        FMLClientHandler.instance().getClient().effectRenderer.addEffect(new FXBeam(world, position, target, heatAtCoord1, heatAtCoord2));
     }
 
 }

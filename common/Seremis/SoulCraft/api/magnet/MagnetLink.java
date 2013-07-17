@@ -35,6 +35,6 @@ public class MagnetLink {
         Line3D templine = new Line3D(from, target);
         Coordinate3D finalFrom = connector1.applyBeamRenderOffset(from, templine.getSide(connector1.getTile()));
         Coordinate3D finalTarget = connector2.applyBeamRenderOffset(target, templine.getSide(connector2.getTile()));
-        ClientProxy.proxy.renderBeam(connector1.getTile().worldObj, finalFrom, finalTarget, 0, 200, 0, 20);
+        ClientProxy.proxy.renderBeam(connector1.getTile().worldObj, finalFrom, finalTarget, connector1.getHeat(), connector2.getHeat());
     }
 }

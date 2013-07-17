@@ -37,4 +37,6 @@ public interface IMagnetConnector {
 
     @SideOnly(Side.CLIENT)
     Coordinate3D applyBeamRenderOffset(Coordinate3D position, ForgeDirection side);
+    
+    int getHeat();
 }

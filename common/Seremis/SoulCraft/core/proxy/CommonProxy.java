@@ -34,5 +34,5 @@ public class CommonProxy {
         MinecraftForge.EVENT_BUS.register(new EventHandler());
     }
 
-    public void renderBeam(World world, Coordinate3D position, Coordinate3D target, float red, float green, float blue, int age) {}
+    public void renderBeam(World world, Coordinate3D position, Coordinate3D target, int heatAtCoord1, int heatAtCoord2) {}
 }

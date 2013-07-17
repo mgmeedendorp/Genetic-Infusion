@@ -35,6 +35,7 @@ public class BlockMagnetConnector extends BlockContainer {
         if(tile != null && tile instanceof TileMagnetConnector) {
             ((TileMagnetConnector) tile).invalidate();
         }
+        super.breakBlock(world, x, y, z, par5, par6);
     }
 
     @Override
