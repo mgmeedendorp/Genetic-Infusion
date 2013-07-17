@@ -15,7 +15,7 @@ public class GuiHandler implements IGuiHandler {
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity tile = world.getBlockTileEntity(x, y, z);
         if(ID == GuiIds.GUI_TRANSPORTER_ID) {
-            return new ContainerTransporter(player, (IInventory)tile);
+            return new ContainerTransporter(player, (IInventory) tile);
         }
         return null;
     }
@@ -24,7 +24,7 @@ public class GuiHandler implements IGuiHandler {
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity tile = world.getBlockTileEntity(x, y, z);
         if(ID == GuiIds.GUI_TRANSPORTER_ID) {
-            return new GuiContainerTransporter(player.inventory, (IInventory)tile);
+            return new GuiContainerTransporter(player.inventory, (IInventory) tile);
         }
         return null;
     }

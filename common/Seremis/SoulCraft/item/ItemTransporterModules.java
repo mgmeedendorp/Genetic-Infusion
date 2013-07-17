@@ -9,8 +9,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemTransporterModules extends SCItem {
 
-    private String[] subNames = {"transporterStorage", "transporterEngine"};
-    
+    private String[] subNames = { "transporterStorage", "transporterEngine" };
+
     public ItemTransporterModules(int ID) {
         super(ID);
         setHasSubtypes(true);
@@ -18,7 +18,7 @@ public class ItemTransporterModules extends SCItem {
         setUnlocalizedName("transporterModules");
         setNumbersofMetadata(2);
     }
-    
+
     @Override
     public String getUnlocalizedName(ItemStack itemstack) {
         return getUnlocalizedName() + "." + subNames[itemstack.getItemDamage()];
@@ -31,11 +31,11 @@ public class ItemTransporterModules extends SCItem {
             list.add(new ItemStack(par1, 1, var4));
         }
     }
-    
+
     public static ItemStack engine() {
         return new ItemStack(ModItems.transporterModules, 1, 1);
     }
-    
+
     public static ItemStack storage() {
         return new ItemStack(ModItems.transporterModules, 1, 0);
     }

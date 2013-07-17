@@ -8,18 +8,18 @@ public class SCGui extends GuiContainer {
     public SCGui(Container container) {
         super(container);
     }
-    
+
     @Override
     public void initGui() {
         super.initGui();
     }
-    
+
     @Override
     public void updateScreen() {
         super.updateScreen();
-        
+
     }
-    
+
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) {
         super.drawGuiContainerForegroundLayer(x, y);
@@ -27,7 +27,7 @@ public class SCGui extends GuiContainer {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
-        
+
     }
 
 }

@@ -1,19 +1,19 @@
 package Seremis.SoulCraft.tileentity;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraftforge.common.ForgeDirection;
 import Seremis.SoulCraft.api.magnet.tile.TileMagnetConnector;
 import Seremis.SoulCraft.block.ModBlocks;
+import Seremis.SoulCraft.util.UtilTileEntity;
 import Seremis.core.geometry.Coordinate3D;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileCrystalStand extends TileMagnetConnector implements IInventory {
 
@@ -22,17 +22,17 @@ public class TileCrystalStand extends TileMagnetConnector implements IInventory 
     }
 
     public ItemStack[] inv = new ItemStack[1];
-    
+
     @Override
     public boolean connectToSide(ForgeDirection direction) {
         return direction != ForgeDirection.DOWN && inv[0] != null && inv[0].itemID == ModBlocks.crystal.blockID;
     }
-    
+
     @Override
     public boolean canConnect() {
         return inv[0] != null && inv[0].itemID == ModBlocks.crystal.blockID;
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
     public Coordinate3D applyBeamRenderOffset(Coordinate3D position, ForgeDirection side) {
@@ -95,48 +95,28 @@ public class TileCrystalStand extends TileMagnetConnector implements IInventory 
 
     @Override
     public void closeChest() {}
-    
+
     @Override
     public boolean isUseableByPlayer(EntityPlayer player) {
         return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == this && player.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64;
     }
-    
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound) {
-        super.readFromNBT(par1NBTTagCompound);
-        NBTTagList var2 = par1NBTTagCompound.getTagList("Items");
-        this.inv = new ItemStack[this.getSizeInventory()];
 
-        for (int var3 = 0; var3 < var2.tagCount(); ++var3) {
-            NBTTagCompound var4 = (NBTTagCompound)var2.tagAt(var3);
-            int var5 = var4.getByte("Slot") & 255;
-
-            if (var5 >= 0 && var5 < this.inv.length) {
-                this.inv[var5] = ItemStack.loadItemStackFromNBT(var4);
-            }
-        }
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+        inv = UtilTileEntity.readInventoryFromNBT(this, compound);
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
-        NBTTagList var2 = new NBTTagList();
-
-        for (int var3 = 0; var3 < this.inv.length; ++var3) {
-            if (this.inv[var3] != null) {
-                NBTTagCompound var4 = new NBTTagCompound();
-                var4.setByte("Slot", (byte)var3);
-                this.inv[var3].writeToNBT(var4);
-                var2.appendTag(var4);
-            }
-        }
-        par1NBTTagCompound.setTag("Items", var2);
+    public void writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
+        UtilTileEntity.writeInventoryToNBT(this, compound);
     }
-    
+
     @Override
     public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
         readFromNBT(packet.customParam1);
     }
-    
+
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound var1 = new NBTTagCompound();
@@ -150,7 +130,7 @@ public class TileCrystalStand extends TileMagnetConnector implements IInventory 
     }
 
     @Override
-    public boolean isStackValidForSlot(int i, ItemStack itemstack) {
+    public boolean isItemValidForSlot(int i, ItemStack itemstack) {
         return false;
     }
 }

@@ -14,11 +14,11 @@ import Seremis.SoulCraft.api.magnet.tile.TileMagnetConnector;
 public class BlockMagnetConnector extends BlockContainer {
 
     public Random rand = new Random();
-    
+
     public BlockMagnetConnector(int blockId, Material material) {
         super(blockId, material);
     }
-    
+
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
         ItemStack playerItem = player.inventory.getCurrentItem();
@@ -28,12 +28,12 @@ public class BlockMagnetConnector extends BlockContainer {
         world.scheduleBlockUpdate(x, y, z, blockID, this.tickRate(world));
         return true;
     }
-    
+
     @Override
     public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
         TileEntity tile = world.getBlockTileEntity(x, y, z);
         if(tile != null && tile instanceof TileMagnetConnector) {
-            ((TileMagnetConnector)tile).invalidate();
+            ((TileMagnetConnector) tile).invalidate();
         }
     }
 

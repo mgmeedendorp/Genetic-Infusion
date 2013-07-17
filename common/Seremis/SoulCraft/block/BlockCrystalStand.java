@@ -16,41 +16,41 @@ import Seremis.SoulCraft.tileentity.TileCrystalStand;
 import Seremis.SoulCraft.util.UtilBlock;
 
 public class BlockCrystalStand extends BlockMagnetConnector {
-    
-	public BlockCrystalStand(int ID, Material material) {
-		super(ID, material);
-		setUnlocalizedName("crystalStand");
-		setHardness(0.5F);
-		setCreativeTab(mod_SoulCraft.CreativeTab);
-		setBlockBounds(0.25F, 0.0F, 0.25F, 0.8125F, 0.75F, 0.8125F);
-	}
-	
-	@Override
-	public void registerIcons(IconRegister iconRegister) {}
-	
-	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
-	    super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
-	    TileCrystalStand tile = (TileCrystalStand)(world.getBlockTileEntity(x, y, z));
+
+    public BlockCrystalStand(int ID, Material material) {
+        super(ID, material);
+        setUnlocalizedName("crystalStand");
+        setHardness(0.5F);
+        setCreativeTab(mod_SoulCraft.CreativeTab);
+        setBlockBounds(0.25F, 0.0F, 0.25F, 0.8125F, 0.75F, 0.8125F);
+    }
+
+    @Override
+    public void registerIcons(IconRegister iconRegister) {}
+
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
+        super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
+        TileCrystalStand tile = (TileCrystalStand) (world.getBlockTileEntity(x, y, z));
         ItemStack currPlayerItem = player.getCurrentEquippedItem();
         ItemStack currStack = tile.getStackInSlot(0);
-                
+
         if(currPlayerItem != null && tile != null && currStack == null && currPlayerItem.itemID == ModBlocks.crystal.blockID) {
             tile.setInventorySlotContents(0, new ItemStack(ModBlocks.crystal, 1));
             player.getCurrentEquippedItem().stackSize--;
             world.markBlockForRenderUpdate(x, y, z);
-        }  
+        }
         if(tile != null && currStack != null) {
             tile.setInventorySlotContents(0, null);
-            if(CommonProxy.proxy.isServerWorld(world)){
-                if (currStack != null && currStack.stackSize > 0) {
+            if(CommonProxy.proxy.isServerWorld(world)) {
+                if(currStack != null && currStack.stackSize > 0) {
                     float rx = rand.nextFloat() * 0.8F + 0.1F;
                     float ry = rand.nextFloat() * 0.8F + 0.1F;
                     float rz = rand.nextFloat() * 0.8F + 0.1F;
 
                     EntityItem entityItem = new EntityItem(world, x + rx, y + ry, z + rz, new ItemStack(currStack.itemID, currStack.stackSize, currStack.getItemDamage()));
 
-                    if (currStack.hasTagCompound()) {
+                    if(currStack.hasTagCompound()) {
                         entityItem.getEntityItem().setTagCompound((NBTTagCompound) currStack.getTagCompound().copy());
                     }
 
@@ -66,29 +66,29 @@ public class BlockCrystalStand extends BlockMagnetConnector {
         world.markBlockForRenderUpdate(x, y, z);
         return true;
     }
-	
-	public boolean isOpaqueCube() {
-		return false;
-	}
 
-	public boolean renderAsNormalBlock() {
-		return false;
-	}
-	
-	@Override
-	public int getRenderType() {
-		return RenderIds.CrystalStandRenderID;
-	}
-	
-	@Override
-	public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
-	    UtilBlock.dropItemsFromTile(world, x, y, z);
-	    super.breakBlock(world, x, y, z, par5, par6);
-	}
-	
-	@Override
-	public TileEntity createTileEntity(World world, int metadata) {
-		return new TileCrystalStand();
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    @Override
+    public int getRenderType() {
+        return RenderIds.CrystalStandRenderID;
+    }
+
+    @Override
+    public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
+        UtilBlock.dropItemsFromTile(world, x, y, z);
+        super.breakBlock(world, x, y, z, par5, par6);
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, int metadata) {
+        return new TileCrystalStand();
     }
 
 }

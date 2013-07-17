@@ -5,16 +5,16 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraftforge.common.ForgeDirection;
 
 public class ModelTransporter extends ModelBase {
-    
+
     ModelRenderer base;
     ModelRenderer top;
     ModelRenderer side1;
     ModelRenderer side2;
-    
+
     public ModelTransporter() {
         int textureHeight = 256;
         int textureWidth = 256;
-        
+
         base = new ModelRenderer(this);
         base.addBox(-6.0F, 0.0F, -3.0F, 12, 1, 6);
         base.setRotationPoint(8.0F, 8.0F, 8.0F);
@@ -31,19 +31,23 @@ public class ModelTransporter extends ModelBase {
         side2.setTextureSize(textureWidth, textureHeight);
         side2.setRotationPoint(8.0F, 8.0F, 8.0F);
     }
-    
+
     public void render(ForgeDirection direction) {
         float scale = 0.0625F;
-        float rotationY = (float)(Math.PI*1.5);
+        float rotationY = (float) (Math.PI * 1.5);
         switch(direction.ordinal()) {
-            case 2: rotationY = (float)(Math.PI*0.5);
-                    break;
-            case 3: rotationY = (float)(Math.PI*1.5);
-                    break;
-            case 4: rotationY = (float)(Math.PI);
-                    break;
-            case 5: rotationY = (float)(0);
-                    break;
+            case 2:
+                rotationY = (float) (Math.PI * 0.5);
+                break;
+            case 3:
+                rotationY = (float) (Math.PI * 1.5);
+                break;
+            case 4:
+                rotationY = (float) (Math.PI);
+                break;
+            case 5:
+                rotationY = (float) (0);
+                break;
         }
         setRotation(base, 0.0F, rotationY, 0.0F);
         base.render(scale);
@@ -54,7 +58,7 @@ public class ModelTransporter extends ModelBase {
         setRotation(side2, 0.0F, rotationY, 0.0F);
         side2.render(scale);
     }
-    
+
     private void setRotation(ModelRenderer model, float x, float y, float z) {
         model.rotateAngleX = x;
         model.rotateAngleY = y;

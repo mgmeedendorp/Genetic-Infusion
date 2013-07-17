@@ -8,8 +8,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemAlloyIsolatzium extends SCItem {
-    
-    private String[] subNames = {"AlloyIsolatziumRed", "AlloyIsolatziumGreen", "AlloyIsolatziumBlue", "AlloyIsolatziumBlack"};
+
+    private String[] subNames = { "AlloyIsolatziumRed", "AlloyIsolatziumGreen", "AlloyIsolatziumBlue", "AlloyIsolatziumBlack" };
 
     public ItemAlloyIsolatzium(int ID) {
         super(ID);
@@ -18,7 +18,7 @@ public class ItemAlloyIsolatzium extends SCItem {
         setUnlocalizedName("isolatziumAlloy");
         setNumbersofMetadata(4);
     }
-    
+
     @Override
     public String getUnlocalizedName(ItemStack itemstack) {
         return getUnlocalizedName() + "." + subNames[itemstack.getItemDamage()];

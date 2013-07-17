@@ -13,28 +13,28 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockOreIsolatzium extends SCBlock {
 
-	public BlockOreIsolatzium(int ID, Material material) {
-		super(ID, material);
-		setHardness(1.0F);
-		setStepSound(Block.soundStoneFootstep);
-		setUnlocalizedName("oreIsolatzium");
-		setNumbersofMetadata(4);
-	}
-	
-	@SideOnly(Side.CLIENT)
-    public void getSubBlocks(int blockID, CreativeTabs tab, List subItems)  {
-    	for (int ix = 0; ix < this.getNumbersOfMetadata(); ix++) {
-    		subItems.add(new ItemStack(this, 1, ix));
- 		}
+    public BlockOreIsolatzium(int ID, Material material) {
+        super(ID, material);
+        setHardness(1.0F);
+        setStepSound(Block.soundStoneFootstep);
+        setUnlocalizedName("oreIsolatzium");
+        setNumbersofMetadata(4);
     }
-	
-	@Override
-	public int damageDropped (int metadata) {
-		return metadata;
-	}
-	
-	@Override
-	public int idDropped(int par1, Random random, int par2) {
-		return ModItems.shardIsolatzium.itemID;
-	}
+
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(int blockID, CreativeTabs tab, List subItems) {
+        for(int ix = 0; ix < this.getNumbersOfMetadata(); ix++) {
+            subItems.add(new ItemStack(this, 1, ix));
+        }
+    }
+
+    @Override
+    public int damageDropped(int metadata) {
+        return metadata;
+    }
+
+    @Override
+    public int idDropped(int par1, Random random, int par2) {
+        return ModItems.shardIsolatzium.itemID;
+    }
 }

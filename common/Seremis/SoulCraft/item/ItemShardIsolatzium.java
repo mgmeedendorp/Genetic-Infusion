@@ -9,26 +9,26 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemShardIsolatzium extends SCItem {
 
-	private String[] subNames = {"ShardIsolatziumRed", "ShardIsolatziumGreen", "ShardIsolatziumBlue", "ShardIsolatziumBlack"};
-	
-	public ItemShardIsolatzium(int ID) {
-		super(ID);
-		setHasSubtypes(true);
-		setMaxDamage(0);
-		setUnlocalizedName("isolatziumShard");
-		setNumbersofMetadata(4);
-	}
+    private String[] subNames = { "ShardIsolatziumRed", "ShardIsolatziumGreen", "ShardIsolatziumBlue", "ShardIsolatziumBlack" };
 
-	@Override
-	public String getUnlocalizedName(ItemStack itemstack) {
-		return getUnlocalizedName() + "." + subNames[itemstack.getItemDamage()];
-	}
+    public ItemShardIsolatzium(int ID) {
+        super(ID);
+        setHasSubtypes(true);
+        setMaxDamage(0);
+        setUnlocalizedName("isolatziumShard");
+        setNumbersofMetadata(4);
+    }
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(int par1, CreativeTabs creativetab, List list) {
-		for(int var4 = 0; var4 < getNumbersofMetadata(); ++var4) {
-			list.add(new ItemStack(par1, 1, var4));
-		}
-	}
+    @Override
+    public String getUnlocalizedName(ItemStack itemstack) {
+        return getUnlocalizedName() + "." + subNames[itemstack.getItemDamage()];
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubItems(int par1, CreativeTabs creativetab, List list) {
+        for(int var4 = 0; var4 < getNumbersofMetadata(); ++var4) {
+            list.add(new ItemStack(par1, 1, var4));
+        }
+    }
 }

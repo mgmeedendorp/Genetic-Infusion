@@ -2,7 +2,6 @@ package Seremis.SoulCraft.client.render;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.ForgeDirection;
 
@@ -22,14 +21,13 @@ public class BlockTransporterRenderer implements ISimpleBlockRenderingHandler {
         GL11.glPushMatrix();
         ModelTransporter model = new ModelTransporter();
         ModelTransporterEngine engine = new ModelTransporterEngine();
-        GL11.glRotatef((float)Math.PI, 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef((float) Math.PI, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.8F, -0.5F);
         GL11.glScalef(1.5F, 1.5F, 1.5F);
         SCRenderHelper.bindTexture(Localizations.LOC_MODEL_TEXTURES + Localizations.ENTITY_TRANSPORTER);
         model.render(ForgeDirection.EAST);
         SCRenderHelper.bindTexture(Localizations.LOC_MODEL_TEXTURES + Localizations.ENTITY_TRANSPORTER_ENGINE);
         engine.render(ForgeDirection.EAST);
-        
         GL11.glPopMatrix();
     }
 

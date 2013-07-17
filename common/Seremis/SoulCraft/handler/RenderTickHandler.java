@@ -9,24 +9,24 @@ import cpw.mods.fml.common.TickType;
 
 public class RenderTickHandler implements ITickHandler {
 
-	@Override
-	public void tickStart(EnumSet<TickType> type, Object... tickData) {
-		
-	}
+    @Override
+    public void tickStart(EnumSet<TickType> type, Object... tickData) {
 
-	@Override
-	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
-	    MagnetLinkHelper.instance.renderLinks();
-	}
+    }
 
-	@Override
-	public EnumSet<TickType> ticks() {
-		return EnumSet.of(TickType.RENDER);
-	}
+    @Override
+    public void tickEnd(EnumSet<TickType> type, Object... tickData) {
+        MagnetLinkHelper.instance.renderLinks();
+    }
 
-	@Override
-	public String getLabel() {
-		return Strings.nameRenderTickHandler;
-	}
+    @Override
+    public EnumSet<TickType> ticks() {
+        return EnumSet.of(TickType.RENDER);
+    }
+
+    @Override
+    public String getLabel() {
+        return Strings.nameRenderTickHandler;
+    }
 
 }

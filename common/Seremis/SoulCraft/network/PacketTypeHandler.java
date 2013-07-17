@@ -8,18 +8,15 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import Seremis.SoulCraft.core.lib.DefaultProps;
 import Seremis.SoulCraft.network.packet.PacketSC;
 
-public enum PacketTypeHandler 
-{
+public enum PacketTypeHandler {
     ;
     private Class<? extends PacketSC> clazz;
 
-    PacketTypeHandler(Class<? extends PacketSC> clazz) 
-    {
+    PacketTypeHandler(Class<? extends PacketSC> clazz) {
         this.clazz = clazz;
     }
 
-    public static PacketSC buildPacket(byte[] data) 
-    {
+    public static PacketSC buildPacket(byte[] data) {
 
         ByteArrayInputStream bis = new ByteArrayInputStream(data);
         int selector = bis.read();
@@ -27,13 +24,11 @@ public enum PacketTypeHandler
 
         PacketSC packet = null;
 
-        try 
-        {
+        try {
             packet = values()[selector].clazz.newInstance();
         }
 
-        catch (Exception e) 
-        {
+        catch(Exception e) {
             e.printStackTrace(System.err);
         }
 
@@ -41,25 +36,21 @@ public enum PacketTypeHandler
         return packet;
     }
 
-    public static PacketSC buildPacket(PacketTypeHandler type) 
-    {
+    public static PacketSC buildPacket(PacketTypeHandler type) {
         PacketSC packet = null;
 
-        try 
-        {
+        try {
             packet = values()[type.ordinal()].clazz.newInstance();
         }
 
-        catch (Exception e) 
-        {
+        catch(Exception e) {
             e.printStackTrace(System.err);
         }
 
         return packet;
     }
 
-    public static Packet populatePacket(PacketSC packet)
-    {
+    public static Packet populatePacket(PacketSC packet) {
         byte[] data = packet.populate();
 
         Packet250CustomPayload packet250 = new Packet250CustomPayload();

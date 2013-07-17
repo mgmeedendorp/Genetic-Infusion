@@ -5,36 +5,36 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
 public class SCTileEntity extends TileEntity {
-	
-	    private String owner;
 
-	    public String getOwner() {
+    private String owner;
 
-	        return owner;
-	    }
+    public String getOwner() {
 
-	    public void setOwner(String owner) {
+        return owner;
+    }
 
-	        this.owner = owner;
-	    }
+    public void setOwner(String owner) {
 
-	    public boolean isUseableByPlayer(EntityPlayer player) {
+        this.owner = owner;
+    }
 
-	        return owner.equals(player.username);
-	    }
+    public boolean isUseableByPlayer(EntityPlayer player) {
 
-	    public void readFromNBT(NBTTagCompound nbtTagCompound) {
+        return owner.equals(player.username);
+    }
 
-	        super.readFromNBT(nbtTagCompound);
-	        owner = nbtTagCompound.getString("teOwner");
-	    }
+    public void readFromNBT(NBTTagCompound nbtTagCompound) {
 
-	    public void writeToNBT(NBTTagCompound nbtTagCompound) {
+        super.readFromNBT(nbtTagCompound);
+        owner = nbtTagCompound.getString("teOwner");
+    }
 
-	        super.writeToNBT(nbtTagCompound);
-	        if (owner != null && owner != "") {
-	            nbtTagCompound.setString("teOwner", owner);
-	        }
-	    }
+    public void writeToNBT(NBTTagCompound nbtTagCompound) {
+
+        super.writeToNBT(nbtTagCompound);
+        if(owner != null && owner != "") {
+            nbtTagCompound.setString("teOwner", owner);
+        }
+    }
 
 }
