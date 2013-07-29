@@ -19,7 +19,7 @@ public class BlockBushRenderer implements ISimpleBlockRenderingHandler {
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
         GL11.glPushMatrix();
-        GL11.glTranslated(0.5, 1.5F, 0.5);
+        GL11.glTranslated(0.5, 2.0F, 0.5);
         GL11.glRotatef(180F, 1.0F, 0.0F, 1.0F);
         GL11.glScalef(1.5F, 1.5F, 1.5F);
         model5 = new ModelBush5();

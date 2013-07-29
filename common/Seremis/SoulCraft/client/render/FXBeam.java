@@ -1,9 +1,5 @@
 package Seremis.SoulCraft.client.render;
 
-import java.awt.Color;
-import java.awt.LinearGradientPaint;
-import java.awt.geom.Point2D;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
@@ -52,7 +48,7 @@ public class FXBeam extends EntityFX {
         this.prevPosY = posY;
         this.prevPosZ = posZ;
 
-        particleMaxAge = 1;
+        particleMaxAge = 2;
 
         /**
          * Sets the particle age based on distance.
@@ -89,8 +85,9 @@ public class FXBeam extends EntityFX {
             green = 20;
             blue = 1;
         } else {
+            red  = 0;
             blue = 5;
-            green = 20;
+            green = 200;
         }
         
         this.particleRed = red/255;
@@ -98,30 +95,57 @@ public class FXBeam extends EntityFX {
         this.particleBlue = blue/255;
     }
     
-    public void transitRGB(int stage, int steps) {
+    public void transitRGB(int scale, int maxScale) {
         setRGBBasedOnHeat(true);
-        float r1 = particleRed;
-        float g1 = particleGreen;
-        float b1 = particleBlue;
+        
+        float startRed = this.particleRed;
+        float startGreen = this.particleGreen;
+        float startBlue = this.particleBlue;
+        
         setRGBBasedOnHeat(false);
-        float r2 = particleRed;
-        float g2 = particleGreen;
-        float b2 = particleBlue;
         
-        float dRed = r1-r2;
-        float dGreen = g1-g2;
-        float dBlue = b1-b2;
+        float endRed = this.particleRed;
+        float endGreen = this.particleGreen;
+        float endBlue = this.particleBlue;
+
+        float diffrenceRed = Math.abs(startRed - endRed);
+        float diffrenceGreen = Math.abs(startGreen - endGreen);
+        float diffrenceBlue = Math.abs(startBlue - endBlue);
         
-        setRGBBasedOnHeat(true);
-        
-        this.red = particleRed - dRed*stage;
-        this.green = particleGreen - dGreen*stage;
-        this.blue = particleBlue - dBlue*stage;
-        
-        float ratio = (float) stage / (float) steps;
-        this.red = (int) (r2 * ratio + r1 * (1 - ratio));
-        this.green = (int) (g2 * ratio + g1 * (1 - ratio));
-        this.blue = (int) (b2 * ratio + b1 * (1 - ratio));
+        float stepRed = diffrenceRed/maxScale;
+        float stepGreen = diffrenceGreen/maxScale;
+        float stepBlue = diffrenceBlue/maxScale;
+
+        if(startRed>endRed)
+        {
+         float scaledRed = startRed - scale*stepRed;
+            this.red = scaledRed;
+        }
+        else 
+        {
+         float scaledRed = startRed + scale*stepRed;
+            this.red = scaledRed;
+        }
+        if(startGreen>endGreen)
+        {
+         float scaledGreen = startGreen - scale*stepGreen;
+            this.green = scaledGreen;
+        }
+        else 
+        {
+         float scaledGreen = startGreen + scale*stepGreen;
+            this.green = scaledGreen;
+        }
+        if(startBlue>endBlue)
+        {
+         float scaledBlue = startBlue - scale*stepBlue;
+            this.blue = scaledBlue;
+        }
+        else 
+        {
+         float scaledBlue = startBlue + scale*stepBlue;
+            this.blue = scaledBlue;
+        }
     }
 
     @Override
@@ -140,7 +164,7 @@ public class FXBeam extends EntityFX {
         SCRenderHelper.avoidFlickering();
 
         GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(770, 1);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_CURRENT_BIT);
         GL11.glDepthMask(false);
 
         float xx = (float) (this.prevPosX + (this.posX - this.prevPosX) * f - interpPosX);
@@ -162,22 +186,22 @@ public class FXBeam extends EntityFX {
             setRGBBasedOnHeat(true);
             
             //Draw the first color
-//            tessellator.startDrawingQuads();
-//            tessellator.setBrightness(200);
-//            tessellator.setColorRGBA_F(this.particleRed, this.particleGreen, this.particleBlue, opacity);
-//            tessellator.addVertex(-width, 0.0D, 0.0D);
-//            tessellator.addVertex(width, 0.0D, 0.0D);
-//            tessellator.addVertex(width, line.getLength()/2-transitionSpace, 0.0D);     
-//            tessellator.addVertex(-width, line.getLength()/2-transitionSpace, 0.0D);
-//            tessellator.draw();
+            tessellator.startDrawingQuads();
+            tessellator.setBrightness(200);
+            tessellator.setColorRGBA_F(this.particleRed, this.particleGreen, this.particleBlue, opacity);
+            tessellator.addVertex(-width, 0.0D, 0.0D);
+            tessellator.addVertex(width, 0.0D, 0.0D);
+            tessellator.addVertex(width, line.getLength()/2-transitionSpace, 0.0D);     
+            tessellator.addVertex(-width, line.getLength()/2-transitionSpace, 0.0D);
+            tessellator.draw();
             
             //Draw the transition
-            int steps = 200;
+            int steps = 20;
             double translationPieceLength = transitionSpace*2/steps;
             
             for(int i = 0; i<steps; i++) {
                 transitRGB(i, steps);
-                GL11.glColor4d(this.red, this.green, this.blue, 1F);
+                GL11.glColor4d(this.red, this.green, this.blue, opacity);
                 
                 GL11.glBegin(GL11.GL_QUADS);
                 GL11.glVertex2d(width, line.getLength()/2-transitionSpace+i*translationPieceLength);
@@ -190,14 +214,14 @@ public class FXBeam extends EntityFX {
             setRGBBasedOnHeat(false);
             
             //Draw the second color
-//            tessellator.startDrawingQuads();
-//            tessellator.setBrightness(200);
-//            tessellator.setColorRGBA_F(this.particleRed, this.particleGreen, this.particleBlue, opacity);
-//            tessellator.addVertex(-width, line.getLength()/2+transitionSpace, 0.0D);     
-//            tessellator.addVertex(width, line.getLength()/2+transitionSpace, 0.0D);
-//            tessellator.addVertex(width, line.getLength(), 0.0D);
-//            tessellator.addVertex(-width, line.getLength(), 0.0D);
-//            tessellator.draw();
+            tessellator.startDrawingQuads();
+            tessellator.setBrightness(200);
+            tessellator.setColorRGBA_F(this.particleRed, this.particleGreen, this.particleBlue, opacity);
+            tessellator.addVertex(-width, line.getLength()/2+transitionSpace, 0.0D);     
+            tessellator.addVertex(width, line.getLength()/2+transitionSpace, 0.0D);
+            tessellator.addVertex(width, line.getLength(), 0.0D);
+            tessellator.addVertex(-width, line.getLength(), 0.0D);
+            tessellator.draw();
         }
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

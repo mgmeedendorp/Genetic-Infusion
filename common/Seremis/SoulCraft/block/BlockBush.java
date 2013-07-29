@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -19,39 +18,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockBush extends SCBlock {
 
+    public EnumBushType type;
+    
     public BlockBush(int ID, Material material) {
         super(ID, material);
         setUnlocalizedName("berryBush");
         setNumbersofMetadata(7);
         setNeedsIcon(false);
-        setTickRandomly(true);
-    }
-    
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public void registerIcons(IconRegister iconRegister) {}
-
-    @Override
-    public void updateTick(World world, int x, int y, int z, Random random) {
-//        int metadata = world.getBlockMetadata(x, y, z);
-//        if(metadata == 7 || metadata == 15) {
-//            return;
-//        }
-//        if(random.nextInt(20) == 0 && canGrow(world, x, y, z)) {
-//            grow(world, x, y, z);
-//        }
-        System.out.println("tick");
-    }
-
-    public boolean canGrow(World world, int x, int y, int z) {
-        if(world.getBlockLightValue(x, y, z) >= 9)
-            return true;
-        return false;
-    }
-
-    public void grow(World world, int x, int y, int z) {
-        int metadata = world.getBlockMetadata(x, y, z);
-        world.setBlock(x, y, z, blockID, metadata, 2);
     }
 
     @Override
@@ -83,20 +56,22 @@ public class BlockBush extends SCBlock {
 
     @Override
     public int damageDropped(int metadata) {
-        return metadata;
+        return type.getDrops().getItemDamage();
     }
 
     @Override
     public int idDropped(int par1, Random random, int par2) {
-        return ModItems.berry.itemID;
+        return type.getDrops().itemID;
     }
 
     @Override
     public TileEntity createTileEntity(World world, int metadata) {
-        switch(metadata) {
-            case 0 :
-                return new TileBush(EnumBushType.NORMAL);
-        }
-        return new TileBush(EnumBushType.NORMAL);
+        this.type = EnumBushType.getTypeFromMetadata(metadata);
+        return new TileBush(type);
+    }
+
+    public void grow(World world, int x, int y, int z) {
+        TileBush tile = (TileBush) world.getBlockTileEntity(x, y, z);
+        tile.updateStage();
     }
 }
