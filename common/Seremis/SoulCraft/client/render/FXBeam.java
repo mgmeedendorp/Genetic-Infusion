@@ -1,5 +1,9 @@
 package Seremis.SoulCraft.client.render;
 
+import java.awt.Color;
+import java.awt.LinearGradientPaint;
+import java.awt.geom.Point2D;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
@@ -29,6 +33,10 @@ public class FXBeam extends EntityFX {
     private int heatHead = 0;
     private int heatTail = 0;
     
+    private double red = 0;
+    private double green = 0;
+    private double blue = 0;
+    
     public FXBeam(World world, Coordinate3D position, Coordinate3D target, int heatAtCoord1, int heatAtCoord2) {
         super(world, position.x, position.y, position.z, 0.0D, 0.0D, 0.0D);
 
@@ -40,6 +48,9 @@ public class FXBeam extends EntityFX {
         this.line = new Line3D(position, target);
         this.heatHead = heatAtCoord1;
         this.heatTail = heatAtCoord2;
+        this.prevPosX = posX;
+        this.prevPosY = posY;
+        this.prevPosZ = posZ;
 
         particleMaxAge = 1;
 
@@ -69,19 +80,48 @@ public class FXBeam extends EntityFX {
     }
 
     public void setRGBBasedOnHeat(boolean heat1) {
-        float red;
+        float red = 0;
         float green = 0;
         float blue = 0;
         
         if(heat1) {
-            red = heatHead/255;
+            red = heatHead*0.1275F;
+            green = 20;
+            blue = 1;
         } else {
-            red = heatTail/255;
+            blue = 5;
+            green = 20;
         }
         
-        this.particleRed = red;
-        this.particleGreen = green;
-        this.particleBlue = blue;
+        this.particleRed = red/255;
+        this.particleGreen = green/255;
+        this.particleBlue = blue/255;
+    }
+    
+    public void transitRGB(int stage, int steps) {
+        setRGBBasedOnHeat(true);
+        float r1 = particleRed;
+        float g1 = particleGreen;
+        float b1 = particleBlue;
+        setRGBBasedOnHeat(false);
+        float r2 = particleRed;
+        float g2 = particleGreen;
+        float b2 = particleBlue;
+        
+        float dRed = r1-r2;
+        float dGreen = g1-g2;
+        float dBlue = b1-b2;
+        
+        setRGBBasedOnHeat(true);
+        
+        this.red = particleRed - dRed*stage;
+        this.green = particleGreen - dGreen*stage;
+        this.blue = particleBlue - dBlue*stage;
+        
+        float ratio = (float) stage / (float) steps;
+        this.red = (int) (r2 * ratio + r1 * (1 - ratio));
+        this.green = (int) (g2 * ratio + g1 * (1 - ratio));
+        this.blue = (int) (b2 * ratio + b1 * (1 - ratio));
     }
 
     @Override
@@ -96,7 +136,7 @@ public class FXBeam extends EntityFX {
 
         GL11.glTexParameterf(3553, 10242, 10497.0F);
         GL11.glTexParameterf(3553, 10243, 10497.0F);
-
+        
         SCRenderHelper.avoidFlickering();
 
         GL11.glEnable(GL11.GL_BLEND);
@@ -108,16 +148,13 @@ public class FXBeam extends EntityFX {
         float zz = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * f - interpPosZ);
         GL11.glTranslated(xx, yy, zz);
 
-        double ry = line.getYaw() * f;
-        double rp = line.getPitch() * f;
         GL11.glRotated(90.0, 1.0, 0.0, 0.0);
-        GL11.glRotated(180.0 + ry, 0.0, 0.0, -1.0);
-        GL11.glRotated(rp, 1.0, 0.0, 0.0);
+        GL11.glRotated(180.0 + line.getYaw(), 0.0, 0.0, -1.0);
+        GL11.glRotated(line.getPitch(), 1.0, 0.0, 0.0);
 
         double width = 0.1D;
         double transitionSpace = 0.1D;
-
-     //   GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
+        
         for(int t = 0; t < 3; t++) {
 
             GL11.glRotatef(60.0F, 0.0F, 1.0F, 0.0F);
@@ -125,33 +162,48 @@ public class FXBeam extends EntityFX {
             setRGBBasedOnHeat(true);
             
             //Draw the first color
-            tessellator.startDrawingQuads();
-            tessellator.setBrightness(200);
-            tessellator.setColorRGBA_F(this.particleRed, this.particleGreen, this.particleBlue, opacity);
-            tessellator.addVertex(-width, line.getLength()/2-transitionSpace, 0.0D);     
-            tessellator.addVertex(width, line.getLength()/2-transitionSpace, 0.0D);
-            tessellator.addVertex(width, 0.0D, 0.0D);
-            tessellator.addVertex(-width, 0.0D, 0.0D);
-            tessellator.draw();
+//            tessellator.startDrawingQuads();
+//            tessellator.setBrightness(200);
+//            tessellator.setColorRGBA_F(this.particleRed, this.particleGreen, this.particleBlue, opacity);
+//            tessellator.addVertex(-width, 0.0D, 0.0D);
+//            tessellator.addVertex(width, 0.0D, 0.0D);
+//            tessellator.addVertex(width, line.getLength()/2-transitionSpace, 0.0D);     
+//            tessellator.addVertex(-width, line.getLength()/2-transitionSpace, 0.0D);
+//            tessellator.draw();
+            
+            //Draw the transition
+            int steps = 200;
+            double translationPieceLength = transitionSpace*2/steps;
+            
+            for(int i = 0; i<steps; i++) {
+                transitRGB(i, steps);
+                GL11.glColor4d(this.red, this.green, this.blue, 1F);
+                
+                GL11.glBegin(GL11.GL_QUADS);
+                GL11.glVertex2d(width, line.getLength()/2-transitionSpace+i*translationPieceLength);
+                GL11.glVertex2d(-width, line.getLength()/2-transitionSpace+i*translationPieceLength);
+                GL11.glVertex2d(-width, line.getLength()/2-transitionSpace+i*translationPieceLength +translationPieceLength);
+                GL11.glVertex2d(width, line.getLength()/2-transitionSpace+i*translationPieceLength + translationPieceLength);
+                GL11.glEnd();
+            }
             
             setRGBBasedOnHeat(false);
             
             //Draw the second color
-            tessellator.startDrawingQuads();
-            tessellator.setBrightness(200);
-            tessellator.setColorRGBA_F(this.particleRed, this.particleGreen, this.particleBlue, opacity);
-            tessellator.addVertex(-width, line.getLength()/2+transitionSpace, 0.0D);     
-            tessellator.addVertex(width, line.getLength()/2+transitionSpace, 0.0D);
-            tessellator.addVertex(width, line.getLength(), 0.0D);
-            tessellator.addVertex(-width, line.getLength(), 0.0D);
-            tessellator.draw();
+//            tessellator.startDrawingQuads();
+//            tessellator.setBrightness(200);
+//            tessellator.setColorRGBA_F(this.particleRed, this.particleGreen, this.particleBlue, opacity);
+//            tessellator.addVertex(-width, line.getLength()/2+transitionSpace, 0.0D);     
+//            tessellator.addVertex(width, line.getLength()/2+transitionSpace, 0.0D);
+//            tessellator.addVertex(width, line.getLength(), 0.0D);
+//            tessellator.addVertex(-width, line.getLength(), 0.0D);
+//            tessellator.draw();
         }
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDepthMask(true);
         GL11.glDisable(GL11.GL_BLEND);
         SCRenderHelper.stopFlickerAvoiding();
-
         GL11.glPopMatrix();
         
         tessellator.startDrawingQuads();

@@ -146,7 +146,7 @@ public class Line3D {
         double xd = head.x - tail.x;
         double zd = head.z - tail.z;
 
-        return Math.atan2(xd, zd) * 180.0D / 3.141592653589793D;
+        return Math.atan2(xd, zd) * 180.0D / Math.PI;
     }
     
     public double getPitch() {
@@ -155,7 +155,7 @@ public class Line3D {
         double zd = head.z - tail.z;
         
         double var7 = MathHelper.sqrt_double(xd * xd + zd * zd);
-
+        
         return Math.atan2(yd, var7) * 180.0D / 3.141592653589793D;
     }
 }
