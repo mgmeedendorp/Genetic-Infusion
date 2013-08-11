@@ -2,7 +2,9 @@ package Seremis.SoulCraft.misc;
 
 import net.minecraft.item.ItemStack;
 import Seremis.SoulCraft.core.lib.Localizations;
+import Seremis.SoulCraft.helper.SCRenderHelper;
 import Seremis.SoulCraft.item.ModItems;
+import Seremis.SoulCraft.tileentity.TileBush;
 
 public enum EnumBushType {
 

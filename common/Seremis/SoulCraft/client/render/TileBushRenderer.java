@@ -24,24 +24,28 @@ public class TileBushRenderer extends TileEntitySpecialRenderer {
     }
 
     public void renderBush(TileBush tile, double x, double y, double z) {
-//        switch(tile.getStage()+1) {
-//            case 1:
-//                model5.render();
-//            case 2:
-//                model5.render();
-//            case 3:
-//                model5.render();
-//            case 4:
-//                model5.render();
-//            case 5:
-//                model5.render();
-//        }
+        String texture = tile.getTexture();
         GL11.glPushMatrix();
-        GL11.glTranslated(x+0.5, y+1.5F, z+0.5);
-        GL11.glRotatef(180F, 1.0F, 0.0F, 1.0F);
-        SCRenderHelper.avoidFlickering();
-        SCRenderHelper.bindTexture(Localizations.LOC_MODEL_TEXTURES + Localizations.BUSH_STAGE_5);
-        model5.render();
+        GL11.glTranslated(x, y, z);
+        GL11.glScalef(0, 0, 0);
+        SCRenderHelper.bindTexture(texture);
+        switch(tile.getStage()) {
+            case 0:
+                model5.render();
+                break;
+            case 1:
+                model5.render();
+                break;
+            case 2:
+                model5.render();
+                break;
+            case 3:
+                model5.render();
+                break;
+            case 4:
+                model5.render();
+                break;
+        }
         GL11.glPopMatrix();
     }
 

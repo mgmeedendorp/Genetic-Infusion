@@ -10,7 +10,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import Seremis.SoulCraft.core.lib.RenderIds;
-import Seremis.SoulCraft.item.ModItems;
 import Seremis.SoulCraft.misc.EnumBushType;
 import Seremis.SoulCraft.tileentity.TileBush;
 import cpw.mods.fml.relauncher.Side;

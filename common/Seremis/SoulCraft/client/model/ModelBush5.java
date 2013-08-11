@@ -211,12 +211,6 @@ public class ModelBush5 extends ModelBase {
         BushPart21.setTextureSize(64, 32);
         BushPart21.mirror = true;
         setRotation(BushPart21, 0F, 0F, 0F);
-        Berry1 = new ModelRenderer(this, 0, 0);
-        Berry1.addBox(0F, 0F, 0F, 1, 1, 1);
-        Berry1.setRotationPoint(-5F, 16F, 0F);
-        Berry1.setTextureSize(64, 32);
-        Berry1.mirror = true;
-        setRotation(Berry1, 0F, 0F, 0F);
         BushPart22 = new ModelRenderer(this, 0, 0);
         BushPart22.addBox(0F, 0F, 0F, 2, 2, 1);
         BushPart22.setRotationPoint(-4F, 13F, -3F);
@@ -271,6 +265,12 @@ public class ModelBush5 extends ModelBase {
         BushPart27.setTextureSize(64, 32);
         BushPart27.mirror = true;
         setRotation(BushPart27, 0F, 0F, 0F);
+        Berry1 = new ModelRenderer(this, 0, 0);
+        Berry1.addBox(0F, 0F, 0F, 1, 1, 1);
+        Berry1.setRotationPoint(-5F, 16F, 0F);
+        Berry1.setTextureSize(64, 32);
+        Berry1.mirror = true;
+        setRotation(Berry1, 0F, 0F, 0F);
         Berry2 = new ModelRenderer(this, 0, 20);
         Berry2.addBox(0F, 0F, 0F, 1, 1, 1);
         Berry2.setRotationPoint(0F, 17F, -3F);
@@ -360,7 +360,6 @@ public class ModelBush5 extends ModelBase {
         BushPart19.render(scale);
         BushPart20.render(scale);
         BushPart21.render(scale);
-        Berry1.render(scale);
         BushPart22.render(scale);
         BushPart23.render(scale);
         BushPart24.render(scale);
@@ -370,6 +369,7 @@ public class ModelBush5 extends ModelBase {
         StemPart4.render(scale);
         BushPart26.render(scale);
         BushPart27.render(scale);
+        Berry1.render(scale);
         Berry2.render(scale);
         Berry3.render(scale);
         Berry4.render(scale);

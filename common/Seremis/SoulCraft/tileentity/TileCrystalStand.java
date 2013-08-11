@@ -8,6 +8,7 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraftforge.common.ForgeDirection;
+import Seremis.SoulCraft.api.magnet.tile.IMagnetConnector;
 import Seremis.SoulCraft.api.magnet.tile.TileMagnetConnector;
 import Seremis.SoulCraft.block.ModBlocks;
 import Seremis.SoulCraft.util.UtilTileEntity;
@@ -17,15 +18,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileCrystalStand extends TileMagnetConnector implements IInventory {
 
-    public TileCrystalStand() {
-        super(5);
-    }
-
     public ItemStack[] inv = new ItemStack[1];
 
     @Override
     public boolean connectToSide(ForgeDirection direction) {
-        return direction != ForgeDirection.DOWN && inv[0] != null && inv[0].itemID == ModBlocks.crystal.blockID;
+        return direction != ForgeDirection.DOWN;
+    }
+    
+    @Override
+    public boolean connectToConnector(IMagnetConnector connector) {
+        return true;
     }
 
     @Override
@@ -39,6 +41,29 @@ public class TileCrystalStand extends TileMagnetConnector implements IInventory 
         Coordinate3D finalPosition = super.applyBeamRenderOffset(position, side);
         finalPosition.y += 0.2D;
         return finalPosition;
+    }
+    
+    @Override
+    public double getRange() {
+        return 5;
+    }
+
+    @Override
+    public int getHeatLossPerTick() {
+        return 2;
+    }
+
+    @Override
+    public int getMaxHeat() {
+        return 400;
+    }
+    
+    @Override
+    public void updateEntity() {
+        super.updateEntity();
+        if(getStackInSlot(0) == null || getStackInSlot(0).stackSize == 0) {
+            this.heat = 0;
+        }
     }
 
     @Override

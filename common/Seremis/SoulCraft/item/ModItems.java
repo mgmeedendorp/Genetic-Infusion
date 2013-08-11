@@ -13,6 +13,7 @@ public class ModItems {
     public static SCItem alloyIsolatzium;
     public static ItemTransporterModules transporterModules;
     public static SCItem berry;
+    public static ItemThermometer thermometer;
 
     public static void init() {
         ingotTitanium = new SCItem(DefaultProps.TitaniumIngotID).setUnlocalizedName("ingotTitanium");
@@ -21,6 +22,7 @@ public class ModItems {
         alloyIsolatzium = new ItemAlloyIsolatzium(DefaultProps.IsolatziumAlloyID);
         transporterModules = new ItemTransporterModules(DefaultProps.TransporterModulesID);
         berry = new ItemBerry(DefaultProps.BerryID);
+        thermometer = new ItemThermometer(DefaultProps.ThermometerID);
 
         LanguageRegistry.addName(ingotTitanium, "Titanium Ingot");
         LanguageRegistry.addName(new ItemStack(shardIsolatzium, 1, 0), "Red Isolatzium shard");
@@ -35,6 +37,7 @@ public class ModItems {
         LanguageRegistry.addName(new ItemStack(transporterModules, 1, 0), "Storage Module");
         LanguageRegistry.addName(new ItemStack(transporterModules, 1, 1), "Engine Module");
         LanguageRegistry.addName(berry, "Berry");
+        LanguageRegistry.addName(thermometer, "Thermometer");
 
         oreDictionary();
     }

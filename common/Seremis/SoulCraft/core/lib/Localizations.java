@@ -11,10 +11,10 @@ public class Localizations {
     public static final String ENTITY_TRANSPORTER = "entityTransporter.png";
     public static final String ENTITY_TRANSPORTER_ENGINE = "entityTransporterEngine.png";
 
-    public static final String BUSH_STAGE_1 = "bush1.png";
-    public static final String BUSH_STAGE_2 = "bush2.png";
-    public static final String BUSH_STAGE_3 = "bush3.png";
-    public static final String BUSH_STAGE_4 = "bush4.png";
+    public static final String BUSH_STAGE_1 = "bush5.png";
+    public static final String BUSH_STAGE_2 = "bush5.png";
+    public static final String BUSH_STAGE_3 = "bush5.png";
+    public static final String BUSH_STAGE_4 = "bush5.png";
     public static final String BUSH_STAGE_5 = "bush5.png";
 
     public static final String GUI_TRANSPORTER = "guiTransporter.png";

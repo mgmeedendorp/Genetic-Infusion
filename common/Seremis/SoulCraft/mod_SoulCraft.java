@@ -1,8 +1,11 @@
 package Seremis.SoulCraft;
 
+import java.util.logging.Level;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.MinecraftForge;
 import Seremis.SoulCraft.block.ModBlocks;
 import Seremis.SoulCraft.core.DamageCompressor;
 import Seremis.SoulCraft.core.SCConfig;
@@ -10,6 +13,7 @@ import Seremis.SoulCraft.core.SCCreativeTab;
 import Seremis.SoulCraft.core.lib.DefaultProps;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
 import Seremis.SoulCraft.entity.ModEntity;
+import Seremis.SoulCraft.handler.EventHandlerSC;
 import Seremis.SoulCraft.handler.GuiHandler;
 import Seremis.SoulCraft.helper.RecipeHelper;
 import Seremis.SoulCraft.helper.SCLogger;
@@ -54,10 +58,11 @@ public class mod_SoulCraft {
         RecipeHelper.initRecipes();
         RecipeHelper.initSmelting();
         LanguageRegistry.instance().addStringLocalization("itemGroup.SoulCraft", "en_US", "SoulCraft");
+        MinecraftForge.EVENT_BUS.register(new EventHandlerSC());
     }
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-
+        SCLogger.log(Level.INFO, DefaultProps.name + " is loaded successfully.");
     }
 }

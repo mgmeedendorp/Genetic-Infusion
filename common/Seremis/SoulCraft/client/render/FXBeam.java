@@ -15,12 +15,6 @@ import Seremis.core.geometry.Line3D;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-/**
- * Based off Modular Force Field's Beam Renderer.
- * 
- * @author Calclavia, Seremis
- * 
- */
 @SideOnly(Side.CLIENT)
 public class FXBeam extends EntityFX {
  
@@ -81,13 +75,11 @@ public class FXBeam extends EntityFX {
         float blue = 0;
         
         if(heat1) {
-            red = heatHead*0.1275F;
-            green = 20;
-            blue = 1;
+            red = (float) (heatHead*0.1);
+            green = 50;
         } else {
-            red  = 0;
-            blue = 5;
-            green = 200;
+            red  = (float)(heatTail*0.1);
+            green = 50;
         }
         
         this.particleRed = red/255;
@@ -108,41 +100,34 @@ public class FXBeam extends EntityFX {
         float endGreen = this.particleGreen;
         float endBlue = this.particleBlue;
 
-        float diffrenceRed = Math.abs(startRed - endRed);
-        float diffrenceGreen = Math.abs(startGreen - endGreen);
-        float diffrenceBlue = Math.abs(startBlue - endBlue);
+        float dRed = Math.abs(startRed - endRed);
+        float dGreen = Math.abs(startGreen - endGreen);
+        float dBlue = Math.abs(startBlue - endBlue);
         
-        float stepRed = diffrenceRed/maxScale;
-        float stepGreen = diffrenceGreen/maxScale;
-        float stepBlue = diffrenceBlue/maxScale;
+        float stepRed = dRed/maxScale;
+        float stepGreen = dGreen/maxScale;
+        float stepBlue = dBlue/maxScale;
 
-        if(startRed>endRed)
-        {
-         float scaledRed = startRed - scale*stepRed;
+        if(startRed>endRed) {
+            float scaledRed = startRed - scale*stepRed;
             this.red = scaledRed;
-        }
-        else 
-        {
+        } else {
          float scaledRed = startRed + scale*stepRed;
             this.red = scaledRed;
         }
-        if(startGreen>endGreen)
-        {
+        
+        if(startGreen>endGreen) {
          float scaledGreen = startGreen - scale*stepGreen;
             this.green = scaledGreen;
-        }
-        else 
-        {
+        } else {
          float scaledGreen = startGreen + scale*stepGreen;
             this.green = scaledGreen;
         }
-        if(startBlue>endBlue)
-        {
+        
+        if(startBlue>endBlue) {
          float scaledBlue = startBlue - scale*stepBlue;
             this.blue = scaledBlue;
-        }
-        else 
-        {
+        } else {
          float scaledBlue = startBlue + scale*stepBlue;
             this.blue = scaledBlue;
         }
@@ -154,17 +139,17 @@ public class FXBeam extends EntityFX {
         
         GL11.glPushMatrix();
 
-        float opacity = 0.5F;
+        float opacity = 0.9F;
 
         SCRenderHelper.bindTexture(Localizations.LOC_MODEL_TEXTURES + Localizations.BLANK);
 
-        GL11.glTexParameterf(3553, 10242, 10497.0F);
-        GL11.glTexParameterf(3553, 10243, 10497.0F);
+        GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, 10497.0F);
+        GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, 10497.0F);
         
         SCRenderHelper.avoidFlickering();
 
         GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_CURRENT_BIT);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         GL11.glDepthMask(false);
 
         float xx = (float) (this.prevPosX + (this.posX - this.prevPosX) * f - interpPosX);
@@ -177,7 +162,7 @@ public class FXBeam extends EntityFX {
         GL11.glRotated(line.getPitch(), 1.0, 0.0, 0.0);
 
         double width = 0.1D;
-        double transitionSpace = 0.1D;
+        double transitionSpace = line.getLength()/10;
         
         for(int t = 0; t < 3; t++) {
 
@@ -186,17 +171,16 @@ public class FXBeam extends EntityFX {
             setRGBBasedOnHeat(true);
             
             //Draw the first color
-            tessellator.startDrawingQuads();
-            tessellator.setBrightness(200);
-            tessellator.setColorRGBA_F(this.particleRed, this.particleGreen, this.particleBlue, opacity);
-            tessellator.addVertex(-width, 0.0D, 0.0D);
-            tessellator.addVertex(width, 0.0D, 0.0D);
-            tessellator.addVertex(width, line.getLength()/2-transitionSpace, 0.0D);     
-            tessellator.addVertex(-width, line.getLength()/2-transitionSpace, 0.0D);
-            tessellator.draw();
+            GL11.glBegin(GL11.GL_QUADS);
+            GL11.glColor4f(this.particleRed, this.particleGreen, this.particleBlue, opacity);
+            GL11.glVertex2d(-width, 0.0D);
+            GL11.glVertex2d(width, 0.0D);
+            GL11.glVertex2d(width, line.getLength()/2-transitionSpace);     
+            GL11.glVertex2d(-width, line.getLength()/2-transitionSpace);
+            GL11.glEnd();
             
             //Draw the transition
-            int steps = 20;
+            int steps = (int) 60;
             double translationPieceLength = transitionSpace*2/steps;
             
             for(int i = 0; i<steps; i++) {
@@ -214,14 +198,13 @@ public class FXBeam extends EntityFX {
             setRGBBasedOnHeat(false);
             
             //Draw the second color
-            tessellator.startDrawingQuads();
-            tessellator.setBrightness(200);
-            tessellator.setColorRGBA_F(this.particleRed, this.particleGreen, this.particleBlue, opacity);
-            tessellator.addVertex(-width, line.getLength()/2+transitionSpace, 0.0D);     
-            tessellator.addVertex(width, line.getLength()/2+transitionSpace, 0.0D);
-            tessellator.addVertex(width, line.getLength(), 0.0D);
-            tessellator.addVertex(-width, line.getLength(), 0.0D);
-            tessellator.draw();
+            GL11.glBegin(GL11.GL_QUADS);
+            GL11.glColor4f(this.particleRed, this.particleGreen, this.particleBlue, opacity);
+            GL11.glVertex2d(-width, line.getLength()/2+transitionSpace);     
+            GL11.glVertex2d(width, line.getLength()/2+transitionSpace);
+            GL11.glVertex2d(width, line.getLength());
+            GL11.glVertex2d(-width, line.getLength());
+            GL11.glEnd();
         }
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

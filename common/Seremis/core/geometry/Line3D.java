@@ -58,9 +58,9 @@ public class Line3D {
         boolean getHead;
         if(tile == null)
             return null;
-        if(tile.equals(head)) {
+        if(new Coordinate3D(tile).equals(head)) {
             getHead = true;
-        } else if(tile.equals(tail)) {
+        } else if(new Coordinate3D(tile).equals(tail)) {
             getHead = false;
         } else {
             return null;

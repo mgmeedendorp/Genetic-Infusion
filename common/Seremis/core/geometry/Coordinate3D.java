@@ -61,4 +61,10 @@ public class Coordinate3D implements Cloneable {
     public Coordinate3D clone() {
         return new Coordinate3D(x, y, z);
     }
+    
+    public boolean equals(Coordinate3D coord) {
+        if(x == coord.x && y == coord.y && z == coord.z)
+            return true;
+        return false;
+    }
 }

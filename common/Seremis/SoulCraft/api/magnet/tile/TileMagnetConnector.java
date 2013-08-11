@@ -2,6 +2,7 @@ package Seremis.SoulCraft.api.magnet.tile;
 
 import java.util.List;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -13,15 +14,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class TileMagnetConnector extends TileEntity implements IMagnetConnector {
-
-    public double range;
-    private long lastUpdateTick;
-    public long ticksBeforeUpdate = 20;
-
-    public TileMagnetConnector(double range) {
-        this.range = range;
-        lastUpdateTick = 0;
-    }
+    
+    private long currTime = 0;
+    private long lastUpdateTick = 0;
+    private long ticksBeforeUpdate = 20;
+    
+    protected int heat = 0;
 
     // TileEntity//
 
@@ -30,25 +28,27 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
         super.updateEntity();
         if(CommonProxy.proxy.isRenderWorld(worldObj))
             return;
-        long currentTime = worldObj.getWorldTime();
-        if(lastUpdateTick + ticksBeforeUpdate <= currentTime) {
-            lastUpdateTick = worldObj.getWorldTime();
+        currTime++;
+        if(lastUpdateTick + ticksBeforeUpdate <= currTime) {
+            lastUpdateTick = currTime;
             linkUpdate();
+            for(MagnetLink link : MagnetLinkHelper.instance.getLinksConnectedTo(this)) {
+                link.divideHeat();
+            }
         }
+        heatUpdate();
     }
 
     public void linkUpdate() {
         World world = worldObj;
         if(canConnect()) {
-            for(int x = (int) (-1 * range); x <= range; x++) {
-                for(int y = (int) (-1 * range); y <= range; y++) {
-                    for(int z = (int) (-1 * range); z <= range; z++) {
+            for(int x = (int) (-1 * getRange()); x <= getRange(); x++) {
+                for(int y = (int) (-1 * getRange()); y <= getRange(); y++) {
+                    for(int z = (int) (-1 * getRange()); z <= getRange(); z++) {
                         TileEntity tile = world.getBlockTileEntity(xCoord + x, yCoord + y, zCoord + z);
                         if(tile != null && tile instanceof IMagnetConnector && tile != this) {
                             MagnetLink link = new MagnetLink(this, (IMagnetConnector) tile);
-                            if(MagnetLinkHelper.instance.checkConditions(link)) {
-                                MagnetLinkHelper.instance.addLink(link);
-                            }
+                            MagnetLinkHelper.instance.addLink(link);
                         }
                     }
                 }
@@ -66,6 +66,23 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
             }
         }
     }
+    
+    public void heatUpdate() {
+        if(heat <0)
+            this.cool(getHeatLossPerTick());
+    }
+    
+    @Override
+    public void writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
+        compound.setInteger("Heat", heat);
+    }
+    
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+        heat = compound.getInteger("Heat");
+    }
 
     // IMagnetConnector//
 
@@ -80,19 +97,13 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
     }
 
     @Override
-    public double getRange() {
-        return range;
-    }
-
-    @Override
     public List<MagnetLink> getLinks() {
-        return MagnetLinkHelper.instance.registeredMap.get(this);
+        return MagnetLinkHelper.instance.getLinksConnectedTo(this);
     }
 
     @Override
     public void invalidate() {
         MagnetLinkHelper.instance.removeAllLinksFrom(this);
-        MagnetLinkHelper.instance.registeredMap.remove(this);
         super.invalidate();
     }
 
@@ -105,6 +116,28 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
     
     @Override
     public int getHeat() {
-        return 2000;
+        return this.heat;
+    }
+    
+    @Override
+    public int warm(int heat) {
+        int remainingHeat = 0;
+        this.heat =this.heat + heat;
+        if(this.heat > getMaxHeat()) {
+            remainingHeat = this.heat-getMaxHeat();
+            this.heat = getMaxHeat();
+        }
+        return remainingHeat;
+    }
+    
+    @Override
+    public int cool(int heat) {
+        int remainingHeat = 0;
+        this.heat =this.heat - heat;
+        if(this.heat < 0) {
+            remainingHeat = this.heat;
+            this.heat = 0;
+        }
+        return remainingHeat;
     }
 }

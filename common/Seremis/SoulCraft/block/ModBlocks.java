@@ -8,6 +8,7 @@ import Seremis.SoulCraft.core.lib.DefaultProps;
 import Seremis.SoulCraft.tileentity.TileBush;
 import Seremis.SoulCraft.tileentity.TileCompressor;
 import Seremis.SoulCraft.tileentity.TileCrystalStand;
+import Seremis.SoulCraft.tileentity.TileHeatIO;
 import Seremis.SoulCraft.tileentity.TileIsolatziumCrystal;
 import Seremis.SoulCraft.tileentity.TileTransporter;
 import Seremis.SoulCraft.world.SCWorldGenerator;
@@ -23,6 +24,7 @@ public class ModBlocks {
     public static BlockCrystalStand crystalStand;
     public static BlockTransporter transporter;
     public static BlockBush bushBerry;
+    public static BlockHeatIO heatIO;
     public static BlockMonsterEgg monsterEgg;
 
     public static SCWorldGenerator worldGen;
@@ -34,7 +36,8 @@ public class ModBlocks {
         crystal = new BlockCrystal(DefaultProps.IsolatziumCrystalID, Material.coral);
         crystalStand = new BlockCrystalStand(DefaultProps.CrystalStandID, Material.wood);
         transporter = new BlockTransporter(DefaultProps.TransporterID, Material.iron);
-        bushBerry = new BlockBush(DefaultProps.BerryBushID, Material.plants);
+        bushBerry = new BlockBush(DefaultProps.BushID, Material.plants);
+        heatIO = new BlockHeatIO(DefaultProps.HeatIOID, Material.rock);
         monsterEgg = new BlockMonsterEgg(DefaultProps.MonsterEggID, Material.dragonEgg);
 
         GameRegistry.registerBlock(oreTitanium, "Titanium Ore");
@@ -44,6 +47,7 @@ public class ModBlocks {
         GameRegistry.registerBlock(crystalStand, "Crystal Stand");
         GameRegistry.registerBlock(transporter, "Plasma Transporter");
         GameRegistry.registerBlock(bushBerry, "Berry Bush");
+        GameRegistry.registerBlock(heatIO, "Heat I/O");
         GameRegistry.registerBlock(monsterEgg, "Monster Egg");
 
         LanguageRegistry.addName(oreTitanium, "Titanium Ore");
@@ -56,6 +60,7 @@ public class ModBlocks {
         LanguageRegistry.addName(crystalStand, "Isolatzium Crystal Stand");
         LanguageRegistry.addName(transporter, "Plasmatic Transporter");
         LanguageRegistry.addName(bushBerry, "Berry Bush");
+        LanguageRegistry.addName(heatIO, "Heat I/O");
         LanguageRegistry.addName(monsterEgg, "Monster Egg");
 
         worldGen = new SCWorldGenerator();
@@ -75,9 +80,10 @@ public class ModBlocks {
 
     public static void tileEntity() {
         GameRegistry.registerTileEntity(TileCompressor.class, "TileCompressor");
-        GameRegistry.registerTileEntity(TileIsolatziumCrystal.class, "TileIsolatziumCrystal");
+        GameRegistry.registerTileEntity(TileIsolatziumCrystal.class, "TileCrystal");
         GameRegistry.registerTileEntity(TileCrystalStand.class, "TileCrystalStand");
         GameRegistry.registerTileEntity(TileTransporter.class, "TileTransporter");
         GameRegistry.registerTileEntity(TileBush.class, "TileBush");
+        GameRegistry.registerTileEntity(TileHeatIO.class, "TileHeatIO");
     }
 }
