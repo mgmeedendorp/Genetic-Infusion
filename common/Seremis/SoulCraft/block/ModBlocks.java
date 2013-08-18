@@ -25,11 +25,13 @@ public class ModBlocks {
     public static BlockTransporter transporter;
     public static BlockBush bushBerry;
     public static BlockHeatIO heatIO;
+    public static BlockConnectedGlass connectedGlass;
     public static BlockMonsterEgg monsterEgg;
 
     public static SCWorldGenerator worldGen;
 
     public static void init() {
+
         oreTitanium = new SCBlock(DefaultProps.OreTitaniumID, Material.rock).setHardness(20F).setUnlocalizedName("oreTitanium");
         oreIsolatzium = new BlockOreIsolatzium(DefaultProps.OreIsolatziumID, Material.rock);
         compressor = new BlockCompressor(DefaultProps.CompressorID, Material.rock);
@@ -38,6 +40,7 @@ public class ModBlocks {
         transporter = new BlockTransporter(DefaultProps.TransporterID, Material.iron);
         bushBerry = new BlockBush(DefaultProps.BushID, Material.plants);
         heatIO = new BlockHeatIO(DefaultProps.HeatIOID, Material.rock);
+        connectedGlass = new BlockConnectedGlass(DefaultProps.ConnectedGlassID, Material.glass);
         monsterEgg = new BlockMonsterEgg(DefaultProps.MonsterEggID, Material.dragonEgg);
 
         GameRegistry.registerBlock(oreTitanium, "Titanium Ore");
@@ -46,8 +49,9 @@ public class ModBlocks {
         GameRegistry.registerBlock(crystal, "Isolazium Crystal");
         GameRegistry.registerBlock(crystalStand, "Crystal Stand");
         GameRegistry.registerBlock(transporter, "Plasma Transporter");
-        GameRegistry.registerBlock(bushBerry, "Berry Bush");
+        GameRegistry.registerBlock(bushBerry, BlockBushItem.class, "Berry Bush");
         GameRegistry.registerBlock(heatIO, "Heat I/O");
+        GameRegistry.registerBlock(connectedGlass, "Connected Glass");
         GameRegistry.registerBlock(monsterEgg, "Monster Egg");
 
         LanguageRegistry.addName(oreTitanium, "Titanium Ore");
@@ -59,8 +63,10 @@ public class ModBlocks {
         LanguageRegistry.addName(crystal, "Isolatzium Crystal");
         LanguageRegistry.addName(crystalStand, "Isolatzium Crystal Stand");
         LanguageRegistry.addName(transporter, "Plasmatic Transporter");
-        LanguageRegistry.addName(bushBerry, "Berry Bush");
+        LanguageRegistry.addName(new ItemStack(bushBerry, 1, 0), "Berry Bush");
+        LanguageRegistry.addName(new ItemStack(bushBerry, 1, 1), "Strange Berry Bush");
         LanguageRegistry.addName(heatIO, "Heat I/O");
+        LanguageRegistry.addName(connectedGlass, "Connected Glass");
         LanguageRegistry.addName(monsterEgg, "Monster Egg");
 
         worldGen = new SCWorldGenerator();

@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import Seremis.SoulCraft.api.magnet.tile.IMagnetConnector;
-import Seremis.core.geometry.Line3D;
+import Seremis.SoulCraft.api.util.Line3D;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

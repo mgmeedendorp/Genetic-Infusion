@@ -8,8 +8,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Seremis.SoulCraft.api.magnet.MagnetLink;
 import Seremis.SoulCraft.api.magnet.MagnetLinkHelper;
+import Seremis.SoulCraft.api.util.Coordinate3D;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
-import Seremis.core.geometry.Coordinate3D;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

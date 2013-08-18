@@ -12,7 +12,8 @@ public class ModItems {
     public static SCItem plateTitanium;
     public static SCItem alloyIsolatzium;
     public static ItemTransporterModules transporterModules;
-    public static SCItem berry;
+    public static ItemBerry berry;
+    public static ItemKernel kernel;
     public static ItemThermometer thermometer;
 
     public static void init() {
@@ -22,6 +23,7 @@ public class ModItems {
         alloyIsolatzium = new ItemAlloyIsolatzium(DefaultProps.IsolatziumAlloyID);
         transporterModules = new ItemTransporterModules(DefaultProps.TransporterModulesID);
         berry = new ItemBerry(DefaultProps.BerryID);
+        kernel = new ItemKernel(DefaultProps.KernelID);
         thermometer = new ItemThermometer(DefaultProps.ThermometerID);
 
         LanguageRegistry.addName(ingotTitanium, "Titanium Ingot");
@@ -36,7 +38,10 @@ public class ModItems {
         LanguageRegistry.addName(new ItemStack(alloyIsolatzium, 1, 3), "Black Isolatzium Alloy");
         LanguageRegistry.addName(new ItemStack(transporterModules, 1, 0), "Storage Module");
         LanguageRegistry.addName(new ItemStack(transporterModules, 1, 1), "Engine Module");
-        LanguageRegistry.addName(berry, "Berry");
+        LanguageRegistry.addName(new ItemStack(berry, 1, 0), "Red Berry");
+        LanguageRegistry.addName(new ItemStack(berry, 1, 1), "Blue Berry");
+        LanguageRegistry.addName(new ItemStack(kernel, 1, 0), "Red Berry Kernel");
+        LanguageRegistry.addName(new ItemStack(kernel, 1, 1), "Blue Berry Kernel");
         LanguageRegistry.addName(thermometer, "Thermometer");
 
         oreDictionary();
@@ -53,6 +58,7 @@ public class ModItems {
         OreDictionary.registerOre("alloyIsolatziumGreen", new ItemStack(alloyIsolatzium, 1, 1));
         OreDictionary.registerOre("alloyIsolatziumBlue", new ItemStack(alloyIsolatzium, 1, 2));
         OreDictionary.registerOre("alloyIsolatziumBlack", new ItemStack(alloyIsolatzium, 1, 3));
-        OreDictionary.registerOre("berry", berry);
+        OreDictionary.registerOre("berryRed", new ItemStack(berry, 1, 0));
+        OreDictionary.registerOre("berryBlue", new ItemStack(berry, 1, 1));
     }
 }

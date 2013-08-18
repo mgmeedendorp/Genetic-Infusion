@@ -5,7 +5,7 @@ import java.util.List;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import Seremis.SoulCraft.api.magnet.MagnetLink;
-import Seremis.core.geometry.Coordinate3D;
+import Seremis.SoulCraft.api.util.Coordinate3D;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

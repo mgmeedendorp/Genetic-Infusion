@@ -6,15 +6,14 @@ import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
 
+import Seremis.SoulCraft.block.BlockBush;
 import Seremis.SoulCraft.client.model.ModelBush5;
-import Seremis.SoulCraft.core.lib.Localizations;
 import Seremis.SoulCraft.core.lib.RenderIds;
-import Seremis.SoulCraft.helper.SCRenderHelper;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class BlockBushRenderer implements ISimpleBlockRenderingHandler {
 
-    ModelBush5 model5;
+    ModelBush5 model5 = new ModelBush5();
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
@@ -22,8 +21,7 @@ public class BlockBushRenderer implements ISimpleBlockRenderingHandler {
         GL11.glTranslated(0.5, 2.0F, 0.5);
         GL11.glRotatef(180F, 1.0F, 0.0F, 1.0F);
         GL11.glScalef(1.5F, 1.5F, 1.5F);
-        model5 = new ModelBush5();
-        SCRenderHelper.bindTexture(Localizations.LOC_MODEL_TEXTURES + Localizations.BUSH_STAGE_5);
+        ((BlockBush)block).getType(metadata).applyTexture(((BlockBush)block).getType(metadata).getMaxStage());
         model5.render();
         GL11.glPopMatrix();
     }

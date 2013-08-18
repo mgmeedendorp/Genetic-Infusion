@@ -8,10 +8,10 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
+import Seremis.SoulCraft.api.util.Coordinate3D;
+import Seremis.SoulCraft.api.util.Line3D;
 import Seremis.SoulCraft.core.lib.Localizations;
 import Seremis.SoulCraft.helper.SCRenderHelper;
-import Seremis.core.geometry.Coordinate3D;
-import Seremis.core.geometry.Line3D;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

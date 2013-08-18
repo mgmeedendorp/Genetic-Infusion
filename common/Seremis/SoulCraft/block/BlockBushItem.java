@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 
 public class BlockBushItem extends ItemBlock {
 
-    private static String[] subNames = { "blockBushBerryStage1", "blockBushBerryStage2", "blockBushBerryStage3", "blockBushBerryStage4", "blockBushBerryStage5", "blockBushBerryStage6", "blockBushBerryStage7" };
+    private static String[] subNames = {"blockBush1", "blockBush2", "blockBush3", "blockBush4", "blockBush5"};
 
     public BlockBushItem(int ID) {
         super(ID);

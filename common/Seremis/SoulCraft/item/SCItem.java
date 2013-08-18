@@ -1,10 +1,16 @@
 package Seremis.SoulCraft.item;
 
+import java.util.List;
+
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import Seremis.SoulCraft.mod_SoulCraft;
 import Seremis.SoulCraft.core.lib.DefaultProps;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class SCItem extends Item {
 
@@ -40,6 +46,18 @@ public class SCItem extends Item {
             itemIcon = iconBuffer[metadata];
         }
         return this.itemIcon;
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void getSubItems(int itemID, CreativeTabs creativetab, List list) {
+        if(metadata > 0) {
+            for(int i = 0; i < getNumbersofMetadata(); ++i) {
+                list.add(new ItemStack(itemID, 1, i));
+            }
+        } else {
+            list.add(new ItemStack(itemID, 1, 0));
+        }
     }
 
     public int getNumbersofMetadata() {

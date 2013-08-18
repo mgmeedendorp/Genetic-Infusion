@@ -2,12 +2,8 @@ package Seremis.SoulCraft.handler;
 
 import java.util.EnumSet;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.ScaledResolution;
 import Seremis.SoulCraft.api.magnet.MagnetLinkHelper;
 import Seremis.SoulCraft.core.lib.Strings;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 

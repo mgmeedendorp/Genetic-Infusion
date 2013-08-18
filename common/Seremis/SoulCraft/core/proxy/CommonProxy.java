@@ -2,8 +2,8 @@ package Seremis.SoulCraft.core.proxy;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
+import Seremis.SoulCraft.api.util.Coordinate3D;
 import Seremis.SoulCraft.core.lib.Localizations;
-import Seremis.core.geometry.Coordinate3D;
 import cpw.mods.fml.common.SidedProxy;
 
 public class CommonProxy {

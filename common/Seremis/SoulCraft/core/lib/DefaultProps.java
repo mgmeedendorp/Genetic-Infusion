@@ -19,6 +19,7 @@ public class DefaultProps {
     public static int TransporterID;
     public static int BushID;
     public static int HeatIOID;
+    public static int ConnectedGlassID;
     public static int MonsterEggID;
 
     public static int TitaniumIngotID;
@@ -28,5 +29,6 @@ public class DefaultProps {
     public static int TransporterModulesID;
     public static int TransporterStorageID;
     public static int BerryID;
+    public static int KernelID;
     public static int ThermometerID;
 }

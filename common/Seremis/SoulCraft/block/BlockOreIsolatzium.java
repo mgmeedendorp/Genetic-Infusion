@@ -1,15 +1,10 @@
 package Seremis.SoulCraft.block;
 
-import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
 import Seremis.SoulCraft.item.ModItems;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockOreIsolatzium extends SCBlock {
 
@@ -19,13 +14,6 @@ public class BlockOreIsolatzium extends SCBlock {
         setStepSound(Block.soundStoneFootstep);
         setUnlocalizedName("oreIsolatzium");
         setNumbersofMetadata(4);
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(int blockID, CreativeTabs tab, List subItems) {
-        for(int ix = 0; ix < this.getNumbersOfMetadata(); ix++) {
-            subItems.add(new ItemStack(this, 1, ix));
-        }
     }
 
     @Override

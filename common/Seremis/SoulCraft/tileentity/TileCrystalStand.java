@@ -10,9 +10,9 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraftforge.common.ForgeDirection;
 import Seremis.SoulCraft.api.magnet.tile.IMagnetConnector;
 import Seremis.SoulCraft.api.magnet.tile.TileMagnetConnector;
+import Seremis.SoulCraft.api.util.Coordinate3D;
 import Seremis.SoulCraft.block.ModBlocks;
 import Seremis.SoulCraft.util.UtilTileEntity;
-import Seremis.core.geometry.Coordinate3D;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

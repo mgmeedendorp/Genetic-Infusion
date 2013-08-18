@@ -1,9 +1,10 @@
 package Seremis.SoulCraft.api.magnet;
 
 import Seremis.SoulCraft.api.magnet.tile.IMagnetConnector;
+import Seremis.SoulCraft.api.util.Coordinate3D;
+import Seremis.SoulCraft.api.util.Line3D;
 import Seremis.SoulCraft.core.proxy.ClientProxy;
-import Seremis.core.geometry.Coordinate3D;
-import Seremis.core.geometry.Line3D;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

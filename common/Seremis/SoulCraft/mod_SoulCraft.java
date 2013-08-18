@@ -18,7 +18,9 @@ import Seremis.SoulCraft.handler.GuiHandler;
 import Seremis.SoulCraft.helper.RecipeHelper;
 import Seremis.SoulCraft.helper.SCLogger;
 import Seremis.SoulCraft.item.ModItems;
+import Seremis.SoulCraft.misc.bush.BushManager;
 import Seremis.SoulCraft.network.PacketHandler;
+import Seremis.SoulCraft.util.structure.ModStructures;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -53,6 +55,7 @@ public class mod_SoulCraft {
         ModBlocks.init();
         ModItems.init();
         ModEntity.init();
+        ModStructures.init();
         CommonProxy.proxy.registerRendering();
         NetworkRegistry.instance().registerGuiHandler(this, new GuiHandler());
         RecipeHelper.initRecipes();
@@ -64,5 +67,6 @@ public class mod_SoulCraft {
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         SCLogger.log(Level.INFO, DefaultProps.name + " is loaded successfully.");
+        BushManager.init();
     }
 }

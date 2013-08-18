@@ -5,17 +5,19 @@ import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
 
+import Seremis.SoulCraft.client.model.ModelBush1;
+import Seremis.SoulCraft.client.model.ModelBush2;
+import Seremis.SoulCraft.client.model.ModelBush3;
+import Seremis.SoulCraft.client.model.ModelBush4;
 import Seremis.SoulCraft.client.model.ModelBush5;
-import Seremis.SoulCraft.core.lib.Localizations;
-import Seremis.SoulCraft.helper.SCRenderHelper;
 import Seremis.SoulCraft.tileentity.TileBush;
 
 public class TileBushRenderer extends TileEntitySpecialRenderer {
 
-    // private ModelBush1 model1 = new ModelBush1();
-    // private ModelBush2 model2 = new ModelBush2();
-    // private ModelBush3 model3 = new ModelBush3();
-    // private ModelBush4 model4 = new ModelBush4();
+    private ModelBush1 model1 = new ModelBush1();
+    private ModelBush2 model2 = new ModelBush2();
+    private ModelBush3 model3 = new ModelBush3();
+    private ModelBush4 model4 = new ModelBush4();
     private ModelBush5 model5 = new ModelBush5();
 
     @Override
@@ -24,25 +26,26 @@ public class TileBushRenderer extends TileEntitySpecialRenderer {
     }
 
     public void renderBush(TileBush tile, double x, double y, double z) {
-        String texture = tile.getTexture();
         GL11.glPushMatrix();
         GL11.glTranslated(x, y, z);
-        GL11.glScalef(0, 0, 0);
-        SCRenderHelper.bindTexture(texture);
+        GL11.glRotatef(180F, 1.0F, 0.0F, 1.0F);
+        GL11.glTranslatef(0.5F, -1.5F, 0.5F);
+    //    System.out.println(tile.getType());
+        tile.getType().applyTexture(tile.getStage());
         switch(tile.getStage()) {
-            case 0:
-                model5.render();
-                break;
             case 1:
-                model5.render();
+                model1.render();
                 break;
             case 2:
-                model5.render();
+                model2.render();
                 break;
             case 3:
-                model5.render();
+                model3.render();
                 break;
             case 4:
+                model4.render();
+                break;
+            case 5:
                 model5.render();
                 break;
         }
