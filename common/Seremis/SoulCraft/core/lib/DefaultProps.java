@@ -20,6 +20,8 @@ public class DefaultProps {
     public static int BushID;
     public static int HeatIOID;
     public static int ConnectedGlassID;
+    public static int TitaniumBrickID;
+    public static int StationControllerID;
     public static int MonsterEggID;
 
     public static int TitaniumIngotID;

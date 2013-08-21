@@ -17,7 +17,9 @@ public class SCConfig {
         DefaultProps.BushID = config.getBlock("Berry bush", 1326).getInt();
         DefaultProps.HeatIOID = config.getBlock("Heat I/O", 1327).getInt();
         DefaultProps.ConnectedGlassID = config.getBlock("Connected Glass", 1328).getInt();
-        DefaultProps.MonsterEggID = config.getBlock("Monster Egg", 1329).getInt();
+        DefaultProps.TitaniumBrickID = config.getBlock("Titanium Reinforced Brick", 1329).getInt();
+        DefaultProps.StationControllerID = config.getBlock("Magnetic Station Controller", 1330).getInt();
+        DefaultProps.MonsterEggID = config.getBlock("Monster Egg", 1331).getInt();
         // Items
         DefaultProps.TitaniumIngotID = config.getItem("Titanium Ingot", 4520).getInt();
         DefaultProps.ShardIsolatziumID = config.getItem("Isolatzium Shards", 4521).getInt();

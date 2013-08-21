@@ -101,4 +101,11 @@ public class Coordinate3D implements Cloneable {
     public String toString() {
         return "Coordinate3D[x: "+x+" y: "+y+" z: "+z+"]";
     }
+
+    public void swapXZCoords() {
+        double oldX = this.x;
+        double oldZ = this.z;
+        this.x = oldZ;
+        this.z = oldX;
+    }
 }

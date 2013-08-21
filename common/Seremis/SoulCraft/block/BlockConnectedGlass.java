@@ -4,22 +4,25 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
-import Seremis.SoulCraft.helper.ConnectedTexturesHelper;
+import Seremis.SoulCraft.helper.ConnectedTextureHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockConnectedGlass extends SCBlock {
 
-    private ConnectedTexturesHelper textureHelper = new ConnectedTexturesHelper(this, "connectedGlass");
+    private ConnectedTextureHelper textureHelper = new ConnectedTextureHelper(this, "connectedGlass");
     
     public BlockConnectedGlass(int ID, Material material) {
         super(ID, material);
         setUnlocalizedName("connectedGlass");
+        setHardness(2F);
+        setResistance(3F);
     }
     
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister iconregister) {
+        super.registerIcons(iconregister);
         textureHelper.registerIcons(iconregister);
     }
     

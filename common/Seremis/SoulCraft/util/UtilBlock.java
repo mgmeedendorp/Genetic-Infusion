@@ -2,7 +2,6 @@ package Seremis.SoulCraft.util;
 
 import java.util.Random;
 
-import Seremis.SoulCraft.api.util.Coordinate3D;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -10,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import Seremis.SoulCraft.api.util.Coordinate3D;
 
 public class UtilBlock {
     

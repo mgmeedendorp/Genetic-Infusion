@@ -10,6 +10,7 @@ import Seremis.SoulCraft.tileentity.TileCompressor;
 import Seremis.SoulCraft.tileentity.TileCrystalStand;
 import Seremis.SoulCraft.tileentity.TileHeatIO;
 import Seremis.SoulCraft.tileentity.TileIsolatziumCrystal;
+import Seremis.SoulCraft.tileentity.TileStationController;
 import Seremis.SoulCraft.tileentity.TileTransporter;
 import Seremis.SoulCraft.world.SCWorldGenerator;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -26,6 +27,8 @@ public class ModBlocks {
     public static BlockBush bushBerry;
     public static BlockHeatIO heatIO;
     public static BlockConnectedGlass connectedGlass;
+    public static Block titaniumBrick;
+    public static BlockStationController stationController;
     public static BlockMonsterEgg monsterEgg;
 
     public static SCWorldGenerator worldGen;
@@ -41,6 +44,8 @@ public class ModBlocks {
         bushBerry = new BlockBush(DefaultProps.BushID, Material.plants);
         heatIO = new BlockHeatIO(DefaultProps.HeatIOID, Material.rock);
         connectedGlass = new BlockConnectedGlass(DefaultProps.ConnectedGlassID, Material.glass);
+        titaniumBrick = new SCBlock(DefaultProps.TitaniumBrickID, Material.rock).setUnlocalizedName("titaniumBrick");
+        stationController = new BlockStationController(DefaultProps.StationControllerID, Material.rock);
         monsterEgg = new BlockMonsterEgg(DefaultProps.MonsterEggID, Material.dragonEgg);
 
         GameRegistry.registerBlock(oreTitanium, "Titanium Ore");
@@ -52,6 +57,8 @@ public class ModBlocks {
         GameRegistry.registerBlock(bushBerry, BlockBushItem.class, "Berry Bush");
         GameRegistry.registerBlock(heatIO, "Heat I/O");
         GameRegistry.registerBlock(connectedGlass, "Connected Glass");
+        GameRegistry.registerBlock(titaniumBrick, "Titanium Reinforced Bricks");
+        GameRegistry.registerBlock(stationController, "Magnetic Station Controller");
         GameRegistry.registerBlock(monsterEgg, "Monster Egg");
 
         LanguageRegistry.addName(oreTitanium, "Titanium Ore");
@@ -67,6 +74,8 @@ public class ModBlocks {
         LanguageRegistry.addName(new ItemStack(bushBerry, 1, 1), "Strange Berry Bush");
         LanguageRegistry.addName(heatIO, "Heat I/O");
         LanguageRegistry.addName(connectedGlass, "Connected Glass");
+        LanguageRegistry.addName(titaniumBrick, "Titanium Reinforced Brick");
+        LanguageRegistry.addName(stationController, "Magnetic Station Controller");
         LanguageRegistry.addName(monsterEgg, "Monster Egg");
 
         worldGen = new SCWorldGenerator();
@@ -91,5 +100,6 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(TileTransporter.class, "TileTransporter");
         GameRegistry.registerTileEntity(TileBush.class, "TileBush");
         GameRegistry.registerTileEntity(TileHeatIO.class, "TileHeatIO");
+        GameRegistry.registerTileEntity(TileStationController.class, "TileStationController");
     }
 }

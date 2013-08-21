@@ -20,6 +20,9 @@ public class SCBlock extends BlockContainer {
     private Icon[] iconBuffer;
     private int metadata = 0;
     private boolean needsIcon = true;
+    private Icon[] sidedIconBuffer;
+    private boolean needsSidedTexture = false;
+    private String[] sidedTextureNames = {"bottom", "top", "back", "front", "left", "right"};;
 
     public SCBlock(int ID, Material material) {
         super(ID, material);
@@ -33,7 +36,12 @@ public class SCBlock extends BlockContainer {
         if(!needsIcon) {
             return;
         }
-        
+        if(this.needsSidedTexture) {
+            sidedIconBuffer = new Icon[sidedTextureNames.length];
+            for(int i = 0; i<sidedTextureNames.length; i++) {
+                sidedIconBuffer[i] = iconRegister.registerIcon(DefaultProps.ID + ":" + this.getUnlocalizedName().substring(5) + "_" + sidedTextureNames[i]);
+            }
+        }
         if(this.metadata == 0) {
             blockIcon = iconRegister.registerIcon(DefaultProps.ID + ":" + this.getUnlocalizedName().substring(5));
         } else {
@@ -51,6 +59,11 @@ public class SCBlock extends BlockContainer {
             blockIcon = iconBuffer[metadata];
         }
         return this.blockIcon;
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public Icon[] getSidedIcons() {
+        return sidedIconBuffer;
     }
     
     @Override
@@ -75,6 +88,11 @@ public class SCBlock extends BlockContainer {
 
     public void setNeedsIcon(boolean needsIcon) {
         this.needsIcon = needsIcon;
+    }
+    
+    public void setNeedsSidedTexture(boolean needsSidedTexture, String[] textureNames) {
+        this.needsSidedTexture = needsSidedTexture;
+        this.sidedTextureNames = textureNames;
     }
 
     @Override

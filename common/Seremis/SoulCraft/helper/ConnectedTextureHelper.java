@@ -8,7 +8,7 @@ import Seremis.SoulCraft.core.lib.DefaultProps;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ConnectedTexturesHelper {
+public class ConnectedTextureHelper {
     
     private Block block;
     
@@ -23,12 +23,12 @@ public class ConnectedTexturesHelper {
                                     {{0, 1, 0}, {0, -1, 0}, {0, 0, -1}, {0, 0, 1}, {0, 1, -1}, {0, 1, 1}, {0, -1, -1}, {0, -1, 1}}, 
                                     {{0, 1, 0}, {0, -1, 0}, {0, 0, 1}, {0, 0, -1}, {0, 1, 1}, {0, 1, -1}, {0, -1, 1}, {0, -1, -1}}};
     
-    public ConnectedTexturesHelper(Block block, String[] textureName) {
+    public ConnectedTextureHelper(Block block, String[] textureName) {
         this.block = block;
         textures = textureName;
     }
     
-    public ConnectedTexturesHelper(Block block, String textureName) {
+    public ConnectedTextureHelper(Block block, String textureName) {
         this.block = block;
         setLogicTextureNames(textureName);
     }

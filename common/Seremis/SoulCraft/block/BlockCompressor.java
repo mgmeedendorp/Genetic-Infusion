@@ -31,21 +31,14 @@ public class BlockCompressor extends SCBlock {
 
     private Random random;
 
-    private Icon top;
-    private Icon blockIcon;
+    private String[] sidedTextureNames = {"top", "side"};
 
     public BlockCompressor(int ID, Material material) {
         super(ID, material);
         setUnlocalizedName("compressor");
+        setNeedsSidedTexture(true, sidedTextureNames);
         random = new Random();
         setHardness(10.0F);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister iconRegister) {
-        this.top = iconRegister.registerIcon(DefaultProps.ID + ":" + "compressor_top");
-        this.blockIcon = iconRegister.registerIcon(DefaultProps.ID + ":" + "compressor_side");
     }
 
     public boolean isOpaqueCube() {
@@ -83,11 +76,11 @@ public class BlockCompressor extends SCBlock {
     public Icon getIcon(int side, int metadata) {
         switch(side) {
             case 0:
-                return top;
+                return getSidedIcons()[0];
             case 1:
-                return top;
+                return getSidedIcons()[0];
             default:
-                return blockIcon;
+                return getSidedIcons()[1];
         }
     }
 

@@ -15,6 +15,14 @@ public class StructureBlock implements IStructureBlock {
         this.position = position;
     }
     
+    public StructureBlock(Block block, int metadata) {
+        this(block, metadata, null);
+    }
+    
+    public StructureBlock(Block block) {
+        this(block, 0);
+    }
+    
     @Override
     public Block getBlock() {
         return block;

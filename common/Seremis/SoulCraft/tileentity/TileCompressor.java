@@ -5,9 +5,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import Seremis.SoulCraft.item.ModItems;
 import Seremis.SoulCraft.util.UtilTileEntity;
@@ -118,18 +115,6 @@ public class TileCompressor extends TileEntity implements IInventory {
      */
     public boolean anyPlayerInRange() {
         return this.worldObj.getClosestPlayer((double) this.xCoord + 0.5D, (double) this.yCoord + 0.5D, (double) this.zCoord + 0.5D, (double) this.requiredPlayerRange) != null;
-    }
-
-    @Override
-    public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
-        readFromNBT(packet.customParam1);
-    }
-
-    @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound var1 = new NBTTagCompound();
-        writeToNBT(var1);
-        return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 1, var1);
     }
 
     @Override

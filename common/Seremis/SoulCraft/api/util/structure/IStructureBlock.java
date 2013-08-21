@@ -1,7 +1,7 @@
 package Seremis.SoulCraft.api.util.structure;
 
-import Seremis.SoulCraft.api.util.Coordinate3D;
 import net.minecraft.block.Block;
+import Seremis.SoulCraft.api.util.Coordinate3D;
 
 public interface IStructureBlock {
 

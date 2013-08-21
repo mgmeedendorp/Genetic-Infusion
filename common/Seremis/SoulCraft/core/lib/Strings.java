@@ -4,4 +4,6 @@ public class Strings {
 
     public static final String nameWorldTickHandler = "SoulCraft.worldTickHandler";
     public static final String nameRenderTickHandler = "SoulCraft.renderTickHandler";
+    
+    public static final String INV_STATION_CONTROLLER_NAME = "stationController";
 }

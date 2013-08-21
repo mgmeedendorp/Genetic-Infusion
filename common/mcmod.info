@@ -2,9 +2,9 @@
 {
   "modid": "SC",
   "name": "SoulCraft",
-  "description": "A W.I.P. mod by Seremis",
-  "version": "SoulCraft Pr1",
-  "mcversion": "1.5.2",
+  "description": "A mod by Seremis",
+  "version": "SoulCraft 0.0.1a",
+  "mcversion": "1.6.2",
   "url": "",
   "updateUrl": "",
   "authors": [
