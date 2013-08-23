@@ -34,7 +34,7 @@ public class BlockStationController extends SCBlockRotateable {
         if(CommonProxy.proxy.isServerWorld(world)) {
             TileStationController tile = (TileStationController) world.getBlockTileEntity(x, y, z);
             if(tile != null) {
-                if(tile.getIsValid()) {
+                if(tile.isValid()) {
                     return true;
                 }
             }

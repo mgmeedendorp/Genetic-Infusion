@@ -15,7 +15,7 @@ public class Structure {
     protected int length;
     protected int width;
     protected int height;
-    protected int baseSize = {3, 3, 4};
+    private Coordinate3D baseSize = new Coordinate3D();
     
     public Structure(IStructureBlock... block) {
         blocks.addAll(Arrays.asList(block));
@@ -23,6 +23,46 @@ public class Structure {
     
     public void addBlock(IStructureBlock block) {
         blocks.add(block);
+        calculateSize();
+    }
+    
+    private void calculateSize() {
+        int maxX = 0;
+        int maxY = 0;
+        int maxZ = 0;
+        for(IStructureBlock block : blocks) {
+            if(block.getPosition().x > maxX) {
+                maxX = (int) block.getPosition().x;
+            }
+            if(block.getPosition().y > maxY) {
+                maxY = (int) block.getPosition().y;
+            }
+            if(block.getPosition().z > maxZ) {
+                maxZ = (int) block.getPosition().z;
+            }
+        }
+        baseSize.setCoords(maxX+1, maxY+1, maxZ+1);
+    }
+    
+    private void setRotatedSize(int rotation) {
+        switch(rotation) {           
+               case 0: {
+                   setSize((int)baseSize.x, (int)baseSize.y, (int)baseSize.z);
+                   break;
+               }
+               case 1: {
+                   setSize((int)-baseSize.z, (int)baseSize.y, (int)baseSize.x);
+                   break;
+               }
+               case 2: {
+                   setSize((int)-baseSize.x, (int)baseSize.y, (int)-baseSize.z);
+                   break;
+               }
+               case 3: {
+                   setSize((int)baseSize.z, (int)baseSize.y, (int)-baseSize.x);
+                   break;
+               }
+           }
     }
     
     /** 
@@ -39,6 +79,113 @@ public class Structure {
             }
         }
         return null;
+    }
+    
+    /** 
+     * Gets the block at the given world coordinates
+     * @param x
+     * @param y
+     * @param z
+     * @return the block at the coordinate
+     */
+    public IStructureBlock getBlockAtWorldCoordinates(World world, int x, int y, int z) {
+        for(IStructureBlock sBlock : getBlocks()) {
+            if(sBlock.getBlock().blockID == world.getBlockId(x, y, z)) {
+                if(sBlock.getMetadata() == world.getBlockMetadata(x+(int)sBlock.getPosition().x, y+(int)sBlock.getPosition().y, z+(int)sBlock.getPosition().z)) {
+                    return sBlock;
+                }
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Returns the world coordinates of the given blockToFind
+     * @param blockToFind
+     * @param metadataToFind
+     * @param world
+     * @param x coordinate of the block to measure from
+     * @param y coordinate of the block to measure from
+     * @param z coordinate of the block to measure from
+     * @return
+     */
+    public Coordinate3D getBlockWorldCoordinates(Block blockToFind, int metadataToFind, World world, int x, int y, int z) {
+        IStructureBlock blockToMeasureFrom = getBlockAtWorldCoordinates(world, x, y, z);
+        int rotation = getStructureRotation(world, blockToMeasureFrom.getBlock(), x, y, z);
+        Coordinate3D structureNullCoord = new Coordinate3D();
+        Coordinate3D blockCoord = new Coordinate3D();
+        
+        for(IStructureBlock sBlock : getBlocks()) {
+            if(sBlock.getBlock() == blockToMeasureFrom) {
+                if(sBlock.getMetadata() == world.getBlockMetadata(x+(int)sBlock.getPosition().x, y+(int)sBlock.getPosition().y, z+(int)sBlock.getPosition().z)) {
+                    structureNullCoord.x = x-sBlock.getPosition().x;
+                    structureNullCoord.y = y-sBlock.getPosition().y;
+                    structureNullCoord.z = z-sBlock.getPosition().z;
+                }
+            }
+        }
+        
+        Structure structure = this.rotateOnYAxis(rotation);
+        
+        for(IStructureBlock sBlock : structure.getBlocks()) {
+            if(sBlock.getBlock() == blockToFind) {
+                if(sBlock.getMetadata() == metadataToFind) {
+                    blockCoord = sBlock.getPosition();
+                    break;
+                }
+            }
+        }
+        blockCoord.move(x, y, z);
+        return blockCoord;
+    }
+    
+    /**
+     * Get the rotation of the structure with the world coordinates at the 0, 0, 0 coordinate of the structure 
+     * @param world
+     * @param x 
+     * @param y
+     * @param z
+     * @return
+     */
+    public int getStructureRotation(World world, int x, int y, int z) {
+        for(int rotation = 0; rotation<4; rotation++) {
+            Structure structure = new Structure();
+            structure = rotateOnYAxis(rotation);
+            setRotatedSize(rotation);
+            if(structure.doesStructureExistAtCoords(world, x, y, z)) {
+                return rotation;
+            }
+        }
+        return -1;
+    }
+    
+    /**
+     * Get the rotation of the structure with the world coordinates at the coordinates of the given block in the structure 
+     * @param world
+     * @param x 
+     * @param y
+     * @param z
+     * @return
+     */
+    public int getStructureRotation(World world, Block block, int x, int y, int z) {
+        Coordinate3D coord = new Coordinate3D();
+        
+        for(int rotation = 0; rotation<4; rotation++) {
+            Structure structure = new Structure();
+            structure = rotateOnYAxis(rotation);
+            for(IStructureBlock sBlock : structure.getBlocks()) {
+                if(sBlock.getBlock() == block) {
+                    if(sBlock.getMetadata() == world.getBlockMetadata(x+(int)sBlock.getPosition().x, y+(int)sBlock.getPosition().y, z+(int)sBlock.getPosition().z)) {
+                        coord = sBlock.getPosition().clone();
+                    }
+                }
+            }
+            setRotatedSize(rotation);
+            if(structure.doesStructureExistAtCoords(world, x-(int)coord.x, y-(int)coord.y, z-(int)coord.z)) {
+                return rotation;
+            }
+        }
+        return -1;
     }
     
     private void setSize(int length, int height, int width) {
@@ -77,9 +224,9 @@ public class Structure {
     public boolean doesRotatedStructureExistAtCoords(World world, Block block, int x, int y, int z) {
         Coordinate3D coord = new Coordinate3D();
         
-        for(int i = 0; i<4; i++) {
+        for(int rotation = 0; rotation<4; rotation++) {
             Structure structure = new Structure();
-            structure = rotateOnYAxis(i);
+            structure = rotateOnYAxis(rotation);
             for(IStructureBlock sBlock : structure.getBlocks()) {
                 if(sBlock.getBlock() == block) {
                     if(sBlock.getMetadata() == world.getBlockMetadata(x+(int)sBlock.getPosition().x, y+(int)sBlock.getPosition().y, z+(int)sBlock.getPosition().z)) {
@@ -247,29 +394,7 @@ public class Structure {
            }
            newStructure.addBlock(newBlock);
         }
-        
-        this.setRotatedSize(i);
+        setRotatedSize(rotation);
         return newStructure;
-    }
-    
-    private void setRotatedSize(int rotation) {
-        switch(rotation) {           
-               case 0: {
-                   setSize(baseSize[0], baseSize[1], baseSize[2]);
-                   break;
-               }
-               case 1: {
-                   setSize(-baseSize[2], baseSize[1], baseSize[0]);
-                   break;
-               }
-               case 2: {
-                   setSize(-baseSize[0], baseSize[1], -baseSize[2]);
-                   break;
-               }
-               case 3: {
-                   setSize(baseSize[2], baseSize[1], -baseSize[0]);
-                   break;
-               }
-           }
     }
 }

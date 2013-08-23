@@ -11,7 +11,7 @@ import Seremis.SoulCraft.network.PacketTypeHandler;
 import Seremis.SoulCraft.network.packet.PacketTileData;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
-abstract class SCTileMagnetConnector extends TileMagnetConnector {
+public abstract class SCTileMagnetConnector extends TileMagnetConnector {
 
     private String owner;
     private int teDirection;

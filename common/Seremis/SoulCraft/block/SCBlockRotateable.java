@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
 import Seremis.SoulCraft.tileentity.SCTile;
+import Seremis.SoulCraft.tileentity.SCTileMagnetConnector;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -47,6 +48,8 @@ public class SCBlockRotateable extends SCBlock {
             TileEntity tile = world.getBlockTileEntity(x, y, z);
             if(tile != null && tile instanceof SCTile) {
                 ((SCTile)tile).setDirection(direction);
+            } else if(tile != null && tile instanceof SCTileMagnetConnector) {
+                ((SCTileMagnetConnector)tile).setDirection(direction);
             }
         }
     }
@@ -64,6 +67,9 @@ public class SCBlockRotateable extends SCBlock {
             TileEntity tile = blockAccess.getBlockTileEntity(x, y, z);
             if(tile != null && tile instanceof SCTile) {
                 int direction = ((SCTile)tile).getDirection();
+                return getSidedIcons()[getTextureIndex(direction, side)];
+            } else if(tile != null && tile instanceof SCTileMagnetConnector) {
+                int direction = ((SCTileMagnetConnector)tile).getDirection();
                 return getSidedIcons()[getTextureIndex(direction, side)];
             }
         } else {
