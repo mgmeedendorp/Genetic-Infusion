@@ -6,23 +6,25 @@ import java.io.DataInputStream;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import Seremis.SoulCraft.core.lib.DefaultProps;
-import Seremis.SoulCraft.network.packet.PacketSC;
+import Seremis.SoulCraft.network.packet.PacketTileData;
+import Seremis.SoulCraft.network.packet.SCPacket;
 
 public enum PacketTypeHandler {
-    ;
-    private Class<? extends PacketSC> clazz;
+    
+    TILEDATA(PacketTileData.class);
+    private Class<? extends SCPacket> clazz;
 
-    PacketTypeHandler(Class<? extends PacketSC> clazz) {
+    PacketTypeHandler(Class<? extends SCPacket> clazz) {
         this.clazz = clazz;
     }
 
-    public static PacketSC buildPacket(byte[] data) {
+    public static SCPacket buildPacket(byte[] data) {
 
         ByteArrayInputStream bis = new ByteArrayInputStream(data);
         int selector = bis.read();
         DataInputStream dis = new DataInputStream(bis);
 
-        PacketSC packet = null;
+        SCPacket packet = null;
 
         try {
             packet = values()[selector].clazz.newInstance();
@@ -36,8 +38,8 @@ public enum PacketTypeHandler {
         return packet;
     }
 
-    public static PacketSC buildPacket(PacketTypeHandler type) {
-        PacketSC packet = null;
+    public static SCPacket buildPacket(PacketTypeHandler type) {
+        SCPacket packet = null;
 
         try {
             packet = values()[type.ordinal()].clazz.newInstance();
@@ -50,7 +52,7 @@ public enum PacketTypeHandler {
         return packet;
     }
 
-    public static Packet populatePacket(PacketSC packet) {
+    public static Packet populatePacket(SCPacket packet) {
         byte[] data = packet.populate();
 
         Packet250CustomPayload packet250 = new Packet250CustomPayload();

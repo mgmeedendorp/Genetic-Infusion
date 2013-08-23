@@ -4,10 +4,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import Seremis.SoulCraft.api.util.structure.Structure;
+import Seremis.SoulCraft.block.ModBlocks;
 import Seremis.SoulCraft.core.lib.Strings;
 import Seremis.SoulCraft.util.structure.ModStructures;
 
-public class TileStationController extends SCTileEntity implements IInventory, ISidedInventory {
+public class TileStationController extends SCTile implements IInventory, ISidedInventory {
     
     private Structure structure = ModStructures.magnetStation;
     
@@ -17,9 +18,8 @@ public class TileStationController extends SCTileEntity implements IInventory, I
         
     }
 
-    
     public boolean getIsValid() {
-        return structure.doesRotatedStructureExistAtCoords(worldObj, xCoord-2, yCoord, zCoord);
+        return structure.doesRotatedStructureExistAtCoords(worldObj, ModBlocks.stationController, xCoord, yCoord, zCoord);
     }
 
     @Override

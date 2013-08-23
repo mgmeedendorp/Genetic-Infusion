@@ -7,7 +7,6 @@ import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
 
-import Seremis.SoulCraft.block.ModBlocks;
 import Seremis.SoulCraft.client.model.ModelCrystal;
 import Seremis.SoulCraft.client.model.ModelCrystalStand;
 import Seremis.SoulCraft.core.lib.Localizations;
@@ -56,7 +55,7 @@ public class TileCrystalStandRenderer extends TileEntitySpecialRenderer {
             SCRenderHelper.bindTexture(Localizations.LOC_MODEL_TEXTURES + Localizations.BLANK);
             Random rand = new Random(tco.xCoord + tco.yCoord * tco.zCoord);
             try {
-                if(tco.inv != null && tco.getStackInSlot(0) != null && tco.getStackInSlot(0).itemID == ModBlocks.crystal.blockID) {
+                if(tco.hasCrystal()) {
                     renderCrystal(tco, (float) x, (float) y, (float) z, rand, 0.6F);
                 }
             } catch(Exception ex) {

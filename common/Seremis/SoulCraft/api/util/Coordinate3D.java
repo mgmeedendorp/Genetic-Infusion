@@ -52,6 +52,12 @@ public class Coordinate3D implements Cloneable {
         this.y = y;
         this.z = z;
     }
+    
+    public void setCoords(TileEntity tile) {
+        this.x = tile.xCoord;
+        this.y = tile.yCoord;
+        this.z = tile.zCoord;
+    }
 
     public void move(double x, double y, double z) {
         this.x =+x;
@@ -87,6 +93,14 @@ public class Coordinate3D implements Cloneable {
         return new Coordinate3D(x, y, z);
     }
     
+    @Override
+    public boolean equals(Object o) {
+        if(o instanceof Coordinate3D) {
+            return equals((Coordinate3D)o);
+        }
+        return false;
+    }
+    
     public boolean equals(Coordinate3D coord) {
         if(x == coord.x && y == coord.y && z == coord.z)
             return true;
@@ -100,12 +114,5 @@ public class Coordinate3D implements Cloneable {
     @Override
     public String toString() {
         return "Coordinate3D[x: "+x+" y: "+y+" z: "+z+"]";
-    }
-
-    public void swapXZCoords() {
-        double oldX = this.x;
-        double oldZ = this.z;
-        this.x = oldZ;
-        this.z = oldX;
     }
 }

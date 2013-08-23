@@ -7,7 +7,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import Seremis.SoulCraft.core.lib.RenderIds;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
-import Seremis.SoulCraft.item.ModItems;
 import Seremis.SoulCraft.tileentity.TileCrystalStand;
 import Seremis.SoulCraft.util.UtilBlock;
 
@@ -24,26 +23,21 @@ public class BlockCrystalStand extends SCBlock {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
         super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
+        if(CommonProxy.proxy.isRenderWorld(world)) return true;
         TileCrystalStand tile = (TileCrystalStand) (world.getBlockTileEntity(x, y, z));
         ItemStack currPlayerItem = player.getCurrentEquippedItem();
-        ItemStack currStack = tile.getStackInSlot(0);
-        if(currPlayerItem != null && currPlayerItem.itemID == ModItems.thermometer.itemID) {
-            return false;
+        boolean hasCrystal = tile.hasCrystal();
+        
+        if(!hasCrystal && currPlayerItem != null && currPlayerItem.itemID == ModBlocks.crystal.blockID) {
+            tile.setHasCrystal(true);
+            currPlayerItem.stackSize--;
+            return true;
         }
-        if(currPlayerItem != null && tile != null && currStack == null && currPlayerItem.itemID == ModBlocks.crystal.blockID) {
-            tile.setInventorySlotContents(0, new ItemStack(ModBlocks.crystal, 1));
-            player.getCurrentEquippedItem().stackSize--;
-            world.markBlockForRenderUpdate(x, y, z);
+        if(hasCrystal) {
+            tile.setHasCrystal(false);
+            UtilBlock.dropItemInWorld(x, y, z, world, new ItemStack(ModBlocks.crystal, 1));
+            return true;
         }
-        if(tile != null && currStack != null && currPlayerItem == null) {
-            tile.setInventorySlotContents(0, null);
-            if(CommonProxy.proxy.isServerWorld(world)) {
-                if(currStack != null && currStack.stackSize > 0) {
-                    UtilBlock.dropItemsFromTile(world, x, y, z, 0);
-                }
-            }
-        }
-        world.markBlockForRenderUpdate(x, y, z);
         return true;
     }
 
@@ -62,7 +56,10 @@ public class BlockCrystalStand extends SCBlock {
 
     @Override
     public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
-        UtilBlock.dropItemsFromTile(world, x, y, z);
+        TileCrystalStand tile = (TileCrystalStand) (world.getBlockTileEntity(x, y, z));
+        if(tile.hasCrystal()) {
+            UtilBlock.dropItemInWorld(x, y, z, world, new ItemStack(ModBlocks.crystal, 1));
+        }
         super.breakBlock(world, x, y, z, par5, par6);
     }
 

@@ -1,21 +1,15 @@
 package Seremis.SoulCraft.tileentity;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ForgeDirection;
 import Seremis.SoulCraft.api.magnet.tile.IMagnetConnector;
-import Seremis.SoulCraft.api.magnet.tile.TileMagnetConnector;
 import Seremis.SoulCraft.api.util.Coordinate3D;
-import Seremis.SoulCraft.block.ModBlocks;
-import Seremis.SoulCraft.util.UtilTileEntity;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileCrystalStand extends TileMagnetConnector implements IInventory {
+public class TileCrystalStand extends SCTileMagnetConnector {
 
-    public ItemStack[] inv = new ItemStack[1];
+    private int hasCrystal = 0;
 
     @Override
     public boolean connectToSide(ForgeDirection direction) {
@@ -29,7 +23,7 @@ public class TileCrystalStand extends TileMagnetConnector implements IInventory 
 
     @Override
     public boolean canConnect() {
-        return inv[0] != null && inv[0].itemID == ModBlocks.crystal.blockID;
+        return hasCrystal==1;
     }
 
     @Override
@@ -58,89 +52,28 @@ public class TileCrystalStand extends TileMagnetConnector implements IInventory 
     @Override
     public void updateEntity() {
         super.updateEntity();
-        if(getStackInSlot(0) == null || getStackInSlot(0).stackSize == 0) {
+        if(hasCrystal==0) {
             this.heat = 0;
         }
     }
 
-    @Override
-    public int getSizeInventory() {
-        return inv.length;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int slot) {
-        return inv[slot];
-    }
-
-    @Override
-    public ItemStack decrStackSize(int slot, int amount) {
-        ItemStack stack = getStackInSlot(slot);
-        if(stack != null) {
-            if(stack.stackSize <= amount) {
-                setInventorySlotContents(slot, null);
-            } else {
-                stack = stack.splitStack(amount);
-                if(stack.stackSize <= 0) {
-                    setInventorySlotContents(slot, null);
-                }
-            }
-        }
-        return stack;
-    }
-
-    @Override
-    public ItemStack getStackInSlotOnClosing(int slot) {
-        return inv[slot];
-    }
-
-    @Override
-    public void setInventorySlotContents(int slot, ItemStack stack) {
-        inv[slot] = stack;
-        if(stack != null && stack.stackSize > getInventoryStackLimit()) {
-            stack.stackSize = getInventoryStackLimit();
-        }
-    }
-
-    @Override
-    public String getInvName() {
-        return "Crystal Stand";
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 1;
-    }
-
-    @Override
-    public void openChest() {}
-
-    @Override
-    public void closeChest() {}
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
-        return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == this && player.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64;
-    }
-
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        inv = UtilTileEntity.readInventoryFromNBT(this, compound);
+        hasCrystal = compound.getInteger("hasCrystal");
     }
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        UtilTileEntity.writeInventoryToNBT(this, compound);
+        compound.setInteger("hasCrystal", hasCrystal);
     }
-
-    @Override
-    public boolean isInvNameLocalized() {
-        return false;
+    
+    public void setHasCrystal(boolean hasCrystal) {
+        this.hasCrystal = hasCrystal? 1:0;
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
-
-    @Override
-    public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-        return false;
-    }
+    
+    public boolean hasCrystal() {
+        return hasCrystal==1;
+    } 
 }

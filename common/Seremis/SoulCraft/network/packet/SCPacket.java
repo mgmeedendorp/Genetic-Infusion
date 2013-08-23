@@ -9,12 +9,12 @@ import net.minecraft.network.INetworkManager;
 import Seremis.SoulCraft.network.PacketTypeHandler;
 import cpw.mods.fml.common.network.Player;
 
-public abstract class PacketSC {
+public abstract class SCPacket {
 
     public PacketTypeHandler packetType;
     public boolean isChunkDataPacket;
 
-    public PacketSC(PacketTypeHandler packetType, boolean isChunkDataPacket) {
+    public SCPacket(PacketTypeHandler packetType, boolean isChunkDataPacket) {
         this.packetType = packetType;
         this.isChunkDataPacket = isChunkDataPacket;
     }

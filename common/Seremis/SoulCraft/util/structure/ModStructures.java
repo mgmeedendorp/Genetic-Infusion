@@ -1,55 +1,24 @@
 package Seremis.SoulCraft.util.structure;
 
+import net.minecraft.block.Block;
 import Seremis.SoulCraft.api.util.Coordinate3D;
 import Seremis.SoulCraft.api.util.structure.Structure;
 import Seremis.SoulCraft.api.util.structure.StructureBlock;
 import Seremis.SoulCraft.block.ModBlocks;
 
 public class ModStructures {
-
-    public static Structure magnetStation = new Structure();
     
-    public static void init() {
-        for(int i=0; i<5; i++) {
-            for(int j = 0; j<3; j++) {
-                if(i != 2 && j != 0) 
-                magnetStation.addBlock(new StructureBlock(ModBlocks.titaniumBrick, 0, new Coordinate3D(i, 0, j)));
-            }
-        }
-        magnetStation.addBlock(new StructureBlock(ModBlocks.stationController, 0, new Coordinate3D(2, 0, 0)));
-        
-        magnetStation.addBlock(new StructureBlock(ModBlocks.titaniumBrick, 0, new Coordinate3D(0, 1, 0)));
-        magnetStation.addBlock(new StructureBlock(ModBlocks.titaniumBrick, 0, new Coordinate3D(0, 2, 0)));
-        magnetStation.addBlock(new StructureBlock(ModBlocks.titaniumBrick, 0, new Coordinate3D(4, 1, 0)));
-        magnetStation.addBlock(new StructureBlock(ModBlocks.titaniumBrick, 0, new Coordinate3D(4, 2, 0)));
-        magnetStation.addBlock(new StructureBlock(ModBlocks.titaniumBrick, 0, new Coordinate3D(0, 1, 2)));
-        magnetStation.addBlock(new StructureBlock(ModBlocks.titaniumBrick, 0, new Coordinate3D(0, 2, 2)));
-        magnetStation.addBlock(new StructureBlock(ModBlocks.titaniumBrick, 0, new Coordinate3D(4, 1, 2)));
-        magnetStation.addBlock(new StructureBlock(ModBlocks.titaniumBrick, 0, new Coordinate3D(4, 2, 2)));
-        magnetStation.addBlock(new StructureBlock(ModBlocks.titaniumBrick, 0, new Coordinate3D(0, 3, 1)));
-        magnetStation.addBlock(new StructureBlock(ModBlocks.titaniumBrick, 0, new Coordinate3D(4, 3, 1)));
-        
-        magnetStation.addBlock(new StructureBlock(ModBlocks.connectedGlass, 0, new Coordinate3D(1, 1, 0)));
-        magnetStation.addBlock(new StructureBlock(ModBlocks.connectedGlass, 0, new Coordinate3D(1, 2, 0)));
-        magnetStation.addBlock(new StructureBlock(ModBlocks.connectedGlass, 0, new Coordinate3D(2, 1, 0)));
-        magnetStation.addBlock(new StructureBlock(ModBlocks.connectedGlass, 0, new Coordinate3D(2, 2, 0)));
-        magnetStation.addBlock(new StructureBlock(ModBlocks.connectedGlass, 0, new Coordinate3D(3, 1, 0)));
-        magnetStation.addBlock(new StructureBlock(ModBlocks.connectedGlass, 0, new Coordinate3D(3, 2, 0)));
-        
-        magnetStation.addBlock(new StructureBlock(ModBlocks.connectedGlass, 0, new Coordinate3D(1, 1, 2)));
-        magnetStation.addBlock(new StructureBlock(ModBlocks.connectedGlass, 0, new Coordinate3D(1, 2, 2)));
-        magnetStation.addBlock(new StructureBlock(ModBlocks.connectedGlass, 0, new Coordinate3D(2, 1, 2)));
-        magnetStation.addBlock(new StructureBlock(ModBlocks.connectedGlass, 0, new Coordinate3D(2, 2, 2)));
-        magnetStation.addBlock(new StructureBlock(ModBlocks.connectedGlass, 0, new Coordinate3D(3, 1, 2)));
-        magnetStation.addBlock(new StructureBlock(ModBlocks.connectedGlass, 0, new Coordinate3D(3, 2, 2)));
-        
-        magnetStation.addBlock(new StructureBlock(ModBlocks.connectedGlass, 0, new Coordinate3D(1, 3, 1)));
-        magnetStation.addBlock(new StructureBlock(ModBlocks.connectedGlass, 0, new Coordinate3D(2, 3, 1)));
-        magnetStation.addBlock(new StructureBlock(ModBlocks.connectedGlass, 0, new Coordinate3D(3, 3, 1)));
+    public static Structure magnetStation = new Structure();
+    public static int[] listX = new int[]{0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 1, 2, 0, 2, 0, 1, 2, 0, 2, 0, 1, 2, 0, 2, 0, 1, 2};
+    public static int[] listY = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 1, 1, 2, 2, 2, 1, 1, 2, 2, 2, 1, 1, 2, 2, 2};
+    public static int[] listZ = new int[]{0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3};
+    public static Block[] blockList = new Block[]{ModBlocks.titaniumBrick, ModBlocks.titaniumBrick, ModBlocks.titaniumBrick, ModBlocks.titaniumBrick, ModBlocks.titaniumBrick, ModBlocks.titaniumBrick, ModBlocks.titaniumBrick, ModBlocks.titaniumBrick ,ModBlocks.titaniumBrick, ModBlocks.titaniumBrick, ModBlocks.titaniumBrick ,ModBlocks.titaniumBrick, ModBlocks.titaniumBrick, ModBlocks.stationController, ModBlocks.titaniumBrick, ModBlocks.titaniumBrick, ModBlocks.titaniumBrick, ModBlocks.titaniumBrick, ModBlocks.connectedGlass, ModBlocks.connectedGlass, ModBlocks.connectedGlass, ModBlocks.connectedGlass, ModBlocks.connectedGlass, ModBlocks.connectedGlass, ModBlocks.connectedGlass, ModBlocks.connectedGlass, ModBlocks.connectedGlass, ModBlocks.connectedGlass, ModBlocks.titaniumBrick, ModBlocks.titaniumBrick, ModBlocks.titaniumBrick, ModBlocks.connectedGlass, ModBlocks.titaniumBrick};     
 
-        magnetStation.addBlock(new StructureBlock(ModBlocks.connectedGlass, 0, new Coordinate3D(0, 2, 1)));
-        magnetStation.addBlock(new StructureBlock(ModBlocks.connectedGlass, 0, new Coordinate3D(4, 2, 1)));
+    public static void init() {
         
-        magnetStation.setSize(5, 3, 4);
+        for(int i = 0; i<blockList.length; i++) {
+            magnetStation.addBlock(new StructureBlock(blockList[i], 0, new Coordinate3D(listX[i], listY[i], listZ[i])));
+        }
+        magnetStation.addBlock(new StructureBlockCrystalStand(new Coordinate3D(1, 1, 3)));
     }
 }

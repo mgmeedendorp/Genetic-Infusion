@@ -6,8 +6,12 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
+import Seremis.SoulCraft.core.proxy.CommonProxy;
+import Seremis.SoulCraft.network.PacketTypeHandler;
+import Seremis.SoulCraft.network.packet.PacketTileData;
+import cpw.mods.fml.common.network.PacketDispatcher;
 
-public class SCTileEntity extends TileEntity {
+public class SCTile extends TileEntity {
 
     private String owner;
     private int teDirection;
@@ -69,5 +73,16 @@ public class SCTileEntity extends TileEntity {
         NBTTagCompound var1 = new NBTTagCompound();
         writeToNBT(var1);
         return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 1, var1);
+    }
+    
+    public void sendTileData(int id, int data) {
+        if(CommonProxy.proxy.isRenderWorld(worldObj)) {
+            PacketDispatcher.sendPacketToServer(PacketTypeHandler.populatePacket(new PacketTileData(data, id, this.xCoord, this.yCoord, this.zCoord)));
+        }
+        else this.setTileData(id, data);
+    }
+
+    public void setTileData(int id, int data){
+
     }
 }

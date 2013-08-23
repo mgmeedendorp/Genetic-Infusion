@@ -1,11 +1,14 @@
 package Seremis.SoulCraft.api.util.structure;
 
 import net.minecraft.block.Block;
+import net.minecraft.world.World;
 import Seremis.SoulCraft.api.util.Coordinate3D;
 
 public interface IStructureBlock {
 
     public Block getBlock();
+    
+    public boolean canFormStructure(Structure structure, World world, int x, int y, int z);
     
     /**
      * The metadata value of the block used in the structure
@@ -20,4 +23,6 @@ public interface IStructureBlock {
     Coordinate3D getPosition();
 
     void setPosition(Coordinate3D position);
+    
+    IStructureBlock copy();
 }

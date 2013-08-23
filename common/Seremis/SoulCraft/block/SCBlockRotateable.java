@@ -10,7 +10,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
-import Seremis.SoulCraft.tileentity.SCTileEntity;
+import Seremis.SoulCraft.tileentity.SCTile;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -45,8 +45,8 @@ public class SCBlockRotateable extends SCBlock {
         world.setBlockMetadataWithNotify(x, y, z, direction-2, 3);
         if(useTile && CommonProxy.proxy.isServerWorld(world)) {
             TileEntity tile = world.getBlockTileEntity(x, y, z);
-            if(tile != null && tile instanceof SCTileEntity) {
-                ((SCTileEntity)tile).setDirection(direction);
+            if(tile != null && tile instanceof SCTile) {
+                ((SCTile)tile).setDirection(direction);
             }
         }
     }
@@ -62,8 +62,8 @@ public class SCBlockRotateable extends SCBlock {
     public Icon getBlockTexture(IBlockAccess blockAccess, int x, int y, int z, int side) {
         if(useTile) {
             TileEntity tile = blockAccess.getBlockTileEntity(x, y, z);
-            if(tile != null && tile instanceof SCTileEntity) {
-                int direction = ((SCTileEntity)tile).getDirection();
+            if(tile != null && tile instanceof SCTile) {
+                int direction = ((SCTile)tile).getDirection();
                 return getSidedIcons()[getTextureIndex(direction, side)];
             }
         } else {

@@ -48,6 +48,9 @@ public class TileBushRenderer extends TileEntitySpecialRenderer {
             case 5:
                 model5.render();
                 break;
+            default:
+                model1.render();
+                break;
         }
         GL11.glPopMatrix();
     }

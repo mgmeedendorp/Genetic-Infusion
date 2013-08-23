@@ -1,10 +1,11 @@
 package Seremis.SoulCraft.gui;
 
+import net.minecraft.inventory.Container;
+
 import org.lwjgl.opengl.GL11;
 
 import Seremis.SoulCraft.core.lib.Localizations;
 import Seremis.SoulCraft.helper.SCRenderHelper;
-import net.minecraft.inventory.Container;
 
 public class GuiContainerStation extends SCGui {
 

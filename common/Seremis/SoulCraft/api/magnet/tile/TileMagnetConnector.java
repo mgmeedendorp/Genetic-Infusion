@@ -41,6 +41,7 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
 
     public void linkUpdate() {
         World world = worldObj;
+        if(world.isRemote) return;
         if(canConnect()) {
             for(int x = (int) (-1 * getRange()); x <= getRange(); x++) {
                 for(int y = (int) (-1 * getRange()); y <= getRange(); y++) {

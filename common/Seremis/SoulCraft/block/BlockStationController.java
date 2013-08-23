@@ -21,8 +21,11 @@ public class BlockStationController extends SCBlockRotateable {
         if(player.isSneaking()){
             return false;
         }
-        if(multiblockCheck(world, x, y, z)) {
-            
+        if(CommonProxy.proxy.isServerWorld(world)) {
+            TileStationController tile = (TileStationController) world.getBlockTileEntity(x, y, z);
+            if(multiblockCheck(world, x, y, z)) {
+                tile.initiateMultiblock();
+            }
         }
         return true;
     }

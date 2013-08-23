@@ -10,7 +10,7 @@ import Seremis.SoulCraft.item.ItemTransporterModules;
 import Seremis.SoulCraft.item.ModItems;
 import Seremis.SoulCraft.util.UtilTileEntity;
 
-public class TileTransporter extends SCTileEntity implements IInventory, ISidedInventory {
+public class TileTransporter extends SCTile implements IInventory, ISidedInventory {
 
     private ItemStack[] inv = new ItemStack[12];
 

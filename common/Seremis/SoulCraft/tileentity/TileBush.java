@@ -3,14 +3,12 @@ package Seremis.SoulCraft.tileentity;
 import java.util.Random;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
+import Seremis.SoulCraft.block.ModBlocks;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
 import Seremis.SoulCraft.misc.bush.BushManager;
 import Seremis.SoulCraft.misc.bush.BushType;
 
-public class TileBush extends SCTileEntity {
+public class TileBush extends SCTile {
 
     private int stage = 1;
     private BushType type;
@@ -24,7 +22,25 @@ public class TileBush extends SCTileEntity {
             if(stage <= type.getMaxStage()) {
                 this.stage = stage;
                 worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                worldObj.addBlockEvent(xCoord, yCoord, zCoord, ModBlocks.bushBerry.blockID, 1, stage);
             }
+        }
+        else sendTileData(0, stage);
+    }
+    
+    public boolean receiveClientEvent(int id, int data) {
+        if (id == 1) {
+            this.stage = data;
+            return true;
+        } else {
+            return super.receiveClientEvent(id, data);
+        }
+    }
+    
+    @Override
+    public void setTileData(int id, int data) {
+        if(id == 0) {
+            this.setStage(data);
         }
     }
 
@@ -36,6 +52,7 @@ public class TileBush extends SCTileEntity {
             updateStage();
             System.out.println(stage);
         }
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
     
     @Override
@@ -61,17 +78,5 @@ public class TileBush extends SCTileEntity {
     public void updateStage() {
         if(stage<type.getMaxStage())
         setStage(stage+1);
-    }
-    
-    @Override
-    public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
-        readFromNBT(packet.customParam1);
-    }
-
-    @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound compound = new NBTTagCompound();
-        writeToNBT(compound);
-        return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 1, compound);
     }
 }

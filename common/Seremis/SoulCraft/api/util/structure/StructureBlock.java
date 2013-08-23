@@ -1,6 +1,7 @@
 package Seremis.SoulCraft.api.util.structure;
 
 import net.minecraft.block.Block;
+import net.minecraft.world.World;
 import Seremis.SoulCraft.api.util.Coordinate3D;
 
 public class StructureBlock implements IStructureBlock {
@@ -41,5 +42,15 @@ public class StructureBlock implements IStructureBlock {
     @Override
     public void setPosition(Coordinate3D position) {
         this.position = position;
+    }
+    
+    @Override
+    public IStructureBlock copy() {
+        return new StructureBlock(getBlock(), getMetadata(), getPosition());
+    }
+
+    @Override
+    public boolean canFormStructure(Structure structure, World world, int x, int y, int z) {
+        return true;
     }
 }
