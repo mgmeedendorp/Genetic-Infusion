@@ -15,6 +15,7 @@ public class Structure {
     protected int length;
     protected int width;
     protected int height;
+    protected int baseSize = {4, 3, 3};
     
     public Structure(IStructureBlock... block) {
         blocks.addAll(Arrays.asList(block));
@@ -23,39 +24,6 @@ public class Structure {
     public void addBlock(IStructureBlock block) {
         blocks.add(block);
         calculateSize();
-    }
-    
-    private void calculateSize() {
-        int maxX = 0;
-        int maxY = 0;
-        int maxZ = 0;
-        for(IStructureBlock block : blocks) {
-            if(Math.abs(block.getPosition().x) > Math.abs(maxX)) {
-                maxX = (int) block.getPosition().x;
-            }
-            if(Math.abs(block.getPosition().y) > Math.abs(maxY)) {
-                maxY = (int) block.getPosition().y;
-            }
-            if(Math.abs(block.getPosition().z) > Math.abs(maxZ)) {
-                maxZ = (int) block.getPosition().z;
-            }
-        }
-        if(maxX < 0) {
-            maxX -=1;
-        } else {
-            maxX +=1;
-        }
-        if(maxY < 0) {
-            maxY -=-1;
-        } else {
-            maxY +=1;
-        }
-        if(maxZ < 0) {
-            maxZ -=1;
-        } else {
-            maxZ +=1;
-        }
-        setSize(maxX, maxY, maxZ);
     }
     
     /** 
@@ -121,6 +89,7 @@ public class Structure {
                 }
             }
             if(structure.doesStructureExistAtCoords(world, x-(int)coord.x, y-(int)coord.y, z-(int)coord.z)) {
+                this.setRotatedSize(i);
                 return true;
             }
         }
@@ -281,5 +250,26 @@ public class Structure {
            newStructure.addBlock(newBlock);
         }
         return newStructure;
+    }
+    
+    private void setRotatedSize(int rotation) {
+        switch(rotation) {           
+               case 0: {
+                   setSize(baseSize[0], baseSize[1], baseSize[2]);
+                   break;
+               }
+               case 1: {
+                   setSize(-baseSize[2], baseSize[1], baseSize[0]);
+                   break;
+               }
+               case 2: {
+                   setSize(-baseSize[0], baseSize[1], -baseSize[2]);
+                   break;
+               }
+               case 3: {
+                   setSize(baseSize[2], baseSize[1], -baseSize[0]);
+                   break;
+               }
+           }
     }
 }
