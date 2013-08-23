@@ -88,7 +88,6 @@ public class Structure {
                 }
             }
             if(structure.doesStructureExistAtCoords(world, x-(int)coord.x, y-(int)coord.y, z-(int)coord.z)) {
-                this.setRotatedSize(i);
                 return true;
             }
         }
@@ -248,6 +247,8 @@ public class Structure {
            }
            newStructure.addBlock(newBlock);
         }
+        
+        this.setRotatedSize(i);
         return newStructure;
     }
     
