@@ -15,7 +15,7 @@ public class Structure {
     protected int length;
     protected int width;
     protected int height;
-    protected int baseSize = {4, 3, 3};
+    protected int baseSize = {3, 3, 4};
     
     public Structure(IStructureBlock... block) {
         blocks.addAll(Arrays.asList(block));
@@ -23,7 +23,6 @@ public class Structure {
     
     public void addBlock(IStructureBlock block) {
         blocks.add(block);
-        calculateSize();
     }
     
     /** 
