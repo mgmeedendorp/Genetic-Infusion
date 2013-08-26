@@ -15,23 +15,17 @@ public class MagnetLinkHelper {
     public static MagnetLinkHelper instance = new MagnetLinkHelper();
     
     private List<MagnetLink> registeredMap = new ArrayList<MagnetLink>();
-
-    public boolean modification = false;
     
     public void addLink(MagnetLink link) {
         if(link != null && link.connector1 != null && link.connector2 != null && link.connector1 != link.connector2 && !doesLinkExist(link)) {
             if(checkConditions(link)) {
-                modification = true;
                 registeredMap.add(link);
-                modification = false;
             }
         }
     }
 
     public void removeLink(MagnetLink link) {
-        modification = true;
         registeredMap.remove(link);
-        modification = false;
     }
 
     public void removeAllLinksFrom(IMagnetConnector connector) {
@@ -39,9 +33,7 @@ public class MagnetLinkHelper {
         while(it.hasNext()) {
             MagnetLink link = it.next();
             if(link.connector1 == connector || link.connector2 == connector) {
-                modification = true;
                 it.remove();
-                modification = false;
             }
         }
     }
@@ -87,12 +79,12 @@ public class MagnetLinkHelper {
             return false;
         Line3D line = new Line3D();
         line.setLineFromTile(connector1.getTile(), connector2.getTile());
-        if(connector1.canConnect() && connector2.canConnect()) {
+        
+        MagnetLink link = new MagnetLink(connector1, connector2);
+        if(connector1.canConnect(link) && connector2.canConnect(link)) {
             if(line.getLength() <= connector1.getRange() && line.getLength() <= connector2.getRange()) {
                 if(!doesLinkExist(connector1, connector2)) {
-                    if(connector1.connectToSide(line.getSide(connector1.getTile())) && connector2.connectToSide(line.getSide(connector2.getTile()))) {
-                        return true;
-                    }
+                    return true;
                 }
             }
         }
@@ -119,11 +111,37 @@ public class MagnetLinkHelper {
     @SideOnly(Side.CLIENT)
     public void renderLinks() {
         if(FMLClientHandler.instance().getClient().inGameHasFocus) {
-            List<MagnetLink> links = getAllLinks();
-            if(links != null && !modification) {
+            List<MagnetLink> links = new ArrayList<MagnetLink>();
+            for(MagnetLink link : getAllLinks()) {
+                links.add(link);
+            }
+            if(links != null) {
                 for(MagnetLink link : links) {
                     link.render();
                 }
+            }
+        }
+    }
+    
+    public List<IMagnetConnector> getAllConnectors() {
+        List<IMagnetConnector> connectors = new ArrayList<IMagnetConnector>();
+        for(MagnetLink link : getAllLinks()) {
+            if(!connectors.contains(link.connector1))
+            connectors.add(link.connector1);
+            if(!connectors.contains(link.connector2))
+            connectors.add(link.connector2);
+        }
+        return connectors;
+    }
+    
+    public void tick() {
+        List<MagnetLink> copy = new ArrayList<MagnetLink>();
+        for(MagnetLink link : getAllLinks()) {
+            copy.add(link);
+        }
+        for(MagnetLink link : copy) {
+            if(!link.isConnectionPossible()) {
+                this.removeLink(link);
             }
         }
     }

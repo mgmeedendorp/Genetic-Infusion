@@ -50,7 +50,7 @@ public class StructureBlock implements IStructureBlock {
     }
 
     @Override
-    public boolean canFormStructure(Structure structure, World world, int x, int y, int z) {
+    public boolean canFormStructure(StructureMap structureMap, World world, int x, int y, int z) {
         return true;
     }
 }

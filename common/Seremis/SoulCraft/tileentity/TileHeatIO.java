@@ -1,7 +1,6 @@
 package Seremis.SoulCraft.tileentity;
 
 import net.minecraft.block.Block;
-import net.minecraftforge.common.ForgeDirection;
 import Seremis.SoulCraft.api.magnet.tile.TileMagnetHeater;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
 
@@ -10,11 +9,6 @@ public class TileHeatIO extends TileMagnetHeater {
     private long currTime = 0;
     private long lastUpdateTick = 0;
     private long ticksBeforeUpdate = 20;
-
-    @Override
-    public boolean connectToSide(ForgeDirection direction) {
-        return true;
-    }
     
     @Override
     public void updateEntity() {

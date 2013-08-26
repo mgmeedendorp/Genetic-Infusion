@@ -21,12 +21,16 @@ public class MagnetLink {
     }
 
     public boolean isConnectionPossible() {
-        if(connector1.canConnect() && connector2.canConnect() && !connector1.getTile().isInvalid() && !connector2.getTile().isInvalid()) {
+        if(connector1.canConnect(this) && connector2.canConnect(this) && !connector1.getTile().isInvalid() && !connector2.getTile().isInvalid()) {
             return true;
         }
         return false;
     }
 
+    public IMagnetConnector getOther(IMagnetConnector connector) {
+        return connector == connector1 ? connector2 : connector1;
+    }
+    
     @SideOnly(Side.CLIENT)
     public void render() {
         Coordinate3D from = new Coordinate3D(connector1.getTile());
@@ -77,5 +81,10 @@ public class MagnetLink {
             return -1;
         }
         return 0;
+    }
+    
+    @Override
+    public String toString() {
+        return "MagnetLink["+connector1.toString()+ " " +connector2.toString()+ "]";
     }
 }

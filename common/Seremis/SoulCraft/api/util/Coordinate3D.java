@@ -53,16 +53,33 @@ public class Coordinate3D implements Cloneable {
         this.z = z;
     }
     
-    public void setCoords(TileEntity tile) {
+    public Coordinate3D setCoords(TileEntity tile) {
         this.x = tile.xCoord;
         this.y = tile.yCoord;
         this.z = tile.zCoord;
+        return this;
     }
 
-    public void move(double x, double y, double z) {
-        this.x =+x;
-        this.y =+y;
-        this.z =+z;
+    public Coordinate3D move(double x, double y, double z) {
+        this.x +=x;
+        this.y +=y;
+        this.z +=z;
+        return this;
+    }
+    
+    public Coordinate3D move(Coordinate3D coord) {
+        return move(coord.x, coord.y, coord.z);
+    }
+    
+    public Coordinate3D moveBack(double x, double y, double z) {
+        this.x -=x;
+        this.y -=y;
+        this.z -=z;
+        return this;
+    }
+    
+    public Coordinate3D moveBack(Coordinate3D coord) {
+        return moveBack(coord.x, coord.y, coord.z);
     }
     
     public int[] toArray() {

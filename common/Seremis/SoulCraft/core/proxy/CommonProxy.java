@@ -4,7 +4,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import Seremis.SoulCraft.api.util.Coordinate3D;
 import Seremis.SoulCraft.core.lib.Localizations;
+import Seremis.SoulCraft.handler.ServerTickHandler;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.registry.TickRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 public class CommonProxy {
     
@@ -29,7 +32,9 @@ public class CommonProxy {
         return "";
     }
 
-    public void registerHandlers() {}
+    public void registerHandlers() {
+        TickRegistry.registerTickHandler(new ServerTickHandler(), Side.SERVER);
+    }
 
     public void renderBeam(World world, Coordinate3D position, Coordinate3D target, int heatAtCoord1, int heatAtCoord2) {}
 }

@@ -42,27 +42,14 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
     public void linkUpdate() {
         World world = worldObj;
         if(world.isRemote) return;
-        if(canConnect()) {
-            for(int x = (int) (-1 * getRange()); x <= getRange(); x++) {
-                for(int y = (int) (-1 * getRange()); y <= getRange(); y++) {
-                    for(int z = (int) (-1 * getRange()); z <= getRange(); z++) {
-                        TileEntity tile = world.getBlockTileEntity(xCoord + x, yCoord + y, zCoord + z);
-                        if(tile != null && tile instanceof IMagnetConnector && tile != this) {
-                            MagnetLink link = new MagnetLink(this, (IMagnetConnector) tile);
-                            MagnetLinkHelper.instance.addLink(link);
-                        }
+        for(int x = (int) (-1 * getRange()); x <= getRange(); x++) {
+            for(int y = (int) (-1 * getRange()); y <= getRange(); y++) {
+                for(int z = (int) (-1 * getRange()); z <= getRange(); z++) {
+                    TileEntity tile = world.getBlockTileEntity(xCoord + x, yCoord + y, zCoord + z);
+                    if(tile != null && tile instanceof IMagnetConnector && tile != this) {
+                        MagnetLink link = new MagnetLink(this, (IMagnetConnector) tile);
+                        MagnetLinkHelper.instance.addLink(link);
                     }
-                }
-            }
-        } else {
-            MagnetLinkHelper.instance.removeAllLinksFrom(this);
-            return;
-        }
-        List<MagnetLink> links = this.getLinks();
-        if(links != null) {
-            for(MagnetLink link : links) {
-                if(!link.isConnectionPossible()) {
-                    MagnetLinkHelper.instance.removeLink(link);
                 }
             }
         }
@@ -93,7 +80,7 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
     }
 
     @Override
-    public boolean canConnect() {
+    public boolean canConnect(MagnetLink link) {
         return true;
     }
 

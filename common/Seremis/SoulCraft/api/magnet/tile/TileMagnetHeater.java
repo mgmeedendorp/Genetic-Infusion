@@ -1,19 +1,14 @@
 package Seremis.SoulCraft.api.magnet.tile;
 
-import net.minecraftforge.common.ForgeDirection;
+import Seremis.SoulCraft.api.magnet.MagnetLink;
 
 public abstract class TileMagnetHeater extends TileMagnetConnector implements IMagnetHeater {
 
     @Override
-    public boolean connectToSide(ForgeDirection direction) {
-        return false;
+    public boolean canConnect(MagnetLink link) {
+        return !(link.getOther(this) instanceof IMagnetHeater);
     }
     
-    @Override
-    public boolean connectToConnector(IMagnetConnector connector) {
-        return !(connector instanceof IMagnetHeater);
-    }
-
     @Override
     public int importHeat(int heat) {
         return warm(heat);
