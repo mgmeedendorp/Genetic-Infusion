@@ -46,7 +46,7 @@ public class StructureBlock implements IStructureBlock {
     
     @Override
     public IStructureBlock copy() {
-        return new StructureBlock(getBlock(), getMetadata(), getPosition());
+        return new StructureBlock(block, metadata, position.clone());
     }
 
     @Override

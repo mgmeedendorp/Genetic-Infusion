@@ -19,11 +19,11 @@ public class Structure {
     
     private boolean initiated = false;
     
-    private int length;
-    private int width;
-    private int height;
+    private int length = initiated? structureMap.getLength():0;
+    private int width = initiated? structureMap.getWidth():0;
+    private int height = initiated? structureMap.getHeight():0;
     
-    private IStructureChangeReceiver changeReceiver;
+    private List<IStructureChangeReceiver> changeReceiver = new ArrayList<IStructureChangeReceiver>();
     
     public Structure(StructureMap structureMap) {
         this.structureMap = structureMap;
@@ -34,11 +34,10 @@ public class Structure {
         this.baseBlockCoords = blockPosition;
         this.baseBlock = new StructureBlock(baseBlock, metadata);
         initiated = true;
-        calculateSize();
     }
     
     public void notifyChangesTo(IStructureChangeReceiver scr) {
-        changeReceiver = scr;
+        changeReceiver.add(scr);
     }
     
     private void calculateBaseCoordinates(int rotation) {
@@ -46,74 +45,37 @@ public class Structure {
             Coordinate3D blockCoordinate = baseBlockCoords.clone();
             Coordinate3D blockCoordinate2 = structureMap.getBlockCoordinates(baseBlock).get(0);
             rotateOnYAxis(blockCoordinate2, rotation);
-            System.out.println(blockCoordinate2 + " " + rotation);
             Coordinate3D baseCoordinate = blockCoordinate.moveBack(blockCoordinate2);
             coordinate = baseCoordinate;
         }
     }
     
     private Coordinate3D rotateOnYAxis(Coordinate3D coord, int rotation) {
-        Coordinate3D coord2 = new Coordinate3D();
         int x = (int) coord.getXCoord();
         int z = (int) coord.getZCoord();
         switch(rotation) {
             case 0: {
-                coord2.x = x;
-                coord2.z = z;
+                coord.x = x;
+                coord.z = z;
                 break;
             }
             case 1: {
-                coord2.x = -z;
-                coord2.z = x;
+                coord.x = -z;
+                coord.z = x;
                 break;
             }
             case 2: {
-                coord2.x = -x;
-                coord2.z = -z;
+                coord.x = -x;
+                coord.z = -z;
                 break;
             }
             case 3: {
-                coord2.x = z;
-                coord2.z = -x;
+                coord.x = z;
+                coord.z = -x;
                 break;
             }
         }
-        return coord2;
-    }
-    
-    private void calculateSize() {
-        int maxX = 0;
-        int maxY = 0;
-        int maxZ = 0;
-        for(IStructureBlock block : getBlocks()) {
-            if(Math.abs(block.getPosition().x) > Math.abs(maxX)) {
-                maxX = (int) block.getPosition().x;
-            }
-            if(Math.abs(block.getPosition().y) > Math.abs(maxY)) {
-                maxY = (int) block.getPosition().y;
-            }
-            if(Math.abs(block.getPosition().z) > Math.abs(maxZ)) {
-                maxZ = (int) block.getPosition().z;
-            }
-        }
-        if(maxX < 0) {
-            maxX -=1;
-        } else {
-            maxX +=1;
-        }
-        if(maxY < 0) {
-            maxY -=-1;
-        } else {
-            maxY +=1;
-        }
-        if(maxZ < 0) {
-            maxZ -=1;
-        } else {
-            maxZ +=1;
-        }
-        length = maxX;
-        height = maxY;
-        width = maxZ;
+        return coord;
     }
     
     public IStructureBlock getBlockAtCoordinate(Coordinate3D coordinate) {
@@ -128,6 +90,7 @@ public class Structure {
     
     public List<Coordinate3D> getBlockCoordinates(IStructureBlock block) {
         if(initiated) {
+            this.calculateBaseCoordinates(getRotation());
             List<Coordinate3D> blockCoords = new ArrayList<Coordinate3D>();
             Coordinate3D blockCoord = getStructureCoordinates().clone();
             
@@ -198,7 +161,7 @@ public class Structure {
     }
     
     public List<IStructureBlock> getBlocks() {
-        return structureMap.getBlocks();
+        return structureMap.getRotation(getRotation()).getBlocks();
     }
     
     public int getLength() {
@@ -214,7 +177,7 @@ public class Structure {
     }
     
     public int getRotation() {
-        if(initiated)
+        if(initiated && currentRotation == -1)
             doesStructureExist();
         return currentRotation;
     }
@@ -235,11 +198,11 @@ public class Structure {
                     }
                 }
                 if(exists.size() == structureMap.getBlockCount()) {
-                    if(airCheck()) {
+                    if(airCheck(i)) {
                         int oldRotation = currentRotation;
                         this.currentRotation = i;
                         if(oldRotation != currentRotation)
-                            changeReceiver.onStructureChange();
+                            updateChangeReceivers();
                         return true;
                     }
                 }
@@ -248,17 +211,25 @@ public class Structure {
         return false;
     }
     
-    private boolean airCheck() {
+    private void updateChangeReceivers() {
+        if(!changeReceiver.isEmpty()) {
+            for(IStructureChangeReceiver iscr: changeReceiver) {
+                iscr.onStructureChange();
+            }
+        }
+    }
+    
+    private boolean airCheck(int rotation) {
         List<Coordinate3D> shouldBeFull = new ArrayList<Coordinate3D>();
         List<Coordinate3D> actuallyFull = new ArrayList<Coordinate3D>();
-        for(IStructureBlock block : getBlocks()) {
+        StructureMap map = structureMap.getRotation(rotation);
+        for(IStructureBlock block : map.getBlocks()) {
             shouldBeFull.add(block.getPosition());
         }
-
-        if(length >= 0 && height >= 0 && width >= 0) {
-            for(int i = 0; i<length; i++) {
-                for(int j = 0; j<height; j++) {
-                    for(int k = 0; k<width; k++) {
+        if(map.length >= 0 && map.height >= 0 && map.width >= 0) {
+            for(int i = 0; i<map.length; i++) {
+                for(int j = 0; j<map.height; j++) {
+                    for(int k = 0; k<map.width; k++) {
                         if(world.getBlockId((int)coordinate.x+i, (int)coordinate.y+j, (int)coordinate.z+k) != 0) {
                             actuallyFull.add(new Coordinate3D(i, j, k));
                         }
@@ -266,10 +237,10 @@ public class Structure {
                 }
             }
         }
-        if(length >= 0 && height >= 0 && width < 0) {
-            for(int i = 0; i<length; i++) {
-                for(int j = 0; j<height; j++) {
-                    for(int k = 0; k>width; k--) {
+        if(map.length >= 0 && map.height >= 0 && map.width < 0) {
+            for(int i = 0; i<map.length; i++) {
+                for(int j = 0; j<map.height; j++) {
+                    for(int k = 0; k>map.width; k--) {
                         if(world.getBlockId((int)coordinate.x+i, (int)coordinate.y+j, (int)coordinate.z+k) != 0) {
                             actuallyFull.add(new Coordinate3D(i, j, k));
                         }
@@ -277,10 +248,10 @@ public class Structure {
                 }
             }
         }
-        if(length >= 0 && height < 0 && width >= 0) {
-            for(int i = 0; i<length; i++) {
-                for(int j = 0; j>height; j--) {
-                    for(int k = 0; k<width; k++) {
+        if(map.length >= 0 && map.height < 0 && map.width >= 0) {
+            for(int i = 0; i<map.length; i++) {
+                for(int j = 0; j>map.height; j--) {
+                    for(int k = 0; k<map.width; k++) {
                         if(world.getBlockId((int)coordinate.x+i, (int)coordinate.y+j, (int)coordinate.z+k) != 0) {
                             actuallyFull.add(new Coordinate3D(i, j, k));
                         }
@@ -288,10 +259,10 @@ public class Structure {
                 }
             }
         }
-        if(length >= 0 && height < 0 && width < 0) {
-            for(int i = 0; i<length; i++) {
-                for(int j = 0; j>height; j--) {
-                    for(int k = 0; k>width; k--) {
+        if(map.length >= 0 && map.height < 0 && map.width < 0) {
+            for(int i = 0; i<map.length; i++) {
+                for(int j = 0; j>map.height; j--) {
+                    for(int k = 0; k>map.width; k--) {
                         if(world.getBlockId((int)coordinate.x+i, (int)coordinate.y+j, (int)coordinate.z+k) != 0) {
                             actuallyFull.add(new Coordinate3D(i, j, k));
                         }
@@ -299,10 +270,10 @@ public class Structure {
                 }
             }
         }
-        if(length < 0 && height >= 0 && width >= 0) {
-            for(int i = 0; i>length; i--) {
-                for(int j = 0; j<height; j++) {
-                    for(int k = 0; k<width; k++) {
+        if(map.length < 0 && map.height >= 0 && map.width >= 0) {
+            for(int i = 0; i>map.length; i--) {
+                for(int j = 0; j<map.height; j++) {
+                    for(int k = 0; k<map.width; k++) {
                         if(world.getBlockId((int)coordinate.x+i, (int)coordinate.y+j, (int)coordinate.z+k) != 0) {
                             actuallyFull.add(new Coordinate3D(i, j, k));
                         }
@@ -310,10 +281,10 @@ public class Structure {
                 }
             }
         }
-        if(length < 0 && height >= 0 && width < 0) {
-            for(int i = 0; i>length; i--) {
-                for(int j = 0; j<height; j++) {
-                    for(int k = 0; k>width; k--) {
+        if(map.length < 0 && map.height >= 0 && map.width < 0) {
+            for(int i = 0; i>map.length; i--) {
+                for(int j = 0; j<map.height; j++) {
+                    for(int k = 0; k>map.width; k--) {
                         if(world.getBlockId((int)coordinate.x+i, (int)coordinate.y+j, (int)coordinate.z+k) != 0) {
                             actuallyFull.add(new Coordinate3D(i, j, k));
                         }
@@ -321,10 +292,10 @@ public class Structure {
                 }
             }
         }
-        if(length < 0 && height < 0 && width >= 0) {
-            for(int i = 0; i>length; i--) {
-                for(int j = 0; j>height; j--) {
-                    for(int k = 0; k<width; k++) {
+        if(map.length < 0 && map.height < 0 && map.width >= 0) {
+            for(int i = 0; i>map.length; i--) {
+                for(int j = 0; j>map.height; j--) {
+                    for(int k = 0; k<map.width; k++) {
                         if(world.getBlockId((int)coordinate.x+i, (int)coordinate.y+j, (int)coordinate.z+k) != 0) {
                             actuallyFull.add(new Coordinate3D(i, j, k));
                         }
@@ -332,10 +303,10 @@ public class Structure {
                 }
             }
         }
-        if(length < 0 && height < 0 && width < 0) {
-            for(int i = 0; i>length; i--) {
-                for(int j = 0; j>height; j--) {
-                    for(int k = 0; k>width; k--) {
+        if(map.length < 0 && map.height < 0 && map.width < 0) {
+            for(int i = 0; i>map.length; i--) {
+                for(int j = 0; j>map.height; j--) {
+                    for(int k = 0; k>map.width; k--) {
                         if(world.getBlockId((int)coordinate.x+i, (int)coordinate.y+j, (int)coordinate.z+k) != 0) {
                             actuallyFull.add(new Coordinate3D(i, j, k));
                         }
@@ -346,6 +317,6 @@ public class Structure {
         if(shouldBeFull.size() == actuallyFull.size()) {
             return true;
         }
-        return true;
+        return false;
     }
 }

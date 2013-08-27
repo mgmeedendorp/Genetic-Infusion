@@ -33,6 +33,6 @@ public class StructureBlockCrystalStand extends StructureBlock {
     
     @Override
     public IStructureBlock copy() {
-        return new StructureBlockCrystalStand(getPosition());
+        return new StructureBlockCrystalStand(getPosition().clone());
     }
 }

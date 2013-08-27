@@ -57,22 +57,23 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
     }
 
     public void initiateMultiblock() {
-        isMultiblock = true;
-        List<Coordinate3D> crystalStandCoordinates = structure.getBlockCoordinates(ModBlocks.crystalStand, 0);
-        if(structure.doesBlockExistInStructure(ModBlocks.crystalStand, 0, 1)) {
-            Coordinate3D crystalStandCoord = crystalStandCoordinates.get(0);
-            
-            TileEntity tile = worldObj.getBlockTileEntity((int) crystalStandCoord.x, (int) crystalStandCoord.y, (int) crystalStandCoord.z);
-            if(tile != null && tile instanceof TileCrystalStand){
-                MagnetLinkHelper.instance.addLink(new MagnetLink(this, (TileCrystalStand)tile));
+        if(!isMultiblock) {
+            List<Coordinate3D> crystalStandCoordinates = structure.getBlockCoordinates(ModBlocks.crystalStand, 0);
+            if(structure.doesBlockExistInStructure(ModBlocks.crystalStand, 0, 1)) {
+                Coordinate3D crystalStandCoord = crystalStandCoordinates.get(0);
                 
-                ((TileCrystalStand)tile).isStructureMagnetStation = true;
-                ((TileCrystalStand)tile).structure = structure;
-                System.out.println("yea");
+                TileEntity tile = worldObj.getBlockTileEntity((int) crystalStandCoord.x, (int) crystalStandCoord.y, (int) crystalStandCoord.z);
+                if(tile != null && tile instanceof TileCrystalStand){
+                    MagnetLinkHelper.instance.addLink(new MagnetLink(this, (TileCrystalStand)tile));
+                    
+                    ((TileCrystalStand)tile).isStructureMagnetStation = true;
+                    ((TileCrystalStand)tile).structure = structure;
+
+                    isMultiblock = true;
+                }
+            } else {
+                isMultiblock = false;
             }
-            System.out.println("yea");
-        } else {
-            isMultiblock = false;
         }
     }
 

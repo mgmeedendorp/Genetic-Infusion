@@ -13,7 +13,7 @@ public class BlockMonsterEgg extends SCBlock {
         setResistance(15.0F);
         setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 1.0F, 0.9375F);
     }
-
+    
     @Override
     public boolean isOpaqueCube() {
         return false;

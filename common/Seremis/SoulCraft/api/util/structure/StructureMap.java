@@ -16,10 +16,47 @@ public class StructureMap {
     
     public StructureMap(IStructureBlock... block) {
         blocks.addAll(Arrays.asList(block));
+        calculateSize();
     }
     
     public void addBlock(IStructureBlock block) {
         blocks.add(block);
+        calculateSize();
+    }
+    
+    private void calculateSize() {
+        int maxX = 0;
+        int maxY = 0;
+        int maxZ = 0;
+        for(IStructureBlock block : getBlocks()) {
+            if(Math.abs(block.getPosition().x) > Math.abs(maxX)) {
+                maxX = (int) block.getPosition().x;
+            }
+            if(Math.abs(block.getPosition().y) > Math.abs(maxY)) {
+                maxY = (int) block.getPosition().y;
+            }
+            if(Math.abs(block.getPosition().z) > Math.abs(maxZ)) {
+                maxZ = (int) block.getPosition().z;
+            }
+        }
+        if(maxX < 0) {
+            maxX -=1;
+        } else {
+            maxX +=1;
+        }
+        if(maxY < 0) {
+            maxY -=-1;
+        } else {
+            maxY +=1;
+        }
+        if(maxZ < 0) {
+            maxZ -=1;
+        } else {
+            maxZ +=1;
+        }
+        length = maxX;
+        height = maxY;
+        width = maxZ;
     }
     
     public IStructureBlock getBlockAtCoordinate(int x, int y, int z) {
@@ -78,8 +115,7 @@ public class StructureMap {
         for(IStructureBlock block : getBlocks()) {    
             IStructureBlock newBlock = block.copy();
             int x = (int) block.getPosition().x;
-            int z = (int) block.getPosition().z;      
-            
+            int z = (int) block.getPosition().z; 
             switch(rotation) {           
                case 0: {
                    newBlock.getPosition().x = x; 
