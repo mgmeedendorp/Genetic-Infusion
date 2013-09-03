@@ -22,7 +22,7 @@ public abstract class SCTileMagnetConnector extends TileMagnetConnector {
     
     public void setDirection(int direction) {
         this.teDirection = direction;
-        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType().blockID, 1, direction);
+        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType().blockID, 0, direction);
     }
     
     public String getOwner() {
@@ -38,9 +38,8 @@ public abstract class SCTileMagnetConnector extends TileMagnetConnector {
     }
 
     @Override
-    public boolean receiveClientEvent(int eventId, int variable)
-    {
-        if(eventId == 1) {
+    public boolean receiveClientEvent(int eventId, int variable) {
+        if(eventId == 0) {
             teDirection = variable;
             worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
             return true;

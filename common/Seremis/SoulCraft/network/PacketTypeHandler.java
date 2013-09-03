@@ -59,7 +59,6 @@ public enum PacketTypeHandler {
         packet250.channel = DefaultProps.PACKET_CHANNEL;
         packet250.data = data;
         packet250.length = data.length;
-        packet250.isChunkDataPacket = packet.isChunkDataPacket;
 
         return packet250;
     }

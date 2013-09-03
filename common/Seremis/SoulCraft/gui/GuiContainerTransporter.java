@@ -27,9 +27,7 @@ public class GuiContainerTransporter extends SCGui {
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         SCRenderHelper.bindTexture(Localizations.LOC_GUI_TEXTURES + Localizations.GUI_TRANSPORTER);
-        int posX = (this.width - this.xSize) / 2;
-        int posY = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(posX, posY, 0, 0, this.xSize, this.ySize);
+        this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
     }
 
 }

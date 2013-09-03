@@ -24,5 +24,6 @@ public class Localizations {
     public static final String BUSH_BLUE_STAGE_5 = "bushBlue5.png";
 
     public static final String GUI_TRANSPORTER = "guiTransporter.png";
-    public static final String GUI_MAGNET_STATION = "guiMagnetStation.png";
+    public static final String GUI_MAGNET_STATION_LOCATION_SCREEN = "guiMagnetStationLocationScreen.png";
+    public static final String GUI_MAGNET_STATION_TRANSPORTER_SCREEN = "guiMagnetStationTransporterScreen.png";
 }

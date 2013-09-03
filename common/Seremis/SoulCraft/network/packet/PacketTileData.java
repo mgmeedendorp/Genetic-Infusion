@@ -8,9 +8,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import Seremis.SoulCraft.network.PacketTypeHandler;
 import Seremis.SoulCraft.tileentity.SCTile;
-import cpw.mods.fml.common.network.Player;
+import Seremis.SoulCraft.tileentity.SCTileMagnetConnector;
 
-public class PacketTileData extends SCPacket{
+public class PacketTileData extends SCPacket {
 
     public int x;
     public int y;
@@ -18,14 +18,12 @@ public class PacketTileData extends SCPacket{
     public int data;
     public int id;
 
-    public PacketTileData() 
-    {
-        super(PacketTypeHandler.TILEDATA, true);
+    public PacketTileData() {
+        super(PacketTypeHandler.TILEDATA);
     }
 
-    public PacketTileData(int data, int id, int x, int y, int z) 
-    {
-        super(PacketTypeHandler.TILEDATA, true);
+    public PacketTileData(int data, int id, int x, int y, int z) {
+        super(PacketTypeHandler.TILEDATA);
         this.x = x;
         this.y = y;
         this.z = z;
@@ -33,8 +31,7 @@ public class PacketTileData extends SCPacket{
         this.id = id;
     }
 
-    public void readData(DataInputStream dataStream) throws IOException 
-    {
+    public void readData(DataInputStream dataStream) throws IOException {
         this.x = dataStream.readInt();
         this.y = dataStream.readInt();
         this.z = dataStream.readInt();
@@ -42,8 +39,7 @@ public class PacketTileData extends SCPacket{
         this.id = dataStream.readInt();
     }
 
-    public void writeData(DataOutputStream dataStream) throws IOException 
-    {
+    public void writeData(DataOutputStream dataStream) throws IOException {
         dataStream.writeInt(x);
         dataStream.writeInt(y);
         dataStream.writeInt(z);
@@ -51,8 +47,10 @@ public class PacketTileData extends SCPacket{
         dataStream.writeInt(id);
     }
     
-    public void execute(INetworkManager network, Player player) 
-    {
-        ((SCTile)((EntityPlayer)player).worldObj.getBlockTileEntity(x, y, z)).sendTileData(id, data);
+    public void execute(INetworkManager network, EntityPlayer player) {
+        if(player.worldObj.getBlockTileEntity(x, y, z) instanceof SCTile) 
+            ((SCTile)player.worldObj.getBlockTileEntity(x, y, z)).sendTileData(id, data);
+        if(player.worldObj.getBlockTileEntity(x, y, z) instanceof SCTileMagnetConnector) 
+            ((SCTileMagnetConnector)player.worldObj.getBlockTileEntity(x, y, z)).sendTileData(id, data);
     }
 }

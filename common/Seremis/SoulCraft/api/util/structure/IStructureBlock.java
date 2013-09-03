@@ -25,4 +25,6 @@ public interface IStructureBlock {
     void setPosition(Coordinate3D position);
     
     IStructureBlock copy();
+    
+    boolean needsToExistForStructureToForm();
 }

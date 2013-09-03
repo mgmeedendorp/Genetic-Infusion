@@ -19,11 +19,9 @@ public class SCBlockRotateable extends SCBlock {
 
     private boolean useTile;
     
-    public SCBlockRotateable(int ID, Material material, boolean useTile, int numbersOfMetadata, String[] sidedTextureNames) {
+    public SCBlockRotateable(int ID, Material material, boolean useTile, String[] sidedTextureNames) {
         super(ID, material);
         this.useTile = useTile;
-        if(!useTile)
-        setNumbersofMetadata(numbersOfMetadata);
         setNeedsSidedTexture(true, sidedTextureNames);
     }
     

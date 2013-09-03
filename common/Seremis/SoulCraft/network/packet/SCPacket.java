@@ -5,18 +5,16 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import Seremis.SoulCraft.network.PacketTypeHandler;
-import cpw.mods.fml.common.network.Player;
 
 public abstract class SCPacket {
 
     public PacketTypeHandler packetType;
-    public boolean isChunkDataPacket;
 
-    public SCPacket(PacketTypeHandler packetType, boolean isChunkDataPacket) {
+    public SCPacket(PacketTypeHandler packetType) {
         this.packetType = packetType;
-        this.isChunkDataPacket = isChunkDataPacket;
     }
 
     public byte[] populate() {
@@ -49,7 +47,7 @@ public abstract class SCPacket {
 
     }
 
-    public void execute(INetworkManager network, Player player) {
+    public void execute(INetworkManager network, EntityPlayer player) {
 
     }
 

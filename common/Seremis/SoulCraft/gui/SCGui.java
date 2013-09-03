@@ -22,12 +22,10 @@ public class SCGui extends GuiContainer {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) {
-        super.drawGuiContainerForegroundLayer(x, y);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
-
+    protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+        
     }
-
 }

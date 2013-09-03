@@ -9,11 +9,17 @@ public class StructureBlock implements IStructureBlock {
     private Block block;
     private int metadata;
     private Coordinate3D position;
+    private boolean needsExistance;
     
-    public StructureBlock(Block block, int metadata, Coordinate3D position) {
+    public StructureBlock(Block block, int metadata, Coordinate3D position, boolean mustExist) {
         this.block = block;
         this.metadata = metadata;
         this.position = position;
+        this.needsExistance = mustExist;
+    }
+    
+    public StructureBlock(Block block, int metadata, Coordinate3D position) {
+        this(block, metadata, position, true);
     }
     
     public StructureBlock(Block block, int metadata) {
@@ -46,11 +52,16 @@ public class StructureBlock implements IStructureBlock {
     
     @Override
     public IStructureBlock copy() {
-        return new StructureBlock(block, metadata, position.clone());
+        return new StructureBlock(block, metadata, position.clone(), needsExistance);
     }
 
     @Override
     public boolean canFormStructure(StructureMap structureMap, World world, int x, int y, int z) {
         return true;
+    }
+
+    @Override
+    public boolean needsToExistForStructureToForm() {
+        return needsExistance;
     }
 }

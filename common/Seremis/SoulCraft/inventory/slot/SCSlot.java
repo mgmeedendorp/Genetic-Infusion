@@ -1,4 +1,4 @@
-package Seremis.SoulCraft.slot;
+package Seremis.SoulCraft.inventory.slot;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -23,7 +23,7 @@ public class SCSlot extends Slot {
         ItemStack itemStack = tile.getStackInSlot(this.slotNumber);
 
         if(itemStack != null) {
-            return itemStack.getMaxStackSize();
+            return Math.min(itemStack.getMaxStackSize(), tile.getInventoryStackLimit());
         }
 
         return tile.getInventoryStackLimit();

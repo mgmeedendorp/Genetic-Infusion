@@ -35,7 +35,7 @@ public class BlockTransporter extends SCBlock {
         if(!tile.hasEngine()) {
             return;
         }
-        double xx = x + 0.5 + random.nextFloat() / 10;
+        double particleX = x + 0.5 + random.nextFloat() / 10;
         double yy = y + 0.7 + random.nextFloat() / 10;
         double zz = z + 0.5 + random.nextFloat() / 10;
 
@@ -75,10 +75,10 @@ public class BlockTransporter extends SCBlock {
                 velocityX = -0.05D * random.nextDouble();
                 break;
         }
-        world.spawnParticle("smoke", xx + offsetX2, yy, zz + offsetZ2, velocityX, 0.0D, velocityZ);
-        world.spawnParticle("smoke", xx + offsetX, yy, zz + offsetZ, velocityX, 0.0D, velocityZ);
-        world.spawnParticle("flame", xx + offsetX2, yy, zz + offsetZ2, velocityX, 0.0D, velocityZ);
-        world.spawnParticle("flame", xx + offsetX, yy, zz + offsetZ, velocityX, 0.0D, velocityZ);
+        world.spawnParticle("smoke", particleX + offsetX2, yy, zz + offsetZ2, velocityX, 0.0D, velocityZ);
+        world.spawnParticle("smoke", particleX + offsetX, yy, zz + offsetZ, velocityX, 0.0D, velocityZ);
+        world.spawnParticle("flame", particleX + offsetX2, yy, zz + offsetZ2, velocityX, 0.0D, velocityZ);
+        world.spawnParticle("flame", particleX + offsetX, yy, zz + offsetZ, velocityX, 0.0D, velocityZ);
     }
 
     @Override
@@ -150,10 +150,11 @@ public class BlockTransporter extends SCBlock {
 
     @Override
     public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
-        UtilBlock.dropItemsFromTile(world, x, y, z);
         if(CommonProxy.proxy.isRenderWorld(world)) {
             return;
         }
+        UtilBlock.dropItemsFromTile(world, x, y, z);
+
         TileTransporter tile = (TileTransporter) world.getBlockTileEntity(x, y, z);
         if(tile.hasEngine()) {
             EntityItem item = new EntityItem(world, x, y, z, new ItemStack(ModItems.transporterModules, 1, 1));

@@ -29,9 +29,4 @@ public class UtilRender {
     public static Vector2f[] calculateUVMapping(int texture) {
         return calculateUVMapping(texture, 16, 16);
     }
-    
-    public static void renderQuadFromUVMap(int texture, int width, int height) {
-        Vector2f[] vecs = calculateUVMapping(texture, width, height);
-        
-    }
 }

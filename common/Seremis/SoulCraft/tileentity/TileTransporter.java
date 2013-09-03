@@ -6,13 +6,15 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ForgeDirection;
+import Seremis.SoulCraft.block.ModBlocks;
+import Seremis.SoulCraft.core.proxy.CommonProxy;
 import Seremis.SoulCraft.item.ItemTransporterModules;
 import Seremis.SoulCraft.item.ModItems;
 import Seremis.SoulCraft.util.UtilTileEntity;
 
 public class TileTransporter extends SCTile implements IInventory, ISidedInventory {
 
-    private ItemStack[] inv = new ItemStack[12];
+    private ItemStack[] inv;
 
     private boolean hasEngine = false;
     private boolean hasInventory = false;
@@ -24,6 +26,7 @@ public class TileTransporter extends SCTile implements IInventory, ISidedInvento
     }
 
     public TileTransporter(boolean engine, boolean inventory) {
+        inv = new ItemStack[12];
         hasInventory = inventory;
         hasEngine = engine;
         if(hasEngine) {
@@ -56,8 +59,14 @@ public class TileTransporter extends SCTile implements IInventory, ISidedInvento
         worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
     }
 
+    public void setDirection(ForgeDirection direction) {
+        this.direction = direction;
+        if(CommonProxy.proxy.isServerWorld(worldObj) && direction != null)
+            worldObj.addBlockEvent(xCoord, yCoord, zCoord, ModBlocks.transporter.blockID, 2, direction.ordinal());
+    }
+    
     public float getSpeed() {
-        return hasEngine ? 5.0F : 1.0F;
+        return speed;
     }
 
     public void setSpeed(float speed) {
@@ -121,7 +130,7 @@ public class TileTransporter extends SCTile implements IInventory, ISidedInvento
 
     @Override
     public ItemStack getStackInSlot(int slot) {
-        return inv[slot];
+        return hasInventory ? inv[slot] : null;
     }
 
     @Override
@@ -181,6 +190,29 @@ public class TileTransporter extends SCTile implements IInventory, ISidedInvento
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
         return true;
     }
+    
+    public ItemStack addToInventorySlot(int slot, ItemStack stack) {
+        ItemStack istack = getStackInSlot(slot);
+        
+        if(stack != null && istack == null) {
+            setInventorySlotContents(slot, stack);
+            
+        } else if(stack != null  && stack.itemID == istack.itemID) {
+            if(istack.stackSize+stack.stackSize > stack.getMaxStackSize()) {
+                stack.stackSize += istack.stackSize;
+                istack = stack.splitStack(istack.getMaxStackSize());
+                setInventorySlotContents(slot, istack);
+            } else {
+                istack.stackSize += stack.stackSize;
+                setInventorySlotContents(slot, istack);
+            }
+        }
+        if(stack.stackSize <= 0) {
+            stack = null;
+        }
+        
+        return stack;
+    }
 
     public boolean setInventorySlot(int slot, ItemStack stack) {
         ItemStack currStack = getStackInSlot(slot);
@@ -234,6 +266,17 @@ public class TileTransporter extends SCTile implements IInventory, ISidedInvento
         inv = new ItemStack[12];
         if(hasEngine) {
             inv[10] = new ItemStack(ModItems.transporterModules, 1, 1);
+        }
+    }
+    
+    @Override
+    public boolean receiveClientEvent(int eventId, int variable) {
+        if(eventId == 2) {
+            this.direction = ForgeDirection.values()[variable];
+            worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+            return true;
+        } else {
+            return super.receiveClientEvent(eventId, variable);
         }
     }
 }

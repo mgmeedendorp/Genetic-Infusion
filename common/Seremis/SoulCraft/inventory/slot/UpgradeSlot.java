@@ -1,4 +1,4 @@
-package Seremis.SoulCraft.slot;
+package Seremis.SoulCraft.inventory.slot;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -19,5 +19,10 @@ public class UpgradeSlot extends SCSlot {
             return true;
         }
         return false;
+    }
+    
+    @Override
+    public int getSlotStackLimit() {
+        return 1;
     }
 }

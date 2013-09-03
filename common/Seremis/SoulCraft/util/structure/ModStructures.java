@@ -20,5 +20,6 @@ public class ModStructures {
             magnetStation.addBlock(new StructureBlock(blockList[i], 0, new Coordinate3D(listX[i], listY[i], listZ[i])));
         }
         magnetStation.addBlock(new StructureBlockCrystalStand(new Coordinate3D(1, 1, 3)));
+        magnetStation.addBlock(new StructureBlock(ModBlocks.transporter, 0, new Coordinate3D(1, 1, 1), false));
     }
 }

@@ -38,8 +38,7 @@ public class SCTile extends TileEntity {
     }
 
     @Override
-    public boolean receiveClientEvent(int eventId, int variable)
-    {
+    public boolean receiveClientEvent(int eventId, int variable) {
         if(eventId == 1) {
             teDirection = variable;
             worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);

@@ -119,7 +119,7 @@ public class ConnectedTextureHelper {
                                 }
                             }
                             else if(downLeft) {
-                                mapping = 35;
+                                mapping = 34;
                             }
                         }
                         else if(downRight) {

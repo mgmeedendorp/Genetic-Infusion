@@ -7,9 +7,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
+import Seremis.SoulCraft.inventory.slot.SCSlot;
 import Seremis.SoulCraft.item.ItemTransporterModules;
-import Seremis.SoulCraft.slot.SCSlot;
-import Seremis.SoulCraft.slot.UpgradeSlot;
 import Seremis.SoulCraft.tileentity.TileTransporter;
 import Seremis.SoulCraft.util.UtilBlock;
 import cpw.mods.fml.relauncher.Side;
@@ -22,7 +21,6 @@ public class ContainerTransporter extends SCContainer {
     private float speed = 0;
 
     public ContainerTransporter(EntityPlayer player, IInventory tile) {
-        super(tile);
         this.tile = (TileTransporter) tile;
         this.speed = this.tile.getSpeed();
         this.world = player.worldObj;
@@ -36,10 +34,6 @@ public class ContainerTransporter extends SCContainer {
         this.addSlotToContainer(new SCSlot(tile, 7, 80, 53));
         this.addSlotToContainer(new SCSlot(tile, 8, 98, 53));
 
-        // Upgrade Slots
-        this.addSlotToContainer(new UpgradeSlot(tile, 9, 154, 17));
-        this.addSlotToContainer(new UpgradeSlot(tile, 10, 154, 35));
-        this.addSlotToContainer(new UpgradeSlot(tile, 11, 154, 53));
         this.addPlayerInventory(player);
     }
 
@@ -82,11 +76,11 @@ public class ContainerTransporter extends SCContainer {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if(par2 < 9) {
-                if(!this.mergeItemStack(itemstack1, 9, this.inventorySlots.size(), true)) {
+            if(par2 < slotCount) {
+                if(!this.mergeItemStack(itemstack1, slotCount, this.inventorySlots.size(), true)) {
                     return null;
                 }
-            } else if(!this.mergeItemStack(itemstack1, 0, 9, false)) {
+            } else if(!this.mergeItemStack(itemstack1, 0, slotCount, false)) {
                 return null;
             }
 
@@ -105,17 +99,17 @@ public class ContainerTransporter extends SCContainer {
         super.onContainerClosed(player);
 
         if(CommonProxy.proxy.isServerWorld(world) && !tile.hasInventory()) {
-            if(tile.hasEngine()) {
-                for(int i = 0; i < 12; i++) {
-                    if(tile.getStackInSlot(i) != null && tile.getStackInSlot(i).itemID != ItemTransporterModules.engine().itemID && tile.getStackInSlot(i).getItemDamage() != ItemTransporterModules.engine().getItemDamage()) {
-                        UtilBlock.dropItemsFromTile(world, tile.xCoord, tile.yCoord, tile.zCoord, i);
-                    }
-                }
-            } else {
-                UtilBlock.dropItemsFromTile(world, tile.xCoord, tile.yCoord, tile.zCoord);
-            }
-            tile.emptyInventory();
-            tile.onInventoryChanged();
+//            if(tile.hasEngine()) {
+//                for(int i = 0; i < tile.getSizeInventory(); i++) {
+//                    if(tile.getStackInSlot(i) != null && tile.getStackInSlot(i).itemID != ItemTransporterModules.engine().itemID && tile.getStackInSlot(i).getItemDamage() != ItemTransporterModules.engine().getItemDamage()) {
+//                        UtilBlock.dropItemsFromTile(world, tile.xCoord, tile.yCoord, tile.zCoord, i);
+//                    }
+//                }
+//            } else {
+//                UtilBlock.dropItemsFromTile(world, tile.xCoord, tile.yCoord, tile.zCoord);
+//            }
+//            tile.emptyInventory();
+//            tile.onInventoryChanged();
         }
     }
 }

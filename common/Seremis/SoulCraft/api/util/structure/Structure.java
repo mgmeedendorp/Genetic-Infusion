@@ -90,7 +90,7 @@ public class Structure {
     
     public List<Coordinate3D> getBlockCoordinates(IStructureBlock block) {
         if(initiated) {
-            this.calculateBaseCoordinates(getRotation());
+            calculateBaseCoordinates(getRotation());
             List<Coordinate3D> blockCoords = new ArrayList<Coordinate3D>();
             Coordinate3D blockCoord = getStructureCoordinates().clone();
             
@@ -192,6 +192,17 @@ public class Structure {
                     if(world.getBlockId((int) coordinate.x + (int) block.getPosition().x, (int) coordinate.y + (int) block.getPosition().y, (int) coordinate.z + (int) block.getPosition().z) == block.getBlock().blockID) {
                         if(world.getBlockMetadata((int) coordinate.x + (int) block.getPosition().x, (int) coordinate.y + (int) block.getPosition().y, (int) coordinate.z + (int) block.getPosition().z) == block.getMetadata()) {
                             if(block.canFormStructure(structureMap, world, (int) coordinate.x + (int) block.getPosition().x, (int) coordinate.y + (int) block.getPosition().y, (int) coordinate.z + (int) block.getPosition().z)) {
+                                exists.add(block);
+                            } else {
+                                break;
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+                    if(!block.needsToExistForStructureToForm()) {
+                        if(world.getBlockId((int) coordinate.x + (int) block.getPosition().x, (int) coordinate.y + (int) block.getPosition().y, (int) coordinate.z + (int) block.getPosition().z) == 0) {
+                            if(!exists.contains(block)) {
                                 exists.add(block);
                             }
                         }
@@ -312,6 +323,24 @@ public class Structure {
                         }
                     }
                 }
+            }
+        }
+        if(shouldBeFull.size() == actuallyFull.size()) {
+            return true;
+        } else {
+            int index = 0;
+            for(IStructureBlock block : map.getBlocks()) {
+                for(Coordinate3D coord : actuallyFull) {
+                    if(!block.needsToExistForStructureToForm()) {
+                        if(!block.getPosition().equals(coord)) {
+                            index ++;
+                        }
+                        if(index == actuallyFull.size()) {
+                            shouldBeFull.remove(block.getPosition());
+                        }
+                    }
+                }
+                index = 0;
             }
         }
         if(shouldBeFull.size() == actuallyFull.size()) {

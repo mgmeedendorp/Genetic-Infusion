@@ -4,6 +4,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import Seremis.SoulCraft.mod_SoulCraft;
+import Seremis.SoulCraft.core.lib.GuiIds;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
 import Seremis.SoulCraft.tileentity.TileStationController;
 
@@ -12,7 +14,7 @@ public class BlockStationController extends SCBlockRotateable {
     private static String[] textureNames = {"side", "side", "front", "side", "side", "side"};
     
     public BlockStationController(int ID, Material material) {
-        super(ID, material, true, 0, textureNames);
+        super(ID, material, true, textureNames);
         setUnlocalizedName("stationController");
     }    
     
@@ -25,6 +27,9 @@ public class BlockStationController extends SCBlockRotateable {
             TileStationController tile = (TileStationController) world.getBlockTileEntity(x, y, z);
             if(multiblockCheck(world, x, y, z)) {
                 tile.initiateMultiblock();
+                if(tile.isMultiblock) {
+                    player.openGui(mod_SoulCraft.instance, GuiIds.GUI_STATION_ID, world, x, y, z);
+                }
             }
         }
         return true;
