@@ -2,6 +2,6 @@ package Seremis.SoulCraft.core.lib;
 
 public class GuiIds {
 
-    public static final int GUI_TRANSPORTER_ID = 1;
-    public static final int GUI_STATION_ID = 2;
+    public static final int GUI_STATION_TRANSPORTER_SCREEN_ID = 0;
+    public static final int GUI_STATION_SEND_SCREEN_ID = 1;
 }

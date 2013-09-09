@@ -40,6 +40,10 @@ public class Coordinate3D implements Cloneable {
     public double getZCoord() {
         return this.z;
     }
+    
+    public Coordinate2D to2D() {
+        return new Coordinate2D(x, z);
+    }
 
     public void setCoords(double x, double y, double z) {
         this.x = x;

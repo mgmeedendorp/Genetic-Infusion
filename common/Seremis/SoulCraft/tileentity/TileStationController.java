@@ -2,21 +2,24 @@ package Seremis.SoulCraft.tileentity;
 
 import java.util.List;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
+import Seremis.SoulCraft.mod_SoulCraft;
 import Seremis.SoulCraft.api.magnet.MagnetLink;
 import Seremis.SoulCraft.api.magnet.MagnetLinkHelper;
 import Seremis.SoulCraft.api.util.Coordinate3D;
 import Seremis.SoulCraft.api.util.structure.IStructureChangeReceiver;
 import Seremis.SoulCraft.api.util.structure.Structure;
 import Seremis.SoulCraft.block.ModBlocks;
+import Seremis.SoulCraft.core.lib.GuiIds;
 import Seremis.SoulCraft.core.lib.Strings;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
-import Seremis.SoulCraft.inventory.ContainerStationController;
+import Seremis.SoulCraft.item.ModItems;
 import Seremis.SoulCraft.util.UtilTileEntity;
 import Seremis.SoulCraft.util.structure.ModStructures;
 
@@ -135,9 +138,14 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
     
     //IInventory//
     private Coordinate3D transporterCoord;    
-    public ContainerStationController container;
     
     private ItemStack[] inv = new ItemStack[13];
+    
+    public int activeTab = -1;
+    
+    public float transporterSpeed = 1.0F;
+    
+    public EntityPlayer player;
     
     @Override
     public int getSizeInventory() {
@@ -221,8 +229,13 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
         return inv;
     }
     
+    public float getTransporterSpeed() {
+        return transporterSpeed;
+    }
+    
     @Override
     public void onInventoryChanged() {
+        super.onInventoryChanged();
         if(CommonProxy.proxy.isRenderWorld(worldObj))
             return;
         
@@ -243,22 +256,20 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
                 worldObj.setBlock((int)getTransporterCoordinate().x, (int)getTransporterCoordinate().y, (int)getTransporterCoordinate().z, 0, 0, 3);
                 removeTransporterInventory();
             }
-        } else if(hasTransporter()) {
-            updateTransporterInventory();
+        } else if(getStackInSlot(0) != null && getStackInSlot(0).itemID == ModBlocks.transporter.blockID) {
+            updateModules();
         }
     }
     
-    private void updateTransporterInventory() {
-        TileEntity tile = worldObj.getBlockTileEntity((int)getTransporterCoordinate().x, (int)getTransporterCoordinate().y, (int)getTransporterCoordinate().z);
-        
-        if(tile != null && tile instanceof TileTransporter) {
-            TileTransporter transporter = (TileTransporter)tile;
-            for(int i = 0; i < transporter.getSizeInventory(); i++) {
-                if(getStackInSlot(i+1) != transporter.getStackInSlot(i)) {
-                    transporter.setInventorySlotContents(i, getStackInSlot(i));
-                }
+    public TileTransporter getTransporter() {
+        if(CommonProxy.proxy.isServerWorld(worldObj)) {
+            Coordinate3D pos = getTransporterCoordinate();
+            TileEntity tile = worldObj.getBlockTileEntity((int)pos.x, (int)pos.y, (int)pos.z);
+            if(tile != null && tile instanceof TileTransporter) {
+                return (TileTransporter)tile;
             }
         }
+        return null;
     }
     
     public Coordinate3D getTransporterCoordinate() {
@@ -266,6 +277,10 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
             calculateTransporterCoordinate();
         }
         return transporterCoord;
+    }
+    
+    public boolean showTransporterInventory() {
+        return this.activeTab == 0;
     }
     
     public boolean hasTransporter() {
@@ -305,25 +320,61 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
         return direction;
     }
     
-    private void initiateTransporterInventory() {
-        TileEntity tile = worldObj.getBlockTileEntity((int)getTransporterCoordinate().x, (int)getTransporterCoordinate().y, (int)getTransporterCoordinate().z);
+    private void updateModules() { 
+        TileTransporter tile = getTransporter();
         
-        if(tile != null && tile instanceof TileTransporter) {
-            TileTransporter transporter = (TileTransporter)tile;
-            container.enableTransporterInventory();
-            for(int i = 0; i < transporter.getSizeInventory(); i++) {
-                setInventorySlotContents(i+1, transporter.getStackInSlot(i));
+        tile.setHasEngine(false);
+        tile.setHasInventory(false);
+        
+        for(int i = 0; i < 3; i++) {
+            if(tile != null) {
+                if(getStackInSlot(i+1) != null && getStackInSlot(i+1).itemID == ModItems.transporterModules.itemID) {
+                    if(getStackInSlot(i+1).getItemDamage() == 0) {
+                        tile.setHasInventory(true);
+                    } else {
+                        tile.setHasEngine(true);
+                    }
+                }
+            }
+        }
+        this.transporterSpeed = tile.getSpeed();
+    }
+    
+    private void initiateTransporterInventory() {
+        TileTransporter tile = getTransporter();
+        
+        if(tile != null) {
+            for(int i = 0; i < 9; i++) {
+                setInventorySlotContents(i+4, tile.inv[i]);
+            }
+            if(tile.hasEngine()) {
+                this.setInventorySlotContents(1, new ItemStack(ModItems.transporterModules, 1, 1));
+            }
+            if(tile.hasInventory()) {
+                this.setInventorySlotContents(2, new ItemStack(ModItems.transporterModules, 1, 0));
             }
         }
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
     
     private void removeTransporterInventory() {
-        container.disableTransporterInventory();
         for(int i = 0; i < 12; i++) {
             setInventorySlotContents(i+1, null);
         }
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    }
+    
+    public void setTileData(int id, int data){
+        if(id == 0) {
+            activeTab = data;
+        }
+        if(id == 1) {
+            if(data == 0) {
+                if(player != null) {
+                    player.openGui(mod_SoulCraft.instance, GuiIds.GUI_STATION_SEND_SCREEN_ID, worldObj, xCoord, yCoord, zCoord);
+                }
+            }
+        }
     }
     
     //ISidedInventory//

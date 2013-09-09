@@ -69,9 +69,9 @@ public abstract class SCTileMagnetConnector extends TileMagnetConnector {
 
     @Override
     public Packet getDescriptionPacket() {
-        NBTTagCompound var1 = new NBTTagCompound();
-        writeToNBT(var1);
-        return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 1, var1);
+        NBTTagCompound compound = new NBTTagCompound();
+        writeToNBT(compound);
+        return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 1, compound);
     }
     
     public void sendTileData(int id, int data) {
@@ -82,6 +82,6 @@ public abstract class SCTileMagnetConnector extends TileMagnetConnector {
     }
 
     public void setTileData(int id, int data){
-
+        
     }
 }

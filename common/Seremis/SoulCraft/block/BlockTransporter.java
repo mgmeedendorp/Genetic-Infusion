@@ -3,21 +3,17 @@ package Seremis.SoulCraft.block;
 import java.util.Random;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import Seremis.SoulCraft.mod_SoulCraft;
-import Seremis.SoulCraft.core.lib.GuiIds;
 import Seremis.SoulCraft.core.lib.RenderIds;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
 import Seremis.SoulCraft.item.ItemTransporterModules;
 import Seremis.SoulCraft.item.ModItems;
 import Seremis.SoulCraft.tileentity.TileTransporter;
-import Seremis.SoulCraft.util.UtilBlock;
 
 public class BlockTransporter extends SCBlock {
 
@@ -126,26 +122,7 @@ public class BlockTransporter extends SCBlock {
             tile.setHasInventory(true);
             playerItem.stackSize--;
         }
-        if(tile != null && playerItem == null && tile.hasInventory()) {
-            player.openGui(mod_SoulCraft.instance, GuiIds.GUI_TRANSPORTER_ID, world, x, y, z);
-        }
         return true;
-    }
-
-    @Override
-    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-        if(CommonProxy.proxy.isRenderWorld(world)) {
-            return;
-        }
-        TileTransporter tile = (TileTransporter) (world.getBlockTileEntity(x, y, z));
-        if(tile != null && tile.hasInventory() && entity instanceof EntityItem) {
-            for(int a = 0; a < 9; a++) {
-                if(((TileTransporter) tile).setInventorySlot(a, ((EntityItem) entity).getEntityItem())) {
-                    CommonProxy.proxy.removeEntity(entity);
-                    break;
-                }
-            }
-        }
     }
 
     @Override
@@ -153,7 +130,6 @@ public class BlockTransporter extends SCBlock {
         if(CommonProxy.proxy.isRenderWorld(world)) {
             return;
         }
-        UtilBlock.dropItemsFromTile(world, x, y, z);
 
         TileTransporter tile = (TileTransporter) world.getBlockTileEntity(x, y, z);
         if(tile.hasEngine()) {

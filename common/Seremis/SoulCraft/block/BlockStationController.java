@@ -28,7 +28,7 @@ public class BlockStationController extends SCBlockRotateable {
             if(multiblockCheck(world, x, y, z)) {
                 tile.initiateMultiblock();
                 if(tile.isMultiblock) {
-                    player.openGui(mod_SoulCraft.instance, GuiIds.GUI_STATION_ID, world, x, y, z);
+                    player.openGui(mod_SoulCraft.instance, GuiIds.GUI_STATION_TRANSPORTER_SCREEN_ID, world, x, y, z);
                 }
             }
         }
