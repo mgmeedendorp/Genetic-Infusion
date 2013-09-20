@@ -16,30 +16,30 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ContainerStationControllerTransporter extends SCContainer {
 
     private TileStationController tile;
-    
+
     private boolean transporterUpgradesEnabled = false;
     private boolean transporterSlotsEnabled = false;
     private float transporterSpeed = 1.0F;
-    
+
     public ContainerStationControllerTransporter(EntityPlayer player, IInventory tile) {
-        this.tile = (TileStationController)tile;
+        this.tile = (TileStationController) tile;
         this.tile.player = player;
-        
+
         addSlotToContainer(new FilteredSlot(tile, 0, 80, 15, new ItemStack(ModBlocks.transporter), 1));
-        
+
         addTransporterInventory();
         addPlayerInventory(player, 56);
     }
-    
+
     private void addTransporterInventory() {
         for(int i = 0; i < 3; i++) {
-            ToggleableMoveUpgradeSlot slot = new ToggleableMoveUpgradeSlot(tile, i+1, 62 + (18 * i), 45);
+            ToggleableMoveUpgradeSlot slot = new ToggleableMoveUpgradeSlot(tile, i + 1, 62 + (18 * i), 45);
             slot.disable();
             addSlotToContainer(slot);
         }
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 3; j++) {
-                ToggleableMoveSlot slot = new ToggleableMoveSlot(tile, i*3+j+4, 63 + (18 * i), 73 + (18 * j));
+                ToggleableMoveSlot slot = new ToggleableMoveSlot(tile, i * 3 + j + 4, 63 + (18 * i), 73 + (18 * j));
                 slot.disable();
                 addSlotToContainer(slot);
             }
@@ -48,34 +48,34 @@ public class ContainerStationControllerTransporter extends SCContainer {
 
     private void enableToggleSlots() {
         for(int i = 0; i < 9; i++) {
-            ((ToggleableMoveSlot)inventorySlots.get(i+4)).enable();
+            ((ToggleableMoveSlot) inventorySlots.get(i + 4)).enable();
         }
     }
-    
+
     private void enableUpgradeSlots() {
         for(int i = 0; i < 3; i++) {
-            ((ToggleableMoveSlot)inventorySlots.get(i+1)).enable();
+            ((ToggleableMoveSlot) inventorySlots.get(i + 1)).enable();
         }
     }
-    
+
     private void disableUpgradeSlots() {
         for(int i = 0; i < 3; i++) {
-            ((ToggleableMoveSlot)inventorySlots.get(i+1)).disable();
+            ((ToggleableMoveSlot) inventorySlots.get(i + 1)).disable();
         }
     }
-    
+
     private void disableToggleSlots() {
         for(int i = 0; i < 9; i++) {
-            ((ToggleableMoveSlot)inventorySlots.get(i+4)).disable();
+            ((ToggleableMoveSlot) inventorySlots.get(i + 4)).disable();
         }
     }
-    
+
     @Override
     public void addCraftingToCrafters(ICrafting iCrafting) {
         super.addCraftingToCrafters(iCrafting);
         iCrafting.sendProgressBarUpdate(this, 0, tile.hasTransporter() ? 1 : 0);
         iCrafting.sendProgressBarUpdate(this, 1, tile.hasTransporter() ? tile.getTransporter().hasInventory() ? 1 : 0 : 0);
-        iCrafting.sendProgressBarUpdate(this, 2, (int)(tile.getTransporterSpeed()*100));
+        iCrafting.sendProgressBarUpdate(this, 2, (int) (tile.getTransporterSpeed() * 100));
     }
 
     @Override
@@ -92,9 +92,9 @@ public class ContainerStationControllerTransporter extends SCContainer {
                     disableToggleSlots();
                 }
             }
-            
+
             boolean tileCondition = tile.hasTransporter() && tile.getTransporter().hasInventory() && tile.showTransporterInventory();
-            
+
             if(this.transporterSlotsEnabled != tileCondition) {
                 icrafting.sendProgressBarUpdate(this, 1, tileCondition ? 1 : 0);
                 if(tileCondition) {
@@ -103,9 +103,9 @@ public class ContainerStationControllerTransporter extends SCContainer {
                     disableToggleSlots();
                 }
             }
-            
+
             if(this.transporterSpeed != tile.getTransporterSpeed()) {
-                icrafting.sendProgressBarUpdate(this, 2, (int)(tile.getTransporterSpeed()*100));
+                icrafting.sendProgressBarUpdate(this, 2, (int) (tile.getTransporterSpeed() * 100));
             }
         }
         this.transporterUpgradesEnabled = tile.hasTransporter();
@@ -132,23 +132,23 @@ public class ContainerStationControllerTransporter extends SCContainer {
                 this.transporterSlotsEnabled = true;
                 tile.onInventoryChanged();
             } else {
-                this.disableToggleSlots(); 
+                this.disableToggleSlots();
                 this.transporterSlotsEnabled = false;
                 tile.onInventoryChanged();
             }
         } else if(id == 2) {
-            this.transporterSpeed = value/100;
-            tile.transporterSpeed = value/100;
+            this.transporterSpeed = value / 100;
+            tile.transporterSpeed = value / 100;
         }
     }
-    
+
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slotNr) {
         ItemStack result = null;
         Slot slot = (Slot) this.inventorySlots.get(slotNr);
 
         if(slot != null && slot.getHasStack()) {
-            ItemStack  itemstack = slot.getStack();
+            ItemStack itemstack = slot.getStack();
             result = itemstack.copy();
 
             if(slotNr < slotCount) {

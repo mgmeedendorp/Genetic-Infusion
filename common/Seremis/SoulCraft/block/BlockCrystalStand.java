@@ -23,11 +23,12 @@ public class BlockCrystalStand extends SCBlock {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
         super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
-        if(CommonProxy.proxy.isRenderWorld(world)) return true;
+        if(CommonProxy.proxy.isRenderWorld(world))
+            return true;
         TileCrystalStand tile = (TileCrystalStand) (world.getBlockTileEntity(x, y, z));
         ItemStack currPlayerItem = player.getCurrentEquippedItem();
         boolean hasCrystal = tile.hasCrystal();
-        
+
         if(!hasCrystal && currPlayerItem != null && currPlayerItem.itemID == ModBlocks.crystal.blockID) {
             tile.setHasCrystal(true);
             currPlayerItem.stackSize--;

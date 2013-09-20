@@ -12,7 +12,7 @@ public class PacketHandler implements IPacketHandler {
     @Override
     public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player) {
         SCPacket scPacket = PacketTypeHandler.buildPacket(packet.data);
-        scPacket.execute(manager, (EntityPlayer)player);
+        scPacket.execute(manager, (EntityPlayer) player);
     }
 
 }

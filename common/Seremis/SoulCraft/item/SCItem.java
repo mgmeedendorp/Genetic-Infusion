@@ -47,7 +47,7 @@ public class SCItem extends Item {
         }
         return this.itemIcon;
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(int itemID, CreativeTabs creativetab, List list) {

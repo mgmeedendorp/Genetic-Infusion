@@ -21,7 +21,7 @@ public class BlockBushRenderer implements ISimpleBlockRenderingHandler {
         GL11.glTranslated(0.5, 2.0F, 0.5);
         GL11.glRotatef(180F, 1.0F, 0.0F, 1.0F);
         GL11.glScalef(1.5F, 1.5F, 1.5F);
-        ((BlockBush)block).getType(metadata).applyTexture(((BlockBush)block).getType(metadata).getMaxStage());
+        ((BlockBush) block).getType(metadata).applyTexture(((BlockBush) block).getType(metadata).getMaxStage());
         model5.render();
         GL11.glPopMatrix();
     }

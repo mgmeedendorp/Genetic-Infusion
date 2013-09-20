@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import Seremis.SoulCraft.core.lib.Blocks;
 import Seremis.SoulCraft.core.lib.RenderIds;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
 import Seremis.SoulCraft.item.ItemTransporterModules;
@@ -19,7 +20,7 @@ public class BlockTransporter extends SCBlock {
 
     public BlockTransporter(int ID, Material material) {
         super(ID, material);
-        setUnlocalizedName("transporter");
+        setUnlocalizedName(Blocks.TRANSPORTER_UNLOCALIZED_NAME);
         setBlockBounds(0.0f, 0.0f, 0.0f, 1.0f, 0.8f, 1.0f);
         setNeedsIcon(false);
     }

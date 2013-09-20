@@ -11,26 +11,4 @@ public class DefaultProps {
     public static boolean spawnOreSoulCrystal;
     public static boolean fancyCompressorRenderer;
 
-    public static int OreTitaniumID;
-    public static int OreIsolatziumID;
-    public static int CompressorID;
-    public static int IsolatziumCrystalID;
-    public static int CrystalStandID;
-    public static int TransporterID;
-    public static int BushID;
-    public static int HeatIOID;
-    public static int ConnectedGlassID;
-    public static int TitaniumBrickID;
-    public static int StationControllerID;
-    public static int MonsterEggID;
-
-    public static int TitaniumIngotID;
-    public static int ShardIsolatziumID;
-    public static int TitaniumPlateID;
-    public static int IsolatziumAlloyID;
-    public static int TransporterModulesID;
-    public static int TransporterStorageID;
-    public static int BerryID;
-    public static int KernelID;
-    public static int ThermometerID;
 }

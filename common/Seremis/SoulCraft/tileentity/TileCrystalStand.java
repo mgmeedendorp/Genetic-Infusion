@@ -21,14 +21,18 @@ public class TileCrystalStand extends SCTileMagnetConnector {
         if(isStructureMagnetStation && !(link.getOther(this) instanceof TileStationController) && structure != null) {
             int rotation = structure.getRotation();
             switch(rotation) {
-                case 0: dir = ForgeDirection.SOUTH;
-                break;
-                case 1: dir = ForgeDirection.WEST;
-                break;
-                case 2: dir = ForgeDirection.NORTH;
-                break;
-                case 3: dir = ForgeDirection.EAST;
-                break;
+                case 0:
+                    dir = ForgeDirection.SOUTH;
+                    break;
+                case 1:
+                    dir = ForgeDirection.WEST;
+                    break;
+                case 2:
+                    dir = ForgeDirection.NORTH;
+                    break;
+                case 3:
+                    dir = ForgeDirection.EAST;
+                    break;
             }
             return direction != ForgeDirection.DOWN && hasCrystal == 1 && direction == dir;
         }
@@ -42,7 +46,7 @@ public class TileCrystalStand extends SCTileMagnetConnector {
         finalPosition.y += 0.2D;
         return finalPosition;
     }
-    
+
     @Override
     public double getRange() {
         return 5;
@@ -57,11 +61,11 @@ public class TileCrystalStand extends SCTileMagnetConnector {
     public int getMaxHeat() {
         return 400;
     }
-    
+
     @Override
     public void updateEntity() {
         super.updateEntity();
-        if(hasCrystal==0) {
+        if(hasCrystal == 0) {
             this.heat = 0;
         }
     }
@@ -76,13 +80,13 @@ public class TileCrystalStand extends SCTileMagnetConnector {
         super.writeToNBT(compound);
         compound.setInteger("hasCrystal", hasCrystal);
     }
-    
+
     public void setHasCrystal(boolean hasCrystal) {
-        this.hasCrystal = hasCrystal? 1:0;
+        this.hasCrystal = hasCrystal ? 1 : 0;
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
-    
+
     public boolean hasCrystal() {
-        return hasCrystal==1;
-    } 
+        return hasCrystal == 1;
+    }
 }

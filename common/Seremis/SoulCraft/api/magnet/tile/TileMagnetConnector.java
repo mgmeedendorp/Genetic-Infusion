@@ -14,11 +14,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class TileMagnetConnector extends TileEntity implements IMagnetConnector {
-    
+
     private long currTime = 0;
     private long lastUpdateTick = 0;
     private long ticksBeforeUpdate = 20;
-    
+
     protected int heat = 0;
 
     // TileEntity//
@@ -41,7 +41,8 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
 
     public void linkUpdate() {
         World world = worldObj;
-        if(world.isRemote) return;
+        if(world.isRemote)
+            return;
         for(int x = (int) (-1 * getRange()); x <= getRange(); x++) {
             for(int y = (int) (-1 * getRange()); y <= getRange(); y++) {
                 for(int z = (int) (-1 * getRange()); z <= getRange(); z++) {
@@ -54,18 +55,18 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
             }
         }
     }
-    
+
     public void heatUpdate() {
-        if(heat <0)
+        if(heat < 0)
             this.cool(getHeatLossPerTick());
     }
-    
+
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         compound.setInteger("Heat", heat);
     }
-    
+
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
@@ -101,31 +102,36 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
         Coordinate3D centerPosition = new Coordinate3D(position.x + 0.5D, position.y + 0.5D, position.z + 0.5D);
         return centerPosition;
     }
-    
+
     @Override
     public int getHeat() {
         return this.heat;
     }
-    
+
     @Override
     public int warm(int heat) {
         int remainingHeat = 0;
-        this.heat =this.heat + heat;
+        this.heat = this.heat + heat;
         if(this.heat > getMaxHeat()) {
-            remainingHeat = this.heat-getMaxHeat();
+            remainingHeat = this.heat - getMaxHeat();
             this.heat = getMaxHeat();
         }
         return remainingHeat;
     }
-    
+
     @Override
     public int cool(int heat) {
         int remainingHeat = 0;
-        this.heat =this.heat - heat;
+        this.heat = this.heat - heat;
         if(this.heat < 0) {
             remainingHeat = this.heat;
             this.heat = 0;
         }
         return remainingHeat;
+    }
+    
+    @Override
+    public String toString() {
+        return "TileMagnetConnector[name: " + this.getBlockType().getUnlocalizedName() + ", x: " + xCoord + ", y: " + yCoord+ ", z: " + zCoord  + ", heat: " + heat + "]";
     }
 }

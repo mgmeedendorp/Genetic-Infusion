@@ -2,6 +2,7 @@ package Seremis.SoulCraft.item;
 
 import java.util.List;
 
+import Seremis.SoulCraft.core.lib.Items;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
@@ -9,13 +10,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemShardIsolatzium extends SCItem {
 
-    private String[] subNames = { "ShardIsolatziumRed", "ShardIsolatziumGreen", "ShardIsolatziumBlue", "ShardIsolatziumBlack" };
+    private String[] subNames = {Items.CRYSTAL_SHARD_META_0_UNLOCALIZED_NAME, Items.CRYSTAL_SHARD_META_1_UNLOCALIZED_NAME, Items.CRYSTAL_SHARD_META_2_UNLOCALIZED_NAME, Items.CRYSTAL_SHARD_META_3_UNLOCALIZED_NAME};
 
     public ItemShardIsolatzium(int ID) {
         super(ID);
         setHasSubtypes(true);
         setMaxDamage(0);
-        setUnlocalizedName("isolatziumShard");
+        setUnlocalizedName(Items.CRYSTAL_SHARD_UNLOCALIZED_NAME);
         setNumbersofMetadata(4);
     }
 

@@ -26,19 +26,19 @@ import Seremis.SoulCraft.tileentity.TileStationController;
 public class GuiStationControllerTransporter extends SCGui {
 
     public TileStationController tile;
-    
+
     private GuiTab activeTab;
     private List<GuiTab> tabs = new ArrayList<GuiTab>();
-    
+
     public GuiStationControllerTransporter(EntityPlayer player, TileStationController tile) {
-        super(new ContainerStationControllerTransporter(player, (IInventory)tile));
+        super(new ContainerStationControllerTransporter(player, (IInventory) tile));
         super.xSize = 176;
         super.ySize = 222;
         this.tile = tile;
-    
+
         tabs.add(new GuiTabInventory(0, 28, 74, 14, 12, "Transporter Inventory").setVisible(false));
         tabs.add(new GuiTabEngine(1, 28, 86, 14, 12, "Transporter Engines", this).setVisible(false));
-        
+
         activeTab = tabs.get(0);
     }
 
@@ -46,31 +46,31 @@ public class GuiStationControllerTransporter extends SCGui {
     public void initGui() {
         super.initGui();
         buttonList.clear();
-        
+
         buttonList.add(new GuiButton(0, guiLeft + 20, guiTop + 15, 40, 20, "Send"));
     }
-    
+
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-   
+
         SCRenderHelper.bindTexture(Localizations.LOC_GUI_TEXTURES + Localizations.GUI_MAGNET_STATION_TRANSPORTER_SCREEN);
-        drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);          
+        drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
         for(GuiTab tab : tabs) {
-            
+
             int srcY = 18;
-            
+
             if(tab == activeTab) {
                 srcY = 30;
                 tab.drawBackground(this, x, y);
             }
-            
+
             tab.draw(this, 176, srcY);
         }
         tabs.get(0).setVisible(false);
         tabs.get(1).setVisible(false);
         for(int i = 0; i < 3; i++) {
-            ItemStack stack = tile.getStackInSlot(i+1);
+            ItemStack stack = tile.getStackInSlot(i + 1);
             if(stack != null && stack.itemID == ModItems.transporterModules.itemID && stack.getItemDamage() == 0) {
                 tabs.get(0).setVisible(true);
             } else {
@@ -88,27 +88,27 @@ public class GuiStationControllerTransporter extends SCGui {
     protected void drawGuiContainerForegroundLayer(int x, int y) {
         fontRenderer.drawString("Magnet Station Controller", 8, 5, 0x404040);
         fontRenderer.drawString("Inventory", 8, this.ySize - 92, 0x404040);
-        
+
         SCRenderHelper.bindTexture(Localizations.LOC_GUI_TEXTURES + Localizations.GUI_MAGNET_STATION_TRANSPORTER_SCREEN);
-        
+
         if(activeTab != null) {
             activeTab.drawForeground(this, x, y);
         }
         if(activeTab == null || !activeTab.visible()) {
-            fontRenderer.drawSplitString("No modules inserted",  50, 80, 100, 0x404040);
+            fontRenderer.drawSplitString("No modules inserted", 50, 80, 100, 0x404040);
         }
-        for (GuiTab tab : tabs) {
+        for(GuiTab tab : tabs) {
             tab.drawString(this, x, y, tab.getName());
         }
     }
-    
+
     @Override
     protected void mouseClicked(int x, int y, int button) {
         super.mouseClicked(x, y, button);
-        
+
         if(activeTab != null)
-        activeTab.mouseClick(this, x, y, button);
-        
+            activeTab.mouseClick(this, x, y, button);
+
         for(GuiTab tab : tabs) {
             if(activeTab == null || activeTab != tab) {
                 if(tab.inRect(this, x, y)) {
@@ -121,23 +121,23 @@ public class GuiStationControllerTransporter extends SCGui {
             }
         }
     }
-    
+
     @Override
     protected void mouseClickMove(int x, int y, int button, long timeSinceClicked) {
         super.mouseClickMove(x, y, button, timeSinceClicked);
-        
+
         if(activeTab != null)
-        activeTab.mouseMoveClick(this, x, y, button, timeSinceClicked);
+            activeTab.mouseMoveClick(this, x, y, button, timeSinceClicked);
     }
-    
+
     @Override
     protected void mouseMovedOrUp(int x, int y, int button) {
         super.mouseMovedOrUp(x, y, button);
-        
+
         if(activeTab != null)
-        activeTab.mouseReleased(this, x, y, button);
+            activeTab.mouseReleased(this, x, y, button);
     }
-    
+
     @Override
     protected void actionPerformed(GuiButton button) {
         tile.sendTileData(1, button.id);

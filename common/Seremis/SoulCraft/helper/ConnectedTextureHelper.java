@@ -9,75 +9,70 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ConnectedTextureHelper {
-    
+
     private Block block;
-    
-    private String[] textures = new String[46];
-    
-    private Icon[] icons = new Icon[46];
-    
-    private int[][][] coordMatrix = {{{0, 0, -1}, {0, 0, 1}, {-1, 0, 0}, {1, 0, 0}, {-1, 0, -1}, {1, 0, -1}, {-1, 0, 1}, {1, 0, 1}}, 
-                                    {{0, 0, -1}, {0, 0, 1}, {-1, 0, 0}, {1, 0, 0}, {-1, 0, -1}, {1, 0, -1}, {-1, 0, 1}, {1, 0, 1}}, 
-                                    {{0, 1, 0}, {0, -1, 0}, {1, 0, 0}, {-1, 0, 0}, {1, 1, 0}, {-1, 1, 0}, {1, -1, 0}, {-1, -1, 0}}, 
-                                    {{0, 1, 0}, {0, -1, 0}, {-1, 0, 0}, {1, 0, 0}, {-1, 1, 0}, {1, 1, 0}, {-1, -1, 0}, {1, -1, 0}}, 
-                                    {{0, 1, 0}, {0, -1, 0}, {0, 0, -1}, {0, 0, 1}, {0, 1, -1}, {0, 1, 1}, {0, -1, -1}, {0, -1, 1}}, 
-                                    {{0, 1, 0}, {0, -1, 0}, {0, 0, 1}, {0, 0, -1}, {0, 1, 1}, {0, 1, -1}, {0, -1, 1}, {0, -1, -1}}};
-    
+
+    private String[] textures = new String[47];
+
+    private Icon[] icons = new Icon[47];
+
+    private int[][][] coordMatrix = { { {0, 0, -1}, {0, 0, 1}, {-1, 0, 0}, {1, 0, 0}, {-1, 0, -1}, {1, 0, -1}, {-1, 0, 1}, {1, 0, 1}}, { {0, 0, -1}, {0, 0, 1}, {-1, 0, 0}, {1, 0, 0}, {-1, 0, -1}, {1, 0, -1}, {-1, 0, 1}, {1, 0, 1}}, { {0, 1, 0}, {0, -1, 0}, {1, 0, 0}, {-1, 0, 0}, {1, 1, 0}, {-1, 1, 0}, {1, -1, 0}, {-1, -1, 0}}, { {0, 1, 0}, {0, -1, 0}, {-1, 0, 0}, {1, 0, 0}, {-1, 1, 0}, {1, 1, 0}, {-1, -1, 0}, {1, -1, 0}}, { {0, 1, 0}, {0, -1, 0}, {0, 0, -1}, {0, 0, 1}, {0, 1, -1}, {0, 1, 1}, {0, -1, -1}, {0, -1, 1}}, { {0, 1, 0}, {0, -1, 0}, {0, 0, 1}, {0, 0, -1}, {0, 1, 1}, {0, 1, -1}, {0, -1, 1}, {0, -1, -1}}};
+
     public ConnectedTextureHelper(Block block, String[] textureName) {
         this.block = block;
         textures = textureName;
     }
-    
+
     public ConnectedTextureHelper(Block block, String textureName) {
         this.block = block;
         setLogicTextureNames(textureName);
     }
-    
+
     private void setLogicTextureNames(String textureName) {
-        for(int i = 0; i<textures.length; i++) {
+        for(int i = 0; i < textures.length; i++) {
             textures[i] = textureName + i;
         }
-        
+
     }
 
     public void registerIcons(IconRegister iconRegister) {
-        for(int i = 0; i<textures.length; i++) {
-            icons[i] = iconRegister.registerIcon(DefaultProps.ID+ ":connected/" + textures[i]);
+        for(int i = 0; i < textures.length; i++) {
+            icons[i] = iconRegister.registerIcon(DefaultProps.ID + ":connected/" + textures[i]);
         }
     }
-    
+
     @SideOnly(Side.CLIENT)
     public Icon getBlockTexture(IBlockAccess blockaccess, int x, int y, int z, int side) {
         int[] adjacentIds = new int[8];
-        
+
         int mapping = 0;
-        
+
         int[][] adjacentCoords = new int[8][3];
-        
+
         boolean up = false, down = false, left = false, right = false, upLeft = false, upRight = false, downLeft = false, downRight = false;
-        
-        for(int i = 0; i<8; i++) {
+
+        for(int i = 0; i < 8; i++) {
             int[] array = coordMatrix[side][i];
-            adjacentIds[i] = blockaccess.getBlockId(x+array[0], y+array[1], z+array[2]);
+            adjacentIds[i] = blockaccess.getBlockId(x + array[0], y + array[1], z + array[2]);
             if(adjacentIds[i] == block.blockID) {
-                adjacentCoords[i] = new int[] {x+array[0], y+array[1], z+array[2]};
+                adjacentCoords[i] = new int[] {x + array[0], y + array[1], z + array[2]};
                 switch(i) {
-                    case 0: 
+                    case 0:
                         up = true;
                         break;
-                    case 1: 
+                    case 1:
                         down = true;
                         break;
-                    case 2: 
+                    case 2:
                         left = true;
                         break;
-                    case 3: 
+                    case 3:
                         right = true;
                         break;
-                    case 4: 
+                    case 4:
                         upLeft = true;
                         break;
-                    case 5: 
+                    case 5:
                         upRight = true;
                         break;
                     case 6:
@@ -89,7 +84,7 @@ public class ConnectedTextureHelper {
                 }
             }
         }
-        
+
         if(up) {
             mapping = 36;
             if(right) {
@@ -97,7 +92,7 @@ public class ConnectedTextureHelper {
                 if(left) {
                     mapping = 18;
                     if(down) {
-                        mapping = 45;
+                        mapping = 46;
                         if(upRight) {
                             mapping = 8;
                             if(upLeft) {
@@ -107,76 +102,62 @@ public class ConnectedTextureHelper {
                                     if(downLeft) {
                                         mapping = 26;
                                     }
-                                }
-                                else if (downLeft) {
+                                } else if(downLeft) {
                                     mapping = 32;
                                 }
-                            }
-                            else if(downRight) {
+                            } else if(downRight) {
                                 mapping = 23;
                                 if(downLeft) {
-                                    mapping = 45;
+                                    mapping = 44;
                                 }
-                            }
-                            else if(downLeft) {
+                            } else if(downLeft) {
                                 mapping = 34;
                             }
-                        }
-                        else if(downRight) {
+                        } else if(downRight) {
                             mapping = 9;
                             if(upLeft) {
                                 mapping = 35;
                                 if(downLeft) {
                                     mapping = 44;
                                 }
-                            }
-                            else if(downLeft) {
+                            } else if(downLeft) {
                                 mapping = 22;
                             }
-                        }
-                        else if(upLeft) {
+                        } else if(upLeft) {
                             mapping = 20;
                             if(downLeft) {
                                 mapping = 10;
                             }
-                        }
-                        else if(downLeft) {
+                        } else if(downLeft) {
                             mapping = 21;
                         }
-                    }
-                    else if(upLeft) {
+                    } else if(upLeft) {
                         mapping = 42;
-                        if(upRight)  {
+                        if(upRight) {
                             mapping = 38;
                         }
-                    }
-                    else if(upRight) {
+                    } else if(upRight) {
                         mapping = 40;
-                    }
-                    else if(downRight) {
+                    } else if(downRight) {
                         mapping = 31;
                         if(downLeft) {
                             mapping = 18;
                         }
                     }
-                }
-                else if(down) {
+                } else if(down) {
                     mapping = 6;
                     if(downRight) {
                         mapping = 28;
                         if(upRight) {
                             mapping = 25;
                         }
-                    }
-                    else if(upRight) {
+                    } else if(upRight) {
                         mapping = 30;
                     }
-                }
-                else if(upRight) {
+                } else if(upRight) {
                     mapping = 37;
                 }
-            }
-            else if(left) {
+            } else if(left) {
                 mapping = 17;
                 if(down) {
                     mapping = 19;
@@ -185,20 +166,16 @@ public class ConnectedTextureHelper {
                         if(downLeft) {
                             mapping = 27;
                         }
-                    }
-                    else if(downLeft) {
+                    } else if(downLeft) {
                         mapping = 43;
                     }
-                }
-                else if(upLeft) {
+                } else if(upLeft) {
                     mapping = 39;
                 }
-            }
-            else if(down) {
+            } else if(down) {
                 mapping = 24;
             }
-        }
-        else if(down) {
+        } else if(down) {
             mapping = 12;
             if(right) {
                 mapping = 4;
@@ -209,33 +186,28 @@ public class ConnectedTextureHelper {
                         if(downLeft) {
                             mapping = 14;
                         }
-                    }
-                    else if(downLeft) {
+                    } else if(downLeft) {
                         mapping = 29;
                     }
-                }
-                else if(downRight) {
+                } else if(downRight) {
                     mapping = 13;
                 }
-            }
-            else if(left) {
+            } else if(left) {
                 mapping = 5;
                 if(downLeft) {
                     mapping = 15;
                 }
-                
+
             }
-        }
-        else if(left) {
+        } else if(left) {
             mapping = 3;
             if(right) {
                 mapping = 2;
             }
-        }
-        else if(right) {
+        } else if(right) {
             mapping = 1;
         }
-        
+
         return icons[mapping];
     }
 

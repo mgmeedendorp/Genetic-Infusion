@@ -1,16 +1,17 @@
 package Seremis.SoulCraft.block;
 
+import Seremis.SoulCraft.core.lib.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 public class BlockOreIsolatziumItem extends ItemBlock {
 
-    private static String[] subNames = { "OreSoulCrystalRed", "OreSoulCrystalGreen", "OreSoulCrystalBlue", "OreSoulCrystalBlack", "OreTitanium" };
+    private static String[] subNames = {Blocks.ORE_ISOLATZIUM_ITEM_META_0_UNLOCALIZED_NAME, Blocks.ORE_ISOLATZIUM_ITEM_META_1_UNLOCALIZED_NAME, Blocks.ORE_ISOLATZIUM_ITEM_META_2_UNLOCALIZED_NAME, Blocks.ORE_ISOLATZIUM_ITEM_META_3_UNLOCALIZED_NAME};
 
     public BlockOreIsolatziumItem(int ID) {
         super(ID);
         setHasSubtypes(true);
-        setUnlocalizedName("oreIsolatziumItem");
+        setUnlocalizedName(Blocks.ORE_ISOLATZIUM_ITEM_UNLOCALIZED_NAME);
     }
 
     @Override

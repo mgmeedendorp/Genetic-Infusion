@@ -28,9 +28,9 @@ public class MagnetLink {
     }
 
     public IMagnetConnector getOther(IMagnetConnector connector) {
-        return connector == connector1 ? connector2 : connector1;
+        return connector == connector1 ? connector2 : connector == connector2 ? connector1 : null;
     }
-    
+
     @SideOnly(Side.CLIENT)
     public void render() {
         Coordinate3D from = new Coordinate3D(connector1.getTile());
@@ -40,22 +40,22 @@ public class MagnetLink {
         Coordinate3D finalTarget = connector2.applyBeamRenderOffset(target, templine.getSide(connector2.getTile()));
         ClientProxy.proxy.renderBeam(connector1.getTile().worldObj, finalFrom, finalTarget, connector1.getHeat(), connector2.getHeat());
     }
-    
+
     public void divideHeat() {
         int method = getHeatDivideMethod();
-        
+
         int heat1 = connector1.getHeat();
         int heat2 = connector2.getHeat();
-        
+
         if(heat1 != heat2 && method == 0) {
-            int averageHeat = heat1-heat2/2;
-            int changeHeat = Math.abs(heat1-averageHeat)/100;
-            if(heat1<heat2) {
+            int averageHeat = heat1 - heat2 / 2;
+            int changeHeat = Math.abs(heat1 - averageHeat) / 100;
+            if(heat1 < heat2) {
                 int con1rem = connector1.warm(changeHeat);
                 int con2rem = connector2.cool(changeHeat);
                 connector1.warm(con2rem);
                 connector2.warm(con1rem);
-            } else if(heat1>heat2) {
+            } else if(heat1 > heat2) {
                 int con1rem = connector1.cool(changeHeat);
                 int con2rem = connector2.warm(changeHeat);
                 connector1.warm(con2rem);
@@ -63,11 +63,11 @@ public class MagnetLink {
             }
         }
     }
-    
+
     private int getHeatDivideMethod() {
         int heat1 = connector1.getHeat();
         int heat2 = connector2.getHeat();
-        
+
         if(heat1 == connector1.getMaxHeat() && heat2 > heat1 || heat2 == connector2.getMaxHeat() && heat1 > heat2) {
             return -1;
         }
@@ -82,9 +82,9 @@ public class MagnetLink {
         }
         return 0;
     }
-    
+
     @Override
     public String toString() {
-        return "MagnetLink["+connector1.toString()+ " " +connector2.toString()+ "]";
+        return "MagnetLink[" + connector1.toString() + " " + connector2.toString() + "]";
     }
 }

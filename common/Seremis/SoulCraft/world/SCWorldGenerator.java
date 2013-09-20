@@ -20,7 +20,7 @@ public class SCWorldGenerator implements IWorldGenerator {
             case 0:
                 generateSurface(world, random, chunkX * 8, chunkZ * 8);
             case 1:
-                generateEnd(world, random, chunkX*16, chunkZ*16);
+                generateEnd(world, random, chunkX * 16, chunkZ * 16);
         }
     }
 
@@ -65,7 +65,7 @@ public class SCWorldGenerator implements IWorldGenerator {
     private void generateNether(World world, Random random, int blockX, int blockZ) {
 
     }
-    
+
     private void generateEnd(World world, Random random, int blockX, int blockZ) {
 
     }

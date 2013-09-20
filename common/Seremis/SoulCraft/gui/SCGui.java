@@ -22,29 +22,28 @@ public class SCGui extends GuiContainer {
         super.updateScreen();
 
     }
-    
+
     public int getLeft() {
         return guiLeft;
     }
-    
+
     public int getTop() {
         return guiTop;
     }
-    
+
     public FontRenderer getFontRenderer() {
         return fontRenderer;
     }
-    
+
     public void drawHoveringString(List<String> list, int x, int y) {
         this.drawHoveringText(list, x, y, fontRenderer);
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int x, int y) {
-    }
+    protected void drawGuiContainerForegroundLayer(int x, int y) {}
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
-        
+
     }
 }

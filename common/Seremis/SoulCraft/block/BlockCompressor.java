@@ -18,6 +18,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import Seremis.SoulCraft.mod_SoulCraft;
+import Seremis.SoulCraft.core.lib.Blocks;
 import Seremis.SoulCraft.core.lib.RenderIds;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
 import Seremis.SoulCraft.item.ModItems;
@@ -31,7 +32,7 @@ public class BlockCompressor extends SCBlock {
 
     public BlockCompressor(int ID, Material material) {
         super(ID, material);
-        setUnlocalizedName("compressor");
+        setUnlocalizedName(Blocks.COMPRESSOR_UNLOCALIZED_NAME);
         setNeedsSidedTexture(true, sidedTextureNames);
         random = new Random();
         setHardness(10.0F);
@@ -87,7 +88,7 @@ public class BlockCompressor extends SCBlock {
         }
         TileCompressor tile = (TileCompressor) (world.getBlockTileEntity(x, y, z));
         if(tile != null && entity instanceof EntityItem) {
-            if(((EntityItem) entity).getEntityItem().itemID == ModItems.shardIsolatzium.itemID) {
+            if(((EntityItem) entity).getEntityItem().itemID == ModItems.crystalShard.itemID) {
                 if(tile.setInventorySlot(0, ((EntityItem) entity).getEntityItem())) {
                     CommonProxy.proxy.removeEntity(entity);
                 }
@@ -107,7 +108,7 @@ public class BlockCompressor extends SCBlock {
             dispense(world, x, y, z, random, 1);
             world.markBlockForUpdate(x, y, z);
         }
-        if(cont != null) {
+        if(cont != null) {//TODO change this text in language supported
             player.addChatMessage("This Compressor contains " + cont.stackSize + " " + cont.getItem().getItemDisplayName(cont));
         } else {
             player.addChatMessage("This Compressor does not contain anything.");

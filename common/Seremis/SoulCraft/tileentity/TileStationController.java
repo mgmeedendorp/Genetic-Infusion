@@ -17,22 +17,22 @@ import Seremis.SoulCraft.api.util.structure.IStructureChangeReceiver;
 import Seremis.SoulCraft.api.util.structure.Structure;
 import Seremis.SoulCraft.block.ModBlocks;
 import Seremis.SoulCraft.core.lib.GuiIds;
-import Seremis.SoulCraft.core.lib.Strings;
+import Seremis.SoulCraft.core.lib.Tiles;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
 import Seremis.SoulCraft.item.ModItems;
 import Seremis.SoulCraft.util.UtilTileEntity;
 import Seremis.SoulCraft.util.structure.ModStructures;
 
 public class TileStationController extends SCTileMagnetConnector implements IInventory, ISidedInventory, IStructureChangeReceiver {
-    
+
     public Structure structure = new Structure(ModStructures.magnetStation);
-    
+
     public boolean isMultiblock = false;
-    
+
     private long currTime = 0;
     private long lastUpdateTick = 0;
     private long ticksBeforeUpdate = 60;
-        
+
     public TileStationController() {
 
     }
@@ -40,7 +40,7 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
     public boolean isValid() {
         return structure.doesStructureExist();
     }
-    
+
     @Override
     public void invalidate() {
         invalidateMultiblock();
@@ -50,13 +50,13 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
     public void invalidateMultiblock() {
         if(isMultiblock) {
             List<Coordinate3D> crystalStandCoordinates = structure.getBlockCoordinates(ModBlocks.crystalStand, 0);
-            
+
             if(structure.doesBlockExistInStructure(ModBlocks.crystalStand, 0, 1)) {
                 Coordinate3D crystalStandCoord = crystalStandCoordinates.get(0);
                 TileEntity tile = worldObj.getBlockTileEntity((int) crystalStandCoord.x, (int) crystalStandCoord.y, (int) crystalStandCoord.z);
-                if(tile != null && tile instanceof TileCrystalStand){
-                    ((TileCrystalStand)tile).isStructureMagnetStation = false;
-                    ((TileCrystalStand)tile).structure = null;
+                if(tile != null && tile instanceof TileCrystalStand) {
+                    ((TileCrystalStand) tile).isStructureMagnetStation = false;
+                    ((TileCrystalStand) tile).structure = null;
                 }
             }
         }
@@ -64,19 +64,21 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
     }
 
     public void initiateMultiblock() {
-        if(!isMultiblock) {
+        if(!isMultiblock && CommonProxy.proxy.isServerWorld(worldObj)) {
             List<Coordinate3D> crystalStandCoordinates = structure.getBlockCoordinates(ModBlocks.crystalStand, 0);
             if(structure.doesBlockExistInStructure(ModBlocks.crystalStand, 0, 1)) {
                 Coordinate3D crystalStandCoord = crystalStandCoordinates.get(0);
-                
+
                 TileEntity tile = worldObj.getBlockTileEntity((int) crystalStandCoord.x, (int) crystalStandCoord.y, (int) crystalStandCoord.z);
-                if(tile != null && tile instanceof TileCrystalStand){
-                    MagnetLinkHelper.instance.addLink(new MagnetLink(this, (TileCrystalStand)tile));
-                    
-                    ((TileCrystalStand)tile).isStructureMagnetStation = true;
-                    ((TileCrystalStand)tile).structure = structure;
+
+                if(tile != null && tile instanceof TileCrystalStand) {
+
+                    ((TileCrystalStand) tile).isStructureMagnetStation = true;
+                    ((TileCrystalStand) tile).structure = structure;
 
                     isMultiblock = true;
+
+                    MagnetLinkHelper.instance.addLink(new MagnetLink(this, (TileCrystalStand) tile));
                 }
             } else {
                 isMultiblock = false;
@@ -86,9 +88,11 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
 
     @Override
     public void updateEntity() {
-        if(CommonProxy.proxy.isRenderWorld(worldObj))
+        if(CommonProxy.proxy.isRenderWorld(worldObj)) {
+            System.out.println("ts" + MagnetLinkHelper.instance.getLinksConnectedTo(this));
+            System.out.println(this.worldObj.isRemote);
             return;
-        
+        }
         if(currTime == 0) {
             structure.initiate(worldObj, new Coordinate3D(xCoord, yCoord, zCoord), ModBlocks.stationController, 0);
             structure.notifyChangesTo(this);
@@ -97,6 +101,7 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
         currTime++;
         if(lastUpdateTick + ticksBeforeUpdate <= currTime) {
             lastUpdateTick = currTime;
+
             if(this.isValid()) {
                 if(!isMultiblock)
                     initiateMultiblock();
@@ -106,67 +111,65 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
             }
         }
     }
-    
+
     @Override
     public void onStructureChange() {
         List<Coordinate3D> crystalStandCoordinates = structure.getBlockCoordinates(ModBlocks.crystalStand, 0);
-        
+
         if(structure.doesBlockExistInStructure(ModBlocks.crystalStand, 0, 1)) {
             Coordinate3D crystalStandCoord = crystalStandCoordinates.get(0);
-            
+
             TileEntity tile = worldObj.getBlockTileEntity((int) crystalStandCoord.x, (int) crystalStandCoord.y, (int) crystalStandCoord.z);
-            if(tile != null && tile instanceof TileCrystalStand){
-                MagnetLinkHelper.instance.addLink(new MagnetLink(this, (TileCrystalStand)tile));
-                ((TileCrystalStand)tile).isStructureMagnetStation = true;
-                ((TileCrystalStand)tile).structure = structure;
+            if(tile != null && tile instanceof TileCrystalStand) {
+                MagnetLinkHelper.instance.addLink(new MagnetLink(this, (TileCrystalStand) tile));
+                ((TileCrystalStand) tile).isStructureMagnetStation = true;
+                ((TileCrystalStand) tile).structure = structure;
             }
         }
         onInventoryChanged();
     }
-    
+
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         UtilTileEntity.writeInventoryToNBT(this, compound);
     }
-    
+
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         inv = UtilTileEntity.readInventoryFromNBT(this, compound);
     }
-    
-    //IInventory//
-    private Coordinate3D transporterCoord;    
-    
+
+    // IInventory//
+    private Coordinate3D transporterCoord;
+
     private ItemStack[] inv = new ItemStack[13];
-    
+
     public int activeTab = -1;
-    
+
     public float transporterSpeed = 1.0F;
-    
+
     public EntityPlayer player;
-    
+
     @Override
     public int getSizeInventory() {
         return inv.length;
     }
-
 
     @Override
     public ItemStack getStackInSlot(int slot) {
         return inv[slot];
     }
 
-
     @Override
     public ItemStack decrStackSize(int slot, int amount) {
         ItemStack itemstack = getStackInSlot(slot);
-        
-        if (itemstack != null) {
-            if (itemstack.stackSize <= amount) {
+
+        if(itemstack != null) {
+            if(itemstack.stackSize <= amount) {
                 setInventorySlotContents(slot, null);
-            }else{
+            } else {
                 itemstack = itemstack.splitStack(amount);
                 onInventoryChanged();
             }
@@ -175,161 +178,153 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
         return itemstack;
     }
 
-
     @Override
     public ItemStack getStackInSlotOnClosing(int slot) {
         return null;
     }
 
-
     @Override
     public void setInventorySlotContents(int slot, ItemStack stack) {
         inv[slot] = stack;
-        
+
         if(stack != null && stack.stackSize > getInventoryStackLimit()) {
             stack.stackSize = getInventoryStackLimit();
         }
-        
+
         onInventoryChanged();
     }
 
-
     @Override
     public String getInvName() {
-        return Strings.INV_STATION_CONTROLLER_NAME;
+        return Tiles.INV_STATION_CONTROLLER_UNLOCALIZED_NAME;
     }
-
 
     @Override
     public boolean isInvNameLocalized() {
         return false;
     }
 
-
     @Override
     public int getInventoryStackLimit() {
         return 64;
     }
 
-
     @Override
     public void openChest() {}
 
-
     @Override
     public void closeChest() {}
-
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
         return slot % 2 == 0 ? getStackInSlot(slot) != null ? !(getStackInSlot(slot).stackSize >= 1) ? stack != null ? stack.stackSize == 1 ? stack.itemID == ModBlocks.transporter.blockID : false : false : false : true : true;
     }
-    
+
     public ItemStack[] getInventory() {
         return inv;
     }
-    
+
     public float getTransporterSpeed() {
         return transporterSpeed;
     }
-    
+
     @Override
     public void onInventoryChanged() {
         super.onInventoryChanged();
         if(CommonProxy.proxy.isRenderWorld(worldObj))
             return;
-        
+
         if(!hasTransporter()) {
-            if(getStackInSlot(0) != null && getStackInSlot(0).itemID == ModBlocks.transporter.blockID) {                
-                worldObj.setBlock((int)getTransporterCoordinate().x, (int)getTransporterCoordinate().y, (int)getTransporterCoordinate().z, ModBlocks.transporter.blockID, 0, 3);
-                
-                TileEntity tile = worldObj.getBlockTileEntity((int)getTransporterCoordinate().x, (int)getTransporterCoordinate().y, (int)getTransporterCoordinate().z);
-                
+            if(getStackInSlot(0) != null && getStackInSlot(0).itemID == ModBlocks.transporter.blockID) {
+                worldObj.setBlock((int) getTransporterCoordinate().x, (int) getTransporterCoordinate().y, (int) getTransporterCoordinate().z, ModBlocks.transporter.blockID, 0, 3);
+
+                TileEntity tile = worldObj.getBlockTileEntity((int) getTransporterCoordinate().x, (int) getTransporterCoordinate().y, (int) getTransporterCoordinate().z);
+
                 if(tile != null && tile instanceof TileTransporter) {
-                    ((TileTransporter)tile).setDirection(convertStructureRotationToForgeDirection(structure.getRotation()));
+                    ((TileTransporter) tile).setDirection(convertStructureRotationToForgeDirection(structure.getRotation()));
                     initiateTransporterInventory();
                 }
             }
         } else if(getStackInSlot(0) == null) {
-            int id = worldObj.getBlockId((int)getTransporterCoordinate().x, (int)getTransporterCoordinate().y, (int)getTransporterCoordinate().z);
+            int id = worldObj.getBlockId((int) getTransporterCoordinate().x, (int) getTransporterCoordinate().y, (int) getTransporterCoordinate().z);
             if(id == ModBlocks.transporter.blockID) {
-                worldObj.setBlock((int)getTransporterCoordinate().x, (int)getTransporterCoordinate().y, (int)getTransporterCoordinate().z, 0, 0, 3);
+                worldObj.setBlock((int) getTransporterCoordinate().x, (int) getTransporterCoordinate().y, (int) getTransporterCoordinate().z, 0, 0, 3);
                 removeTransporterInventory();
             }
         } else if(getStackInSlot(0) != null && getStackInSlot(0).itemID == ModBlocks.transporter.blockID) {
             updateModules();
         }
     }
-    
+
     public TileTransporter getTransporter() {
         if(CommonProxy.proxy.isServerWorld(worldObj)) {
             Coordinate3D pos = getTransporterCoordinate();
-            TileEntity tile = worldObj.getBlockTileEntity((int)pos.x, (int)pos.y, (int)pos.z);
+            TileEntity tile = worldObj.getBlockTileEntity((int) pos.x, (int) pos.y, (int) pos.z);
             if(tile != null && tile instanceof TileTransporter) {
-                return (TileTransporter)tile;
+                return (TileTransporter) tile;
             }
         }
         return null;
     }
-    
+
     public Coordinate3D getTransporterCoordinate() {
         if(transporterCoord == null) {
             calculateTransporterCoordinate();
         }
         return transporterCoord;
     }
-    
+
     public boolean showTransporterInventory() {
         return this.activeTab == 0;
     }
-    
+
     public boolean hasTransporter() {
         return structure.doesBlockExistInStructure(ModBlocks.transporter, 0, 1);
     }
-    
+
     private void calculateTransporterCoordinate() {
         transporterCoord = new Coordinate3D().setCoords(this);
-        
+
         Coordinate3D coord = structure.getBlockCoordinates(ModBlocks.transporter, 0).get(0);
         Coordinate3D coord2 = structure.getBlockCoordinates(ModBlocks.stationController, 0).get(0);
-        
+
         transporterCoord.moveBack(coord2);
         transporterCoord.move(coord);
     }
-    
+
     private ForgeDirection convertStructureRotationToForgeDirection(int rotation) {
         ForgeDirection direction = ForgeDirection.NORTH;
         switch(rotation) {
-            case 0 : {
+            case 0: {
                 direction = ForgeDirection.SOUTH;
                 break;
             }
-            case 1 : {
+            case 1: {
                 direction = ForgeDirection.WEST;
                 break;
             }
-            case 2 : {
+            case 2: {
                 direction = ForgeDirection.NORTH;
                 break;
             }
-            case 3 : {
+            case 3: {
                 direction = ForgeDirection.EAST;
                 break;
             }
         }
         return direction;
     }
-    
-    private void updateModules() { 
+
+    private void updateModules() {
         TileTransporter tile = getTransporter();
-        
+
         tile.setHasEngine(false);
         tile.setHasInventory(false);
-        
+
         for(int i = 0; i < 3; i++) {
             if(tile != null) {
-                if(getStackInSlot(i+1) != null && getStackInSlot(i+1).itemID == ModItems.transporterModules.itemID) {
-                    if(getStackInSlot(i+1).getItemDamage() == 0) {
+                if(getStackInSlot(i + 1) != null && getStackInSlot(i + 1).itemID == ModItems.transporterModules.itemID) {
+                    if(getStackInSlot(i + 1).getItemDamage() == 0) {
                         tile.setHasInventory(true);
                     } else {
                         tile.setHasEngine(true);
@@ -339,13 +334,13 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
         }
         this.transporterSpeed = tile.getSpeed();
     }
-    
+
     private void initiateTransporterInventory() {
         TileTransporter tile = getTransporter();
-        
+
         if(tile != null) {
             for(int i = 0; i < 9; i++) {
-                setInventorySlotContents(i+4, tile.inv[i]);
+                setInventorySlotContents(i + 4, tile.inv[i]);
             }
             if(tile.hasEngine()) {
                 this.setInventorySlotContents(1, new ItemStack(ModItems.transporterModules, 1, 1));
@@ -356,15 +351,15 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
         }
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
-    
+
     private void removeTransporterInventory() {
         for(int i = 0; i < 12; i++) {
-            setInventorySlotContents(i+1, null);
+            setInventorySlotContents(i + 1, null);
         }
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
-    
-    public void setTileData(int id, int data){
+
+    public void setTileData(int id, int data) {
         if(id == 0) {
             activeTab = data;
         }
@@ -376,9 +371,9 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
             }
         }
     }
-    
-    //ISidedInventory//
-    
+
+    // ISidedInventory//
+
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
         return new int[] {0};
@@ -389,22 +384,41 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
         return slot == 0 ? stack.itemID == ModBlocks.transporter.blockID : false;
     }
 
-
     @Override
     public boolean canExtractItem(int slot, ItemStack stack, int side) {
         return slot == 0 ? stack.itemID == ModBlocks.transporter.blockID : false;
     }
 
-    //TileMagnetConnector//
-    
+    // TileMagnetConnector//
+
     @Override
     public double getRange() {
         return 3;
     }
-    
+
     @Override
     public boolean canConnect(MagnetLink link) {
-        return isMultiblock & MagnetLinkHelper.instance.getLinksConnectedTo(this).size() <= 1;
+        ForgeDirection dir = null;
+        ForgeDirection direction = link.line.getSide(link.getOther(this).getTile());
+        if(isMultiblock) {
+            int rotation = structure.getRotation();
+            switch(rotation) {
+                case 0:
+                    dir = ForgeDirection.SOUTH;
+                    break;
+                case 1:
+                    dir = ForgeDirection.WEST;
+                    break;
+                case 2:
+                    dir = ForgeDirection.NORTH;
+                    break;
+                case 3:
+                    dir = ForgeDirection.EAST;
+                    break;
+            }
+            return direction != ForgeDirection.DOWN && direction == dir && MagnetLinkHelper.instance.getLinksConnectedTo(this).size() <= 1;
+        }
+        return false;
     }
 
     @Override
@@ -416,7 +430,7 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
     public int getMaxHeat() {
         return 0;
     }
-    
+
     @Override
     public void linkUpdate() {}
 }

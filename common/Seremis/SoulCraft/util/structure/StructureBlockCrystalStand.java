@@ -20,9 +20,9 @@ public class StructureBlockCrystalStand extends StructureBlock {
     public boolean canFormStructure(StructureMap structureMap, World world, int x, int y, int z) {
         if(CommonProxy.proxy.isServerWorld(world)) {
             TileEntity tile = world.getBlockTileEntity(x, y, z);
-            
+
             if(tile != null && tile instanceof TileCrystalStand) {
-                TileCrystalStand tile2 = (TileCrystalStand)tile;
+                TileCrystalStand tile2 = (TileCrystalStand) tile;
                 if(tile2.hasCrystal()) {
                     return true;
                 }
@@ -30,7 +30,7 @@ public class StructureBlockCrystalStand extends StructureBlock {
         }
         return false;
     }
-    
+
     @Override
     public IStructureBlock copy() {
         return new StructureBlockCrystalStand(getPosition().clone());

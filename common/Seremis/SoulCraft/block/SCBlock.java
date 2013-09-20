@@ -38,7 +38,7 @@ public class SCBlock extends BlockContainer {
         }
         if(this.needsSidedTexture) {
             sidedIconBuffer = new Icon[sidedTextureNames.length];
-            for(int i = 0; i<sidedTextureNames.length; i++) {
+            for(int i = 0; i < sidedTextureNames.length; i++) {
                 sidedIconBuffer[i] = iconRegister.registerIcon(DefaultProps.ID + ":" + this.getUnlocalizedName().substring(5) + "_" + sidedTextureNames[i]);
             }
         }
@@ -60,12 +60,12 @@ public class SCBlock extends BlockContainer {
         }
         return this.blockIcon;
     }
-    
+
     @SideOnly(Side.CLIENT)
     public Icon[] getSidedIcons() {
         return sidedIconBuffer;
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(int blockID, CreativeTabs tab, List subItems) {
@@ -89,7 +89,7 @@ public class SCBlock extends BlockContainer {
     public void setNeedsIcon(boolean needsIcon) {
         this.needsIcon = needsIcon;
     }
-    
+
     public void setNeedsSidedTexture(boolean needsSidedTexture, String[] textureNames) {
         this.needsSidedTexture = needsSidedTexture;
         this.sidedTextureNames = textureNames;

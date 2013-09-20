@@ -19,12 +19,12 @@ public class SCTile extends TileEntity {
     public int getDirection() {
         return teDirection;
     }
-    
+
     public void setDirection(int direction) {
         this.teDirection = direction;
         worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType().blockID, 1, direction);
     }
-    
+
     public String getOwner() {
         return owner;
     }
@@ -32,7 +32,7 @@ public class SCTile extends TileEntity {
     public void setOwner(String owner) {
         this.owner = owner;
     }
-    
+
     public boolean isUseableByPlayer(EntityPlayer player) {
         return owner.equals(player.username);
     }
@@ -47,7 +47,7 @@ public class SCTile extends TileEntity {
             return super.receiveClientEvent(eventId, variable);
         }
     }
-    
+
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         owner = compound.getString("teOwner");
@@ -61,7 +61,7 @@ public class SCTile extends TileEntity {
         }
         compound.setInteger("teDirection", teDirection);
     }
-    
+
     @Override
     public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
         readFromNBT(packet.customParam1);
@@ -73,15 +73,15 @@ public class SCTile extends TileEntity {
         writeToNBT(var1);
         return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 1, var1);
     }
-    
+
     public void sendTileData(int id, int data) {
         if(CommonProxy.proxy.isRenderWorld(worldObj)) {
             PacketDispatcher.sendPacketToServer(PacketTypeHandler.populatePacket(new PacketTileData(data, id, this.xCoord, this.yCoord, this.zCoord)));
-        }
-        else this.setTileData(id, data);
+        } else
+            this.setTileData(id, data);
     }
 
-    public void setTileData(int id, int data){
+    public void setTileData(int id, int data) {
 
     }
 }

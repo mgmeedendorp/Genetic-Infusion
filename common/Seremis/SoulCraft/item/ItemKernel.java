@@ -8,19 +8,20 @@ import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IPlantable;
 import Seremis.SoulCraft.block.ModBlocks;
+import Seremis.SoulCraft.core.lib.Items;
 
 public class ItemKernel extends SCItem implements IPlantable {
-    
-    private String[] subNames = { "kernel0", "kernel1", "kernel2", "kernel3" };
-    
+
+    private String[] subNames = {Items.KERNEL_META_0_UNLOCALIZED_NAME, Items.KERNEL_META_1_UNLOCALIZED_NAME};
+
     public ItemKernel(int ID) {
         super(ID);
         setHasSubtypes(true);
         setNumbersofMetadata(2);
         setMaxDamage(0);
-        setUnlocalizedName("kernel");
+        setUnlocalizedName(Items.KERNEL_UNLOCALIZED_NAME);
     }
-    
+
     @Override
     public String getUnlocalizedName(ItemStack itemstack) {
         return getUnlocalizedName() + "." + subNames[itemstack.getItemDamage()];
@@ -33,7 +34,7 @@ public class ItemKernel extends SCItem implements IPlantable {
             Block blockClicked = Block.blocksList[blockID];
 
             if(blockClicked != null && blockClicked.canSustainPlant(world, x, y, z, ForgeDirection.UP, this) && world.isAirBlock(x, y + 1, z)) {
-                world.setBlock(x, y+1, z, ModBlocks.bushBerry.blockID,  stack.getItemDamage(), 1);
+                world.setBlock(x, y + 1, z, ModBlocks.bushBerry.blockID, stack.getItemDamage(), 1);
                 stack.stackSize--;
                 return true;
             }

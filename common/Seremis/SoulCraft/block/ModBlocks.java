@@ -4,12 +4,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import Seremis.SoulCraft.core.lib.DefaultProps;
+import Seremis.SoulCraft.core.lib.Blocks;
+import Seremis.SoulCraft.core.lib.Tiles;
 import Seremis.SoulCraft.tileentity.TileBush;
 import Seremis.SoulCraft.tileentity.TileCompressor;
 import Seremis.SoulCraft.tileentity.TileCrystalStand;
 import Seremis.SoulCraft.tileentity.TileHeatIO;
-import Seremis.SoulCraft.tileentity.TileIsolatziumCrystal;
+import Seremis.SoulCraft.tileentity.TileCrystal;
 import Seremis.SoulCraft.tileentity.TileStationController;
 import Seremis.SoulCraft.tileentity.TileTransporter;
 import Seremis.SoulCraft.world.SCWorldGenerator;
@@ -35,48 +36,48 @@ public class ModBlocks {
 
     public static void init() {
 
-        oreTitanium = new SCBlock(DefaultProps.OreTitaniumID, Material.rock).setHardness(20F).setUnlocalizedName("oreTitanium");
-        oreIsolatzium = new BlockOreIsolatzium(DefaultProps.OreIsolatziumID, Material.rock);
-        compressor = new BlockCompressor(DefaultProps.CompressorID, Material.rock);
-        crystal = new BlockCrystal(DefaultProps.IsolatziumCrystalID, Material.coral);
-        crystalStand = new BlockCrystalStand(DefaultProps.CrystalStandID, Material.wood);
-        transporter = new BlockTransporter(DefaultProps.TransporterID, Material.iron);
-        bushBerry = new BlockBush(DefaultProps.BushID, Material.plants);
-        heatIO = new BlockHeatIO(DefaultProps.HeatIOID, Material.rock);
-        connectedGlass = new BlockConnectedGlass(DefaultProps.ConnectedGlassID, Material.glass);
-        titaniumBrick = new SCBlock(DefaultProps.TitaniumBrickID, Material.rock).setUnlocalizedName("titaniumBrick");
-        stationController = new BlockStationController(DefaultProps.StationControllerID, Material.rock);
-        monsterEgg = new BlockMonsterEgg(DefaultProps.MonsterEggID, Material.dragonEgg);
+        oreTitanium = new SCBlock(Blocks.oreTitaniumID, Material.rock).setHardness(20F).setUnlocalizedName("oreTitanium");
+        oreIsolatzium = new BlockOreIsolatzium(Blocks.oreIsolatziumID, Material.rock);
+        compressor = new BlockCompressor(Blocks.compressorID, Material.rock);
+        crystal = new BlockCrystal(Blocks.crystalID, Material.coral);
+        crystalStand = new BlockCrystalStand(Blocks.crystalStandID, Material.wood);
+        transporter = new BlockTransporter(Blocks.transporterID, Material.iron);
+        bushBerry = new BlockBush(Blocks.bushID, Material.plants);
+        heatIO = new BlockHeatIO(Blocks.heatIOID, Material.rock);
+        connectedGlass = new BlockConnectedGlass(Blocks.connectedGlassID, Material.glass);
+        titaniumBrick = new SCBlock(Blocks.titaniumBrickID, Material.rock).setUnlocalizedName("titaniumBrick");
+        stationController = new BlockStationController(Blocks.stationControllerID, Material.rock);
+        monsterEgg = new BlockMonsterEgg(Blocks.monsterEggID, Material.dragonEgg);
 
-        GameRegistry.registerBlock(oreTitanium, "Titanium Ore");
-        GameRegistry.registerBlock(oreIsolatzium, BlockOreIsolatziumItem.class, "Isolatzium Crystal Ore");
-        GameRegistry.registerBlock(compressor, "Compressor");
-        GameRegistry.registerBlock(crystal, "Isolazium Crystal");
-        GameRegistry.registerBlock(crystalStand, "Crystal Stand");
-        GameRegistry.registerBlock(transporter, "Plasma Transporter");
-        GameRegistry.registerBlock(bushBerry, BlockBushItem.class, "Berry Bush");
-        GameRegistry.registerBlock(heatIO, "Heat I/O");
-        GameRegistry.registerBlock(connectedGlass, "Connected Glass");
-        GameRegistry.registerBlock(titaniumBrick, "Titanium Reinforced Bricks");
-        GameRegistry.registerBlock(stationController, "Magnetic Station Controller");
-        GameRegistry.registerBlock(monsterEgg, "Monster Egg");
+        GameRegistry.registerBlock(oreTitanium, Blocks.ORE_TITANIUM_LOCALIZED_NAME);
+        GameRegistry.registerBlock(oreIsolatzium, BlockOreIsolatziumItem.class, Blocks.ORE_ISOLATZIUM_LOCALIZED_NAME);
+        GameRegistry.registerBlock(compressor, Blocks.COMPRESSOR_LOCALIZED_NAME);
+        GameRegistry.registerBlock(crystal, Blocks.CRYSTAL_LOCALIZED_NAME);
+        GameRegistry.registerBlock(crystalStand, Blocks.CRYSTAL_STAND_LOCALIZED_NAME);
+        GameRegistry.registerBlock(transporter, Blocks.TRANSPORTER_LOCALIZED_NAME);
+        GameRegistry.registerBlock(bushBerry, BlockBushItem.class, Blocks.BUSH_LOCALIZED_NAME);
+        GameRegistry.registerBlock(heatIO, Blocks.HEAT_IO_LOCALIZED_NAME);
+        GameRegistry.registerBlock(connectedGlass, Blocks.CONNECTED_GLASS_LOCALIZED_NAME);
+        GameRegistry.registerBlock(titaniumBrick, Blocks.TITANIUM_BRICK_LOCALIZED_NAME);
+        GameRegistry.registerBlock(stationController, Blocks.STATION_CONTROLLER_LOCALIZED_NAME);
+        GameRegistry.registerBlock(monsterEgg, Blocks.MONSTER_EGG_LOCALIZED_NAME);
 
-        LanguageRegistry.addName(oreTitanium, "Titanium Ore");
-        LanguageRegistry.addName(new ItemStack(oreIsolatzium, 1, 0), "Red Isolatzium Crystal Ore");
-        LanguageRegistry.addName(new ItemStack(oreIsolatzium, 1, 1), "Green Isolatzium Crystal Ore");
-        LanguageRegistry.addName(new ItemStack(oreIsolatzium, 1, 2), "Blue Isolatzium Crystal Ore");
-        LanguageRegistry.addName(new ItemStack(oreIsolatzium, 1, 3), "Black Isolatzium Crystal Ore");
-        LanguageRegistry.addName(compressor, "Atomic Compressor");
-        LanguageRegistry.addName(crystal, "Isolatzium Crystal");
-        LanguageRegistry.addName(crystalStand, "Isolatzium Crystal Stand");
-        LanguageRegistry.addName(transporter, "Plasmatic Transporter");
-        LanguageRegistry.addName(new ItemStack(bushBerry, 1, 0), "Berry Bush");
-        LanguageRegistry.addName(new ItemStack(bushBerry, 1, 1), "Strange Berry Bush");
-        LanguageRegistry.addName(heatIO, "Heat I/O");
-        LanguageRegistry.addName(connectedGlass, "Connected Glass");
-        LanguageRegistry.addName(titaniumBrick, "Titanium Reinforced Brick");
-        LanguageRegistry.addName(stationController, "Magnetic Station Controller");
-        LanguageRegistry.addName(monsterEgg, "Monster Egg");
+        LanguageRegistry.addName(oreTitanium, Blocks.ORE_TITANIUM_LOCALIZED_NAME);
+        LanguageRegistry.addName(new ItemStack(oreIsolatzium, 1, 0), Blocks.ORE_ISOLATZIUM_META_0_LOCALIZED_NAME);
+        LanguageRegistry.addName(new ItemStack(oreIsolatzium, 1, 1), Blocks.ORE_ISOLATZIUM_META_1_LOCALIZED_NAME);
+        LanguageRegistry.addName(new ItemStack(oreIsolatzium, 1, 2), Blocks.ORE_ISOLATZIUM_META_2_LOCALIZED_NAME);
+        LanguageRegistry.addName(new ItemStack(oreIsolatzium, 1, 3), Blocks.ORE_ISOLATZIUM_META_3_LOCALIZED_NAME);
+        LanguageRegistry.addName(compressor, Blocks.COMPRESSOR_LOCALIZED_NAME);
+        LanguageRegistry.addName(crystal, Blocks.CRYSTAL_LOCALIZED_NAME);
+        LanguageRegistry.addName(crystalStand, Blocks.CRYSTAL_STAND_LOCALIZED_NAME);
+        LanguageRegistry.addName(transporter, Blocks.TRANSPORTER_LOCALIZED_NAME);
+        LanguageRegistry.addName(new ItemStack(bushBerry, 1, 0), Blocks.BUSH_META_0_LOCALIZED_NAME);
+        LanguageRegistry.addName(new ItemStack(bushBerry, 1, 1), Blocks.BUSH_META_1_LOCALIZED_NAME);
+        LanguageRegistry.addName(heatIO, Blocks.HEAT_IO_LOCALIZED_NAME);
+        LanguageRegistry.addName(connectedGlass, Blocks.CONNECTED_GLASS_LOCALIZED_NAME);
+        LanguageRegistry.addName(titaniumBrick, Blocks.TITANIUM_BRICK_LOCALIZED_NAME);
+        LanguageRegistry.addName(stationController, Blocks.STATION_CONTROLLER_LOCALIZED_NAME);
+        LanguageRegistry.addName(monsterEgg, Blocks.MONSTER_EGG_LOCALIZED_NAME);
 
         worldGen = new SCWorldGenerator();
         GameRegistry.registerWorldGenerator(worldGen);
@@ -94,12 +95,12 @@ public class ModBlocks {
     }
 
     public static void tileEntity() {
-        GameRegistry.registerTileEntity(TileCompressor.class, "TileCompressor");
-        GameRegistry.registerTileEntity(TileIsolatziumCrystal.class, "TileCrystal");
-        GameRegistry.registerTileEntity(TileCrystalStand.class, "TileCrystalStand");
-        GameRegistry.registerTileEntity(TileTransporter.class, "TileTransporter");
-        GameRegistry.registerTileEntity(TileBush.class, "TileBush");
-        GameRegistry.registerTileEntity(TileHeatIO.class, "TileHeatIO");
-        GameRegistry.registerTileEntity(TileStationController.class, "TileStationController");
+        GameRegistry.registerTileEntity(TileCompressor.class, Tiles.COMPRESSOR_UNLOCALIZED_NAME);
+        GameRegistry.registerTileEntity(TileCrystal.class, Tiles.CRYSTAL_UNLOCALIZED_NAME);
+        GameRegistry.registerTileEntity(TileCrystalStand.class, Tiles.CRYSTAL_STAND_UNLOCALIZED_NAME);
+        GameRegistry.registerTileEntity(TileTransporter.class, Tiles.TRANSPORTER_UNLOCALIZED_NAME);
+        GameRegistry.registerTileEntity(TileBush.class, Tiles.BUSH_UNLOCALIZED_NAME);
+        GameRegistry.registerTileEntity(TileHeatIO.class, Tiles.HEAT_IO_UNLOCALIZED_NAME);
+        GameRegistry.registerTileEntity(TileStationController.class, Tiles.STATION_CONTROLLER_UNLOCALIZED_NAME);
     }
 }

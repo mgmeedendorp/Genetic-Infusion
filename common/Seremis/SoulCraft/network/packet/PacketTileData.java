@@ -46,11 +46,11 @@ public class PacketTileData extends SCPacket {
         dataStream.writeInt(data);
         dataStream.writeInt(id);
     }
-    
+
     public void execute(INetworkManager network, EntityPlayer player) {
-        if(player.worldObj.getBlockTileEntity(x, y, z) instanceof SCTile) 
-            ((SCTile)player.worldObj.getBlockTileEntity(x, y, z)).sendTileData(id, data);
-        if(player.worldObj.getBlockTileEntity(x, y, z) instanceof SCTileMagnetConnector) 
-            ((SCTileMagnetConnector)player.worldObj.getBlockTileEntity(x, y, z)).sendTileData(id, data);
+        if(player.worldObj.getBlockTileEntity(x, y, z) instanceof SCTile)
+            ((SCTile) player.worldObj.getBlockTileEntity(x, y, z)).sendTileData(id, data);
+        if(player.worldObj.getBlockTileEntity(x, y, z) instanceof SCTileMagnetConnector)
+            ((SCTileMagnetConnector) player.worldObj.getBlockTileEntity(x, y, z)).sendTileData(id, data);
     }
 }

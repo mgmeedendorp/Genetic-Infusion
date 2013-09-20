@@ -30,7 +30,7 @@ public class TileBushRenderer extends TileEntitySpecialRenderer {
         GL11.glTranslated(x, y, z);
         GL11.glRotatef(180F, 1.0F, 0.0F, 1.0F);
         GL11.glTranslatef(0.5F, -1.5F, 0.5F);
-    //    System.out.println(tile.getType());
+        // System.out.println(tile.getType());
         tile.getType().applyTexture(tile.getStage());
         switch(tile.getStage()) {
             case 1:

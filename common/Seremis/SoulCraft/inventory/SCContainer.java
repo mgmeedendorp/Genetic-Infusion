@@ -9,7 +9,7 @@ public class SCContainer extends Container {
 
     private boolean addingPlayerInv = false;
     protected int slotCount = 0;
-    
+
     public void addPlayerInventory(EntityPlayer player, int zDown) {
         addingPlayerInv = true;
         InventoryPlayer playerInv = player.inventory;
@@ -20,15 +20,15 @@ public class SCContainer extends Container {
         }
 
         for(int j = 0; j < 9; ++j) {
-            this.addSlotToContainer(new Slot(playerInv, j, 8 + j * 18, 142+zDown));
+            this.addSlotToContainer(new Slot(playerInv, j, 8 + j * 18, 142 + zDown));
         }
         addingPlayerInv = false;
     }
-    
+
     public void addPlayerInventory(EntityPlayer player) {
         addPlayerInventory(player, 0);
     }
-    
+
     @Override
     public Slot addSlotToContainer(Slot slot) {
         if(!addingPlayerInv) {

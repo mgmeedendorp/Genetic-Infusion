@@ -11,12 +11,12 @@ public class GuiTabInventory extends GuiTab {
     @Override
     public void drawBackground(SCGui gui, int x, int y) {
         if(visible)
-            gui.drawTexturedModalRect(gui.getLeft() + 62, gui.getTop() + 72, 7, 139, 54, 54);          
+            gui.drawTexturedModalRect(gui.getLeft() + 62, gui.getTop() + 72, 7, 139, 54, 54);
     }
 
     @Override
     public void drawForeground(SCGui gui, int x, int y) {
-        
+
     }
 
 }

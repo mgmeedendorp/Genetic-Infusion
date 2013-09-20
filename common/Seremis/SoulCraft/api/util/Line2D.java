@@ -35,13 +35,13 @@ public class Line2D {
         this.head = new Coordinate2D(x1, y1);
         this.tail = new Coordinate2D(x2, y2);
     }
-    
+
     public Line2D setLine(Line3D coord) {
         this.head = coord.head.to2D();
         this.tail = coord.tail.to2D();
         return this;
     }
-    
+
     public double getLength() {
         double x = Math.abs(head.getXCoord() - tail.getXCoord());
         double y = Math.abs(head.getYCoord() - tail.getYCoord());

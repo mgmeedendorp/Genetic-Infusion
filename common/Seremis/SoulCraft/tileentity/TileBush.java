@@ -16,7 +16,7 @@ public class TileBush extends SCTile {
     public TileBush(BushType type) {
         this.type = type;
     }
-    
+
     public void setStage(int stage) {
         if(CommonProxy.proxy.isServerWorld(worldObj)) {
             if(stage <= type.getMaxStage()) {
@@ -24,19 +24,19 @@ public class TileBush extends SCTile {
                 worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                 worldObj.addBlockEvent(xCoord, yCoord, zCoord, ModBlocks.bushBerry.blockID, 1, stage);
             }
-        }
-        else sendTileData(0, stage);
+        } else
+            sendTileData(0, stage);
     }
-    
+
     public boolean receiveClientEvent(int id, int data) {
-        if (id == 1) {
+        if(id == 1) {
             this.stage = data;
             return true;
         } else {
             return super.receiveClientEvent(id, data);
         }
     }
-    
+
     @Override
     public void setTileData(int id, int data) {
         if(id == 0) {
@@ -45,16 +45,17 @@ public class TileBush extends SCTile {
     }
 
     public void updateEntity() {
-        if(CommonProxy.proxy.isRenderWorld(worldObj)) return;
-        Random random = new Random();      
-        
-        if (random.nextInt(2) == 0 && stage < 5) {
+        if(CommonProxy.proxy.isRenderWorld(worldObj))
+            return;
+        Random random = new Random();
+
+        if(random.nextInt(2) == 0 && stage < 5) {
             updateStage();
             System.out.println(stage);
         }
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
-    
+
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         compound.setInteger("stage", stage);
@@ -76,7 +77,7 @@ public class TileBush extends SCTile {
     }
 
     public void updateStage() {
-        if(stage<type.getMaxStage())
-        setStage(stage+1);
+        if(stage < type.getMaxStage())
+            setStage(stage + 1);
     }
 }

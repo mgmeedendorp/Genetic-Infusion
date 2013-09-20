@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import Seremis.SoulCraft.core.lib.Blocks;
 import Seremis.SoulCraft.item.ModItems;
 
 public class BlockOreIsolatzium extends SCBlock {
@@ -12,7 +13,7 @@ public class BlockOreIsolatzium extends SCBlock {
         super(ID, material);
         setHardness(1.0F);
         setStepSound(Block.soundStoneFootstep);
-        setUnlocalizedName("oreIsolatzium");
+        setUnlocalizedName(Blocks.ORE_ISOLATZIUM_UNLOCALIZED_NAME);
         setNumbersofMetadata(4);
     }
 
@@ -23,6 +24,6 @@ public class BlockOreIsolatzium extends SCBlock {
 
     @Override
     public int idDropped(int par1, Random random, int par2) {
-        return ModItems.shardIsolatzium.itemID;
+        return ModItems.crystalShard.itemID;
     }
 }

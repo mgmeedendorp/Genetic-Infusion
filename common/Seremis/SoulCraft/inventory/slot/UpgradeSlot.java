@@ -20,7 +20,7 @@ public class UpgradeSlot extends SCSlot {
         }
         return false;
     }
-    
+
     @Override
     public int getSlotStackLimit() {
         return 1;

@@ -8,7 +8,7 @@ public abstract class TileMagnetHeater extends TileMagnetConnector implements IM
     public boolean canConnect(MagnetLink link) {
         return !(link.getOther(this) instanceof IMagnetHeater);
     }
-    
+
     @Override
     public int importHeat(int heat) {
         return warm(heat);

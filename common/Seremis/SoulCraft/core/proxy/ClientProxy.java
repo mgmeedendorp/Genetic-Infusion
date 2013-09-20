@@ -23,7 +23,7 @@ import Seremis.SoulCraft.handler.RenderTickHandler;
 import Seremis.SoulCraft.tileentity.TileBush;
 import Seremis.SoulCraft.tileentity.TileCompressor;
 import Seremis.SoulCraft.tileentity.TileCrystalStand;
-import Seremis.SoulCraft.tileentity.TileIsolatziumCrystal;
+import Seremis.SoulCraft.tileentity.TileCrystal;
 import Seremis.SoulCraft.tileentity.TileTransporter;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -44,7 +44,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(EntityTransporter.class, new EntityTransporterRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileCompressor.class, new TileCompressorRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileIsolatziumCrystal.class, new TileCrystalRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileCrystal.class, new TileCrystalRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileCrystalStand.class, new TileCrystalStandRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileTransporter.class, new TileTransporterRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileBush.class, new TileBushRenderer());

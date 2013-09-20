@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11;
 import Seremis.SoulCraft.client.model.ModelCrystal;
 import Seremis.SoulCraft.core.lib.Localizations;
 import Seremis.SoulCraft.helper.SCRenderHelper;
-import Seremis.SoulCraft.tileentity.TileIsolatziumCrystal;
+import Seremis.SoulCraft.tileentity.TileCrystal;
 
 public class TileCrystalRenderer extends TileEntitySpecialRenderer {
 
@@ -39,7 +39,7 @@ public class TileCrystalRenderer extends TileEntitySpecialRenderer {
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f) {
 
-        TileIsolatziumCrystal tco = (TileIsolatziumCrystal) tile;
+        TileCrystal tco = (TileCrystal) tile;
 
         SCRenderHelper.bindTexture(Localizations.LOC_MODEL_TEXTURES + Localizations.BLANK);
         Random rand = new Random(tco.xCoord + tco.yCoord * tco.zCoord);

@@ -29,7 +29,7 @@ public class GuiHandler implements IGuiHandler {
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         TileEntity tile = world.getBlockTileEntity(x, y, z);
         if(ID == GuiIds.GUI_STATION_TRANSPORTER_SCREEN_ID) {
-            return new GuiStationControllerTransporter(player, (TileStationController)tile);
+            return new GuiStationControllerTransporter(player, (TileStationController) tile);
         } else if(ID == GuiIds.GUI_STATION_SEND_SCREEN_ID) {
             return new GuiStationControllerSend(player, (IInventory) tile);
         }

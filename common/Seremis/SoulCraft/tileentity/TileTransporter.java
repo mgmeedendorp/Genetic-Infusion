@@ -12,7 +12,7 @@ public class TileTransporter extends SCTile {
     private boolean hasInventory = false;
     private float speed = 1.0F;
     public ForgeDirection direction = ForgeDirection.WEST;
-    
+
     public ItemStack[] inv = new ItemStack[9];
 
     public TileTransporter() {
@@ -49,7 +49,7 @@ public class TileTransporter extends SCTile {
         if(CommonProxy.proxy.isServerWorld(worldObj) && direction != null)
             worldObj.addBlockEvent(xCoord, yCoord, zCoord, ModBlocks.transporter.blockID, 2, direction.ordinal());
     }
-    
+
     public float getSpeed() {
         return speed;
     }
@@ -81,14 +81,14 @@ public class TileTransporter extends SCTile {
         compound.setBoolean("hasEngine", hasEngine);
         compound.setInteger("direction", direction.ordinal());
     }
-    
+
     @Override
     public boolean receiveClientEvent(int eventId, int variable) {
         if(eventId == 2) {
             this.direction = ForgeDirection.values()[variable];
             worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
             return true;
-        } else if (eventId == 3) {
+        } else if(eventId == 3) {
             this.hasEngine = variable == 1;
             worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
             return true;

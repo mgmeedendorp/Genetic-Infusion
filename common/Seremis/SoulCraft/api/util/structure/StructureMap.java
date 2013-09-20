@@ -7,23 +7,23 @@ import java.util.List;
 import Seremis.SoulCraft.api.util.Coordinate3D;
 
 public class StructureMap {
-    
+
     protected List<IStructureBlock> blocks = new ArrayList<IStructureBlock>();
-    
+
     protected int length;
     protected int width;
     protected int height;
-    
+
     public StructureMap(IStructureBlock... block) {
         blocks.addAll(Arrays.asList(block));
         calculateSize();
     }
-    
+
     public void addBlock(IStructureBlock block) {
         blocks.add(block);
         calculateSize();
     }
-    
+
     private void calculateSize() {
         int maxX = 0;
         int maxY = 0;
@@ -40,25 +40,25 @@ public class StructureMap {
             }
         }
         if(maxX < 0) {
-            maxX -=1;
+            maxX -= 1;
         } else {
-            maxX +=1;
+            maxX += 1;
         }
         if(maxY < 0) {
-            maxY -=-1;
+            maxY -= -1;
         } else {
-            maxY +=1;
+            maxY += 1;
         }
         if(maxZ < 0) {
-            maxZ -=1;
+            maxZ -= 1;
         } else {
-            maxZ +=1;
+            maxZ += 1;
         }
         length = maxX;
         height = maxY;
         width = maxZ;
     }
-    
+
     public IStructureBlock getBlockAtCoordinate(int x, int y, int z) {
         for(IStructureBlock block : blocks) {
             if(block.getPosition().x == x && block.getPosition().y == y && block.getPosition().z == z) {
@@ -67,11 +67,11 @@ public class StructureMap {
         }
         return null;
     }
-    
+
     public List<Coordinate3D> getBlockCoordinates(IStructureBlock block) {
         List<Coordinate3D> blockCoords = new ArrayList<Coordinate3D>();
         Coordinate3D blockCoord = new Coordinate3D();
-        
+
         for(IStructureBlock sBlock : getBlocks()) {
             blockCoord = new Coordinate3D();
             if(sBlock.getBlock() == block.getBlock()) {
@@ -84,61 +84,61 @@ public class StructureMap {
 
         return blockCoords;
     }
-    
+
     public int getBlockCount() {
         return blocks.size();
     }
-    
+
     public List<IStructureBlock> getBlocks() {
         return blocks;
     }
-    
+
     public int getLength() {
         return length;
     }
-    
+
     public int getWidth() {
         return width;
     }
-    
+
     public int getHeight() {
         return height;
     }
-    
+
     public StructureMap getRotation(int rotation) {
         return this.rotateOnYAxis(rotation);
     }
-    
+
     public StructureMap rotateOnYAxis(int rotation) {
         StructureMap newStructure = new StructureMap();
-        
-        for(IStructureBlock block : getBlocks()) {    
+
+        for(IStructureBlock block : getBlocks()) {
             IStructureBlock newBlock = block.copy();
             int x = (int) block.getPosition().x;
-            int z = (int) block.getPosition().z; 
-            switch(rotation) {           
-               case 0: {
-                   newBlock.getPosition().x = x; 
-                   newBlock.getPosition().z = z;
-                   break;
-               }
-               case 1: { 
-                   newBlock.getPosition().x = -z;   
-                   newBlock.getPosition().z = x;
-                   break;
-               }
-               case 2: {
-                   newBlock.getPosition().x = -x;   
-                   newBlock.getPosition().z = -z;
-                   break;
-               }
-               case 3: {
-                   newBlock.getPosition().x = z;   
-                   newBlock.getPosition().z = -x;
-                   break;
-               }
-           }
-           newStructure.addBlock(newBlock);
+            int z = (int) block.getPosition().z;
+            switch(rotation) {
+                case 0: {
+                    newBlock.getPosition().x = x;
+                    newBlock.getPosition().z = z;
+                    break;
+                }
+                case 1: {
+                    newBlock.getPosition().x = -z;
+                    newBlock.getPosition().z = x;
+                    break;
+                }
+                case 2: {
+                    newBlock.getPosition().x = -x;
+                    newBlock.getPosition().z = -z;
+                    break;
+                }
+                case 3: {
+                    newBlock.getPosition().x = z;
+                    newBlock.getPosition().z = -x;
+                    break;
+                }
+            }
+            newStructure.addBlock(newBlock);
         }
         return newStructure;
     }

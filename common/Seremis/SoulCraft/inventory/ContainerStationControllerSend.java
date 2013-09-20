@@ -7,10 +7,10 @@ import Seremis.SoulCraft.tileentity.TileStationController;
 public class ContainerStationControllerSend extends SCContainer {
 
     private TileStationController tile;
-    
+
     public ContainerStationControllerSend(EntityPlayer player, IInventory tile) {
-        this.tile = (TileStationController)tile;
-        
+        this.tile = (TileStationController) tile;
+
         addPlayerInventory(player, 56);
     }
 }

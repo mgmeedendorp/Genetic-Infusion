@@ -6,13 +6,13 @@ public class ToggleableMoveSlot extends ToggleableSlot {
 
     private int srcX;
     private int srcY;
-    
+
     public ToggleableMoveSlot(IInventory inventory, int id, int x, int y) {
         super(inventory, id, x, y);
         srcX = x;
         srcY = y;
     }
-    
+
     public void enable() {
         enabled = true;
         xDisplayPosition = srcX;
@@ -21,7 +21,7 @@ public class ToggleableMoveSlot extends ToggleableSlot {
 
     public void disable() {
         enabled = false;
-        xDisplayPosition = srcX+1000;
-        yDisplayPosition = srcY+1000;
+        xDisplayPosition = srcX + 1000;
+        yDisplayPosition = srcY + 1000;
     }
 }

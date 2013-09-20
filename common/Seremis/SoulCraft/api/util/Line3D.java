@@ -141,21 +141,21 @@ public class Line3D {
     public String toString() {
         return "Line3D[head x: " + head.x + ", y: " + head.y + ", z: " + head.z + " tail x: " + tail.x + ", y: " + tail.y + ", z: " + tail.z + "]";
     }
-    
+
     public double getYaw() {
         double xd = head.x - tail.x;
         double zd = head.z - tail.z;
 
         return Math.atan2(xd, zd) * 180.0D / Math.PI;
     }
-    
+
     public double getPitch() {
         double xd = head.x - tail.x;
         double yd = head.y - tail.y;
         double zd = head.z - tail.z;
-        
+
         double var7 = MathHelper.sqrt_double(xd * xd + zd * zd);
-        
+
         return Math.atan2(yd, var7) * 180.0D / 3.141592653589793D;
     }
 }

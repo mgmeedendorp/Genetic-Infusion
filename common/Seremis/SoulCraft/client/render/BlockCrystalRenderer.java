@@ -7,7 +7,7 @@ import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
 
-import Seremis.SoulCraft.tileentity.TileIsolatziumCrystal;
+import Seremis.SoulCraft.tileentity.TileCrystal;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class BlockCrystalRenderer implements ISimpleBlockRenderingHandler {
@@ -18,7 +18,7 @@ public class BlockCrystalRenderer implements ISimpleBlockRenderingHandler {
         GL11.glRotatef(10.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
         GL11.glScalef(1.2F, 1.2F, 1.2F);
-        TileIsolatziumCrystal tile = new TileIsolatziumCrystal();
+        TileCrystal tile = new TileCrystal();
         TileEntityRenderer.instance.renderTileEntityAt(tile, 0.0D, 0.0D, 0.0D, 0.0F);
         GL11.glPopMatrix();
     }

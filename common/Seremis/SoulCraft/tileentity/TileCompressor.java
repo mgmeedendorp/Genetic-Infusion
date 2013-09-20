@@ -6,6 +6,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import Seremis.SoulCraft.core.lib.Tiles;
 import Seremis.SoulCraft.item.ModItems;
 import Seremis.SoulCraft.util.UtilTileEntity;
 
@@ -59,7 +60,7 @@ public class TileCompressor extends TileEntity implements IInventory {
 
     @Override
     public String getInvName() {
-        return "Compressor";
+        return Tiles.INV_COMPRESSOR_UNLOCALIZED_NAME;
     }
 
     @Override
@@ -130,7 +131,7 @@ public class TileCompressor extends TileEntity implements IInventory {
 
     @Override
     public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-        if(itemstack.itemID == ModItems.shardIsolatzium.itemID) {
+        if(itemstack.itemID == ModItems.crystalShard.itemID) {
             return true;
         }
         return false;

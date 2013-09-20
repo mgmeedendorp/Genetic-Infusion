@@ -6,14 +6,14 @@ import net.minecraft.item.ItemStack;
 public class ToggleableSlot extends SCSlot {
 
     protected boolean enabled = true;
-    
+
     public ToggleableSlot(IInventory inventory, int id, int x, int y) {
         super(inventory, id, x, y);
     }
 
     @Override
     public boolean isItemValid(ItemStack is) {
-         return enabled;
+        return enabled;
     }
 
     public void enable() {

@@ -13,7 +13,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class SCItemFood extends ItemFood {
-    
+
     private Icon iconBuffer[];
     private int metadata = 0;
 
@@ -22,11 +22,11 @@ public class SCItemFood extends ItemFood {
         setMaxStackSize(64);
         setCreativeTab(mod_SoulCraft.CreativeTab);
     }
-    
+
     public SCItemFood(int ID, int healAmount, boolean isWolfsFavoriteMeat) {
         this(ID, healAmount, 0.6F, isWolfsFavoriteMeat);
     }
-    
+
     public SCItemFood(int ID, int healAmount) {
         this(ID, healAmount, false);
     }
@@ -55,7 +55,7 @@ public class SCItemFood extends ItemFood {
         }
         return this.itemIcon;
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(int itemID, CreativeTabs creativetab, List list) {

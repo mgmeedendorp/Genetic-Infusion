@@ -12,22 +12,22 @@ import net.minecraft.world.World;
 import Seremis.SoulCraft.api.util.Coordinate3D;
 
 public class UtilBlock {
-    
+
     public static Coordinate3D getBlockCoordsAtSide(int x, int y, int z, int side) {
         Coordinate3D coord = new Coordinate3D(x, y, z);
-        int[][] shiftMap = {{0, -1, 0}, {0, 1, 0}, {0, 0, -1}, {0, 0, 1}, {-1, 0, 0}, {1, 0, 0}};
-        
+        int[][] shiftMap = { {0, -1, 0}, {0, 1, 0}, {0, 0, -1}, {0, 0, 1}, {-1, 0, 0}, {1, 0, 0}};
+
         int shiftx = shiftMap[side][0];
         int shifty = shiftMap[side][1];
         int shiftz = shiftMap[side][2];
-        
+
         coord.move(shiftx, shifty, shiftz);
         return coord;
     }
-    
+
     public static EntityItem dropItemInWorld(int x, int y, int z, World world, ItemStack stack) {
         Random rand = new Random();
-        
+
         ItemStack item = stack;
 
         float rx = rand.nextFloat() * 0.4F + 0.5F;
@@ -46,7 +46,7 @@ public class UtilBlock {
         entityItem.motionZ = rand.nextGaussian() * factor;
         world.spawnEntityInWorld(entityItem);
         item.stackSize = 0;
-        
+
         return entityItem;
     }
 

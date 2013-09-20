@@ -6,7 +6,7 @@ import Seremis.SoulCraft.gui.SCGui;
 public class GuiTabEngine extends GuiTab {
 
     private GuiStationControllerTransporter gui;
-    
+
     public GuiTabEngine(int id, int x, int y, int w, int h, String name, GuiStationControllerTransporter gui) {
         super(id, x, y, w, h, name);
         this.gui = gui;
@@ -14,7 +14,7 @@ public class GuiTabEngine extends GuiTab {
 
     @Override
     public void drawBackground(SCGui gui, int x, int y) {
-        
+
     }
 
     @Override

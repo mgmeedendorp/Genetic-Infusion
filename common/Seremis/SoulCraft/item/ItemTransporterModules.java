@@ -2,6 +2,7 @@ package Seremis.SoulCraft.item;
 
 import java.util.List;
 
+import Seremis.SoulCraft.core.lib.Items;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
@@ -9,13 +10,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemTransporterModules extends SCItem {
 
-    private String[] subNames = { "transporterStorage", "transporterEngine" };
+    private String[] subNames = {Items.TRANSPORTER_MODULES_META_0_UNLOCALIZED_NAME, Items.TRANSPORTER_MODULES_META_1_UNLOCALIZED_NAME};
 
     public ItemTransporterModules(int ID) {
         super(ID);
         setHasSubtypes(true);
         setMaxDamage(0);
-        setUnlocalizedName("transporterModules");
+        setUnlocalizedName(Items.TRANSPORTER_MODULES_UNLOCALIZED_NAME);
         setNumbersofMetadata(2);
     }
 

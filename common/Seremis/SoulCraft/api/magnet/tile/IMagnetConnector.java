@@ -29,24 +29,28 @@ public interface IMagnetConnector {
 
     @SideOnly(Side.CLIENT)
     Coordinate3D applyBeamRenderOffset(Coordinate3D position, ForgeDirection side);
-    
+
     int getHeat();
+
     /**
-     * Heats up the connector
-     * This shouln't be used by blocks that are not in the network. (Network-internal)
+     * Heats up the connector This shouln't be used by blocks that are not in
+     * the network. (Network-internal)
+     * 
      * @param heat
      * @return the heat that couldn't be applied
      */
     int warm(int heat);
+
     /**
-     * Cools down the connector
-     * This shouln't be used by blocks that are not in the network. (Network-internal)
+     * Cools down the connector This shouln't be used by blocks that are not in
+     * the network. (Network-internal)
+     * 
      * @param heat
      * @return the 'coolness' left.
      */
     int cool(int heat);
-    
+
     int getHeatLossPerTick();
-    
+
     int getMaxHeat();
 }

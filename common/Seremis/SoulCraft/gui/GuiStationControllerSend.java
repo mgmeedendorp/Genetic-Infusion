@@ -21,26 +21,26 @@ import Seremis.SoulCraft.tileentity.TileStationController;
 public class GuiStationControllerSend extends SCGui {
 
     public TileStationController tile;
-    
+
     public List<GuiLine> lines = new ArrayList<GuiLine>();
     public List<GuiRectangle> stations = new ArrayList<GuiRectangle>();
-    
+
     public GuiStationControllerSend(EntityPlayer player, IInventory tile) {
         super(new ContainerStationControllerSend(player, tile));
-        
+
         super.xSize = 176;
         super.ySize = 222;
-        tile = (TileStationController)tile;
+        tile = (TileStationController) tile;
     }
-    
+
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-   
+
         SCRenderHelper.bindTexture(Localizations.LOC_GUI_TEXTURES + Localizations.GUI_MAGNET_STATION_LOCATION_SCREEN);
-        drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);          
+        drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
     }
-    
+
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) {
         fontRenderer.drawString("Magnet Station Controller", 8, 5, 0x404040);
@@ -48,29 +48,29 @@ public class GuiStationControllerSend extends SCGui {
         initLines();
 
         for(GuiRectangle rect : stations) {
-            rect.draw(this, 0, 0);
+            rect.draw(this, 167, 18);
         }
         for(GuiLine line : lines) {
             line.render(0, 255, 4, 0.5F);
         }
     }
-    
+
     private void initLines() {
-        if(lines.isEmpty()) {
+        if(lines.isEmpty() && stations.isEmpty()) {
             calculateLines();
         }
     }
-    
+
     private void calculateLines() {
-        List<MagnetLink> firstLinks = MagnetLinkHelper.instance.getLinksConnectedTo((IMagnetConnector)tile);
-        
-        stations.add(new GuiRectangle(this.width/2-xSize, this.height/2-ySize, 4, 3));
-        
+        List<MagnetLink> firstLinks = MagnetLinkHelper.instance.getLinksConnectedTo((IMagnetConnector) tile);
+
+        stations.clear();
+        lines.clear();
+
+        stations.add(new GuiRectangle(xSize / 2, ySize / 2, 20, 50));
         for(MagnetLink link : firstLinks) {
             lines.add(new GuiLine().setLine(link.line));
-            
         }
     }
-    
 
 }

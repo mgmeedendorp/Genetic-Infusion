@@ -9,7 +9,7 @@ public class TileHeatIO extends TileMagnetHeater {
     private long currTime = 0;
     private long lastUpdateTick = 0;
     private long ticksBeforeUpdate = 20;
-    
+
     @Override
     public void updateEntity() {
         super.updateEntity();
@@ -21,9 +21,9 @@ public class TileHeatIO extends TileMagnetHeater {
             heatUpdate();
         }
     }
-    
+
     public void heatUpdate() {
-        int id = worldObj.getBlockId(xCoord, yCoord-1, zCoord);
+        int id = worldObj.getBlockId(xCoord, yCoord - 1, zCoord);
         if(id == Block.fire.blockID || id == Block.lavaStill.blockID) {
             importHeat(500);
         }

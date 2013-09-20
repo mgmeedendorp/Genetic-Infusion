@@ -1,16 +1,17 @@
 package Seremis.SoulCraft.block;
 
+import Seremis.SoulCraft.core.lib.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 public class BlockBushItem extends ItemBlock {
 
-    private static String[] subNames = {"blockBush1", "blockBush2", "blockBush3", "blockBush4", "blockBush5"};
+    private static String[] subNames = {Blocks.BUSH_ITEM_META_0_UNLOCALIZED_NAME, Blocks.BUSH_ITEM_META_1_UNLOCALIZED_NAME};
 
     public BlockBushItem(int ID) {
         super(ID);
         setHasSubtypes(true);
-        setUnlocalizedName("bushBerryItem");
+        setUnlocalizedName(Blocks.BUSH_ITEM_UNLOCALIZED_NAME);
     }
 
     @Override

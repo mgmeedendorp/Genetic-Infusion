@@ -25,7 +25,7 @@ public class UtilRender {
 
         return UVList;
     }
-    
+
     public static Vector2f[] calculateUVMapping(int texture) {
         return calculateUVMapping(texture, 16, 16);
     }
