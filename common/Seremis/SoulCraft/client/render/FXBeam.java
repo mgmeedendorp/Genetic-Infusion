@@ -10,7 +10,6 @@ import org.lwjgl.opengl.GL11;
 
 import Seremis.SoulCraft.api.util.Coordinate3D;
 import Seremis.SoulCraft.api.util.Line3D;
-import Seremis.SoulCraft.core.lib.Localizations;
 import Seremis.SoulCraft.helper.SCRenderHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -27,10 +26,11 @@ public class FXBeam extends EntityFX {
     private double green = 0;
     private double blue = 0;
 
-    public FXBeam(World world, Coordinate3D position, Coordinate3D target, int heatAtCoord1, int heatAtCoord2) {
-        super(world, position.x, position.y, position.z, 0.0D, 0.0D, 0.0D);
+    private boolean render = true;
 
-        this.setSize(0.02F, 0.02F);
+    public FXBeam(World world, Coordinate3D position, Coordinate3D target, int heatAtCoord1, int heatAtCoord2) {
+        super(world, position.x, position.y, position.z);
+
         this.noClip = true;
         this.motionX = 0.0D;
         this.motionY = 0.0D;
@@ -40,13 +40,12 @@ public class FXBeam extends EntityFX {
         this.heatTail = heatAtCoord2;
         this.prevPosX = posX;
         this.prevPosY = posY;
-        this.prevPosZ = posZ;
+        this.prevPosZ = posZ;        
+        this.setSize((float) line.getLength(), 0.02F);
 
         particleMaxAge = 2;
+        this.setRGBBasedOnHeat(true);
 
-        /**
-         * Sets the particle age based on distance.
-         */
         EntityLivingBase renderentity = (EntityLivingBase) Minecraft.getMinecraft().renderViewEntity;
         int visibleDistance = 50;
 
@@ -54,7 +53,7 @@ public class FXBeam extends EntityFX {
             visibleDistance = 25;
         }
         if(renderentity != null && renderentity.getDistance(this.posX, this.posY, this.posZ) > visibleDistance) {
-            this.particleMaxAge = 0;
+            render = false;
         }
     }
 
@@ -65,7 +64,7 @@ public class FXBeam extends EntityFX {
         this.prevPosZ = this.posZ;
 
         if(this.particleAge++ >= this.particleMaxAge) {
-            setDead();
+            this.setDead();
         }
     }
 
@@ -75,11 +74,13 @@ public class FXBeam extends EntityFX {
         float blue = 0;
 
         if(heat1) {
-            red = (float) (heatHead * 0.1);
-            green = 50;
+            red = 160;
+            green = 70;
+            blue = 220;
         } else {
-            red = (float) (heatTail * 0.1);
-            green = 50;
+            red = 160;
+            green = 70;
+            blue = 220;
         }
 
         this.particleRed = red / 255;
@@ -134,87 +135,77 @@ public class FXBeam extends EntityFX {
     }
 
     @Override
-    public void renderParticle(Tessellator tessellator, float f, float f1, float f2, float f3, float f4, float f5) {
-        tessellator.draw();
+    public void renderParticle(Tessellator tess, float partialTickTime, float f1, float f2, float f3, float f4, float f5) {
+        
+        if(render) {
+            float opacity = 4F;
 
-        GL11.glPushMatrix();
+            GL11.glPushMatrix();
 
-        float opacity = 1.0F;
+            GL11.glDepthMask(false);
+            GL11.glEnable(GL11.GL_BLEND);
+            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+            GL11.glDisable(GL11.GL_CULL_FACE);
+            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            
+            float xx = (float) (this.prevPosX + (this.posX - this.prevPosX) * partialTickTime - interpPosX);
+            float yy = (float) (this.prevPosY + (this.posY - this.prevPosY) * partialTickTime - interpPosY);
+            float zz = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * partialTickTime - interpPosZ);
+            GL11.glTranslated(xx, yy, zz);
 
-        SCRenderHelper.bindTexture(Localizations.LOC_MODEL_TEXTURES + Localizations.BLANK);
+            GL11.glRotated(90.0, 1.0, 0.0, 0.0);
+            GL11.glRotated(180.0 + line.getYaw(), 0.0, 0.0, -1.0);
+            GL11.glRotated(line.getPitch(), 1.0, 0.0, 0.0);
 
-        GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, 10497.0F);
-        GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, 10497.0F);
+            double width = 0.1D;
+            double transitionSpace = line.getLength() / 10;
 
-        SCRenderHelper.avoidFlickering();
+            for(int t = 0; t < 3; t++) {
+                GL11.glRotatef(60.0F, 0.0F, 1.0F, 0.0F);
 
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-        GL11.glDepthMask(false);
+                setRGBBasedOnHeat(true);
 
-        float xx = (float) (this.prevPosX + (this.posX - this.prevPosX) * f - interpPosX);
-        float yy = (float) (this.prevPosY + (this.posY - this.prevPosY) * f - interpPosY);
-        float zz = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * f - interpPosZ);
-        GL11.glTranslated(xx, yy, zz);
-
-        GL11.glRotated(90.0, 1.0, 0.0, 0.0);
-        GL11.glRotated(180.0 + line.getYaw(), 0.0, 0.0, -1.0);
-        GL11.glRotated(line.getPitch(), 1.0, 0.0, 0.0);
-
-        double width = 0.1D;
-        double transitionSpace = line.getLength() / 10;
-
-        for(int t = 0; t < 3; t++) {
-
-            GL11.glRotatef(60.0F, 0.0F, 1.0F, 0.0F);
-
-            setRGBBasedOnHeat(true);
-
-            // Draw the first color
-            GL11.glBegin(GL11.GL_QUADS);
-            GL11.glColor4f(this.particleRed, this.particleGreen, this.particleBlue, opacity);
-            GL11.glVertex2d(-width, 0.0D);
-            GL11.glVertex2d(width, 0.0D);
-            GL11.glVertex2d(width, line.getLength() / 2 - transitionSpace);
-            GL11.glVertex2d(-width, line.getLength() / 2 - transitionSpace);
-            GL11.glEnd();
-
-            // Draw the transition
-            int steps = (int) 60;
-            double translationPieceLength = transitionSpace * 2 / steps;
-
-            for(int i = 0; i < steps; i++) {
-                transitRGB(i, steps);
-                GL11.glColor4d(this.red, this.green, this.blue, opacity);
-
+                // Draw the first color
                 GL11.glBegin(GL11.GL_QUADS);
-                GL11.glVertex2d(width, line.getLength() / 2 - transitionSpace + i * translationPieceLength);
-                GL11.glVertex2d(-width, line.getLength() / 2 - transitionSpace + i * translationPieceLength);
-                GL11.glVertex2d(-width, line.getLength() / 2 - transitionSpace + i * translationPieceLength + translationPieceLength);
-                GL11.glVertex2d(width, line.getLength() / 2 - transitionSpace + i * translationPieceLength + translationPieceLength);
+                GL11.glColor4f(this.particleRed, this.particleGreen, this.particleBlue, opacity);
+                GL11.glVertex2d(-width, 0.0D);
+                GL11.glVertex2d(width, 0.0D);
+                GL11.glVertex2d(width, line.getLength() / 2 - transitionSpace);
+                GL11.glVertex2d(-width, line.getLength() / 2 - transitionSpace);
+                GL11.glEnd();
+
+                // Draw the transition
+                int steps = (int) 60;
+                double translationPieceLength = transitionSpace * 2 / steps;
+
+                for(int i = 0; i < steps; i++) {
+                    transitRGB(i, steps);
+                    GL11.glColor4d(this.red, this.green, this.blue, opacity);
+
+                    GL11.glBegin(GL11.GL_QUADS);
+                    GL11.glVertex2d(width, line.getLength() / 2 - transitionSpace + i * translationPieceLength);
+                    GL11.glVertex2d(-width, line.getLength() / 2 - transitionSpace + i * translationPieceLength);
+                    GL11.glVertex2d(-width, line.getLength() / 2 - transitionSpace + i * translationPieceLength + translationPieceLength);
+                    GL11.glVertex2d(width, line.getLength() / 2 - transitionSpace + i * translationPieceLength + translationPieceLength);
+                    GL11.glEnd();
+                }
+
+                setRGBBasedOnHeat(false);
+
+                // Draw the second color
+                GL11.glBegin(GL11.GL_QUADS);
+                GL11.glColor4f(this.particleRed, this.particleGreen, this.particleBlue, opacity);
+                GL11.glVertex2d(-width, line.getLength() / 2 + transitionSpace);
+                GL11.glVertex2d(width, line.getLength() / 2 + transitionSpace);
+                GL11.glVertex2d(width, line.getLength());
+                GL11.glVertex2d(-width, line.getLength());
                 GL11.glEnd();
             }
 
-            setRGBBasedOnHeat(false);
-
-            // Draw the second color
-            GL11.glBegin(GL11.GL_QUADS);
-            GL11.glColor4f(this.particleRed, this.particleGreen, this.particleBlue, opacity);
-            GL11.glVertex2d(-width, line.getLength() / 2 + transitionSpace);
-            GL11.glVertex2d(width, line.getLength() / 2 + transitionSpace);
-            GL11.glVertex2d(width, line.getLength());
-            GL11.glVertex2d(-width, line.getLength());
-            GL11.glEnd();
+            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            
+            GL11.glPopMatrix();
         }
-
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glDepthMask(true);
-        GL11.glDisable(GL11.GL_BLEND);
-        SCRenderHelper.stopFlickerAvoiding();
-        GL11.glPopMatrix();
-
-        tessellator.startDrawingQuads();
-
         SCRenderHelper.bindTexture("minecraft:textures/particle/particles.png");
     }
 }

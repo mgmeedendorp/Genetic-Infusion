@@ -185,6 +185,13 @@ public class Structure {
             doesStructureExist();
         return currentRotation;
     }
+    
+    public float getRotationInDegrees() {
+        if(initiated) {
+            return getRotation()*90;
+        }
+        return -1F;
+    }
 
     public boolean doesStructureExist() {
         if(initiated) {

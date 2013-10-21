@@ -1,8 +1,8 @@
 package Seremis.SoulCraft.inventory.slot;
 
-import Seremis.SoulCraft.item.ItemTransporterModules;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import Seremis.SoulCraft.item.ItemTransporterModules;
 
 public class ToggleableMoveUpgradeSlot extends ToggleableMoveSlot {
 

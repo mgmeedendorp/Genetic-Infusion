@@ -1,6 +1,5 @@
 package Seremis.SoulCraft.util;
 
-import Seremis.SoulCraft.handler.ServerTickHandler;
 
 public class Timer {
 
@@ -17,11 +16,10 @@ public class Timer {
     public void tick() {
         if(timeStart == true) {
             timeCount--;
-            if(timeCount == 0) {
+            if(timeCount <= 0) {
                 timeStart = false;
                 timerEnd = true;
                 isTicking = false;
-                ServerTickHandler.instance.timerEnd(timerId);
             }
         }
     }

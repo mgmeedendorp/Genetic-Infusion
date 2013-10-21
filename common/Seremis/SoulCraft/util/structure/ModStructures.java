@@ -2,8 +2,8 @@ package Seremis.SoulCraft.util.structure;
 
 import net.minecraft.block.Block;
 import Seremis.SoulCraft.api.util.Coordinate3D;
-import Seremis.SoulCraft.api.util.structure.StructureMap;
 import Seremis.SoulCraft.api.util.structure.StructureBlock;
+import Seremis.SoulCraft.api.util.structure.StructureMap;
 import Seremis.SoulCraft.block.ModBlocks;
 
 public class ModStructures {
@@ -20,6 +20,5 @@ public class ModStructures {
             magnetStation.addBlock(new StructureBlock(blockList[i], 0, new Coordinate3D(listX[i], listY[i], listZ[i])));
         }
         magnetStation.addBlock(new StructureBlockCrystalStand(new Coordinate3D(1, 1, 3)));
-        magnetStation.addBlock(new StructureBlock(ModBlocks.transporter, 0, new Coordinate3D(1, 1, 1), false));
     }
 }

@@ -10,6 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 import Seremis.SoulCraft.api.magnet.MagnetLinkHelper;
 import Seremis.SoulCraft.api.magnet.tile.IMagnetConnector;
 import Seremis.SoulCraft.network.PacketTypeHandler;
+import cpw.mods.fml.common.network.Player;
 
 public class PacketRemoveMagnetLinkConnector extends SCPacket {
 
@@ -48,8 +49,8 @@ public class PacketRemoveMagnetLinkConnector extends SCPacket {
     }
 
     @Override
-    public void execute(INetworkManager network, EntityPlayer player) {
-        TileEntity tile = player.worldObj.getBlockTileEntity(x, y, z);
+    public void execute(INetworkManager network, Player player) {
+        TileEntity tile = ((EntityPlayer)player).worldObj.getBlockTileEntity(x, y, z);
 
         if(tile != null && tile instanceof IMagnetConnector) {
             IMagnetConnector conn = (IMagnetConnector) tile;

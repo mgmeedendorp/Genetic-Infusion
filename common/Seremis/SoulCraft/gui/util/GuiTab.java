@@ -59,4 +59,8 @@ public abstract class GuiTab extends GuiRectangle {
     public void mouseMoveClick(SCGui gui, int x, int y, int button, long timeSinceClicked) {}
 
     public void mouseReleased(SCGui gui, int x, int y, int button) {}
+    
+    public void initGui(SCGui gui) {}
+    
+    public void keyTyped(SCGui gui, char keyTyped, int keyCode) {}
 }

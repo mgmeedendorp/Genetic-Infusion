@@ -18,7 +18,7 @@ public class PlayerHandlerSC implements IPlayerTracker {
 
     @Override
     public void onPlayerChangedDimension(EntityPlayer player) {
-
+        ServerTickHandler.instance.addTimer(new Timer(player.entityId, 50));
     }
 
     @Override

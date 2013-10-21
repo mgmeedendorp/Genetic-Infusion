@@ -1,8 +1,8 @@
 package Seremis.SoulCraft.block;
 
-import Seremis.SoulCraft.core.lib.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import Seremis.SoulCraft.core.lib.Blocks;
 
 public class BlockBushItem extends ItemBlock {
 

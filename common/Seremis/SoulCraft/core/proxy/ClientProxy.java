@@ -3,28 +3,28 @@ package Seremis.SoulCraft.core.proxy;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
 import Seremis.SoulCraft.api.util.Coordinate3D;
 import Seremis.SoulCraft.client.render.BlockBushRenderer;
 import Seremis.SoulCraft.client.render.BlockCompressorRenderer;
 import Seremis.SoulCraft.client.render.BlockCrystalRenderer;
 import Seremis.SoulCraft.client.render.BlockCrystalStandRenderer;
 import Seremis.SoulCraft.client.render.BlockMonsterEggRenderer;
-import Seremis.SoulCraft.client.render.BlockTransporterRenderer;
 import Seremis.SoulCraft.client.render.EntityTransporterRenderer;
 import Seremis.SoulCraft.client.render.FXBeam;
+import Seremis.SoulCraft.client.render.ItemTransporterModulesRenderer;
 import Seremis.SoulCraft.client.render.TileBushRenderer;
 import Seremis.SoulCraft.client.render.TileCompressorRenderer;
 import Seremis.SoulCraft.client.render.TileCrystalRenderer;
 import Seremis.SoulCraft.client.render.TileCrystalStandRenderer;
-import Seremis.SoulCraft.client.render.TileTransporterRenderer;
 import Seremis.SoulCraft.core.lib.RenderIds;
 import Seremis.SoulCraft.entity.EntityTransporter;
 import Seremis.SoulCraft.handler.RenderTickHandler;
+import Seremis.SoulCraft.item.ModItems;
 import Seremis.SoulCraft.tileentity.TileBush;
 import Seremis.SoulCraft.tileentity.TileCompressor;
-import Seremis.SoulCraft.tileentity.TileCrystalStand;
 import Seremis.SoulCraft.tileentity.TileCrystal;
-import Seremis.SoulCraft.tileentity.TileTransporter;
+import Seremis.SoulCraft.tileentity.TileCrystalStand;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -38,7 +38,6 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(RenderIds.CompressorRenderID, new BlockCompressorRenderer());
         RenderingRegistry.registerBlockHandler(RenderIds.IsolatziumCrystalRenderID, new BlockCrystalRenderer());
         RenderingRegistry.registerBlockHandler(RenderIds.CrystalStandRenderID, new BlockCrystalStandRenderer());
-        RenderingRegistry.registerBlockHandler(RenderIds.TransporterRenderID, new BlockTransporterRenderer());
         RenderingRegistry.registerBlockHandler(RenderIds.BushRenderID, new BlockBushRenderer());
 
         RenderingRegistry.registerEntityRenderingHandler(EntityTransporter.class, new EntityTransporterRenderer());
@@ -46,8 +45,9 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileCompressor.class, new TileCompressorRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileCrystal.class, new TileCrystalRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileCrystalStand.class, new TileCrystalStandRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileTransporter.class, new TileTransporterRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileBush.class, new TileBushRenderer());
+        
+        MinecraftForgeClient.registerItemRenderer(ModItems.transporterModules.itemID, new ItemTransporterModulesRenderer());
     }
 
     @Override

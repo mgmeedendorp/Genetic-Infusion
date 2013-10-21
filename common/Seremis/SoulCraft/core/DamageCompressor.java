@@ -14,7 +14,7 @@ public class DamageCompressor extends DamageSource {
     @Override
     public ChatMessageComponent getDeathMessage(EntityLivingBase entity) {
         ChatMessageComponent message = new ChatMessageComponent();
-        message.func_111079_a(((EntityPlayer) entity).username + " was compressed in an Atomic Compressor.");
+        message.addText(((EntityPlayer) entity).username + " was compressed in an Atomic Compressor.");
         return message;
     }
 

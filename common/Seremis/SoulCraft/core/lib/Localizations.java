@@ -8,6 +8,7 @@ public class Localizations {
     public static final String LOC_MODEL_TEXTURES = DefaultProps.ID + ":textures/models/";
     public static final String LOC_GUI_TEXTURES = DefaultProps.ID + ":textures/gui/";
 
+    public static final String BLACK = "black.png";
     public static final String BLANK = "blank.png";
     public static final String CRYSTAL = "crystal.png";
     public static final String CRYSTAL_STAND = "crystalStand.png";

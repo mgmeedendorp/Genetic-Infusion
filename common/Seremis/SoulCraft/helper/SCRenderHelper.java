@@ -56,7 +56,7 @@ public class SCRenderHelper {
 
     public static void bindTexture(String tex) {
         ResourceLocation resource = new ResourceLocation(tex);
-        FMLClientHandler.instance().getClient().renderEngine.func_110577_a(resource);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(resource);
     }
 
     public static void avoidFlickering() {

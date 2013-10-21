@@ -11,6 +11,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
 import Seremis.SoulCraft.api.magnet.MagnetLinkHelper;
 import Seremis.SoulCraft.core.lib.Strings;
+import Seremis.SoulCraft.core.proxy.CommonProxy;
 import Seremis.SoulCraft.util.Timer;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
@@ -41,14 +42,15 @@ public class ServerTickHandler implements ITickHandler {
 
     @Override
     public void tickEnd(EnumSet<TickType> type, Object... tickData) {
-        if(!timers.isEmpty()) {
-            Iterator<Timer> it = timers.iterator();
+        Iterator<Timer> it = timers.iterator();;
+        while(it.hasNext()) {
             Timer timer = it.next();
-            while(it.hasNext()) {
-                timer.tick();
-                if(timer.timerEnd) {
-                    timers.remove(timer);
-                }
+            
+            timer.tick();
+            
+            if(timer.timerEnd) {
+                timerEnd(timer.timerId);
+                it.remove();
             }
         }
         MagnetLinkHelper.instance.tick();
@@ -65,10 +67,19 @@ public class ServerTickHandler implements ITickHandler {
     }
 
     public void timerEnd(int timerId) {
-        WorldServer world = MinecraftServer.getServer().worldServers[0];
-        Entity entity = world.getEntityByID(timerId);
+        Entity entity = null;
+        
+        MagnetLinkHelper.instance.reset();
+        
+        for(int i = 0; i < MinecraftServer.getServer().worldServers.length; i++) {
+            WorldServer world = MinecraftServer.getServer().worldServers[i];
+            entity = world.getEntityByID(timerId);
+            if(entity != null) {
+                break;
+            }
+        }
 
-        if(entity != null && entity instanceof EntityPlayer) {
+        if(entity != null && entity instanceof EntityPlayer && CommonProxy.proxy.isServerWorld(entity.worldObj)) {
             MagnetLinkHelper.instance.updatePlayerWithNetworks((EntityPlayer) entity);
         }
     }

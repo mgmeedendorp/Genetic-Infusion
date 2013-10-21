@@ -39,8 +39,11 @@ public class Items {
     public static final String TRANSPORTER_MODULES_LOCALIZED_NAME = "Transporter Modules";
     public static final String TRANSPORTER_MODULES_META_0_UNLOCALIZED_NAME = "module0";
     public static final String TRANSPORTER_MODULES_META_1_UNLOCALIZED_NAME = "module1";
+    public static final String TRANSPORTER_MODULES_META_2_UNLOCALIZED_NAME = "transporter";
     public static final String TRANSPORTER_MODULES_META_0_LOCALIZED_NAME = "Storage Module";
     public static final String TRANSPORTER_MODULES_META_1_LOCALIZED_NAME = "Engine Module";
+    public static final String TRANSPORTER_MODULES_META_2_LOCALIZED_NAME = "Plasmatic Transporter";
+    
 
     public static int berryID;
     public static final String BERRY_UNLOCALIZED_NAME = "berry";
@@ -61,5 +64,9 @@ public class Items {
     public static int thermometerID;
     public static final String THERMOMETER_UNLOCALIZED_NAME = "thermometer";
     public static final String THERMOMETER_LOCALIZED_NAME = "Thermometer";
+    public static final String THERMOMETER_META_0_UNLOCALIZED_NAME = "thermometer0";
+    public static final String THERMOMETER_META_1_UNLOCALIZED_NAME = "thermometer1";
+    public static final String THERMOMETER_META_0_LOCALIZED_NAME = "Thermometer";
+    public static final String THERMOMETER_META_1_LOCALIZED_NAME = "Debug Tool";
 
 }

@@ -5,10 +5,10 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import Seremis.SoulCraft.block.ModBlocks;
 import Seremis.SoulCraft.inventory.slot.FilteredSlot;
 import Seremis.SoulCraft.inventory.slot.ToggleableMoveSlot;
 import Seremis.SoulCraft.inventory.slot.ToggleableMoveUpgradeSlot;
+import Seremis.SoulCraft.item.ModItems;
 import Seremis.SoulCraft.tileentity.TileStationController;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -25,7 +25,7 @@ public class ContainerStationControllerTransporter extends SCContainer {
         this.tile = (TileStationController) tile;
         this.tile.player = player;
 
-        addSlotToContainer(new FilteredSlot(tile, 0, 80, 15, new ItemStack(ModBlocks.transporter), 1));
+        addSlotToContainer(new FilteredSlot(tile, 0, 80, 15, new ItemStack(ModItems.transporterModules, 1, 2), 1));
 
         addTransporterInventory();
         addPlayerInventory(player, 56);
@@ -74,7 +74,7 @@ public class ContainerStationControllerTransporter extends SCContainer {
     public void addCraftingToCrafters(ICrafting iCrafting) {
         super.addCraftingToCrafters(iCrafting);
         iCrafting.sendProgressBarUpdate(this, 0, tile.hasTransporter() ? 1 : 0);
-        iCrafting.sendProgressBarUpdate(this, 1, tile.hasTransporter() ? tile.getTransporter().hasInventory() ? 1 : 0 : 0);
+        iCrafting.sendProgressBarUpdate(this, 1, tile.hasTransporterInventory() && tile.showTransporterInventory() ? 1 : 0);
         iCrafting.sendProgressBarUpdate(this, 2, (int) (tile.getTransporterSpeed() * 100));
     }
 
@@ -93,7 +93,7 @@ public class ContainerStationControllerTransporter extends SCContainer {
                 }
             }
 
-            boolean tileCondition = tile.hasTransporter() && tile.getTransporter().hasInventory() && tile.showTransporterInventory();
+            boolean tileCondition = tile.hasTransporterInventory() && tile.showTransporterInventory();
 
             if(this.transporterSlotsEnabled != tileCondition) {
                 icrafting.sendProgressBarUpdate(this, 1, tileCondition ? 1 : 0);
@@ -109,7 +109,7 @@ public class ContainerStationControllerTransporter extends SCContainer {
             }
         }
         this.transporterUpgradesEnabled = tile.hasTransporter();
-        this.transporterSlotsEnabled = tile.hasTransporter() && tile.getTransporter().hasInventory() && tile.showTransporterInventory();
+        this.transporterSlotsEnabled = tile.hasTransporterInventory() && tile.showTransporterInventory();
         this.transporterSpeed = tile.getTransporterSpeed();
     }
 

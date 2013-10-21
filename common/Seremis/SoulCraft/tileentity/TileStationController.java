@@ -1,5 +1,6 @@
 package Seremis.SoulCraft.tileentity;
 
+import java.nio.ByteBuffer;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,6 +20,8 @@ import Seremis.SoulCraft.block.ModBlocks;
 import Seremis.SoulCraft.core.lib.GuiIds;
 import Seremis.SoulCraft.core.lib.Tiles;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
+import Seremis.SoulCraft.entity.EntityTransporter;
+import Seremis.SoulCraft.entity.EntityTransporterLogic;
 import Seremis.SoulCraft.item.ModItems;
 import Seremis.SoulCraft.util.UtilTileEntity;
 import Seremis.SoulCraft.util.structure.ModStructures;
@@ -28,6 +31,8 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
     public Structure structure = new Structure(ModStructures.magnetStation);
 
     public boolean isMultiblock = false;
+    
+    public String name;
 
     private long currTime = 0;
     private long lastUpdateTick = 0;
@@ -50,7 +55,7 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
     public void invalidateMultiblock() {
         if(isMultiblock) {
             List<Coordinate3D> crystalStandCoordinates = structure.getBlockCoordinates(ModBlocks.crystalStand, 0);
-
+            
             if(structure.doesBlockExistInStructure(ModBlocks.crystalStand, 0, 1)) {
                 Coordinate3D crystalStandCoord = crystalStandCoordinates.get(0);
                 TileEntity tile = worldObj.getBlockTileEntity((int) crystalStandCoord.x, (int) crystalStandCoord.y, (int) crystalStandCoord.z);
@@ -88,11 +93,9 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
 
     @Override
     public void updateEntity() {
-        if(CommonProxy.proxy.isRenderWorld(worldObj)) {
-            System.out.println("ts" + MagnetLinkHelper.instance.getLinksConnectedTo(this));
-            System.out.println(this.worldObj.isRemote);
+        if(CommonProxy.proxy.isRenderWorld(worldObj))
             return;
-        }
+        
         if(currTime == 0) {
             structure.initiate(worldObj, new Coordinate3D(xCoord, yCoord, zCoord), ModBlocks.stationController, 0);
             structure.notifyChangesTo(this);
@@ -133,17 +136,18 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         UtilTileEntity.writeInventoryToNBT(this, compound);
+        if(name != null && name != "")
+        compound.setString("name", name);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         inv = UtilTileEntity.readInventoryFromNBT(this, compound);
+        name = compound.getString("name");
     }
 
     // IInventory//
-    private Coordinate3D transporterCoord;
-
     private ItemStack[] inv = new ItemStack[13];
 
     public int activeTab = -1;
@@ -217,7 +221,8 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return slot % 2 == 0 ? getStackInSlot(slot) != null ? !(getStackInSlot(slot).stackSize >= 1) ? stack != null ? stack.stackSize == 1 ? stack.itemID == ModBlocks.transporter.blockID : false : false : false : true : true;
+        //TODO change this
+        return true;
     }
 
     public ItemStack[] getInventory() {
@@ -234,140 +239,154 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
         if(CommonProxy.proxy.isRenderWorld(worldObj))
             return;
 
-        if(!hasTransporter()) {
-            if(getStackInSlot(0) != null && getStackInSlot(0).itemID == ModBlocks.transporter.blockID) {
-                worldObj.setBlock((int) getTransporterCoordinate().x, (int) getTransporterCoordinate().y, (int) getTransporterCoordinate().z, ModBlocks.transporter.blockID, 0, 3);
-
-                TileEntity tile = worldObj.getBlockTileEntity((int) getTransporterCoordinate().x, (int) getTransporterCoordinate().y, (int) getTransporterCoordinate().z);
-
-                if(tile != null && tile instanceof TileTransporter) {
-                    ((TileTransporter) tile).setDirection(convertStructureRotationToForgeDirection(structure.getRotation()));
-                    initiateTransporterInventory();
-                }
-            }
-        } else if(getStackInSlot(0) == null) {
-            int id = worldObj.getBlockId((int) getTransporterCoordinate().x, (int) getTransporterCoordinate().y, (int) getTransporterCoordinate().z);
-            if(id == ModBlocks.transporter.blockID) {
-                worldObj.setBlock((int) getTransporterCoordinate().x, (int) getTransporterCoordinate().y, (int) getTransporterCoordinate().z, 0, 0, 3);
-                removeTransporterInventory();
-            }
-        } else if(getStackInSlot(0) != null && getStackInSlot(0).itemID == ModBlocks.transporter.blockID) {
-            updateModules();
+        if(!hasTransporter() && hasTransporterInventory() || hasTransporterEngines() && !hasTransporter()) {
+            emptySlots(1, 13);
         }
     }
-
-    public TileTransporter getTransporter() {
-        if(CommonProxy.proxy.isServerWorld(worldObj)) {
-            Coordinate3D pos = getTransporterCoordinate();
-            TileEntity tile = worldObj.getBlockTileEntity((int) pos.x, (int) pos.y, (int) pos.z);
-            if(tile != null && tile instanceof TileTransporter) {
-                return (TileTransporter) tile;
-            }
+    
+    public void emptySlots(int start, int end) {
+        if(start < 0) {
+            start = 0;
         }
-        return null;
+        if(start > getSizeInventory()) {
+            start = getSizeInventory();
+        }
+        if(end < 0) {
+            end = 0;
+        }
+        if(end > getSizeInventory()) {
+            end = getSizeInventory();
+        }
+        
+        for(int i = start; i < end; i++) {
+            inv[i] = null;
+        }
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
-    public Coordinate3D getTransporterCoordinate() {
-        if(transporterCoord == null) {
-            calculateTransporterCoordinate();
-        }
-        return transporterCoord;
-    }
 
     public boolean showTransporterInventory() {
-        return this.activeTab == 0;
+        return this.activeTab == 1;
     }
 
     public boolean hasTransporter() {
-        return structure.doesBlockExistInStructure(ModBlocks.transporter, 0, 1);
+        return getStackInSlot(0) != null;
     }
-
-    private void calculateTransporterCoordinate() {
-        transporterCoord = new Coordinate3D().setCoords(this);
-
-        Coordinate3D coord = structure.getBlockCoordinates(ModBlocks.transporter, 0).get(0);
-        Coordinate3D coord2 = structure.getBlockCoordinates(ModBlocks.stationController, 0).get(0);
-
-        transporterCoord.moveBack(coord2);
-        transporterCoord.move(coord);
-    }
-
-    private ForgeDirection convertStructureRotationToForgeDirection(int rotation) {
-        ForgeDirection direction = ForgeDirection.NORTH;
-        switch(rotation) {
-            case 0: {
-                direction = ForgeDirection.SOUTH;
-                break;
-            }
-            case 1: {
-                direction = ForgeDirection.WEST;
-                break;
-            }
-            case 2: {
-                direction = ForgeDirection.NORTH;
-                break;
-            }
-            case 3: {
-                direction = ForgeDirection.EAST;
-                break;
+    
+    public boolean hasTransporterInventory() {
+        for(int i = 1; i < 4; i++) {
+            if(getStackInSlot(i) != null && getStackInSlot(i).getItemDamage() == 0) {
+                return true;
             }
         }
-        return direction;
+        return false;
     }
-
-    private void updateModules() {
-        TileTransporter tile = getTransporter();
-
-        tile.setHasEngine(false);
-        tile.setHasInventory(false);
-
-        for(int i = 0; i < 3; i++) {
-            if(tile != null) {
-                if(getStackInSlot(i + 1) != null && getStackInSlot(i + 1).itemID == ModItems.transporterModules.itemID) {
-                    if(getStackInSlot(i + 1).getItemDamage() == 0) {
-                        tile.setHasInventory(true);
-                    } else {
-                        tile.setHasEngine(true);
-                    }
+    
+    public boolean hasTransporterEngines() {
+        for(int i = 1; i < 4; i++) {
+            if(getStackInSlot(i) != null && getStackInSlot(i).getItemDamage() == 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public void sendCurrentTransporterTo(TileStationController tile) {
+        if(CommonProxy.proxy.isServerWorld(worldObj) && tile != this) {
+            EntityTransporterLogic logic = EntityTransporterLogic.getLogic(this, tile);
+            
+            EntityTransporter transporter = new EntityTransporter(worldObj, xCoord, yCoord, zCoord, logic);
+            
+            ItemStack[] inventory = new ItemStack[9];
+            
+            for(int i = 0; i < 9; i++) {
+                inventory[i] = inv[i+4];
+            }
+            
+            if(hasTransporterInventory()) {
+                transporter.setHasInventory(true);
+            }
+            if(hasTransporterEngines()) {
+                transporter.setHasEngine(true);
+            }
+            
+            switch(structure.getRotation()) {
+                case 0 : {
+                    transporter.posZ = zCoord + 1;
+                    break;
+                }
+                case 1 : {
+                    transporter.posX = xCoord - 1;
+                    break;
+                }
+                case 2 : {
+                    transporter.posZ = zCoord - 1;
+                    break;
+                }
+                case 3 : {
+                    transporter.posX = xCoord + 1;
+                    break;
                 }
             }
+            
+            transporter.posX += 0.5;
+            transporter.posZ += 0.5;
+            
+            transporter.setYaw((float)structure.getRotation()*(float)90F);
+            
+            transporter.setInventory(inventory);
+            worldObj.spawnEntityInWorld(transporter);
+            transporter.sendEntityDataToClient(0, new byte[] {(byte)structure.getRotation()});
         }
-        this.transporterSpeed = tile.getSpeed();
+    }
+    
+    public void handleIncoming(EntityTransporter transporter) {
+        System.out.println("YEW " + transporter);
     }
 
-    private void initiateTransporterInventory() {
-        TileTransporter tile = getTransporter();
-
-        if(tile != null) {
-            for(int i = 0; i < 9; i++) {
-                setInventorySlotContents(i + 4, tile.inv[i]);
-            }
-            if(tile.hasEngine()) {
-                this.setInventorySlotContents(1, new ItemStack(ModItems.transporterModules, 1, 1));
-            }
-            if(tile.hasInventory()) {
-                this.setInventorySlotContents(2, new ItemStack(ModItems.transporterModules, 1, 0));
-            }
-        }
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-    }
-
-    private void removeTransporterInventory() {
-        for(int i = 0; i < 12; i++) {
-            setInventorySlotContents(i + 1, null);
-        }
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-    }
-
-    public void setTileData(int id, int data) {
+    @Override
+    public void setTileData(int id, byte[] data) {
         if(id == 0) {
-            activeTab = data;
+            activeTab = data[0];
         }
         if(id == 1) {
-            if(data == 0) {
+            if(data[0] == 0) {
                 if(player != null) {
                     player.openGui(mod_SoulCraft.instance, GuiIds.GUI_STATION_SEND_SCREEN_ID, worldObj, xCoord, yCoord, zCoord);
                 }
+            }
+        }
+        if(id == 2) {
+            name = "";
+            if(data.length > 0) {
+                name = new String(data);
+            }
+        }
+        if(id == 3) {
+            byte[] data1 = new byte[4];
+            byte[] data2 = new byte[4];;
+            byte[] data3 = new byte[4];;
+            
+            for(int j = 0; j < 4; j++) {
+                data1[j] = data[j];
+                data2[j] = data[j+4];
+                data3[j] = data[j+8];
+            }
+            ByteBuffer wrapped1 = ByteBuffer.wrap(data1);
+            ByteBuffer wrapped2 = ByteBuffer.wrap(data2);
+            ByteBuffer wrapped3 = ByteBuffer.wrap(data3);
+            
+            Coordinate3D destination = new Coordinate3D();
+            
+            destination.x = wrapped1.getInt();
+            destination.y = wrapped2.getInt();
+            destination.z = wrapped3.getInt();
+            
+            TileEntity tile = worldObj.getBlockTileEntity((int) destination.x, (int) destination.y, (int) destination.z);
+            
+            System.out.println(destination);
+            if(tile != null && tile instanceof TileStationController) {
+                this.sendCurrentTransporterTo((TileStationController) tile);
             }
         }
     }
@@ -381,12 +400,12 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
 
     @Override
     public boolean canInsertItem(int slot, ItemStack stack, int side) {
-        return slot == 0 ? stack.itemID == ModBlocks.transporter.blockID : false;
+        return slot == 0 ? ModItems.transporterModules.isTransporter(stack) : false;
     }
 
     @Override
     public boolean canExtractItem(int slot, ItemStack stack, int side) {
-        return slot == 0 ? stack.itemID == ModBlocks.transporter.blockID : false;
+        return slot != 0;
     }
 
     // TileMagnetConnector//
@@ -416,7 +435,7 @@ public class TileStationController extends SCTileMagnetConnector implements IInv
                     dir = ForgeDirection.EAST;
                     break;
             }
-            return direction != ForgeDirection.DOWN && direction == dir && MagnetLinkHelper.instance.getLinksConnectedTo(this).size() <= 1;
+            return direction == dir;
         }
         return false;
     }

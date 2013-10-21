@@ -25,7 +25,6 @@ public class TileCrystalStandRenderer extends TileEntitySpecialRenderer {
 
     public void renderCrystal(TileCrystalStand tile, float x, float y, float z, Random rand, float size) {
         GL11.glPushMatrix();
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glTranslatef(x + 0.43F, y - 0.05F * size, z + 0.43F);
         GL11.glScalef((0.15F + rand.nextFloat() * 0.075F) * size, (0.5F + rand.nextFloat() * 0.1F) * size, (0.15F + rand.nextFloat() * 0.05F) * size);
 

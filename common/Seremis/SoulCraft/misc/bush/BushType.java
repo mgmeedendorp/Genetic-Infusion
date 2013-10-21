@@ -42,7 +42,7 @@ public class BushType {
 
     public void applyTexture(int stage) {
         if(!(stage > maxStage))
-            FMLClientHandler.instance().getClient().renderEngine.func_110577_a(new ResourceLocation(textureMap[stage - 1]));
+            FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(textureMap[stage - 1]));
     }
 
     public void addFortuneDrop(ItemStack drop, float chance) {

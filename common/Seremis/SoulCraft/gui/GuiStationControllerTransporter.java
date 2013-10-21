@@ -10,17 +10,15 @@ import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
 import Seremis.SoulCraft.block.ModBlocks;
 import Seremis.SoulCraft.core.lib.Localizations;
 import Seremis.SoulCraft.gui.util.GuiTab;
 import Seremis.SoulCraft.gui.util.GuiTabEngine;
 import Seremis.SoulCraft.gui.util.GuiTabInventory;
+import Seremis.SoulCraft.gui.util.GuiTabName;
 import Seremis.SoulCraft.helper.SCRenderHelper;
 import Seremis.SoulCraft.inventory.ContainerStationControllerTransporter;
 import Seremis.SoulCraft.item.ModItems;
-import Seremis.SoulCraft.network.PacketTypeHandler;
-import Seremis.SoulCraft.network.packet.PacketTileData;
 import Seremis.SoulCraft.tileentity.TileStationController;
 
 public class GuiStationControllerTransporter extends SCGui {
@@ -36,8 +34,10 @@ public class GuiStationControllerTransporter extends SCGui {
         super.ySize = 222;
         this.tile = tile;
 
-        tabs.add(new GuiTabInventory(0, 28, 74, 14, 12, "Transporter Inventory").setVisible(false));
-        tabs.add(new GuiTabEngine(1, 28, 86, 14, 12, "Transporter Engines", this).setVisible(false));
+
+        tabs.add(new GuiTabName(0, 28, 74, 14, 12, "Station Settings", this));
+        tabs.add(new GuiTabInventory(1, 28, 86, 14, 12, "Transporter Inventory").setVisible(false));
+        tabs.add(new GuiTabEngine(2, 28, 98, 14, 12, "Transporter Engines", this).setVisible(false));
 
         activeTab = tabs.get(0);
     }
@@ -48,6 +48,10 @@ public class GuiStationControllerTransporter extends SCGui {
         buttonList.clear();
 
         buttonList.add(new GuiButton(0, guiLeft + 20, guiTop + 15, 40, 20, "Send"));
+        
+        for(GuiTab tab : tabs) {
+            tab.initGui(this);
+        }
     }
 
     @Override
@@ -56,6 +60,7 @@ public class GuiStationControllerTransporter extends SCGui {
 
         SCRenderHelper.bindTexture(Localizations.LOC_GUI_TEXTURES + Localizations.GUI_MAGNET_STATION_TRANSPORTER_SCREEN);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
+        
         for(GuiTab tab : tabs) {
 
             int srcY = 18;
@@ -67,17 +72,17 @@ public class GuiStationControllerTransporter extends SCGui {
 
             tab.draw(this, 176, srcY);
         }
-        tabs.get(0).setVisible(false);
         tabs.get(1).setVisible(false);
+        tabs.get(2).setVisible(false);
         for(int i = 0; i < 3; i++) {
             ItemStack stack = tile.getStackInSlot(i + 1);
             if(stack != null && stack.itemID == ModItems.transporterModules.itemID && stack.getItemDamage() == 0) {
-                tabs.get(0).setVisible(true);
+                tabs.get(1).setVisible(true);
             } else {
                 tile.activeTab = -1;
             }
             if(stack != null && stack.itemID == ModItems.transporterModules.itemID && stack.getItemDamage() == 1) {
-                tabs.get(1).setVisible(true);
+                tabs.get(2).setVisible(true);
             } else {
                 tile.activeTab = -1;
             }
@@ -105,7 +110,7 @@ public class GuiStationControllerTransporter extends SCGui {
     @Override
     protected void mouseClicked(int x, int y, int button) {
         super.mouseClicked(x, y, button);
-
+        
         if(activeTab != null)
             activeTab.mouseClick(this, x, y, button);
 
@@ -114,7 +119,7 @@ public class GuiStationControllerTransporter extends SCGui {
                 if(tab.inRect(this, x, y)) {
                     activeTab = tab;
                     tile.activeTab = tab.getId();
-                    tile.sendTileData(0, tab.getId());
+                    tile.sendTileData(0, new byte[] {(byte) tab.getId()});
                     tile.worldObj.addBlockEvent(tile.xCoord, tile.yCoord, tile.zCoord, ModBlocks.stationController.blockID, 1, activeTab.getId());
                     break;
                 }
@@ -137,9 +142,25 @@ public class GuiStationControllerTransporter extends SCGui {
         if(activeTab != null)
             activeTab.mouseReleased(this, x, y, button);
     }
+    
+    @Override
+    protected void keyTyped(char keyTyped, int keyCode) {
+        if(keyCode == 1) {
+            this.mc.thePlayer.closeScreen();
+        }
+        if(activeTab != null) {
+            activeTab.keyTyped(this, keyTyped, keyCode);
+        }
+    }
+    
+    public void onGuiClosed() {
+        super.onGuiClosed();
+        
+        tile.sendTileData(2, tile.name.getBytes());
+    }
 
     @Override
     protected void actionPerformed(GuiButton button) {
-        tile.sendTileData(1, button.id);
+        tile.sendTileData(1, new byte[] {(byte) button.id});
     }
 }

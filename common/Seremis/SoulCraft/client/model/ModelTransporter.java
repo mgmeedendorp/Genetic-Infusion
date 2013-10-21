@@ -2,7 +2,6 @@ package Seremis.SoulCraft.client.model;
 
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraftforge.common.ForgeDirection;
 
 public class ModelTransporter extends ModelBase {
 
@@ -32,36 +31,12 @@ public class ModelTransporter extends ModelBase {
         side2.setRotationPoint(8.0F, 8.0F, 8.0F);
     }
 
-    public void render(ForgeDirection direction) {
+    public void render() {
         float scale = 0.0625F;
-        float rotationY = (float) (Math.PI * 1.5);
-        switch(direction.ordinal()) {
-            case 2:
-                rotationY = (float) (Math.PI * 0.5);
-                break;
-            case 3:
-                rotationY = (float) (Math.PI * 1.5);
-                break;
-            case 4:
-                rotationY = (float) (Math.PI);
-                break;
-            case 5:
-                rotationY = (float) (0);
-                break;
-        }
-        setRotation(base, 0.0F, rotationY, 0.0F);
-        base.render(scale);
-        setRotation(top, 0.0F, rotationY, 0.0F);
-        top.render(scale);
-        setRotation(side1, 0.0F, rotationY, 0.0F);
-        side1.render(scale);
-        setRotation(side2, 0.0F, rotationY, 0.0F);
-        side2.render(scale);
-    }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
+        base.render(scale);
+        top.render(scale);
+        side1.render(scale);
+        side2.render(scale);
     }
 }

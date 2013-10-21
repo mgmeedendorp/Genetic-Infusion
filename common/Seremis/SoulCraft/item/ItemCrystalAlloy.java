@@ -1,7 +1,7 @@
 package Seremis.SoulCraft.item;
 
-import Seremis.SoulCraft.core.lib.Items;
 import net.minecraft.item.ItemStack;
+import Seremis.SoulCraft.core.lib.Items;
 
 public class ItemCrystalAlloy extends SCItem {
 

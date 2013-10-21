@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import cpw.mods.fml.common.network.Player;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.tileentity.TileEntity;
@@ -17,16 +18,17 @@ public class PacketAddMagnetLink extends SCPacket {
     public int x1, y1, z1;
     public int x2, y2, z2;
     public int heat1, heat2;
+    public int dimensionID;
 
     public PacketAddMagnetLink() {
         super(PacketTypeHandler.ADD_MAGNET_LINK);
     }
 
     public PacketAddMagnetLink(MagnetLink link) {
-        this((int) link.line.head.x, (int) link.line.head.y, (int) link.line.head.z, (int) link.line.tail.x, (int) link.line.tail.y, (int) link.line.tail.z, link.connector1.getHeat(), link.connector2.getHeat());
+        this((int) link.line.head.x, (int) link.line.head.y, (int) link.line.head.z, (int) link.line.tail.x, (int) link.line.tail.y, (int) link.line.tail.z, link.connector1.getHeat(), link.connector2.getHeat(), link.dimensionID);
     }
 
-    public PacketAddMagnetLink(int x1, int y1, int z1, int x2, int y2, int z2, int heat1, int heat2) {
+    public PacketAddMagnetLink(int x1, int y1, int z1, int x2, int y2, int z2, int heat1, int heat2, int dimensionID) {
         super(PacketTypeHandler.ADD_MAGNET_LINK);
         this.x1 = x1;
         this.y1 = y1;
@@ -36,6 +38,7 @@ public class PacketAddMagnetLink extends SCPacket {
         this.z2 = z2;
         this.heat1 = heat1;
         this.heat2 = heat2;
+        this.dimensionID = dimensionID;
     }
 
     @Override
@@ -48,6 +51,7 @@ public class PacketAddMagnetLink extends SCPacket {
         this.z2 = dataStream.readInt();
         this.heat1 = dataStream.readInt();
         this.heat2 = dataStream.readInt();
+        this.dimensionID = dataStream.readInt();
     }
 
     @Override
@@ -60,14 +64,13 @@ public class PacketAddMagnetLink extends SCPacket {
         dataStream.writeInt(z2);
         dataStream.writeInt(heat1);
         dataStream.writeInt(heat2);
+        dataStream.writeInt(dimensionID);
     }
 
     @Override
-    public void execute(INetworkManager network, EntityPlayer player) {
-        TileEntity tile1 = player.worldObj.getBlockTileEntity(x1, y1, z1);
-        TileEntity tile2 = player.worldObj.getBlockTileEntity(x2, y2, z2);
-
-        System.out.println(player.worldObj.isRemote);
+    public void execute(INetworkManager network, Player player) {
+        TileEntity tile1 = ((EntityPlayer)player).worldObj.getBlockTileEntity(x1, y1, z1);
+        TileEntity tile2 = ((EntityPlayer)player).worldObj.getBlockTileEntity(x2, y2, z2);
         
         if(tile1 != null && tile2 != null && tile1 instanceof IMagnetConnector && tile2 instanceof IMagnetConnector) {
             IMagnetConnector conn1 = (IMagnetConnector) tile1;
@@ -79,7 +82,9 @@ public class PacketAddMagnetLink extends SCPacket {
             conn1.warm(heat1);
             conn2.warm(heat2);
 
-            MagnetLinkHelper.instance.addLink(new MagnetLink(conn1, conn2));
+            MagnetLink link = new MagnetLink(conn1, conn2, dimensionID);
+            
+            MagnetLinkHelper.instance.addLink(link);
         }
     }
 }

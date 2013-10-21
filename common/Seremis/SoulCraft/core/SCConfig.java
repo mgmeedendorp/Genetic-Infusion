@@ -15,13 +15,12 @@ public class SCConfig {
         Blocks.compressorID = config.getBlock("Compressor", 1322).getInt();
         Blocks.crystalID = config.getBlock("Isolatzium Crystal", 1323).getInt();
         Blocks.crystalStandID = config.getBlock("Crystal Stand", 1324).getInt();
-        Blocks.transporterID = config.getBlock("Plasmatic Transporter", 1325).getInt();
-        Blocks.bushID = config.getBlock("Berry bush", 1326).getInt();
-        Blocks.heatIOID = config.getBlock("Heat I/O", 1327).getInt();
-        Blocks.connectedGlassID = config.getBlock("Connected Glass", 1328).getInt();
-        Blocks.titaniumBrickID = config.getBlock("Titanium Reinforced Brick", 1329).getInt();
-        Blocks.stationControllerID = config.getBlock("Magnetic Station Controller", 1330).getInt();
-        Blocks.monsterEggID = config.getBlock("Monster Egg", 1331).getInt();
+        Blocks.bushID = config.getBlock("Berry bush", 1325).getInt();
+        Blocks.heatIOID = config.getBlock("Heat I/O", 1326).getInt();
+        Blocks.connectedGlassID = config.getBlock("Connected Glass", 1327).getInt();
+        Blocks.titaniumBrickID = config.getBlock("Titanium Reinforced Brick", 1328).getInt();
+        Blocks.stationControllerID = config.getBlock("Magnetic Station Controller", 1329).getInt();
+        Blocks.monsterEggID = config.getBlock("Monster Egg", 1330).getInt();
         // Items
         Items.titaniumIngotID = config.getItem("Titanium Ingot", 4520).getInt();
         Items.crystalShardID = config.getItem("Isolatzium Shards", 4521).getInt();

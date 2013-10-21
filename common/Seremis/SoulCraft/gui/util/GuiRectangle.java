@@ -6,10 +6,10 @@ import Seremis.SoulCraft.gui.SCGui;
 
 public class GuiRectangle {
 
-    protected int x;
-    protected int y;
-    protected int w;
-    protected int h;
+    public int x;
+    public int y;
+    public int w;
+    public int h;
 
     public GuiRectangle(int x, int y, int w, int h) {
         this.x = x;
@@ -21,8 +21,12 @@ public class GuiRectangle {
     public boolean inRect(SCGui gui, int mouseX, int mouseY) {
         mouseX -= gui.getLeft();
         mouseY -= gui.getTop();
-
-        return x <= mouseX && mouseX <= x + w && y <= mouseY && mouseY <= y + h;
+        
+        return isInBetween(x, x+w, mouseX) && isInBetween(y, y+h, mouseY);
+    }
+    
+    public boolean isInBetween(int x, int y, int i) {
+        return i > Math.min(x, y) && i < Math.max(x, y);
     }
 
     public void setX(int x) {
@@ -31,6 +35,14 @@ public class GuiRectangle {
 
     public void setY(int y) {
         this.y = y;
+    }
+    
+    public void setWidth(int w) {
+        this.w = w;
+    }
+    
+    public void setHeight(int h) {
+        this.h = h;
     }
 
     public int getX() {

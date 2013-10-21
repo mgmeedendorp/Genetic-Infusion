@@ -64,7 +64,7 @@ public class SCTile extends TileEntity {
 
     @Override
     public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
-        readFromNBT(packet.customParam1);
+        readFromNBT(packet.data);
     }
 
     @Override
@@ -73,15 +73,15 @@ public class SCTile extends TileEntity {
         writeToNBT(var1);
         return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 1, var1);
     }
-
-    public void sendTileData(int id, int data) {
+    
+    public void sendTileData(int id, byte[] data) {
         if(CommonProxy.proxy.isRenderWorld(worldObj)) {
             PacketDispatcher.sendPacketToServer(PacketTypeHandler.populatePacket(new PacketTileData(data, id, this.xCoord, this.yCoord, this.zCoord)));
         } else
             this.setTileData(id, data);
     }
-
-    public void setTileData(int id, int data) {
+    
+    public void setTileData(int id, byte[] data) {
 
     }
 }

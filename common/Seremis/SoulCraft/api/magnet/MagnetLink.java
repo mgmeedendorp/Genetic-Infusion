@@ -11,17 +11,27 @@ public class MagnetLink {
 
     public IMagnetConnector connector1;
     public IMagnetConnector connector2;
+    
+    public int dimensionID;
 
     public Line3D line = new Line3D();
 
+    public MagnetLink(IMagnetConnector connector1, IMagnetConnector connector2, int dimensionID) {
+        this.connector1 = connector1;
+        this.connector2 = connector2;
+        line.setLineFromTile(connector1.getTile(), connector2.getTile());
+        this.dimensionID = dimensionID;
+    }
+    
     public MagnetLink(IMagnetConnector connector1, IMagnetConnector connector2) {
         this.connector1 = connector1;
         this.connector2 = connector2;
         line.setLineFromTile(connector1.getTile(), connector2.getTile());
+        this.dimensionID = connector1.getTile().worldObj.provider.dimensionId;
     }
 
     public boolean isConnectionPossible() {
-        if(connector1.canConnect(this) && connector2.canConnect(this) && !connector1.getTile().isInvalid() && !connector2.getTile().isInvalid()) {
+        if(connector1.getTile() != null && connector2.getTile() != null && connector1.canConnect(this) && connector2.canConnect(this) && !connector1.getTile().isInvalid() && !connector2.getTile().isInvalid()) {
             return true;
         }
         return false;
@@ -82,9 +92,13 @@ public class MagnetLink {
         }
         return 0;
     }
+    
+    public boolean equals(MagnetLink link) {
+        return connector1 == link.connector1 && connector2 == link.connector2 || connector2 == link.connector1 && connector1 == link.connector2;
+    }
 
     @Override
     public String toString() {
-        return "MagnetLink[" + connector1.toString() + " " + connector2.toString() + "]";
+        return "MagnetLink[" + "dimensionID: " + dimensionID + ", " + connector1.toString() + " " + connector2.toString() + "]";
     }
 }

@@ -2,7 +2,6 @@ package Seremis.SoulCraft.api.util;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
 import net.minecraftforge.common.ForgeDirection;
 
 public class Line3D {
@@ -142,6 +141,10 @@ public class Line3D {
         return "Line3D[head x: " + head.x + ", y: " + head.y + ", z: " + head.z + " tail x: " + tail.x + ", y: " + tail.y + ", z: " + tail.z + "]";
     }
 
+    /**
+     * Get the line's yaw in degrees
+     * @return
+     */
     public double getYaw() {
         double xd = head.x - tail.x;
         double zd = head.z - tail.z;
@@ -149,12 +152,16 @@ public class Line3D {
         return Math.atan2(xd, zd) * 180.0D / Math.PI;
     }
 
+    /**
+     * Get this line's pitch in degrees
+     * @return
+     */
     public double getPitch() {
         double xd = head.x - tail.x;
         double yd = head.y - tail.y;
         double zd = head.z - tail.z;
 
-        double var7 = MathHelper.sqrt_double(xd * xd + zd * zd);
+        double var7 = Math.sqrt(xd * xd + zd * zd);
 
         return Math.atan2(yd, var7) * 180.0D / 3.141592653589793D;
     }

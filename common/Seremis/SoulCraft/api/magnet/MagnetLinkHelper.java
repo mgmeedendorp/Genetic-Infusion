@@ -3,6 +3,7 @@ package Seremis.SoulCraft.api.magnet;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
 import Seremis.SoulCraft.api.magnet.tile.IMagnetConnector;
@@ -22,9 +23,7 @@ public class MagnetLinkHelper {
 
     public static MagnetLinkHelper instance = new MagnetLinkHelper();
 
-    private List<MagnetLink> registeredMap = new ArrayList<MagnetLink>();
-
-    // TODO something with networks
+    private List<MagnetLink> registeredMap = new CopyOnWriteArrayList<MagnetLink>();
 
     public void addLink(MagnetLink link) {
         if(link.connector1.getTile().worldObj.isRemote) {
@@ -55,16 +54,12 @@ public class MagnetLinkHelper {
         PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketRemoveMagnetLink(link)));
     }
     
-    private void removeLink2(MagnetLink link) {
-        PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketRemoveMagnetLink(link)));
-    }
-
     public void removeAllLinksFrom(IMagnetConnector connector) {
         Iterator<MagnetLink> it = registeredMap.iterator();
         while(it.hasNext()) {
             MagnetLink link = it.next();
             if(link.connector1 == connector || link.connector2 == connector) {
-                it.remove();
+                registeredMap.remove(link);
             }
         }
         PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketRemoveMagnetLinkConnector(connector)));
@@ -78,14 +73,22 @@ public class MagnetLinkHelper {
         while(it.hasNext()) {
             MagnetLink link = it.next();
             
-//            if(connector.getTile().worldObj.isRemote) {
-//                System.out.println(link.connector1.getTile().worldObj.isRemote);
-//                System.out.println(connector.getTile().worldObj.isRemote);
-//                //TODO why can a server world be on a client?
-//            }
-            
-            if(link.connector1 == connector || link.connector2 == connector) {
+            if(link.connector1 == connector) {
                 links.add(link);
+            } else if(link.connector2 == connector) {
+                links.add(link);
+            } else if(link.connector1.getTile().xCoord == connector.getTile().xCoord) {
+                if(link.connector1.getTile().yCoord == connector.getTile().yCoord) {
+                    if(link.connector1.getTile().zCoord == connector.getTile().zCoord) {
+                        links.add(link);
+                    }
+                }
+            } else if(link.connector2.getTile().xCoord == connector.getTile().xCoord) {
+                if(link.connector2.getTile().yCoord == connector.getTile().yCoord) {
+                    if(link.connector2.getTile().zCoord == connector.getTile().zCoord) {
+                        links.add(link);
+                    }
+                }
             }
         }
 
@@ -103,13 +106,25 @@ public class MagnetLinkHelper {
                 connList.add(link.connector2);
             } else if(link.connector2 == connector) {
                 connList.add(link.connector1);
+            } else if(link.connector1.getTile().xCoord == connector.getTile().xCoord) {
+                if(link.connector1.getTile().yCoord == connector.getTile().yCoord) {
+                    if(link.connector1.getTile().zCoord == connector.getTile().zCoord) {
+                        connList.add(link.connector2);
+                    }
+                }
+            } else if(link.connector2.getTile().xCoord == connector.getTile().xCoord) {
+                if(link.connector2.getTile().yCoord == connector.getTile().yCoord) {
+                    if(link.connector2.getTile().zCoord == connector.getTile().zCoord) {
+                        connList.add(link.connector1);
+                    }
+                }
             }
         }
         return connList;
     }
 
     public List<MagnetLink> getAllLinks() {
-        return registeredMap;
+        return new ArrayList<MagnetLink>(registeredMap);
     }
 
     public boolean checkConditions(MagnetLink link) {
@@ -155,12 +170,16 @@ public class MagnetLinkHelper {
 
     @SideOnly(Side.CLIENT)
     public void renderLinks() {
-        if(FMLClientHandler.instance().getClient().inGameHasFocus) {
-            Iterator<MagnetLink> it = getAllLinks().iterator();
-            while(it.hasNext()) {
-                it.next().render();
+        try {
+            if(FMLClientHandler.instance().getClient().inGameHasFocus) {
+                Iterator<MagnetLink> it = getAllLinks().iterator();
+                while(it.hasNext()) {
+                    MagnetLink link = it.next();
+                    if(link.dimensionID == FMLClientHandler.instance().getClient().thePlayer.dimension)
+                        link.render();
+                }
             }
-        }
+        } catch (Exception ex) {}
     }
 
     public List<IMagnetConnector> getAllConnectors() {
@@ -177,17 +196,16 @@ public class MagnetLinkHelper {
     }
 
     public void tick() {
-        Iterator<MagnetLink> it = getAllLinks().iterator();
+        Iterator<MagnetLink> it = registeredMap.iterator();
         while(it.hasNext()) {
             MagnetLink link = it.next();
             if(!link.isConnectionPossible()) {
-                it.remove();
-                removeLink2(link);
+                registeredMap.remove(link);
+                PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketRemoveMagnetLink(link)));
             }
         }
     }
 
-    @SideOnly(Side.SERVER)
     public void updatePlayerWithNetworks(EntityPlayer player) {
         PacketDispatcher.sendPacketToPlayer(PacketTypeHandler.populatePacket(new PacketResetMagnetLinks()), (Player) player);
 
@@ -200,18 +218,51 @@ public class MagnetLinkHelper {
         return getNetworkFrom(link.connector1);
     }
 
-    public void deleteAllNetworks() {
-        Iterator<MagnetLink> it = MagnetLinkHelper.instance.getAllLinks().iterator();
-        while(it.hasNext()) {
-            MagnetLink link = it.next();
-            it.remove();
-            this.removeLink2(link);
-        }
+    public void reset() {
+        instance = new MagnetLinkHelper();
     }
     
     public MagnetNetwork getNetworkFrom(IMagnetConnector connector) {
         MagnetNetwork network = new MagnetNetwork();
-
+        List<IMagnetConnector> connectors = new ArrayList<IMagnetConnector>();
+        List<MagnetLink> links = new ArrayList<MagnetLink>();
+        connectors.add(connector);
+        
+        int index = 0;
+        while(index < connectors.size()) {
+            List<IMagnetConnector> copy = new ArrayList<IMagnetConnector>(connectors);
+            
+            for(MagnetLink link : getLinksConnectedTo(copy)) {
+                if(!connectors.contains(link.connector1)) {
+                    connectors.add(link.connector1);
+                }
+                if(!connectors.contains(link.connector2)) {
+                    connectors.add(link.connector2);
+                }
+                if(!links.contains(link)) {
+                    links.add(link);
+                }
+            }
+            index++;
+        }
+        
+        for(MagnetLink link : links) {
+            network.addLink(link);
+        }
+        
         return network;
+    }
+    
+    private static List<MagnetLink> getLinksConnectedTo(List<IMagnetConnector> conns) {
+        List<MagnetLink> links = new ArrayList<MagnetLink>();
+        
+        for(IMagnetConnector conn : conns) {
+            for(MagnetLink link : MagnetLinkHelper.instance.getLinksConnectedTo(conn)) {
+                if(!links.contains(link)) {
+                    links.add(link);
+                }
+            }
+        }
+        return links;
     }
 }

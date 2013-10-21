@@ -47,4 +47,16 @@ public class Line2D {
         double y = Math.abs(head.getYCoord() - tail.getYCoord());
         return Math.sqrt(x * x + y * y);
     }
+    
+    public double getYaw() {
+        double xd = head.x - tail.x;
+        double yd = head.y - tail.y;
+
+        return Math.atan2(xd, yd) * 180.0D / Math.PI;
+    }
+    
+    @Override
+    public String toString() {
+        return "Line2D[head x: " + head.x + ", y: " + head.y + " tail x: " + tail.x + ", y: " + tail.y + "]";
+    }
 }

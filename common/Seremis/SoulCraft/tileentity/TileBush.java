@@ -25,7 +25,7 @@ public class TileBush extends SCTile {
                 worldObj.addBlockEvent(xCoord, yCoord, zCoord, ModBlocks.bushBerry.blockID, 1, stage);
             }
         } else
-            sendTileData(0, stage);
+            sendTileData(0, new byte[] {(byte) stage});
     }
 
     public boolean receiveClientEvent(int id, int data) {
@@ -38,9 +38,9 @@ public class TileBush extends SCTile {
     }
 
     @Override
-    public void setTileData(int id, int data) {
+    public void setTileData(int id, byte[] data) {
         if(id == 0) {
-            this.setStage(data);
+            this.setStage(data[0]);
         }
     }
 

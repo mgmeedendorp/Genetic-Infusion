@@ -5,9 +5,9 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import Seremis.SoulCraft.network.PacketTypeHandler;
+import cpw.mods.fml.common.network.Player;
 
 public abstract class SCPacket {
 
@@ -47,7 +47,7 @@ public abstract class SCPacket {
 
     }
 
-    public void execute(INetworkManager network, EntityPlayer player) {
+    public void execute(INetworkManager network, Player player) {
 
     }
 

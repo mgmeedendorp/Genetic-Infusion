@@ -2,9 +2,9 @@ package Seremis.SoulCraft.item;
 
 import java.util.List;
 
-import Seremis.SoulCraft.core.lib.Items;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import Seremis.SoulCraft.core.lib.Items;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
