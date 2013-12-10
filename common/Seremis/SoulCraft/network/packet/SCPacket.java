@@ -12,6 +12,7 @@ import cpw.mods.fml.common.network.Player;
 public abstract class SCPacket {
 
     public PacketTypeHandler packetType;
+    public boolean isChunkData = false;
 
     public SCPacket(PacketTypeHandler packetType) {
         this.packetType = packetType;
@@ -23,7 +24,7 @@ public abstract class SCPacket {
 
         try {
             dos.writeByte(packetType.ordinal());
-            this.writeData(dos);
+            writeData(dos);
         } catch(IOException e) {
             e.printStackTrace(System.err);
         }
@@ -33,7 +34,7 @@ public abstract class SCPacket {
     public void readPopulate(DataInputStream data) {
 
         try {
-            this.readData(data);
+            readData(data);
         } catch(IOException e) {
             e.printStackTrace(System.err);
         }

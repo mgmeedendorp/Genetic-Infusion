@@ -4,7 +4,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import cpw.mods.fml.common.network.Player;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.tileentity.TileEntity;
@@ -12,6 +11,7 @@ import Seremis.SoulCraft.api.magnet.MagnetLink;
 import Seremis.SoulCraft.api.magnet.MagnetLinkHelper;
 import Seremis.SoulCraft.api.magnet.tile.IMagnetConnector;
 import Seremis.SoulCraft.network.PacketTypeHandler;
+import cpw.mods.fml.common.network.Player;
 
 public class PacketAddMagnetLink extends SCPacket {
 
@@ -69,20 +69,20 @@ public class PacketAddMagnetLink extends SCPacket {
 
     @Override
     public void execute(INetworkManager network, Player player) {
-        TileEntity tile1 = ((EntityPlayer)player).worldObj.getBlockTileEntity(x1, y1, z1);
-        TileEntity tile2 = ((EntityPlayer)player).worldObj.getBlockTileEntity(x2, y2, z2);
-        
+        TileEntity tile1 = ((EntityPlayer) player).worldObj.getBlockTileEntity(x1, y1, z1);
+        TileEntity tile2 = ((EntityPlayer) player).worldObj.getBlockTileEntity(x2, y2, z2);
+
         if(tile1 != null && tile2 != null && tile1 instanceof IMagnetConnector && tile2 instanceof IMagnetConnector) {
             IMagnetConnector conn1 = (IMagnetConnector) tile1;
             IMagnetConnector conn2 = (IMagnetConnector) tile2;
 
-            conn1.cool(conn1.getHeat());
-            conn2.cool(conn2.getHeat());
-
-            conn1.warm(heat1);
-            conn2.warm(heat2);
-
             MagnetLink link = new MagnetLink(conn1, conn2, dimensionID);
+
+            link.connector1.cool(link.connector1.getHeat());
+            link.connector2.cool(link.connector2.getHeat());
+            
+            link.connector1.warm(heat1);
+            link.connector2.warm(heat2);
             
             MagnetLinkHelper.instance.addLink(link);
         }

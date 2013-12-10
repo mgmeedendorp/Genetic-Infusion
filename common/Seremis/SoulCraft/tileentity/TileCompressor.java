@@ -115,7 +115,7 @@ public class TileCompressor extends TileEntity implements IInventory {
      * Returns true if there is a player in range (using World.getClosestPlayer)
      */
     public boolean anyPlayerInRange() {
-        return this.worldObj.getClosestPlayer((double) this.xCoord + 0.5D, (double) this.yCoord + 0.5D, (double) this.zCoord + 0.5D, (double) this.requiredPlayerRange) != null;
+        return this.worldObj.getClosestPlayer(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, this.requiredPlayerRange) != null;
     }
 
     @Override

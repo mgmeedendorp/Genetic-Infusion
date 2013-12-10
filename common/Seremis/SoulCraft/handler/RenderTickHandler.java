@@ -16,26 +16,26 @@ public class RenderTickHandler implements ITickHandler {
 
     @Override
     public void tickEnd(EnumSet<TickType> type, Object... tickData) {
-        MagnetLinkHelper.instance.renderLinks();
+        //MagnetLinkHelper.instance.renderLinks();
 
         // for testing, will be used later on
-        // ScaledResolution res = new
-        // ScaledResolution(Minecraft.getMinecraft().gameSettings,
-        // Minecraft.getMinecraft().displayWidth,
-        // Minecraft.getMinecraft().displayHeight);
-        // FontRenderer fontRender = Minecraft.getMinecraft().fontRenderer;
-        // int width = res.getScaledWidth();
-        // int height = res.getScaledHeight();
-        // Minecraft.getMinecraft().entityRenderer.setupOverlayRendering();
-        //
-        // // draw
-        // if(FMLClientHandler.instance().getClient().inGameHasFocus){
-        // String text = "Hello World";
-        // int x = 100;
-        // int y = 200;
-        // int color = 0xFFFFFF;
-        // fontRender.drawStringWithShadow(text, x, y, color);
-        // }
+//         ScaledResolution res = new
+//         ScaledResolution(Minecraft.getMinecraft().gameSettings,
+//         Minecraft.getMinecraft().displayWidth,
+//         Minecraft.getMinecraft().displayHeight);
+//         FontRenderer fontRender = Minecraft.getMinecraft().fontRenderer;
+//         int width = res.getScaledWidth();
+//         int height = res.getScaledHeight();
+//         Minecraft.getMinecraft().entityRenderer.setupOverlayRendering();
+//        
+//         // draw
+//         if(FMLClientHandler.instance().getClient().inGameHasFocus){
+//         String text = "Hello World";
+//         int x = 100;
+//         int y = 200;
+//         int color = 0xFFFFFF;
+//         fontRender.drawStringWithShadow(text, x, y, color);
+//         }
     }
 
     @Override

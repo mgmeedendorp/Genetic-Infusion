@@ -1,49 +1,47 @@
 package Seremis.SoulCraft.entity;
 
+import java.nio.ByteBuffer;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.packet.Packet30Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import Seremis.SoulCraft.api.util.Coordinate3D;
-import Seremis.SoulCraft.core.lib.Localizations;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
+import Seremis.SoulCraft.entity.logic.EntityTransporterLogic;
 import Seremis.SoulCraft.tileentity.TileStationController;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntityTransporter extends SCEntity implements IEntityAdditionalSpawnData {
-    
+
     private boolean hasEngine = false;
     private boolean hasInventory = false;
     private float speed = 1.0F;
+    private int heat = 0;
 
     private ItemStack[] inv = new ItemStack[9];
-    
+
     private EntityTransporterLogic logic;
 
     public EntityTransporter(World world) {
         super(world);
-        setSize(1F, 0.6F);
         isImmuneToFire = true;
         this.noClip = true;
     }
 
     public EntityTransporter(World world, double x, double y, double z, EntityTransporterLogic logic) {
         this(world);
-        setPosition(x, y, z);
-        
-        this.logic = logic;        
-        logic.init(this);
-        System.out.println(logic);
+        setPosition(x + 0.5F, y + 0.5F, z + 0.5F);
+        this.logic = logic;
+        if(logic.getTurnPoints().size() < 1) {
+            this.setDead();
+        }
     }
 
     @Override
@@ -52,19 +50,19 @@ public class EntityTransporter extends SCEntity implements IEntityAdditionalSpaw
     public void setInventory(ItemStack[] inv) {
         this.inv = inv;
     }
-    
+
     public ItemStack[] getInventory() {
         return inv;
     }
-    
+
     public float getYaw() {
         return rotationYaw;
     }
-    
+
     public void setYaw(float yaw) {
         this.rotationYaw = yaw;
     }
-    
+
     public float getPitch() {
         return rotationPitch;
     }
@@ -73,15 +71,15 @@ public class EntityTransporter extends SCEntity implements IEntityAdditionalSpaw
     public AxisAlignedBB getCollisionBox(Entity entity) {
         return null;
     }
-    
+
     @Override
     public AxisAlignedBB getBoundingBox() {
-        return this.boundingBox;
+        return null;
     }
 
     @Override
     public boolean canBeCollidedWith() {
-        return true;
+        return false;
     }
 
     @Override
@@ -96,70 +94,72 @@ public class EntityTransporter extends SCEntity implements IEntityAdditionalSpaw
             if(!logic.hasEntity) {
                 logic.init(this);
             }
-         //  setDead();
             logic.update();
-         //   System.out.println(new Coordinate3D(this).toString());
+        } else {
+            if(logic != null) {
+                logic.update();
+            }
         }
     }
- 
-//    TODO decide if this has to be overridden
-//    @Override
-//    public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9) {
-//        
-//    }
-    
+
     public void arrive() {
-        System.out.println("arrival");
-        TileEntity tile = worldObj.getBlockTileEntity((int)posX, (int)posY, (int)posZ);
-        
+        TileEntity tile = worldObj.getBlockTileEntity((int) Math.floor(posX), (int) Math.floor(posY), (int) Math.floor(posZ));
+
         if(tile != null && tile instanceof TileStationController) {
-            ((TileStationController)tile).handleIncoming(this);
+            ((TileStationController) tile).handleIncoming(this);
         }
         setDead();
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound compound) {        
+    public void readEntityFromNBT(NBTTagCompound compound) {
         NBTTagList list = compound.getTagList("Items");
         this.inv = new ItemStack[9];
-        
+
         for(int var3 = 0; var3 < list.tagCount(); ++var3) {
             NBTTagCompound compound1 = (NBTTagCompound) list.tagAt(var3);
             int slotNr = compound1.getByte("Slot") & 255;
-            
+
             if(slotNr >= 0 && slotNr < this.inv.length) {
                 this.inv[slotNr] = ItemStack.loadItemStackFromNBT(compound1);
             }
         }
-        
+
         logic = new EntityTransporterLogic();
         logic.readFromNBT(compound);
+
+        if(logic.getTurnPoints() == null || logic.getTurnPoints().size() < 1)
+            setDead();
         
         hasInventory = compound.getBoolean("hasInventory");
         hasEngine = compound.getBoolean("hasEngine");
+        speed = compound.getFloat("speed");
+        heat = compound.getInteger("heat");
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound compound) {        
+    public void writeEntityToNBT(NBTTagCompound compound) {
         NBTTagList list = new NBTTagList();
-        
-        for (int i = 0; i < this.inv.length; ++i) {
-            if (this.inv[i] != null) {
+
+        for(int i = 0; i < this.inv.length; ++i) {
+            if(this.inv[i] != null) {
                 NBTTagCompound compound1 = new NBTTagCompound();
-               
+
                 compound1.setByte("Slot", (byte) i);
-               
+
                 this.inv[i].writeToNBT(compound1);
-               
+
                 list.appendTag(compound1);
             }
         }
         compound.setTag("Items", list);
-       
+
         logic.writeToNBT(compound);
-       
+
         compound.setBoolean("hasEngine", hasEngine);
         compound.setBoolean("hasInventory", hasInventory);
+        compound.setFloat("speed", speed);
+        compound.setInteger("heat", heat);
     }
 
     public void setHasInventory(boolean inventory) {
@@ -190,30 +190,47 @@ public class EntityTransporter extends SCEntity implements IEntityAdditionalSpaw
     public boolean hasInventory() {
         return hasInventory;
     }
+    
+    public void setHeat(int heat) {
+        this.sendEntityDataToClient(3, ByteBuffer.allocate(4).putInt(heat).array());
+        this.heat = heat;
+    }
+    
+    public int getHeat() {
+        return heat;
+    }
 
     @Override
     public void writeSpawnData(ByteArrayDataOutput data) {
         data.writeBoolean(hasEngine);
         data.writeBoolean(hasInventory);
-        data.writeDouble(rotationYaw);
+        data.writeFloat(speed);
+        data.writeInt(heat);
     }
 
     @Override
     public void readSpawnData(ByteArrayDataInput data) {
         hasEngine = data.readBoolean();
         hasInventory = data.readBoolean();
-        rotationYaw = data.readFloat();
+        speed = data.readFloat();
+        heat = data.readInt();
     }
-    
+
     @Override
     public void receivePacketOnClient(int id, byte[] data) {
-        if(id == 0) {
-            rotationYaw = (float)data[0]*(float)90F;
+        if(id == 1) {
+            System.out.println("client transporter data received");
+            logic = new EntityTransporterLogic();
+            logic.receiveClientLogic(data);
+            logic.init(this);
         }
-    }
-    
-    @Override
-    public ResourceLocation getTexture() {
-        return new ResourceLocation(Localizations.LOC_MODEL_TEXTURES + Localizations.ENTITY_TRANSPORTER);
+        if(id == 2) {
+            if(logic != null) {
+                logic.nextPoint();
+            }
+        }
+        if(id == 3) {
+            heat = ByteBuffer.wrap(data).getInt();
+        }
     }
 }

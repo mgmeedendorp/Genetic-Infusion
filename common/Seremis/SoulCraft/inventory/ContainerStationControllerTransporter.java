@@ -20,6 +20,7 @@ public class ContainerStationControllerTransporter extends SCContainer {
     private boolean transporterUpgradesEnabled = false;
     private boolean transporterSlotsEnabled = false;
     private float transporterSpeed = 1.0F;
+    private int heat = 0;
 
     public ContainerStationControllerTransporter(EntityPlayer player, IInventory tile) {
         this.tile = (TileStationController) tile;
@@ -33,13 +34,13 @@ public class ContainerStationControllerTransporter extends SCContainer {
 
     private void addTransporterInventory() {
         for(int i = 0; i < 3; i++) {
-            ToggleableMoveUpgradeSlot slot = new ToggleableMoveUpgradeSlot(tile, i + 1, 62 + (18 * i), 45);
+            ToggleableMoveUpgradeSlot slot = new ToggleableMoveUpgradeSlot(tile, i + 1, 62 + 18 * i, 45);
             slot.disable();
             addSlotToContainer(slot);
         }
         for(int i = 0; i < 3; i++) {
             for(int j = 0; j < 3; j++) {
-                ToggleableMoveSlot slot = new ToggleableMoveSlot(tile, i * 3 + j + 4, 63 + (18 * i), 73 + (18 * j));
+                ToggleableMoveSlot slot = new ToggleableMoveSlot(tile, i * 3 + j + 4, 63 + 18 * i, 73 + 18 * j);
                 slot.disable();
                 addSlotToContainer(slot);
             }
@@ -76,6 +77,7 @@ public class ContainerStationControllerTransporter extends SCContainer {
         iCrafting.sendProgressBarUpdate(this, 0, tile.hasTransporter() ? 1 : 0);
         iCrafting.sendProgressBarUpdate(this, 1, tile.hasTransporterInventory() && tile.showTransporterInventory() ? 1 : 0);
         iCrafting.sendProgressBarUpdate(this, 2, (int) (tile.getTransporterSpeed() * 100));
+        iCrafting.sendProgressBarUpdate(this, 3, tile.getHeat());
     }
 
     @Override
@@ -107,38 +109,46 @@ public class ContainerStationControllerTransporter extends SCContainer {
             if(this.transporterSpeed != tile.getTransporterSpeed()) {
                 icrafting.sendProgressBarUpdate(this, 2, (int) (tile.getTransporterSpeed() * 100));
             }
+            
+            if(this.heat != tile.getHeat()) {
+                icrafting.sendProgressBarUpdate(this, 3, tile.getHeat());
+            }
         }
         this.transporterUpgradesEnabled = tile.hasTransporter();
         this.transporterSlotsEnabled = tile.hasTransporterInventory() && tile.showTransporterInventory();
         this.transporterSpeed = tile.getTransporterSpeed();
+        this.heat = tile.getHeat();
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
     public void updateProgressBar(int id, int value) {
         if(id == 0) {
             if(value == 1) {
-                this.enableUpgradeSlots();
+                enableUpgradeSlots();
                 this.transporterUpgradesEnabled = true;
                 tile.onInventoryChanged();
             } else {
-                this.disableUpgradeSlots();
-                this.disableToggleSlots();
+                disableUpgradeSlots();
+                disableToggleSlots();
                 this.transporterUpgradesEnabled = false;
                 tile.onInventoryChanged();
             }
         } else if(id == 1) {
             if(value == 1) {
-                this.enableToggleSlots();
+                enableToggleSlots();
                 this.transporterSlotsEnabled = true;
                 tile.onInventoryChanged();
             } else {
-                this.disableToggleSlots();
+                disableToggleSlots();
                 this.transporterSlotsEnabled = false;
                 tile.onInventoryChanged();
             }
         } else if(id == 2) {
             this.transporterSpeed = value / 100;
             tile.transporterSpeed = value / 100;
+        } else if(id == 3) {
+            tile.barHeat = value;
         }
     }
 

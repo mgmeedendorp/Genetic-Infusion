@@ -6,8 +6,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import Seremis.SoulCraft.api.magnet.MagnetLink;
 import Seremis.SoulCraft.api.util.Coordinate3D;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public interface IMagnetConnector {
 
@@ -27,10 +25,15 @@ public interface IMagnetConnector {
 
     List<MagnetLink> getLinks();
 
-    @SideOnly(Side.CLIENT)
     Coordinate3D applyBeamRenderOffset(Coordinate3D position, ForgeDirection side);
 
     int getHeat();
+    
+    /**
+     * Returns the speed this connector will transmit heat with.
+     * @return heat per tick
+     */
+    int getHeatTransmissionSpeed();
 
     /**
      * Heats up the connector This shouln't be used by blocks that are not in

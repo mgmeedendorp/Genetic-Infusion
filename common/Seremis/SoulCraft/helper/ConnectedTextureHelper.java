@@ -139,7 +139,7 @@ public class ConnectedTextureHelper {
                     } else if(upRight) {
                         mapping = 40;
                     } else if(downRight) {
-                        mapping = 31;
+                        mapping = 18;
                         if(downLeft) {
                             mapping = 18;
                         }

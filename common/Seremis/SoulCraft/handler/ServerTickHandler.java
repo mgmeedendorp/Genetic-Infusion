@@ -42,12 +42,13 @@ public class ServerTickHandler implements ITickHandler {
 
     @Override
     public void tickEnd(EnumSet<TickType> type, Object... tickData) {
-        Iterator<Timer> it = timers.iterator();;
+        Iterator<Timer> it = timers.iterator();
+        
         while(it.hasNext()) {
             Timer timer = it.next();
-            
+
             timer.tick();
-            
+
             if(timer.timerEnd) {
                 timerEnd(timer.timerId);
                 it.remove();
@@ -68,11 +69,10 @@ public class ServerTickHandler implements ITickHandler {
 
     public void timerEnd(int timerId) {
         Entity entity = null;
-        
+
         MagnetLinkHelper.instance.reset();
-        
-        for(int i = 0; i < MinecraftServer.getServer().worldServers.length; i++) {
-            WorldServer world = MinecraftServer.getServer().worldServers[i];
+
+        for(WorldServer world : MinecraftServer.getServer().worldServers) {
             entity = world.getEntityByID(timerId);
             if(entity != null) {
                 break;

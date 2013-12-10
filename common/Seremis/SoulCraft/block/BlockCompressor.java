@@ -24,7 +24,7 @@ import Seremis.SoulCraft.core.proxy.CommonProxy;
 import Seremis.SoulCraft.item.ModItems;
 import Seremis.SoulCraft.tileentity.TileCompressor;
 
-public class BlockCompressor extends SCBlock {
+public class BlockCompressor extends SCBlockContainer {
 
     private Random random;
 
@@ -38,33 +38,38 @@ public class BlockCompressor extends SCBlock {
         setHardness(10.0F);
     }
 
+    @Override
     public boolean isOpaqueCube() {
         return false;
     }
 
+    @Override
     public boolean renderAsNormalBlock() {
         return false;
     }
 
+    @Override
     public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
         return true;
     }
 
+    @Override
     public int getRenderType() {
         return RenderIds.CompressorRenderID;
     }
 
+    @Override
     public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB AABB, List list, Entity entity) {
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.3125F, 1.0F);
+        setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.3125F, 1.0F);
         super.addCollisionBoxesToList(world, x, y, z, AABB, list, entity);
         float f = 0.125F;
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
+        setBlockBounds(0.0F, 0.0F, 0.0F, f, 1.0F, 1.0F);
         super.addCollisionBoxesToList(world, x, y, z, AABB, list, entity);
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
+        setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, f);
         super.addCollisionBoxesToList(world, x, y, z, AABB, list, entity);
-        this.setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        setBlockBounds(1.0F - f, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         super.addCollisionBoxesToList(world, x, y, z, AABB, list, entity);
-        this.setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
+        setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
         super.addCollisionBoxesToList(world, x, y, z, AABB, list, entity);
         setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
     }
@@ -86,7 +91,7 @@ public class BlockCompressor extends SCBlock {
         if(CommonProxy.proxy.isRenderWorld(world)) {
             return;
         }
-        TileCompressor tile = (TileCompressor) (world.getBlockTileEntity(x, y, z));
+        TileCompressor tile = (TileCompressor) world.getBlockTileEntity(x, y, z);
         if(tile != null && entity instanceof EntityItem) {
             if(((EntityItem) entity).getEntityItem().itemID == ModItems.crystalShard.itemID) {
                 if(tile.setInventorySlot(0, ((EntityItem) entity).getEntityItem())) {
@@ -98,8 +103,9 @@ public class BlockCompressor extends SCBlock {
         }
     }
 
+    @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
-        TileCompressor tile = (TileCompressor) (world.getBlockTileEntity(x, y, z));
+        TileCompressor tile = (TileCompressor) world.getBlockTileEntity(x, y, z);
         if(tile == null || CommonProxy.proxy.isRenderWorld(world)) {
             return true;
         }
@@ -108,7 +114,7 @@ public class BlockCompressor extends SCBlock {
             dispense(world, x, y, z, random, 1);
             world.markBlockForUpdate(x, y, z);
         }
-        if(cont != null) {//TODO change this text in language supported
+        if(cont != null) {// TODO change this text in language supported
             player.addChatMessage("This Compressor contains " + cont.stackSize + " " + cont.getItem().getItemDisplayName(cont));
         } else {
             player.addChatMessage("This Compressor does not contain anything.");
@@ -161,12 +167,13 @@ public class BlockCompressor extends SCBlock {
         }
     }
 
+    @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, int neighbourId) {
         if(neighbourId > 0 && Block.blocksList[neighbourId].canProvidePower()) {
             boolean var6 = world.isBlockIndirectlyGettingPowered(x, y, z) || world.isBlockIndirectlyGettingPowered(x, y + 1, z);
 
             if(var6) {
-                world.scheduleBlockUpdate(x, y, z, this.blockID, this.tickRate(world));
+                world.scheduleBlockUpdate(x, y, z, this.blockID, tickRate(world));
             }
         }
     }
@@ -179,12 +186,12 @@ public class BlockCompressor extends SCBlock {
     @Override
     public void updateTick(World world, int x, int y, int z, Random random) {
         if(CommonProxy.proxy.isServerWorld(world) && (world.isBlockIndirectlyGettingPowered(x, y, z) || world.isBlockIndirectlyGettingPowered(x, y + 1, z))) {
-            this.dispense(world, x, y, z, random, 64);
+            dispense(world, x, y, z, random, 64);
         }
     }
 
     public void dispense(World world, int x, int y, int z, Random random, int stackSize) {
-        TileCompressor tile = (TileCompressor) (world.getBlockTileEntity(x, y, z));
+        TileCompressor tile = (TileCompressor) world.getBlockTileEntity(x, y, z);
         ItemStack currStack = tile.getStackInSlot(0);
         ItemStack dropStack;
         int dropStackSize;

@@ -13,8 +13,8 @@ public class UtilRender {
         float xOffset = 1f / atlasWidth;
         float yOffset = 1f / atlasHeight;
 
-        float uOffset = (u * xOffset);
-        float vOffset = (v * yOffset);
+        float uOffset = u * xOffset;
+        float vOffset = v * yOffset;
 
         Vector2f[] UVList = new Vector2f[4];
 

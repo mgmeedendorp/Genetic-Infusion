@@ -42,19 +42,29 @@ public class Line2D {
         return this;
     }
 
+    private double length = -1;
+    
     public double getLength() {
-        double x = Math.abs(head.getXCoord() - tail.getXCoord());
-        double y = Math.abs(head.getYCoord() - tail.getYCoord());
-        return Math.sqrt(x * x + y * y);
+        if(length == -1) {
+            double x = Math.abs(head.getXCoord() - tail.getXCoord());
+            double y = Math.abs(head.getYCoord() - tail.getYCoord());
+            length = Math.sqrt(x * x + y * y);
+        }
+        return length;
     }
+
+    private double yaw = -1;
     
     public double getYaw() {
-        double xd = head.x - tail.x;
-        double yd = head.y - tail.y;
-
-        return Math.atan2(xd, yd) * 180.0D / Math.PI;
-    }
+        if(yaw == -1) {
+            double xd = head.x - tail.x;
+            double yd = head.y - tail.y;
     
+            yaw = Math.atan2(xd, yd) * 180.0D / Math.PI;
+        }
+        return yaw;
+    }
+
     @Override
     public String toString() {
         return "Line2D[head x: " + head.x + ", y: " + head.y + " tail x: " + tail.x + ", y: " + tail.y + "]";

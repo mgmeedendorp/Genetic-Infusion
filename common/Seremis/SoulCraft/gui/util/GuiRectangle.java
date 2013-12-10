@@ -21,12 +21,12 @@ public class GuiRectangle {
     public boolean inRect(SCGui gui, int mouseX, int mouseY) {
         mouseX -= gui.getLeft();
         mouseY -= gui.getTop();
-        
-        return isInBetween(x, x+w, mouseX) && isInBetween(y, y+h, mouseY);
+
+        return isInBetween(x, x + w, mouseX) && isInBetween(y, y + h, mouseY);
     }
-    
+
     public boolean isInBetween(int x, int y, int i) {
-        return i > Math.min(x, y) && i < Math.max(x, y);
+        return i >= Math.min(x, y) && i <= Math.max(x, y);
     }
 
     public void setX(int x) {
@@ -36,11 +36,11 @@ public class GuiRectangle {
     public void setY(int y) {
         this.y = y;
     }
-    
+
     public void setWidth(int w) {
         this.w = w;
     }
-    
+
     public void setHeight(int h) {
         this.h = h;
     }

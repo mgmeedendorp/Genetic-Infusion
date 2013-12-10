@@ -9,15 +9,14 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 
 import org.lwjgl.opengl.GL11;
 
 import Seremis.SoulCraft.api.magnet.MagnetLink;
 import Seremis.SoulCraft.api.magnet.MagnetLinkHelper;
 import Seremis.SoulCraft.api.magnet.MagnetNetwork;
-import Seremis.SoulCraft.api.magnet.tile.IMagnetConnector;
 import Seremis.SoulCraft.api.util.Line2D;
-import Seremis.SoulCraft.block.ModBlocks;
 import Seremis.SoulCraft.core.lib.Localizations;
 import Seremis.SoulCraft.gui.util.GuiLine;
 import Seremis.SoulCraft.gui.util.GuiLineStation;
@@ -29,11 +28,20 @@ public class GuiStationControllerSend extends SCGui {
 
     public TileStationController tile;
 
-    private int structureRotation = -1;
-
-    public GuiLine station;
     public List<GuiLine> lines = new ArrayList<GuiLine>();
     public List<GuiLineStation> stations = new ArrayList<GuiLineStation>();
+
+    public final int mapSendX = guiLeft + 6;
+    public final int mapSendY = guiTop + 16;
+    public final int mapSendWidth = 164;
+    public final int mapSendHeight = 110;
+
+    public int dragOffsetX = 0;
+    public int dragOffsetY = 0;
+    public boolean isDragging;
+    public boolean firstDragTick = true;
+    public int mouseStartX;
+    public int mouseStartY;
 
     public GuiStationControllerSend(EntityPlayer player, IInventory tile) {
         super(new ContainerStationControllerSend(player, tile));
@@ -48,64 +56,67 @@ public class GuiStationControllerSend extends SCGui {
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
+        SCRenderHelper.bindTexture(Localizations.LOC_MODEL_TEXTURES + Localizations.BLACK);
+        drawTexturedModalRect(guiLeft + 6, guiTop + 16, 6, 16, this.mapSendWidth, mapSendHeight);
+
         SCRenderHelper.bindTexture(Localizations.LOC_GUI_TEXTURES + Localizations.GUI_MAGNET_STATION_LOCATION_SCREEN);
-        drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
+        drawTexturedModalRect(guiLeft, guiTop + 135, 0, 135, xSize, ySize - 135);
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) {
-        fontRenderer.drawString("Magnet Station Controller", 8, 5, 0x404040);
-        fontRenderer.drawString("Inventory", 8, this.ySize - 92, 0x404040);
-
         initLines();
-
         SCRenderHelper.bindTexture(Localizations.LOC_MODEL_TEXTURES + Localizations.BLANK);
-
-        station.render(this);
 
         GL11.glPushMatrix();
 
-        switch(getStructureRotation(tile)) {
-            case 1: {
-                GL11.glTranslatef(xSize / 2 + 1, ySize / 2 + 1, 0.0F);
-                GL11.glRotatef(-getStructureRotation(tile) * 90, 0.0F, 0.0F, 1.0F);
-                GL11.glTranslatef(-xSize / 2 + 1 - 2, -ySize / 2 + 1 - 4, 0.0F);
-                break;
-            }
-            case 2: {
-                GL11.glTranslatef(xSize / 2 + 1, ySize / 2 + 1, 0.0F);
-                GL11.glRotatef(-getStructureRotation(tile) * 90, 0.0F, 0.0F, 1.0F);
-                GL11.glTranslatef(-xSize / 2 + 1, -ySize / 2 + 1 - 4, 0.0F);
-                break;
-            }
-            case 3: {
-                GL11.glTranslatef(xSize / 2 + 1, ySize / 2 + 1, 0.0F);
-                GL11.glRotatef(-getStructureRotation(tile) * 90, 0.0F, 0.0F, 1.0F);
-                GL11.glTranslatef(-xSize / 2 + 1, -ySize / 2 + 1 - 2, 0.0F);
-                break;
-            }
-        }
+        GL11.glTranslatef(dragOffsetX, dragOffsetY, 0);
+
         for(GuiLine line : stations) {
-            line.render(this);
+            if(isInBetween(mapSendX, mapSendX + mapSendWidth-9, line.x + dragOffsetX) && isInBetween(mapSendY, mapSendY + mapSendHeight-9, line.y + dragOffsetY)) {
+                line.render(this);
+            }
         }
         for(GuiLine line : lines) {
-            line.render(this);
-        }
-        GL11.glPopMatrix();
-
-        for(GuiLineStation station : stations) {
-            if(station.inRect(this, x, y)) {
-                List<String> list = new ArrayList<String>();
-
-                list.add("Magnet Station");
-
-                if(station.tile.name != null) {
-                    list.add(station.tile.name);
-                }
-
-                drawHoveringString(list, x - guiLeft, y - guiTop);
+            if(isInBetween(mapSendX, mapSendX + mapSendWidth-9, line.x + dragOffsetX) && isInBetween(mapSendY, mapSendY + mapSendHeight-9, line.y + dragOffsetY)) {
+                line.render(this);
             }
         }
+
+        GL11.glTranslatef(-dragOffsetX, -dragOffsetY, 0);
+
+        GL11.glPopMatrix();
+
+        GL11.glColor3f(255, 255, 255);
+        SCRenderHelper.bindTexture(Localizations.LOC_GUI_TEXTURES + Localizations.GUI_MAGNET_STATION_LOCATION_SCREEN);
+        drawTexturedModalRect(0, 0, 0, 0, xSize, 135);
+
+        fontRenderer.drawString("Magnet Station Controller", 8, 5, 0x404040);
+        fontRenderer.drawString("Inventory", 8, this.ySize - 92, 0x404040);
+        
+        if(!isDragging) {
+            for(GuiLineStation station : stations) {
+                if(station.inRect(this, x-dragOffsetX, y-dragOffsetY)) {
+                    List<String> list = new ArrayList<String>();
+    
+                    list.add("Magnet Station");
+    
+                    if(station.tile == tile) {
+                        list.add(EnumChatFormatting.BLUE + "Current");
+                    }
+    
+                    if(station.tile.name != null) {
+                        list.add(EnumChatFormatting.ITALIC + station.tile.name);
+                    }
+    
+                    drawHoveringString(list, x - guiLeft, y - guiTop);
+                }
+            }
+        }
+    }
+
+    private boolean isInBetween(int x, int y, int i) {
+        return i > Math.min(x, y) && i < Math.max(x, y);
     }
 
     private void initLines() {
@@ -116,16 +127,11 @@ public class GuiStationControllerSend extends SCGui {
 
     private void calculate() {
         lines.clear();
-
-        station = new GuiLineStation(xSize / 2 - 3, ySize / 2 - 12, 6, 8);
-
-        station.red = 50;
-
         calculateLines();
     }
 
     private void calculateLines() {
-        MagnetNetwork network = MagnetLinkHelper.instance.getNetworkFrom((IMagnetConnector) tile);
+        MagnetNetwork network = MagnetLinkHelper.instance.getNetworkFrom(tile);
 
         Iterator<MagnetLink> it = network.getLinks().iterator();
 
@@ -169,7 +175,7 @@ public class GuiStationControllerSend extends SCGui {
 
             line.rotation = (float) line2d.getYaw();
 
-            line.setY((int) (line.getY() - line.getHeight()));
+            line.setY(line.getY() - line.getHeight());
 
             line.red = (float) ((link.connector1.getHeat() + link.connector2.getHeat()) / 2 * 0.1);
             line.green = 50;
@@ -177,89 +183,83 @@ public class GuiStationControllerSend extends SCGui {
             lines.add(line);
 
             // Check for stations
-            if(tile1 != tile && tile2 != tile) {
-                int id = tile.blockType.blockID;
+            int id = tile.blockType.blockID;
 
+            if(tile1.blockType != null && tile1.blockType.blockID == id || tile2.blockType != null && tile2.blockType.blockID == id) {
                 GuiLineStation station = new GuiLineStation();
 
-                if(tile1.blockType != null && tile1.blockType.blockID == id || tile2.blockType != null && tile2.blockType.blockID == id) {
+                TileStationController controller = null;
 
-                    station.setX(line.getX() + 4);
-                    station.setY(line.getY() + 6);
-
-                    station.setWidth(6);
-                    station.setHeight(8);
-
-                    station.rotation = (float) line2d.getYaw();
-
-                    station.red = 20;
-
-                    int xx = station.getX();
-                    int yy = station.getY();
-                    int w = station.getWidth();
-                    int h = station.getHeight();
-
-                    station.x = xx;
-                    station.y = yy - h;
-                    station.h = h;
-                    station.w = -w;
-
-                    if(tile1.blockType != null && tile1.blockType.blockID == id) {
-                        station.tile = (TileStationController) tile1;
-                    } else if(tile2.blockType != null && tile2.blockType.blockID == id) {
-                        station.tile = (TileStationController) tile2;
-                    }
-
-                    stations.add(station);
-
+                if(tile1.blockType != null && tile1.blockType.blockID == id) {
+                    controller = (TileStationController) tile1;
+                } else {
+                    controller = (TileStationController) tile2;
                 }
+
+                station.setX(4);
+                station.setY(6);
+
+                station.setWidth(6);
+                station.setHeight(8);
+
+                station.rotation = (float) line2d.getYaw();
+
+                station.x += line.getX();
+                station.y += line.getY();
+
+                station.red = 20;
+
+                station.y -= station.h;
+                station.w = -station.w;
+
+                station.tile = controller;
+
+                stations.add(station);
+
             }
         }
     }
 
-    private int calculateStructureRotation(TileStationController tile) {
-        int checkId = ModBlocks.crystalStand.blockID;
-
-        int id1 = tile.worldObj.getBlockId(tile.xCoord + 3, tile.yCoord, tile.zCoord);
-        int id2 = tile.worldObj.getBlockId(tile.xCoord, tile.yCoord, tile.zCoord + 3);
-        int id3 = tile.worldObj.getBlockId(tile.xCoord - 3, tile.yCoord, tile.zCoord);
-        int id4 = tile.worldObj.getBlockId(tile.xCoord, tile.yCoord, tile.zCoord - 3);
-
-        if(id1 == checkId)
-            return 0;
-        if(id2 == checkId)
-            return 1;
-        if(id3 == checkId)
-            return 2;
-        if(id4 == checkId)
-            return 3;
-
-        return -1;
-    }
-
-    private int getStructureRotation(TileStationController tile) {
-        if(structureRotation == -1 && tile == this.tile)
-            structureRotation = calculateStructureRotation(this.tile);
-
-        if(structureRotation != -1 && tile == this.tile)
-            return structureRotation;
-
-        return calculateStructureRotation(tile);
-    }
-
     @Override
     protected void mouseClicked(int x, int y, int button) {
+        super.mouseClicked(x, y, button);
         for(GuiLineStation station : stations) {
-            if(station.inRect(this, x, y)) {
+            if(station.inRect(this, x - dragOffsetX, y - dragOffsetY) && tile.hasTransporter()) {
                 int[] coordinates = new int[] {station.tile.xCoord, station.tile.yCoord, station.tile.zCoord};
-                
-                ByteBuffer byteBuffer = ByteBuffer.allocate(coordinates.length * 4);        
+
+                ByteBuffer byteBuffer = ByteBuffer.allocate(coordinates.length * 4);
                 IntBuffer intBuffer = byteBuffer.asIntBuffer();
                 intBuffer.put(coordinates);
 
                 byte[] array = byteBuffer.array();
-                tile.sendTileData(3, array);
+                tile.sendTileDataToServer(3, array);
             }
+        }
+
+        if(isInBetween(this.mapSendX, this.mapSendX + this.mapSendWidth, x-guiLeft) && isInBetween(this.mapSendY, this.mapSendY + this.mapSendHeight, y-guiTop)) {
+            this.isDragging = true;
+        }
+    }
+    
+    @Override
+    public void mouseClickMove(int x, int y, int button, long timeSinceClicked) {
+        super.mouseClickMove(x, y, button, timeSinceClicked);
+        if(isDragging && firstDragTick) {       
+            mouseStartX = x - dragOffsetX;
+            mouseStartY = y - dragOffsetY;
+            firstDragTick = false;
+        } else if(isDragging) {
+            dragOffsetX = -(mouseStartX - x);
+            dragOffsetY = -(mouseStartY - y);
+        }
+    }
+    
+    @Override
+    public void mouseMovedOrUp(int x, int y, int movedOrUp) {
+        super.mouseMovedOrUp(x, y, movedOrUp);
+        if(isDragging) {
+            isDragging = false;
+            firstDragTick = true;
         }
     }
 }

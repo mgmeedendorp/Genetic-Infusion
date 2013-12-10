@@ -75,16 +75,16 @@ public class BlockMonsterEggRenderer implements ISimpleBlockRenderingHandler {
                 var8 = 3;
             }
 
-            float var10 = (float) var8 / 16.0F;
-            float var11 = 1.0F - (float) var6 / 16.0F;
-            float var12 = 1.0F - (float) (var6 + var9) / 16.0F;
+            float var10 = var8 / 16.0F;
+            float var11 = 1.0F - var6 / 16.0F;
+            float var12 = 1.0F - (var6 + var9) / 16.0F;
             var6 += var9;
             if(!item) {
-                renderer.setRenderBounds((double) (0.5F - var10), (double) var12, (double) (0.5F - var10), (double) (0.5F + var10), (double) var11, (double) (0.5F + var10));
+                renderer.setRenderBounds(0.5F - var10, var12, 0.5F - var10, 0.5F + var10, var11, 0.5F + var10);
                 renderer.renderStandardBlock(block, x, y, z);
             }
             if(item) {
-                block.setBlockBounds((float) (0.5F - var10), (float) var12, (float) (0.5F - var10), (float) (0.5F + var10), (float) var11, (float) (0.5F + var10));
+                block.setBlockBounds(0.5F - var10, var12, 0.5F - var10, 0.5F + var10, var11, 0.5F + var10);
                 renderer.setRenderBoundsFromBlock(block);
                 SCRenderHelper.renderAllFaces(block, renderer, block.getBlockTextureFromSide(0));
             }

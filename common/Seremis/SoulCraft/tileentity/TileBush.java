@@ -24,10 +24,12 @@ public class TileBush extends SCTile {
                 worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
                 worldObj.addBlockEvent(xCoord, yCoord, zCoord, ModBlocks.bushBerry.blockID, 1, stage);
             }
-        } else
-            sendTileData(0, new byte[] {(byte) stage});
+        } else {
+            sendTileDataToServer(0, new byte[] {(byte) stage});
+        }
     }
 
+    @Override
     public boolean receiveClientEvent(int id, int data) {
         if(id == 1) {
             this.stage = data;
@@ -38,15 +40,17 @@ public class TileBush extends SCTile {
     }
 
     @Override
-    public void setTileData(int id, byte[] data) {
+    public void setTileDataFromServer(int id, byte[] data) {
         if(id == 0) {
-            this.setStage(data[0]);
+            setStage(data[0]);
         }
     }
 
+    @Override
     public void updateEntity() {
-        if(CommonProxy.proxy.isRenderWorld(worldObj))
+        if(CommonProxy.proxy.isRenderWorld(worldObj)) {
             return;
+        }
         Random random = new Random();
 
         if(random.nextInt(2) == 0 && stage < 5) {
@@ -77,7 +81,8 @@ public class TileBush extends SCTile {
     }
 
     public void updateStage() {
-        if(stage < type.getMaxStage())
+        if(stage < type.getMaxStage()) {
             setStage(stage + 1);
+        }
     }
 }

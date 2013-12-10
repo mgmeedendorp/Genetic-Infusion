@@ -17,7 +17,7 @@ import Seremis.SoulCraft.misc.bush.BushType;
 import Seremis.SoulCraft.tileentity.TileBush;
 import Seremis.SoulCraft.util.UtilBlock;
 
-public class BlockBush extends SCBlock {
+public class BlockBush extends SCBlockContainer {
 
     public BlockBush(int ID, Material material) {
         super(ID, material);
@@ -27,6 +27,7 @@ public class BlockBush extends SCBlock {
         setBlockBounds(0.2F, 0.0F, 0.2F, 0.85F, 0.9F, 0.85F);
     }
 
+    @Override
     public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
         world.markBlockForRenderUpdate(x, y + 1, z);
         return metadata;
@@ -72,7 +73,7 @@ public class BlockBush extends SCBlock {
             ArrayList<ItemStack> items = getBlockDropped(world, x, y, z, metadata, 0);
 
             for(ItemStack item : items) {
-                this.dropBlockAsItem_do(world, x, y, z, item);
+                dropBlockAsItem_do(world, x, y, z, item);
             }
         }
         super.onBlockDestroyedByPlayer(world, x, y, z, metadata);
@@ -80,13 +81,15 @@ public class BlockBush extends SCBlock {
 
     @Override
     public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune) {
-        if(CommonProxy.proxy.isRenderWorld(world))
+        if(CommonProxy.proxy.isRenderWorld(world)) {
             return null;
+        }
 
         TileBush tile = (TileBush) world.getBlockTileEntity(x, y, z);
 
-        if(tile == null || tile.getStage() >= tile.getType().getBerryStage())
+        if(tile == null || tile.getStage() >= tile.getType().getBerryStage()) {
             return new ArrayList<ItemStack>();
+        }
 
         HashMap<ItemStack, Float> drops = tile.getType().getDrops();
         ItemStack[] stacks = new ItemStack[drops.size()];
@@ -130,8 +133,9 @@ public class BlockBush extends SCBlock {
     }
 
     public void grow(World world, int x, int y, int z) {
-        if(CommonProxy.proxy.isRenderWorld(world))
+        if(CommonProxy.proxy.isRenderWorld(world)) {
             return;
+        }
         TileBush tile = (TileBush) world.getBlockTileEntity(x, y, z);
         tile.updateStage();
     }

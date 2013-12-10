@@ -2,12 +2,11 @@ package Seremis.SoulCraft.client.render;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
 
-import Seremis.SoulCraft.tileentity.TileCrystal;
+import Seremis.SoulCraft.core.lib.RenderIds;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class BlockCrystalRenderer implements ISimpleBlockRenderingHandler {
@@ -17,9 +16,7 @@ public class BlockCrystalRenderer implements ISimpleBlockRenderingHandler {
         GL11.glPushMatrix();
         GL11.glRotatef(10.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-        GL11.glScalef(1.2F, 1.2F, 1.2F);
-        TileCrystal tile = new TileCrystal();
-        TileEntityRenderer.instance.renderTileEntityAt(tile, 0.0D, 0.0D, 0.0D, 0.0F);
+        RenderCrystal.instance.renderCrystal(0, 0, 0, 1.2F, 10, 0, 255, 255);
         GL11.glPopMatrix();
     }
 
@@ -35,7 +32,7 @@ public class BlockCrystalRenderer implements ISimpleBlockRenderingHandler {
 
     @Override
     public int getRenderId() {
-        return 0;
+        return RenderIds.CrystalRenderID;
     }
 
 }

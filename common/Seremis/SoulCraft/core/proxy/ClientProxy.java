@@ -36,7 +36,7 @@ public class ClientProxy extends CommonProxy {
     public void registerRendering() {
         RenderingRegistry.registerBlockHandler(RenderIds.MonsterEggRenderID, new BlockMonsterEggRenderer());
         RenderingRegistry.registerBlockHandler(RenderIds.CompressorRenderID, new BlockCompressorRenderer());
-        RenderingRegistry.registerBlockHandler(RenderIds.IsolatziumCrystalRenderID, new BlockCrystalRenderer());
+        RenderingRegistry.registerBlockHandler(RenderIds.CrystalRenderID, new BlockCrystalRenderer());
         RenderingRegistry.registerBlockHandler(RenderIds.CrystalStandRenderID, new BlockCrystalStandRenderer());
         RenderingRegistry.registerBlockHandler(RenderIds.BushRenderID, new BlockBushRenderer());
 
@@ -46,7 +46,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileCrystal.class, new TileCrystalRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileCrystalStand.class, new TileCrystalStandRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileBush.class, new TileBushRenderer());
-        
+
         MinecraftForgeClient.registerItemRenderer(ModItems.transporterModules.itemID, new ItemTransporterModulesRenderer());
     }
 
@@ -70,8 +70,7 @@ public class ClientProxy extends CommonProxy {
     }
 
     @Override
-    public void renderBeam(World world, Coordinate3D position, Coordinate3D target, int heatAtCoord1, int heatAtCoord2) {
-        FMLClientHandler.instance().getClient().effectRenderer.addEffect(new FXBeam(world, position, target, heatAtCoord1, heatAtCoord2));
+    public void renderBeam(World world, Coordinate3D position, Coordinate3D target, int r1, int g1, int b1, int r2, int g2, int b2) {
+        FMLClientHandler.instance().getClient().effectRenderer.addEffect(new FXBeam(world, position, target, r1, g1, b1, r2, g2, b2));
     }
-
 }

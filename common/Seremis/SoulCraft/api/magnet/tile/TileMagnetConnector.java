@@ -10,8 +10,6 @@ import Seremis.SoulCraft.api.magnet.MagnetLink;
 import Seremis.SoulCraft.api.magnet.MagnetLinkHelper;
 import Seremis.SoulCraft.api.util.Coordinate3D;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class TileMagnetConnector extends TileEntity implements IMagnetConnector {
 
@@ -26,23 +24,22 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
     @Override
     public void updateEntity() {
         super.updateEntity();
-        if(CommonProxy.proxy.isRenderWorld(worldObj))
+        if(CommonProxy.proxy.isRenderWorld(worldObj)) {
             return;
+        }
         currTime++;
         if(lastUpdateTick + ticksBeforeUpdate <= currTime) {
             lastUpdateTick = currTime;
             linkUpdate();
-            for(MagnetLink link : MagnetLinkHelper.instance.getLinksConnectedTo(this)) {
-                link.divideHeat();
-            }
         }
         heatUpdate();
     }
 
     public void linkUpdate() {
         World world = worldObj;
-        if(world.isRemote)
+        if(world.isRemote) {
             return;
+        }
         for(int x = (int) (-1 * getRange()); x <= getRange(); x++) {
             for(int y = (int) (-1 * getRange()); y <= getRange(); y++) {
                 for(int z = (int) (-1 * getRange()); z <= getRange(); z++) {
@@ -57,8 +54,9 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
     }
 
     public void heatUpdate() {
-        if(heat < 0)
-            this.cool(getHeatLossPerTick());
+        if(heat > 0) {
+            cool(getHeatLossPerTick());
+        }
     }
 
     @Override
@@ -97,7 +95,6 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public Coordinate3D applyBeamRenderOffset(Coordinate3D position, ForgeDirection side) {
         Coordinate3D centerPosition = new Coordinate3D(position.x + 0.5D, position.y + 0.5D, position.z + 0.5D);
         return centerPosition;
@@ -111,7 +108,7 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
     @Override
     public int warm(int heat) {
         int remainingHeat = 0;
-        this.heat = this.heat + heat;
+        this.heat += heat;
         if(this.heat > getMaxHeat()) {
             remainingHeat = this.heat - getMaxHeat();
             this.heat = getMaxHeat();
@@ -122,16 +119,16 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
     @Override
     public int cool(int heat) {
         int remainingHeat = 0;
-        this.heat = this.heat - heat;
+        this.heat -= heat;
         if(this.heat < 0) {
-            remainingHeat = this.heat;
+            remainingHeat = this.heat*-1;
             this.heat = 0;
         }
         return remainingHeat;
     }
-    
+
     @Override
     public String toString() {
-        return "TileMagnetConnector[name: " + this.getBlockType().getUnlocalizedName() + ", x: " + xCoord + ", y: " + yCoord+ ", z: " + zCoord  + ", heat: " + heat + "]";
+        return "TileMagnetConnector[name: " + getBlockType().getUnlocalizedName() + ", x: " + xCoord + ", y: " + yCoord + ", z: " + zCoord + ", heat: " + heat + "]";
     }
 }

@@ -6,11 +6,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import Seremis.SoulCraft.core.lib.Blocks;
 import Seremis.SoulCraft.core.lib.Tiles;
+import Seremis.SoulCraft.tileentity.TileBiomeHeatGenerator;
 import Seremis.SoulCraft.tileentity.TileBush;
 import Seremis.SoulCraft.tileentity.TileCompressor;
 import Seremis.SoulCraft.tileentity.TileCrystal;
 import Seremis.SoulCraft.tileentity.TileCrystalStand;
 import Seremis.SoulCraft.tileentity.TileHeatIO;
+import Seremis.SoulCraft.tileentity.TileItemIO;
 import Seremis.SoulCraft.tileentity.TileStationController;
 import Seremis.SoulCraft.world.SCWorldGenerator;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -28,6 +30,8 @@ public class ModBlocks {
     public static BlockConnectedGlass connectedGlass;
     public static Block titaniumBrick;
     public static BlockStationController stationController;
+    public static BlockItemIO itemIO;
+    public static BlockBiomeHeatGenerator biomeHeatGenerator;
     public static BlockMonsterEgg monsterEgg;
 
     public static SCWorldGenerator worldGen;
@@ -44,6 +48,8 @@ public class ModBlocks {
         connectedGlass = new BlockConnectedGlass(Blocks.connectedGlassID, Material.glass);
         titaniumBrick = new SCBlock(Blocks.titaniumBrickID, Material.rock).setUnlocalizedName("titaniumBrick");
         stationController = new BlockStationController(Blocks.stationControllerID, Material.rock);
+        itemIO = new BlockItemIO(Blocks.itemIOID, Material.rock);
+        biomeHeatGenerator = new BlockBiomeHeatGenerator(Blocks.biomeHeatGeneratorID, Material.rock);
         monsterEgg = new BlockMonsterEgg(Blocks.monsterEggID, Material.dragonEgg);
 
         GameRegistry.registerBlock(oreTitanium, Blocks.ORE_TITANIUM_LOCALIZED_NAME);
@@ -56,6 +62,8 @@ public class ModBlocks {
         GameRegistry.registerBlock(connectedGlass, Blocks.CONNECTED_GLASS_LOCALIZED_NAME);
         GameRegistry.registerBlock(titaniumBrick, Blocks.TITANIUM_BRICK_LOCALIZED_NAME);
         GameRegistry.registerBlock(stationController, Blocks.STATION_CONTROLLER_LOCALIZED_NAME);
+        GameRegistry.registerBlock(itemIO, Blocks.ITEM_IO_LOCALIZED_NAME);
+        GameRegistry.registerBlock(biomeHeatGenerator, Blocks.BIOME_HEAT_GENERATOR_LOCALIZED_NAME);
         GameRegistry.registerBlock(monsterEgg, Blocks.MONSTER_EGG_LOCALIZED_NAME);
 
         LanguageRegistry.addName(oreTitanium, Blocks.ORE_TITANIUM_LOCALIZED_NAME);
@@ -72,6 +80,8 @@ public class ModBlocks {
         LanguageRegistry.addName(connectedGlass, Blocks.CONNECTED_GLASS_LOCALIZED_NAME);
         LanguageRegistry.addName(titaniumBrick, Blocks.TITANIUM_BRICK_LOCALIZED_NAME);
         LanguageRegistry.addName(stationController, Blocks.STATION_CONTROLLER_LOCALIZED_NAME);
+        LanguageRegistry.addName(itemIO, Blocks.ITEM_IO_LOCALIZED_NAME);
+        LanguageRegistry.addName(biomeHeatGenerator, Blocks.BIOME_HEAT_GENERATOR_LOCALIZED_NAME);
         LanguageRegistry.addName(monsterEgg, Blocks.MONSTER_EGG_LOCALIZED_NAME);
 
         worldGen = new SCWorldGenerator();
@@ -96,5 +106,7 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(TileBush.class, Tiles.BUSH_UNLOCALIZED_NAME);
         GameRegistry.registerTileEntity(TileHeatIO.class, Tiles.HEAT_IO_UNLOCALIZED_NAME);
         GameRegistry.registerTileEntity(TileStationController.class, Tiles.STATION_CONTROLLER_UNLOCALIZED_NAME);
+        GameRegistry.registerTileEntity(TileItemIO.class, Tiles.ITEM_IO_UNLOCALIZED_NAME);
+        GameRegistry.registerTileEntity(TileBiomeHeatGenerator.class, Tiles.BIOME_HEAT_GENERATOR_UNLOCALIZED_NAME);
     }
 }

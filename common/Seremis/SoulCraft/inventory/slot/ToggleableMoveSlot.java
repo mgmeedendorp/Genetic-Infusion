@@ -13,12 +13,14 @@ public class ToggleableMoveSlot extends ToggleableSlot {
         srcY = y;
     }
 
+    @Override
     public void enable() {
         enabled = true;
         xDisplayPosition = srcX;
         yDisplayPosition = srcY;
     }
 
+    @Override
     public void disable() {
         enabled = false;
         xDisplayPosition = srcX + 1000;

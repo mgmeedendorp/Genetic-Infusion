@@ -36,5 +36,7 @@ public class CommonProxy {
         TickRegistry.registerTickHandler(new ServerTickHandler(), Side.SERVER);
     }
 
-    public void renderBeam(World world, Coordinate3D position, Coordinate3D target, int heatAtCoord1, int heatAtCoord2) {}
+    public void renderBeam(World world, Coordinate3D position, Coordinate3D target, int r1, int g1, int b1, int r2, int g2, int b2) {}
+
+    public void renderEngineBeam(World world, Coordinate3D position, float yaw, float pitch, int r, int g, int b) {}
 }

@@ -20,8 +20,9 @@ public class SCRenderHelper {
         Tessellator tessellator = Tessellator.instance;
         if(tex1 != null && tex2 != null && tex3 != null && tex4 != null && tex5 != null && tex6 != null) {
             try {
-                if(tessellator.isDrawing)
+                if(tessellator.isDrawing) {
                     return;
+                }
                 GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
                 tessellator.startDrawingQuads();
                 tessellator.setNormal(0.0F, -1.0F, 0.0F);

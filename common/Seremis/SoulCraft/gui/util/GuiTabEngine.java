@@ -19,8 +19,9 @@ public class GuiTabEngine extends GuiTab {
 
     @Override
     public void drawForeground(SCGui gui, int x, int y) {
-        if(visible)
-            gui.getFontRenderer().drawSplitString("Transporter Speed: " + (this.gui.tile.getTransporterSpeed()), 50, 80, 90, 0x404040);
+        if(visible) {
+            gui.getFontRenderer().drawSplitString("Transporter Speed: " + this.gui.tile.getTransporterSpeed(), 50, 80, 90, 0x404040);
+        }
     }
 
 }

@@ -31,11 +31,14 @@ public abstract class GuiTab extends GuiRectangle {
         return visible;
     }
 
+    @Override
     public void draw(SCGui gui, int srcX, int srcY) {
-        if(visible)
+        if(visible) {
             gui.drawTexturedModalRect(gui.getLeft() + x, gui.getTop() + y, srcX, srcY, w, h);
+        }
     }
 
+    @Override
     public void drawString(SCGui gui, int mouseX, int mouseY, String str) {
         if(visible && inRect(gui, mouseX, mouseY)) {
             gui.drawHoveringString(Arrays.asList(str.split("\n")), mouseX - gui.getLeft(), mouseY - gui.getTop());
@@ -46,6 +49,7 @@ public abstract class GuiTab extends GuiRectangle {
         return name;
     }
 
+    @Override
     public String toString() {
         return "GuiTab[id: " + id + " x: " + x + ", y: " + y + ", width: " + w + ", heigth: " + h + ", name: '" + name + "']";
     }
@@ -59,8 +63,8 @@ public abstract class GuiTab extends GuiRectangle {
     public void mouseMoveClick(SCGui gui, int x, int y, int button, long timeSinceClicked) {}
 
     public void mouseReleased(SCGui gui, int x, int y, int button) {}
-    
+
     public void initGui(SCGui gui) {}
-    
+
     public void keyTyped(SCGui gui, char keyTyped, int keyCode) {}
 }

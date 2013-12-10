@@ -30,9 +30,9 @@ public class UtilBlock {
 
         ItemStack item = stack;
 
-        float rx = rand.nextFloat() * 0.4F + 0.5F;
-        float ry = rand.nextFloat() * 0.4F + 0.5F;
-        float rz = rand.nextFloat() * 0.4F + 0.5F;
+        float rx = rand.nextFloat() * 0.8F + 0.5F;
+        float ry = rand.nextFloat() * 0.8F + 0.5F;
+        float rz = rand.nextFloat() * 0.8F + 0.5F;
 
         EntityItem entityItem = new EntityItem(world, x + rx, y + ry, z + rz, new ItemStack(item.itemID, item.stackSize, item.getItemDamage()));
 

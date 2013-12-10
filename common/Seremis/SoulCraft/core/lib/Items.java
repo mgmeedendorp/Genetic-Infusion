@@ -43,7 +43,6 @@ public class Items {
     public static final String TRANSPORTER_MODULES_META_0_LOCALIZED_NAME = "Storage Module";
     public static final String TRANSPORTER_MODULES_META_1_LOCALIZED_NAME = "Engine Module";
     public static final String TRANSPORTER_MODULES_META_2_LOCALIZED_NAME = "Plasmatic Transporter";
-    
 
     public static int berryID;
     public static final String BERRY_UNLOCALIZED_NAME = "berry";

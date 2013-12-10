@@ -40,26 +40,31 @@ public class Line3D {
         this.tail = new Coordinate3D(x2, y2, z2);
     }
 
-    public void setLineFromTile(TileEntity tile1, TileEntity tile2) {
+    public Line3D setLineFromTile(TileEntity tile1, TileEntity tile2) {
         this.head = new Coordinate3D(tile1);
         this.tail = new Coordinate3D(tile2);
+        
+        return this;
     }
 
+    private double length;
+    
     public double getLength() {
-        double x = Math.abs(head.getXCoord() - tail.getXCoord());
-        double y = Math.abs(head.getYCoord() - tail.getYCoord());
-        double z = Math.abs(head.getZCoord() - tail.getZCoord());
-        return Math.sqrt(x * x + y * y + z * z);
+        if(length == 0) {
+            double x = Math.abs(head.getXCoord() - tail.getXCoord());
+            double y = Math.abs(head.getYCoord() - tail.getYCoord());
+            double z = Math.abs(head.getZCoord() - tail.getZCoord());
+            length = Math.sqrt(x * x + y * y + z * z);
+        }
+        return length;
     }
 
-    public ForgeDirection getSide(TileEntity tile) {
+    public ForgeDirection getSide(Coordinate3D coord) {
         ForgeDirection direction = ForgeDirection.UNKNOWN;
         boolean getHead;
-        if(tile == null)
-            return null;
-        if(new Coordinate3D(tile).equals(head)) {
+        if(coord.equals(head)) {
             getHead = true;
-        } else if(new Coordinate3D(tile).equals(tail)) {
+        } else if(coord.equals(tail)) {
             getHead = false;
         } else {
             return null;
@@ -70,51 +75,73 @@ public class Line3D {
             double varY = head.getYCoord() - tail.getYCoord();
             double varZ = head.getZCoord() - tail.getZCoord();
             if(Math.abs(varX) >= Math.abs(varY) && Math.abs(varX) >= Math.abs(varZ)) {
-                if(varX >= 0)
+                if(varX >= 0) {
                     direction = ForgeDirection.EAST;
-                if(varX < 0)
+                }
+                if(varX < 0) {
                     direction = ForgeDirection.WEST;
+                }
             } else if(Math.abs(varY) >= Math.abs(varX) && Math.abs(varY) >= Math.abs(varZ)) {
-                if(varY >= 0)
+                if(varY >= 0) {
                     direction = ForgeDirection.UP;
-                if(varY < 0)
+                }
+                if(varY < 0) {
                     direction = ForgeDirection.DOWN;
+                }
             } else if(Math.abs(varZ) >= Math.abs(varX) && Math.abs(varZ) >= Math.abs(varY)) {
-                if(varZ >= 0)
+                if(varZ >= 0) {
                     direction = ForgeDirection.SOUTH;
-                if(varZ < 0)
+                }
+                if(varZ < 0) {
                     direction = ForgeDirection.NORTH;
+                }
             }
         }
 
         if(getHead) {
-            if(direction == ForgeDirection.NORTH && head.getZCoord() >= tail.getZCoord())
+            if(direction == ForgeDirection.NORTH && head.getZCoord() >= tail.getZCoord()) {
                 direction = ForgeDirection.NORTH.getOpposite();
-            if(direction == ForgeDirection.EAST && head.getXCoord() < tail.getXCoord())
+            }
+            if(direction == ForgeDirection.EAST && head.getXCoord() < tail.getXCoord()) {
                 direction = ForgeDirection.EAST.getOpposite();
-            if(direction == ForgeDirection.SOUTH && head.getZCoord() < tail.getZCoord())
+            }
+            if(direction == ForgeDirection.SOUTH && head.getZCoord() < tail.getZCoord()) {
                 direction = ForgeDirection.SOUTH.getOpposite();
-            if(direction == ForgeDirection.WEST && head.getXCoord() >= tail.getXCoord())
+            }
+            if(direction == ForgeDirection.WEST && head.getXCoord() >= tail.getXCoord()) {
                 direction = ForgeDirection.WEST.getOpposite();
-            if(direction == ForgeDirection.UP && head.getYCoord() < tail.getYCoord())
+            }
+            if(direction == ForgeDirection.UP && head.getYCoord() < tail.getYCoord()) {
                 direction = ForgeDirection.UP.getOpposite();
-            if(direction == ForgeDirection.DOWN && head.getYCoord() >= tail.getYCoord())
+            }
+            if(direction == ForgeDirection.DOWN && head.getYCoord() >= tail.getYCoord()) {
                 direction = ForgeDirection.DOWN.getOpposite();
+            }
         } else {
-            if(direction == ForgeDirection.NORTH && tail.getZCoord() >= head.getZCoord())
+            if(direction == ForgeDirection.NORTH && tail.getZCoord() >= head.getZCoord()) {
                 direction = ForgeDirection.NORTH.getOpposite();
-            if(direction == ForgeDirection.EAST && tail.getXCoord() < head.getXCoord())
+            }
+            if(direction == ForgeDirection.EAST && tail.getXCoord() < head.getXCoord()) {
                 direction = ForgeDirection.EAST.getOpposite();
-            if(direction == ForgeDirection.SOUTH && tail.getZCoord() < head.getZCoord())
+            }
+            if(direction == ForgeDirection.SOUTH && tail.getZCoord() < head.getZCoord()) {
                 direction = ForgeDirection.SOUTH.getOpposite();
-            if(direction == ForgeDirection.WEST && tail.getXCoord() >= head.getXCoord())
+            }
+            if(direction == ForgeDirection.WEST && tail.getXCoord() >= head.getXCoord()) {
                 direction = ForgeDirection.WEST.getOpposite();
-            if(direction == ForgeDirection.UP && tail.getYCoord() < head.getYCoord())
+            }
+            if(direction == ForgeDirection.UP && tail.getYCoord() < head.getYCoord()) {
                 direction = ForgeDirection.UP.getOpposite();
-            if(direction == ForgeDirection.DOWN && tail.getYCoord() >= head.getYCoord())
+            }
+            if(direction == ForgeDirection.DOWN && tail.getYCoord() >= head.getYCoord()) {
                 direction = ForgeDirection.DOWN.getOpposite();
+            }
         }
         return direction;
+    }
+
+    public ForgeDirection getSide(TileEntity tile) {
+        return getSide(new Coordinate3D(tile));
     }
 
     public void writeToNBT(NBTTagCompound compound) {
@@ -141,28 +168,40 @@ public class Line3D {
         return "Line3D[head x: " + head.x + ", y: " + head.y + ", z: " + head.z + " tail x: " + tail.x + ", y: " + tail.y + ", z: " + tail.z + "]";
     }
 
+    private double yaw = -1;
+    
     /**
      * Get the line's yaw in degrees
+     * 
      * @return
      */
     public double getYaw() {
-        double xd = head.x - tail.x;
-        double zd = head.z - tail.z;
-
-        return Math.atan2(xd, zd) * 180.0D / Math.PI;
+        if(yaw == -1) {
+            double xd = head.x - tail.x;
+            double zd = head.z - tail.z;
+    
+            yaw = Math.atan2(xd, zd) * 180.0D / Math.PI;
+        }
+        return yaw;
     }
 
+    private double pitch = -1;
+    
     /**
      * Get this line's pitch in degrees
+     * 
      * @return
      */
     public double getPitch() {
-        double xd = head.x - tail.x;
-        double yd = head.y - tail.y;
-        double zd = head.z - tail.z;
-
-        double var7 = Math.sqrt(xd * xd + zd * zd);
-
-        return Math.atan2(yd, var7) * 180.0D / 3.141592653589793D;
+        if(pitch == -1) {
+            double xd = head.x - tail.x;
+            double yd = head.y - tail.y;
+            double zd = head.z - tail.z;
+    
+            double var7 = Math.sqrt(xd * xd + zd * zd);
+    
+            pitch = Math.atan2(yd, var7) * 180.0D / Math.PI;
+        }
+        return pitch;
     }
 }

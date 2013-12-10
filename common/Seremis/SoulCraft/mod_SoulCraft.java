@@ -7,7 +7,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import Seremis.SoulCraft.block.ModBlocks;
-import Seremis.SoulCraft.core.DamageCompressor;
+import Seremis.SoulCraft.client.render.RenderBeam;
 import Seremis.SoulCraft.core.SCConfig;
 import Seremis.SoulCraft.core.SCCreativeTab;
 import Seremis.SoulCraft.core.lib.DefaultProps;
@@ -20,6 +20,7 @@ import Seremis.SoulCraft.handler.ServerTickHandler;
 import Seremis.SoulCraft.helper.RecipeHelper;
 import Seremis.SoulCraft.helper.SCLogger;
 import Seremis.SoulCraft.item.ModItems;
+import Seremis.SoulCraft.misc.DamageCompressor;
 import Seremis.SoulCraft.misc.bush.BushManager;
 import Seremis.SoulCraft.network.PacketHandler;
 import Seremis.SoulCraft.util.structure.ModStructures;
@@ -69,6 +70,7 @@ public class mod_SoulCraft {
         RecipeHelper.initSmelting();
         LanguageRegistry.instance().addStringLocalization("itemGroup.SoulCraft", "en_US", "SoulCraft");
         MinecraftForge.EVENT_BUS.register(new EventHandlerSC());
+        MinecraftForge.EVENT_BUS.register(new RenderBeam());
     }
 
     @EventHandler

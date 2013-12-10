@@ -24,10 +24,12 @@ public class MagnetNetwork {
         Iterator<MagnetLink> it = links.iterator();
         while(it.hasNext()) {
             MagnetLink link = it.next();
-            if(!connectors.contains(link.connector1))
+            if(!connectors.contains(link.connector1)) {
                 connectors.add(link.connector1);
-            if(!connectors.contains(link.connector2))
+            }
+            if(!connectors.contains(link.connector2)) {
                 connectors.add(link.connector2);
+            }
         }
     }
 

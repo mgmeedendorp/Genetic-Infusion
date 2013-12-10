@@ -181,14 +181,15 @@ public class Structure {
     }
 
     public int getRotation() {
-        if(initiated && currentRotation == -1)
+        if(initiated && currentRotation == -1) {
             doesStructureExist();
+        }
         return currentRotation;
     }
-    
+
     public float getRotationInDegrees() {
         if(initiated) {
-            return getRotation()*90;
+            return getRotation() * 90;
         }
         return -1F;
     }
@@ -223,8 +224,9 @@ public class Structure {
                     if(airCheck(i)) {
                         int oldRotation = currentRotation;
                         this.currentRotation = i;
-                        if(oldRotation != currentRotation)
+                        if(oldRotation != currentRotation) {
                             updateChangeReceivers();
+                        }
                         return true;
                     }
                 }

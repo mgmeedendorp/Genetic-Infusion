@@ -13,11 +13,10 @@ public class ModEntity {
     }
 
     public static void register() {
-        EntityRegistry.registerModEntity(EntityTransporter.class, "EntityTransporter", EntityIds.transporterID, mod_SoulCraft.instance, 40, 1, true);
+        EntityRegistry.registerModEntity(EntityTransporter.class, "EntityTransporter", EntityIds.transporterID, mod_SoulCraft.instance, 256, 1, false);
     }
 
     public static void addNames() {
         LanguageRegistry.instance().addStringLocalization("entity.SC.EntityTransporter.name", "en_US", "Plasma Transporter");
     }
-
 }

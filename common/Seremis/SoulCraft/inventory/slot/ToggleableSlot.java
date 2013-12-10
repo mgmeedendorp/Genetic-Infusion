@@ -13,7 +13,7 @@ public class ToggleableSlot extends SCSlot {
 
     @Override
     public boolean isItemValid(ItemStack is) {
-        return enabled;
+        return enabled && super.isItemValid(is);
     }
 
     public void enable() {

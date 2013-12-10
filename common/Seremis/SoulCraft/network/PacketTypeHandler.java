@@ -8,16 +8,16 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 import Seremis.SoulCraft.core.lib.DefaultProps;
 import Seremis.SoulCraft.network.packet.PacketAddMagnetLink;
 import Seremis.SoulCraft.network.packet.PacketEntityData;
+import Seremis.SoulCraft.network.packet.PacketHeatMagnetLink;
 import Seremis.SoulCraft.network.packet.PacketRemoveMagnetLink;
 import Seremis.SoulCraft.network.packet.PacketRemoveMagnetLinkConnector;
 import Seremis.SoulCraft.network.packet.PacketResetMagnetLinks;
 import Seremis.SoulCraft.network.packet.PacketTileData;
 import Seremis.SoulCraft.network.packet.SCPacket;
 
-public enum PacketTypeHandler
-{
+public enum PacketTypeHandler {
 
-    TILEDATA(PacketTileData.class), ADD_MAGNET_LINK(PacketAddMagnetLink.class), REMOVE_MAGNET_LINK(PacketRemoveMagnetLink.class), REMOVE_MAGNET_LINK_CONNECTOR(PacketRemoveMagnetLinkConnector.class), RESET_MAGNET_LINKS(PacketResetMagnetLinks.class), ENTITY_DATA(PacketEntityData.class);
+    TILEDATA(PacketTileData.class), ADD_MAGNET_LINK(PacketAddMagnetLink.class), REMOVE_MAGNET_LINK(PacketRemoveMagnetLink.class), REMOVE_MAGNET_LINK_CONNECTOR(PacketRemoveMagnetLinkConnector.class), RESET_MAGNET_LINKS(PacketResetMagnetLinks.class), ENTITY_DATA(PacketEntityData.class), HEAT_MAGNET_LINKS(PacketHeatMagnetLink.class);
 
     private Class<? extends SCPacket> clazz;
 
@@ -66,6 +66,7 @@ public enum PacketTypeHandler
         packet250.channel = DefaultProps.PACKET_CHANNEL;
         packet250.data = data;
         packet250.length = data.length;
+        packet250.isChunkDataPacket = packet.isChunkData;
 
         return packet250;
     }

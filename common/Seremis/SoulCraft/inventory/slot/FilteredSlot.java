@@ -18,7 +18,7 @@ public class FilteredSlot extends SCSlot {
     public boolean isItemValid(ItemStack stack) {
         if(filter != null) {
             if(stack.itemID == filter.itemID && stack.getItemDamage() == filter.getItemDamage()) {
-                return true;
+                return super.isItemValid(stack);
             }
         }
         return false;

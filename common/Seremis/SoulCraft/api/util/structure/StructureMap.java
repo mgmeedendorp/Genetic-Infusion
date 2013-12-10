@@ -106,7 +106,7 @@ public class StructureMap {
     }
 
     public StructureMap getRotation(int rotation) {
-        return this.rotateOnYAxis(rotation);
+        return rotateOnYAxis(rotation);
     }
 
     public StructureMap rotateOnYAxis(int rotation) {

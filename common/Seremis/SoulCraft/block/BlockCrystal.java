@@ -7,7 +7,7 @@ import Seremis.SoulCraft.core.lib.Blocks;
 import Seremis.SoulCraft.core.lib.RenderIds;
 import Seremis.SoulCraft.tileentity.TileCrystal;
 
-public class BlockCrystal extends SCBlock {
+public class BlockCrystal extends SCBlockContainer {
 
     public BlockCrystal(int ID, Material material) {
         super(ID, material);
@@ -16,22 +16,23 @@ public class BlockCrystal extends SCBlock {
         setNeedsIcon(false);
     }
 
+    @Override
     public boolean isOpaqueCube() {
         return false;
     }
 
+    @Override
     public boolean renderAsNormalBlock() {
         return false;
     }
 
     @Override
     public int getRenderType() {
-        return RenderIds.IsolatziumCrystalRenderID;
-
+        return RenderIds.CrystalRenderID;
     }
-
+    
     @Override
-    public TileEntity createTileEntity(World world, int metadata) {
+    public TileEntity createNewTileEntity(World world) {
         return new TileCrystal();
     }
 }

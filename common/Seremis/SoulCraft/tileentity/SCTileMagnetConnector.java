@@ -13,28 +13,19 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 
 public abstract class SCTileMagnetConnector extends TileMagnetConnector {
 
-    private String owner;
     private int teDirection;
 
     public int getDirection() {
         return teDirection;
     }
 
+    public boolean isUseableByPlayer(EntityPlayer player) {
+        return true;
+    }
+    
     public void setDirection(int direction) {
         this.teDirection = direction;
         worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType().blockID, 0, direction);
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
-    public boolean isUseableByPlayer(EntityPlayer player) {
-        return owner.equals(player.username);
     }
 
     @Override
@@ -48,17 +39,15 @@ public abstract class SCTileMagnetConnector extends TileMagnetConnector {
         }
     }
 
+    @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        owner = compound.getString("teOwner");
         teDirection = compound.getInteger("teDirection");
     }
 
+    @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        if(owner != null && owner != "") {
-            compound.setString("teOwner", owner);
-        }
         compound.setInteger("teDirection", teDirection);
     }
 
@@ -74,14 +63,27 @@ public abstract class SCTileMagnetConnector extends TileMagnetConnector {
         return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 1, compound);
     }
 
-    public void sendTileData(int id, byte[] data) {
+    public void sendTileDataToServer(int id, byte[] data) {
         if(CommonProxy.proxy.isRenderWorld(worldObj)) {
             PacketDispatcher.sendPacketToServer(PacketTypeHandler.populatePacket(new PacketTileData(data, id, this.xCoord, this.yCoord, this.zCoord)));
-        } else
-            this.setTileData(id, data);
+        } else {
+            setTileDataFromClient(id, data);
+        }
     }
-    
-    public void setTileData(int id, byte[] data) {
+
+    public void setTileDataFromServer(int id, byte[] data) {
+
+    }
+
+    public void sendTileDataToClient(int id, byte[] data) {
+        if(CommonProxy.proxy.isServerWorld(worldObj)) {
+            PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketTileData(data, id, this.xCoord, this.yCoord, this.zCoord)));
+        } else {
+            setTileDataFromServer(id, data);
+        }
+    }
+
+    public void setTileDataFromClient(int id, byte[] data) {
 
     }
 }

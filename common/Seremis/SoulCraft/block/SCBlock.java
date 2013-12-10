@@ -2,20 +2,18 @@ package Seremis.SoulCraft.block;
 
 import java.util.List;
 
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
-import net.minecraft.world.World;
 import Seremis.SoulCraft.mod_SoulCraft;
 import Seremis.SoulCraft.core.lib.DefaultProps;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class SCBlock extends BlockContainer {
+public class SCBlock extends Block {
 
     private Icon[] iconBuffer;
     private int metadata = 0;
@@ -39,15 +37,15 @@ public class SCBlock extends BlockContainer {
         if(this.needsSidedTexture) {
             sidedIconBuffer = new Icon[sidedTextureNames.length];
             for(int i = 0; i < sidedTextureNames.length; i++) {
-                sidedIconBuffer[i] = iconRegister.registerIcon(DefaultProps.ID + ":" + this.getUnlocalizedName().substring(5) + "_" + sidedTextureNames[i]);
+                sidedIconBuffer[i] = iconRegister.registerIcon(DefaultProps.ID + ":" + getUnlocalizedName().substring(5) + "_" + sidedTextureNames[i]);
             }
         }
         if(this.metadata == 0) {
-            blockIcon = iconRegister.registerIcon(DefaultProps.ID + ":" + this.getUnlocalizedName().substring(5));
+            blockIcon = iconRegister.registerIcon(DefaultProps.ID + ":" + getUnlocalizedName().substring(5));
         } else {
             iconBuffer = new Icon[metadata];
             for(int x = 0; x < iconBuffer.length; x++) {
-                iconBuffer[x] = iconRegister.registerIcon(DefaultProps.ID + ":" + this.getUnlocalizedName().substring(5) + (x + 1));
+                iconBuffer[x] = iconRegister.registerIcon(DefaultProps.ID + ":" + getUnlocalizedName().substring(5) + (x + 1));
             }
         }
     }
@@ -70,7 +68,7 @@ public class SCBlock extends BlockContainer {
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(int blockID, CreativeTabs tab, List subItems) {
         if(metadata > 0) {
-            for(int ix = 0; ix < this.getNumbersOfMetadata(); ix++) {
+            for(int ix = 0; ix < getNumbersOfMetadata(); ix++) {
                 subItems.add(new ItemStack(this, 1, ix));
             }
         } else {
@@ -93,10 +91,5 @@ public class SCBlock extends BlockContainer {
     public void setNeedsSidedTexture(boolean needsSidedTexture, String[] textureNames) {
         this.needsSidedTexture = needsSidedTexture;
         this.sidedTextureNames = textureNames;
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World world) {
-        return null;
     }
 }

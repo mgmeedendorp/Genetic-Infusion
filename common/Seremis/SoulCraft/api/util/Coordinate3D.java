@@ -110,6 +110,7 @@ public class Coordinate3D implements Cloneable {
         return line.getLength();
     }
 
+    @Override
     public Coordinate3D clone() {
         return new Coordinate3D(x, y, z);
     }
@@ -123,8 +124,9 @@ public class Coordinate3D implements Cloneable {
     }
 
     public boolean equals(Coordinate3D coord) {
-        if(x == coord.x && y == coord.y && z == coord.z)
+        if(x == coord.x && y == coord.y && z == coord.z) {
             return true;
+        }
         return false;
     }
 

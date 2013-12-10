@@ -1,4 +1,4 @@
-package Seremis.SoulCraft.core;
+package Seremis.SoulCraft.misc;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;

@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 import Seremis.SoulCraft.core.lib.Blocks;
 import Seremis.SoulCraft.tileentity.TileHeatIO;
 
-public class BlockHeatIO extends SCBlock {
+public class BlockHeatIO extends SCBlockContainer {
 
     public BlockHeatIO(int ID, Material material) {
         super(ID, material);

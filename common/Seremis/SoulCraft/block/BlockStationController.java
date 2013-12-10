@@ -10,9 +10,9 @@ import Seremis.SoulCraft.core.lib.GuiIds;
 import Seremis.SoulCraft.core.proxy.CommonProxy;
 import Seremis.SoulCraft.tileentity.TileStationController;
 
-public class BlockStationController extends SCBlockRotateable {
+public class BlockStationController extends SCBlockContainerRotateable {
 
-    private static String[] textureNames = {"side", "side", "front", "side", "side", "side"};
+    private static String[] textureNames = {"side", "side", "side", "side", "front", "side"};
 
     public BlockStationController(int ID, Material material) {
         super(ID, material, true, textureNames);

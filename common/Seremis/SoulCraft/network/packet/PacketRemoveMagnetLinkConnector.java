@@ -50,7 +50,7 @@ public class PacketRemoveMagnetLinkConnector extends SCPacket {
 
     @Override
     public void execute(INetworkManager network, Player player) {
-        TileEntity tile = ((EntityPlayer)player).worldObj.getBlockTileEntity(x, y, z);
+        TileEntity tile = ((EntityPlayer) player).worldObj.getBlockTileEntity(x, y, z);
 
         if(tile != null && tile instanceof IMagnetConnector) {
             IMagnetConnector conn = (IMagnetConnector) tile;

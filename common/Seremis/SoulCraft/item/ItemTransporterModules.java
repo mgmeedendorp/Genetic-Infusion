@@ -28,7 +28,7 @@ public class ItemTransporterModules extends SCItem {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(int par1, CreativeTabs creativetab, List list) {
-        for(int var4 = 0; var4 < this.getNumbersofMetadata(); ++var4) {
+        for(int var4 = 0; var4 < getNumbersofMetadata(); ++var4) {
             list.add(new ItemStack(par1, 1, var4));
         }
     }
@@ -40,8 +40,12 @@ public class ItemTransporterModules extends SCItem {
     public static ItemStack storage() {
         return new ItemStack(ModItems.transporterModules, 1, 0);
     }
-    
+
     public boolean isTransporter(ItemStack stack) {
-        return stack.itemID == itemID && stack.getItemDamage() == 3;
+        return stack.itemID == itemID && stack.getItemDamage() == 2;
+    }
+
+    public boolean isUpgrade(ItemStack stack) {
+        return stack.itemID == itemID && stack.getItemDamage() == 1 || stack.itemID == itemID && stack.getItemDamage() == 0;
     }
 }

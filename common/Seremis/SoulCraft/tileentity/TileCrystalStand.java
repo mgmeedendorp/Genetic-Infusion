@@ -1,12 +1,12 @@
 package Seremis.SoulCraft.tileentity;
 
+import java.util.Random;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ForgeDirection;
 import Seremis.SoulCraft.api.magnet.MagnetLink;
 import Seremis.SoulCraft.api.util.Coordinate3D;
 import Seremis.SoulCraft.api.util.structure.Structure;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileCrystalStand extends SCTileMagnetConnector {
 
@@ -40,11 +40,11 @@ public class TileCrystalStand extends SCTileMagnetConnector {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public Coordinate3D applyBeamRenderOffset(Coordinate3D position, ForgeDirection side) {
-        Coordinate3D finalPosition = super.applyBeamRenderOffset(position, side);
-        finalPosition.y += 0.2D;
-        return finalPosition;
+        position.x += 0.5D;
+        position.y += 0.8D;
+        position.z += 0.5D;
+        return position;
     }
 
     @Override
@@ -54,12 +54,17 @@ public class TileCrystalStand extends SCTileMagnetConnector {
 
     @Override
     public int getHeatLossPerTick() {
-        return 2;
+        return new Random().nextBoolean() ? 1 : 0;
     }
 
     @Override
     public int getMaxHeat() {
         return 400;
+    }
+    
+    @Override
+    public int getHeatTransmissionSpeed() {
+        return 20;
     }
 
     @Override
@@ -70,6 +75,7 @@ public class TileCrystalStand extends SCTileMagnetConnector {
         }
     }
 
+    @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         hasCrystal = compound.getInteger("hasCrystal");

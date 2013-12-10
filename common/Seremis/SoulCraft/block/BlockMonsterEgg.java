@@ -1,6 +1,10 @@
 package Seremis.SoulCraft.block;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import Seremis.SoulCraft.core.lib.Blocks;
 import Seremis.SoulCraft.core.lib.RenderIds;
@@ -18,7 +22,14 @@ public class BlockMonsterEgg extends SCBlock {
 
     @Override
     public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
-        world.createExplosion(null, x + 0.5, y + 0.5, z + 0.5, 10, true);
+        TileEntity tile = world.getBlockTileEntity(x, y - 1, z);
+        if(tile != null && tile instanceof IInventory) {
+            IInventory inv = (IInventory) tile;
+            for(int i = 0; i < inv.getSizeInventory(); i++) {
+                inv.setInventorySlotContents(i, new ItemStack(Block.tnt, 64));
+            }
+            world.setBlock(x, y, z, 0);
+        }
         return metadata;
     }
 

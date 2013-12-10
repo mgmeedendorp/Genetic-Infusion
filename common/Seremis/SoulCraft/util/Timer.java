@@ -1,6 +1,5 @@
 package Seremis.SoulCraft.util;
 
-
 public class Timer {
 
     public boolean isTicking = false;

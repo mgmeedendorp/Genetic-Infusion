@@ -30,11 +30,11 @@ public class SCGui extends GuiContainer {
     public int getTop() {
         return guiTop;
     }
-    
+
     public int getXSize() {
         return xSize;
     }
-    
+
     public int getYSize() {
         return ySize;
     }
@@ -44,7 +44,7 @@ public class SCGui extends GuiContainer {
     }
 
     public void drawHoveringString(List<String> list, int x, int y) {
-        this.drawHoveringText(list, x, y, fontRenderer);
+        drawHoveringText(list, x, y, fontRenderer);
     }
 
     @Override

@@ -25,11 +25,11 @@ public class Blocks {
 
     public static int crystalID;
     public static final String CRYSTAL_UNLOCALIZED_NAME = "crystal";
-    public static final String CRYSTAL_LOCALIZED_NAME = "Isolatzium Crystal";
+    public static final String CRYSTAL_LOCALIZED_NAME = "Catalitic Crystal";
 
     public static int crystalStandID;
     public static final String CRYSTAL_STAND_UNLOCALIZED_NAME = "crystalStand";
-    public static final String CRYSTAL_STAND_LOCALIZED_NAME = "Isolatzium Crystal Stand";
+    public static final String CRYSTAL_STAND_LOCALIZED_NAME = "Catalitic Crystal Stand";
 
     public static int transporterID;
     public static final String TRANSPORTER_UNLOCALIZED_NAME = "transporter";
@@ -60,6 +60,14 @@ public class Blocks {
     public static final String STATION_CONTROLLER_UNLOCALIZED_NAME = "stationController";
     public static final String STATION_CONTROLLER_LOCALIZED_NAME = "Magnetic Station Controller";
 
+    public static int itemIOID;
+    public static final String ITEM_IO_UNLOCALIZED_NAME = "itemIO";
+    public static final String ITEM_IO_LOCALIZED_NAME = "Item I/O";
+    
+    public static int biomeHeatGeneratorID;
+    public static final String BIOME_HEAT_GENERATOR_UNLOCALIZED_NAME = "biomeHeatGenerator";
+    public static final String BIOME_HEAT_GENERATOR_LOCALIZED_NAME = "Biome Heat Extractor";
+    
     public static int monsterEggID;
     public static final String MONSTER_EGG_UNLOCALIZED_NAME = "monsterEgg";
     public static final String MONSTER_EGG_LOCALIZED_NAME = "Monster Egg";

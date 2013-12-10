@@ -16,7 +16,7 @@ public class ModelCrystal extends ModelBase {
         crystal.addBox(0.0F, 0.0F, 0.0F, 16, 16, 16);
         crystal.setRotationPoint(0.0F, 32.0F, 0.0F);
         crystal.setTextureSize(textureWidth, textureHeight);
-        setRotation(crystal, 0.7F, 0.0F, 0.7F);
+        setRotation(crystal, 0.7F, 0.0F, 0.4F);
     }
 
     public void render() {

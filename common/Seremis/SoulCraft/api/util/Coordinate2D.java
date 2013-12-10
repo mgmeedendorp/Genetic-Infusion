@@ -25,4 +25,9 @@ public class Coordinate2D {
         this.x = x;
         this.y = y;
     }
+
+    @Override
+    public String toString() {
+        return "Coordinate2D[x: " + x + " y: " + y + "]";
+    }
 }
