@@ -7,7 +7,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import seremis.soulcraft.block.ModBlocks;
-import seremis.soulcraft.core.lib.DefaultProps;
 import cpw.mods.fml.common.IWorldGenerator;
 
 public class SCWorldGenerator implements IWorldGenerator {
@@ -26,39 +25,35 @@ public class SCWorldGenerator implements IWorldGenerator {
 
     private void generateSurface(World world, Random random, int blockX, int blockZ) {
 
-        if(DefaultProps.spawnTitanium) {
-            for(int i = 0; i < 7; i++) {
-                int Xcoord = blockX + random.nextInt(1);
-                int Ycoord = random.nextInt(60);
-                int Zcoord = blockZ + random.nextInt(1);
-                new WorldGenMinable(ModBlocks.oreTitanium.blockID, 10).generate(world, random, Xcoord, Ycoord, Zcoord);
-            }
+        for(int i = 0; i < 7; i++) {
+            int Xcoord = blockX + random.nextInt(1);
+            int Ycoord = random.nextInt(60);
+            int Zcoord = blockZ + random.nextInt(1);
+            new WorldGenMinable(ModBlocks.oreTitanium.blockID, 10).generate(world, random, Xcoord, Ycoord, Zcoord);
         }
-        if(DefaultProps.spawnOreSoulCrystal) {
-            for(int i = 0; i < 7; i++) {
-                int Xcoord = blockX + random.nextInt(2);
-                int Ycoord = random.nextInt(256);
-                int Zcoord = blockZ + random.nextInt(2);
-                new WorldGenMinable(ModBlocks.oreIsolatzium.blockID, 0, 8, Block.stone.blockID).generate(world, random, Xcoord, Ycoord, Zcoord);
-            }
-            for(int i = 0; i < 7; i++) {
-                int Xcoord = blockX + random.nextInt(2);
-                int Ycoord = random.nextInt(256);
-                int Zcoord = blockZ + random.nextInt(2);
-                new WorldGenMinable(ModBlocks.oreIsolatzium.blockID, 1, 8, Block.stone.blockID).generate(world, random, Xcoord, Ycoord, Zcoord);
-            }
-            for(int i = 0; i < 7; i++) {
-                int Xcoord = blockX + random.nextInt(2);
-                int Ycoord = random.nextInt(256);
-                int Zcoord = blockZ + random.nextInt(2);
-                new WorldGenMinable(ModBlocks.oreIsolatzium.blockID, 2, 8, Block.stone.blockID).generate(world, random, Xcoord, Ycoord, Zcoord);
-            }
-            for(int i = 0; i < 7; i++) {
-                int Xcoord = blockX + random.nextInt(2);
-                int Ycoord = random.nextInt(256);
-                int Zcoord = blockZ + random.nextInt(2);
-                new WorldGenMinable(ModBlocks.oreIsolatzium.blockID, 3, 8, Block.stone.blockID).generate(world, random, Xcoord, Ycoord, Zcoord);
-            }
+        for(int i = 0; i < 7; i++) {
+            int Xcoord = blockX + random.nextInt(2);
+            int Ycoord = random.nextInt(256);
+            int Zcoord = blockZ + random.nextInt(2);
+            new WorldGenMinable(ModBlocks.oreIsolatzium.blockID, 0, 8, Block.stone.blockID).generate(world, random, Xcoord, Ycoord, Zcoord);
+        }
+        for(int i = 0; i < 7; i++) {
+            int Xcoord = blockX + random.nextInt(2);
+            int Ycoord = random.nextInt(256);
+            int Zcoord = blockZ + random.nextInt(2);
+            new WorldGenMinable(ModBlocks.oreIsolatzium.blockID, 1, 8, Block.stone.blockID).generate(world, random, Xcoord, Ycoord, Zcoord);
+        }
+        for(int i = 0; i < 7; i++) {
+            int Xcoord = blockX + random.nextInt(2);
+            int Ycoord = random.nextInt(256);
+            int Zcoord = blockZ + random.nextInt(2);
+            new WorldGenMinable(ModBlocks.oreIsolatzium.blockID, 2, 8, Block.stone.blockID).generate(world, random, Xcoord, Ycoord, Zcoord);
+        }
+        for(int i = 0; i < 7; i++) {
+            int Xcoord = blockX + random.nextInt(2);
+            int Ycoord = random.nextInt(256);
+            int Zcoord = blockZ + random.nextInt(2);
+            new WorldGenMinable(ModBlocks.oreIsolatzium.blockID, 3, 8, Block.stone.blockID).generate(world, random, Xcoord, Ycoord, Zcoord);
         }
     }
 

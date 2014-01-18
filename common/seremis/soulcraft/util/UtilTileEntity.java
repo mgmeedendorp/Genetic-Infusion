@@ -23,35 +23,31 @@ public class UtilTileEntity {
         return dropItemInWorld(tile, world, new ItemStack(item, amount, metadata));
     }
 
-    public static void writeInventoryToNBT(TileEntity tile, NBTTagCompound compound) {
+    public static void writeInventoryToNBT(IInventory tile, NBTTagCompound compound) {
         NBTTagList nbtTagList = new NBTTagList();
 
-        IInventory tileInv = (IInventory) tile;
-
-        for(int i = 0; i < tileInv.getSizeInventory(); ++i) {
-            if(tileInv.getStackInSlot(i) != null) {
+        for(int i = 0; i < tile.getSizeInventory(); ++i) {
+            if(tile.getStackInSlot(i) != null) {
                 NBTTagCompound compound2 = new NBTTagCompound();
                 compound2.setByte("Slot", (byte) i);
-                tileInv.getStackInSlot(i).writeToNBT(compound2);
+                tile.getStackInSlot(i).writeToNBT(compound2);
                 nbtTagList.appendTag(compound2);
             }
         }
         compound.setTag("Items", nbtTagList);
     }
 
-    public static ItemStack[] readInventoryFromNBT(TileEntity tile, NBTTagCompound compound) {
+    public static ItemStack[] readInventoryFromNBT(IInventory tile, NBTTagCompound compound) {
         ItemStack[] inv;
 
-        IInventory tileInv = (IInventory) tile;
-
         NBTTagList nbtTagList = compound.getTagList("Items");
-        inv = new ItemStack[tileInv.getSizeInventory()];
+        inv = new ItemStack[tile.getSizeInventory()];
 
         for(int i = 0; i < nbtTagList.tagCount(); ++i) {
             NBTTagCompound compound2 = (NBTTagCompound) nbtTagList.tagAt(i);
             int var5 = compound2.getByte("Slot") & 255;
 
-            if(var5 >= 0 && var5 < tileInv.getSizeInventory()) {
+            if(var5 >= 0 && var5 < tile.getSizeInventory()) {
                 inv[var5] = ItemStack.loadItemStackFromNBT(compound2);
             }
         }

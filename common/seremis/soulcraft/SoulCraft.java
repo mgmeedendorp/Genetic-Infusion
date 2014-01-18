@@ -20,7 +20,6 @@ import seremis.soulcraft.handler.ServerTickHandler;
 import seremis.soulcraft.helper.RecipeHelper;
 import seremis.soulcraft.item.ModItems;
 import seremis.soulcraft.misc.DamageCompressor;
-import seremis.soulcraft.misc.bush.BushManager;
 import seremis.soulcraft.network.PacketHandler;
 import seremis.soulcraft.util.structure.ModStructures;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -77,6 +76,5 @@ public class SoulCraft {
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         logger.log(Level.INFO, DefaultProps.name + " is loaded successfully.");
-        BushManager.init();
     }
 }

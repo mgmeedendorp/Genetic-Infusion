@@ -28,7 +28,7 @@ public class GuiLine extends GuiRectangle {
     public GuiLine(int x, int y, int w, int h, int u, int v) {
         super(x, y, w, h, u, v);
     }
-
+    
     public void render(SCGui gui) {
         GL11.glPushMatrix();
 
@@ -44,7 +44,7 @@ public class GuiLine extends GuiRectangle {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 
-        GL11.glTranslatef(x, y, 0.0F);
+        GL11.glTranslatef(x, y, 0);
 
         GL11.glTranslatef(w / 2, h, 0);
         GL11.glRotated(180 + rotation, 0.0F, 0.0F, -1.0F);

@@ -11,8 +11,6 @@ public class Tiles {
 
     public static final String TRANSPORTER_UNLOCALIZED_NAME = "transporter";
 
-    public static final String BUSH_UNLOCALIZED_NAME = "bush";
-
     public static final String HEAT_IO_UNLOCALIZED_NAME = "heatIO";
 
     public static final String STATION_CONTROLLER_UNLOCALIZED_NAME = "stationController";

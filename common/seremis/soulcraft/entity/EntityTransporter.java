@@ -14,6 +14,7 @@ import seremis.soulcraft.SoulCraft;
 import seremis.soulcraft.core.proxy.CommonProxy;
 import seremis.soulcraft.entity.logic.EntityTransporterLogic;
 import seremis.soulcraft.tileentity.TileStationController;
+import seremis.soulcraft.util.UtilBlock;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
@@ -107,8 +108,12 @@ public class EntityTransporter extends SCEntity implements IEntityAdditionalSpaw
     public void arrive() {
         TileEntity tile = worldObj.getBlockTileEntity((int) Math.floor(posX), (int) Math.floor(posY), (int) Math.floor(posZ));
 
-        if(tile != null && tile instanceof TileStationController) {
+        if(tile != null && tile instanceof TileStationController && ((TileStationController)tile).isMultiblock) {
             ((TileStationController) tile).handleIncoming(this);
+        } else {
+            for(ItemStack stack : inv) {
+                UtilBlock.dropItemInWorld((int) posX, (int) posY, (int) posZ, worldObj, stack);
+            }
         }
         setDead();
     }

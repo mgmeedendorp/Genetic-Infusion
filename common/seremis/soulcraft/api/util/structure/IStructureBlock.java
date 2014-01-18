@@ -1,5 +1,7 @@
 package seremis.soulcraft.api.util.structure;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import seremis.soulcraft.api.util.Coordinate3D;
@@ -29,4 +31,10 @@ public interface IStructureBlock {
     IStructureBlock copy();
 
     boolean needsToExistForStructureToForm();
+    
+    /**
+     * The blocks this block is replaceable with
+     * @return a list of replaceable blocks
+     */
+    List<IStructureBlock> getReplaceableBlocks();
 }

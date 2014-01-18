@@ -7,7 +7,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import seremis.soulcraft.core.lib.Blocks;
 import seremis.soulcraft.core.lib.Tiles;
 import seremis.soulcraft.tileentity.TileBiomeHeatGenerator;
-import seremis.soulcraft.tileentity.TileBush;
 import seremis.soulcraft.tileentity.TileCompressor;
 import seremis.soulcraft.tileentity.TileCrystal;
 import seremis.soulcraft.tileentity.TileCrystalStand;
@@ -25,7 +24,6 @@ public class ModBlocks {
     public static BlockCompressor compressor;
     public static BlockCrystal crystal;
     public static BlockCrystalStand crystalStand;
-    public static BlockBush bushBerry;
     public static BlockHeatIO heatIO;
     public static BlockConnectedGlass connectedGlass;
     public static Block titaniumBrick;
@@ -43,7 +41,6 @@ public class ModBlocks {
         compressor = new BlockCompressor(Blocks.compressorID, Material.rock);
         crystal = new BlockCrystal(Blocks.crystalID, Material.coral);
         crystalStand = new BlockCrystalStand(Blocks.crystalStandID, Material.wood);
-        bushBerry = new BlockBush(Blocks.bushID, Material.plants);
         heatIO = new BlockHeatIO(Blocks.heatIOID, Material.rock);
         connectedGlass = new BlockConnectedGlass(Blocks.connectedGlassID, Material.glass);
         titaniumBrick = new SCBlock(Blocks.titaniumBrickID, Material.rock).setUnlocalizedName("titaniumBrick");
@@ -57,7 +54,6 @@ public class ModBlocks {
         GameRegistry.registerBlock(compressor, Blocks.COMPRESSOR_LOCALIZED_NAME);
         GameRegistry.registerBlock(crystal, Blocks.CRYSTAL_LOCALIZED_NAME);
         GameRegistry.registerBlock(crystalStand, Blocks.CRYSTAL_STAND_LOCALIZED_NAME);
-        GameRegistry.registerBlock(bushBerry, BlockBushItem.class, Blocks.BUSH_LOCALIZED_NAME);
         GameRegistry.registerBlock(heatIO, Blocks.HEAT_IO_LOCALIZED_NAME);
         GameRegistry.registerBlock(connectedGlass, Blocks.CONNECTED_GLASS_LOCALIZED_NAME);
         GameRegistry.registerBlock(titaniumBrick, Blocks.TITANIUM_BRICK_LOCALIZED_NAME);
@@ -74,8 +70,6 @@ public class ModBlocks {
         LanguageRegistry.addName(compressor, Blocks.COMPRESSOR_LOCALIZED_NAME);
         LanguageRegistry.addName(crystal, Blocks.CRYSTAL_LOCALIZED_NAME);
         LanguageRegistry.addName(crystalStand, Blocks.CRYSTAL_STAND_LOCALIZED_NAME);
-        LanguageRegistry.addName(new ItemStack(bushBerry, 1, 0), Blocks.BUSH_META_0_LOCALIZED_NAME);
-        LanguageRegistry.addName(new ItemStack(bushBerry, 1, 1), Blocks.BUSH_META_1_LOCALIZED_NAME);
         LanguageRegistry.addName(heatIO, Blocks.HEAT_IO_LOCALIZED_NAME);
         LanguageRegistry.addName(connectedGlass, Blocks.CONNECTED_GLASS_LOCALIZED_NAME);
         LanguageRegistry.addName(titaniumBrick, Blocks.TITANIUM_BRICK_LOCALIZED_NAME);
@@ -96,14 +90,12 @@ public class ModBlocks {
         OreDictionary.registerOre("oreIsolatziumGreen", new ItemStack(oreIsolatzium, 1, 1));
         OreDictionary.registerOre("oreIsolatziumBlue", new ItemStack(oreIsolatzium, 1, 2));
         OreDictionary.registerOre("oreIsolatziumBlack", new ItemStack(oreIsolatzium, 1, 3));
-        OreDictionary.registerOre("berryBush", bushBerry);
     }
 
     public static void tileEntity() {
         GameRegistry.registerTileEntity(TileCompressor.class, Tiles.COMPRESSOR_UNLOCALIZED_NAME);
         GameRegistry.registerTileEntity(TileCrystal.class, Tiles.CRYSTAL_UNLOCALIZED_NAME);
         GameRegistry.registerTileEntity(TileCrystalStand.class, Tiles.CRYSTAL_STAND_UNLOCALIZED_NAME);
-        GameRegistry.registerTileEntity(TileBush.class, Tiles.BUSH_UNLOCALIZED_NAME);
         GameRegistry.registerTileEntity(TileHeatIO.class, Tiles.HEAT_IO_UNLOCALIZED_NAME);
         GameRegistry.registerTileEntity(TileStationController.class, Tiles.STATION_CONTROLLER_UNLOCALIZED_NAME);
         GameRegistry.registerTileEntity(TileItemIO.class, Tiles.ITEM_IO_UNLOCALIZED_NAME);

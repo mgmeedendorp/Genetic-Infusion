@@ -44,22 +44,6 @@ public class Items {
     public static final String TRANSPORTER_MODULES_META_1_LOCALIZED_NAME = "Engine Module";
     public static final String TRANSPORTER_MODULES_META_2_LOCALIZED_NAME = "Plasmatic Transporter";
 
-    public static int berryID;
-    public static final String BERRY_UNLOCALIZED_NAME = "berry";
-    public static final String BERRY_LOCALIZED_NAME = "Berry";
-    public static final String BERRY_META_0_UNLOCALIZED_NAME = "berry0";
-    public static final String BERRY_META_1_UNLOCALIZED_NAME = "berry1";
-    public static final String BERRY_META_0_LOCALIZED_NAME = "Red Berry";
-    public static final String BERRY_META_1_LOCALIZED_NAME = "Blue Berry";
-
-    public static int kernelID;
-    public static final String KERNEL_UNLOCALIZED_NAME = "kernel";
-    public static final String KERNEL_LOCALIZED_NAME = "Kernel";
-    public static final String KERNEL_META_0_UNLOCALIZED_NAME = "kernel0";
-    public static final String KERNEL_META_1_UNLOCALIZED_NAME = "kernel1";
-    public static final String KERNEL_META_0_LOCALIZED_NAME = "Red Berry Kernel";
-    public static final String KERNEL_META_1_LOCALIZED_NAME = "Blue Berry Kernel";
-
     public static int thermometerID;
     public static final String THERMOMETER_UNLOCALIZED_NAME = "thermometer";
     public static final String THERMOMETER_LOCALIZED_NAME = "Thermometer";

@@ -35,15 +35,6 @@ public class Blocks {
     public static final String TRANSPORTER_UNLOCALIZED_NAME = "transporter";
     public static final String TRANSPORTER_LOCALIZED_NAME = "Plasmatic Transporter";
 
-    public static int bushID;
-    public static final String BUSH_UNLOCALIZED_NAME = "bush";
-    public static final String BUSH_LOCALIZED_NAME = "Berry Bush";
-    public static final String BUSH_META_0_LOCALIZED_NAME = "Berry Bush";
-    public static final String BUSH_META_1_LOCALIZED_NAME = "Strange Berry Bush";
-    public static final String BUSH_ITEM_UNLOCALIZED_NAME = "bushItem";
-    public static final String BUSH_ITEM_META_0_UNLOCALIZED_NAME = "bushItem0";
-    public static final String BUSH_ITEM_META_1_UNLOCALIZED_NAME = "bushItem1";
-
     public static int heatIOID;
     public static final String HEAT_IO_UNLOCALIZED_NAME = "heatIO";
     public static final String HEAT_IO_LOCALIZED_NAME = "Heat I/O";

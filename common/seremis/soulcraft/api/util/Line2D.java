@@ -46,9 +46,9 @@ public class Line2D {
     
     public double getLength() {
         if(length == -1) {
-            double x = Math.abs(head.getXCoord() - tail.getXCoord());
-            double y = Math.abs(head.getYCoord() - tail.getYCoord());
-            length = Math.sqrt(x * x + y * y);
+            double dx = Math.abs(head.getXCoord() - tail.getXCoord());
+            double dy = Math.abs(head.getYCoord() - tail.getYCoord());
+            length = Math.sqrt(dx * dx + dy * dy);
         }
         return length;
     }

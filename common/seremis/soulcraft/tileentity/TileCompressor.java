@@ -5,90 +5,72 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import seremis.soulcraft.core.lib.Tiles;
 import seremis.soulcraft.item.ModItems;
-import seremis.soulcraft.util.UtilTileEntity;
+import seremis.soulcraft.util.inventory.Inventory;
 
-public class TileCompressor extends TileEntity implements IInventory {
-
-    private ItemStack[] inv;
+public class TileCompressor extends SCTile implements IInventory {
+    
     private int requiredPlayerRange = 16;
 
-    public TileCompressor() {
-        inv = new ItemStack[1];
-    }
+    private Inventory inventory = new Inventory(1, Tiles.INV_COMPRESSOR_UNLOCALIZED_NAME, 4096, this);
 
     @Override
     public int getSizeInventory() {
-        return inv.length;
+        return inventory.getSizeInventory();
     }
 
     @Override
     public ItemStack getStackInSlot(int slot) {
-        return inv[slot];
+        return inventory.getStackInSlot(slot);
     }
 
     @Override
     public ItemStack decrStackSize(int slot, int amount) {
-        ItemStack stack = getStackInSlot(slot);
-        if(stack != null) {
-            if(stack.stackSize <= amount) {
-                setInventorySlotContents(slot, null);
-            } else {
-                stack = stack.splitStack(amount);
-                if(stack.stackSize <= 0) {
-                    setInventorySlotContents(slot, null);
-                }
-            }
-        }
-        return stack;
+        return inventory.decrStackSize(slot, amount);
     }
 
     @Override
     public ItemStack getStackInSlotOnClosing(int slot) {
-        return null;
+        return inventory.getStackInSlotOnClosing(slot);
     }
 
     @Override
     public void setInventorySlotContents(int slot, ItemStack stack) {
-        inv[slot] = stack;
-        if(stack != null && stack.stackSize > getInventoryStackLimit()) {
-            stack.stackSize = getInventoryStackLimit();
-        }
+        inventory.setInventorySlotContents(slot, stack);
     }
 
     @Override
     public String getInvName() {
-        return Tiles.INV_COMPRESSOR_UNLOCALIZED_NAME;
+        return inventory.getInvName();
     }
 
     @Override
     public int getInventoryStackLimit() {
-        return 4096;
+        return inventory.getInventoryStackLimit();
     }
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer player) {
-        return worldObj.getBlockTileEntity(xCoord, yCoord, zCoord) == this && player.getDistanceSq(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 64;
+        return inventory.isUseableByPlayer(player);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        inv = UtilTileEntity.readInventoryFromNBT(this, compound);
+        inventory.readFromNBT(compound);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        UtilTileEntity.writeInventoryToNBT(this, compound);
+        inventory.writeToNBT(compound);
     }
 
     public boolean setInventorySlot(int slot, ItemStack stack) {
         ItemStack currStack = getStackInSlot(slot);
         if(currStack == null) {
-            inv[slot] = stack;
+            setInventorySlotContents(slot, stack);
             this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
             return true;
         }
@@ -100,11 +82,13 @@ public class TileCompressor extends TileEntity implements IInventory {
             return false;
         }
         if(currStack.stackSize < 0) {
-            inv[slot] = null;
+            setInventorySlotContents(slot, null);
             this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
         }
         if(currStack.getItem() == stack.getItem() && currStack.getItemDamage() == stack.getItemDamage()) {
-            inv[slot].stackSize += stack.stackSize;
+            ItemStack last = getStackInSlot(slot).copy();
+            last.stackSize += stack.stackSize;
+            setInventorySlotContents(slot, last);
             this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
             return true;
         }
@@ -126,7 +110,7 @@ public class TileCompressor extends TileEntity implements IInventory {
 
     @Override
     public boolean isInvNameLocalized() {
-        return false;
+        return inventory.isInvNameLocalized();
     }
 
     @Override

@@ -17,6 +17,7 @@ import org.lwjgl.util.Color;
 import seremis.soulcraft.api.magnet.MagnetLink;
 import seremis.soulcraft.api.magnet.MagnetLinkHelper;
 import seremis.soulcraft.api.magnet.MagnetNetwork;
+import seremis.soulcraft.api.util.Coordinate3D;
 import seremis.soulcraft.api.util.HeatColorHelper;
 import seremis.soulcraft.api.util.Line2D;
 import seremis.soulcraft.core.lib.Localizations;
@@ -110,12 +111,17 @@ public class GuiStationControllerSend extends SCGui {
         
         if(!isDragging) {
             for(GuiLineStation station : stations) {
+                if(tile.selectedDestination != null && tile.selectedDestination.equals(new Coordinate3D(station.tile))) {
+                    station.green = 80;
+                } else {
+                    station.green = 0;
+                }
                 if(station.inRect(this, x-dragOffsetX, y-dragOffsetY)) {
                     List<String> list = new ArrayList<String>();
     
                     list.add("Magnet Station");
-    
-                    if(station.tile == tile) {
+                    
+                    if(new Coordinate3D(station.tile).equals(new Coordinate3D(tile))) {
                         list.add(EnumChatFormatting.BLUE + "Current");
                     }
     
@@ -245,8 +251,8 @@ public class GuiStationControllerSend extends SCGui {
     protected void mouseClicked(int x, int y, int button) {
         super.mouseClicked(x, y, button);
         for(GuiLineStation station : stations) {
-            if(station.inRect(this, x - dragOffsetX, y - dragOffsetY) && tile.hasTransporter()) {
-                int[] coordinates = new int[] {station.tile.xCoord, station.tile.yCoord, station.tile.zCoord};
+            if(station.inRect(this, x - dragOffsetX, y - dragOffsetY) && station.tile != tile) {
+                int[] coordinates = new int[] {station.tile.xCoord, station.tile.yCoord, station.tile.zCoord, button};
 
                 ByteBuffer byteBuffer = ByteBuffer.allocate(coordinates.length * 4);
                 IntBuffer intBuffer = byteBuffer.asIntBuffer();
@@ -254,6 +260,9 @@ public class GuiStationControllerSend extends SCGui {
 
                 byte[] array = byteBuffer.array();
                 tile.sendTileDataToServer(3, array);
+                if(button == 1 && !new Coordinate3D(station.tile).equals(new Coordinate3D(tile))) {
+                    tile.selectedDestination = new Coordinate3D(station.tile);
+                }
             }
         }
 

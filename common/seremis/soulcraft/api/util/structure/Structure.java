@@ -123,9 +123,19 @@ public class Structure {
             List<Coordinate3D> list = getBlockCoordinates(block);
             List<Coordinate3D> exists = new ArrayList<Coordinate3D>();
             for(Coordinate3D coord : list) {
-                if(world.getBlockId((int) coord.x, (int) coord.y, (int) coord.z) == block.getBlock().blockID) {
-                    if(world.getBlockMetadata((int) coord.x, (int) coord.y, (int) coord.z) == block.getMetadata()) {
-                        exists.add(coord);
+                if(block.getReplaceableBlocks() != null) {
+                    for(IStructureBlock blck : block.getReplaceableBlocks()) {
+                        if(world.getBlockId((int) coord.x, (int) coord.y, (int) coord.z) == blck.getBlock().blockID) {
+                            if(world.getBlockMetadata((int) coord.x, (int) coord.y, (int) coord.z) == block.getMetadata()) {
+                                exists.add(coord);
+                            }
+                        }
+                    }
+                } else {
+                    if(world.getBlockId((int) coord.x, (int) coord.y, (int) coord.z) == block.getBlock().blockID) {
+                        if(world.getBlockMetadata((int) coord.x, (int) coord.y, (int) coord.z) == block.getMetadata()) {
+                            exists.add(coord);
+                        }
                     }
                 }
             }
@@ -201,15 +211,23 @@ public class Structure {
                 StructureMap structureMap = this.structureMap.getRotation(i);
                 calculateBaseCoordinates(i);
                 for(IStructureBlock block : structureMap.getBlocks()) {
-                    if(world.getBlockId((int) coordinate.x + (int) block.getPosition().x, (int) coordinate.y + (int) block.getPosition().y, (int) coordinate.z + (int) block.getPosition().z) == block.getBlock().blockID) {
-                        if(world.getBlockMetadata((int) coordinate.x + (int) block.getPosition().x, (int) coordinate.y + (int) block.getPosition().y, (int) coordinate.z + (int) block.getPosition().z) == block.getMetadata()) {
-                            if(block.canFormStructure(structureMap, world, (int) coordinate.x + (int) block.getPosition().x, (int) coordinate.y + (int) block.getPosition().y, (int) coordinate.z + (int) block.getPosition().z)) {
-                                exists.add(block);
-                            } else {
-                                break;
+                    if(block.getReplaceableBlocks() != null) {
+                        for(IStructureBlock blck : block.getReplaceableBlocks()) {
+                            if(world.getBlockId((int) coordinate.x + (int) block.getPosition().x, (int) coordinate.y + (int) block.getPosition().y, (int) coordinate.z + (int) block.getPosition().z) == blck.getBlock().blockID) {
+                                if(world.getBlockMetadata((int) coordinate.x + (int) block.getPosition().x, (int) coordinate.y + (int) block.getPosition().y, (int) coordinate.z + (int) block.getPosition().z) == blck.getMetadata()) {
+                                    if(block.canFormStructure(structureMap, world, (int) coordinate.x + (int) block.getPosition().x, (int) coordinate.y + (int) block.getPosition().y, (int) coordinate.z + (int) block.getPosition().z)) {
+                                        exists.add(block);
+                                    }
+                                }
                             }
-                        } else {
-                            break;
+                        }
+                    } else {
+                        if(world.getBlockId((int) coordinate.x + (int) block.getPosition().x, (int) coordinate.y + (int) block.getPosition().y, (int) coordinate.z + (int) block.getPosition().z) == block.getBlock().blockID) {
+                            if(world.getBlockMetadata((int) coordinate.x + (int) block.getPosition().x, (int) coordinate.y + (int) block.getPosition().y, (int) coordinate.z + (int) block.getPosition().z) == block.getMetadata()) {
+                                if(block.canFormStructure(structureMap, world, (int) coordinate.x + (int) block.getPosition().x, (int) coordinate.y + (int) block.getPosition().y, (int) coordinate.z + (int) block.getPosition().z)) {
+                                    exists.add(block);
+                                }
+                            }
                         }
                     }
                     if(!block.needsToExistForStructureToForm()) {

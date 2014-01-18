@@ -4,7 +4,6 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
-import seremis.soulcraft.client.render.BlockBushRenderer;
 import seremis.soulcraft.client.render.BlockCompressorRenderer;
 import seremis.soulcraft.client.render.BlockCrystalRenderer;
 import seremis.soulcraft.client.render.BlockCrystalStandRenderer;
@@ -12,7 +11,6 @@ import seremis.soulcraft.client.render.BlockMonsterEggRenderer;
 import seremis.soulcraft.client.render.EntityTransporterRenderer;
 import seremis.soulcraft.client.render.ItemTransporterModulesRenderer;
 import seremis.soulcraft.client.render.RenderBeam;
-import seremis.soulcraft.client.render.TileBushRenderer;
 import seremis.soulcraft.client.render.TileCompressorRenderer;
 import seremis.soulcraft.client.render.TileCrystalRenderer;
 import seremis.soulcraft.client.render.TileCrystalStandRenderer;
@@ -20,7 +18,6 @@ import seremis.soulcraft.core.lib.RenderIds;
 import seremis.soulcraft.entity.EntityTransporter;
 import seremis.soulcraft.handler.RenderTickHandler;
 import seremis.soulcraft.item.ModItems;
-import seremis.soulcraft.tileentity.TileBush;
 import seremis.soulcraft.tileentity.TileCompressor;
 import seremis.soulcraft.tileentity.TileCrystal;
 import seremis.soulcraft.tileentity.TileCrystalStand;
@@ -37,14 +34,12 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(RenderIds.CompressorRenderID, new BlockCompressorRenderer());
         RenderingRegistry.registerBlockHandler(RenderIds.CrystalRenderID, new BlockCrystalRenderer());
         RenderingRegistry.registerBlockHandler(RenderIds.CrystalStandRenderID, new BlockCrystalStandRenderer());
-        RenderingRegistry.registerBlockHandler(RenderIds.BushRenderID, new BlockBushRenderer());
 
         RenderingRegistry.registerEntityRenderingHandler(EntityTransporter.class, new EntityTransporterRenderer());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileCompressor.class, new TileCompressorRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileCrystal.class, new TileCrystalRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileCrystalStand.class, new TileCrystalStandRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileBush.class, new TileBushRenderer());
 
         MinecraftForgeClient.registerItemRenderer(ModItems.transporterModules.itemID, new ItemTransporterModulesRenderer());
     }

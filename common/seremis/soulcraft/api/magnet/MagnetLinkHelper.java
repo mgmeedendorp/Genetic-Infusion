@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
 import seremis.soulcraft.SoulCraft;
 import seremis.soulcraft.api.magnet.tile.IMagnetConnector;
+import seremis.soulcraft.api.util.Coordinate3D;
 import seremis.soulcraft.api.util.Line3D;
 import seremis.soulcraft.network.PacketTypeHandler;
 import seremis.soulcraft.network.packet.PacketAddMagnetLink;
@@ -30,6 +31,7 @@ public class MagnetLinkHelper {
     public void addLink(MagnetLink link) {
         if(link.connector1.getTile().worldObj.isRemote) {
             addClientLink(link);
+            //System.out.println(link);
             return;
         }
         if(link != null && link.connector1 != null && link.connector2 != null && link.connector1 != link.connector2 && !doesLinkExist(link)) {
@@ -68,27 +70,15 @@ public class MagnetLinkHelper {
         List<MagnetLink> links = new ArrayList<MagnetLink>();
 
         Iterator<MagnetLink> it = getAllLinks().iterator();
-
+        
         while(it.hasNext()) {
             MagnetLink link = it.next();
-
-            if(link.connector1 == connector) {
+            
+            if(new Coordinate3D(connector.getTile()).equals(new Coordinate3D(link.connector1.getTile()))) {
                 links.add(link);
-            } else if(link.connector2 == connector) {
+            } else if(new Coordinate3D(connector.getTile()).equals(new Coordinate3D(link.connector2.getTile()))) {
                 links.add(link);
-            } else if(link.connector1.getTile().xCoord == connector.getTile().xCoord) {
-                if(link.connector1.getTile().yCoord == connector.getTile().yCoord) {
-                    if(link.connector1.getTile().zCoord == connector.getTile().zCoord) {
-                        links.add(link);
-                    }
-                }
-            } else if(link.connector2.getTile().xCoord == connector.getTile().xCoord) {
-                if(link.connector2.getTile().yCoord == connector.getTile().yCoord) {
-                    if(link.connector2.getTile().zCoord == connector.getTile().zCoord) {
-                        links.add(link);
-                    }
-                }
-            }
+            } 
         }
 
         return links;
@@ -101,23 +91,11 @@ public class MagnetLinkHelper {
 
         while(it.hasNext()) {
             MagnetLink link = it.next();
-            if(link.connector1 == connector) {
-                connList.add(link.connector2);
-            } else if(link.connector2 == connector) {
-                connList.add(link.connector1);
-            } else if(link.connector1.getTile().xCoord == connector.getTile().xCoord) {
-                if(link.connector1.getTile().yCoord == connector.getTile().yCoord) {
-                    if(link.connector1.getTile().zCoord == connector.getTile().zCoord) {
-                        connList.add(link.connector2);
-                    }
-                }
-            } else if(link.connector2.getTile().xCoord == connector.getTile().xCoord) {
-                if(link.connector2.getTile().yCoord == connector.getTile().yCoord) {
-                    if(link.connector2.getTile().zCoord == connector.getTile().zCoord) {
-                        connList.add(link.connector1);
-                    }
-                }
-            }
+            if(new Coordinate3D(connector.getTile()).equals(new Coordinate3D(link.connector1.getTile()))) {
+                 connList.add(link.connector2);
+             } else if(new Coordinate3D(connector.getTile()).equals(new Coordinate3D(link.connector2.getTile()))) {
+                 connList.add(link.connector1);
+             } 
         }
         return connList;
     }
@@ -166,24 +144,35 @@ public class MagnetLinkHelper {
         return doesLinkExist(link.connector1, link.connector2);
     }
 
-    public boolean doesLinkExist(IMagnetConnector connector1, IMagnetConnector connector2) {
-        if(connector1 == null || connector2 == null || connector1 == connector2) {
+    public boolean doesLinkExist(IMagnetConnector conn1, IMagnetConnector conn2) {
+        if(conn1 == null || conn2 == null || conn1 == conn2) {
             return true;
         }
 
         Iterator<MagnetLink> it = getAllLinks().iterator();
         while(it.hasNext()) {
             MagnetLink link = it.next();
-            if(link.connector1 == connector1 && link.connector2 == connector2) {
+            if(!areLinksEqual(link, new MagnetLink(conn1, conn2))) {
                 return true;
             }
-            if(link.connector1 == connector2 && link.connector2 == connector1) {
+            if(link.connector1 == conn2 && link.connector2 == conn1) {
                 return true;
             }
         }
         return false;
     }
-
+    
+    public boolean areLinksEqual(MagnetLink link1, MagnetLink link2) {
+        if(link1.dimensionID != link2.dimensionID) {
+            if(!Coordinate3D.equals(link1.connector1.getTile(), link2.connector1.getTile()) && !Coordinate3D.equals(link1.connector2.getTile(), link2.connector2.getTile())) {
+                if(!Coordinate3D.equals(link1.connector1.getTile(), link2.connector2.getTile()) && !Coordinate3D.equals(link1.connector2.getTile(), link2.connector1.getTile())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
     public List<IMagnetConnector> getAllConnectors() {
         List<IMagnetConnector> connectors = new ArrayList<IMagnetConnector>();
         Iterator<MagnetLink> it = getAllLinks().iterator();
@@ -216,8 +205,8 @@ public class MagnetLinkHelper {
 
         for(MagnetLink link : getAllLinks()) {
             PacketDispatcher.sendPacketToPlayer(PacketTypeHandler.populatePacket(new PacketAddMagnetLink(link)), (Player) player);
-        }
-        SoulCraft.logger.log(Level.FINE, "Sent list of links to player: " + player.username);
+        }        
+        SoulCraft.logger.log(Level.INFO, "Sent list of links to player: " + player.username);
     }
 
     public MagnetNetwork getNetworkFrom(MagnetLink link) {

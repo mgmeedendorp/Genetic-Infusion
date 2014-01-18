@@ -1,15 +1,17 @@
 package seremis.soulcraft.api.util.structure;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import seremis.soulcraft.api.util.Coordinate3D;
 
 public class StructureBlock implements IStructureBlock {
 
-    private Block block;
-    private int metadata;
-    private Coordinate3D position;
-    private boolean needsExistance;
+    protected Block block;
+    protected int metadata;
+    protected Coordinate3D position;
+    protected boolean needsExistance;
 
     public StructureBlock(Block block, int metadata, Coordinate3D position, boolean mustExist) {
         this.block = block;
@@ -63,5 +65,10 @@ public class StructureBlock implements IStructureBlock {
     @Override
     public boolean needsToExistForStructureToForm() {
         return needsExistance;
+    }
+
+    @Override
+    public List<IStructureBlock> getReplaceableBlocks() {
+        return null;
     }
 }
