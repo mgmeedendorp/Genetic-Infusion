@@ -1,14 +1,13 @@
 package seremis.soulcraft.soul;
 
+import seremis.soulcraft.soul.allele.AlleleBoolean;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class SoulHandler {
 
-    public static SoulHandler instance = new SoulHandler();
-    
-    public void addSoulTo(EntityLivingBase entity) {
+    public static void addSoulTo(EntityLivingBase entity) {
         NBTTagCompound compound = entity.getEntityData();
         if(!compound.hasKey("soul")) {
             
@@ -23,7 +22,7 @@ public class SoulHandler {
         }
     }
     
-    public Soul getSoulFrom(EntityLivingBase entity) {
+    public static Soul getSoulFrom(EntityLivingBase entity) {
         Soul soul = null;
         
         NBTTagCompound compound = entity.getEntityData();
@@ -41,13 +40,18 @@ public class SoulHandler {
         }
         return soul;
     }
+    
+    public static boolean isSoulPreset(Soul soul) {
+        return ((AlleleBoolean)soul.chromosomes[EnumChromosome.IS_TEMPLATE_GENOME.ordinal()].getActive()).value;
+    }
 
-    public void entityRightClicked(EntityLivingBase entity, EntityPlayer player) {
+    public static void entityRightClicked(EntityLivingBase entity, EntityPlayer player) {
         Soul soul = getSoulFrom(entity);
         
-        for(IChromosome chromosome : soul.getChromosomes()) {
-            AlleleRegistry.registry.getAction(chromosome.getPrimary().getName()).interact(entity, player);
-            AlleleRegistry.registry.getAction(chromosome.getSecondary().getName()).interact(entity, player);
+        if(!isSoulPreset(soul)) {
+            for(int i = 1; i < soul.chromosomes.length; i++) {
+                EnumChromosome.values()[i].action.interact(entity, player);;
+            }
         }
     }
 }

@@ -1,8 +1,8 @@
 package seremis.soulcraft.soul;
 
-import seremis.soulcraft.core.lib.AlleleNames;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityZombie;
+import seremis.soulcraft.soul.allele.AlleleBoolean;
 
 public class SoulPresets {
 
@@ -13,12 +13,20 @@ public class SoulPresets {
     }
     
     public static Soul getZombieSoul() {
-        Chromosome[] chromosomes = new Chromosome[1];
+        Chromosome[] chromosomes = new Chromosome[2];
         
-        IAllele allele1 = new Allele(true, AlleleNames.BURNS_IN_DAYLIGHT);
-        IAllele allele2 = new Allele(true, AlleleNames.BURNS_IN_DAYLIGHT);
+        IAllele allele1;
+        IAllele allele2;
         
-        chromosomes[0] = new Chromosome(allele1, allele2);
+        allele1 = new AlleleBoolean(true, true);
+        allele2 = new AlleleBoolean(true, true);
+        
+        chromosomes[EnumChromosome.IS_TEMPLATE_GENOME.ordinal()] = new Chromosome(allele1, allele2);
+        
+        allele1 = new AlleleBoolean(true, true);
+        allele2 = new AlleleBoolean(true, true);
+        
+        chromosomes[EnumChromosome.BURNS_IN_DAYLIGHT.ordinal()] = new Chromosome(allele1, allele2);
         
         return new Soul(chromosomes);
     }

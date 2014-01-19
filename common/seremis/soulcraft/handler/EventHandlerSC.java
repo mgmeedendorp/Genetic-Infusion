@@ -13,14 +13,14 @@ public class EventHandlerSC {
     @ForgeSubscribe
     public void entitySpawn(EntityJoinWorldEvent event) {
         if(CommonProxy.proxy.isServerWorld(event.entity.worldObj) && event.entity instanceof EntityLivingBase) {
-            SoulHandler.instance.addSoulTo((EntityLivingBase) event.entity);
+            SoulHandler.addSoulTo((EntityLivingBase) event.entity);
         }
     }
     
     @ForgeSubscribe
     public void entityRightClick(EntityInteractEvent event) {
         if(CommonProxy.proxy.isServerWorld(event.entity.worldObj) && event.target instanceof EntityLivingBase) {
-            SoulHandler.instance.entityRightClicked((EntityLivingBase) event.target, event.entityPlayer);
+            SoulHandler.entityRightClicked((EntityLivingBase) event.target, event.entityPlayer);
         }
     }
     

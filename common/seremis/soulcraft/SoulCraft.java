@@ -21,7 +21,6 @@ import seremis.soulcraft.helper.RecipeHelper;
 import seremis.soulcraft.item.ModItems;
 import seremis.soulcraft.misc.DamageCompressor;
 import seremis.soulcraft.network.PacketHandler;
-import seremis.soulcraft.soul.ModAlleleActions;
 import seremis.soulcraft.util.structure.ModStructures;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -76,7 +75,6 @@ public class SoulCraft {
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        ModAlleleActions.init();
         logger.log(Level.INFO, DefaultProps.name + " is loaded successfully.");
     }
 }
