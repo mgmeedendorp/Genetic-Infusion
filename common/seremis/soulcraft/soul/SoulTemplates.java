@@ -1,12 +1,12 @@
 package seremis.soulcraft.soul;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityZombie;
 import seremis.soulcraft.soul.allele.AlleleBoolean;
 
-public class SoulPresets {
+public class SoulTemplates {
 
-    public static Soul getStandardSoulFromEntity(EntityLivingBase entity) {
+    public static Soul getSoulPreset(EntityLiving entity) {
         if(entity instanceof EntityZombie)
             return getZombieSoul();
         return null;

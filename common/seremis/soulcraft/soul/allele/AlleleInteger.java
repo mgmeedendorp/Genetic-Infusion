@@ -3,28 +3,28 @@ package seremis.soulcraft.soul.allele;
 import net.minecraft.nbt.NBTTagCompound;
 import seremis.soulcraft.soul.Allele;
 
-public class AlleleBoolean extends Allele {
+public class AlleleInteger extends Allele {
 
-    public boolean value;
+    public int value;
     
-    public AlleleBoolean(boolean isDominant, boolean value) {
+    public AlleleInteger(boolean isDominant, int value) {
         super(isDominant);
         this.value = value;
     }
     
-    public AlleleBoolean(NBTTagCompound compound) {
+    public AlleleInteger(NBTTagCompound compound) {
         super(compound);
     }
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        compound.setBoolean("value", value);
+        compound.setInteger("value", value);
     }
     
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        value = compound.getBoolean("value");
+        value = compound.getInteger("value");
     }
 }
