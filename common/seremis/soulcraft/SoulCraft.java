@@ -21,6 +21,7 @@ import seremis.soulcraft.helper.RecipeHelper;
 import seremis.soulcraft.item.ModItems;
 import seremis.soulcraft.misc.DamageCompressor;
 import seremis.soulcraft.network.PacketHandler;
+import seremis.soulcraft.soul.ModSouls;
 import seremis.soulcraft.util.structure.ModStructures;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -71,6 +72,7 @@ public class SoulCraft {
         RecipeHelper.initSmelting();
         LanguageRegistry.instance().addStringLocalization("itemGroup.SoulCraft", "en_US", "SoulCraft");
         MinecraftForge.EVENT_BUS.register(new EventHandlerSC());
+        ModSouls.init();
     }
 
     @EventHandler

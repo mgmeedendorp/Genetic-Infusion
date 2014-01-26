@@ -6,7 +6,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import seremis.soulcraft.soul.allele.AlleleBoolean;
 import seremis.soulcraft.soul.allele.AlleleFloat;
-import seremis.soulcraft.soul.allele.AlleleItemStack;
+import seremis.soulcraft.soul.allele.AlleleIntArray;
+import seremis.soulcraft.soul.allele.AlleleInteger;
+import seremis.soulcraft.soul.allele.AlleleInventory;
 
 public class SoulTemplates {
 
@@ -37,8 +39,25 @@ public class SoulTemplates {
         
         chromosomes[EnumChromosome.BURNS_IN_DAYLIGHT.ordinal()] = new Chromosome(allele1, allele2);
         
-        allele1 = new AlleleItemStack(true, new ItemStack(Item.rottenFlesh));
-        allele2 = new AlleleItemStack(true, new ItemStack(Item.rottenFlesh));
+        allele1 = new AlleleInventory(true, new ItemStack[] {new ItemStack(Item.rottenFlesh)});
+        allele2 = new AlleleInventory(true, new ItemStack[] {new ItemStack(Item.rottenFlesh)});
+        
+        chromosomes[EnumChromosome.ITEM_DROPS.ordinal()] = new Chromosome(allele1, allele2);
+        
+        allele1 = new AlleleIntArray(true, new int[] {});
+        allele2 = new AlleleIntArray(true, new int[] {});
+        
+        chromosomes[EnumChromosome.EQUIPMENT_DROP_CHANCES.ordinal()] = new Chromosome(allele1, allele2);
+        
+        allele1 = new AlleleInventory(true, new ItemStack[] {new ItemStack(Item.ingotIron), new ItemStack(Item.carrot), new ItemStack(Item.potato)});
+        allele2 = new AlleleInventory(true, new ItemStack[] {new ItemStack(Item.ingotIron), new ItemStack(Item.carrot), new ItemStack(Item.potato)});
+        
+        chromosomes[EnumChromosome.RARE_ITEM_DROPS.ordinal()] = new Chromosome(allele1, allele2);
+        
+        allele1 = new AlleleInteger(true, 3);
+        allele2 = new AlleleInteger(true, 3);
+        
+        chromosomes[EnumChromosome.RARE_ITEM_DROP_CHANCE.ordinal()] = new Chromosome(allele1, allele2);
         
         return new Soul(chromosomes);
     }

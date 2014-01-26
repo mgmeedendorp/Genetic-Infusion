@@ -1,11 +1,15 @@
 package seremis.soulcraft.entity;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import seremis.soulcraft.soul.IEntitySoulCustom;
+import net.minecraftforge.common.ForgeHooks;
 import seremis.soulcraft.soul.SoulHandler;
+import seremis.soulcraft.soul.entity.IEntitySoulCustom;
 
 public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom {
 
@@ -19,11 +23,7 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
         SoulHandler.entityInit(this);
     }
 
-    //Modularity stuff//
-    
-    public ItemStack drops;
-    public ItemStack rareDrops;
-    
+    //Modularity stuff//    
     @Override
     public double getPosX() {
         return posX;
@@ -70,8 +70,8 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
     }
     
     @Override
-    public ItemStack getArmor(int slot) {
-        return getCurrentItemOrArmor(slot+1);
+    public ItemStack getCurrentItemOrArmor(int slot) {
+        return getCurrentItemOrArmor(slot);
     }
     
     @Override
@@ -103,17 +103,19 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
     public void dropItems(ItemStack stack) {
         this.entityDropItem(stack, getEyeHeight());
     }
+
+    @Override
+    public boolean getIsChild() {
+        return isChild();
+    }
+
+    @Override
+    public int getRecentlyHit() {
+        return recentlyHit;
+    }
     
-    //Entity stuff//
-//    @Override
-//    protected void applyEntityAttributes() {
-//      getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(maxHealth);
-//      getEntityAttribute(SharedMonsterAttributes.followRange).setAttribute(32.0D);
-//      getEntityAttribute(SharedMonsterAttributes.knockbackResistance).setAttribute(0.0D);
-//      getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(0.699D);
-//      getEntityAttribute(SharedMonsterAttributes.attackDamage).setAttribute(2.0D);
-//    }
     
+    //Entity stuff//    
     @Override
     public boolean interact(EntityPlayer player) {
         SoulHandler.entityRightClicked(this, player);
@@ -127,7 +129,30 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
     }
     
     @Override
-    public void dropFewItems(boolean recentlyHit, int lootingLevel) {
-        SoulHandler.entityDropItems(this, recentlyHit, lootingLevel);
+    public void onDeath(DamageSource source) {
+        if(ForgeHooks.onLivingDeath(this, source)) return;
+        
+        if(source.getEntity() != null) {
+            source.getEntity().onKillEntity(this);
+        }
+        dead = true;
+        
+        SoulHandler.entityDeath(this, source);
+        this.worldObj.setEntityState(this, (byte)3);
+    }
+    
+    @Override
+    public void onKillEntity(EntityLivingBase entity) {
+        SoulHandler.onKillEntity(this, entity);
+    }
+    
+    @Override
+    public boolean attackEntityFrom(DamageSource source, float damage) {
+       return SoulHandler.attackEntityFrom(this, source, damage);
+    }
+    
+    @Override
+    public EntityLivingData onSpawnWithEgg(EntityLivingData data) {
+        return SoulHandler.spawnEntityFromEgg(this, data);
     }
 }

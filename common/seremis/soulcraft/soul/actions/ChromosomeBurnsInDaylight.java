@@ -2,28 +2,30 @@ package seremis.soulcraft.soul.actions;
 
 import java.util.Random;
 
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
 import seremis.soulcraft.core.proxy.CommonProxy;
-import seremis.soulcraft.soul.IChromosome;
-import seremis.soulcraft.soul.IChromosomeAction;
-import seremis.soulcraft.soul.IEntitySoulCustom;
+import seremis.soulcraft.soul.entity.IEntitySoulCustom;
+import seremis.soulcraft.soul.event.EntityEventHandler;
 
-public class ChromosomeBurnsInDaylight implements IChromosomeAction {
+public class ChromosomeBurnsInDaylight extends EntityEventHandler {
 
     @Override
-    public void init(IChromosome chromosome, IEntitySoulCustom entity) {}
+    public void onInit(IEntitySoulCustom entity) {}
     
     @Override
-    public void entityUpdate(IChromosome chromosome, IEntitySoulCustom entity) {
+    public void onUpdate(IEntitySoulCustom entity) {
         if(CommonProxy.proxy.isServerWorld(entity.getWorld()) && entity.getWorld().isDaytime()) {
             
             float brightness = entity.getBrightness();
             
             if(brightness > 0.5F && entity.getWorld().canBlockSeeTheSky((int) Math.floor(entity.getPosX()), (int) Math.floor(entity.getPosY()), (int) Math.floor(entity.getPosZ()))) {
                 
-                ItemStack headwear = entity.getArmor(3);
+                ItemStack headwear = entity.getCurrentItemOrArmor(4);
                 
                 if(headwear != null) {
                     if(headwear.isItemStackDamageable()) {
@@ -60,9 +62,19 @@ public class ChromosomeBurnsInDaylight implements IChromosomeAction {
     }
     
     @Override
-    public void interact(IChromosome chromosome, IEntitySoulCustom entity, EntityPlayer player) {}
+    public void onInteract(IEntitySoulCustom entity, EntityPlayer player) {}
 
     @Override
-    public void dropItems(IChromosome chromosome, IEntitySoulCustom entity, boolean recentlyHit, int lootingLevel) {}
-    
+    public void onDeath(IEntitySoulCustom entity, DamageSource source) {}
+
+    @Override
+    public void onKillEntity(IEntitySoulCustom entity, EntityLivingBase killed) {}
+
+    @Override
+    public boolean onEntityAttacked(IEntitySoulCustom entity, DamageSource source, float damage) {
+        return true;
+    }
+
+    @Override
+    public void onSpawnWithEgg(IEntitySoulCustom entity, EntityLivingData data) {}
 }

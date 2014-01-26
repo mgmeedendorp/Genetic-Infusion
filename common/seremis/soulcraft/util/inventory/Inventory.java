@@ -19,6 +19,11 @@ public class Inventory implements IInventory {
         this.name = name;
         this.inventoryStackLimit = inventoryStackLimit;
     }
+    
+    public Inventory(NBTTagCompound compound, TileEntity tile) {
+        readFromNBT(compound);
+        this.tile = tile;
+    }
 
     @Override
     public int getSizeInventory() {
@@ -105,11 +110,24 @@ public class Inventory implements IInventory {
         return inventory;
     }
     
+    public void setItemStacks(ItemStack[] stacks) {
+        inventory = stacks;
+    }
+    
     public void writeToNBT(NBTTagCompound compound) {
+        if(getInvName() != null)
+            compound.setString("name", getInvName());
+        
+        compound.setInteger("stackLimit", getInventoryStackLimit());
+
         UtilTileEntity.writeInventoryToNBT(this, compound);
     }
     
     public void readFromNBT(NBTTagCompound compound) {
+        if(compound.hasKey("name"))
+            name = compound.getString("name");
+        
+        inventoryStackLimit = compound.getInteger("stackLimit");
         inventory = UtilTileEntity.readInventoryFromNBT(this, compound);
     }
 }

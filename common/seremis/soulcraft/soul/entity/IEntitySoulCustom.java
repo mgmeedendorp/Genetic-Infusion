@@ -1,4 +1,4 @@
-package seremis.soulcraft.soul;
+package seremis.soulcraft.soul.entity;
 
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeInstance;
@@ -27,7 +27,7 @@ public interface IEntitySoulCustom {
     /*
      * Get the armor from slot 0-3
      */
-    ItemStack getArmor(int slot);
+    ItemStack getCurrentItemOrArmor(int slot);
     void setArmor(int slot, ItemStack stack);
     ItemStack getHeldItem();
     void setHeldItem(ItemStack stack);
@@ -47,4 +47,8 @@ public interface IEntitySoulCustom {
     AttributeInstance getEntityAttribute(Attribute attribute);
     
     NBTTagCompound getEntityData();
+    
+    boolean getIsChild();
+    
+    int getRecentlyHit();
 }
