@@ -77,4 +77,7 @@ public class ChromosomeBurnsInDaylight extends EntityEventHandler {
 
     @Override
     public void onSpawnWithEgg(IEntitySoulCustom entity, EntityLivingData data) {}
+
+    @Override
+    public void playSound(IEntitySoulCustom entity, String name, float volume, float pitch) {}
 }

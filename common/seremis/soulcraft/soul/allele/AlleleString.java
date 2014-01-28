@@ -13,10 +13,12 @@ public class AlleleString extends Allele {
     }
 
     public void writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
         compound.setString("value", value);
     }
     
     public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
         value = compound.getString("value");
     }
 }

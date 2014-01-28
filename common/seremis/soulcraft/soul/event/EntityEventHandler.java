@@ -21,4 +21,6 @@ public abstract class EntityEventHandler {
     public abstract boolean onEntityAttacked(IEntitySoulCustom entity, DamageSource source, float damage);
 
     public abstract void onSpawnWithEgg(IEntitySoulCustom entity, EntityLivingData data);
+    
+    public abstract void playSound(IEntitySoulCustom entity, String name, float volume, float pitch);
 }

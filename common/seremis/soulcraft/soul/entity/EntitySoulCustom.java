@@ -1,15 +1,15 @@
-package seremis.soulcraft.entity;
+package seremis.soulcraft.soul.entity;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityLivingData;
+import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import seremis.soulcraft.soul.SoulHandler;
-import seremis.soulcraft.soul.entity.IEntitySoulCustom;
 
 public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom {
 
@@ -114,12 +114,36 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
         return recentlyHit;
     }
     
+    @Override
+    public String getLivingSound() {
+        return "sound.living";
+    }
     
+    @Override
+    public String getHurtSound() {
+        return "sound.hurt";
+    }
+    
+    @Override
+    public String getDeathSound() {
+        return "sound.death";
+    }
+    
+    @Override
+    public EntityAITasks getTasks() {
+        return tasks;
+    }
+
+    @Override
+    public EntityAITasks getTargetTasks() {
+        return targetTasks;
+    }
+   
     //Entity stuff//    
     @Override
     public boolean interact(EntityPlayer player) {
         SoulHandler.entityRightClicked(this, player);
-        return super.interact(player);
+        return true;
     }
     
     @Override
@@ -154,5 +178,10 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
     @Override
     public EntityLivingData onSpawnWithEgg(EntityLivingData data) {
         return SoulHandler.spawnEntityFromEgg(this, data);
+    }
+    
+    @Override
+    public void playSound(String name, float volume, float pitch) {
+        SoulHandler.playSoundAtEntity(this, name, volume, pitch);
     }
 }

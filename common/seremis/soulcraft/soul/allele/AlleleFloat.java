@@ -11,10 +11,6 @@ public class AlleleFloat extends Allele {
         super(isDominant);
         this.value = value;
     }
-    
-    public AlleleFloat(NBTTagCompound compound) {
-        super(compound);
-    }
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {

@@ -1,0 +1,30 @@
+package seremis.soulcraft.soul.allele;
+
+import net.minecraft.nbt.NBTTagCompound;
+import seremis.soulcraft.soul.Allele;
+
+public class AlleleStringArray extends Allele {
+
+    public String[] value;
+    
+    public AlleleStringArray(boolean isDominant, String[] value) {
+        super(isDominant);
+        this.value = value;
+    }
+
+    public void writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
+        compound.setInteger("length", value.length);
+        for(int i = 0; i < value.length; i++) {
+            compound.setString("value" + i, value[i]);
+        }
+    }
+    
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+        value = new String[compound.getInteger("length")];
+        for(int i = 0; i < value.length; i++) {
+            value[i] = compound.getString("value" + i);
+        }
+    }
+}

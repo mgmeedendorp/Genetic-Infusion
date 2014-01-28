@@ -117,7 +117,7 @@ public class SoulHandler {
                 }
             }
         }
-        return true;
+        return flag;
     }
 
     public static EntityLivingData spawnEntityFromEgg(IEntitySoulCustom entity, EntityLivingData data) {
@@ -129,5 +129,15 @@ public class SoulHandler {
             }
         }
         return data;
+    }
+
+    public static void playSoundAtEntity(IEntitySoulCustom entity, String name, float volume, float pitch) {
+        Soul soul = getSoulFrom((EntityLiving) entity);
+        
+        if(soul != null && !isSoulPreset(soul) && isSoulEntity(entity)) {
+            for(EntityEventHandler handler : eventHandlers) {
+                handler.playSound(entity, name, volume, pitch);
+            }
+        }
     }
 }

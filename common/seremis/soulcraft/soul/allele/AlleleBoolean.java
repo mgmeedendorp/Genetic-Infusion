@@ -11,10 +11,6 @@ public class AlleleBoolean extends Allele {
         super(isDominant);
         this.value = value;
     }
-    
-    public AlleleBoolean(NBTTagCompound compound) {
-        super(compound);
-    }
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {

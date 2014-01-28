@@ -19,10 +19,6 @@ public class AlleleInventory extends Allele {
         inventory.setItemStacks(stacks);
     }
     
-    public AlleleInventory(NBTTagCompound compound) {
-        super(compound);
-    }
-    
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         inventory.writeToNBT(compound);

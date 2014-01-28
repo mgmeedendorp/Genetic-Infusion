@@ -12,11 +12,6 @@ public class AlleleIntArray extends Allele {
         this.value = value;
     }
     
-    public AlleleIntArray(NBTTagCompound compound) {
-        super(compound);
-        
-    }
-    
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         value = compound.getIntArray("value");

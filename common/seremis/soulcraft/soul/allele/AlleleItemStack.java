@@ -12,15 +12,13 @@ public class AlleleItemStack extends Allele {
         super(isDominant);
     }
     
-    public AlleleItemStack(NBTTagCompound compound) {
-        super(compound);
-    }
-    
     public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
         stack = ItemStack.loadItemStackFromNBT(compound);
     }
 
     public void writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
         stack.writeToNBT(compound);
     }
 }

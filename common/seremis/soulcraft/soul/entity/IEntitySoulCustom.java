@@ -1,9 +1,11 @@
 package seremis.soulcraft.soul.entity;
 
+import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.world.World;
 
 public interface IEntitySoulCustom {
@@ -51,4 +53,8 @@ public interface IEntitySoulCustom {
     boolean getIsChild();
     
     int getRecentlyHit();
+    
+    PathNavigate getNavigator();
+    EntityAITasks getTasks();
+    EntityAITasks getTargetTasks();
 }
