@@ -2,6 +2,7 @@ package seremis.soulcraft.soul.actions;
 
 import java.util.Random;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,38 +10,59 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
 import seremis.soulcraft.core.proxy.CommonProxy;
+import seremis.soulcraft.soul.EnumChromosome;
+import seremis.soulcraft.soul.SoulHandler;
+import seremis.soulcraft.soul.allele.AlleleBoolean;
 import seremis.soulcraft.soul.entity.IEntitySoulCustom;
 import seremis.soulcraft.soul.event.EntityEventHandler;
 
-public class ChromosomeBurnsInDaylight extends EntityEventHandler {
+public class ChromosomeHandlerFire extends EntityEventHandler {
 
     @Override
     public void onInit(IEntitySoulCustom entity) {}
     
     @Override
     public void onUpdate(IEntitySoulCustom entity) {
-        if(CommonProxy.proxy.isServerWorld(entity.getWorld()) && entity.getWorld().isDaytime()) {
-            
-            float brightness = entity.getBrightness();
-            
-            if(brightness > 0.5F && entity.getWorld().canBlockSeeTheSky((int) Math.floor(entity.getPosX()), (int) Math.floor(entity.getPosY()), (int) Math.floor(entity.getPosZ()))) {
+        boolean burnsInDayLight = ((AlleleBoolean)SoulHandler.getSoulFrom((EntityLiving) entity).getChromosomes()[EnumChromosome.BURNS_IN_DAYLIGHT.ordinal()].getActive()).value;
+        boolean isImmuneToFire = ((AlleleBoolean)SoulHandler.getSoulFrom((EntityLiving) entity).getChromosomes()[EnumChromosome.IMMUNE_TO_FIRE.ordinal()].getActive()).value;
+        
+        if(burnsInDayLight && !isImmuneToFire) {
+            if(CommonProxy.proxy.isServerWorld(entity.getWorld()) && entity.getWorld().isDaytime()) {
                 
-                ItemStack headwear = entity.getCurrentItemOrArmor(4);
+                float brightness = entity.getBrightness();
                 
-                if(headwear != null) {
-                    if(headwear.isItemStackDamageable()) {
-                        headwear.setItemDamage(headwear.getItemDamageForDisplay() + new Random().nextInt(2));
-                        
-                        if(headwear.getItemDamageForDisplay() >= headwear.getMaxDamage()) {
-                            breakHeadwear(entity, headwear);
-                            entity.setArmor(3, null);
+                if(brightness > 0.5F && entity.getWorld().canBlockSeeTheSky((int) Math.floor(entity.getPosX()), (int) Math.floor(entity.getPosY()), (int) Math.floor(entity.getPosZ()))) {
+                    
+                    ItemStack headwear = entity.getCurrentItemOrArmor(4);
+                    
+                    if(headwear != null) {
+                        if(headwear.isItemStackDamageable()) {
+                            headwear.setItemDamage(headwear.getItemDamageForDisplay() + new Random().nextInt(2));
+                            
+                            if(headwear.getItemDamageForDisplay() >= headwear.getMaxDamage()) {
+                                breakHeadwear(entity, headwear);
+                                entity.setArmor(3, null);
+                            }
                         }
+                    } else {
+                        entity.setFire(8);
                     }
-                } else {
-                    entity.setFire(8);
-                }
+                }   
             }
-            
+        }
+        
+        if(isImmuneToFire) {
+            entity.extinguish();
+        } else {
+            if(CommonProxy.proxy.isRenderWorld(entity.getWorld())) {
+                entity.setFire(0);
+            } else if(entity.getFire() % 20 == 0) {
+                entity.attackEntityFrom(DamageSource.onFire, 1.0F);
+            }
+            if(entity.handleLavaMovement()) {
+                entity.setFire(15);
+                entity.attackEntityFrom(DamageSource.lava, 4.0F);
+            }
         }
     }
     
@@ -71,9 +93,7 @@ public class ChromosomeBurnsInDaylight extends EntityEventHandler {
     public void onKillEntity(IEntitySoulCustom entity, EntityLivingBase killed) {}
 
     @Override
-    public boolean onEntityAttacked(IEntitySoulCustom entity, DamageSource source, float damage) {
-        return true;
-    }
+    public void onEntityAttacked(IEntitySoulCustom entity, DamageSource source, float damage) {}
 
     @Override
     public void onSpawnWithEgg(IEntitySoulCustom entity, EntityLivingData data) {}

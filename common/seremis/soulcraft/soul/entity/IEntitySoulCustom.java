@@ -6,6 +6,7 @@ import net.minecraft.entity.ai.attributes.AttributeInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 public interface IEntitySoulCustom {
@@ -35,6 +36,7 @@ public interface IEntitySoulCustom {
     void setHeldItem(ItemStack stack);
     
     void setFire(int timeSec);
+    int getFire();
     void extinguish();
     
     void playSound(String sound, float volume, float pitch);
@@ -57,4 +59,13 @@ public interface IEntitySoulCustom {
     PathNavigate getNavigator();
     EntityAITasks getTasks();
     EntityAITasks getTargetTasks();
+    
+    int getAir();
+    void setAir(int air);
+    
+    boolean isEntityAlive();
+    boolean isInWater();
+    boolean handleLavaMovement();
+    
+    boolean attackEntityFrom(DamageSource source, float damage);
 }

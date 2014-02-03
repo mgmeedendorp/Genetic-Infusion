@@ -29,9 +29,7 @@ public class ChromosomeSounds extends EntityEventHandler {
     public void onKillEntity(IEntitySoulCustom entity, EntityLivingBase killed) {}
 
     @Override
-    public boolean onEntityAttacked(IEntitySoulCustom entity, DamageSource source, float damage) {
-        return true;
-    }
+    public void onEntityAttacked(IEntitySoulCustom entity, DamageSource source, float damage) {}
 
     @Override
     public void onSpawnWithEgg(IEntitySoulCustom entity, EntityLivingData data) {}

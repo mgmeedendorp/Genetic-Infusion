@@ -1,5 +1,9 @@
 package seremis.soulcraft.soul.entity;
 
+import java.awt.geom.Rectangle2D;
+import java.lang.reflect.Field;
+
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityLivingData;
@@ -137,6 +141,21 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
     @Override
     public EntityAITasks getTargetTasks() {
         return targetTasks;
+    }
+    
+    @Override
+    public int getFire() {
+        //This became a bit overcomplicated..
+        int fire = 0;
+        try {
+            Field onFire = Entity.class.getDeclaredField("fire");
+            onFire.setAccessible(true);
+            fire = onFire.getInt(Entity.class);
+            onFire.setAccessible(false);
+        } catch (Exception e) {
+            e.printStackTrace();;
+        }
+        return fire;
     }
    
     //Entity stuff//    

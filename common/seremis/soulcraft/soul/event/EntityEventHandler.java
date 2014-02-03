@@ -18,7 +18,7 @@ public abstract class EntityEventHandler {
 
     public abstract void onKillEntity(IEntitySoulCustom entity, EntityLivingBase killed);
 
-    public abstract boolean onEntityAttacked(IEntitySoulCustom entity, DamageSource source, float damage);
+    public abstract void onEntityAttacked(IEntitySoulCustom entity, DamageSource source, float damage);
 
     public abstract void onSpawnWithEgg(IEntitySoulCustom entity, EntityLivingData data);
     

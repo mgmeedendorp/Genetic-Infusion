@@ -108,16 +108,12 @@ public class SoulHandler {
     public static boolean attackEntityFrom(IEntitySoulCustom entity, DamageSource source, float damage) {
         Soul soul = getSoulFrom((EntityLiving) entity);
         
-        boolean flag = true;
-        
         if(soul != null && !isSoulPreset(soul) && isSoulEntity(entity)) {
             for(EntityEventHandler handler : eventHandlers) {
-                if(!handler.onEntityAttacked(entity, source, damage)) {
-                    flag = false;
-                }
+                handler.onEntityAttacked(entity, source, damage);
             }
         }
-        return flag;
+        return true;
     }
 
     public static EntityLivingData spawnEntityFromEgg(IEntitySoulCustom entity, EntityLivingData data) {
