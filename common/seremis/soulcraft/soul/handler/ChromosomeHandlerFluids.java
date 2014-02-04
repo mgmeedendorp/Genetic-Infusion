@@ -1,4 +1,4 @@
-package seremis.soulcraft.soul.actions;
+package seremis.soulcraft.soul.handler;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;

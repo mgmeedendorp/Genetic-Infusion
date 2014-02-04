@@ -8,8 +8,13 @@ public class AlleleFloatArray extends Allele {
     public float[] value;
     
     public AlleleFloatArray(boolean isDominant, float[] value) {
-        super(isDominant);
+        super(isDominant, EnumAlleleType.FLOAT_ARRAY);
         this.value = value;
+    }
+    
+    public AlleleFloatArray(NBTTagCompound compound) {
+        super(compound);
+        readFromNBT(compound);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package seremis.soulcraft.core.proxy;
 
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.renderer.entity.RenderZombie;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
@@ -18,6 +19,7 @@ import seremis.soulcraft.core.lib.RenderIds;
 import seremis.soulcraft.entity.EntityTransporter;
 import seremis.soulcraft.handler.RenderTickHandler;
 import seremis.soulcraft.item.ModItems;
+import seremis.soulcraft.soul.entity.EntitySoulCustom;
 import seremis.soulcraft.tileentity.TileCompressor;
 import seremis.soulcraft.tileentity.TileCrystal;
 import seremis.soulcraft.tileentity.TileCrystalStand;
@@ -36,6 +38,7 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(RenderIds.CrystalStandRenderID, new BlockCrystalStandRenderer());
 
         RenderingRegistry.registerEntityRenderingHandler(EntityTransporter.class, new EntityTransporterRenderer());
+        RenderingRegistry.registerEntityRenderingHandler(EntitySoulCustom.class, new RenderZombie());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileCompressor.class, new TileCompressorRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileCrystal.class, new TileCrystalRenderer());

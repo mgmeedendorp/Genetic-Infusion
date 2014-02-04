@@ -9,6 +9,7 @@ import seremis.soulcraft.soul.allele.AlleleFloat;
 import seremis.soulcraft.soul.allele.AlleleIntArray;
 import seremis.soulcraft.soul.allele.AlleleInteger;
 import seremis.soulcraft.soul.allele.AlleleInventory;
+import seremis.soulcraft.soul.allele.AlleleString;
 
 public class SoulTemplates {
 
@@ -19,25 +20,45 @@ public class SoulTemplates {
     }
     
     public static Soul getZombieSoul() {
-        Chromosome[] chromosomes = new Chromosome[2];
+        Chromosome[] chromosomes = new Chromosome[EnumChromosome.values().length];
         
         IAllele allele1;
         IAllele allele2;
-        
-        allele1 = new AlleleBoolean(true, true);
-        allele2 = new AlleleBoolean(true, true);
-        
-        chromosomes[EnumChromosome.IS_TEMPLATE_GENOME.ordinal()] = new Chromosome(allele1, allele2);
         
         allele1 = new AlleleFloat(true, 10);
         allele2 = new AlleleFloat(true, 10);
         
         chromosomes[EnumChromosome.MAX_HEALTH.ordinal()] = new Chromosome(allele1, allele2);
         
+        allele1 = new AlleleFloat(true, 3);
+        allele2 = new AlleleFloat(true, 3);
+        
+        chromosomes[EnumChromosome.ATTACK_DAMAGE.ordinal()] = new Chromosome(allele1, allele2);
+        
+        allele1 = new AlleleFloat(true, 0.23F);
+        allele2 = new AlleleFloat(true, 0.23F);
+        
+        chromosomes[EnumChromosome.MOVEMENT_SPEED.ordinal()] = new Chromosome(allele1, allele2);
+        
         allele1 = new AlleleBoolean(false, true);
         allele2 = new AlleleBoolean(false, true);
         
         chromosomes[EnumChromosome.BURNS_IN_DAYLIGHT.ordinal()] = new Chromosome(allele1, allele2);
+        
+        allele1 = new AlleleBoolean(true, true);
+        allele2 = new AlleleBoolean(true, true);
+        
+        chromosomes[EnumChromosome.DROWNS_IN_WATER.ordinal()] = new Chromosome(allele1, allele2);
+        
+        allele1 = new AlleleBoolean(true, true);
+        allele2 = new AlleleBoolean(true, true);
+        
+        chromosomes[EnumChromosome.DROWNS_IN_AIR.ordinal()] = new Chromosome(allele1, allele2);
+        
+        allele1 = new AlleleBoolean(true, false);
+        allele2 = new AlleleBoolean(true, false);
+        
+        chromosomes[EnumChromosome.IMMUNE_TO_FIRE.ordinal()] = new Chromosome(allele1, allele2);
         
         allele1 = new AlleleInventory(true, new ItemStack[] {new ItemStack(Item.rottenFlesh)});
         allele2 = new AlleleInventory(true, new ItemStack[] {new ItemStack(Item.rottenFlesh)});
@@ -58,6 +79,21 @@ public class SoulTemplates {
         allele2 = new AlleleInteger(true, 3);
         
         chromosomes[EnumChromosome.RARE_ITEM_DROP_CHANCE.ordinal()] = new Chromosome(allele1, allele2);
+        
+        allele1 = new AlleleString(true, "mob.zombie.say");
+        allele2 = new AlleleString(true, "mob.zombie.say");
+        
+        chromosomes[EnumChromosome.LIVING_SOUND.ordinal()] = new Chromosome(allele1, allele2);
+
+        allele1 = new AlleleString(true, "mob.zombie.hurt");
+        allele2 = new AlleleString(true, "mob.zombie.hurt");
+        
+        chromosomes[EnumChromosome.HURT_SOUND.ordinal()] = new Chromosome(allele1, allele2);
+        
+        allele1 = new AlleleString(true, "mob.zombie.death");
+        allele2 = new AlleleString(true, "mob.zombie.death");
+        
+        chromosomes[EnumChromosome.DEATH_SOUND.ordinal()] = new Chromosome(allele1, allele2);
         
         return new Soul(chromosomes);
     }

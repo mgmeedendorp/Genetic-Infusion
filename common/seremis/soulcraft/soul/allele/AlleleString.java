@@ -8,8 +8,13 @@ public class AlleleString extends Allele {
     public String value;
     
     public AlleleString(boolean isDominant, String value) {
-        super(isDominant);
+        super(isDominant, EnumAlleleType.STRING);
         this.value = value;
+    }
+    
+    public AlleleString(NBTTagCompound compound) {
+        super(compound);
+        readFromNBT(compound);
     }
 
     public void writeToNBT(NBTTagCompound compound) {

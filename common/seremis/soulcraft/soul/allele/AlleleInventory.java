@@ -10,13 +10,17 @@ import seremis.soulcraft.util.inventory.Inventory;
  */
 public class AlleleInventory extends Allele {
 
-
     public Inventory inventory;
     
     public AlleleInventory(boolean isDominant, ItemStack[] stacks) {
-        super(isDominant);
+        super(isDominant, EnumAlleleType.INVENTORY);
         inventory = new Inventory(stacks.length, null, 64, null);
         inventory.setItemStacks(stacks);
+    }
+    
+    public AlleleInventory(NBTTagCompound compound) {
+        super(compound);
+        readFromNBT(compound);
     }
     
     public void writeToNBT(NBTTagCompound compound) {

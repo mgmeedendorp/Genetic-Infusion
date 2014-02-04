@@ -11,6 +11,7 @@ public class Inventory implements IInventory {
     
     private ItemStack[] inventory;
     private String name;
+    private int inventorySize;
     private int inventoryStackLimit;
     private TileEntity tile;
     
@@ -27,7 +28,7 @@ public class Inventory implements IInventory {
 
     @Override
     public int getSizeInventory() {
-        return inventory.length;
+        return inventorySize;
     }
 
     @Override
@@ -115,19 +116,30 @@ public class Inventory implements IInventory {
     }
     
     public void writeToNBT(NBTTagCompound compound) {
-        if(getInvName() != null)
-            compound.setString("name", getInvName());
+        NBTTagCompound inventory = new NBTTagCompound();
         
-        compound.setInteger("stackLimit", getInventoryStackLimit());
+        if(getInvName() != null)
+            inventory.setString("name", getInvName());
+        
+        inventory.setInteger("stackLimit", getInventoryStackLimit());
+        inventory.setInteger("length", getSizeInventory());
 
-        UtilTileEntity.writeInventoryToNBT(this, compound);
+        UtilTileEntity.writeInventoryToNBT(this, inventory);
+        
+        compound.setTag("inventory", inventory);
     }
     
     public void readFromNBT(NBTTagCompound compound) {
-        if(compound.hasKey("name"))
-            name = compound.getString("name");
-        
-        inventoryStackLimit = compound.getInteger("stackLimit");
-        inventory = UtilTileEntity.readInventoryFromNBT(this, compound);
+        if(compound.hasKey("inventory")) {
+            NBTTagCompound inventory = compound.getCompoundTag("inventory");
+            
+            if(inventory.hasKey("name"))
+                name = inventory.getString("name");
+            
+            inventoryStackLimit = inventory.getInteger("stackLimit");
+            inventorySize = inventory.getInteger("length");
+            
+            this.inventory = UtilTileEntity.readInventoryFromNBT(this, inventory);
+        }
     }
 }

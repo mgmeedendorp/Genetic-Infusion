@@ -8,8 +8,13 @@ public class AlleleFloat extends Allele {
     public float value;
     
     public AlleleFloat(boolean isDominant, float value) {
-        super(isDominant);
+        super(isDominant, EnumAlleleType.FLOAT);
         this.value = value;
+    }
+    
+    public AlleleFloat(NBTTagCompound compound) {
+        super(compound);
+        readFromNBT(compound);
     }
 
     @Override

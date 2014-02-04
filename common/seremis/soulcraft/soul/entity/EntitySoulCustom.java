@@ -1,6 +1,5 @@
 package seremis.soulcraft.soul.entity;
 
-import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Field;
 
 import net.minecraft.entity.Entity;
@@ -10,20 +9,28 @@ import net.minecraft.entity.EntityLivingData;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+import seremis.soulcraft.soul.Soul;
 import seremis.soulcraft.soul.SoulHandler;
 
 public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom {
-
+    
+    private Soul soul;
+    
     public EntitySoulCustom(World world) {
         super(world);
     }
     
-    public EntitySoulCustom(World world, double x, double y, double z) {
+    public EntitySoulCustom(World world, Soul soul, double x, double y, double z) {
         super(world);
+        this.soul = soul;
+        NBTTagCompound compound = getEntityData();
+        soul.writeToNBT(compound);
         setPosition(x, y, z);
+        setSize(1, 1);
         SoulHandler.entityInit(this);
     }
 
@@ -75,7 +82,7 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
     
     @Override
     public ItemStack getCurrentItemOrArmor(int slot) {
-        return getCurrentItemOrArmor(slot);
+        return super.getCurrentItemOrArmor(slot);
     }
     
     @Override
@@ -145,12 +152,11 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
     
     @Override
     public int getFire() {
-        //This became a bit overcomplicated..
         int fire = 0;
         try {
             Field onFire = Entity.class.getDeclaredField("fire");
             onFire.setAccessible(true);
-            fire = onFire.getInt(Entity.class);
+            fire = onFire.getInt(this);
             onFire.setAccessible(false);
         } catch (Exception e) {
             e.printStackTrace();;
@@ -168,7 +174,6 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
     @Override
     public void onUpdate() {
         SoulHandler.entityUpdate(this);
-        super.onUpdate();
     }
     
     @Override
@@ -202,5 +207,19 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
     @Override
     public void playSound(String name, float volume, float pitch) {
         SoulHandler.playSoundAtEntity(this, name, volume, pitch);
+    }
+    
+    @Override
+    public void readFromNBT(NBTTagCompound compound) {
+        super.readFromNBT(compound);
+        NBTTagCompound data = getEntityData();
+        soul = new Soul(data);
+    }
+    
+    @Override
+    public void writeToNBT(NBTTagCompound compound) {
+        super.writeToNBT(compound);
+        NBTTagCompound data = getEntityData();
+        soul.writeToNBT(data);
     }
 }

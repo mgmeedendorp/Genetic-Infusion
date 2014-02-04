@@ -1,4 +1,4 @@
-package seremis.soulcraft.soul.actions;
+package seremis.soulcraft.soul.handler;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -11,7 +11,7 @@ import seremis.soulcraft.soul.allele.AlleleString;
 import seremis.soulcraft.soul.entity.IEntitySoulCustom;
 import seremis.soulcraft.soul.event.EntityEventHandler;
 
-public class ChromosomeSounds extends EntityEventHandler {
+public class ChromosomeHandlerSounds extends EntityEventHandler {
 
     @Override
     public void onInit(IEntitySoulCustom entity) {}

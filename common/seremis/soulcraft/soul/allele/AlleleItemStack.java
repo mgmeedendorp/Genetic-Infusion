@@ -9,7 +9,12 @@ public class AlleleItemStack extends Allele {
     public ItemStack stack;
     
     public AlleleItemStack(boolean isDominant, ItemStack stack) {
-        super(isDominant);
+        super(isDominant, EnumAlleleType.ITEMSTACK);
+    }
+    
+    public AlleleItemStack(NBTTagCompound compound) {
+        super(compound);
+        readFromNBT(compound);
     }
     
     public void readFromNBT(NBTTagCompound compound) {

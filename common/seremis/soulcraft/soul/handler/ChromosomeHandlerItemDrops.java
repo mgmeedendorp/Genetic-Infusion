@@ -1,4 +1,4 @@
-package seremis.soulcraft.soul.actions;
+package seremis.soulcraft.soul.handler;
 
 import java.util.Random;
 
@@ -20,7 +20,7 @@ import seremis.soulcraft.soul.entity.IEntitySoulCustom;
 import seremis.soulcraft.soul.event.EntityEventHandler;
 import seremis.soulcraft.util.inventory.Inventory;
 
-public class ChromosomeItemDrops extends EntityEventHandler {
+public class ChromosomeHandlerItemDrops extends EntityEventHandler {
 
     @Override
     public void onInit(IEntitySoulCustom entity) {}

@@ -7,8 +7,8 @@ public class Soul implements ISoul {
 
     protected IChromosome[] chromosomes;
     
-    public Soul(IChromosome[] chomosomes) {
-        this.chromosomes = chomosomes;
+    public Soul(IChromosome[] chromosomes) {
+        this.chromosomes = chromosomes;
     }
     
     public Soul(NBTTagCompound compound) {

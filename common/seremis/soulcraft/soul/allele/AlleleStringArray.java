@@ -8,8 +8,13 @@ public class AlleleStringArray extends Allele {
     public String[] value;
     
     public AlleleStringArray(boolean isDominant, String[] value) {
-        super(isDominant);
+        super(isDominant, EnumAlleleType.STRING_ARRAY);
         this.value = value;
+    }
+    
+    public AlleleStringArray(NBTTagCompound compound) {
+        super(compound);
+        readFromNBT(compound);
     }
 
     public void writeToNBT(NBTTagCompound compound) {

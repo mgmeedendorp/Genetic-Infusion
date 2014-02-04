@@ -3,6 +3,7 @@ package seremis.soulcraft.soul.entity;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeInstance;
+import net.minecraft.entity.ai.attributes.BaseAttributeMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathNavigate;
@@ -68,4 +69,5 @@ public interface IEntitySoulCustom {
     boolean handleLavaMovement();
     
     boolean attackEntityFrom(DamageSource source, float damage);
+    BaseAttributeMap getAttributeMap();
 }

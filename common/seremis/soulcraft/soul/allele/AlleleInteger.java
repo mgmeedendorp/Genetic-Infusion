@@ -8,8 +8,13 @@ public class AlleleInteger extends Allele {
     public int value;
     
     public AlleleInteger(boolean isDominant, int value) {
-        super(isDominant);
+        super(isDominant, EnumAlleleType.INTEGER);
         this.value = value;
+    }
+    
+    public AlleleInteger(NBTTagCompound compound) {
+        super(compound);
+        readFromNBT(compound);
     }
 
     @Override

@@ -8,8 +8,13 @@ public class AlleleBooleanArray extends Allele {
     public boolean[] value;
     
     public AlleleBooleanArray(boolean isDominant, boolean[] value) {
-        super(isDominant);
+        super(isDominant, EnumAlleleType.BOOLEAN_ARRAY);
         this.value = value;
+    }
+    
+    public AlleleBooleanArray(NBTTagCompound compound) {
+        super(compound);
+        readFromNBT(compound);
     }
 
     @Override

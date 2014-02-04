@@ -1,4 +1,4 @@
-package seremis.soulcraft.soul.actions;
+package seremis.soulcraft.soul.handler;
 
 import java.util.Random;
 
