@@ -2,10 +2,6 @@ package seremis.soulcraft.soul.handler;
 
 import java.util.Random;
 
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EntityLivingData;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Vec3;
@@ -19,22 +15,18 @@ import seremis.soulcraft.soul.event.EntityEventHandler;
 public class ChromosomeHandlerFire extends EntityEventHandler {
 
     @Override
-    public void onInit(IEntitySoulCustom entity) {}
-    
-    @Override
     public void onUpdate(IEntitySoulCustom entity) {
-        boolean burnsInDayLight = ((AlleleBoolean)SoulHandler.getSoulFrom((EntityLiving) entity).getChromosomes()[EnumChromosome.BURNS_IN_DAYLIGHT.ordinal()].getActive()).value;
-        boolean isImmuneToFire = ((AlleleBoolean)SoulHandler.getSoulFrom((EntityLiving) entity).getChromosomes()[EnumChromosome.IMMUNE_TO_FIRE.ordinal()].getActive()).value;
+        boolean burnsInDayLight = ((AlleleBoolean)SoulHandler.getSoulFrom(entity).getChromosomes()[EnumChromosome.BURNS_IN_DAYLIGHT.ordinal()].getActive()).value;
+        boolean isImmuneToFire = ((AlleleBoolean)SoulHandler.getSoulFrom(entity).getChromosomes()[EnumChromosome.IMMUNE_TO_FIRE.ordinal()].getActive()).value;
         
         if(burnsInDayLight && !isImmuneToFire) {
             if(CommonProxy.proxy.isServerWorld(entity.getWorld()) && entity.getWorld().isDaytime()) {
-                
+
                 float brightness = entity.getBrightness();
                 
                 if(brightness > 0.5F && entity.getWorld().canBlockSeeTheSky((int) Math.floor(entity.getPosX()), (int) Math.floor(entity.getPosY()), (int) Math.floor(entity.getPosZ()))) {
-                    
                     ItemStack headwear = entity.getCurrentItemOrArmor(4);
-                    
+                                        
                     if(headwear != null) {
                         if(headwear.isItemStackDamageable()) {
                             headwear.setItemDamage(headwear.getItemDamageForDisplay() + new Random().nextInt(2));
@@ -64,6 +56,25 @@ public class ChromosomeHandlerFire extends EntityEventHandler {
                 entity.attackEntityFrom(DamageSource.lava, 4.0F);
             }
         }
+        
+        if(CommonProxy.proxy.isRenderWorld(entity.getWorld())) {
+            entity.setFire(0);
+        } else if(entity.getFire() > 0) {
+            if(isImmuneToFire) {
+                entity.setFire(entity.getFire()-4);
+
+                if(entity.getFire() < 0) {
+                    entity.setFire(0);
+                }
+            } else {
+                //System.out.println(entity.getFire());
+                if(entity.getFire() % 20 == 0) {
+                    entity.attackEntityFrom(DamageSource.onFire, 1.0F);
+                }
+
+                entity.setFire(entity.getFire()-1);
+            }
+        }
     }
     
     public void breakHeadwear(IEntitySoulCustom entity, ItemStack stack) {
@@ -82,22 +93,4 @@ public class ChromosomeHandlerFire extends EntityEventHandler {
             entity.getWorld().spawnParticle("iconcrack_" + stack.getItem().itemID, vec31.xCoord, vec31.yCoord, vec31.zCoord, vec3.xCoord, vec3.yCoord + 0.05D, vec3.zCoord);
         }
     }
-    
-    @Override
-    public void onInteract(IEntitySoulCustom entity, EntityPlayer player) {}
-
-    @Override
-    public void onDeath(IEntitySoulCustom entity, DamageSource source) {}
-
-    @Override
-    public void onKillEntity(IEntitySoulCustom entity, EntityLivingBase killed) {}
-
-    @Override
-    public void onEntityAttacked(IEntitySoulCustom entity, DamageSource source, float damage) {}
-
-    @Override
-    public void onSpawnWithEgg(IEntitySoulCustom entity, EntityLivingData data) {}
-
-    @Override
-    public void playSound(IEntitySoulCustom entity, String name, float volume, float pitch) {}
 }

@@ -5,7 +5,6 @@ import java.util.Random;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -13,7 +12,7 @@ import seremis.soulcraft.core.proxy.CommonProxy;
 import seremis.soulcraft.soul.EnumChromosome;
 import seremis.soulcraft.soul.IChromosome;
 import seremis.soulcraft.soul.SoulHandler;
-import seremis.soulcraft.soul.allele.AlleleIntArray;
+import seremis.soulcraft.soul.allele.AlleleFloatArray;
 import seremis.soulcraft.soul.allele.AlleleInteger;
 import seremis.soulcraft.soul.allele.AlleleInventory;
 import seremis.soulcraft.soul.entity.IEntitySoulCustom;
@@ -21,15 +20,6 @@ import seremis.soulcraft.soul.event.EntityEventHandler;
 import seremis.soulcraft.util.inventory.Inventory;
 
 public class ChromosomeHandlerItemDrops extends EntityEventHandler {
-
-    @Override
-    public void onInit(IEntitySoulCustom entity) {}
-
-    @Override
-    public void onUpdate(IEntitySoulCustom entity) {}
-
-    @Override
-    public void onInteract(IEntitySoulCustom entity, EntityPlayer player) {}
 
     @Override
     public void onDeath(IEntitySoulCustom entity, DamageSource source) {
@@ -91,7 +81,7 @@ public class ChromosomeHandlerItemDrops extends EntityEventHandler {
     public void dropEquipment(IEntitySoulCustom entity, int lootingLevel) {
         Random rand = new Random();
 
-        int[] equipmentDropChances = ((AlleleIntArray)SoulHandler.getChromosomeFrom((EntityLiving) entity, EnumChromosome.EQUIPMENT_DROP_CHANCES).getActive()).value;
+        float[] equipmentDropChances = ((AlleleFloatArray)SoulHandler.getChromosomeFrom((EntityLiving) entity, EnumChromosome.EQUIPMENT_DROP_CHANCES).getActive()).value;
 
         boolean recentlyHit = entity.getRecentlyHit() < 1;
         
@@ -122,16 +112,4 @@ public class ChromosomeHandlerItemDrops extends EntityEventHandler {
             }
         }
     }
-
-    @Override
-    public void onKillEntity(IEntitySoulCustom entity, EntityLivingBase killed) {}
-
-    @Override
-    public void onEntityAttacked(IEntitySoulCustom entity, DamageSource source, float damage) {}
-
-    @Override
-    public void onSpawnWithEgg(IEntitySoulCustom entity, EntityLivingData data) {}
-
-    @Override
-    public void playSound(IEntitySoulCustom entity, String name, float volume, float pitch) {}
 }

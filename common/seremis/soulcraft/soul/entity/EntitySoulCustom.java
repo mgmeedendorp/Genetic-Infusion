@@ -10,6 +10,7 @@ import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.CombatTracker;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
@@ -28,10 +29,14 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
         super(world);
         this.soul = soul;
         NBTTagCompound compound = getEntityData();
-        soul.writeToNBT(compound);
+        this.soul.writeToNBT(compound);
         setPosition(x, y, z);
         setSize(1, 1);
         SoulHandler.entityInit(this);
+    }
+    
+    public Soul getSoul() {
+        return soul;
     }
 
     //Modularity stuff//    
@@ -119,11 +124,6 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
     public boolean getIsChild() {
         return isChild();
     }
-
-    @Override
-    public int getRecentlyHit() {
-        return recentlyHit;
-    }
     
     @Override
     public String getLivingSound() {
@@ -163,7 +163,132 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
         }
         return fire;
     }
-   
+    
+    @Override
+    public void setAge(int age) {
+        entityAge = age;
+    }
+    
+    @Override
+    public float getLimbSwingAmount() {
+        return limbSwingAmount;
+    }
+    
+    @Override
+    public void setLimbSwingAmount(float amount) {
+        limbSwingAmount = amount;
+    }
+    
+    @Override
+    public float getPrevHealth() {
+        return prevHealth;
+    }
+
+    @Override
+    public void setPrevHealth(float lastHealth) {
+        prevHealth = lastHealth;
+    }
+
+    @Override
+    public int getHurtTime() {
+        return hurtTime;
+    }
+
+    @Override
+    public void setHurtTime(int time) {
+        hurtTime = time;
+    }
+
+    @Override
+    public int getHurtResistantTime() {
+        return hurtResistantTime;
+    }
+
+    @Override
+    public void setHurtResistantTime(int time) {
+        hurtResistantTime = time;
+    }
+
+    @Override
+    public float getLastDamage() {
+        return lastDamage;
+    }
+
+    @Override
+    public void setLastDamage(float damage) {
+        lastDamage = damage;
+    }
+    
+    @Override
+    public EntityPlayer getRevengePlayer() {
+        return attackingPlayer;
+    }
+
+    @Override
+    public void setRevengePlayer(EntityPlayer player) {
+        attackingPlayer = player;
+    }
+
+    @Override
+    public int getRecentlyHit() {
+        return recentlyHit;
+    }
+    
+    @Override
+    public void setRecentlyHit(int time) {
+        recentlyHit = time;
+    }
+
+    @Override
+    public void setAttackedAtYaw(float yaw) {
+        attackedAtYaw = yaw;
+    }
+
+    @Override
+    public float getAttackedAtYaw() {
+        return attackedAtYaw;
+    }
+
+    @Override
+    public void setBeenAttacked() {
+        super.setBeenAttacked();
+    }
+    
+    @Override
+    public CombatTracker getCombatTracker() {
+        return super.func_110142_aN();
+    }
+    
+    @Override
+    public float applyArmorCalculations(DamageSource source, float damage) {
+        return super.applyArmorCalculations(source, damage);
+    }
+    
+    @Override
+    public float applyPotionDamageCalculations(DamageSource source, float damage) {
+        return super.applyPotionDamageCalculations(source, damage);
+    }
+    
+    @Override
+    public void onDeathUpdate() {
+        super.onDeathUpdate();
+    }
+    
+    @Override
+    public float getSoundPitch() {
+        return super.getSoundPitch();
+    }
+    
+    @Override
+    public void setAttackTime(int time) {
+        attackTime = time;
+    }
+    
+    @Override
+    public int getAttackTime() {
+        return attackTime;
+    }
+    
     //Entity stuff//    
     @Override
     public boolean interact(EntityPlayer player) {
@@ -172,7 +297,14 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
     }
     
     @Override
+    public void onLivingUpdate(){}
+    
+    @Override
+    public void onEntityUpdate(){}
+    
+    @Override
     public void onUpdate() {
+        //isDead = true;
         SoulHandler.entityUpdate(this);
     }
     
@@ -183,7 +315,6 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
         if(source.getEntity() != null) {
             source.getEntity().onKillEntity(this);
         }
-        dead = true;
         
         SoulHandler.entityDeath(this, source);
         this.worldObj.setEntityState(this, (byte)3);
@@ -196,7 +327,13 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
     
     @Override
     public boolean attackEntityFrom(DamageSource source, float damage) {
-       return SoulHandler.attackEntityFrom(this, source, damage);
+        if(ForgeHooks.onLivingAttack(this, source, damage)) return false;
+        return SoulHandler.attackEntityFrom(this, source, damage);
+    }
+    
+    @Override
+    public void damageEntity(DamageSource source, float damage) {
+        SoulHandler.damageEntity(this, source, damage);
     }
     
     @Override
@@ -212,14 +349,12 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        NBTTagCompound data = getEntityData();
-        soul = new Soul(data);
+        soul = new Soul(compound);
     }
     
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        NBTTagCompound data = getEntityData();
-        soul.writeToNBT(data);
+        soul.writeToNBT(compound);
     }
 }

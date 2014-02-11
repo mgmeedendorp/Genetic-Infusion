@@ -1,9 +1,6 @@
 package seremis.soulcraft.soul.handler;
 
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EntityLivingData;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import seremis.soulcraft.soul.EnumChromosome;
 import seremis.soulcraft.soul.SoulHandler;
@@ -46,23 +43,4 @@ public class ChromosomeHandlerFluids extends EntityEventHandler {
             }
         }
     }
-
-    @Override
-    public void onInteract(IEntitySoulCustom entity, EntityPlayer player) {}
-
-    @Override
-    public void onDeath(IEntitySoulCustom entity, DamageSource source) {}
-
-    @Override
-    public void onKillEntity(IEntitySoulCustom entity, EntityLivingBase killed) {}
-
-    @Override
-    public void onEntityAttacked(IEntitySoulCustom entity, DamageSource source, float damage) {}
-
-    @Override
-    public void onSpawnWithEgg(IEntitySoulCustom entity, EntityLivingData data) {}
-
-    @Override
-    public void playSound(IEntitySoulCustom entity, String name, float volume, float pitch) {}
-
 }

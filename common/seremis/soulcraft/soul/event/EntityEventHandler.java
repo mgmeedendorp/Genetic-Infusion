@@ -8,19 +8,21 @@ import seremis.soulcraft.soul.entity.IEntitySoulCustom;
 
 public abstract class EntityEventHandler {
 
-    public abstract void onInit(IEntitySoulCustom entity);
+    public void onInit(IEntitySoulCustom entity){}
     
-    public abstract void onUpdate(IEntitySoulCustom entity);
+    public void onUpdate(IEntitySoulCustom entity){}
     
-    public abstract void onInteract(IEntitySoulCustom entity, EntityPlayer player);
+    public void onInteract(IEntitySoulCustom entity, EntityPlayer player){}
     
-    public abstract void onDeath(IEntitySoulCustom entity, DamageSource source);
+    public void onDeath(IEntitySoulCustom entity, DamageSource source){}
 
-    public abstract void onKillEntity(IEntitySoulCustom entity, EntityLivingBase killed);
+    public void onKillEntity(IEntitySoulCustom entity, EntityLivingBase killed){}
 
-    public abstract void onEntityAttacked(IEntitySoulCustom entity, DamageSource source, float damage);
+    public boolean onEntityAttacked(IEntitySoulCustom entity, DamageSource source, float damage){return true;}
 
-    public abstract void onSpawnWithEgg(IEntitySoulCustom entity, EntityLivingData data);
+    public void onSpawnWithEgg(IEntitySoulCustom entity, EntityLivingData data){}
     
-    public abstract void playSound(IEntitySoulCustom entity, String name, float volume, float pitch);
+    public void playSound(IEntitySoulCustom entity, String name, float volume, float pitch){}
+
+    public void damageEntity(IEntitySoulCustom entity, DamageSource source, float damage){}
 }

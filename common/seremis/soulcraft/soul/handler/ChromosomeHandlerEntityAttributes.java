@@ -1,10 +1,6 @@
 package seremis.soulcraft.soul.handler;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.DamageSource;
 import seremis.soulcraft.soul.EnumChromosome;
 import seremis.soulcraft.soul.SoulHandler;
 import seremis.soulcraft.soul.allele.AlleleFloat;
@@ -25,25 +21,4 @@ public class ChromosomeHandlerEntityAttributes extends EntityEventHandler {
         float movementSpeed = ((AlleleFloat)SoulHandler.getChromosomeFrom(entity, EnumChromosome.MOVEMENT_SPEED).getActive()).value;
         entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setAttribute(movementSpeed);
     }
-    
-    @Override
-    public void onUpdate(IEntitySoulCustom entity) {}
-
-    @Override
-    public void onInteract(IEntitySoulCustom entity, EntityPlayer player) {}
-
-    @Override
-    public void onDeath(IEntitySoulCustom entity, DamageSource source) {}
-
-    @Override
-    public void onKillEntity(IEntitySoulCustom entity, EntityLivingBase killed) {}
-
-    @Override
-    public void onEntityAttacked(IEntitySoulCustom entity, DamageSource source, float damage) {}
-
-    @Override
-    public void onSpawnWithEgg(IEntitySoulCustom entity, EntityLivingData data) {}
-
-    @Override
-    public void playSound(IEntitySoulCustom entity, String name, float volume, float pitch) {}
 }

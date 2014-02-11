@@ -27,10 +27,8 @@ public class SoulHandler {
     public static Soul getSoulFrom(EntityLiving entity) {
         Soul soul = null;
         
-        NBTTagCompound compound = entity.getEntityData();
-        
         if(entity instanceof IEntitySoulCustom) {
-            soul = new Soul(compound);
+            soul = ((IEntitySoulCustom)entity).getSoul();
         } else {
             soul = SoulTemplates.getSoulPreset(entity);
         }
@@ -103,12 +101,16 @@ public class SoulHandler {
     public static boolean attackEntityFrom(IEntitySoulCustom entity, DamageSource source, float damage) {
         Soul soul = getSoulFrom(entity);
         
+        boolean flag = true;
+        
         if(soul != null) {
             for(EntityEventHandler handler : eventHandlers) {
-                handler.onEntityAttacked(entity, source, damage);
+                if(!handler.onEntityAttacked(entity, source, damage)) {
+                    flag = false;
+                }
             }
         }
-        return true;
+        return flag;
     }
 
     public static EntityLivingData spawnEntityFromEgg(IEntitySoulCustom entity, EntityLivingData data) {
@@ -128,6 +130,16 @@ public class SoulHandler {
         if(soul != null) {
             for(EntityEventHandler handler : eventHandlers) {
                 handler.playSound(entity, name, volume, pitch);
+            }
+        }
+    }
+
+    public static void damageEntity(IEntitySoulCustom entity, DamageSource source, float damage) {
+        Soul soul = getSoulFrom(entity);
+        
+        if(soul != null) {
+            for(EntityEventHandler handler : eventHandlers) {
+                handler.damageEntity(entity, source, damage);
             }
         }
     }

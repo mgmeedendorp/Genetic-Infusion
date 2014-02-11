@@ -4,6 +4,6 @@ import cpw.mods.fml.common.registry.EntityRegistry;
 
 public class EntityIds {
 
-    public static int transporterID = EntityRegistry.findGlobalUniqueEntityId();
-    public static int soulEntityID = EntityRegistry.findGlobalUniqueEntityId();
+    public static int transporterID = 0;
+    public static int soulEntityID = 1;
 }

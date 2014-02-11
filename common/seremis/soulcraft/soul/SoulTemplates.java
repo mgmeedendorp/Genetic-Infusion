@@ -6,7 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import seremis.soulcraft.soul.allele.AlleleBoolean;
 import seremis.soulcraft.soul.allele.AlleleFloat;
-import seremis.soulcraft.soul.allele.AlleleIntArray;
+import seremis.soulcraft.soul.allele.AlleleFloatArray;
 import seremis.soulcraft.soul.allele.AlleleInteger;
 import seremis.soulcraft.soul.allele.AlleleInventory;
 import seremis.soulcraft.soul.allele.AlleleString;
@@ -22,6 +22,8 @@ public class SoulTemplates {
     public static Soul getZombieSoul() {
         Chromosome[] chromosomes = new Chromosome[EnumChromosome.values().length];
         
+        System.out.println(chromosomes.length);
+        
         IAllele allele1;
         IAllele allele2;
         
@@ -29,6 +31,11 @@ public class SoulTemplates {
         allele2 = new AlleleFloat(true, 10);
         
         chromosomes[EnumChromosome.MAX_HEALTH.ordinal()] = new Chromosome(allele1, allele2);
+        
+        allele1 = new AlleleBoolean(true, false);
+        allele2 = new AlleleBoolean(true, false);
+        
+        chromosomes[EnumChromosome.INVULNERABLE.ordinal()] = new Chromosome(allele1, allele2);
         
         allele1 = new AlleleFloat(true, 3);
         allele2 = new AlleleFloat(true, 3);
@@ -60,13 +67,23 @@ public class SoulTemplates {
         
         chromosomes[EnumChromosome.IMMUNE_TO_FIRE.ordinal()] = new Chromosome(allele1, allele2);
         
+        allele1 = new AlleleInteger(true, 10);
+        allele2 = new AlleleInteger(true, 10);
+        
+        chromosomes[EnumChromosome.MAX_HURT_TIME.ordinal()] = new Chromosome(allele1, allele2);
+        
+        allele1 = new AlleleInteger(true, 20);
+        allele2 = new AlleleInteger(true, 20);
+        
+        chromosomes[EnumChromosome.MAX_HURT_RESISTANT_TIME.ordinal()] = new Chromosome(allele1, allele2);
+        
         allele1 = new AlleleInventory(true, new ItemStack[] {new ItemStack(Item.rottenFlesh)});
         allele2 = new AlleleInventory(true, new ItemStack[] {new ItemStack(Item.rottenFlesh)});
         
         chromosomes[EnumChromosome.ITEM_DROPS.ordinal()] = new Chromosome(allele1, allele2);
         
-        allele1 = new AlleleIntArray(true, new int[] {});
-        allele2 = new AlleleIntArray(true, new int[] {});
+        allele1 = new AlleleFloatArray(true, new float[] {0.085F, 0.085F, 0.085F, 0.085F, 0.085F});
+        allele2 = new AlleleFloatArray(true, new float[] {0.085F, 0.085F, 0.085F, 0.085F, 0.085F});
         
         chromosomes[EnumChromosome.EQUIPMENT_DROP_CHANCES.ordinal()] = new Chromosome(allele1, allele2);
         
@@ -94,6 +111,11 @@ public class SoulTemplates {
         allele2 = new AlleleString(true, "mob.zombie.death");
         
         chromosomes[EnumChromosome.DEATH_SOUND.ordinal()] = new Chromosome(allele1, allele2);
+        
+        allele1 = new AlleleFloat(true, 1);
+        allele2 = new AlleleFloat(true, 1);
+        
+        chromosomes[EnumChromosome.SOUND_VOLUME.ordinal()] = new Chromosome(allele1, allele2);
         
         return new Soul(chromosomes);
     }

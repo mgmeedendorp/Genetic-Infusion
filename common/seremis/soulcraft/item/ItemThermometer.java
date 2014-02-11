@@ -36,7 +36,7 @@ public class ItemThermometer extends SCItem {
                 player.addChatMessage("Heat: " + ((IMagnetConnector) tile).getHeat());
             }
             if(stack.getItemDamage() == 1) {
-                EntitySoulCustom entity = new EntitySoulCustom(world, SoulTemplates.getZombieSoul(), x, y, z);
+                EntitySoulCustom entity = new EntitySoulCustom(world, SoulTemplates.getZombieSoul(), (float)x+0.5, y, (float)z+0.5F);
                 world.spawnEntityInWorld(entity);
             }
         }
