@@ -2,6 +2,7 @@ package seremis.soulcraft.soul.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeInstance;
@@ -36,7 +37,7 @@ public interface IEntitySoulCustom {
     
     float getBrightness();
     
-    /*
+    /**
      * Get the armor from slot 0-3
      */
     ItemStack getCurrentItemOrArmor(int slot);
@@ -44,7 +45,20 @@ public interface IEntitySoulCustom {
     ItemStack getHeldItem();
     void setHeldItem(ItemStack stack);
     
+    /**
+     * Good ol' Entity.class setFire();
+     * @param timeSec
+     */
     void setFire(int timeSec);
+    /**
+     * Watch out! Time in ticks, not in seconds like standard entity method!
+     * @param timeTicks
+     */
+    void setFireNew(int timeTicks);
+    /**
+     * Get entity fire time in ticks
+     * @return
+     */
     int getFire();
     void extinguish();
     
@@ -127,4 +141,11 @@ public interface IEntitySoulCustom {
     void onDeathUpdate();
     
     float getSoundPitch();
+    
+    void setCreatureAttribute(EnumCreatureAttribute attribute);
+    EnumCreatureAttribute getCreatureAttribute();
+    
+    void collideWithNearbyEntities();
+
+    void setFlag(int id, boolean value);
 }

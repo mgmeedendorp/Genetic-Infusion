@@ -5,6 +5,7 @@ import seremis.soulcraft.soul.handler.ChromosomeHandlerEntityAttributes;
 import seremis.soulcraft.soul.handler.ChromosomeHandlerFire;
 import seremis.soulcraft.soul.handler.ChromosomeHandlerFluids;
 import seremis.soulcraft.soul.handler.ChromosomeHandlerItemDrops;
+import seremis.soulcraft.soul.handler.ChromosomeHandlerMovement;
 import seremis.soulcraft.soul.handler.ChromosomeHandlerSounds;
 
 public class ModSouls {
@@ -16,5 +17,6 @@ public class ModSouls {
         SoulHandler.registerHandler(new ChromosomeHandlerFluids());
         SoulHandler.registerHandler(new ChromosomeHandlerSounds());
         SoulHandler.registerHandler(new ChromosomeHandlerAttacked());
+        SoulHandler.registerHandler(new ChromosomeHandlerMovement());
     }
 }

@@ -56,6 +56,8 @@ public class ChromosomeHandlerAttacked extends EntityEventHandler {
             
             boolean isInvulnerable = ((AlleleBoolean)SoulHandler.getChromosomeFrom(entity, EnumChromosome.INVULNERABLE).getActive()).value;
 
+            System.out.println(source.damageType);
+            
             if(isInvulnerable) {
                 return false;
             } else if (entity.getHealth() <= 0.0F) {
@@ -157,7 +159,6 @@ public class ChromosomeHandlerAttacked extends EntityEventHandler {
     public void damageEntity(IEntitySoulCustom entity, DamageSource source, float damage) {
         boolean isInvulnerable = ((AlleleBoolean)SoulHandler.getChromosomeFrom(entity, EnumChromosome.INVULNERABLE).getActive()).value;
 
-        System.out.println(source.damageType);
         if(!isInvulnerable) {
             damage = ForgeHooks.onLivingHurt((EntityLiving) entity, source, damage);
             if (damage <= 0) return;

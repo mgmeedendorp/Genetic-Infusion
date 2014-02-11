@@ -1,9 +1,11 @@
 package seremis.soulcraft.soul.handler;
 
+import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
 import seremis.soulcraft.soul.EnumChromosome;
 import seremis.soulcraft.soul.SoulHandler;
 import seremis.soulcraft.soul.allele.AlleleFloat;
+import seremis.soulcraft.soul.allele.AlleleInteger;
 import seremis.soulcraft.soul.entity.IEntitySoulCustom;
 import seremis.soulcraft.soul.event.EntityEventHandler;
 
@@ -11,6 +13,9 @@ public class ChromosomeHandlerEntityAttributes extends EntityEventHandler {
 
     @Override
     public void onInit(IEntitySoulCustom entity) {
+        EnumCreatureAttribute attribute = EnumCreatureAttribute.values()[((AlleleInteger)SoulHandler.getChromosomeFrom(entity, EnumChromosome.CREATURE_ATTRIBUTE).getActive()).value];
+        entity.setCreatureAttribute(attribute);
+        
         float maxHealth = ((AlleleFloat)SoulHandler.getChromosomeFrom(entity, EnumChromosome.MAX_HEALTH).getActive()).value;
         entity.getEntityAttribute(SharedMonsterAttributes.maxHealth).setAttribute(maxHealth);
         

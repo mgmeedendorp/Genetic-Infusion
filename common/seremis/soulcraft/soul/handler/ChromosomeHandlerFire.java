@@ -43,36 +43,21 @@ public class ChromosomeHandlerFire extends EntityEventHandler {
             }
         }
         
-        if(isImmuneToFire) {
-            entity.extinguish();
-        } else {
-            if(CommonProxy.proxy.isRenderWorld(entity.getWorld())) {
-                entity.setFire(0);
-            } else if(entity.getFire() % 20 == 0) {
-                entity.attackEntityFrom(DamageSource.onFire, 1.0F);
-            }
-            if(entity.handleLavaMovement()) {
-                entity.setFire(15);
-                entity.attackEntityFrom(DamageSource.lava, 4.0F);
-            }
-        }
-        
         if(CommonProxy.proxy.isRenderWorld(entity.getWorld())) {
-            entity.setFire(0);
+            entity.setFireNew(0);
         } else if(entity.getFire() > 0) {
             if(isImmuneToFire) {
-                entity.setFire(entity.getFire()-4);
-
-                if(entity.getFire() < 0) {
-                    entity.setFire(0);
-                }
+                entity.extinguish();
             } else {
-                //System.out.println(entity.getFire());
                 if(entity.getFire() % 20 == 0) {
                     entity.attackEntityFrom(DamageSource.onFire, 1.0F);
                 }
-
-                entity.setFire(entity.getFire()-1);
+                if(entity.handleLavaMovement()) {
+                    entity.setFire(15);
+                    entity.attackEntityFrom(DamageSource.lava, 4.0F);
+                }
+                entity.setFireNew(entity.getFire()-1);
+                entity.setFlag(0, entity.getFire() > 0);
             }
         }
     }

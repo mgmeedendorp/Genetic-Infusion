@@ -2,10 +2,12 @@ package seremis.soulcraft.soul.entity;
 
 import java.lang.reflect.Field;
 
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityLivingData;
+import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -154,7 +156,7 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
     public int getFire() {
         int fire = 0;
         try {
-            Field onFire = Entity.class.getDeclaredField("fire");
+            Field onFire = ReflectionHelper.findField(Entity.class, new String[] {"fire", "field_70151_c"});
             onFire.setAccessible(true);
             fire = onFire.getInt(this);
             onFire.setAccessible(false);
@@ -162,6 +164,23 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
             e.printStackTrace();;
         }
         return fire;
+    }
+    
+    @Override
+    public void setFire(int time) {
+        super.setFire(time);
+    }
+    
+    @Override
+    public void setFireNew(int fire) {
+        try {
+            Field onFire = ReflectionHelper.findField(Entity.class, new String[] {"fire", "field_70151_c"});
+            onFire.setAccessible(true);
+            onFire.setInt(this, fire);
+            onFire.setAccessible(false);
+        } catch (Exception e) {
+            e.printStackTrace();;
+        }
     }
     
     @Override
@@ -289,6 +308,27 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
         return attackTime;
     }
     
+    private EnumCreatureAttribute creatureAttribute;
+    
+    @Override
+    public EnumCreatureAttribute getCreatureAttribute() {
+        return creatureAttribute;
+    }
+    
+    @Override
+    public void setCreatureAttribute(EnumCreatureAttribute attribute) {
+        creatureAttribute = attribute;
+    }
+    
+    @Override
+    public void collideWithNearbyEntities() {
+        super.collideWithNearbyEntities();
+    }
+
+    @Override
+    public void setFlag(int id, boolean value) {
+        super.setFlag(id, value);
+    }
     //Entity stuff//    
     @Override
     public boolean interact(EntityPlayer player) {
@@ -304,6 +344,7 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
     
     @Override
     public void onUpdate() {
+        if (ForgeHooks.onLivingUpdate(this))return;
         //isDead = true;
         SoulHandler.entityUpdate(this);
     }

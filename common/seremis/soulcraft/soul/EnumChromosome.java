@@ -28,7 +28,8 @@ public enum EnumChromosome {
     LIVING_SOUND(AlleleString.class),
     DEATH_SOUND(AlleleString.class),
     HURT_SOUND(AlleleString.class),
-    SOUND_VOLUME(AlleleFloat.class);
+    SOUND_VOLUME(AlleleFloat.class),
+    CREATURE_ATTRIBUTE(AlleleInteger.class);
     
     public Class<? extends IAllele>[] possibleAlleles;
     

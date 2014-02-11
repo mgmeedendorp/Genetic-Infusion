@@ -1,6 +1,7 @@
 package seremis.soulcraft.soul;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -116,6 +117,11 @@ public class SoulTemplates {
         allele2 = new AlleleFloat(true, 1);
         
         chromosomes[EnumChromosome.SOUND_VOLUME.ordinal()] = new Chromosome(allele1, allele2);
+        
+        allele1 = new AlleleInteger(true, EnumCreatureAttribute.UNDEAD.ordinal());
+        allele2 = new AlleleInteger(true, EnumCreatureAttribute.UNDEAD.ordinal());
+        
+        chromosomes[EnumChromosome.CREATURE_ATTRIBUTE.ordinal()] = new Chromosome(allele1, allele2);
         
         return new Soul(chromosomes);
     }
