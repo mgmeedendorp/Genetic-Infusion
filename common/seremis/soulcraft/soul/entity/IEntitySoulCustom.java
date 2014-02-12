@@ -27,6 +27,25 @@ public interface IEntitySoulCustom {
     
     void setPosition(double x, double y, double z);
     
+    double getMotionX();
+    double getMotionY();
+    double getMotionZ();
+    
+    /**
+     * SETS the motion on the entity
+     * @param motionX
+     * @param motionY
+     * @param motionZ
+     */
+    void setMotion(double x, double y, double z);
+    /**
+     * ADDS to the current velocity (motionX/Y/Z) of the entity
+     * @param motionX
+     * @param motionY
+     * @param motionZ
+     */
+    void addVelocity(double x, double y, double z);
+    
     float getRotationYaw();
     float getRotationPitch();
 
@@ -148,4 +167,14 @@ public interface IEntitySoulCustom {
     void collideWithNearbyEntities();
 
     void setFlag(int id, boolean value);
+    
+    void setIsJumping(boolean jump);
+    boolean getIsJumping();
+    
+    void moveEntity(double posX, double posY, double posZ);
+    void moveEntityWithHeading(float strafe, float forward);
+    void setMoveStrafing(float strafe);
+    float getMoveStrafing();
+    void setMoveForward(float forward);
+    float getMoveForward();
 }

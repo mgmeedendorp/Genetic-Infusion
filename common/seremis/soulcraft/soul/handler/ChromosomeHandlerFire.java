@@ -52,7 +52,7 @@ public class ChromosomeHandlerFire extends EntityEventHandler {
                 if(entity.getFire() % 20 == 0) {
                     entity.attackEntityFrom(DamageSource.onFire, 1.0F);
                 }
-                if(entity.handleLavaMovement()) {
+                if(entity.handleLavaMovement() && entity.getFire() % 20 == 0) {
                     entity.setFire(15);
                     entity.attackEntityFrom(DamageSource.lava, 4.0F);
                 }

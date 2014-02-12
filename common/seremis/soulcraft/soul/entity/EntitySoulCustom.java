@@ -23,17 +23,11 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
     
     private Soul soul;
     
-    public EntitySoulCustom(World world) {
-        super(world);
-    }
-    
     public EntitySoulCustom(World world, Soul soul, double x, double y, double z) {
         super(world);
         this.soul = soul;
-        NBTTagCompound compound = getEntityData();
-        this.soul.writeToNBT(compound);
         setPosition(x, y, z);
-        setSize(1, 1);
+        setSize(1, 1.7F);
         SoulHandler.entityInit(this);
     }
     
@@ -55,6 +49,29 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
     @Override
     public double getPosZ() {
         return posZ;
+    }
+    
+
+    @Override
+    public double getMotionX() {
+        return motionX;
+    }
+
+    @Override
+    public double getMotionY() {
+        return motionY;
+    }
+
+    @Override
+    public double getMotionZ() {
+        return motionZ;
+    }
+    
+    @Override
+    public void setMotion(double x, double y, double z) {
+        motionX = x;
+        motionY = y;
+        motionZ = z;
     }
     
     @Override
@@ -329,6 +346,32 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
     public void setFlag(int id, boolean value) {
         super.setFlag(id, value);
     }
+    
+    @Override
+    public void setIsJumping(boolean jump) {
+        this.isJumping = true;
+    }
+
+    @Override
+    public boolean getIsJumping() {
+        return isJumping;
+    }
+    
+    @Override
+    public void setMoveStrafing(float strafe) {
+        this.moveStrafing = strafe;        
+    }
+
+    @Override
+    public float getMoveStrafing() {
+        return moveStrafing;
+    }
+
+    @Override
+    public float getMoveForward() {
+        return moveForward;
+    }
+    
     //Entity stuff//    
     @Override
     public boolean interact(EntityPlayer player) {
