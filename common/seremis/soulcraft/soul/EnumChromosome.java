@@ -24,7 +24,6 @@ public enum EnumChromosome {
     ITEM_DROPS(AlleleInventory.class),
     EQUIPMENT_DROP_CHANCES(AlleleFloatArray.class),
     RARE_ITEM_DROPS(AlleleInventory.class),
-    RARE_ITEM_DROP_CHANCE(AlleleInteger.class),
     LIVING_SOUND(AlleleString.class),
     DEATH_SOUND(AlleleString.class),
     HURT_SOUND(AlleleString.class),

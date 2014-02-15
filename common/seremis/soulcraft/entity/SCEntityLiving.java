@@ -1,23 +1,23 @@
 package seremis.soulcraft.entity;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.world.World;
 import seremis.soulcraft.core.proxy.CommonProxy;
 import seremis.soulcraft.network.PacketTypeHandler;
 import seremis.soulcraft.network.packet.PacketEntityData;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.world.World;
 
-public abstract class SCEntity extends Entity {
-
-    public SCEntity(World world) {
+public class SCEntityLiving extends EntityLiving {
+    
+    public SCEntityLiving(World world) {
         super(world);
     }
-
+    
     public void sendEntityDataToClient(int id, byte[] value) {
         if(CommonProxy.proxy.isServerWorld(worldObj)) {
             PacketDispatcher.sendPacketToAllAround(posX, posY, posZ, 128D, worldObj.provider.dimensionId, PacketTypeHandler.populatePacket(new PacketEntityData(value, id, entityId)));
         } else {
-            receivePacketOnServer(id, value);
+            receivePacketOnClient(id, value);
         }
     }
 
@@ -46,4 +46,5 @@ public abstract class SCEntity extends Entity {
     public void receivePacketOnServer(int id, byte[] value) {
 
     }
+
 }

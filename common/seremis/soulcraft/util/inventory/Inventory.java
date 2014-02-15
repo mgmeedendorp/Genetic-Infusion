@@ -17,6 +17,7 @@ public class Inventory implements IInventory {
     
     public Inventory(int size, String name, int inventoryStackLimit, TileEntity tile) {
         inventory = new ItemStack[size];
+        inventorySize = size;
         this.name = name;
         this.inventoryStackLimit = inventoryStackLimit;
     }

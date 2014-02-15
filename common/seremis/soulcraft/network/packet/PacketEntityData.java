@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import seremis.soulcraft.core.proxy.CommonProxy;
 import seremis.soulcraft.entity.SCEntity;
+import seremis.soulcraft.entity.SCEntityLiving;
 import seremis.soulcraft.network.PacketTypeHandler;
 import cpw.mods.fml.common.network.Player;
 
@@ -59,6 +60,14 @@ public class PacketEntityData extends SCPacket {
             }
             if(CommonProxy.proxy.isServerWorld(((EntityPlayer) player).worldObj)) {
                 ((SCEntity) ent).receivePacketOnServer(id, data);
+            }
+        }
+        if(ent != null && ent instanceof SCEntityLiving) {
+            if(CommonProxy.proxy.isRenderWorld(((EntityPlayer) player).worldObj)) {
+                ((SCEntityLiving) ent).receivePacketOnClient(id, data);
+            }
+            if(CommonProxy.proxy.isServerWorld(((EntityPlayer) player).worldObj)) {
+                ((SCEntityLiving) ent).receivePacketOnServer(id, data);
             }
         }
     }

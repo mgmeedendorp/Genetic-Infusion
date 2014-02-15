@@ -93,11 +93,6 @@ public class SoulTemplates {
         
         chromosomes[EnumChromosome.RARE_ITEM_DROPS.ordinal()] = new Chromosome(allele1, allele2);
         
-        allele1 = new AlleleInteger(true, 3);
-        allele2 = new AlleleInteger(true, 3);
-        
-        chromosomes[EnumChromosome.RARE_ITEM_DROP_CHANCE.ordinal()] = new Chromosome(allele1, allele2);
-        
         allele1 = new AlleleString(true, "mob.zombie.say");
         allele2 = new AlleleString(true, "mob.zombie.say");
         
@@ -113,8 +108,8 @@ public class SoulTemplates {
         
         chromosomes[EnumChromosome.DEATH_SOUND.ordinal()] = new Chromosome(allele1, allele2);
         
-        allele1 = new AlleleFloat(true, 1);
-        allele2 = new AlleleFloat(true, 1);
+        allele1 = new AlleleFloat(true, 1F);
+        allele2 = new AlleleFloat(true, 1F);
         
         chromosomes[EnumChromosome.SOUND_VOLUME.ordinal()] = new Chromosome(allele1, allele2);
         

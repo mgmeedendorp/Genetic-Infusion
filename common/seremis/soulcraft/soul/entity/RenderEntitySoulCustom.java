@@ -9,7 +9,7 @@ import seremis.soulcraft.core.lib.Localizations;
 public class RenderEntitySoulCustom extends RenderLiving {
 
     public RenderEntitySoulCustom() {
-        super(new ModelZombie(), 5.0F);
+        super(new ModelZombie(), 0.5F);
     }
 
     @Override

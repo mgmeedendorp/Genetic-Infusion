@@ -1,34 +1,77 @@
 package seremis.soulcraft.soul.entity;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EntityLivingData;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.CombatTracker;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+import seremis.soulcraft.entity.SCEntityLiving;
 import seremis.soulcraft.soul.Soul;
 import seremis.soulcraft.soul.SoulHandler;
 
-public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom {
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteArrayDataOutput;
+
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import cpw.mods.fml.relauncher.ReflectionHelper;
+
+public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCustom, IEntityAdditionalSpawnData {
     
     private Soul soul;
     
-    public EntitySoulCustom(World world, Soul soul, double x, double y, double z) {
+    public EntitySoulCustom(World world) {
         super(world);
-        this.soul = soul;
+    }
+    
+    public EntitySoulCustom(World world, Soul soul, double x, double y, double z) {
+        this(world);
         setPosition(x, y, z);
-        setSize(1, 1.7F);
+        setSize(0.8F, 1.7F);
+        this.soul = soul;
         SoulHandler.entityInit(this);
+    }
+    
+
+    @Override
+    public void writeSpawnData(ByteArrayDataOutput data) {
+        NBTTagCompound compound = new NBTTagCompound();
+        writeToNBT(compound);
+        
+        byte[] abyte = null;
+        try {
+            abyte = CompressedStreamTools.compress(compound);
+        } catch(IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        data.writeShort((short)abyte.length);
+        data.write(abyte);
+    }
+
+    @Override
+    public void readSpawnData(ByteArrayDataInput data) {
+        short short1 = data.readShort();
+        byte[] abyte = new byte[short1];
+        data.readFully(abyte);
+        NBTTagCompound compound;
+        try {
+            compound = CompressedStreamTools.decompress(abyte);
+        } catch(IOException e) {
+            e.printStackTrace();
+            return;
+        }
+        readFromNBT(compound);
     }
     
     public Soul getSoul() {
@@ -401,7 +444,7 @@ public class EntitySoulCustom extends EntityLiving implements IEntitySoulCustom 
         }
         
         SoulHandler.entityDeath(this, source);
-        this.worldObj.setEntityState(this, (byte)3);
+        worldObj.setEntityState(this, (byte)3);
     }
     
     @Override

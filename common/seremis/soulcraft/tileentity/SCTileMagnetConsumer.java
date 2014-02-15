@@ -78,7 +78,7 @@ public abstract class SCTileMagnetConsumer extends TileMagnetConnector implement
 
     public void sendTileDataToClient(int id, byte[] data) {
         if(CommonProxy.proxy.isServerWorld(worldObj)) {
-            PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketTileData(data, id, this.xCoord, this.yCoord, this.zCoord)));
+            PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 128D, worldObj.provider.dimensionId, PacketTypeHandler.populatePacket(new PacketTileData(data, id, this.xCoord, this.yCoord, this.zCoord)));
         } else {
             setTileDataFromServer(id, data);
         }

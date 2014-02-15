@@ -48,7 +48,7 @@ public class SoulCraft {
 
     public static DamageSource damageCompressor = new DamageCompressor("compressed");
     
-    public static Logger logger = Logger.getLogger("SoulCraft");
+    public static Logger logger = Logger.getLogger(DefaultProps.name);
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {

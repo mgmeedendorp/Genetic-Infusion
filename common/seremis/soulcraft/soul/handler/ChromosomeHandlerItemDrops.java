@@ -13,7 +13,6 @@ import seremis.soulcraft.soul.EnumChromosome;
 import seremis.soulcraft.soul.IChromosome;
 import seremis.soulcraft.soul.SoulHandler;
 import seremis.soulcraft.soul.allele.AlleleFloatArray;
-import seremis.soulcraft.soul.allele.AlleleInteger;
 import seremis.soulcraft.soul.allele.AlleleInventory;
 import seremis.soulcraft.soul.entity.IEntitySoulCustom;
 import seremis.soulcraft.soul.event.EntityEventHandler;
@@ -26,7 +25,7 @@ public class ChromosomeHandlerItemDrops extends EntityEventHandler {
         if(CommonProxy.proxy.isRenderWorld(entity.getWorld())) return;
         
         int lootingLevel = 0;
-
+        
         if (entity instanceof EntityPlayer) {
             lootingLevel = EnchantmentHelper.getLootingModifier((EntityLivingBase)entity);
         }
@@ -34,9 +33,10 @@ public class ChromosomeHandlerItemDrops extends EntityEventHandler {
         if (entity.getWorld().getGameRules().getGameRuleBooleanValue("doMobLoot")) {
             dropNormalItems(entity, lootingLevel);
             dropEquipment(entity, lootingLevel);
+            entity.setRecentlyHit(100);
             if (entity.getRecentlyHit() > 0) {
                 int chance = new Random().nextInt(200) - lootingLevel;
-
+                System.out.println(chance);
                 if (chance < 5) {
                     dropRareItems(entity, lootingLevel);
                 }
@@ -54,28 +54,21 @@ public class ChromosomeHandlerItemDrops extends EntityEventHandler {
         }
         
         IChromosome chromosome = SoulHandler.getChromosomeFrom((EntityLiving) entity, EnumChromosome.ITEM_DROPS);
+        Inventory drops = ((AlleleInventory)chromosome.getActive()).inventory;
 
         for (int l = 0; l < chance; ++l) {
-            Inventory drops = ((AlleleInventory)chromosome.getActive()).inventory;
             for(int i = 0; i < drops.getSizeInventory(); i++) {
                 entity.dropItems(drops.getStackInSlot(i));
             }
         }
     }
     
-    public void dropRareItems(IEntitySoulCustom entity, int lootingLevel) {
-        int modifier = ((AlleleInteger)SoulHandler.getChromosomeFrom((EntityLiving) entity, EnumChromosome.RARE_ITEM_DROP_CHANCE).getActive()).value;
-        
+    public void dropRareItems(IEntitySoulCustom entity, int lootingLevel) {        
         IChromosome chromosome = SoulHandler.getChromosomeFrom((EntityLiving) entity, EnumChromosome.RARE_ITEM_DROPS);
         
-        if(new Random().nextInt(200-lootingLevel) < 5) {
-            if(new Random().nextInt(modifier) == 0) {
-                Inventory drops = ((AlleleInventory)chromosome.getActive()).inventory;
-                for(int i = 0; i < drops.getSizeInventory(); i++) {
-                    entity.dropItems(drops.getStackInSlot(i));
-                }
-            }
-        }
+        Inventory drops = ((AlleleInventory)chromosome.getActive()).inventory;
+            
+        entity.dropItems(drops.getStackInSlot(new Random().nextInt(drops.getSizeInventory())));
     }
     
     public void dropEquipment(IEntitySoulCustom entity, int lootingLevel) {
