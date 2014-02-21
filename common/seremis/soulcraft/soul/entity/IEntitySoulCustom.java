@@ -12,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.CombatTracker;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -46,15 +47,59 @@ public interface IEntitySoulCustom {
      */
     void addVelocity(double x, double y, double z);
     
+    double getPrevPosX();
+    double getPrevPosY();
+    double getPrevPosZ();
+    
+    void setPrevPosX(double x);
+    void setPrevPosY(double y);
+    void setPrevPosZ(double z);
+    
     float getRotationYaw();
     float getRotationPitch();
 
     void setRotationYaw(float yaw);
     void setRotationPitch(float pitch);
     
+    float getPrevRotationYaw();
+    float getPrevRotationPitch();
+    
+    void setPrevRotationYaw(float yaw);
+    void setPrevRotationPitch(float pitch);
+    
+    void setPrevDistanceWalkedModified(float prevDistanceWalkedModified);
+    void setDistanceWalkedModified(float distanceWalkedModified);
+    
+    float getPrevDistanceWalkedModified();
+    float getDistanceWalkedModified();
+    
     World getWorld();
     
     float getBrightness();
+    
+    boolean getIsInPortal();
+    void setIsInPortal(boolean inPortal);
+    
+    int getPortalTimer();
+    void setPortalTimer(int time);
+    
+    int getPortalCooldown();
+    void setPortalCooldown(int cooldown);
+    
+    float getWidth();
+    void setWidth(float width);
+    
+    float getHeight();
+    void setHeight(float height);
+    
+    AxisAlignedBB getBoundingBox();
+    void setBoundingBox(AxisAlignedBB boundingBox);
+    
+    float getCameraPitch();
+    void setCameraPitch(float cameraPitch);
+    
+    float getPrevCameraPitch();
+    void setPrevCameraPitch(float prevCameraPitch);
     
     /**
      * Get the armor from slot 0-3
@@ -105,6 +150,7 @@ public interface IEntitySoulCustom {
     
     boolean isEntityAlive();
     boolean isInWater();
+    boolean handleWaterMovement();
     boolean handleLavaMovement();
     
     boolean attackEntityFrom(DamageSource source, float damage);
@@ -168,8 +214,16 @@ public interface IEntitySoulCustom {
 
     void setFlag(int id, boolean value);
     
+    void setIsSprinting(boolean sprint);
+    boolean isSprinting();
+    
     void setIsJumping(boolean jump);
     boolean getIsJumping();
+    
+    void setFallDistance(float fallDistance);
+    float getFallDistance();
+    
+    void setDead();
     
     void moveEntity(double posX, double posY, double posZ);
     void moveEntityWithHeading(float strafe, float forward);
@@ -177,4 +231,28 @@ public interface IEntitySoulCustom {
     float getMoveStrafing();
     void setMoveForward(float forward);
     float getMoveForward();
+    
+    void setRidingEntity(Entity ridingEntity);
+    Entity getRidingEntity();
+    
+    void travelToDimension(int dimId);
+    
+    double getYOffset();
+    void setYOffset(float yOffset);
+    
+    boolean isEntityInsideOpaqueBlock();
+    
+    void updatePotionEffects();
+    
+    void setRenderYawOffset(float yawOffset);
+    float getRenderYawOffset();
+    void setPrevRenderYawOffset(float prevYawOffset);
+    float getPrevRenderYawOffset();
+    
+    void setRotationYawHead(float yaw);
+    float getRotationYawHead();
+    void setPrevRotationYawHead(float yaw);
+    float getPrevRotationYawHead();
+    
+    
 }

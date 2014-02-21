@@ -23,8 +23,6 @@ public class SoulTemplates {
     public static Soul getZombieSoul() {
         Chromosome[] chromosomes = new Chromosome[EnumChromosome.values().length];
         
-        System.out.println(chromosomes.length);
-        
         IAllele allele1;
         IAllele allele2;
         
@@ -117,6 +115,16 @@ public class SoulTemplates {
         allele2 = new AlleleInteger(true, EnumCreatureAttribute.UNDEAD.ordinal());
         
         chromosomes[EnumChromosome.CREATURE_ATTRIBUTE.ordinal()] = new Chromosome(allele1, allele2);
+        
+        allele1 = new AlleleInteger(true, 1);
+        allele2 = new AlleleInteger(true, 1);
+        
+        chromosomes[EnumChromosome.TELEPORT_TIME_IN_PORTAL.ordinal()] = new Chromosome(allele1, allele2);
+        
+        allele1 = new AlleleInteger(true, 900);
+        allele2 = new AlleleInteger(true, 900);
+        
+        chromosomes[EnumChromosome.PORTAL_COOLDOWN.ordinal()] = new Chromosome(allele1, allele2);
         
         return new Soul(chromosomes);
     }

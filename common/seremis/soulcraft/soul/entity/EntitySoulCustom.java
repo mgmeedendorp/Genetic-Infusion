@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.CombatTracker;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -413,6 +414,225 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     @Override
     public float getMoveForward() {
         return moveForward;
+    }
+    
+
+    @Override
+    public double getPrevPosX() {
+        return prevPosX;
+    }
+
+    @Override
+    public double getPrevPosY() {
+        return prevPosY;
+    }
+
+    @Override
+    public double getPrevPosZ() {
+        return prevPosZ;
+    }
+
+    @Override
+    public void setPrevPosX(double x) {
+        prevPosX = x;
+    }
+
+    @Override
+    public void setPrevPosY(double y) {
+        prevPosY = y;
+    }
+
+    @Override
+    public void setPrevPosZ(double z) {
+        prevPosZ = z;
+    }
+
+    @Override
+    public float getPrevRotationYaw() {
+        return prevRotationYaw;
+    }
+
+    @Override
+    public float getPrevRotationPitch() {
+        return prevRotationPitch;
+    }
+
+    @Override
+    public void setPrevRotationYaw(float yaw) {
+        prevRotationYaw = yaw;
+    }
+
+    @Override
+    public void setPrevRotationPitch(float pitch) {
+        prevRotationPitch = pitch;
+    }
+
+    @Override
+    public boolean getIsInPortal() {
+        return inPortal;
+    }
+
+    @Override
+    public void setIsInPortal(boolean inPortal) {
+        this.inPortal = inPortal;
+    }
+
+    @Override
+    public int getPortalTimer() {
+        return portalCounter;
+    }
+
+    @Override
+    public void setPortalTimer(int time) {
+        portalCounter = time;
+    }
+
+    @Override
+    public void setPortalCooldown(int cooldown) {
+        timeUntilPortal = cooldown;
+    }
+
+    @Override
+    public int getPortalCooldown() {
+        return timeUntilPortal;
+    }
+
+    @Override
+    public void setRidingEntity(Entity ridingEntity) {
+        this.ridingEntity = ridingEntity;
+    }
+
+    @Override
+    public Entity getRidingEntity() {
+        return ridingEntity;
+    }
+    
+
+    @Override
+    public void setPrevDistanceWalkedModified(float prevDistanceWalkedModified) {
+        this.prevDistanceWalkedModified = prevDistanceWalkedModified;
+    }
+
+    @Override
+    public void setDistanceWalkedModified(float distanceWalkedModified) {
+        this.distanceWalkedModified = distanceWalkedModified;        
+    }
+
+    @Override
+    public float getPrevDistanceWalkedModified() {
+        return prevDistanceWalkedModified;
+    }
+
+    @Override
+    public float getDistanceWalkedModified() {
+        return distanceWalkedModified;
+    }
+    
+    @Override
+    public float getWidth() {
+        return width;
+    }
+
+    @Override
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    @Override
+    public float getHeight() {
+        return height;
+    }
+
+    @Override
+    public void setHeight(float height) {
+        this.height = height;
+    }
+
+    @Override
+    public void setBoundingBox(AxisAlignedBB boundingBox) {
+        try {
+            Field bounds = ReflectionHelper.findField(Entity.class, new String[] {"boundingBox", "field_70121_D"});
+            bounds.setAccessible(true);
+            bounds.set(this, boundingBox);
+            bounds.setAccessible(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public float getCameraPitch() {
+        return this.cameraPitch;
+    }
+
+    @Override
+    public void setCameraPitch(float cameraPitch) {
+        this.cameraPitch = cameraPitch;
+    }
+
+    @Override
+    public float getPrevCameraPitch() {
+        return this.prevCameraPitch;
+    }
+
+    @Override
+    public void setPrevCameraPitch(float prevCameraPitch) {
+        this.prevCameraPitch = prevCameraPitch;
+    }
+
+    @Override
+    public void setIsSprinting(boolean sprint) {
+        this.setSprinting(sprint);
+    }
+
+    @Override
+    public void setFallDistance(float fallDistance) {
+        this.fallDistance = fallDistance;
+    }
+
+    @Override
+    public float getFallDistance() {
+        return fallDistance;
+    }
+
+    @Override
+    public void setYOffset(float yOffset) {
+        this.yOffset = yOffset;
+    }
+
+    @Override
+    public void setRenderYawOffset(float yawOffset) {
+        this.renderYawOffset = yawOffset;
+    }
+
+    @Override
+    public float getRenderYawOffset() {
+        return renderYawOffset;
+    }
+
+    @Override
+    public void setPrevRenderYawOffset(float prevYawOffset) {
+        this.prevRenderYawOffset = prevYawOffset;
+    }
+
+    @Override
+    public float getPrevRenderYawOffset() {
+        return prevRenderYawOffset;
+    }
+
+    @Override
+    public void setPrevRotationYawHead(float yaw) {
+        this.prevRotationYawHead = yaw;
+    }
+
+    @Override
+    public float getPrevRotationYawHead() {
+        return prevRotationYawHead;
+    }
+    
+    @Override
+    public void updatePotionEffects() {
+        super.updatePotionEffects();
     }
     
     //Entity stuff//    

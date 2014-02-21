@@ -33,7 +33,7 @@ public class ChromosomeHandlerItemDrops extends EntityEventHandler {
         if (entity.getWorld().getGameRules().getGameRuleBooleanValue("doMobLoot")) {
             dropNormalItems(entity, lootingLevel);
             dropEquipment(entity, lootingLevel);
-            entity.setRecentlyHit(100);
+
             if (entity.getRecentlyHit() > 0) {
                 int chance = new Random().nextInt(200) - lootingLevel;
                 System.out.println(chance);
