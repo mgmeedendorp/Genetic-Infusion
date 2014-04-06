@@ -4,11 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EntityLivingData;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
 import seremis.soulcraft.soul.entity.IEntitySoulCustom;
 import seremis.soulcraft.soul.event.EntityEventHandler;
 
@@ -46,101 +42,5 @@ public class SoulHandler {
     
     public static IChromosome getChromosomeFrom(EntityLiving entity, EnumChromosome chromosome) {
         return getSoulFrom(entity).chromosomes[chromosome.ordinal()];
-    }
-    
-    public static void entityInit(IEntitySoulCustom entity) {
-        Soul soul = getSoulFrom(entity);
-
-        if(soul != null) {
-            for(EntityEventHandler handler : eventHandlers) {
-                handler.onInit(entity);
-            }
-        }
-    }
-    
-    public static void entityUpdate(IEntitySoulCustom entity) {
-        Soul soul = getSoulFrom(entity);
-        
-        if(soul != null) {
-            for(EntityEventHandler handler : eventHandlers) {
-                handler.onUpdate(entity);
-            }
-        }
-    }
-    
-    public static void entityRightClicked(IEntitySoulCustom entity, EntityPlayer player) {
-        Soul soul = getSoulFrom(entity);
-        
-        if(soul != null) {
-            for(EntityEventHandler handler : eventHandlers) {
-                handler.onInteract(entity, player);
-            }
-        }
-    }
-
-    public static void entityDeath(IEntitySoulCustom entity, DamageSource source) {
-        Soul soul = getSoulFrom(entity);
-        
-        if(soul != null) {
-            for(EntityEventHandler handler : eventHandlers) {
-                handler.onDeath(entity, source);
-            }
-        }
-    }
-
-    public static void onKillEntity(IEntitySoulCustom entity, EntityLivingBase killed) {
-        Soul soul = getSoulFrom(entity);
-        
-        if(soul != null) {
-            for(EntityEventHandler handler : eventHandlers) {
-                handler.onKillEntity(entity, killed);
-            }
-        }
-    }
-
-    public static boolean attackEntityFrom(IEntitySoulCustom entity, DamageSource source, float damage) {
-        Soul soul = getSoulFrom(entity);
-        
-        boolean flag = true;
-        
-        if(soul != null) {
-            for(EntityEventHandler handler : eventHandlers) {
-                if(!handler.onEntityAttacked(entity, source, damage)) {
-                    flag = false;
-                }
-            }
-        }
-        return flag;
-    }
-
-    public static EntityLivingData spawnEntityFromEgg(IEntitySoulCustom entity, EntityLivingData data) {
-        Soul soul = getSoulFrom(entity);
-        
-        if(soul != null) {
-            for(EntityEventHandler handler : eventHandlers) {
-                handler.onSpawnWithEgg(entity, data);
-            }
-        }
-        return data;
-    }
-
-    public static void playSoundAtEntity(IEntitySoulCustom entity, String name, float volume, float pitch) {
-        Soul soul = getSoulFrom(entity);
-        
-        if(soul != null) {
-            for(EntityEventHandler handler : eventHandlers) {
-                handler.playSound(entity, name, volume, pitch);
-            }
-        }
-    }
-
-    public static void damageEntity(IEntitySoulCustom entity, DamageSource source, float damage) {
-        Soul soul = getSoulFrom(entity);
-        
-        if(soul != null) {
-            for(EntityEventHandler handler : eventHandlers) {
-                handler.damageEntity(entity, source, damage);
-            }
-        }
     }
 }

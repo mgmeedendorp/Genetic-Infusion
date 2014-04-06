@@ -22,6 +22,44 @@ public interface IEntitySoulCustom {
 
     Soul getSoul();
     
+    /*
+     * Use these methods to set and get a persistent variable. This variable will save and load with NBT.
+     */
+    
+    void setPersistentVariable(String name, boolean variable);
+    void setPersistentVariable(String name, byte variable);
+    void setPersistentVariable(String name, int variable);
+    void setPersistentVariable(String name, float variable);
+    void setPersistentVariable(String name, double variable);
+    void setPersistentVariable(String name, String variable);
+    
+    boolean getPersistentBoolean(String name);
+    byte getPersistentByte(String name);
+    int getPersistentInteger(String name);
+    float getPersistentFloat(String name);
+    double getPersistentDouble(String name);
+    String getPersistentString(String name);
+    
+    /*
+     * Use these methods to get and set a non-persistent variable. This variable will not sustain over saves.
+     */
+    
+    void setVariable(String name, boolean variable);
+    void setVariable(String name, byte variable);
+    void setVariable(String name, int variable);
+    void setVariable(String name, float variable);
+    void setVariable(String name, double variable);
+    void setVariable(String name, String variable);
+    
+    boolean getBoolean(String name);
+    byte getByte(String name);
+    int getInteger(String name);
+    float getFloat(String name);
+    double getDouble(String name);
+    String getString(String name);
+    
+    //TO BE REMOVED?! Not sure yet...
+    
     double getPosX();
     double getPosY();
     double getPosZ();

@@ -2,6 +2,9 @@ package seremis.soulcraft.soul.entity;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -12,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.CombatTracker;
 import net.minecraft.util.DamageSource;
@@ -19,7 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import seremis.soulcraft.entity.SCEntityLiving;
 import seremis.soulcraft.soul.Soul;
-import seremis.soulcraft.soul.SoulHandler;
+import seremis.soulcraft.soul.traits.TraitHandler;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
@@ -40,7 +44,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
         setPosition(x, y, z);
         setSize(0.8F, 1.7F);
         this.soul = soul;
-        SoulHandler.entityInit(this);
+        TraitHandler.entityInit(this);
     }
     
 
@@ -638,7 +642,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     //Entity stuff//    
     @Override
     public boolean interact(EntityPlayer player) {
-        SoulHandler.entityRightClicked(this, player);
+        TraitHandler.entityRightClicked(this, player);
         return true;
     }
     
@@ -652,7 +656,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     public void onUpdate() {
         if (ForgeHooks.onLivingUpdate(this))return;
         //isDead = true;
-        SoulHandler.entityUpdate(this);
+        TraitHandler.entityUpdate(this);
     }
     
     @Override
@@ -663,45 +667,391 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
             source.getEntity().onKillEntity(this);
         }
         
-        SoulHandler.entityDeath(this, source);
+        TraitHandler.entityDeath(this, source);
         worldObj.setEntityState(this, (byte)3);
     }
     
     @Override
     public void onKillEntity(EntityLivingBase entity) {
-        SoulHandler.onKillEntity(this, entity);
+        TraitHandler.onKillEntity(this, entity);
     }
     
     @Override
     public boolean attackEntityFrom(DamageSource source, float damage) {
         if(ForgeHooks.onLivingAttack(this, source, damage)) return false;
-        return SoulHandler.attackEntityFrom(this, source, damage);
+        return TraitHandler.attackEntityFrom(this, source, damage);
     }
     
     @Override
     public void damageEntity(DamageSource source, float damage) {
-        SoulHandler.damageEntity(this, source, damage);
+        TraitHandler.damageEntity(this, source, damage);
     }
     
     @Override
     public EntityLivingData onSpawnWithEgg(EntityLivingData data) {
-        return SoulHandler.spawnEntityFromEgg(this, data);
+        return TraitHandler.spawnEntityFromEgg(this, data);
     }
     
     @Override
     public void playSound(String name, float volume, float pitch) {
-        SoulHandler.playSoundAtEntity(this, name, volume, pitch);
+        TraitHandler.playSoundAtEntity(this, name, volume, pitch);
     }
     
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         soul = new Soul(compound);
+        
+        NBTTagList tagList = (NBTTagList) compound.getTag("traitVariables");
+        
+        NBTTagCompound compoundBoolean = null;
+        NBTTagCompound compoundByte = null;
+        NBTTagCompound compoundInteger = null;
+        NBTTagCompound compoundFloat = null;
+        NBTTagCompound compoundDouble = null;
+        NBTTagCompound compoundString = null;
+        
+        for(int i = 0; i < tagList.tagCount(); i++) {
+            if(((NBTTagCompound)tagList.tagAt(i)).getString("name") == "boolean") {
+                compoundBoolean = (NBTTagCompound)tagList.tagAt(i);
+            } else if(((NBTTagCompound)tagList.tagAt(i)).getString("name") == "byte") {
+                compoundByte = (NBTTagCompound)tagList.tagAt(i);
+            } else if(((NBTTagCompound)tagList.tagAt(i)).getString("name") == "integer") {
+                compoundInteger = (NBTTagCompound)tagList.tagAt(i);
+            } else if(((NBTTagCompound)tagList.tagAt(i)).getString("name") == "float") {
+                compoundFloat = (NBTTagCompound)tagList.tagAt(i);
+            } else if(((NBTTagCompound)tagList.tagAt(i)).getString("name") == "double") {
+                compoundDouble = (NBTTagCompound)tagList.tagAt(i);
+            } else if(((NBTTagCompound)tagList.tagAt(i)).getString("name") == "string") {
+                compoundString = (NBTTagCompound)tagList.tagAt(i);
+            }
+        }
+        
+        if(compoundBoolean != null) {
+            int size = compoundBoolean.getInteger("size");
+            for(int i = 0; i < size; i++) {
+                String name = compoundBoolean.getString("boolean" + i + "Name");
+                boolean value = compoundBoolean.getBoolean("boolean" + i + "Value");
+                persistentBoolean.put(name, value);
+            }
+        }
+        
+        if(compoundByte != null) {
+            int size = compoundByte.getInteger("size");
+            for(int i = 0; i < size; i++) {
+                String name = compoundByte.getString("byte" + i + "Name");
+                byte value = compoundByte.getByte("byte" + i + "Value");
+                persistentByte.put(name, value);
+            }
+        }
+        
+        if(compoundInteger != null) {
+            int size = compoundInteger.getInteger("size");
+            for(int i = 0; i < size; i++) {
+                String name = compoundInteger.getString("integer" + i + "Name");
+                int value = compoundInteger.getInteger("integer" + i + "Value");
+                persistentInteger.put(name, value);
+            }
+        }
+        
+        if(compoundFloat != null) {
+            int size = compoundFloat.getInteger("size");
+            for(int i = 0; i < size; i++) {
+                String name = compoundFloat.getString("float" + i + "Name");
+                float value = compoundFloat.getFloat("float" + i + "Value");
+                persistentFloat.put(name, value);
+            }
+        }
+        
+        if(compoundDouble != null) {
+            int size = compoundDouble.getInteger("size");
+            for(int i = 0; i < size; i++) {
+                String name = compoundDouble.getString("double" + i + "Name");
+                double value = compoundDouble.getDouble("double" + i + "Value");
+                persistentDouble.put(name, value);
+            }
+        }
+        
+        if(compoundString != null) {
+            int size = compoundString.getInteger("size");
+            for(int i = 0; i < size; i++) {
+                String name = compoundString.getString("string" + i + "Name");
+                String value = compoundString.getString("string" + i + "Value");
+                persistentString.put(name, value);
+            }
+        }
     }
     
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         soul.writeToNBT(compound);
+        
+        NBTTagList tagList = new NBTTagList();
+        
+        List<String> stringList = new ArrayList<String>();
+        stringList.addAll(persistentBoolean.keySet());
+        
+        NBTTagCompound booleanCompound = new NBTTagCompound();
+        for(int i = 0; i < persistentBoolean.size(); i++) {
+            booleanCompound.setString("boolean" + i + "Name", stringList.get(i));
+            booleanCompound.setBoolean("boolean" + i + "Value", persistentBoolean.get(stringList.get(i)));
+        }
+        booleanCompound.setString("type", "boolean");
+        booleanCompound.setInteger("size", persistentBoolean.size());
+        tagList.appendTag(booleanCompound);
+        
+        stringList.clear();
+        stringList.addAll(persistentByte.keySet());
+        
+        NBTTagCompound byteCompound = new NBTTagCompound();
+        for(int i = 0; i < persistentByte.size(); i++) {
+            byteCompound.setString("byte" + i + "Name", stringList.get(i));
+            byteCompound.setByte("byte" + i + "Value", persistentByte.get(stringList.get(i)));
+        }
+        byteCompound.setString("type", "byte");
+        byteCompound.setInteger("size", persistentByte.size());
+        tagList.appendTag(byteCompound);
+        
+        stringList.clear();
+        stringList.addAll(persistentInteger.keySet());
+        
+        NBTTagCompound integerCompound = new NBTTagCompound();
+        for(int i = 0; i < persistentInteger.size(); i++) {
+            integerCompound.setString("integer" + i + "Name", stringList.get(i));
+            integerCompound.setInteger("integer" + i + "Value", persistentInteger.get(stringList.get(i)));
+        }
+        integerCompound.setString("type", "integer");
+        integerCompound.setInteger("size", persistentInteger.size());
+        tagList.appendTag(integerCompound);
+        
+        stringList.clear();
+        stringList.addAll(persistentFloat.keySet());
+        
+        NBTTagCompound floatCompound = new NBTTagCompound();
+        for(int i = 0; i < persistentFloat.size(); i++) {
+            floatCompound.setString("float" + i + "Name", stringList.get(i));
+            floatCompound.setFloat("float" + i + "Value", persistentFloat.get(stringList.get(i)));
+        }
+        floatCompound.setString("type", "float");
+        floatCompound.setInteger("size", persistentFloat.size());
+        
+        stringList.clear();
+        stringList.addAll(persistentDouble.keySet());
+        
+        NBTTagCompound doubleCompound = new NBTTagCompound();
+        for(int i = 0; i < persistentDouble.size(); i++) {
+            doubleCompound.setString("double" + i + "Name", stringList.get(i));
+            doubleCompound.setDouble("double" + i + "Value", persistentDouble.get(stringList.get(i)));
+        }
+        doubleCompound.setString("type", "double");
+        doubleCompound.setInteger("size", persistentDouble.size());
+        
+        stringList.clear();
+        stringList.addAll(persistentString.keySet());
+        
+        NBTTagCompound stringCompound = new NBTTagCompound();
+        for(int i = 0; i < persistentString.size(); i++) {
+            stringCompound.setString("string" + i + "Name", stringList.get(i));
+            stringCompound.setString("string" + i + "Value", persistentString.get(stringList.get(i)));
+        }
+        stringCompound.setString("type", "string");
+        stringCompound.setInteger("size", persistentString.size());
+        
+        compound.setTag("traitVariables", tagList);
+    }
+    
+    private HashMap<String, Boolean> persistentBoolean = new HashMap<String, Boolean>(); 
+    private HashMap<String, Byte> persistentByte = new HashMap<String, Byte>(); 
+    private HashMap<String, Integer> persistentInteger = new HashMap<String, Integer>(); 
+    private HashMap<String, Float> persistentFloat = new HashMap<String, Float>(); 
+    private HashMap<String, Double> persistentDouble = new HashMap<String, Double>(); 
+    private HashMap<String, String> persistentString = new HashMap<String, String>(); 
+    
+    private HashMap<String, Boolean> variableBoolean = new HashMap<String, Boolean>(); 
+    private HashMap<String, Byte> variableByte = new HashMap<String, Byte>(); 
+    private HashMap<String, Integer> variableInteger = new HashMap<String, Integer>(); 
+    private HashMap<String, Float> variableFloat = new HashMap<String, Float>(); 
+    private HashMap<String, Double> variableDouble = new HashMap<String, Double>(); 
+    private HashMap<String, String> variableString = new HashMap<String, String>(); 
+    
+    @Override
+    public void setPersistentVariable(String name, boolean variable) {
+        for(String string : persistentBoolean.keySet()) {
+            if(string.equals(name)) {
+                persistentBoolean.remove(name);
+            }
+        }
+        persistentBoolean.put(name, variable);
+    }
+
+    @Override
+    public void setPersistentVariable(String name, byte variable) {
+        for(String string : persistentByte.keySet()) {
+            if(string.equals(name)) {
+                persistentByte.remove(name);
+            }
+        }
+        persistentByte.put(name, variable);
+    }
+
+    @Override
+    public void setPersistentVariable(String name, int variable) {
+        for(String string : persistentInteger.keySet()) {
+            if(string.equals(name)) {
+                persistentInteger.remove(name);
+            }
+        }
+        persistentInteger.put(name, variable);
+    }
+
+    @Override
+    public void setPersistentVariable(String name, float variable) {
+        for(String string : persistentFloat.keySet()) {
+            if(string.equals(name)) {
+                persistentFloat.remove(name);
+            }
+        }
+        persistentFloat.put(name, variable);        
+    }
+
+    @Override
+    public void setPersistentVariable(String name, double variable) {
+        for(String string : persistentDouble.keySet()) {
+            if(string.equals(name)) {
+                persistentDouble.remove(name);
+            }
+        }
+        persistentDouble.put(name, variable);
+    }
+
+    @Override
+    public void setPersistentVariable(String name, String variable) {
+        for(String string : persistentString.keySet()) {
+            if(string.equals(name)) {
+                persistentString.remove(name);
+            }
+        }
+        persistentString.put(name, variable);
+    }
+    
+    @Override
+    public boolean getPersistentBoolean(String name) {
+        return persistentBoolean.get(name);
+    }
+
+    @Override
+    public byte getPersistentByte(String name) {
+        return persistentByte.get(name);
+    }
+
+    @Override
+    public int getPersistentInteger(String name) {
+        return persistentInteger.get(name);
+    }
+
+    @Override
+    public float getPersistentFloat(String name) {
+        return persistentFloat.get(name);
+    }
+
+    @Override
+    public double getPersistentDouble(String name) {
+        return persistentDouble.get(name);
+    }
+
+    @Override
+    public String getPersistentString(String name) {
+        return persistentString.get(name);
+    }
+
+    @Override
+    public void setVariable(String name, boolean variable) {
+        for(String string : variableBoolean.keySet()) {
+            if(string.equals(name)) {
+                variableBoolean.remove(name);
+            }
+        }
+        variableBoolean.put(name, variable);
+    }
+
+    @Override
+    public void setVariable(String name, byte variable) {
+        for(String string : variableByte.keySet()) {
+            if(string.equals(name)) {
+                persistentByte.remove(name);
+            }
+        }
+        persistentByte.put(name, variable);
+    }
+
+    @Override
+    public void setVariable(String name, int variable) {
+        for(String string : variableInteger.keySet()) {
+            if(string.equals(name)) {
+                variableInteger.remove(name);
+            }
+        }
+        variableInteger.put(name, variable);
+    }
+
+    @Override
+    public void setVariable(String name, float variable) {
+        for(String string : variableFloat.keySet()) {
+            if(string.equals(name)) {
+                variableFloat.remove(name);
+            }
+        }
+        variableFloat.put(name, variable);        
+    }
+
+    @Override
+    public void setVariable(String name, double variable) {
+        for(String string : variableDouble.keySet()) {
+            if(string.equals(name)) {
+                variableDouble.remove(name);
+            }
+        }
+        variableDouble.put(name, variable);
+    }
+
+    @Override
+    public void setVariable(String name, String variable) {
+        for(String string : variableString.keySet()) {
+            if(string.equals(name)) {
+                variableString.remove(name);
+            }
+        }
+        variableString.put(name, variable);
+    }
+
+    @Override
+    public boolean getBoolean(String name) {
+        return variableBoolean.get(name);
+    }
+
+    @Override
+    public byte getByte(String name) {
+        return variableByte.get(name);
+    }
+
+    @Override
+    public int getInteger(String name) {
+        return variableInteger.get(name);
+    }
+
+    @Override
+    public float getFloat(String name) {
+        return variableFloat.get(name);
+    }
+
+    @Override
+    public double getDouble(String name) {
+        return variableDouble.get(name);
+    }
+
+    @Override
+    public String getString(String name) {
+        return variableString.get(name);
     }
 }
