@@ -1,20 +1,20 @@
 package seremis.soulcraft.block;
 
+import seremis.soulcraft.core.lib.Blocks;
+import seremis.soulcraft.tileentity.TileItemIO;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import seremis.soulcraft.core.lib.Blocks;
-import seremis.soulcraft.tileentity.TileItemIO;
 
 public class BlockItemIO extends SCBlockContainer {
     
-    public BlockItemIO(int ID, Material material) {
-        super(ID, material);
-        setUnlocalizedName(Blocks.ITEM_IO_UNLOCALIZED_NAME);
+    public BlockItemIO(Material material) {
+        super(material);
+        setBlockName(Blocks.ITEM_IO_UNLOCALIZED_NAME);
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world) {
+    public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileItemIO();
     }
 }

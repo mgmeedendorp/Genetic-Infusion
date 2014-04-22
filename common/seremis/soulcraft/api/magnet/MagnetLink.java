@@ -4,9 +4,6 @@ import seremis.soulcraft.api.magnet.tile.IMagnetConnector;
 import seremis.soulcraft.api.magnet.tile.IMagnetConsumer;
 import seremis.soulcraft.api.util.Coordinate3D;
 import seremis.soulcraft.api.util.Line3D;
-import seremis.soulcraft.network.PacketTypeHandler;
-import seremis.soulcraft.network.packet.PacketHeatMagnetLink;
-import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class MagnetLink {
 
@@ -29,7 +26,7 @@ public class MagnetLink {
     }
 
     public MagnetLink(IMagnetConnector connector1, IMagnetConnector connector2) {
-        this(connector1, connector2, connector1.getTile().worldObj.provider.dimensionId);
+        this(connector1, connector2, connector1.getTile().getWorldObj().provider.dimensionId);
     }
 
     public boolean isConnectionPossible() {
@@ -59,13 +56,13 @@ public class MagnetLink {
                 int con2rem = connector2.cool(changeHeat);
                 connector1.warm(con2rem);
                 connector2.warm(con1rem);
-                PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketHeatMagnetLink(this)));
+             //   PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketHeatMagnetLink(this)));
             } else if(heat1 > heat2) {
                 int con1rem = connector1.cool(changeHeat);
                 int con2rem = connector2.warm(changeHeat);
                 connector1.warm(con2rem);
                 connector2.warm(con1rem);
-                PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketHeatMagnetLink(this)));
+              //  PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketHeatMagnetLink(this)));
             }
         }
         if(method == 1) {
@@ -80,7 +77,7 @@ public class MagnetLink {
                     connector1.warm(changeHeat);
                     connector2.cool(changeHeat);
                     
-                    PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketHeatMagnetLink(this)));
+                  //  PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketHeatMagnetLink(this)));
                 }
             } else if(connector2 instanceof IMagnetConsumer) {
                 if(connector2.getHeat() != connector2.getMaxHeat() && connector1.getHeat() != 0) {
@@ -93,7 +90,7 @@ public class MagnetLink {
                     connector1.cool(changeHeat);
                     connector2.warm(changeHeat);
                     
-                    PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketHeatMagnetLink(this)));
+                  //  PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketHeatMagnetLink(this)));
                 }
             }
         }

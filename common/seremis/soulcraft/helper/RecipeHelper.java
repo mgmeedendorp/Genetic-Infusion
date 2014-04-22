@@ -1,18 +1,18 @@
 package seremis.soulcraft.helper;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import seremis.soulcraft.block.ModBlocks;
 import seremis.soulcraft.item.ModItems;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class RecipeHelper {
 
     public static void initRecipes() {
-        GameRegistry.addRecipe(new ItemStack(ModBlocks.monsterEgg), "xyx", "xzx", "xxx", Character.valueOf('z'), Item.egg, Character.valueOf('x'), ModItems.titaniumIngot, Character.valueOf('z'), ModBlocks.crystal);
+        GameRegistry.addRecipe(new ItemStack(ModBlocks.monsterEgg), "xyx", "xzx", "xxx", Character.valueOf('z'), Items.egg, Character.valueOf('x'), ModItems.titaniumIngot, Character.valueOf('z'), ModBlocks.crystal);
     }
 
     public static void initSmelting() {
-        GameRegistry.addSmelting(ModBlocks.oreTitanium.blockID, new ItemStack(ModItems.titaniumIngot), 0.4f);
+        GameRegistry.addSmelting(ModBlocks.oreTitanium, new ItemStack(ModItems.titaniumIngot), 0.4f);
     }
 }

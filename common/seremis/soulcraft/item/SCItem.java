@@ -2,23 +2,23 @@ package seremis.soulcraft.item;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import seremis.soulcraft.SoulCraft;
+import seremis.soulcraft.core.lib.DefaultProps;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
-import seremis.soulcraft.SoulCraft;
-import seremis.soulcraft.core.lib.DefaultProps;
+import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class SCItem extends Item {
 
-    private Icon iconBuffer[];
+    private IIcon iconBuffer[];
     private int metadata = 0;
 
-    public SCItem(int ID) {
-        super(ID);
+    public SCItem() {
+        super();
         setMaxStackSize(64);
         setCreativeTab(SoulCraft.CreativeTab);
     }
@@ -29,11 +29,11 @@ public class SCItem extends Item {
     }
 
     @Override
-    public void registerIcons(IconRegister iconRegister) {
+    public void registerIcons(IIconRegister iconRegister) {
         if(this.metadata == 0) {
             itemIcon = iconRegister.registerIcon(DefaultProps.ID + ":" + this.getUnlocalizedName().substring(5));
         } else {
-            iconBuffer = new Icon[metadata];
+            iconBuffer = new IIcon[metadata];
             for(int x = 0; x < iconBuffer.length; x++) {
                 iconBuffer[x] = iconRegister.registerIcon(DefaultProps.ID + ":" + this.getUnlocalizedName().substring(5) + (x + 1));
             }
@@ -41,7 +41,7 @@ public class SCItem extends Item {
     }
 
     @Override
-    public Icon getIconFromDamage(int metadata) {
+    public IIcon getIconFromDamage(int metadata) {
         if(this.metadata != 0) {
             itemIcon = iconBuffer[metadata];
         }
@@ -50,13 +50,13 @@ public class SCItem extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(int itemID, CreativeTabs creativetab, List list) {
+    public void getSubItems(Item item, CreativeTabs creativetab, List list) {
         if(metadata > 0) {
             for(int i = 0; i < getNumbersofMetadata(); ++i) {
-                list.add(new ItemStack(itemID, 1, i));
+                list.add(new ItemStack(item, 1, i));
             }
         } else {
-            list.add(new ItemStack(itemID, 1, 0));
+            list.add(new ItemStack(item, 1, 0));
         }
     }
 

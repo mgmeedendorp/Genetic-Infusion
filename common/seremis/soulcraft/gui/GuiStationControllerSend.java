@@ -106,8 +106,8 @@ public class GuiStationControllerSend extends SCGui {
             tab.drawForeground(this, x, y);
         }
         
-        fontRenderer.drawString("Magnet Station Controller", 8, 5, 0x404040);
-        fontRenderer.drawString("Inventory", 8, this.ySize - 92, 0x404040);
+        fontRendererObj.drawString("Magnet Station Controller", 8, 5, 0x404040);
+        fontRendererObj.drawString("Inventory", 8, this.ySize - 92, 0x404040);
         
         if(!isDragging) {
             for(GuiLineStation station : stations) {
@@ -210,14 +210,12 @@ public class GuiStationControllerSend extends SCGui {
             lines.add(line);
 
             // Check for stations
-            int id = tile.blockType.blockID;
-
-            if(tile1.blockType != null && tile1.blockType.blockID == id || tile2.blockType != null && tile2.blockType.blockID == id) {
+            if(tile1.blockType != null && tile1.blockType == tile.blockType || tile2.blockType != null && tile2.blockType == tile.blockType) {
                 GuiLineStation station = new GuiLineStation();
 
                 TileStationController controller = null;
 
-                if(tile1.blockType != null && tile1.blockType.blockID == id) {
+                if(tile1.blockType != null && tile1.blockType == tile.blockType) {
                     controller = (TileStationController) tile1;
                 } else {
                     controller = (TileStationController) tile2;

@@ -1,10 +1,10 @@
 package seremis.soulcraft.soul.traits;
 
+import seremis.soulcraft.soul.entity.IEntitySoulCustom;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EntityLivingData;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
-import seremis.soulcraft.soul.entity.IEntitySoulCustom;
 
 public class Trait {
     
@@ -20,7 +20,7 @@ public class Trait {
 
     public boolean onEntityAttacked(IEntitySoulCustom entity, DamageSource source, float damage){return true;}
 
-    public void onSpawnWithEgg(IEntitySoulCustom entity, EntityLivingData data){}
+    public void onSpawnWithEgg(IEntitySoulCustom entity, IEntityLivingData data){}
     
     public void playSound(IEntitySoulCustom entity, String name, float volume, float pitch){}
 

@@ -1,12 +1,11 @@
 package seremis.soulcraft.core.proxy;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.world.World;
 import seremis.soulcraft.core.lib.Localizations;
 import seremis.soulcraft.handler.ServerTickHandler;
+import net.minecraft.entity.Entity;
+import net.minecraft.world.World;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.registry.TickRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 public class CommonProxy {
 
@@ -32,6 +31,6 @@ public class CommonProxy {
     }
 
     public void registerHandlers() {
-        TickRegistry.registerTickHandler(new ServerTickHandler(), Side.SERVER);
+    	FMLCommonHandler.instance().bus().register(new ServerTickHandler());
     }
 }

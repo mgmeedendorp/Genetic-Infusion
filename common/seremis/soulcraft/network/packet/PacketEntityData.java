@@ -1,17 +1,16 @@
 package seremis.soulcraft.network.packet;
 
+import ibxm.Player;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.INetworkManager;
 import seremis.soulcraft.core.proxy.CommonProxy;
 import seremis.soulcraft.entity.SCEntity;
 import seremis.soulcraft.entity.SCEntityLiving;
-import seremis.soulcraft.network.PacketTypeHandler;
-import cpw.mods.fml.common.network.Player;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class PacketEntityData extends SCPacket {
 

@@ -1,7 +1,8 @@
 package seremis.soulcraft.entity;
 
+import io.netty.buffer.ByteBuf;
+
 import java.nio.ByteBuffer;
-import java.util.logging.Level;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -10,15 +11,15 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
+
+import org.apache.logging.log4j.Level;
+
 import seremis.soulcraft.SoulCraft;
 import seremis.soulcraft.core.proxy.CommonProxy;
 import seremis.soulcraft.entity.logic.EntityTransporterLogic;
 import seremis.soulcraft.tileentity.TileStationController;
 import seremis.soulcraft.util.UtilBlock;
-
-import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteArrayDataOutput;
-
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntityTransporter extends SCEntity implements IEntityAdditionalSpawnData {
@@ -106,7 +107,7 @@ public class EntityTransporter extends SCEntity implements IEntityAdditionalSpaw
     }
 
     public void arrive() {
-        TileEntity tile = worldObj.getBlockTileEntity((int) Math.floor(posX), (int) Math.floor(posY), (int) Math.floor(posZ));
+        TileEntity tile = worldObj.getTileEntity((int) Math.floor(posX), (int) Math.floor(posY), (int) Math.floor(posZ));
 
         if(tile != null && tile instanceof TileStationController && ((TileStationController)tile).isMultiblock) {
             ((TileStationController) tile).handleIncoming(this);
@@ -120,11 +121,11 @@ public class EntityTransporter extends SCEntity implements IEntityAdditionalSpaw
 
     @Override
     public void readEntityFromNBT(NBTTagCompound compound) {
-        NBTTagList list = compound.getTagList("Items");
+        NBTTagList list = compound.getTagList("Items", Constants.NBT.TAG_COMPOUND);
         this.inv = new ItemStack[9];
 
         for(int var3 = 0; var3 < list.tagCount(); ++var3) {
-            NBTTagCompound compound1 = (NBTTagCompound) list.tagAt(var3);
+            NBTTagCompound compound1 = list.getCompoundTagAt(var3);
             int slotNr = compound1.getByte("Slot") & 255;
 
             if(slotNr >= 0 && slotNr < this.inv.length) {
@@ -208,7 +209,7 @@ public class EntityTransporter extends SCEntity implements IEntityAdditionalSpaw
     }
 
     @Override
-    public void writeSpawnData(ByteArrayDataOutput data) {
+    public void writeSpawnData(ByteBuf data) {
         data.writeBoolean(hasEngine);
         data.writeBoolean(hasInventory);
         data.writeFloat(speed);
@@ -216,7 +217,7 @@ public class EntityTransporter extends SCEntity implements IEntityAdditionalSpaw
     }
 
     @Override
-    public void readSpawnData(ByteArrayDataInput data) {
+    public void readSpawnData(ByteBuf data) {
         hasEngine = data.readBoolean();
         hasInventory = data.readBoolean();
         speed = data.readFloat();
@@ -226,7 +227,7 @@ public class EntityTransporter extends SCEntity implements IEntityAdditionalSpaw
     @Override
     public void receivePacketOnClient(int id, byte[] data) {
         if(id == 1) {
-            SoulCraft.logger.log(Level.FINE, "Received transporter data on client!");
+            SoulCraft.logger.log(Level.INFO, "Received transporter data on client!");
             logic = new EntityTransporterLogic();
             logic.receiveClientLogic(data);
             logic.init(this);

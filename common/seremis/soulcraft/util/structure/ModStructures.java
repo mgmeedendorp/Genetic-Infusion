@@ -3,13 +3,13 @@ package seremis.soulcraft.util.structure;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
 import seremis.soulcraft.api.util.Coordinate3D;
 import seremis.soulcraft.api.util.structure.IStructureBlock;
 import seremis.soulcraft.api.util.structure.StructureBlock;
 import seremis.soulcraft.api.util.structure.StructureBlockChangeable;
 import seremis.soulcraft.api.util.structure.StructureMap;
 import seremis.soulcraft.block.ModBlocks;
+import net.minecraft.block.Block;
 
 public class ModStructures {
 

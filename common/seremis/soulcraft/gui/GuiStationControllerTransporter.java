@@ -81,12 +81,12 @@ public class GuiStationControllerTransporter extends SCGui {
         
         for(int i = 0; i < 3; i++) {
             ItemStack stack = tile.getStackInSlot(i + 1);
-            if(stack != null && stack.itemID == ModItems.transporterModules.itemID && stack.getItemDamage() == 0) {
+            if(stack != null && stack.isItemEqual(new ItemStack(ModItems.transporterModules)) && stack.getItemDamage() == 0) {
                 tabs.get(1).setVisible(true);
             } else {
                 tile.activeTab = 0;
             }
-            if(stack != null && stack.itemID == ModItems.transporterModules.itemID && stack.getItemDamage() == 1) {
+            if(stack != null && stack.isItemEqual(new ItemStack(ModItems.transporterModules)) && stack.getItemDamage() == 1) {
                 tabs.get(2).setVisible(true);
             } else {
                 tile.activeTab = 0;
@@ -103,8 +103,8 @@ public class GuiStationControllerTransporter extends SCGui {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int x, int y) {
-        fontRenderer.drawString("Magnet Station Controller", 8, 5, 0x404040);
-        fontRenderer.drawString("Inventory", 8, this.ySize - 92, 0x404040);
+        fontRendererObj.drawString("Magnet Station Controller", 8, 5, 0x404040);
+        fontRendererObj.drawString("Inventory", 8, this.ySize - 92, 0x404040);
 
         SCRenderHelper.bindTexture(Localizations.LOC_GUI_TEXTURES + Localizations.GUI_MAGNET_STATION_TRANSPORTER_SCREEN);
 

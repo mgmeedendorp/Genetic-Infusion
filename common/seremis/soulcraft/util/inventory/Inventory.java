@@ -1,11 +1,11 @@
 package seremis.soulcraft.util.inventory;
 
+import seremis.soulcraft.util.UtilTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import seremis.soulcraft.util.UtilTileEntity;
 
 public class Inventory implements IInventory {
     
@@ -68,16 +68,16 @@ public class Inventory implements IInventory {
         if (stack != null && stack.stackSize > getInventoryStackLimit()) {
                 stack.stackSize = getInventoryStackLimit();
         }
-        onInventoryChanged();
+        markDirty();
     }
 
     @Override
-    public String getInvName() {
+    public String getInventoryName() {
         return name;
     }
 
     @Override
-    public boolean isInvNameLocalized() {
+    public boolean hasCustomInventoryName() {
         return false;
     }
 
@@ -87,9 +87,9 @@ public class Inventory implements IInventory {
     }
 
     @Override
-    public void onInventoryChanged() {
+    public void markDirty() {
         if(tile != null)
-            tile.onInventoryChanged();
+            tile.markDirty();
     }
 
     @Override
@@ -98,10 +98,10 @@ public class Inventory implements IInventory {
     }
 
     @Override
-    public void openChest() {}
+    public void openInventory() {}
 
     @Override
-    public void closeChest() {}
+    public void closeInventory() {}
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
@@ -119,8 +119,8 @@ public class Inventory implements IInventory {
     public void writeToNBT(NBTTagCompound compound) {
         NBTTagCompound inventory = new NBTTagCompound();
         
-        if(getInvName() != null)
-            inventory.setString("name", getInvName());
+        if(getInventoryName() != null)
+            inventory.setString("name", getInventoryName());
         
         inventory.setInteger("stackLimit", getInventoryStackLimit());
         inventory.setInteger("length", getSizeInventory());

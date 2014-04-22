@@ -39,13 +39,13 @@ public class TileCompressorRenderer extends TileEntitySpecialRenderer {
         GL11.glScalef(1.4F, 1.4F, 1.4F);
         ItemStack item = tile.getStackInSlot(0);
         
-        EntityItem entityItem = new EntityItem(tile.worldObj);
+        EntityItem entityItem = new EntityItem(tile.getWorldObj());
         if(item != null && item.stackSize > 0) {
             entityItem.setEntityItemStack(item);
             entityItem.hoverStart = 0.0F;
             item.stackSize = 1;
             GL11.glRotatef(-FMLClientHandler.instance().getClient().thePlayer.rotationYaw, 0, 1, 0);
-            renderItems.doRenderItem(entityItem, 0, 0, 0, 0, 0);
+            renderItems.doRender(entityItem, 0, 0, 0, 0, 0);
         }
         GL11.glPopMatrix();
     }

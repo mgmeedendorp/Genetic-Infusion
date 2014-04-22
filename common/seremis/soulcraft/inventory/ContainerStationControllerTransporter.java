@@ -1,15 +1,15 @@
 package seremis.soulcraft.inventory;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ICrafting;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 import seremis.soulcraft.inventory.slot.FilteredSlot;
 import seremis.soulcraft.inventory.slot.ToggleableMoveSlot;
 import seremis.soulcraft.inventory.slot.ToggleableMoveUpgradeSlot;
 import seremis.soulcraft.item.ModItems;
 import seremis.soulcraft.tileentity.TileStationController;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -127,22 +127,22 @@ public class ContainerStationControllerTransporter extends SCContainer {
             if(value == 1) {
                 enableUpgradeSlots();
                 this.transporterUpgradesEnabled = true;
-                tile.onInventoryChanged();
+                tile.markDirty();
             } else {
                 disableUpgradeSlots();
                 disableToggleSlots();
                 this.transporterUpgradesEnabled = false;
-                tile.onInventoryChanged();
+                tile.markDirty();
             }
         } else if(id == 1) {
             if(value == 1) {
                 enableToggleSlots();
                 this.transporterSlotsEnabled = true;
-                tile.onInventoryChanged();
+                tile.markDirty();
             } else {
                 disableToggleSlots();
                 this.transporterSlotsEnabled = false;
-                tile.onInventoryChanged();
+                tile.markDirty();
             }
         } else if(id == 2) {
             this.transporterSpeed = value / 100;

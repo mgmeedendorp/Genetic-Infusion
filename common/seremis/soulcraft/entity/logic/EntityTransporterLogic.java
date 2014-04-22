@@ -7,10 +7,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.PriorityQueue;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.MinecraftForge;
 import seremis.soulcraft.api.magnet.MagnetLink;
 import seremis.soulcraft.api.magnet.MagnetLinkHelper;
 import seremis.soulcraft.api.magnet.MagnetNetwork;
@@ -23,6 +19,11 @@ import seremis.soulcraft.entity.EntityTransporter;
 import seremis.soulcraft.event.TransporterArriveEvent;
 import seremis.soulcraft.event.TransporterHitBlockEvent;
 import seremis.soulcraft.tileentity.TileStationController;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.Constants;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -119,7 +120,7 @@ public class EntityTransporterLogic {
             if(inBlock(turnPoints.get(turnPoints.size() - 1))) {
                 entity.arrive();
                 update = false;
-                MinecraftForge.EVENT_BUS.post(new TransporterArriveEvent(entity, (TileStationController) entity.worldObj.getBlockTileEntity((int) turnPoints.get(turnPoints.size() - 1).x, (int) turnPoints.get(turnPoints.size() - 1).y, (int) turnPoints.get(turnPoints.size() - 1).z)));
+                MinecraftForge.EVENT_BUS.post(new TransporterArriveEvent(entity, (TileStationController) entity.worldObj.getTileEntity((int) turnPoints.get(turnPoints.size() - 1).x, (int) turnPoints.get(turnPoints.size() - 1).y, (int) turnPoints.get(turnPoints.size() - 1).z)));
                 return;
             }
 
@@ -146,8 +147,8 @@ public class EntityTransporterLogic {
                 int posY1 = (int) Math.floor(turnPoints.get(currentIndex+1).y);
                 int posZ1 = (int) Math.floor(turnPoints.get(currentIndex+1).z);
                 
-                TileEntity tile = entity.worldObj.getBlockTileEntity(posX, posY, posZ);
-                TileEntity tile1 = entity.worldObj.getBlockTileEntity(posX1, posY1, posZ1);
+                TileEntity tile = entity.worldObj.getTileEntity(posX, posY, posZ);
+                TileEntity tile1 = entity.worldObj.getTileEntity(posX1, posY1, posZ1);
                 
                 if(tile != null && tile instanceof IMagnetConnector && tile1 != null && tile1 instanceof IMagnetConnector) {
                     for(MagnetLink link : MagnetLinkHelper.instance.getLinksConnectedTo((IMagnetConnector)tile)) {
@@ -280,26 +281,26 @@ public class EntityTransporterLogic {
     }
 
     public void readFromNBT(NBTTagCompound compound) {
-        NBTTagList list = compound.getTagList("TurnPoints");
+        NBTTagList list = compound.getTagList("TurnPoints", Constants.NBT.TAG_COMPOUND);
 
         for(int i = 0; i < list.tagCount(); i++) {
-            NBTTagCompound compound1 = (NBTTagCompound) list.tagAt(i);
+            NBTTagCompound compound1 = list.getCompoundTagAt(i);
 
             turnPoints.add(new Coordinate3D(compound1.getDouble("logicX"), compound1.getDouble("logicY"), compound1.getDouble("logicZ")));
         }
 
-        NBTTagList list1 = compound.getTagList("TurnPointRotations");
+        NBTTagList list1 = compound.getTagList("TurnPointRotations", Constants.NBT.TAG_COMPOUND);
 
         for(int i = 0; i < list1.tagCount(); i++) {
-            NBTTagCompound compound1 = (NBTTagCompound) list1.tagAt(i);
+            NBTTagCompound compound1 = list1.getCompoundTagAt(i);
 
             turnPointRotations.add(new Coordinate2D(compound1.getDouble("logicX"), compound1.getDouble("logicY")));
         }
 
-        NBTTagList list2 = compound.getTagList("TurnPointMovements");
+        NBTTagList list2 = compound.getTagList("TurnPointMovements", Constants.NBT.TAG_COMPOUND);
 
         for(int i = 0; i < list2.tagCount(); i++) {
-            NBTTagCompound compound1 = (NBTTagCompound) list2.tagAt(i);
+            NBTTagCompound compound1 = list2.getCompoundTagAt(i);
 
             turnPointMovements.add(new Coordinate3D(compound1.getDouble("logicX"), compound1.getDouble("logicY"), compound1.getDouble("logicZ")));
         }

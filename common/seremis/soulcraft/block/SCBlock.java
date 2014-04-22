@@ -2,40 +2,42 @@ package seremis.soulcraft.block;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
 import seremis.soulcraft.SoulCraft;
 import seremis.soulcraft.core.lib.DefaultProps;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class SCBlock extends Block {
 
-    private Icon[] iconBuffer;
+    private IIcon[] iconBuffer;
     private int metadata = 0;
     private boolean needsIcon = true;
-    private Icon[] sidedIconBuffer;
+    private IIcon[] sidedIconBuffer;
     private boolean needsSidedTexture = false;
     private String[] sidedTextureNames = {"bottom", "top", "back", "front", "left", "right"};;
 
-    public SCBlock(int ID, Material material) {
-        super(ID, material);
-        setUnlocalizedName("");
+    public SCBlock(Material material) {
+        super(material);
+        setBlockName("");
         setCreativeTab(SoulCraft.CreativeTab);
+       // setBlockTextureName(DefaultProps.ID + ":" + getUnlocalizedName().substring(5));
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister iconRegister) {
+    public void registerBlockIcons(IIconRegister iconRegister) {
         if(!needsIcon) {
             return;
         }
         if(this.needsSidedTexture) {
-            sidedIconBuffer = new Icon[sidedTextureNames.length];
+            sidedIconBuffer = new IIcon[sidedTextureNames.length];
             for(int i = 0; i < sidedTextureNames.length; i++) {
                 sidedIconBuffer[i] = iconRegister.registerIcon(DefaultProps.ID + ":" + getUnlocalizedName().substring(5) + "_" + sidedTextureNames[i]);
             }
@@ -43,7 +45,7 @@ public class SCBlock extends Block {
         if(this.metadata == 0) {
             blockIcon = iconRegister.registerIcon(DefaultProps.ID + ":" + getUnlocalizedName().substring(5));
         } else {
-            iconBuffer = new Icon[metadata];
+            iconBuffer = new IIcon[metadata];
             for(int x = 0; x < iconBuffer.length; x++) {
                 iconBuffer[x] = iconRegister.registerIcon(DefaultProps.ID + ":" + getUnlocalizedName().substring(5) + (x + 1));
             }
@@ -52,7 +54,7 @@ public class SCBlock extends Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Icon getIcon(int side, int metadata) {
+    public IIcon getIcon(int side, int metadata) {
         if(this.metadata > 0 && needsIcon) {
             blockIcon = iconBuffer[metadata];
         }
@@ -63,13 +65,13 @@ public class SCBlock extends Block {
     }
 
     @SideOnly(Side.CLIENT)
-    public Icon[] getSidedIcons() {
+    public IIcon[] getSidedIcons() {
         return sidedIconBuffer;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(int blockID, CreativeTabs tab, List subItems) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List subItems) {
         if(metadata > 0) {
             for(int ix = 0; ix < getNumbersOfMetadata(); ix++) {
                 subItems.add(new ItemStack(this, 1, ix));

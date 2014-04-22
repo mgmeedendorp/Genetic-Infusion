@@ -4,21 +4,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.logging.Level;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
+
+import org.apache.logging.log4j.Level;
+
 import seremis.soulcraft.SoulCraft;
 import seremis.soulcraft.api.magnet.tile.IMagnetConnector;
 import seremis.soulcraft.api.util.Coordinate3D;
 import seremis.soulcraft.api.util.Line3D;
-import seremis.soulcraft.network.PacketTypeHandler;
-import seremis.soulcraft.network.packet.PacketAddMagnetLink;
-import seremis.soulcraft.network.packet.PacketRemoveMagnetLink;
-import seremis.soulcraft.network.packet.PacketRemoveMagnetLinkConnector;
-import seremis.soulcraft.network.packet.PacketResetMagnetLinks;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -29,7 +24,7 @@ public class MagnetLinkHelper {
     private List<MagnetLink> registeredMap = new CopyOnWriteArrayList<MagnetLink>();
 
     public void addLink(MagnetLink link) {
-        if(link.connector1.getTile().worldObj.isRemote) {
+        if(link.connector1.getTile().getWorldObj().isRemote) {
             addClientLink(link);
             //System.out.println(link);
             return;
@@ -37,7 +32,7 @@ public class MagnetLinkHelper {
         if(link != null && link.connector1 != null && link.connector2 != null && link.connector1 != link.connector2 && !doesLinkExist(link)) {
             if(checkConditions(link)) {
                 registeredMap.add(link);
-                PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketAddMagnetLink(link)));
+              //  PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketAddMagnetLink(link)));
             }
         }
     }
@@ -52,7 +47,7 @@ public class MagnetLinkHelper {
 
     public void removeLink(MagnetLink link) {
         registeredMap.remove(link);
-        PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketRemoveMagnetLink(link)));
+      //  PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketRemoveMagnetLink(link)));
     }
 
     public void removeAllLinksFrom(IMagnetConnector connector) {
@@ -63,7 +58,7 @@ public class MagnetLinkHelper {
                 registeredMap.remove(link);
             }
         }
-        PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketRemoveMagnetLinkConnector(connector)));
+       // PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketRemoveMagnetLinkConnector(connector)));
     }
 
     public List<MagnetLink> getLinksConnectedTo(IMagnetConnector connector) {
@@ -195,18 +190,18 @@ public class MagnetLinkHelper {
             link.divideHeat();
             if(!link.isConnectionPossible()) {
                 registeredMap.remove(link);
-                PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketRemoveMagnetLink(link)));
+              //  PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketRemoveMagnetLink(link)));
             }
         }
     }
 
     public void updatePlayerWithNetworks(EntityPlayer player) {
-        PacketDispatcher.sendPacketToPlayer(PacketTypeHandler.populatePacket(new PacketResetMagnetLinks()), (Player) player);
+      //  PacketDispatcher.sendPacketToPlayer(PacketTypeHandler.populatePacket(new PacketResetMagnetLinks()), (Player) player);
 
         for(MagnetLink link : getAllLinks()) {
-            PacketDispatcher.sendPacketToPlayer(PacketTypeHandler.populatePacket(new PacketAddMagnetLink(link)), (Player) player);
+      //      PacketDispatcher.sendPacketToPlayer(PacketTypeHandler.populatePacket(new PacketAddMagnetLink(link)), (Player) player);
         }        
-        SoulCraft.logger.log(Level.INFO, "Sent list of links to player: " + player.username);
+        SoulCraft.logger.log(Level.INFO, "Sent list of links to player: " + player.getDisplayName());
     }
 
     public MagnetNetwork getNetworkFrom(MagnetLink link) {

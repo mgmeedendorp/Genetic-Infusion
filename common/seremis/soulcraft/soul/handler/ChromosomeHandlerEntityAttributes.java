@@ -1,13 +1,13 @@
 package seremis.soulcraft.soul.handler;
 
-import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.SharedMonsterAttributes;
 import seremis.soulcraft.soul.EnumChromosome;
 import seremis.soulcraft.soul.SoulHandler;
 import seremis.soulcraft.soul.allele.AlleleFloat;
 import seremis.soulcraft.soul.allele.AlleleInteger;
 import seremis.soulcraft.soul.entity.IEntitySoulCustom;
 import seremis.soulcraft.soul.event.EntityEventHandler;
+import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.SharedMonsterAttributes;
 
 public class ChromosomeHandlerEntityAttributes extends EntityEventHandler {
 

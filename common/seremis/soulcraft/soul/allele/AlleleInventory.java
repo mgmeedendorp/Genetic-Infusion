@@ -1,9 +1,9 @@
 package seremis.soulcraft.soul.allele;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import seremis.soulcraft.soul.Allele;
 import seremis.soulcraft.util.inventory.Inventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 /*
  * Just a multiple itemstack allele
@@ -23,12 +23,14 @@ public class AlleleInventory extends Allele {
         readFromNBT(compound);
     }
     
-    public void writeToNBT(NBTTagCompound compound) {
+    @Override
+	public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         inventory.writeToNBT(compound);
     }
     
-    public void readFromNBT(NBTTagCompound compound) {
+    @Override
+	public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         inventory = new Inventory(compound, null);
     }

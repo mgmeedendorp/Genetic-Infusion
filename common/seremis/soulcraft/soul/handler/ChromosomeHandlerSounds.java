@@ -1,11 +1,11 @@
 package seremis.soulcraft.soul.handler;
 
-import net.minecraft.entity.EntityLiving;
 import seremis.soulcraft.soul.EnumChromosome;
 import seremis.soulcraft.soul.SoulHandler;
 import seremis.soulcraft.soul.allele.AlleleString;
 import seremis.soulcraft.soul.entity.IEntitySoulCustom;
 import seremis.soulcraft.soul.event.EntityEventHandler;
+import net.minecraft.entity.EntityLiving;
 
 public class ChromosomeHandlerSounds extends EntityEventHandler {
 

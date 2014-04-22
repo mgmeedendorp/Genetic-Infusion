@@ -2,7 +2,7 @@ package seremis.soulcraft.api.util;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class Line3D {
 
@@ -159,7 +159,7 @@ public class Line3D {
         compound2.setDouble("tailX", tail.x);
         compound2.setDouble("tailY", tail.y);
         compound2.setDouble("tailZ", tail.z);
-        compound.setCompoundTag("LineCoordinates", compound2);
+        compound.setTag("LineCoordinates", compound2);
     }
 
     public void readFromNBT(NBTTagCompound compound) {

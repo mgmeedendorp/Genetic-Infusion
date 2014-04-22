@@ -1,9 +1,9 @@
 package seremis.soulcraft.event;
 
-import net.minecraftforge.event.Event;
 import seremis.soulcraft.entity.EntityTransporter;
 
-public class TransporterEvent extends Event {
+
+public class TransporterEvent extends cpw.mods.fml.common.eventhandler.Event {
 
     public final EntityTransporter transporter;
 

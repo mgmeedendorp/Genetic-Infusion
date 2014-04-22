@@ -6,7 +6,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.event.ForgeSubscribe;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
@@ -16,6 +15,7 @@ import seremis.soulcraft.api.magnet.MagnetLinkHelper;
 import seremis.soulcraft.api.util.HeatColorHelper;
 import seremis.soulcraft.core.lib.Localizations;
 import seremis.soulcraft.helper.SCRenderHelper;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class RenderBeam {
 
@@ -31,10 +31,10 @@ public class RenderBeam {
     
     private float width = 0.2F;
     
-    @ForgeSubscribe
+    @SubscribeEvent
     public void onWorldRenderLast(RenderWorldLastEvent event) {
-        EntityPlayer player = event.context.mc.thePlayer;
-        Entity entity = event.context.mc.renderViewEntity;
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        Entity entity = Minecraft.getMinecraft().thePlayer;
         
         if(player == null) {
             return;
@@ -65,7 +65,7 @@ public class RenderBeam {
         
         List<MagnetLink> renderLinks = MagnetLinkHelper.instance.getAllLinksInRange(interpPosX, interpPosY, interpPosZ, visibleDistance);
         
-        float rot = (float)entity.worldObj.getWorldInfo().getWorldTime() % (360.0F / this.rotateSpeed) * this.rotateSpeed + this.rotateSpeed * event.partialTicks;
+        float rot = entity.worldObj.getWorldInfo().getWorldTime() % (360.0F / this.rotateSpeed) * this.rotateSpeed + this.rotateSpeed * event.partialTicks;
         
         for(MagnetLink link : renderLinks) {    
             if(link.dimensionID != entity.dimension) {

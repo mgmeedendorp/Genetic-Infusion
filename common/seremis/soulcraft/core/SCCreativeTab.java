@@ -1,16 +1,17 @@
 package seremis.soulcraft.core;
 
+import seremis.soulcraft.item.ModItems;
 import net.minecraft.creativetab.CreativeTabs;
-import seremis.soulcraft.block.ModBlocks;
+import net.minecraft.item.Item;
 
 public class SCCreativeTab extends CreativeTabs {
     public SCCreativeTab(String name) {
         super(name);
     }
-
-    @Override
-    public int getTabIconItemIndex() {
-        return ModBlocks.compressor.blockID;
-    }
+    
+	@Override
+	public Item getTabIconItem() {
+		return ModItems.titaniumIngot;
+	}
 
 }

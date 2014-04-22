@@ -1,18 +1,18 @@
 package seremis.soulcraft.block;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 import seremis.soulcraft.core.proxy.CommonProxy;
 import seremis.soulcraft.tileentity.SCTile;
 import seremis.soulcraft.tileentity.SCTileMagnetConnector;
 import seremis.soulcraft.tileentity.SCTileMagnetConsumer;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -20,8 +20,8 @@ public class SCBlockContainerRotateable extends SCBlockContainer {
 
     private boolean useTile;
 
-    public SCBlockContainerRotateable(int ID, Material material, boolean useTile, String[] sidedTextureNames) {
-        super(ID, material);
+    public SCBlockContainerRotateable(Material material, boolean useTile, String[] sidedTextureNames) {
+        super(material);
         this.useTile = useTile;
         setNeedsSidedTexture(true, sidedTextureNames);
     }
@@ -30,7 +30,6 @@ public class SCBlockContainerRotateable extends SCBlockContainer {
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack itemStack) {
         int direction = 0;
         int facing = MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        // Strange...
         switch(facing) {
             case 3:
                 direction = ForgeDirection.WEST.ordinal();
@@ -49,7 +48,7 @@ public class SCBlockContainerRotateable extends SCBlockContainer {
             world.setBlockMetadataWithNotify(x, y, z, direction - 2, 3);
         }
         if(useTile && CommonProxy.proxy.isServerWorld(world)) {
-            TileEntity tile = world.getBlockTileEntity(x, y, z);
+            TileEntity tile = world.getTileEntity(x, y, z);
             if(tile != null && tile instanceof SCTile) {
                 ((SCTile) tile).setDirection(direction);
             } else if(tile != null && tile instanceof SCTileMagnetConnector) {
@@ -62,15 +61,15 @@ public class SCBlockContainerRotateable extends SCBlockContainer {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Icon getIcon(int side, int metadata) {
+    public IIcon getIcon(int side, int metadata) {
         return getSidedIcons()[side];
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Icon getBlockTexture(IBlockAccess blockAccess, int x, int y, int z, int side) {
+    public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int side) {
         if(useTile) {
-            TileEntity tile = blockAccess.getBlockTileEntity(x, y, z);
+            TileEntity tile = blockAccess.getTileEntity(x, y, z);
             if(tile != null && tile instanceof SCTile) {
                 int direction = ((SCTile) tile).getDirection();
                 return getSidedIcons()[getTextureIndex(direction, side)];

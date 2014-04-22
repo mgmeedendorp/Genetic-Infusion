@@ -3,7 +3,7 @@ package seremis.soulcraft.helper;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -12,15 +12,15 @@ import cpw.mods.fml.client.FMLClientHandler;
 
 public class SCRenderHelper {
 
-    public static void renderAllFaces(Block block, RenderBlocks renderer, Icon tex) {
+    public static void renderAllFaces(Block block, RenderBlocks renderer, IIcon tex) {
         renderAllFaces(block, renderer, tex, tex, tex, tex, tex, tex);
     }
 
-    public static void renderAllFaces(Block block, RenderBlocks renderer, Icon tex1, Icon tex2, Icon tex3, Icon tex4, Icon tex5, Icon tex6) {
+    public static void renderAllFaces(Block block, RenderBlocks renderer, IIcon tex1, IIcon tex2, IIcon tex3, IIcon tex4, IIcon tex5, IIcon tex6) {
         Tessellator tessellator = Tessellator.instance;
         if(tex1 != null && tex2 != null && tex3 != null && tex4 != null && tex5 != null && tex6 != null) {
             try {
-                if(tessellator.isDrawing) {
+                if(Tessellator.renderingWorldRenderer) {
                     return;
                 }
                 GL11.glTranslatef(-0.5F, -0.5F, -0.5F);

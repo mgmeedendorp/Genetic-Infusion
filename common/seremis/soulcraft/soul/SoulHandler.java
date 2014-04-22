@@ -1,20 +1,10 @@
 package seremis.soulcraft.soul;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import seremis.soulcraft.soul.entity.IEntitySoulCustom;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.nbt.NBTTagCompound;
-import seremis.soulcraft.soul.entity.IEntitySoulCustom;
-import seremis.soulcraft.soul.event.EntityEventHandler;
 
 public class SoulHandler {
-    
-    public static List<EntityEventHandler> eventHandlers = new ArrayList<EntityEventHandler>();
-    
-    public static void registerHandler(EntityEventHandler handler) {
-        eventHandlers.add(handler);
-    }
     
     public static Soul getSoulFrom(IEntitySoulCustom entity) {
         return getSoulFrom((EntityLiving) entity);

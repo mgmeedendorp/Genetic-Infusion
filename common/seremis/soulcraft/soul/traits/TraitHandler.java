@@ -3,11 +3,11 @@ package seremis.soulcraft.soul.traits;
 import java.util.ArrayList;
 import java.util.List;
 
+import seremis.soulcraft.soul.entity.IEntitySoulCustom;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.EntityLivingData;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
-import seremis.soulcraft.soul.entity.IEntitySoulCustom;
 
 public class TraitHandler {
     
@@ -57,7 +57,7 @@ public class TraitHandler {
         return flag;
     }
     
-    public static EntityLivingData spawnEntityFromEgg(IEntitySoulCustom entity, EntityLivingData data) {
+    public static IEntityLivingData spawnEntityFromEgg(IEntitySoulCustom entity, IEntityLivingData data) {
         for(Trait trait : traits) {
             trait.onSpawnWithEgg(entity, data);
         }

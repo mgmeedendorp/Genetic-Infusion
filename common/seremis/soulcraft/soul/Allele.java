@@ -2,8 +2,8 @@ package seremis.soulcraft.soul;
 
 import java.lang.reflect.Constructor;
 
-import net.minecraft.nbt.NBTTagCompound;
 import seremis.soulcraft.soul.allele.EnumAlleleType;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class Allele implements IAllele {
 

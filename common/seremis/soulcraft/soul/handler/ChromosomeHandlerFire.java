@@ -2,15 +2,15 @@ package seremis.soulcraft.soul.handler;
 
 import java.util.Random;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Vec3;
 import seremis.soulcraft.core.proxy.CommonProxy;
 import seremis.soulcraft.soul.EnumChromosome;
 import seremis.soulcraft.soul.SoulHandler;
 import seremis.soulcraft.soul.allele.AlleleBoolean;
 import seremis.soulcraft.soul.entity.IEntitySoulCustom;
 import seremis.soulcraft.soul.event.EntityEventHandler;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.Vec3;
 
 public class ChromosomeHandlerFire extends EntityEventHandler {
 
@@ -68,10 +68,10 @@ public class ChromosomeHandlerFire extends EntityEventHandler {
         entity.playSound("random.break", 0.8F, 0.8F + rand.nextFloat() * 0.4F);
 
         for (int i = 0; i < 5; ++i) {
-            Vec3 vec3 = entity.getWorld().getWorldVec3Pool().getVecFromPool(((double)rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
+            Vec3 vec3 = entity.getWorld().getWorldVec3Pool().getVecFromPool((rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
             vec3.rotateAroundX(-entity.getRotationPitch() * (float)Math.PI / 180.0F);
             vec3.rotateAroundY(-entity.getRotationYaw() * (float)Math.PI / 180.0F);
-            Vec3 vec31 = entity.getWorld().getWorldVec3Pool().getVecFromPool(((double)rand.nextFloat() - 0.5D) * 0.3D, (double)(-rand.nextFloat()) * 0.6D - 0.3D, 0.6D);
+            Vec3 vec31 = entity.getWorld().getWorldVec3Pool().getVecFromPool((rand.nextFloat() - 0.5D) * 0.3D, (-rand.nextFloat()) * 0.6D - 0.3D, 0.6D);
             vec31.rotateAroundX(-entity.getRotationPitch() * (float)Math.PI / 180.0F);
             vec31.rotateAroundY(-entity.getRotationYaw() * (float)Math.PI / 180.0F);
             vec31 = vec31.addVector(entity.getPosX(), entity.getPosY() + (double)entity.getEyeHeight(), entity.getPosZ());

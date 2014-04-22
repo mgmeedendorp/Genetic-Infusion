@@ -2,10 +2,6 @@ package seremis.soulcraft.soul.handler;
 
 import java.util.Random;
 
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.WorldServer;
 import seremis.soulcraft.core.proxy.CommonProxy;
 import seremis.soulcraft.soul.EnumChromosome;
 import seremis.soulcraft.soul.SoulHandler;
@@ -13,6 +9,10 @@ import seremis.soulcraft.soul.allele.AlleleBoolean;
 import seremis.soulcraft.soul.allele.AlleleInteger;
 import seremis.soulcraft.soul.entity.IEntitySoulCustom;
 import seremis.soulcraft.soul.event.EntityEventHandler;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.WorldServer;
 
 public class ChromosomeHandlerMovement extends EntityEventHandler {
 

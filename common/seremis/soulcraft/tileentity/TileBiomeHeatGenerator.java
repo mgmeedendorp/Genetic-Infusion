@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import seremis.soulcraft.core.proxy.CommonProxy;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
-import seremis.soulcraft.core.proxy.CommonProxy;
 
 public class TileBiomeHeatGenerator extends SCTileMagnetConnector {
     
@@ -44,7 +44,7 @@ public class TileBiomeHeatGenerator extends SCTileMagnetConnector {
             int arrayPosition = modX + (modZ *16);
             int currentBiomeID = currentChunkBiomes[arrayPosition];
             
-            currentBiome = BiomeGenBase.biomeList[currentBiomeID];
+            currentBiome = BiomeGenBase.getBiome(currentBiomeID);
         }
         return currentBiome;
     }
@@ -72,7 +72,7 @@ public class TileBiomeHeatGenerator extends SCTileMagnetConnector {
         int[] numbers = new int[256];
         
         for(int i = 0; i < currentChunkBiomes.length; i++) {
-            if(BiomeGenBase.biomeList[currentChunkBiomes[i]].biomeID == currentBiome.biomeID) {
+            if(BiomeGenBase.getBiome(currentChunkBiomes[i]).biomeID == currentBiome.biomeID) {
                 numbers[i] = 1;
             } else {
                 numbers[i] = 0;
@@ -84,10 +84,10 @@ public class TileBiomeHeatGenerator extends SCTileMagnetConnector {
     public void fillBiomeChanger() {
         if(biomeChanger == null || biomeChanger.length == 0) {
             biomeChanger = new int[256][];
-            for(BiomeGenBase biome : BiomeGenBase.biomeList) {
+            for(BiomeGenBase biome : BiomeGenBase.getBiomeGenArray()) {
                 List<Integer> temp = new ArrayList<Integer>();
                 if(biome != null && biome.biomeID != BiomeGenBase.hell.biomeID) {
-                    for(BiomeGenBase biome1 : BiomeGenBase.biomeList) {
+                    for(BiomeGenBase biome1 : BiomeGenBase.getBiomeGenArray()) {
                         if(biome1 != null) {
                             if(biome1.temperature < biome.temperature) {
                                 temp.add(biome1.biomeID);

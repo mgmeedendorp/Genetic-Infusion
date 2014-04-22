@@ -1,30 +1,31 @@
 package seremis.soulcraft.block;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import seremis.soulcraft.SoulCraft;
 import seremis.soulcraft.core.lib.Blocks;
 import seremis.soulcraft.core.lib.GuiIds;
 import seremis.soulcraft.core.proxy.CommonProxy;
 import seremis.soulcraft.tileentity.TileStationController;
 import seremis.soulcraft.util.UtilBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 
 public class BlockStationController extends SCBlockContainerRotateable {
 
     private static String[] textureNames = {"side", "side", "side", "side", "front", "side"};
 
-    public BlockStationController(int ID, Material material) {
-        super(ID, material, true, textureNames);
-        setUnlocalizedName(Blocks.STATION_CONTROLLER_UNLOCALIZED_NAME);
+    public BlockStationController(Material material) {
+        super(material, true, textureNames);
+        setBlockName(Blocks.STATION_CONTROLLER_UNLOCALIZED_NAME);
     }
 
     @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, int id) {
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
         if(CommonProxy.proxy.isServerWorld(world)) {
             if(isNeighbourBlockPowered(world, x, y, z)) {
-                TileStationController tile = (TileStationController) world.getBlockTileEntity(x, y, z);
+                TileStationController tile = (TileStationController) world.getTileEntity(x, y, z);
                 tile.onRedstoneSignal();
             }
         }
@@ -67,7 +68,7 @@ public class BlockStationController extends SCBlockContainerRotateable {
             return false;
         }
         if(CommonProxy.proxy.isServerWorld(world)) {
-            TileStationController tile = (TileStationController) world.getBlockTileEntity(x, y, z);
+            TileStationController tile = (TileStationController) world.getTileEntity(x, y, z);
             if(multiblockCheck(world, x, y, z)) {
                 tile.initiateMultiblock();
                 if(tile.isMultiblock) {
@@ -80,7 +81,7 @@ public class BlockStationController extends SCBlockContainerRotateable {
 
     private boolean multiblockCheck(World world, int x, int y, int z) {
         if(CommonProxy.proxy.isServerWorld(world)) {
-            TileStationController tile = (TileStationController) world.getBlockTileEntity(x, y, z);
+            TileStationController tile = (TileStationController) world.getTileEntity(x, y, z);
             if(tile != null) {
                 if(tile.isValid()) {
                     return true;
@@ -91,13 +92,13 @@ public class BlockStationController extends SCBlockContainerRotateable {
     }
     
     @Override
-    public void breakBlock(World world, int x, int y, int z, int blockId, int metadata) {
-        super.breakBlock(world, x, y, z, blockId, metadata);
+    public void breakBlock(World world, int x, int y, int z, Block block, int metadata) {
+        super.breakBlock(world, x, y, z, block, metadata);
         UtilBlock.dropItemsFromTile(world, x, y, z);
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world) {
+    public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileStationController();
     }
 }

@@ -157,7 +157,7 @@ public class FXBeamLegacy extends EntityFX {
         if(render) {
             float opacity = 0.4F;
 
-            float rot = (float)this.worldObj.getWorldInfo().getWorldTime() % (360.0F / this.rotateSpeed) * this.rotateSpeed + this.rotateSpeed * partialTickTime;
+            float rot = this.worldObj.getWorldInfo().getWorldTime() % (360.0F / this.rotateSpeed) * this.rotateSpeed + this.rotateSpeed * partialTickTime;
             
             GL11.glPushMatrix();
 
@@ -193,7 +193,7 @@ public class FXBeamLegacy extends EntityFX {
 
                 // Draw the first color
                 GL11.glBegin(GL11.GL_QUADS);
-                GL11.glColor4f((float) particleRed, (float) particleGreen, (float) particleBlue, opacity);
+                GL11.glColor4f(particleRed, particleGreen, particleBlue, opacity);
                 GL11.glVertex2d(-width, 0.0D);
                 GL11.glVertex2d(width, 0.0D);
                 GL11.glVertex2d(width, line.getLength() / 2 - transitionSpace);

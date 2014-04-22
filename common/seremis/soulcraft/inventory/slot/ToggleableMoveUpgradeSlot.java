@@ -1,8 +1,8 @@
 package seremis.soulcraft.inventory.slot;
 
+import seremis.soulcraft.item.ItemTransporterModules;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import seremis.soulcraft.item.ItemTransporterModules;
 
 public class ToggleableMoveUpgradeSlot extends ToggleableMoveSlot {
 
@@ -12,10 +12,10 @@ public class ToggleableMoveUpgradeSlot extends ToggleableMoveSlot {
 
     @Override
     public boolean isItemValid(ItemStack stack) {
-        if(stack.itemID == ItemTransporterModules.engine().itemID && stack.getItemDamage() == ItemTransporterModules.engine().getItemDamage()) {
+        if(stack.isItemEqual(ItemTransporterModules.engine()) && stack.getItemDamage() == ItemTransporterModules.engine().getItemDamage()) {
             return super.isItemValid(stack);
         }
-        if(stack.itemID == ItemTransporterModules.storage().itemID && stack.getItemDamage() == ItemTransporterModules.storage().getItemDamage()) {
+        if(stack.isItemEqual(ItemTransporterModules.storage()) && stack.getItemDamage() == ItemTransporterModules.storage().getItemDamage()) {
             return super.isItemValid(stack);
         }
         return false;

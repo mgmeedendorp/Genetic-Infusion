@@ -3,6 +3,12 @@ package seremis.soulcraft.block;
 import java.util.List;
 import java.util.Random;
 
+import seremis.soulcraft.SoulCraft;
+import seremis.soulcraft.core.lib.Blocks;
+import seremis.soulcraft.core.lib.RenderIds;
+import seremis.soulcraft.core.proxy.CommonProxy;
+import seremis.soulcraft.item.ModItems;
+import seremis.soulcraft.tileentity.TileCompressor;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -14,15 +20,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Icon;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import seremis.soulcraft.SoulCraft;
-import seremis.soulcraft.core.lib.Blocks;
-import seremis.soulcraft.core.lib.RenderIds;
-import seremis.soulcraft.core.proxy.CommonProxy;
-import seremis.soulcraft.item.ModItems;
-import seremis.soulcraft.tileentity.TileCompressor;
 
 public class BlockCompressor extends SCBlockContainer {
 
@@ -30,9 +31,9 @@ public class BlockCompressor extends SCBlockContainer {
 
     private String[] sidedTextureNames = {"top", "side"};
 
-    public BlockCompressor(int ID, Material material) {
-        super(ID, material);
-        setUnlocalizedName(Blocks.COMPRESSOR_UNLOCALIZED_NAME);
+    public BlockCompressor(Material material) {
+        super(material);
+        setBlockName(Blocks.COMPRESSOR_UNLOCALIZED_NAME);
         setNeedsSidedTexture(true, sidedTextureNames);
         random = new Random();
         setHardness(10.0F);
@@ -75,7 +76,7 @@ public class BlockCompressor extends SCBlockContainer {
     }
 
     @Override
-    public Icon getIcon(int side, int metadata) {
+    public IIcon getIcon(int side, int metadata) {
         switch(side) {
             case 0:
                 return getSidedIcons()[0];
@@ -91,9 +92,9 @@ public class BlockCompressor extends SCBlockContainer {
         if(CommonProxy.proxy.isRenderWorld(world)) {
             return;
         }
-        TileCompressor tile = (TileCompressor) world.getBlockTileEntity(x, y, z);
+        TileCompressor tile = (TileCompressor) world.getTileEntity(x, y, z);
         if(tile != null && entity instanceof EntityItem) {
-            if(((EntityItem) entity).getEntityItem().itemID == ModItems.crystalShard.itemID) {
+            if(((EntityItem) entity).getEntityItem().isItemEqual(new ItemStack(ModItems.crystalShard))) {
                 if(tile.setInventorySlot(0, ((EntityItem) entity).getEntityItem())) {
                     CommonProxy.proxy.removeEntity(entity);
                 }
@@ -105,7 +106,7 @@ public class BlockCompressor extends SCBlockContainer {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
-        TileCompressor tile = (TileCompressor) world.getBlockTileEntity(x, y, z);
+        TileCompressor tile = (TileCompressor) world.getTileEntity(x, y, z);
         if(tile == null || CommonProxy.proxy.isRenderWorld(world)) {
             return true;
         }
@@ -115,9 +116,9 @@ public class BlockCompressor extends SCBlockContainer {
             world.markBlockForUpdate(x, y, z);
         }
         if(cont != null) {// TODO change this text in language supported
-            player.addChatMessage("This Compressor contains " + cont.stackSize + " " + cont.getItem().getItemDisplayName(cont));
+        	player.addChatMessage(new ChatComponentText("This Compressor contains " + cont.stackSize + " " + cont.getDisplayName()));
         } else {
-            player.addChatMessage("This Compressor does not contain anything.");
+        	player.addChatMessage(new ChatComponentText("This Compressor is empty."));
         }
 
         return true;
@@ -129,15 +130,15 @@ public class BlockCompressor extends SCBlockContainer {
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, int par5, int par6) {
+    public void breakBlock(World world, int x, int y, int z, Block block, int par6) {
         dropItems(world, x, y, z);
-        super.breakBlock(world, x, y, z, par5, par6);
+        super.breakBlock(world, x, y, z, block, par6);
     }
 
     private void dropItems(World world, int x, int y, int z) {
         Random rand = new Random();
 
-        TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+        TileEntity tileEntity = world.getTileEntity(x, y, z);
         if(!(tileEntity instanceof IInventory)) {
             return;
         }
@@ -151,7 +152,7 @@ public class BlockCompressor extends SCBlockContainer {
                 float ry = rand.nextFloat() * 0.8F + 0.1F;
                 float rz = rand.nextFloat() * 0.8F + 0.1F;
 
-                EntityItem entityItem = new EntityItem(world, x + rx, y + ry, z + rz, new ItemStack(item.itemID, item.stackSize, item.getItemDamage()));
+                EntityItem entityItem = new EntityItem(world, x + rx, y + ry, z + rz, new ItemStack(item.getItem(), item.stackSize, item.getItemDamage()));
 
                 if(item.hasTagCompound()) {
                     entityItem.getEntityItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());
@@ -168,12 +169,12 @@ public class BlockCompressor extends SCBlockContainer {
     }
 
     @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, int neighbourId) {
-        if(neighbourId > 0 && Block.blocksList[neighbourId].canProvidePower()) {
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbourBlock) {
+        if(neighbourBlock != null && neighbourBlock.canProvidePower()) {
             boolean var6 = world.isBlockIndirectlyGettingPowered(x, y, z) || world.isBlockIndirectlyGettingPowered(x, y + 1, z);
 
             if(var6) {
-                world.scheduleBlockUpdate(x, y, z, this.blockID, tickRate(world));
+                world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
             }
         }
     }
@@ -191,7 +192,7 @@ public class BlockCompressor extends SCBlockContainer {
     }
 
     public void dispense(World world, int x, int y, int z, Random random, int stackSize) {
-        TileCompressor tile = (TileCompressor) world.getBlockTileEntity(x, y, z);
+        TileCompressor tile = (TileCompressor) world.getTileEntity(x, y, z);
         ItemStack currStack = tile.getStackInSlot(0);
         ItemStack dropStack;
         int dropStackSize;
@@ -206,7 +207,7 @@ public class BlockCompressor extends SCBlockContainer {
         } else {
             dropStackSize = stackSize;
         }
-        dropStack = new ItemStack(currStack.itemID, dropStackSize, currStack.getItemDamage());
+        dropStack = new ItemStack(currStack.getItem(), dropStackSize, currStack.getItemDamage());
         currStack = tile.decrStackSize(0, stackSize);
         world.spawnEntityInWorld(new EntityItem(world, x, y + 1, z, dropStack));
         world.markBlockForUpdate(x, y, z);

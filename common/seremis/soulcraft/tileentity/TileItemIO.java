@@ -16,7 +16,7 @@ public class TileItemIO extends SCTile implements IInventory, ISidedInventory {
     public void updateEntity() {
         if(stationController != null) {
             isStructureMagnetStation = true;
-            worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, ModBlocks.itemIO.blockID);
+            worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, ModBlocks.itemIO);
         } else {
             isStructureMagnetStation = false;
         }
@@ -60,16 +60,16 @@ public class TileItemIO extends SCTile implements IInventory, ISidedInventory {
     }
     
     @Override
-    public String getInvName() {
+    public String getInventoryName() {
         if(isStructureMagnetStation)
-            return stationController.inventory.getInvName();
+            return stationController.inventory.getInventoryName();
         return "";
     }
     
     @Override
-    public boolean isInvNameLocalized() {
+    public boolean hasCustomInventoryName() {
         if(isStructureMagnetStation)
-            return stationController.inventory.isInvNameLocalized();
+            return stationController.inventory.hasCustomInventoryName();
         return false;
     }
     
@@ -81,10 +81,10 @@ public class TileItemIO extends SCTile implements IInventory, ISidedInventory {
     }
     
     @Override
-    public void openChest() {}
+    public void openInventory() {}
     
     @Override
-    public void closeChest() {}
+    public void closeInventory() {}
     
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {

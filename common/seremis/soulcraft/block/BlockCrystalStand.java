@@ -1,22 +1,22 @@
 package seremis.soulcraft.block;
 
+import seremis.soulcraft.core.lib.RenderIds;
+import seremis.soulcraft.core.proxy.CommonProxy;
+import seremis.soulcraft.tileentity.TileCrystalStand;
+import seremis.soulcraft.util.UtilBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-import seremis.soulcraft.core.lib.RenderIds;
-import seremis.soulcraft.core.proxy.CommonProxy;
-import seremis.soulcraft.tileentity.TileCrystalStand;
-import seremis.soulcraft.util.UtilBlock;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockCrystalStand extends SCBlockContainer {
 
-    public BlockCrystalStand(int ID, Material material) {
-        super(ID, material);
-        setUnlocalizedName("crystalStand");
+    public BlockCrystalStand(Material material) {
+        super(material);
+        setBlockName("crystalStand");
         setNeedsIcon(false);
         setHardness(0.5F);
         setBlockBounds(0.25F, 0.0F, 0.25F, 0.8125F, 0.75F, 0.8125F);
@@ -28,11 +28,11 @@ public class BlockCrystalStand extends SCBlockContainer {
         if(CommonProxy.proxy.isRenderWorld(world)) {
             return true;
         }
-        TileCrystalStand tile = (TileCrystalStand) world.getBlockTileEntity(x, y, z);
+        TileCrystalStand tile = (TileCrystalStand) world.getTileEntity(x, y, z);
         ItemStack currPlayerItem = player.getCurrentEquippedItem();
         boolean hasCrystal = tile.hasCrystal();
 
-        if(!hasCrystal && currPlayerItem != null && currPlayerItem.itemID == ModBlocks.crystal.blockID) {
+        if(!hasCrystal && currPlayerItem != null && currPlayerItem.isItemEqual(new ItemStack(ModBlocks.crystal))) {
             tile.setHasCrystal(true);
             currPlayerItem.stackSize--;
             return true;
@@ -61,12 +61,12 @@ public class BlockCrystalStand extends SCBlockContainer {
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, int blockId, int metadata) {
-        TileCrystalStand tile = (TileCrystalStand) world.getBlockTileEntity(x, y, z);
+    public void breakBlock(World world, int x, int y, int z, Block block, int metadata) {
+        TileCrystalStand tile = (TileCrystalStand) world.getTileEntity(x, y, z);
         if(tile.hasCrystal()) {
             UtilBlock.dropItemInWorld(x, y, z, world, new ItemStack(ModBlocks.crystal, 1));
         }
-        super.breakBlock(world, x, y, z, blockId, metadata);
+        super.breakBlock(world, x, y, z, block, metadata);
     }
 
     @Override
@@ -76,13 +76,13 @@ public class BlockCrystalStand extends SCBlockContainer {
 
     
     @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, int blockId) {
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
         if(CommonProxy.proxy.isServerWorld(world)) {
-            int id = world.getBlockId(x, y-1, z);
+            Block id = world.getBlock(x, y-1, z);
             
-            if(id == 0 || !Block.blocksList[id].isBlockSolidOnSide(world, x, y-1, z, ForgeDirection.UP)) {
-                dropBlockAsItem_do(world, x, y, z, new ItemStack(blockID, 1, 0));
-                world.setBlock(x, y, z, 0);
+            if(id.isAir(world, x, y-1, z) || !id.isBlockSolid(world, x, y-1, z, ForgeDirection.UP.ordinal())) {
+                dropBlockAsItem(world, x, y, z, new ItemStack(block, 1, 0));
+                world.setBlock(x, y, z, null);
             }
         }
     }

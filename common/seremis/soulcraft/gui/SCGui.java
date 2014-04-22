@@ -40,11 +40,11 @@ public class SCGui extends GuiContainer {
     }
 
     public FontRenderer getFontRenderer() {
-        return fontRenderer;
+        return fontRendererObj;
     }
 
     public void drawHoveringString(List<String> list, int x, int y) {
-        drawHoveringText(list, x, y, fontRenderer);
+        drawHoveringText(list, x, y, fontRendererObj);
     }
 
     @Override

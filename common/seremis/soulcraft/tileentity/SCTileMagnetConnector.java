@@ -1,15 +1,15 @@
 package seremis.soulcraft.tileentity;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
+import seremis.soulcraft.SoulCraft;
 import seremis.soulcraft.api.magnet.tile.TileMagnetConnector;
 import seremis.soulcraft.core.proxy.CommonProxy;
-import seremis.soulcraft.network.PacketTypeHandler;
-import seremis.soulcraft.network.packet.PacketTileData;
-import cpw.mods.fml.common.network.PacketDispatcher;
+import seremis.soulcraft.networknew.packet.PacketTileData;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 
 public abstract class SCTileMagnetConnector extends TileMagnetConnector {
 
@@ -25,14 +25,14 @@ public abstract class SCTileMagnetConnector extends TileMagnetConnector {
     
     public void setDirection(int direction) {
         this.teDirection = direction;
-        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType().blockID, 0, direction);
+        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 0, direction);
     }
 
     @Override
     public boolean receiveClientEvent(int eventId, int variable) {
         if(eventId == 0) {
             teDirection = variable;
-            worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
             return true;
         } else {
             return super.receiveClientEvent(eventId, variable);
@@ -52,20 +52,20 @@ public abstract class SCTileMagnetConnector extends TileMagnetConnector {
     }
 
     @Override
-    public void onDataPacket(INetworkManager net, Packet132TileEntityData packet) {
-        readFromNBT(packet.data);
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+        readFromNBT(packet.func_148857_g());
     }
 
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound compound = new NBTTagCompound();
         writeToNBT(compound);
-        return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 1, compound);
+        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, compound);
     }
 
     public void sendTileDataToServer(int id, byte[] data) {
         if(CommonProxy.proxy.isRenderWorld(worldObj)) {
-            PacketDispatcher.sendPacketToServer(PacketTypeHandler.populatePacket(new PacketTileData(data, id, this.xCoord, this.yCoord, this.zCoord)));
+            SoulCraft.packetPipeline.sendToServer(new PacketTileData(data, id, this.xCoord, this.yCoord, this.zCoord));
         } else {
             setTileDataFromClient(id, data);
         }
@@ -77,7 +77,7 @@ public abstract class SCTileMagnetConnector extends TileMagnetConnector {
 
     public void sendTileDataToClient(int id, byte[] data) {
         if(CommonProxy.proxy.isServerWorld(worldObj)) {
-            PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 128D, worldObj.provider.dimensionId, PacketTypeHandler.populatePacket(new PacketTileData(data, id, this.xCoord, this.yCoord, this.zCoord)));
+            SoulCraft.packetPipeline.sendToAllAround(new PacketTileData(data, id, xCoord, yCoord, zCoord), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 128));
         } else {
             setTileDataFromServer(id, data);
         }

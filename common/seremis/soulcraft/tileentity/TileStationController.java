@@ -3,15 +3,6 @@ package seremis.soulcraft.tileentity;
 import java.nio.ByteBuffer;
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.common.MinecraftForge;
 import seremis.soulcraft.SoulCraft;
 import seremis.soulcraft.api.magnet.MagnetLink;
 import seremis.soulcraft.api.magnet.MagnetLinkHelper;
@@ -29,6 +20,15 @@ import seremis.soulcraft.item.ModItems;
 import seremis.soulcraft.util.UtilBlock;
 import seremis.soulcraft.util.inventory.Inventory;
 import seremis.soulcraft.util.structure.ModStructures;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -73,7 +73,7 @@ public class TileStationController extends SCTileMagnetConsumer implements IInve
             
             if(structure.doesBlockExistInStructure(ModBlocks.crystalStand, 0, 1)) {
                 Coordinate3D crystalStandCoord = crystalStandCoordinates.get(0);
-                TileEntity tile = worldObj.getBlockTileEntity((int) crystalStandCoord.x, (int) crystalStandCoord.y, (int) crystalStandCoord.z);
+                TileEntity tile = worldObj.getTileEntity((int) crystalStandCoord.x, (int) crystalStandCoord.y, (int) crystalStandCoord.z);
                 if(tile != null && tile instanceof TileCrystalStand) {
                     ((TileCrystalStand) tile).isStructureMagnetStation = false;
                     ((TileCrystalStand) tile).structure = null;
@@ -103,7 +103,7 @@ public class TileStationController extends SCTileMagnetConsumer implements IInve
             if(structure.doesBlockExistInStructure(ModBlocks.crystalStand, 0, 1)) {
                 Coordinate3D crystalStandCoord = crystalStandCoordinates.get(0);
                 
-                TileEntity tile = worldObj.getBlockTileEntity((int) crystalStandCoord.x, (int) crystalStandCoord.y, (int) crystalStandCoord.z);
+                TileEntity tile = worldObj.getTileEntity((int) crystalStandCoord.x, (int) crystalStandCoord.y, (int) crystalStandCoord.z);
                 
                 if(tile != null && tile instanceof TileCrystalStand) {
 
@@ -120,7 +120,7 @@ public class TileStationController extends SCTileMagnetConsumer implements IInve
                 
                 if(itemIOCoordinates != null) {
                     for(Coordinate3D itemIOCoord : itemIOCoordinates) {
-                        TileEntity itemIO = worldObj.getBlockTileEntity((int) itemIOCoord.x, (int) itemIOCoord.y, (int) itemIOCoord.z);
+                        TileEntity itemIO = worldObj.getTileEntity((int) itemIOCoord.x, (int) itemIOCoord.y, (int) itemIOCoord.z);
                         
                         if(itemIO != null && itemIO instanceof TileItemIO) {                        
                             TileItemIO tileIO = (TileItemIO)itemIO;
@@ -169,7 +169,7 @@ public class TileStationController extends SCTileMagnetConsumer implements IInve
         }
         
         if(heatNeeded && heat == neededHeat) {
-            sendCurrentTransporterTo((TileStationController) worldObj.getBlockTileEntity((int) tempDestination.x, (int) tempDestination.y, (int) tempDestination.z));
+            sendCurrentTransporterTo((TileStationController) worldObj.getTileEntity((int) tempDestination.x, (int) tempDestination.y, (int) tempDestination.z));
             heatNeeded = false;
             heat = 0;
             tempDestination = null;
@@ -257,13 +257,13 @@ public class TileStationController extends SCTileMagnetConsumer implements IInve
     }
 
     @Override
-    public String getInvName() {
-        return inventory.getInvName();
+    public String getInventoryName() {
+        return inventory.getInventoryName();
     }
 
     @Override
-    public boolean isInvNameLocalized() {
-        return inventory.isInvNameLocalized();
+    public boolean hasCustomInventoryName() {
+        return inventory.hasCustomInventoryName();
     }
 
     @Override
@@ -272,10 +272,10 @@ public class TileStationController extends SCTileMagnetConsumer implements IInve
     }
 
     @Override
-    public void openChest() {}
+    public void openInventory() {}
 
     @Override
-    public void closeChest() {}
+    public void closeInventory() {}
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
@@ -291,8 +291,8 @@ public class TileStationController extends SCTileMagnetConsumer implements IInve
     }
 
     @Override
-    public void onInventoryChanged() {
-        super.onInventoryChanged();
+    public void markDirty() {
+        super.markDirty();
         if(CommonProxy.proxy.isRenderWorld(worldObj)) {
             return;
         }
@@ -473,7 +473,7 @@ public class TileStationController extends SCTileMagnetConsumer implements IInve
             destination.z = wrapped3.getInt();
             int mouseButton = wrapped4.getInt();
 
-            TileEntity tile = worldObj.getBlockTileEntity((int) destination.x, (int) destination.y, (int) destination.z);
+            TileEntity tile = worldObj.getTileEntity((int) destination.x, (int) destination.y, (int) destination.z);
 
             if(tile != null && tile != this && tile instanceof TileStationController) {
                 if(mouseButton == 0) {
@@ -504,7 +504,7 @@ public class TileStationController extends SCTileMagnetConsumer implements IInve
     public void onRedstoneSignal() {
         System.out.println(this);
         if(selectedDestination != null)
-            sendCurrentTransporterTo((TileStationController) worldObj.getBlockTileEntity((int) selectedDestination.x, (int) selectedDestination.y, (int) selectedDestination.z));
+            sendCurrentTransporterTo((TileStationController) worldObj.getTileEntity((int) selectedDestination.x, (int) selectedDestination.y, (int) selectedDestination.z));
     }
 
     // ISidedInventory//

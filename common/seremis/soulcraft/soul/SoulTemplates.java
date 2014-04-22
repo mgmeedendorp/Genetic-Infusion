@@ -1,16 +1,16 @@
 package seremis.soulcraft.soul;
 
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EnumCreatureAttribute;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import seremis.soulcraft.soul.allele.AlleleBoolean;
 import seremis.soulcraft.soul.allele.AlleleFloat;
 import seremis.soulcraft.soul.allele.AlleleFloatArray;
 import seremis.soulcraft.soul.allele.AlleleInteger;
 import seremis.soulcraft.soul.allele.AlleleInventory;
 import seremis.soulcraft.soul.allele.AlleleString;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 
 public class SoulTemplates {
 
@@ -76,8 +76,8 @@ public class SoulTemplates {
         
         chromosomes[EnumChromosome.MAX_HURT_RESISTANT_TIME.ordinal()] = new Chromosome(allele1, allele2);
         
-        allele1 = new AlleleInventory(true, new ItemStack[] {new ItemStack(Item.rottenFlesh)});
-        allele2 = new AlleleInventory(true, new ItemStack[] {new ItemStack(Item.rottenFlesh)});
+        allele1 = new AlleleInventory(true, new ItemStack[] {new ItemStack(Items.rotten_flesh)});
+        allele2 = new AlleleInventory(true, new ItemStack[] {new ItemStack(Items.rotten_flesh)});
         
         chromosomes[EnumChromosome.ITEM_DROPS.ordinal()] = new Chromosome(allele1, allele2);
         
@@ -86,8 +86,8 @@ public class SoulTemplates {
         
         chromosomes[EnumChromosome.EQUIPMENT_DROP_CHANCES.ordinal()] = new Chromosome(allele1, allele2);
         
-        allele1 = new AlleleInventory(true, new ItemStack[] {new ItemStack(Item.ingotIron), new ItemStack(Item.carrot), new ItemStack(Item.potato)});
-        allele2 = new AlleleInventory(true, new ItemStack[] {new ItemStack(Item.ingotIron), new ItemStack(Item.carrot), new ItemStack(Item.potato)});
+        allele1 = new AlleleInventory(true, new ItemStack[] {new ItemStack(Items.iron_ingot), new ItemStack(Items.carrot), new ItemStack(Items.potato)});
+        allele2 = new AlleleInventory(true, new ItemStack[] {new ItemStack(Items.iron_ingot), new ItemStack(Items.carrot), new ItemStack(Items.potato)});
         
         chromosomes[EnumChromosome.RARE_ITEM_DROPS.ordinal()] = new Chromosome(allele1, allele2);
         

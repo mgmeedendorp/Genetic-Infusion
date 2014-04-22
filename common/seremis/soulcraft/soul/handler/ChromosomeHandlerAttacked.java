@@ -2,14 +2,6 @@ package seremis.soulcraft.soul.handler;
 
 import java.util.Random;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntityWolf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.DamageSource;
-import net.minecraftforge.common.ForgeHooks;
 import seremis.soulcraft.core.proxy.CommonProxy;
 import seremis.soulcraft.soul.EnumChromosome;
 import seremis.soulcraft.soul.SoulHandler;
@@ -19,6 +11,14 @@ import seremis.soulcraft.soul.allele.AlleleInteger;
 import seremis.soulcraft.soul.allele.AlleleString;
 import seremis.soulcraft.soul.entity.IEntitySoulCustom;
 import seremis.soulcraft.soul.event.EntityEventHandler;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntityWolf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.potion.Potion;
+import net.minecraft.util.DamageSource;
+import net.minecraftforge.common.ForgeHooks;
 
 public class ChromosomeHandlerAttacked extends EntityEventHandler {
 
@@ -76,7 +76,7 @@ public class ChromosomeHandlerAttacked extends EntityEventHandler {
                 int maxHurtTime = ((AlleleInteger)SoulHandler.getChromosomeFrom(entity, EnumChromosome.MAX_HURT_TIME).getActive()).value;
                 int maxHurtResistantTime = ((AlleleInteger)SoulHandler.getChromosomeFrom(entity, EnumChromosome.MAX_HURT_RESISTANT_TIME).getActive()).value;
 
-                if ((float)entity.getHurtResistantTime() > (float)maxHurtResistantTime / 2.0F) {
+                if ((float)entity.getHurtResistantTime() > maxHurtResistantTime / 2.0F) {
                     if (damage <= entity.getLastDamage()) {
                         return false;
                     }

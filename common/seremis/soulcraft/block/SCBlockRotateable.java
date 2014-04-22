@@ -3,18 +3,18 @@ package seremis.soulcraft.block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class SCBlockRotateable extends SCBlockContainer {
 
-    public SCBlockRotateable(int ID, Material material, String[] sidedTextureNames) {
-        super(ID, material);
+    public SCBlockRotateable(Material material, String[] sidedTextureNames) {
+        super(material);
         setNeedsSidedTexture(true, sidedTextureNames);
     }
 
@@ -41,13 +41,13 @@ public class SCBlockRotateable extends SCBlockContainer {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Icon getIcon(int side, int metadata) {
+    public IIcon getIcon(int side, int metadata) {
         return getSidedIcons()[side];
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public Icon getBlockTexture(IBlockAccess blockAccess, int x, int y, int z, int side) {
+    public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int side) {
         int direction = blockAccess.getBlockMetadata(x, y, z) + 2;
         return getSidedIcons()[getTextureIndex(direction, side)];
     }

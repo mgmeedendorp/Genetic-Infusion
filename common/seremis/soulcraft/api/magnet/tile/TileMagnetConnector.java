@@ -2,14 +2,14 @@ package seremis.soulcraft.api.magnet.tile;
 
 import java.util.List;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 import seremis.soulcraft.api.magnet.MagnetLink;
 import seremis.soulcraft.api.magnet.MagnetLinkHelper;
 import seremis.soulcraft.api.util.Coordinate3D;
 import seremis.soulcraft.core.proxy.CommonProxy;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class TileMagnetConnector extends TileEntity implements IMagnetConnector {
 
@@ -43,7 +43,7 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
         for(int x = (int) (-1 * getRange()); x <= getRange(); x++) {
             for(int y = (int) (-1 * getRange()); y <= getRange(); y++) {
                 for(int z = (int) (-1 * getRange()); z <= getRange(); z++) {
-                    TileEntity tile = world.getBlockTileEntity(xCoord + x, yCoord + y, zCoord + z);
+                    TileEntity tile = world.getTileEntity(xCoord + x, yCoord + y, zCoord + z);
                     if(tile != null && tile instanceof IMagnetConnector && tile != this) {
                         MagnetLink link = new MagnetLink(this, (IMagnetConnector) tile);
                         MagnetLinkHelper.instance.addLink(link);

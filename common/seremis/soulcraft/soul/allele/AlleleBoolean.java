@@ -1,7 +1,7 @@
 package seremis.soulcraft.soul.allele;
 
-import net.minecraft.nbt.NBTTagCompound;
 import seremis.soulcraft.soul.Allele;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class AlleleBoolean extends Allele {
 

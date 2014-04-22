@@ -2,6 +2,8 @@ package seremis.soulcraft.util;
 
 import java.util.Random;
 
+import seremis.soulcraft.api.util.Coordinate3D;
+import seremis.soulcraft.core.proxy.CommonProxy;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -9,8 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import seremis.soulcraft.api.util.Coordinate3D;
-import seremis.soulcraft.core.proxy.CommonProxy;
 
 public class UtilBlock {
 
@@ -35,7 +35,7 @@ public class UtilBlock {
         float ry = rand.nextFloat() * 0.8F + 0.5F;
         float rz = rand.nextFloat() * 0.8F + 0.5F;
 
-        EntityItem entityItem = new EntityItem(world, x + rx, y + ry, z + rz, new ItemStack(item.itemID, item.stackSize, item.getItemDamage()));
+        EntityItem entityItem = new EntityItem(world, x + rx, y + ry, z + rz, new ItemStack(item.getItem(), item.stackSize, item.getItemDamage()));
 
         if(item.hasTagCompound()) {
             entityItem.getEntityItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());
@@ -61,8 +61,8 @@ public class UtilBlock {
 
     public static void dropItemsFromTile(World world, int x, int y, int z) {
 
-        TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-        if(!(tileEntity instanceof IInventory) || CommonProxy.proxy.isRenderWorld(tileEntity.worldObj)) {
+        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        if(!(tileEntity instanceof IInventory) || CommonProxy.proxy.isRenderWorld(tileEntity.getWorldObj())) {
             return;
         }
         IInventory inventory = (IInventory) tileEntity;
@@ -81,8 +81,8 @@ public class UtilBlock {
      * @param slot
      */
     public static void dropItemsFromTile(World world, int x, int y, int z, int slot) {        
-        TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-        if(!(tileEntity instanceof IInventory) || CommonProxy.proxy.isRenderWorld(tileEntity.worldObj)) {
+        TileEntity tileEntity = world.getTileEntity(x, y, z);
+        if(!(tileEntity instanceof IInventory) || CommonProxy.proxy.isRenderWorld(tileEntity.getWorldObj())) {
             return;
         }
         IInventory inventory = (IInventory) tileEntity;
@@ -95,7 +95,7 @@ public class UtilBlock {
             float ry = rand.nextFloat() * 0.8F + 0.1F;
             float rz = rand.nextFloat() * 0.8F + 0.1F;
 
-            EntityItem entityItem = new EntityItem(world, x + rx, y + ry, z + rz, new ItemStack(item.itemID, item.stackSize, item.getItemDamage()));
+            EntityItem entityItem = new EntityItem(world, x + rx, y + ry, z + rz, new ItemStack(item.getItem(), item.stackSize, item.getItemDamage()));
 
             if(item.hasTagCompound()) {
                 entityItem.getEntityItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());

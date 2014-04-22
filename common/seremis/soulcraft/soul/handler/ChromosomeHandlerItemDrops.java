@@ -2,12 +2,6 @@ package seremis.soulcraft.soul.handler;
 
 import java.util.Random;
 
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
 import seremis.soulcraft.core.proxy.CommonProxy;
 import seremis.soulcraft.soul.EnumChromosome;
 import seremis.soulcraft.soul.IChromosome;
@@ -17,6 +11,12 @@ import seremis.soulcraft.soul.allele.AlleleInventory;
 import seremis.soulcraft.soul.entity.IEntitySoulCustom;
 import seremis.soulcraft.soul.event.EntityEventHandler;
 import seremis.soulcraft.util.inventory.Inventory;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 
 public class ChromosomeHandlerItemDrops extends EntityEventHandler {
 
@@ -82,7 +82,7 @@ public class ChromosomeHandlerItemDrops extends EntityEventHandler {
             ItemStack itemstack = entity.getCurrentItemOrArmor(i);
             boolean flag = equipmentDropChances[i] > 1.0F;
             
-            if (itemstack != null && (recentlyHit || flag) && rand.nextFloat() - (float)lootingLevel * 0.01F < equipmentDropChances[i]) {
+            if (itemstack != null && (recentlyHit || flag) && rand.nextFloat() - lootingLevel * 0.01F < equipmentDropChances[i]) {
                 
                 if (!flag && itemstack.isItemStackDamageable()) {
                     int chance = Math.max(itemstack.getMaxDamage() - 25, 1);

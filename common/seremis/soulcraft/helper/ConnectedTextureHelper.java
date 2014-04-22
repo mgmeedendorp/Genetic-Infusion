@@ -1,10 +1,10 @@
 package seremis.soulcraft.helper;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.util.Icon;
-import net.minecraft.world.IBlockAccess;
 import seremis.soulcraft.core.lib.DefaultProps;
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -14,7 +14,7 @@ public class ConnectedTextureHelper {
 
     private String[] textures = new String[47];
 
-    private Icon[] icons = new Icon[47];
+    private IIcon[] icons = new IIcon[47];
 
     private int[][][] coordMatrix = { { {0, 0, -1}, {0, 0, 1}, {-1, 0, 0}, {1, 0, 0}, {-1, 0, -1}, {1, 0, -1}, {-1, 0, 1}, {1, 0, 1}}, { {0, 0, -1}, {0, 0, 1}, {-1, 0, 0}, {1, 0, 0}, {-1, 0, -1}, {1, 0, -1}, {-1, 0, 1}, {1, 0, 1}}, { {0, 1, 0}, {0, -1, 0}, {1, 0, 0}, {-1, 0, 0}, {1, 1, 0}, {-1, 1, 0}, {1, -1, 0}, {-1, -1, 0}}, { {0, 1, 0}, {0, -1, 0}, {-1, 0, 0}, {1, 0, 0}, {-1, 1, 0}, {1, 1, 0}, {-1, -1, 0}, {1, -1, 0}}, { {0, 1, 0}, {0, -1, 0}, {0, 0, -1}, {0, 0, 1}, {0, 1, -1}, {0, 1, 1}, {0, -1, -1}, {0, -1, 1}}, { {0, 1, 0}, {0, -1, 0}, {0, 0, 1}, {0, 0, -1}, {0, 1, 1}, {0, 1, -1}, {0, -1, 1}, {0, -1, -1}}};
 
@@ -35,15 +35,15 @@ public class ConnectedTextureHelper {
 
     }
 
-    public void registerIcons(IconRegister iconRegister) {
+    public void registerBlockIcons(IIconRegister iconRegister) {
         for(int i = 0; i < textures.length; i++) {
             icons[i] = iconRegister.registerIcon(DefaultProps.ID + ":connected/" + textures[i]);
         }
     }
 
     @SideOnly(Side.CLIENT)
-    public Icon getBlockTexture(IBlockAccess blockaccess, int x, int y, int z, int side) {
-        int[] adjacentIds = new int[8];
+    public IIcon getIcon(IBlockAccess blockaccess, int x, int y, int z, int side) {
+        Block[] adjacentIds = new Block[8];
 
         int mapping = 0;
 
@@ -53,8 +53,8 @@ public class ConnectedTextureHelper {
 
         for(int i = 0; i < 8; i++) {
             int[] array = coordMatrix[side][i];
-            adjacentIds[i] = blockaccess.getBlockId(x + array[0], y + array[1], z + array[2]);
-            if(adjacentIds[i] == block.blockID) {
+            adjacentIds[i] = blockaccess.getBlock(x + array[0], y + array[1], z + array[2]);
+            if(adjacentIds[i] == block) {
                 adjacentCoords[i] = new int[] {x + array[0], y + array[1], z + array[2]};
                 switch(i) {
                     case 0:

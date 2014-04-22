@@ -1,15 +1,16 @@
 package seremis.soulcraft.tileentity;
 
-import net.minecraft.block.Block;
 import seremis.soulcraft.api.magnet.tile.TileMagnetHeater;
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 
 public class TileHeatIO extends TileMagnetHeater {
 
     @Override
     public void heatUpdate() {
         super.heatUpdate();
-        int id = worldObj.getBlockId(xCoord, yCoord - 1, zCoord);
-        if(id == Block.fire.blockID || id == Block.lavaStill.blockID) {
+        Block id = worldObj.getBlock(xCoord, yCoord - 1, zCoord);
+        if(id == Blocks.fire || id == Blocks.lava) {
             importHeat(5);
         }
     }

@@ -1,10 +1,10 @@
 package seremis.soulcraft.client.render;
 
+import seremis.soulcraft.core.lib.RenderIds;
+import seremis.soulcraft.helper.SCRenderHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
-import seremis.soulcraft.core.lib.RenderIds;
-import seremis.soulcraft.helper.SCRenderHelper;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class BlockCompressorRenderer implements ISimpleBlockRenderingHandler {
@@ -21,7 +21,7 @@ public class BlockCompressorRenderer implements ISimpleBlockRenderingHandler {
     }
 
     @Override
-    public boolean shouldRender3DInInventory() {
+    public boolean shouldRender3DInInventory(int modelId) {
         return true;
     }
 

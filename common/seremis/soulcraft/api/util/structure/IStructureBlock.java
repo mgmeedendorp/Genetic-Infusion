@@ -2,9 +2,9 @@ package seremis.soulcraft.api.util.structure;
 
 import java.util.List;
 
+import seremis.soulcraft.api.util.Coordinate3D;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
-import seremis.soulcraft.api.util.Coordinate3D;
 
 public interface IStructureBlock {
 

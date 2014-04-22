@@ -1,11 +1,11 @@
 package seremis.soulcraft.entity;
 
+import seremis.soulcraft.SoulCraft;
 import seremis.soulcraft.core.proxy.CommonProxy;
-import seremis.soulcraft.network.PacketTypeHandler;
-import seremis.soulcraft.network.packet.PacketEntityData;
-import cpw.mods.fml.common.network.PacketDispatcher;
+import seremis.soulcraft.networknew.packet.PacketEntityData;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 
 public class SCEntityLiving extends EntityLiving {
     
@@ -15,15 +15,15 @@ public class SCEntityLiving extends EntityLiving {
     
     public void sendEntityDataToClient(int id, byte[] value) {
         if(CommonProxy.proxy.isServerWorld(worldObj)) {
-            PacketDispatcher.sendPacketToAllAround(posX, posY, posZ, 128D, worldObj.provider.dimensionId, PacketTypeHandler.populatePacket(new PacketEntityData(value, id, entityId)));
+        	SoulCraft.packetPipeline.sendToAllAround(new PacketEntityData(value, id, getEntityId()), new TargetPoint(worldObj.provider.dimensionId, posX, posY, posZ, 128));
         } else {
-            receivePacketOnClient(id, value);
+            receivePacketOnServer(id, value);
         }
     }
 
     public void sendEntityDataToServer(int id, byte[] value) {
         if(CommonProxy.proxy.isRenderWorld(worldObj)) {
-            PacketDispatcher.sendPacketToServer(PacketTypeHandler.populatePacket(new PacketEntityData(value, id, entityId)));
+        	SoulCraft.packetPipeline.sendToServer(new PacketEntityData(value, id, getEntityId()));
         } else {
             receivePacketOnServer(id, value);
         }

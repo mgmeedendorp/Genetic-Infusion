@@ -1,13 +1,13 @@
 package seremis.soulcraft.tileentity;
 
+import seremis.soulcraft.core.lib.Tiles;
+import seremis.soulcraft.item.ModItems;
+import seremis.soulcraft.util.inventory.Inventory;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import seremis.soulcraft.core.lib.Tiles;
-import seremis.soulcraft.item.ModItems;
-import seremis.soulcraft.util.inventory.Inventory;
 
 public class TileCompressor extends SCTile implements IInventory {
     
@@ -41,8 +41,8 @@ public class TileCompressor extends SCTile implements IInventory {
     }
 
     @Override
-    public String getInvName() {
-        return inventory.getInvName();
+    public String getInventoryName() {
+        return inventory.getInventoryName();
     }
 
     @Override
@@ -75,7 +75,7 @@ public class TileCompressor extends SCTile implements IInventory {
             return true;
         }
         if(currStack.stackSize > getInventoryStackLimit()) {
-            ItemStack tooMuch = new ItemStack(getStackInSlot(slot).itemID, currStack.stackSize - getInventoryStackLimit(), currStack.getItemDamage());
+            ItemStack tooMuch = new ItemStack(getStackInSlot(slot).getItem(), currStack.stackSize - getInventoryStackLimit(), currStack.getItemDamage());
             this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.xCoord, this.yCoord, this.zCoord, tooMuch));
             currStack.stackSize = getInventoryStackLimit();
             this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
@@ -102,20 +102,20 @@ public class TileCompressor extends SCTile implements IInventory {
         return this.worldObj.getClosestPlayer(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, this.requiredPlayerRange) != null;
     }
 
-    @Override
-    public void openChest() {}
+	@Override
+	public void openInventory() {}
+
+	@Override
+	public void closeInventory() {}
 
     @Override
-    public void closeChest() {}
-
-    @Override
-    public boolean isInvNameLocalized() {
-        return inventory.isInvNameLocalized();
+    public boolean hasCustomInventoryName() {
+        return inventory.hasCustomInventoryName();
     }
 
     @Override
     public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-        if(itemstack.itemID == ModItems.crystalShard.itemID) {
+        if(itemstack.getItem() == ModItems.crystalShard) {
             return true;
         }
         return false;

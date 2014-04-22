@@ -17,7 +17,7 @@ public class FilteredSlot extends SCSlot {
     @Override
     public boolean isItemValid(ItemStack stack) {
         if(filter != null) {
-            if(stack.itemID == filter.itemID && stack.getItemDamage() == filter.getItemDamage()) {
+            if(stack.isItemEqual(filter)) {
                 return super.isItemValid(stack);
             }
         }

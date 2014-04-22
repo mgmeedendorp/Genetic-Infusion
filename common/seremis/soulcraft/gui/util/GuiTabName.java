@@ -1,8 +1,8 @@
 package seremis.soulcraft.gui.util;
 
-import net.minecraft.client.gui.GuiTextField;
 import seremis.soulcraft.gui.GuiStationControllerTransporter;
 import seremis.soulcraft.gui.SCGui;
+import net.minecraft.client.gui.GuiTextField;
 
 public class GuiTabName extends GuiTab {
 

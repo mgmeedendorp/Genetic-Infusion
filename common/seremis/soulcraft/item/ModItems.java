@@ -1,9 +1,11 @@
 package seremis.soulcraft.item;
 
+import seremis.soulcraft.core.lib.DefaultProps;
+import seremis.soulcraft.core.lib.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import seremis.soulcraft.core.lib.Items;
-import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ModItems {
 
@@ -15,28 +17,35 @@ public class ModItems {
     public static ItemThermometer thermometer;
 
     public static void init() {
-        titaniumIngot = new SCItem(Items.titaniumIngotID).setUnlocalizedName(Items.TITANIUM_INGOT_UNLOCALIZED_NAME);
-        crystalShard = new ItemShardIsolatzium(Items.crystalShardID);
-        plateTitanium = new SCItem(Items.titaniumPlateID).setUnlocalizedName(Items.TITANIUM_PLATE_UNLOCALIZED_NAME);
-        crystalAlloy = new ItemCrystalAlloy(Items.crystalAlloyID);
-        transporterModules = new ItemTransporterModules(Items.transporterModulesID);
-        thermometer = new ItemThermometer(Items.thermometerID);
+        titaniumIngot = new SCItem().setUnlocalizedName(Items.TITANIUM_INGOT_UNLOCALIZED_NAME);
+        crystalShard = new ItemShardIsolatzium();
+        plateTitanium = new SCItem().setUnlocalizedName(Items.TITANIUM_PLATE_UNLOCALIZED_NAME);
+        crystalAlloy = new ItemCrystalAlloy();
+        transporterModules = new ItemTransporterModules();
+        thermometer = new ItemThermometer();
 
-        LanguageRegistry.addName(titaniumIngot, Items.TITANIUM_INGOT_LOCALIZED_NAME);
-        LanguageRegistry.addName(new ItemStack(crystalShard, 1, 0), Items.CRYSTAL_SHARD_META_0_LOCALIZED_NAME);
-        LanguageRegistry.addName(new ItemStack(crystalShard, 1, 1), Items.CRYSTAL_SHARD_META_1_LOCALIZED_NAME);
-        LanguageRegistry.addName(new ItemStack(crystalShard, 1, 2), Items.CRYSTAL_SHARD_META_2_LOCALIZED_NAME);
-        LanguageRegistry.addName(new ItemStack(crystalShard, 1, 3), Items.CRYSTAL_SHARD_META_3_LOCALIZED_NAME);
-        LanguageRegistry.addName(plateTitanium, Items.TITANIUM_PLATE_LOCALIZED_NAME);
-        LanguageRegistry.addName(new ItemStack(crystalAlloy, 1, 0), Items.CRYSTAL_ALLOY_META_0_LOCALIZED_NAME);
-        LanguageRegistry.addName(new ItemStack(crystalAlloy, 1, 1), Items.CRYSTAL_ALLOY_META_1_LOCALIZED_NAME);
-        LanguageRegistry.addName(new ItemStack(crystalAlloy, 1, 2), Items.CRYSTAL_ALLOY_META_2_LOCALIZED_NAME);
-        LanguageRegistry.addName(new ItemStack(crystalAlloy, 1, 3), Items.CRYSTAL_ALLOY_META_3_LOCALIZED_NAME);
-        LanguageRegistry.addName(new ItemStack(transporterModules, 1, 0), Items.TRANSPORTER_MODULES_META_0_LOCALIZED_NAME);
-        LanguageRegistry.addName(new ItemStack(transporterModules, 1, 1), Items.TRANSPORTER_MODULES_META_1_LOCALIZED_NAME);
-        LanguageRegistry.addName(new ItemStack(transporterModules, 1, 2), Items.TRANSPORTER_MODULES_META_2_LOCALIZED_NAME);
-        LanguageRegistry.addName(new ItemStack(thermometer, 1, 0), Items.THERMOMETER_META_0_LOCALIZED_NAME);
-        LanguageRegistry.addName(new ItemStack(thermometer, 1, 1), Items.THERMOMETER_META_1_LOCALIZED_NAME);
+        registerItem(titaniumIngot, Items.TITANIUM_INGOT_UNLOCALIZED_NAME);
+        registerItem(crystalShard, Items.CRYSTAL_SHARD_UNLOCALIZED_NAME);
+        registerItem(plateTitanium, Items.TITANIUM_PLATE_UNLOCALIZED_NAME);
+        registerItem(crystalAlloy, Items.CRYSTAL_ALLOY_UNLOCALIZED_NAME);
+        registerItem(transporterModules, Items.TRANSPORTER_MODULES_UNLOCALIZED_NAME);
+        registerItem(thermometer, Items.THERMOMETER_UNLOCALIZED_NAME);
+        
+//        LanguageRegistry.addName(titaniumIngot, Items.TITANIUM_INGOT_LOCALIZED_NAME);
+//        LanguageRegistry.addName(new ItemStack(crystalShard, 1, 0), Items.CRYSTAL_SHARD_META_0_LOCALIZED_NAME);
+//        LanguageRegistry.addName(new ItemStack(crystalShard, 1, 1), Items.CRYSTAL_SHARD_META_1_LOCALIZED_NAME);
+//        LanguageRegistry.addName(new ItemStack(crystalShard, 1, 2), Items.CRYSTAL_SHARD_META_2_LOCALIZED_NAME);
+//        LanguageRegistry.addName(new ItemStack(crystalShard, 1, 3), Items.CRYSTAL_SHARD_META_3_LOCALIZED_NAME);
+//        LanguageRegistry.addName(plateTitanium, Items.TITANIUM_PLATE_LOCALIZED_NAME);
+//        LanguageRegistry.addName(new ItemStack(crystalAlloy, 1, 0), Items.CRYSTAL_ALLOY_META_0_LOCALIZED_NAME);
+//        LanguageRegistry.addName(new ItemStack(crystalAlloy, 1, 1), Items.CRYSTAL_ALLOY_META_1_LOCALIZED_NAME);
+//        LanguageRegistry.addName(new ItemStack(crystalAlloy, 1, 2), Items.CRYSTAL_ALLOY_META_2_LOCALIZED_NAME);
+//        LanguageRegistry.addName(new ItemStack(crystalAlloy, 1, 3), Items.CRYSTAL_ALLOY_META_3_LOCALIZED_NAME);
+//        LanguageRegistry.addName(new ItemStack(transporterModules, 1, 0), Items.TRANSPORTER_MODULES_META_0_LOCALIZED_NAME);
+//        LanguageRegistry.addName(new ItemStack(transporterModules, 1, 1), Items.TRANSPORTER_MODULES_META_1_LOCALIZED_NAME);
+//        LanguageRegistry.addName(new ItemStack(transporterModules, 1, 2), Items.TRANSPORTER_MODULES_META_2_LOCALIZED_NAME);
+//        LanguageRegistry.addName(new ItemStack(thermometer, 1, 0), Items.THERMOMETER_META_0_LOCALIZED_NAME);
+//        LanguageRegistry.addName(new ItemStack(thermometer, 1, 1), Items.THERMOMETER_META_1_LOCALIZED_NAME);
 
         oreDictionary();
     }
@@ -52,5 +61,9 @@ public class ModItems {
         OreDictionary.registerOre("alloyIsolatziumGreen", new ItemStack(crystalAlloy, 1, 1));
         OreDictionary.registerOre("alloyIsolatziumBlue", new ItemStack(crystalAlloy, 1, 2));
         OreDictionary.registerOre("alloyIsolatziumBlack", new ItemStack(crystalAlloy, 1, 3));
+    }
+    
+    public static void registerItem(Item item, String name) {
+    	GameRegistry.registerItem(item, DefaultProps.nameLower + "_item_" + name);
     }
 }

@@ -2,11 +2,11 @@ package seremis.soulcraft.tileentity;
 
 import java.util.Random;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.ForgeDirection;
 import seremis.soulcraft.api.magnet.MagnetLink;
 import seremis.soulcraft.api.util.Coordinate3D;
 import seremis.soulcraft.api.util.structure.Structure;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileCrystalStand extends SCTileMagnetConnector {
 

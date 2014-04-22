@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants;
 
 public class UtilTileEntity {
 
@@ -40,11 +41,11 @@ public class UtilTileEntity {
     public static ItemStack[] readInventoryFromNBT(IInventory tile, NBTTagCompound compound) {
         ItemStack[] inv;
 
-        NBTTagList nbtTagList = compound.getTagList("Items");
+        NBTTagList nbtTagList = compound.getTagList("Items", Constants.NBT.TAG_COMPOUND);
         inv = new ItemStack[tile.getSizeInventory()];
 
         for(int i = 0; i < nbtTagList.tagCount(); ++i) {
-            NBTTagCompound compound2 = (NBTTagCompound) nbtTagList.tagAt(i);
+            NBTTagCompound compound2 = nbtTagList.getCompoundTagAt(i);
             int var5 = compound2.getByte("Slot") & 255;
 
             if(var5 >= 0 && var5 < tile.getSizeInventory()) {

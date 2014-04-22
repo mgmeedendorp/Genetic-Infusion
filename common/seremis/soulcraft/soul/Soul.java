@@ -2,6 +2,7 @@ package seremis.soulcraft.soul;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.Constants;
 
 public class Soul implements ISoul {
 
@@ -40,10 +41,10 @@ public class Soul implements ISoul {
     public void readFromNBT(NBTTagCompound compound) {
         chromosomes = new Chromosome[compound.getInteger("genomeLength")];
         
-        NBTTagList tagList = compound.getTagList("chromosomes");
+        NBTTagList tagList = compound.getTagList("chromosomes", Constants.NBT.TAG_COMPOUND);
         
         for(int i = 0; i < tagList.tagCount(); i++) {
-            NBTTagCompound compound1 = (NBTTagCompound) tagList.tagAt(i);
+            NBTTagCompound compound1 = tagList.getCompoundTagAt(i);
             
             chromosomes[i] = new Chromosome(compound1);
         }

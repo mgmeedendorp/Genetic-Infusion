@@ -1,13 +1,11 @@
 package seremis.soulcraft.network.packet;
 
+import ibxm.Player;
+
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-
-import net.minecraft.network.INetworkManager;
-import seremis.soulcraft.network.PacketTypeHandler;
-import cpw.mods.fml.common.network.Player;
 
 public abstract class SCPacket {
 

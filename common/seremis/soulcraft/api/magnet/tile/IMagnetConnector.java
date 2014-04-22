@@ -2,10 +2,10 @@ package seremis.soulcraft.api.magnet.tile;
 
 import java.util.List;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
 import seremis.soulcraft.api.magnet.MagnetLink;
 import seremis.soulcraft.api.util.Coordinate3D;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public interface IMagnetConnector {
 

@@ -1,7 +1,7 @@
 package seremis.soulcraft.soul.allele;
 
-import net.minecraft.nbt.NBTTagCompound;
 import seremis.soulcraft.soul.Allele;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class AlleleStringArray extends Allele {
 
@@ -17,7 +17,8 @@ public class AlleleStringArray extends Allele {
         readFromNBT(compound);
     }
 
-    public void writeToNBT(NBTTagCompound compound) {
+    @Override
+	public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         compound.setInteger("length", value.length);
         for(int i = 0; i < value.length; i++) {
@@ -25,7 +26,8 @@ public class AlleleStringArray extends Allele {
         }
     }
     
-    public void readFromNBT(NBTTagCompound compound) {
+    @Override
+	public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         value = new String[compound.getInteger("length")];
         for(int i = 0; i < value.length; i++) {
