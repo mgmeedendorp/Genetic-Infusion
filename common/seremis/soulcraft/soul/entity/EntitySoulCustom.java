@@ -8,23 +8,29 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import seremis.soulcraft.entity.SCEntityLiving;
-import seremis.soulcraft.soul.Soul;
-import seremis.soulcraft.soul.traits.TraitHandler;
+import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.ai.EntityAITasks;
+import net.minecraft.entity.ai.attributes.BaseAttributeMap;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.CombatTracker;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.Constants;
+import seremis.soulcraft.entity.SCEntityLiving;
+import seremis.soulcraft.soul.Soul;
+import seremis.soulcraft.soul.traits.TraitHandler;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 
@@ -97,6 +103,59 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     }
     
     @Override
+    public BaseAttributeMap getAttributeMap() {
+    	return getAttributeMap();
+    }
+    
+    @Override
+    public CombatTracker getCombatTracker() {
+    	return getCombatTracker();
+    }
+    
+    @Override
+    public HashMap<Integer, PotionEffect> getActivePotionsMap() {
+    	HashMap<Integer, PotionEffect> var = new HashMap<Integer, PotionEffect>();
+        try {
+            Field field = ReflectionHelper.findField(Entity.class, new String[] {"activePotionsMap", "field_70147_f"});
+            field.setAccessible(true);
+            var = (HashMap<Integer, PotionEffect>) field.get(this);
+            field.setAccessible(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return var;
+    }
+    
+    @Override
+    public DataWatcher getDataWatcher() {
+    	return dataWatcher;
+    }
+    
+	@Override
+	public EntityAITasks getTasks() {
+		return tasks;
+	}
+
+	@Override
+	public EntityAITasks getTargetTasks() {
+		return targetTasks;
+	}
+
+	@Override
+	public NBTTagCompound getLeashedCompound() {
+		NBTTagCompound var = new NBTTagCompound();
+        try {
+            Field field = ReflectionHelper.findField(Entity.class, new String[] {"field_110170_bx", "field_110170_bx"});
+            field.setAccessible(true);
+            var = (NBTTagCompound) field.get(this);
+            field.setAccessible(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return var;
+	}
+    
+    @Override
     public void onDeathUpdate() {
         super.onDeathUpdate();
     }
@@ -122,6 +181,8 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     	syncWalking();
     	syncRender();
     	syncRiding();
+    	syncHealth();
+    	syncAttack();
     	
     	if(syncTicksExisted != ticksExisted) {
     		persistentInteger.put("ticksExisted", ticksExisted);
@@ -132,8 +193,8 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     	}
     }
     
-    private double syncPosX, syncPosY, syncPosZ, syncPrevPosX, syncPrevPosY, syncPrevPosZ, syncLastTickPosX, syncLastTickPosY, syncLastTickPosZ;
-    private int syncServerPosX, syncServerPosY, syncServerPosZ;
+    private double syncPosX, syncPosY, syncPosZ, syncPrevPosX, syncPrevPosY, syncPrevPosZ, syncLastTickPosX, syncLastTickPosY, syncLastTickPosZ, syncNewPosX, syncNewPosY, syncNewPosZ;
+    private int syncServerPosX, syncServerPosY, syncServerPosZ, syncNewPosRotationIncrements;
     
     private void syncCoordinates() {
     	if(syncPosX != posX) {
@@ -220,9 +281,38 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     		lastTickPosZ = getDouble("lastTickPosZ");
     		syncLastTickPosZ = lastTickPosZ;
     	}
+    	if(syncNewPosRotationIncrements != newPosRotationIncrements) {
+    		variableInteger.put("newPosRotationIncrements", newPosRotationIncrements);
+    		syncNewPosRotationIncrements = newPosRotationIncrements;
+    	} else if(syncNewPosRotationIncrements != getInteger("newPosRotationIncrements")) {
+    		newPosRotationIncrements = getInteger("newPosRotationIncrements");
+    		syncNewPosRotationIncrements = newPosRotationIncrements;
+    	}
+    	if(syncNewPosX != newPosX) {
+    		variableDouble.put("newPosX", newPosX);
+    		syncNewPosX = newPosX;
+    	} else if(syncNewPosX != getDouble("newPosX")) {
+    		newPosX = getDouble("newPosX");
+    		syncNewPosX = newPosX;
+    	}
+    	if(syncNewPosY != newPosY) {
+    		variableDouble.put("newPosY", newPosY);
+    		syncNewPosY = newPosY;
+    	} else if(syncNewPosY != getDouble("newPosY")) {
+    		newPosY = getDouble("newPosY");
+    		syncNewPosY = newPosY;
+    	}
+    	if(syncNewPosZ != newPosZ) {
+    		variableDouble.put("newPosZ", newPosZ);
+    		syncNewPosZ = newPosZ;
+    	} else if(syncNewPosZ != getDouble("newPosZ")) {
+    		newPosZ = getDouble("newPosZ");
+    		syncNewPosZ = newPosZ;
+    	}
     }
     
     private double syncMotionX, syncMotionY, syncMotionZ;
+    private float syncJumpMovementFactor, syncMoveStrafing, syncMoveForward, syncRandomYawVelocity, syncLandMovementFactor;
     
     private void syncMovement() {
     	if(syncMotionX != motionX) {
@@ -245,6 +335,41 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     	} else if(syncMotionZ != getPersistentDouble("motionZ")) {
     		motionZ = getPersistentDouble("motionZ");
     		syncMotionZ = motionZ;
+    	}
+    	if(syncJumpMovementFactor != jumpMovementFactor) {
+    		variableFloat.put("jumpMovementFactor", jumpMovementFactor);
+    		syncJumpMovementFactor = jumpMovementFactor;
+    	} else if(syncJumpMovementFactor != getFloat("jumpMovementFactor")) {
+    		jumpMovementFactor = getFloat("jumpMovementFactor");
+    		syncJumpMovementFactor = jumpMovementFactor;
+    	}
+    	if(syncMoveStrafing != moveStrafing) {
+    		variableFloat.put("moveStrafing", moveStrafing);
+    		syncMoveStrafing = moveStrafing;
+    	} else if(syncMoveStrafing != getFloat("moveStrafing")) {
+    		moveStrafing = getFloat("moveStrafing");
+    		syncMoveStrafing = moveStrafing;
+    	}
+    	if(syncMoveForward != moveForward) {
+    		variableFloat.put("moveForward", moveForward);
+    		syncMoveForward = moveForward;
+    	} else if(syncMoveForward != getFloat("moveForward")) {
+    		moveForward = getFloat("moveForward");
+    		syncMoveForward = moveForward;
+    	}
+    	if(syncRandomYawVelocity != randomYawVelocity) {
+    		variableFloat.put("randomYawVelocity", randomYawVelocity);
+    		syncRandomYawVelocity = randomYawVelocity;
+    	} else if(syncRandomYawVelocity != getFloat("randomYawVelocity")) {
+    		randomYawVelocity = getFloat("randomYawVelocity");
+    		syncRandomYawVelocity = randomYawVelocity;
+    	}
+    	if(syncLandMovementFactor != getLandMovementFactor()) {
+    		variableFloat.put("landMovementFactor", getLandMovementFactor());
+    		syncLandMovementFactor = getLandMovementFactor();
+    	} else if(syncLandMovementFactor != getFloat("landMovementFactor")) {
+    		setAIMoveSpeed(getFloat("landMovementFactor"));
+    		syncLandMovementFactor = getLandMovementFactor();
     	}
     }
     
@@ -296,7 +421,8 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     	}
     }
     
-    private float syncYaw, syncPitch, syncPrevYaw, syncPrevPitch;
+    private double syncNewYaw, syncNewPitch;
+    private float syncYaw, syncPitch, syncPrevYaw, syncPrevPitch, syncDefaultPitch;
     
     private void syncRotation() {
     	if(syncYaw != rotationYaw) {
@@ -327,10 +453,32 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     		prevRotationPitch = getFloat("prevRotationPitch");
     		syncPrevPitch = prevRotationPitch;
     	}
+    	if(syncNewYaw != newRotationYaw) {
+    		variableDouble.put("newRotationYaw", newRotationYaw);
+    		syncNewYaw = newRotationYaw;
+    	} else if(syncNewYaw != getDouble("newRotationYaw")) {
+    		newRotationYaw = getDouble("newRotationYaw");
+    		syncNewYaw = newRotationYaw;
+    	}
+    	if(syncNewPitch != newRotationPitch) {
+    		variableDouble.put("newRotationPitch", newRotationPitch);
+    		syncNewPitch = newRotationPitch;
+    	} else if(syncNewPitch != getDouble("newRotationPitch")) {
+    		newRotationPitch = getDouble("newRotationPitch");
+    		syncNewPitch = newRotationPitch;
+    	}
+    	if(syncDefaultPitch != defaultPitch) {
+    		variableFloat.put("defaultPitch", defaultPitch);
+    		syncDefaultPitch = defaultPitch;
+    	} else if(syncDefaultPitch != getFloat("defaultPitch")) {
+    		defaultPitch = getFloat("defaultPitch");
+    		syncDefaultPitch = defaultPitch;
+    	}
     }
     
+    private float syncAttackedAtYaw;
     private int syncFire, syncFireResistance;
-    private boolean syncInWater, syncOnGround, syncIsInWeb, syncIsDead, syncIsAirBorne;
+    private boolean syncInWater, syncOnGround, syncIsInWeb, syncIsDead, syncIsAirBorne, syncPreventEntitySpawning, syncForceSpawn, syncNoClip, syncInvulnerable, syncIsJumping;
     
     private void syncEnvironment() {
     	if(syncFire != getFire()) {
@@ -382,9 +530,51 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     		isAirBorne = getBoolean("isAirBorne");
     		syncIsAirBorne = isAirBorne;
     	}
+       	if(syncPreventEntitySpawning != preventEntitySpawning) {
+    		variableBoolean.put("preventEntitySpawning", preventEntitySpawning);
+    		syncPreventEntitySpawning = preventEntitySpawning;
+    	} else if(syncPreventEntitySpawning != getBoolean("preventEntitySpawning")) {
+    		preventEntitySpawning = getBoolean("preventEntitySpawning");
+    		syncPreventEntitySpawning = preventEntitySpawning;
+    	}
+       	if(syncForceSpawn != forceSpawn) {
+    		variableBoolean.put("forceSpawn", forceSpawn);
+    		syncForceSpawn = forceSpawn;
+    	} else if(syncForceSpawn != getBoolean("forceSpawn")) {
+    		forceSpawn = getBoolean("forceSpawn");
+    		syncForceSpawn = forceSpawn;
+    	}
+       	if(syncNoClip != noClip) {
+    		variableBoolean.put("noClip", noClip);
+    		syncNoClip = noClip;
+    	} else if(syncNoClip != getBoolean("noClip")) {
+    		noClip = getBoolean("noClip");
+    		syncNoClip = noClip;
+    	}
+       	if(syncInvulnerable != isEntityInvulnerable()) {
+    		variableBoolean.put("invulnerable", isEntityInvulnerable());
+    		syncInvulnerable = isEntityInvulnerable();
+    	} else if(syncForceSpawn != getBoolean("invulnerable")) {
+    		setInvulnerable(getBoolean("invulnerable"));
+    		syncInvulnerable = isEntityInvulnerable();
+    	}
+    	if(syncAttackedAtYaw != attackedAtYaw) {
+    		persistentFloat.put("attackedAtYaw", attackedAtYaw);
+    		syncAttackedAtYaw = attackedAtYaw;
+    	} else if(syncAttackedAtYaw != getPersistentFloat("attackedAtYaw")) {
+    		attackedAtYaw = getPersistentFloat("attackedAtYaw");
+    		syncAttackedAtYaw = attackedAtYaw;
+    	}
+       	if(syncIsJumping != isJumping) {
+    		variableBoolean.put("isJumping", isJumping);
+    		syncIsJumping = isJumping;
+    	} else if(syncForceSpawn != getBoolean("isJumping")) {
+    		isJumping = getBoolean("isJumping");
+    		syncIsJumping = isJumping;
+    	}
     }
     
-    private boolean syncAddedToChunk;
+    private boolean syncAddedToChunk, syncPersistenceRequired;
     private int syncChunkCoordX, syncChunkCoordY, syncChunkCoordZ;
     
     private void syncChunk() {
@@ -415,6 +605,13 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     	} else if(syncChunkCoordZ != getInteger("chunkCoordZ")) {
     		chunkCoordZ = getInteger("chunkCoordZ");
     		syncChunkCoordZ = chunkCoordZ;
+    	}    	
+    	if(syncPersistenceRequired != isNoDespawnRequired()) {
+    		persistentBoolean.put("persistenceRequired", isNoDespawnRequired());
+    		syncPersistenceRequired = isNoDespawnRequired();
+    	} else if(syncPersistenceRequired != getPersistentBoolean("persistenceRequired")) {
+    		setPersistenceRequired(getPersistentBoolean("persistenceRequired"));
+    		syncPersistenceRequired = isNoDespawnRequired();
     	}
     }
     
@@ -494,7 +691,6 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     }
     
     private float syncDistanceWalkedModified, syncPrevDistanceWalkedModified, syncDistanceWalkedOnStepModified, syncFallDistance;
-    private int syncNextStepDistance;
     
     private void syncWalking() {
     	if(syncDistanceWalkedModified != distanceWalkedModified) {
@@ -528,7 +724,9 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     }
     
     private double syncRenderDistanceWeight;
-    private boolean syncIgnoreFrustumCheck;
+    private float syncPrevSwingProgress, syncSwingProgress, syncPrevLimbSwingAmount, syncLimbSwingAmount, syncLimbSwing, syncPrevCameraPitch, syncCameraPitch, syncRenderYawOffset, syncPrevRenderYawOffset, syncRotationYawHead, syncPrevRotationYawHead;
+    private int syncSwingProgressInt, syncArrowHitTimer;
+    private boolean syncIgnoreFrustumCheck, syncIsSwingInProgress;
     
     private void syncRender() {
     	if(syncRenderDistanceWeight != renderDistanceWeight) {
@@ -545,10 +743,109 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     		ignoreFrustumCheck = getBoolean("ignoreFrustumCheck");
     		syncIgnoreFrustumCheck = ignoreFrustumCheck;
     	}
+       	if(syncIsSwingInProgress != isSwingInProgress) {
+       		variableBoolean.put("isSwingInProgress", isSwingInProgress);
+    		syncIsSwingInProgress = isSwingInProgress;
+    	} else if(syncIsSwingInProgress != getBoolean("isSwingInProgress")) {
+    		isSwingInProgress = getBoolean("isSwingInProgress");
+    		syncIsSwingInProgress = isSwingInProgress;
+    	}
+       	if(syncSwingProgressInt != swingProgressInt) {
+       		variableInteger.put("swingProgressInt", swingProgressInt);
+       		syncSwingProgressInt = swingProgressInt;
+       	} else if(syncSwingProgressInt != getInteger("swingProgressInt")) {
+       		swingProgressInt = getInteger("swingProgressInt");
+       		syncSwingProgressInt = swingProgressInt;
+       	}
+       	if(syncArrowHitTimer != arrowHitTimer) {
+       		variableInteger.put("arrowTimer", arrowHitTimer);
+       		syncArrowHitTimer = arrowHitTimer;
+       	} else if(syncArrowHitTimer != getInteger("arrowTimer")) {
+       		arrowHitTimer = getInteger("arrowTimer");
+       		syncArrowHitTimer = arrowHitTimer;
+       	}
+       	if(syncPrevSwingProgress != prevSwingProgress) {
+       		variableFloat.put("prevSwingProgress", prevSwingProgress);
+       		syncPrevSwingProgress = prevSwingProgress;
+       	} else if(syncPrevSwingProgress != getFloat("prevSwingProgress")) {
+       		prevSwingProgress = getFloat("prevSwingProgress");
+       		syncPrevSwingProgress = prevSwingProgress;
+       	}
+      	if(syncSwingProgress != swingProgress) {
+       		variableFloat.put("swingProgress", swingProgress);
+       		syncSwingProgress = swingProgress;
+       	} else if(syncSwingProgress != getFloat("SwingProgress")) {
+       		swingProgress = getFloat("SwingProgress");
+       		syncSwingProgress = swingProgress;
+       	}
+       	if(syncPrevLimbSwingAmount != prevLimbSwingAmount) {
+       		variableFloat.put("prevLimbSwingAmount", prevLimbSwingAmount);
+       		syncPrevLimbSwingAmount = prevLimbSwingAmount;
+       	} else if(syncPrevLimbSwingAmount != getFloat("prevLimbSwingAmount")) {
+       		prevLimbSwingAmount = getFloat("prevLimbSwingAmount");
+       		syncPrevLimbSwingAmount = prevLimbSwingAmount;
+       	}
+      	if(syncLimbSwingAmount != limbSwingAmount) {
+       		variableFloat.put("limbSwingAmount", limbSwingAmount);
+       		syncLimbSwingAmount = limbSwingAmount;
+       	} else if(syncLimbSwingAmount != getFloat("limbSwingAmount")) {
+       		limbSwingAmount = getFloat("limbSwingAmount");
+       		syncLimbSwingAmount = limbSwingAmount;
+       	}
+      	if(syncLimbSwing != limbSwing) {
+       		variableFloat.put("limbSwing", limbSwing);
+       		syncLimbSwing = limbSwing;
+       	} else if(syncLimbSwing != getFloat("limbSwing")) {
+       		limbSwing = getFloat("limbSwing");
+       		syncLimbSwing = limbSwing;
+       	}
+       	if(syncPrevCameraPitch != prevCameraPitch) {
+       		variableFloat.put("prevCameraPitch", prevCameraPitch);
+       		syncPrevCameraPitch = prevCameraPitch;
+       	} else if(syncPrevCameraPitch != getFloat("prevCameraPitch")) {
+       		prevCameraPitch = getFloat("prevCameraPitch");
+       		syncPrevCameraPitch = prevCameraPitch;
+       	}
+      	if(syncCameraPitch != cameraPitch) {
+       		variableFloat.put("cameraPitch", cameraPitch);
+       		syncCameraPitch = cameraPitch;
+       	} else if(syncCameraPitch != getFloat("cameraPitch")) {
+       		cameraPitch = getFloat("cameraPitch");
+       		syncCameraPitch = cameraPitch;
+       	}
+       	if(syncPrevRenderYawOffset != prevRenderYawOffset) {
+       		variableFloat.put("prevRenderYawOffset", prevRenderYawOffset);
+       		syncPrevRenderYawOffset = prevRenderYawOffset;
+       	} else if(syncPrevRenderYawOffset != getFloat("prevRenderYawOffset")) {
+       		prevRenderYawOffset = getFloat("prevRenderYawOffset");
+       		syncPrevRenderYawOffset = prevRenderYawOffset;
+       	}
+      	if(syncRenderYawOffset != renderYawOffset) {
+       		variableFloat.put("renderYawOffset", renderYawOffset);
+       		syncRenderYawOffset = renderYawOffset;
+       	} else if(syncRenderYawOffset != getFloat("renderYawOffset")) {
+       		renderYawOffset = getFloat("renderYawOffset");
+       		syncRenderYawOffset = renderYawOffset;
+       	}
+      	if(syncPrevRotationYawHead != prevRotationYawHead) {
+       		variableFloat.put("prevRotationYawHead", prevRotationYawHead);
+       		syncPrevRotationYawHead = prevRotationYawHead;
+       	} else if(syncPrevRotationYawHead != getFloat("prevRotationYawHead")) {
+       		prevRotationYawHead = getFloat("prevRotationYawHead");
+       		syncPrevRotationYawHead = prevRotationYawHead;
+       	}
+      	if(syncRotationYawHead != rotationYawHead) {
+       		variableFloat.put("rotationYawHead", rotationYawHead);
+       		syncRotationYawHead = rotationYawHead;
+       	} else if(syncRotationYawHead != getFloat("rotationYawHead")) {
+       		rotationYawHead = getFloat("rotationYawHead");
+       		syncRotationYawHead = rotationYawHead;
+       	}
     }
     
-    private Entity syncRiddenByEntity, syncRidingEntity;
+    private Entity syncRiddenByEntity, syncRidingEntity, syncLeashedToEntity;
     private double syncEntityRiderPitchDelta, syncEntityRiderYawDelta;
+    private boolean syncIsLeashed;
     
     private void syncRiding() {
     	if(syncRiddenByEntity != riddenByEntity) {
@@ -579,10 +876,26 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     		setEntityRiderYawDelta(getDouble("entityRiderYawDelta"));
     		syncEntityRiderYawDelta = getEntityRiderYawDelta();
     	}
+    	if(syncIsLeashed != getLeashed()) {
+       		persistentBoolean.put("isLeashed", getLeashed());
+       		syncIsLeashed = getLeashed();
+    	} else if(syncIsLeashed != getPersistentBoolean("isLeashed")) {
+    		setIsLeashed(getPersistentBoolean("isLeashed"));
+    		syncIsLeashed = getLeashed();
+    	}
+    	if(syncLeashedToEntity != getLeashedToEntity()) {
+    		persistentInteger.put("leashedToEntity", getLeashedToEntity().getEntityId());
+    		syncLeashedToEntity = getLeashedToEntity();
+    	} else if(syncLeashedToEntity != worldObj.getEntityByID(getPersistentInteger("leashedToEntity"))) {
+    		setLeashedToEntity(worldObj.getEntityByID(getPersistentInteger("leashedToEntity")));
+    		syncLeashedToEntity = getLeashedToEntity();
+    	}
     }
     
-    private boolean syncCaptureDrops;
+    private float[] syncEquipmentDropChances = new float[5];
+    private boolean syncCaptureDrops, syncCanPickUpLoot;
     private List<EntityItem> syncCapturedDrops;
+    private ItemStack[] syncEquipment = new ItemStack[5];
     
     private void syncInventory() {
        	if(syncCaptureDrops != captureDrops) {
@@ -601,6 +914,169 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
        			syncCapturedDrops.add(i, capturedDrops.get(i));
        		}
        	}
+       	for(int i = 0; i < getLastActiveItems().length; i++) {
+       		if(syncEquipment[i] != getLastActiveItems()[i]) {
+       			persistentItemStack.put("equipment." + i, getLastActiveItems()[i]);
+       			syncEquipment[i] = getLastActiveItems()[i];
+       		} else if(syncEquipment[i] != getPersistentItemStack("equipment." + i)) {
+       			setCurrentItemOrArmor(i, getPersistentItemStack("equipment." + i));
+       			syncEquipment[i] = getLastActiveItems()[i];
+       		}
+       	}
+      	for(int i = 0; i < equipmentDropChances.length; i++) {
+       		if(syncEquipmentDropChances[i] != equipmentDropChances[i]) {
+       			persistentFloat.put("equipmentDropChances." + i, equipmentDropChances[i]);
+       			syncEquipmentDropChances[i] = equipmentDropChances[i];
+       		} else if(syncEquipmentDropChances[i] != getPersistentFloat("equipmentDropChances." + i)) {
+       			equipmentDropChances[i] =  getPersistentFloat("equipmentDropChances." + i);
+       			syncEquipmentDropChances[i] = equipmentDropChances[i];
+       		}
+       	}
+       	if(syncCanPickUpLoot != canPickUpLoot()) {
+       		persistentBoolean.put("canPickUpLoot", canPickUpLoot());
+    		syncCanPickUpLoot = canPickUpLoot();
+    	} else if(syncCanPickUpLoot != getPersistentBoolean("canPickUpLoot")) {
+    		setCanPickUpLoot(getPersistentBoolean("canPickUpLoot"));
+    		syncCanPickUpLoot = canPickUpLoot();
+    	}
+    }
+    
+    private float syncPrevHealth;
+    private int syncHurtTime, syncMaxHurtTime, syncDeathTime, syncMaxHurtResistantTime, syncEntityAge;
+    
+    private void syncHealth() {
+    	if(syncPrevHealth != prevHealth) {
+    		variableFloat.put("prevHealth", prevHealth);
+    		syncPrevHealth = prevHealth;
+    	} else if(syncPrevHealth != getFloat("prevHealth")) {
+    		prevHealth = getFloat("prevHealth");
+    		syncPrevHealth = prevHealth;
+    	}
+    	if(syncHurtTime != hurtTime) {
+    		persistentInteger.put("hurtTime", hurtTime);
+    		syncHurtTime = hurtTime;
+    	} else if(syncHurtTime != getPersistentInteger("hurtTime")) {
+    		hurtTime = getPersistentInteger("hurtTime");
+    		syncHurtTime = hurtTime;
+    	}
+    	if(syncMaxHurtTime != maxHurtTime) {
+    		variableInteger.put("maxMaxHurtTime", maxHurtTime);
+    		syncMaxHurtTime = maxHurtTime;
+    	} else if(syncMaxHurtTime != getInteger("maxMaxHurtTime")) {
+    		maxHurtTime = getInteger("maxMaxHurtTime");
+    		syncMaxHurtTime = maxHurtTime;
+    	}
+    	if(syncDeathTime != deathTime) {
+    		persistentInteger.put("deathTime", deathTime);
+    		syncDeathTime = deathTime;
+    	} else if(syncDeathTime != getPersistentInteger("deathTime")) {
+    		deathTime = getPersistentInteger("deathTime");
+    		syncDeathTime = deathTime;
+    	}
+    	if(syncMaxHurtResistantTime != maxHurtResistantTime) {
+    		variableInteger.put("maxHurtResistantTime", maxHurtResistantTime);
+    		syncMaxHurtResistantTime = maxHurtResistantTime;
+    	} else if(syncMaxHurtResistantTime != getInteger("maxHurtResistantTime")) {
+    		maxHurtResistantTime = getInteger("maxHurtResistantTime");
+    		syncMaxHurtResistantTime = maxHurtResistantTime;
+    	}
+    	if(syncEntityAge != entityAge) {
+    		variableInteger.put("entityAge", entityAge);
+    		syncEntityAge = entityAge;
+    	} else if(syncEntityAge != getInteger("entityAge")) {
+    		entityAge = getInteger("entityAge");
+    		syncEntityAge = entityAge;
+    	}
+    }
+    
+    private float syncLastDamage;
+    private int  syncAttackTime, syncRecentlyHit, syncScoreValue, syncLastAttackerTime, syncExperienceValue, syncNumTicksToChaseTarget;
+    private EntityPlayer syncAttackingPlayer;
+    private EntityLivingBase syncLastAttacker, syncAttackTarget;
+    
+    private void syncAttack() {
+    	if(syncAttackTime != attackTime) {
+    		persistentInteger.put("attackTime", attackTime);
+    		syncAttackTime = attackTime;
+    	} else if(syncAttackTime != getPersistentInteger("attackTime")) {
+    		attackTime = getPersistentInteger("attackTime");
+    		syncAttackTime = attackTime;
+    	}
+    	if(syncAttackingPlayer != attackingPlayer) {
+    		variableInteger.put("attackingPlayerID", attackingPlayer.getEntityId());
+    		syncAttackingPlayer = attackingPlayer;
+    	} else if(syncAttackingPlayer != worldObj.getEntityByID(getInteger("attackingPlayer"))) {
+    		attackingPlayer = (EntityPlayer) worldObj.getEntityByID(getInteger("attackingPlayer"));
+    		syncAttackingPlayer = attackingPlayer;
+    	}
+       	if(syncRecentlyHit != recentlyHit) {
+       		variableInteger.put("recentlyHit", recentlyHit);
+    		syncRecentlyHit = recentlyHit;
+    	} else if(syncRecentlyHit != getInteger("recentlyHit")) {
+    		recentlyHit = getInteger("recentlyHit");
+    		syncRecentlyHit = recentlyHit;
+    	}
+       	if(syncScoreValue != scoreValue) {
+       		variableInteger.put("scoreValue", scoreValue);
+    		syncScoreValue = scoreValue;
+    	} else if(syncScoreValue != getInteger("scoreValue")) {
+    		scoreValue = getInteger("scoreValue");
+    		syncScoreValue = scoreValue;
+    	}
+     	if(syncLastDamage != lastDamage) {
+       		variableFloat.put("lastDamage", lastDamage);
+    		syncLastDamage = lastDamage;
+    	} else if(syncLastDamage != getFloat("lastDamage")) {
+    		lastDamage = getFloat("lastDamage");
+    		syncLastDamage = lastDamage;
+    	}
+    	if(syncLastAttacker != getLastAttacker()) {
+    		variableInteger.put("lastAttacker", getLastAttacker().getEntityId());
+    		syncLastAttacker = getLastAttacker();
+    	} else if(syncLastAttacker != worldObj.getEntityByID(getInteger("lastAttacker"))) {
+    		setLastAttacker((EntityLivingBase) worldObj.getEntityByID(getInteger("lastAttacker")));
+    		syncLastAttacker = getLastAttacker();
+    	}
+       	if(syncLastAttackerTime != getLastAttackerTime()) {
+       		variableInteger.put("lastAttackerTime", getLastAttackerTime());
+    		syncLastAttackerTime = getLastAttackerTime();
+    	} else if(syncLastAttackerTime != getInteger("lastAttackerTime")) {
+    		setLastAttackerTime(getInteger("lastAttackerTime"));
+    		syncLastAttackerTime = getLastAttackerTime();
+    	}
+       	if(syncExperienceValue != experienceValue) {
+       		variableInteger.put("experienceValue", experienceValue);
+    		syncExperienceValue = experienceValue;
+    	} else if(syncExperienceValue != getInteger("experienceValue")) {
+    		experienceValue = getInteger("experienceValue");
+    		syncExperienceValue = experienceValue;
+    	}
+    	if(syncAttackTarget != getAttackTarget()) {
+    		variableInteger.put("attackTarget", getAttackTarget().getEntityId());
+    		syncAttackTarget = getAttackTarget();
+    	} else if(syncAttackTarget != worldObj.getEntityByID(getInteger("attackTarget"))) {
+    		setAttackTarget((EntityLiving) worldObj.getEntityByID(getInteger("attackTarget")));
+    		syncAttackTarget = getAttackTarget();
+    	}
+       	if(syncAttackTime != attackTime) {
+    		persistentInteger.put("attackTime", attackTime);
+    		syncAttackTime = attackTime;
+    	} else if(syncAttackTime != getPersistentInteger("attackTime")) {
+    		attackTime = getPersistentInteger("attackTime");
+    		syncAttackTime = attackTime;
+    	}
+    }
+    
+    private int syncLivingSoundTime;
+    
+    private void syncSound() {
+       	if(syncNumTicksToChaseTarget != numTicksToChaseTarget) {
+       		variableInteger.put("numTicksToChaseTarget", numTicksToChaseTarget);
+       		syncNumTicksToChaseTarget = numTicksToChaseTarget;
+    	} else if(syncNumTicksToChaseTarget != getInteger("numTicksToChaseTarget")) {
+    		numTicksToChaseTarget = getInteger("numTicksToChaseTarget");
+    		syncNumTicksToChaseTarget = numTicksToChaseTarget;
+    	}
     }
     
     
@@ -779,7 +1255,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
             fire = onFire.getInt(this);
             onFire.setAccessible(false);
         } catch (Exception e) {
-            e.printStackTrace();;
+            e.printStackTrace();
         }
         return fire;
     }
@@ -791,7 +1267,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
             onFire.setInt(this, fire);
             onFire.setAccessible(false);
         } catch (Exception e) {
-            e.printStackTrace();;
+            e.printStackTrace();
         }
     }
     
@@ -803,7 +1279,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
             var = field.getDouble(this);
             field.setAccessible(false);
         } catch (Exception e) {
-            e.printStackTrace();;
+            e.printStackTrace();
         }
         return var;
     }
@@ -816,7 +1292,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
             var = field.getDouble(this);
             field.setAccessible(false);
         } catch (Exception e) {
-            e.printStackTrace();;
+            e.printStackTrace();
         }
         return var;
     }
@@ -828,7 +1304,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
             field.setDouble(this, value);
             field.setAccessible(false);
         } catch (Exception e) {
-            e.printStackTrace();;
+            e.printStackTrace();
         }
     }
     
@@ -839,10 +1315,78 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
             field.setDouble(this, value);
             field.setAccessible(false);
         } catch (Exception e) {
-            e.printStackTrace();;
+            e.printStackTrace();
         }
     }
-//    
+    
+    private void setInvulnerable(boolean value) {
+        try {
+            Field field = ReflectionHelper.findField(Entity.class, new String[] {"invulnerable", "field_83001_bt"});
+            field.setAccessible(true);
+            field.setBoolean(this, value);
+            field.setAccessible(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void setLastAttackerTime(int value) {
+        try {
+            Field field = ReflectionHelper.findField(Entity.class, new String[] {"lastAttackerTime", "field_142016_bo"});
+            field.setAccessible(true);
+            field.setInt(this, value);
+            field.setAccessible(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private float getLandMovementFactor() {
+        int value = 0;
+        try {
+            Field field = ReflectionHelper.findField(Entity.class, new String[] {"landMovementFactor", "field_70746_aG"});
+            field.setAccessible(true);
+            value = field.getInt(this);
+            field.setAccessible(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return value;
+    }
+    
+    private void setPersistenceRequired(boolean value) {
+        try {
+            Field field = ReflectionHelper.findField(Entity.class, new String[] {"persistenceRequired", "field_82179_bU"});
+            field.setAccessible(true);
+            field.setBoolean(this, value);
+            field.setAccessible(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void setIsLeashed(boolean value) {
+        try {
+            Field field = ReflectionHelper.findField(Entity.class, new String[] {"isLeashed", "field_110169_bv"});
+            field.setAccessible(true);
+            field.setBoolean(this, value);
+            field.setAccessible(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void setLeashedToEntity(Entity value) {
+        try {
+            Field field = ReflectionHelper.findField(Entity.class, new String[] {"leashedToEntity", "field_110168_bw"});
+            field.setAccessible(true);
+            field.set(this, value);
+            field.setAccessible(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
 //    @Override
 //    public void setAge(int age) {
 //        entityAge = age;

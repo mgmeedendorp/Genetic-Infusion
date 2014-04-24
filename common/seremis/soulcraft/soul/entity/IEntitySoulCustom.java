@@ -1,11 +1,23 @@
 package seremis.soulcraft.soul.entity;
 
-import seremis.soulcraft.soul.Soul;
+import java.util.HashMap;
+
+import net.minecraft.entity.DataWatcher;
+import net.minecraft.entity.ai.EntityAITasks;
+import net.minecraft.entity.ai.EntityJumpHelper;
+import net.minecraft.entity.ai.EntityLookHelper;
+import net.minecraft.entity.ai.EntityMoveHelper;
+import net.minecraft.entity.ai.EntitySenses;
+import net.minecraft.entity.ai.attributes.BaseAttributeMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.CombatTracker;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import seremis.soulcraft.soul.Soul;
 
 public interface IEntitySoulCustom {
 
@@ -16,6 +28,25 @@ public interface IEntitySoulCustom {
     AxisAlignedBB getBoundingBox();
     
     int getEntityId();
+    
+    BaseAttributeMap getAttributeMap();
+    
+    CombatTracker getCombatTracker();
+    
+    HashMap<Integer, PotionEffect> getActivePotionsMap();
+    
+    DataWatcher getDataWatcher();
+    
+    EntityLookHelper getLookHelper();
+    EntityMoveHelper getMoveHelper();
+    EntityJumpHelper getJumpHelper();
+    PathNavigate getNavigator();
+    EntitySenses getEntitySenses();
+    
+    EntityAITasks getTasks();
+    EntityAITasks getTargetTasks();
+    
+    NBTTagCompound getLeashedCompound();
     
     /*
      * Use these methods to set and get a persistent variable. This variable will save and load with NBT.
