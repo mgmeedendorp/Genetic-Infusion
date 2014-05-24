@@ -2,24 +2,26 @@ package seremis.soulcraft.soul.traits;
 
 import java.util.Random;
 
-import seremis.soulcraft.core.proxy.CommonProxy;
-import seremis.soulcraft.soul.EnumChromosome;
-import seremis.soulcraft.soul.SoulHandler;
-import seremis.soulcraft.soul.allele.AlleleBoolean;
-import seremis.soulcraft.soul.entity.IEntitySoulCustom;
-import seremis.soulcraft.soul.util.UtilSoulEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
+import seremis.soulcraft.api.soul.GeneRegistry;
+import seremis.soulcraft.api.soul.IEntitySoulCustom;
+import seremis.soulcraft.api.soul.TraitDependencies;
+import seremis.soulcraft.api.soul.lib.Genes;
+import seremis.soulcraft.api.soul.util.UtilSoulEntity;
+import seremis.soulcraft.core.proxy.CommonProxy;
+import seremis.soulcraft.soul.Trait;
+import seremis.soulcraft.soul.allele.AlleleBoolean;
 
 public class TraitFire extends Trait {
 
     @Override
     public void onUpdate(IEntitySoulCustom entity) {
-        boolean burnsInDayLight = ((AlleleBoolean) SoulHandler.getSoulFrom(entity).getChromosomes()[EnumChromosome.BURNS_IN_DAYLIGHT.ordinal()].getActive()).value;
-        boolean isImmuneToFire = ((AlleleBoolean) SoulHandler.getSoulFrom(entity).getChromosomes()[EnumChromosome.IMMUNE_TO_FIRE.ordinal()].getActive()).value;
+        boolean burnsInDayLight = ((AlleleBoolean) GeneRegistry.getActiveFor(entity, Genes.GENE_BURNS_IN_DAYLIGHT)).value;
+        boolean isImmuneToFire = ((AlleleBoolean) GeneRegistry.getActiveFor(entity, Genes.GENE_IMMUNE_TO_FIRE)).value;
 
         double posX = entity.getPersistentDouble("posX");
         double posY = entity.getPersistentDouble("posY");
@@ -60,18 +62,17 @@ public class TraitFire extends Trait {
                 if(fireTicks % 20 == 0) {
                     entity.attackEntityFrom(DamageSource.onFire, 1.0F);
                 }
-                if(UtilSoulEntity.handleLavaMovement(entity) && fireTicks % 20 == 0) {
-                    entity.setPersistentVariable("fire", (int)(15*20));
-                    entity.attackEntityFrom(DamageSource.lava, 4.0F);
-                }
                 entity.setPersistentVariable("fire", (int)(fireTicks - 1));
                 entity.setFlag(0, fireTicks > 0);
             }
         } else if(fireTicks <= 0) {
         	entity.setFlag(0, false);
         }
-        if(CommonProxy.proxy.isServerWorld(entity.getWorld()))
-        	System.out.println(entity.getPersistentInteger("fire"));
+        
+        if(UtilSoulEntity.handleLavaMovement(entity) && fireTicks % 20 == 0) {
+            entity.setPersistentVariable("fire", (int)(15*20));
+            entity.attackEntityFrom(DamageSource.lava, 4.0F);
+        }
     }
     
     public float getBrightness(IEntitySoulCustom entity) {

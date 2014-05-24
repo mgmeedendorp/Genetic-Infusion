@@ -1,6 +1,6 @@
 package seremis.soulcraft.soul.allele;
 
-import seremis.soulcraft.soul.IAllele;
+import seremis.soulcraft.api.soul.IAllele;
 
 public enum EnumAlleleType {
 

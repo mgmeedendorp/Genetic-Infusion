@@ -1,15 +1,16 @@
 package seremis.soulcraft.item;
 
-import seremis.soulcraft.api.magnet.tile.IMagnetConnector;
-import seremis.soulcraft.core.lib.Items;
-import seremis.soulcraft.core.proxy.CommonProxy;
-import seremis.soulcraft.soul.SoulTemplates;
-import seremis.soulcraft.soul.entity.EntitySoulCustom;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
+import seremis.soulcraft.api.magnet.tile.IMagnetConnector;
+import seremis.soulcraft.api.soul.GeneRegistry;
+import seremis.soulcraft.core.lib.Items;
+import seremis.soulcraft.core.proxy.CommonProxy;
+import seremis.soulcraft.soul.entity.EntitySoulCustom;
 
 public class ItemThermometer extends SCItem {
 
@@ -37,7 +38,7 @@ public class ItemThermometer extends SCItem {
                 player.addChatComponentMessage(new ChatComponentText("Heat: " + ((IMagnetConnector) tile).getHeat()));
             }
             if(stack.getItemDamage() == 1) {
-                EntitySoulCustom entity = new EntitySoulCustom(world, SoulTemplates.getZombieSoul(), x+0.5, y, z+0.5F);
+                EntitySoulCustom entity = new EntitySoulCustom(world,GeneRegistry.getSoulFor(new EntityZombie(world)), x+0.5F, y+1F, z+0.5F);
                 world.spawnEntityInWorld(entity);
             }
         }

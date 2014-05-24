@@ -1,5 +1,7 @@
 package seremis.soulcraft.soul;
 
+import seremis.soulcraft.api.soul.IAllele;
+import seremis.soulcraft.api.soul.IChromosome;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
@@ -69,5 +71,10 @@ public class Chromosome implements IChromosome {
         
         allele1 = Allele.readAlleleFromNBT(list.getCompoundTagAt(0));
         allele2 = Allele.readAlleleFromNBT(list.getCompoundTagAt(1));
+    }
+    
+    @Override
+    public String toString() {
+    	return "Chromosome:[allele1: " + allele1 + ", allele2: " + allele2 + "]";
     }
 }

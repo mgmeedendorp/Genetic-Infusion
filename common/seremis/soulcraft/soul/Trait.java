@@ -1,12 +1,13 @@
-package seremis.soulcraft.soul.traits;
+package seremis.soulcraft.soul;
 
-import seremis.soulcraft.soul.entity.IEntitySoulCustom;
+import seremis.soulcraft.api.soul.IEntitySoulCustom;
+import seremis.soulcraft.api.soul.ITrait;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 
-public class Trait {
+public class Trait implements ITrait {
     
     public void onInit(IEntitySoulCustom entity){}
     

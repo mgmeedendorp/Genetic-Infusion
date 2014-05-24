@@ -1,4 +1,4 @@
-package seremis.soulcraft.soul;
+package seremis.soulcraft.api.soul;
 
 import seremis.soulcraft.util.INBTTagable;
 

@@ -28,9 +28,12 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.Constants;
+import seremis.soulcraft.api.soul.IEntitySoulCustom;
+import seremis.soulcraft.api.soul.TraitHandler;
 import seremis.soulcraft.entity.SCEntityLiving;
+import seremis.soulcraft.item.ModItems;
 import seremis.soulcraft.soul.Soul;
-import seremis.soulcraft.soul.traits.TraitHandler;
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 
@@ -47,8 +50,6 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
         setPosition(x, y, z);
         setSize(0.8F, 1.7F);
         this.soul = soul;
-        syncVariables();
-        TraitHandler.entityInit(this);
     }
 
     @Override
@@ -104,7 +105,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     
     @Override
     public BaseAttributeMap getAttributeMap() {
-    	return getAttributeMap();
+    	return super.getAttributeMap();
     }
     
     @Override
@@ -848,17 +849,17 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     private boolean syncIsLeashed;
     
     private void syncRiding() {
-    	if(syncRiddenByEntity != riddenByEntity) {
+    	if(syncRiddenByEntity != riddenByEntity && riddenByEntity != null) {
     		variableInteger.put("riddenByEntityID", riddenByEntity.getEntityId());
     		syncRiddenByEntity = riddenByEntity;
-    	} else if(syncRiddenByEntity != worldObj.getEntityByID(getInteger("riddenByEntityID"))) {
+    	} else if(syncRiddenByEntity != worldObj.getEntityByID(getInteger("riddenByEntityID")) && getInteger("riddenByEntityID") != 0) {
     		riddenByEntity = worldObj.getEntityByID(getInteger("riddenByEntityID"));
     		syncRiddenByEntity = riddenByEntity;
     	}
-    	if(syncRidingEntity != ridingEntity) {
+    	if(syncRidingEntity != ridingEntity && ridingEntity != null) {
     		persistentInteger.put("ridingEntityID", ridingEntity.getEntityId());
     		syncRidingEntity = ridingEntity;
-    	} else if(syncRidingEntity != worldObj.getEntityByID(getPersistentInteger("ridingEntityID"))) {
+    	} else if(syncRidingEntity != worldObj.getEntityByID(getPersistentInteger("ridingEntityID")) && getPersistentInteger("ridingEntityID") != 0) {
     		ridingEntity = worldObj.getEntityByID(getPersistentInteger("ridingEntityID"));
     		syncRidingEntity = ridingEntity;
     	}
@@ -1005,7 +1006,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     	if(syncAttackingPlayer != attackingPlayer) {
     		variableInteger.put("attackingPlayerID", attackingPlayer.getEntityId());
     		syncAttackingPlayer = attackingPlayer;
-    	} else if(syncAttackingPlayer != worldObj.getEntityByID(getInteger("attackingPlayer"))) {
+    	} else if(syncAttackingPlayer != worldObj.getEntityByID(getInteger("attackingPlayer")) && getInteger("attackingPlayer") != 0) {
     		attackingPlayer = (EntityPlayer) worldObj.getEntityByID(getInteger("attackingPlayer"));
     		syncAttackingPlayer = attackingPlayer;
     	}
@@ -1255,20 +1256,13 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
             fire = onFire.getInt(this);
             onFire.setAccessible(false);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return fire;
     }
  
     public void setFireTicks(int fire) {
-        try {
-            Field onFire = ReflectionHelper.findField(Entity.class, new String[] {"fire", "field_70151_c"});
-            onFire.setAccessible(true);
-            onFire.setInt(this, fire);
-            onFire.setAccessible(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    	ObfuscationReflectionHelper.setPrivateValue(Entity.class, this, fire, "fire", "field_70151_c");
     }
     
     private double getEntityRiderPitchDelta() {
@@ -1279,7 +1273,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
             var = field.getDouble(this);
             field.setAccessible(false);
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return var;
     }
@@ -1292,7 +1286,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
             var = field.getDouble(this);
             field.setAccessible(false);
         } catch (Exception e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         }
         return var;
     }
@@ -1304,7 +1298,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
             field.setDouble(this, value);
             field.setAccessible(false);
         } catch (Exception e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         }
     }
     
@@ -1315,7 +1309,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
             field.setDouble(this, value);
             field.setAccessible(false);
         } catch (Exception e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         }
     }
     
@@ -1326,7 +1320,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
             field.setBoolean(this, value);
             field.setAccessible(false);
         } catch (Exception e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         }
     }
     
@@ -1337,7 +1331,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
             field.setInt(this, value);
             field.setAccessible(false);
         } catch (Exception e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         }
     }
     
@@ -1349,7 +1343,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
             value = field.getInt(this);
             field.setAccessible(false);
         } catch (Exception e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         }
         return value;
     }
@@ -1361,7 +1355,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
             field.setBoolean(this, value);
             field.setAccessible(false);
         } catch (Exception e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         }
     }
     
@@ -1372,7 +1366,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
             field.setBoolean(this, value);
             field.setAccessible(false);
         } catch (Exception e) {
-            e.printStackTrace();
+           //e.printStackTrace();
         }
     }
     
@@ -1383,7 +1377,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
             field.set(this, value);
             field.setAccessible(false);
         } catch (Exception e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         }
     }
     
@@ -1764,6 +1758,9 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     //Entity stuff//    
     @Override
     public boolean interact(EntityPlayer player) {
+    	if(player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().isItemEqual(new ItemStack(ModItems.thermometer, 1, 1)))
+    		isDead = true;
+    	
         TraitHandler.entityRightClicked(this, player);
         return true;
     }
@@ -1774,23 +1771,19 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     @Override
     public void onEntityUpdate(){}
     
+    private boolean firstTick = true;
+    
     @Override
     public void onUpdate() {
     	syncVariables();
         if(ForgeHooks.onLivingUpdate(this))return;
         
-        TraitHandler.entityUpdate(this);
-        
-        //Mojang, why u make things so hard?
-        
-        try {
-            Field up = ReflectionHelper.findField(Entity.class, new String[] {"firstUpdate", "field_70151_c"});
-            up.setAccessible(true);
-            up.setBoolean(this, false);
-            up.setAccessible(false);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(firstTick) {
+        	TraitHandler.entityInit(this);
+            ObfuscationReflectionHelper.setPrivateValue(Entity.class, this, false, "firstUpdate", "field_70151_c");
         }
+        
+        TraitHandler.entityUpdate(this);
     }
     
     @Override
@@ -1936,7 +1929,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
         super.writeToNBT(compound);
         soul.writeToNBT(compound);
         
-        //if(persistentBoolean != null) {
+        if(persistentBoolean != null) {
 	        NBTTagList tagList = new NBTTagList();
 	        
 	        List<String> stringList = new ArrayList<String>();
@@ -2044,7 +2037,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
 	        }
 	        
 	        compound.setTag("traitVariables", tagList);
-        //}
+        }
     }
     
     private HashMap<String, Boolean> persistentBoolean = new HashMap<String, Boolean>(), variableBoolean = new HashMap<String, Boolean>(); 

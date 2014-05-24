@@ -10,6 +10,7 @@ import net.minecraftforge.common.config.Configuration;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 
+import seremis.soulcraft.api.soul.TraitRegistry;
 import seremis.soulcraft.block.ModBlocks;
 import seremis.soulcraft.core.SCConfig;
 import seremis.soulcraft.core.SCCreativeTab;
@@ -73,7 +74,6 @@ public class SoulCraft {
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
         RecipeHelper.initRecipes();
         RecipeHelper.initSmelting();
-        LanguageRegistry.instance().addStringLocalization("itemGroup.SoulCraft", "en_US", "SoulCraft");
         MinecraftForge.EVENT_BUS.register(new EventHandlerSC());
         ModSouls.init();
         packetPipeline.initialise();
@@ -82,6 +82,7 @@ public class SoulCraft {
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         packetPipeline.postInitialise();
+        TraitRegistry.orderTraits();
         logger.log(Level.INFO, DefaultProps.name + " is loaded successfully.");
     }
 }

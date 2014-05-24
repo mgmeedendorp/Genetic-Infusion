@@ -1,4 +1,4 @@
-package seremis.soulcraft.soul.entity;
+package seremis.soulcraft.api.soul;
 
 import java.util.HashMap;
 

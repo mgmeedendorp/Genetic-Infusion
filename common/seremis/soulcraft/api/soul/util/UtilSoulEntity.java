@@ -1,13 +1,13 @@
-package seremis.soulcraft.soul.util;
+package seremis.soulcraft.api.soul.util;
 
-import seremis.soulcraft.soul.entity.IEntitySoulCustom;
+import seremis.soulcraft.api.soul.IEntitySoulCustom;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 
 public class UtilSoulEntity {
 
     public static void extinguish(IEntitySoulCustom entity) {
-        entity.setPersistentVariable("fireTicks", 0);
+        entity.setPersistentVariable("fire", 0);
     }
     
     public static ItemStack getCurrentItemOrArmor(IEntitySoulCustom entity, int slot) {

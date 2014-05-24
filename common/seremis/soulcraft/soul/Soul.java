@@ -1,5 +1,7 @@
 package seremis.soulcraft.soul;
 
+import seremis.soulcraft.api.soul.IChromosome;
+import seremis.soulcraft.api.soul.ISoul;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;

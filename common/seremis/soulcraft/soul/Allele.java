@@ -2,6 +2,7 @@ package seremis.soulcraft.soul;
 
 import java.lang.reflect.Constructor;
 
+import seremis.soulcraft.api.soul.IAllele;
 import seremis.soulcraft.soul.allele.EnumAlleleType;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -49,5 +50,10 @@ public class Allele implements IAllele {
         }
         
         return null;
+    }
+    
+    @Override
+    public String toString() {
+    	return "Allele[type: " + type + ", isDominant: " + isDominant + "]";
     }
 }
