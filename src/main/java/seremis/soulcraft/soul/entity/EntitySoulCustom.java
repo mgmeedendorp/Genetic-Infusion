@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.Entity;
@@ -50,6 +51,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
         setPosition(x, y, z);
         setSize(0.8F, 1.7F);
         this.soul = soul;
+        moveEntity(1, 0, 0);
     }
 
     @Override
@@ -479,7 +481,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     
     private float syncAttackedAtYaw;
     private int syncFire, syncFireResistance;
-    private boolean syncInWater, syncOnGround, syncIsInWeb, syncIsDead, syncIsAirBorne, syncPreventEntitySpawning, syncForceSpawn, syncNoClip, syncInvulnerable, syncIsJumping;
+    public boolean syncInWater, syncOnGround, syncIsInWeb, syncIsDead, syncIsAirBorne, syncPreventEntitySpawning, syncForceSpawn, syncNoClip, syncInvulnerable, syncIsJumping;
     
     private void syncEnvironment() {
     	if(syncFire != getFire()) {
@@ -617,7 +619,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     }
     
     private int syncDimension, syncPortalCounter, syncTimeUntilPortal, syncTeleportDirection;
-    private boolean inPortal;
+    private boolean syncInPortal;
     
     private void syncDimension() {
     	if(syncDimension != dimension) {
@@ -647,6 +649,13 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     	} else if(syncTeleportDirection != getInteger("teleportDirection")) {
     		teleportDirection = getInteger("teleportDirection");
     		syncTeleportDirection = teleportDirection;
+    	}
+    	if(syncInPortal != inPortal) {
+    		variableBoolean.put("inPortal", inPortal);
+    		syncInPortal = inPortal;
+    	} else if(syncInPortal != getBoolean("inPortal")) {
+    		inPortal = getBoolean("inPortal");
+    		syncInPortal = inPortal;
     	}
     }
     
@@ -692,6 +701,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     }
     
     private float syncDistanceWalkedModified, syncPrevDistanceWalkedModified, syncDistanceWalkedOnStepModified, syncFallDistance;
+    private boolean syncSprinting;
     
     private void syncWalking() {
     	if(syncDistanceWalkedModified != distanceWalkedModified) {
@@ -719,8 +729,15 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     		persistentFloat.put("fallDistance", fallDistance);
     		syncFallDistance = fallDistance;
     	} else if(syncFallDistance != getPersistentFloat("fallDistance")) {
-    		distanceWalkedOnStepModified = getPersistentFloat("fallDistance");
+    		fallDistance = getPersistentFloat("fallDistance");
     		syncFallDistance = fallDistance;
+    	}
+    	if(syncSprinting != isSprinting()) {
+    		variableBoolean.put("isSprinting", isSprinting());
+    		syncSprinting = isSprinting();
+    	} else if(syncSprinting != getBoolean("isSprinting")) {
+    		setFlag(3, getBoolean("isSprinting"));
+    		syncSprinting = isSprinting();
     	}
     }
     
@@ -942,7 +959,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     	}
     }
     
-    private float syncPrevHealth;
+    private float syncPrevHealth, syncHealth;
     private int syncHurtTime, syncMaxHurtTime, syncDeathTime, syncMaxHurtResistantTime, syncEntityAge;
     
     private void syncHealth() {
@@ -952,6 +969,13 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     	} else if(syncPrevHealth != getFloat("prevHealth")) {
     		prevHealth = getFloat("prevHealth");
     		syncPrevHealth = prevHealth;
+    	}
+    	if(syncHealth != getHealth()) {
+    		persistentFloat.put("health", getHealth());
+    		syncHealth = getHealth();
+    	} else if(syncHealth != getPersistentFloat("health")) {
+    		setHealth(getFloat("health"));
+    		syncHealth = getHealth();
     	}
     	if(syncHurtTime != hurtTime) {
     		persistentInteger.put("hurtTime", hurtTime);
@@ -1080,175 +1104,8 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     	}
     }
     
-    
-//    @Override
-//    public void setPosition(double x, double y, double z) {
-//        setPersistentVariable("posX", x);
-//        setPersistentVariable("posY", y);
-//        setPersistentVariable("posZ", z);
-//
-//        float width = getPersistentFloat("width");
-//        float height = getPersistentFloat("height");
-//        
-//        float yOffset = getPersistentFloat("yOffset");
-//        float ySize = getPersistentFloat("ySize");
-//        
-//        float f = width / 2.0F;
-//        float f1 = height;
-//        boundingBox.setBounds(x - f, y - yOffset + ySize, z - f, x + f, y - yOffset + ySize + f1, z + f);
-//    }
-//    
-//    @Override
-//    protected void setRotation(float yaw, float pitch) {
-//        setPersistentVariable("rotationYaw", yaw % 360.0F);
-//        setPersistentVariable("rotationPitch", pitch % 360.0F);
-//    }
-//    
-//    @Override
-//    public void setFire(int fireSec) {
-//        int fireTicks = fireSec * 20;
-//        fireTicks = EnchantmentProtection.getFireTimeForEntity(this, fireTicks);
-//         
-//        int fire = getPersistentInteger("fireTicks");
-//        
-//        if (fire < fireTicks) {
-//             setPersistentVariable("fireTicks", fireTicks);
-//        }
-//    }
-
-    //Modularity stuff//    
-//    @Override
-//    public double getPosX() {
-//        return posX;
-//    }
-//    
-//    @Override
-//    public double getPosY() {
-//        return posY;
-//    }
-//    
-//    @Override
-//    public double getPosZ() {
-//        return posZ;
-//    }
-//    
-//
-//    @Override
-//    public double getMotionX() {
-//        return motionX;
-//    }
-//
-//    @Override
-//    public double getMotionY() {
-//        return motionY;
-//    }
-//
-//    @Override
-//    public double getMotionZ() {
-//        return motionZ;
-//    }
-//    
-//    @Override
-//    public void setMotion(double x, double y, double z) {
-//        motionX = x;
-//        motionY = y;
-//        motionZ = z;
-//    }
-//    
-//    @Override
-//    public float getRotationYaw() {
-//        return rotationYaw;
-//    }
-//    
-//    @Override
-//    public void setRotationYaw(float yaw) {
-//        rotationYaw = yaw;
-//    }
-//    
-//    @Override
-//    public float getRotationPitch() {
-//        return rotationPitch;
-//    }
-//    
-//    @Override
-//    public void setRotationPitch(float pitch) {
-//        rotationPitch = pitch;
-//    }
-//    
-
-//    
-//    @Override
-//    public float getBrightness() {
-//        return getBrightness(1.0F);
-//    }
-//    
-//    @Override
-//    public ItemStack getCurrentItemOrArmor(int slot) {
-//        return super.getCurrentItemOrArmor(slot);
-//    }
-//    
-//    @Override
-//    public void setArmor(int slot, ItemStack stack) {
-//        this.setCurrentItemOrArmor(slot+1, stack);
-//    }
-//    
-//    @Override
-//    public ItemStack getHeldItem() {
-//        return getCurrentItemOrArmor(0);
-//    }
-//    
-//    @Override
-//    public void setHeldItem(ItemStack stack) {
-//        setCurrentItemOrArmor(0, stack);
-//    }
-//    
-//    @Override
-//    public boolean getCanPickUpItems() {
-//        return canPickUpLoot();
-//    }
-//    
-//    @Override
-//    public void setCanPickUpItems(boolean canPickUp) {
-//        setCanPickUpLoot(canPickUp);
-//    }
-//    
-//    @Override
-//    public void dropItems(ItemStack stack) {
-//        this.entityDropItem(stack, getEyeHeight());
-//    }
-//
-//    @Override
-//    public boolean getIsChild() {
-//        return isChild();
-//    }
-//    
-//    @Override
-//    public String getLivingSound() {
-//        return "sound.living";
-//    }
-//    
-//    @Override
-//    public String getHurtSound() {
-//        return "sound.hurt";
-//    }
-//    
-//    @Override
-//    public String getDeathSound() {
-//        return "sound.death";
-//    }
-//    
-//    @Override
-//    public EntityAITasks getTasks() {
-//        return tasks;
-//    }
-//
-//    @Override
-//    public EntityAITasks getTargetTasks() {
-//        return targetTasks;
-//    }
-//    
- 
-    public int getFire() {
+    //Change private variables//
+    private int getFire() {
         int fire = 0;
         try {
             Field onFire = ReflectionHelper.findField(Entity.class, new String[] {"fire", "field_70151_c"});
@@ -1261,7 +1118,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
         return fire;
     }
  
-    public void setFireTicks(int fire) {
+    private void setFireTicks(int fire) {
     	ObfuscationReflectionHelper.setPrivateValue(Entity.class, this, fire, "fire", "field_70151_c");
     }
     
@@ -1380,380 +1237,6 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
            // e.printStackTrace();
         }
     }
-    
-//    @Override
-//    public void setAge(int age) {
-//        entityAge = age;
-//    }
-//    
-//    @Override
-//    public float getLimbSwingAmount() {
-//        return limbSwingAmount;
-//    }
-//    
-//    @Override
-//    public void setLimbSwingAmount(float amount) {
-//        limbSwingAmount = amount;
-//    }
-//    
-//    @Override
-//    public float getPrevHealth() {
-//        return prevHealth;
-//    }
-//
-//    @Override
-//    public void setPrevHealth(float lastHealth) {
-//        prevHealth = lastHealth;
-//    }
-//
-//    @Override
-//    public int getHurtTime() {
-//        return hurtTime;
-//    }
-//
-//    @Override
-//    public void setHurtTime(int time) {
-//        hurtTime = time;
-//    }
-//
-//    @Override
-//    public int getHurtResistantTime() {
-//        return hurtResistantTime;
-//    }
-//
-//    @Override
-//    public void setHurtResistantTime(int time) {
-//        hurtResistantTime = time;
-//    }
-//
-//    @Override
-//    public float getLastDamage() {
-//        return lastDamage;
-//    }
-//
-//    @Override
-//    public void setLastDamage(float damage) {
-//        lastDamage = damage;
-//    }
-//    
-//    @Override
-//    public EntityPlayer getRevengePlayer() {
-//        return attackingPlayer;
-//    }
-//
-//    @Override
-//    public void setRevengePlayer(EntityPlayer player) {
-//        attackingPlayer = player;
-//    }
-//
-//    @Override
-//    public int getRecentlyHit() {
-//        return recentlyHit;
-//    }
-//    
-//    @Override
-//    public void setRecentlyHit(int time) {
-//        recentlyHit = time;
-//    }
-//
-//    @Override
-//    public void setAttackedAtYaw(float yaw) {
-//        attackedAtYaw = yaw;
-//    }
-//
-//    @Override
-//    public float getAttackedAtYaw() {
-//        return attackedAtYaw;
-//    }
-//
-//    @Override
-//    public void setBeenAttacked() {
-//        super.setBeenAttacked();
-//    }
-//    
-//    @Override
-//    public CombatTracker getCombatTracker() {
-//        return super.func_110142_aN();
-//    }
-//    
-//    @Override
-//    public float applyArmorCalculations(DamageSource source, float damage) {
-//        return super.applyArmorCalculations(source, damage);
-//    }
-//    
-//    @Override
-//    public float applyPotionDamageCalculations(DamageSource source, float damage) {
-//        return super.applyPotionDamageCalculations(source, damage);
-//    }
-//    
-
-//    
-//    @Override
-//    public float getSoundPitch() {
-//        return super.getSoundPitch();
-//    }
-//    
-//    @Override
-//    public void setAttackTime(int time) {
-//        attackTime = time;
-//    }
-//    
-//    @Override
-//    public int getAttackTime() {
-//        return attackTime;
-//    }
-//    
-//    @Override
-//    private EnumCreatureAttribute creatureAttribute;
-//    
-//    @Override
-//    public EnumCreatureAttribute getCreatureAttribute() {
-//        return creatureAttribute;
-//    }
-//    
-//    @Override
-//    public void setCreatureAttribute(EnumCreatureAttribute attribute) {
-//        creatureAttribute = attribute;
-//    }
-//    
-//    @Override
-//    public void collideWithNearbyEntities() {
-//        super.collideWithNearbyEntities();
-//    }
-//
-
-//    
-//    @Override
-//    public void setIsJumping(boolean jump) {
-//        this.isJumping = true;
-//    }
-//
-//    @Override
-//    public boolean getIsJumping() {
-//        return isJumping;
-//    }
-//    
-//    @Override
-//    public void setMoveStrafing(float strafe) {
-//        this.moveStrafing = strafe;        
-//    }
-//
-//    @Override
-//    public float getMoveStrafing() {
-//        return moveStrafing;
-//    }
-//
-//    @Override
-//    public float getMoveForward() {
-//        return moveForward;
-//    }
-//    
-//
-//    @Override
-//    public double getPrevPosX() {
-//        return prevPosX;
-//    }
-//
-//    @Override
-//    public double getPrevPosY() {
-//        return prevPosY;
-//    }
-//
-//    @Override
-//    public double getPrevPosZ() {
-//        return prevPosZ;
-//    }
-//
-//    @Override
-//    public void setPrevPosX(double x) {
-//        prevPosX = x;
-//    }
-//
-//    @Override
-//    public void setPrevPosY(double y) {
-//        prevPosY = y;
-//    }
-//
-//    @Override
-//    public void setPrevPosZ(double z) {
-//        prevPosZ = z;
-//    }
-//
-//    @Override
-//    public float getPrevRotationYaw() {
-//        return prevRotationYaw;
-//    }
-//
-//    @Override
-//    public float getPrevRotationPitch() {
-//        return prevRotationPitch;
-//    }
-//
-//    @Override
-//    public void setPrevRotationYaw(float yaw) {
-//        prevRotationYaw = yaw;
-//    }
-//
-//    @Override
-//    public void setPrevRotationPitch(float pitch) {
-//        prevRotationPitch = pitch;
-//    }
-//
-//    @Override
-//    public boolean getIsInPortal() {
-//        return inPortal;
-//    }
-//
-//    @Override
-//    public void setIsInPortal(boolean inPortal) {
-//        this.inPortal = inPortal;
-//    }
-//
-//    @Override
-//    public int getPortalTimer() {
-//        return portalCounter;
-//    }
-//
-//    @Override
-//    public void setPortalTimer(int time) {
-//        portalCounter = time;
-//    }
-//
-//    @Override
-//    public void setPortalCooldown(int cooldown) {
-//        timeUntilPortal = cooldown;
-//    }
-//
-//    @Override
-//    public int getPortalCooldown() {
-//        return timeUntilPortal;
-//    }
-//
-//    @Override
-//    public void setRidingEntity(Entity ridingEntity) {
-//        this.ridingEntity = ridingEntity;
-//    }
-//
-//    @Override
-//    public Entity getRidingEntity() {
-//        return ridingEntity;
-//    }
-//    
-//
-//    @Override
-//    public void setPrevDistanceWalkedModified(float prevDistanceWalkedModified) {
-//        this.prevDistanceWalkedModified = prevDistanceWalkedModified;
-//    }
-//
-//    @Override
-//    public void setDistanceWalkedModified(float distanceWalkedModified) {
-//        this.distanceWalkedModified = distanceWalkedModified;        
-//    }
-//
-//    @Override
-//    public float getPrevDistanceWalkedModified() {
-//        return prevDistanceWalkedModified;
-//    }
-//
-//    @Override
-//    public float getDistanceWalkedModified() {
-//        return distanceWalkedModified;
-//    }
-//    
-//    @Override
-//    public float getWidth() {
-//        return width;
-//    }
-//
-//    @Override
-//    public void setWidth(float width) {
-//        this.width = width;
-//    }
-//
-//    @Override
-//    public float getHeight() {
-//        return height;
-//    }
-//
-//    @Override
-//    public void setHeight(float height) {
-//        this.height = height;
-//    }
-//
-//    @Override
-//    public float getCameraPitch() {
-//        return this.cameraPitch;
-//    }
-//
-//    @Override
-//    public void setCameraPitch(float cameraPitch) {
-//        this.cameraPitch = cameraPitch;
-//    }
-//
-//    @Override
-//    public float getPrevCameraPitch() {
-//        return this.prevCameraPitch;
-//    }
-//
-//    @Override
-//    public void setPrevCameraPitch(float prevCameraPitch) {
-//        this.prevCameraPitch = prevCameraPitch;
-//    }
-//
-//    @Override
-//    public void setIsSprinting(boolean sprint) {
-//        this.setSprinting(sprint);
-//    }
-//
-//    @Override
-//    public void setFallDistance(float fallDistance) {
-//        this.fallDistance = fallDistance;
-//    }
-//
-//    @Override
-//    public float getFallDistance() {
-//        return fallDistance;
-//    }
-//
-//    @Override
-//    public void setYOffset(float yOffset) {
-//        this.yOffset = yOffset;
-//    }
-//
-//    @Override
-//    public void setRenderYawOffset(float yawOffset) {
-//        this.renderYawOffset = yawOffset;
-//    }
-//
-//    @Override
-//    public float getRenderYawOffset() {
-//        return renderYawOffset;
-//    }
-//
-//    @Override
-//    public void setPrevRenderYawOffset(float prevYawOffset) {
-//        this.prevRenderYawOffset = prevYawOffset;
-//    }
-//
-//    @Override
-//    public float getPrevRenderYawOffset() {
-//        return prevRenderYawOffset;
-//    }
-//
-//    @Override
-//    public void setPrevRotationYawHead(float yaw) {
-//        this.prevRotationYawHead = yaw;
-//    }
-//
-//    @Override
-//    public float getPrevRotationYawHead() {
-//        return prevRotationYawHead;
-//    }
-//    
-//    @Override
-//    public void updatePotionEffects() {
-//        super.updatePotionEffects();
-//    }
     
     //Entity stuff//    
     @Override
@@ -2040,13 +1523,13 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
         }
     }
     
-    private HashMap<String, Boolean> persistentBoolean = new HashMap<String, Boolean>(), variableBoolean = new HashMap<String, Boolean>(); 
-    private HashMap<String, Byte> persistentByte = new HashMap<String, Byte>(), variableByte = new HashMap<String, Byte>(); 
-    private HashMap<String, Integer> persistentInteger = new HashMap<String, Integer>(), variableInteger = new HashMap<String, Integer>(); 
-    private HashMap<String, Float> persistentFloat = new HashMap<String, Float>(), variableFloat = new HashMap<String, Float>(); 
-    private HashMap<String, Double> persistentDouble = new HashMap<String, Double>(), variableDouble = new HashMap<String, Double>(); 
-    private HashMap<String, String> persistentString = new HashMap<String, String>(), variableString = new HashMap<String, String>(); 
-    private HashMap<String, ItemStack> persistentItemStack = new HashMap<String, ItemStack>(), variableItemStack = new HashMap<String, ItemStack>();
+    private ConcurrentHashMap<String, Boolean> persistentBoolean = new ConcurrentHashMap<String, Boolean>(), variableBoolean = new ConcurrentHashMap<String, Boolean>(); 
+    private ConcurrentHashMap<String, Byte> persistentByte = new ConcurrentHashMap<String, Byte>(), variableByte = new ConcurrentHashMap<String, Byte>(); 
+    private ConcurrentHashMap<String, Integer> persistentInteger = new ConcurrentHashMap<String, Integer>(), variableInteger = new ConcurrentHashMap<String, Integer>(); 
+    private ConcurrentHashMap<String, Float> persistentFloat = new ConcurrentHashMap<String, Float>(), variableFloat = new ConcurrentHashMap<String, Float>(); 
+    private ConcurrentHashMap<String, Double> persistentDouble = new ConcurrentHashMap<String, Double>(), variableDouble = new ConcurrentHashMap<String, Double>(); 
+    private ConcurrentHashMap<String, String> persistentString = new ConcurrentHashMap<String, String>(), variableString = new ConcurrentHashMap<String, String>(); 
+    private ConcurrentHashMap<String, ItemStack> persistentItemStack = new ConcurrentHashMap<String, ItemStack>(), variableItemStack = new ConcurrentHashMap<String, ItemStack>();
     
     @Override
     public void setPersistentVariable(String name, boolean variable) {
@@ -2098,7 +1581,6 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
 
     @Override
     public void setPersistentVariable(String name, double variable) {
-    	System.out.println(persistentDouble);
     	if(!persistentDouble.isEmpty()) {
 	        for(String string : persistentDouble.keySet()) {
 	            if(string.equals(name)) {
@@ -2286,4 +1768,9 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     public ItemStack getItemStack(String name) {
         return !variableItemStack.containsKey(name) ? null : variableItemStack.get(name);
     }
+
+	@Override
+	public void forceVariableSync() {
+		this.syncVariables();
+	}
 }

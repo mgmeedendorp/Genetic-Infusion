@@ -27,6 +27,8 @@ public class TraitFire extends Trait {
         double posY = entity.getPersistentDouble("posY");
         double posZ = entity.getPersistentDouble("posZ");
         
+        float fallDistance = entity.getPersistentFloat("fallDistance");
+        
         if(burnsInDayLight && !isImmuneToFire) {
             if(CommonProxy.proxy.isServerWorld(entity.getWorld()) && entity.getWorld().isDaytime()) {
 
@@ -69,9 +71,12 @@ public class TraitFire extends Trait {
         	entity.setFlag(0, false);
         }
         
-        if(UtilSoulEntity.handleLavaMovement(entity) && fireTicks % 20 == 0) {
-            entity.setPersistentVariable("fire", (int)(15*20));
-            entity.attackEntityFrom(DamageSource.lava, 4.0F);
+        if(UtilSoulEntity.handleLavaMovement(entity)) {
+            if(!isImmuneToFire) {
+                entity.attackEntityFrom(DamageSource.lava, 4.0F);
+                entity.setPersistentVariable("fire", (int)(15*20));
+            }
+            entity.setPersistentVariable("fallDistance", fallDistance * 0.5F);
         }
     }
     

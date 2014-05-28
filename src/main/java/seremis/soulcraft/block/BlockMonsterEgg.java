@@ -28,7 +28,7 @@ public class BlockMonsterEgg extends SCBlock {
             for(int i = 0; i < inv.getSizeInventory(); i++) {
                 inv.setInventorySlotContents(i, new ItemStack(Block.getBlockFromName("tnt"), 64));
             }
-            world.setBlock(x, y, z, null);
+            world.setBlock(x, y, z, net.minecraft.init.Blocks.air);
         }
         return metadata;
     }

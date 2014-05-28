@@ -26,6 +26,7 @@ import seremis.soulcraft.soul.gene.GeneSoundVolume;
 import seremis.soulcraft.soul.gene.GeneTeleportTimeInPortal;
 import seremis.soulcraft.soul.gene.GeneWalkSound;
 import seremis.soulcraft.soul.traits.TraitFire;
+import seremis.soulcraft.soul.traits.TraitMovement;
 
 public class ModSouls {
 
@@ -53,5 +54,6 @@ public class ModSouls {
         GeneRegistry.registerGene(Genes.GENE_PORTAL_COOLDOWN, new GenePortalCooldown());
         
         TraitRegistry.registerTrait(Traits.TRAIT_FIRE, new TraitFire());
+        TraitRegistry.registerTrait(Traits.TRAIT_MOVEMENT, new TraitMovement());
     }
 }
