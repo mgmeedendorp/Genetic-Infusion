@@ -26,4 +26,5 @@ public class Genes {
 	public static final String GENE_CREATURE_ATTRIBUTE = DefaultProps.nameLower + ".gene.creatureAttribute";
 	public static final String GENE_TELEPORT_TIME_IN_PORTAL = DefaultProps.nameLower + ".gene.teleportTimeInPortal";
 	public static final String GENE_PORTAL_COOLDOWN = DefaultProps.nameLower + ".gene.portalCooldown";
+	public static final String GENE_KNOCKBACK_RESISTANCE = DefaultProps.nameLower + ".gene.'knockbackResistance";
 }

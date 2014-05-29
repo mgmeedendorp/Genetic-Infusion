@@ -14,6 +14,7 @@ import seremis.soulcraft.soul.gene.GeneHurtSound;
 import seremis.soulcraft.soul.gene.GeneImmuneToFire;
 import seremis.soulcraft.soul.gene.GeneInvulnerable;
 import seremis.soulcraft.soul.gene.GeneItemDrops;
+import seremis.soulcraft.soul.gene.GeneKnockbackResistance;
 import seremis.soulcraft.soul.gene.GeneLivingSound;
 import seremis.soulcraft.soul.gene.GeneMaxHealth;
 import seremis.soulcraft.soul.gene.GeneMaxHurtResistantTime;
@@ -52,6 +53,7 @@ public class ModSouls {
         GeneRegistry.registerGene(Genes.GENE_CREATURE_ATTRIBUTE, new GeneCreatureAttribute());
         GeneRegistry.registerGene(Genes.GENE_TELEPORT_TIME_IN_PORTAL, new GeneTeleportTimeInPortal());
         GeneRegistry.registerGene(Genes.GENE_PORTAL_COOLDOWN, new GenePortalCooldown());
+        GeneRegistry.registerGene(Genes.GENE_KNOCKBACK_RESISTANCE, new GeneKnockbackResistance());
         
         TraitRegistry.registerTrait(Traits.TRAIT_FIRE, new TraitFire());
         TraitRegistry.registerTrait(Traits.TRAIT_MOVEMENT, new TraitMovement());

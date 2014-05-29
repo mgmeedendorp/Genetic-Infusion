@@ -101,4 +101,8 @@ public interface IEntitySoulCustom {
     boolean attackEntityFrom(DamageSource source, float damage);
 
     void setFlag(int id, boolean value);
+    
+    void onDeathUpdate();
+    
+    void damageEntity(DamageSource source, float damage);
 }

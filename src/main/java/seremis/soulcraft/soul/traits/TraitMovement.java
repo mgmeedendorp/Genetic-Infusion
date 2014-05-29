@@ -5,25 +5,24 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldServer;
 import seremis.soulcraft.api.soul.GeneRegistry;
 import seremis.soulcraft.api.soul.IEntitySoulCustom;
+import seremis.soulcraft.api.soul.TraitDependencies;
 import seremis.soulcraft.api.soul.lib.Genes;
 import seremis.soulcraft.api.soul.util.UtilSoulEntity;
 import seremis.soulcraft.core.proxy.CommonProxy;
 import seremis.soulcraft.soul.Trait;
 import seremis.soulcraft.soul.allele.AlleleBoolean;
 import seremis.soulcraft.soul.allele.AlleleInteger;
-import seremis.soulcraft.soul.entity.EntitySoulCustom;
 
 public class TraitMovement extends Trait {
 
 	@Override
+	@TraitDependencies(dependencies = "first")
     public void onUpdate(IEntitySoulCustom entity) {
         boolean isImmuneToFire = ((AlleleBoolean) GeneRegistry.getActiveFor(entity, Genes.GENE_IMMUNE_TO_FIRE)).value;
         int timeInPortalUntilTeleport = ((AlleleInteger) GeneRegistry.getActiveFor(entity, Genes.GENE_TELEPORT_TIME_IN_PORTAL)).value;
@@ -92,7 +91,7 @@ public class TraitMovement extends Trait {
                                 travelDimensionId = -1;
                             }
 
-                            travelToDimension(entity, travelDimensionId);
+                            UtilSoulEntity.travelToDimension(entity, travelDimensionId);
                         }
                     }
 
@@ -156,53 +155,4 @@ public class TraitMovement extends Trait {
 //        entity.moveEntity(motionX, motionY, motionZ);
         // }
 	}
-	
-	public void travelToDimension(IEntitySoulCustom entity, int dimensionId) {
-		boolean isDead = entity.getPersistentBoolean("isDead");
-		
-        if (CommonProxy.proxy.isServerWorld(entity.getWorld()) && !isDead) {
-            entity.getWorld().theProfiler.startSection("changeDimension");
-            MinecraftServer minecraftserver = MinecraftServer.getServer();
-            int currentDimension = entity.getPersistentInteger("dimension");
-            WorldServer worldserver = minecraftserver.worldServerForDimension(currentDimension);
-            WorldServer worldserver1 = minecraftserver.worldServerForDimension(dimensionId);
-            entity.setPersistentVariable("dimension", dimensionId);
-
-            if (currentDimension == 1 && dimensionId == 1) {
-                worldserver1 = minecraftserver.worldServerForDimension(0);
-                entity.setPersistentVariable("dimension", 0);
-            }
-
-            if (entity.getWorld().getEntityByID(entity.getInteger("riddenByEntityID")) != null) {
-            	entity.getWorld().getEntityByID(entity.getInteger("riddenByEntityID")).mountEntity((Entity)null);
-            }
-
-            if (entity.getWorld().getEntityByID(entity.getPersistentInteger("ridingEntityID")) != null) {
-            	entity.getWorld().getEntityByID(entity.getEntityId()).mountEntity((Entity)null);
-            }
-            entity.getWorld().theProfiler.startSection("reposition");            
-            minecraftserver.getConfigurationManager().transferEntityToWorld((Entity) entity, currentDimension, worldserver, worldserver1);
-            entity.getWorld().theProfiler.endStartSection("reloading");
-            Entity ent = EntityList.createEntityByName(EntityList.getEntityString((Entity) entity), worldserver1);
-            
-            if (ent != null) {
-                ent.copyDataFrom((Entity) entity, true);
-
-                if (currentDimension == 1 && dimensionId == 1)
-                {
-                    ChunkCoordinates chunkcoordinates = worldserver1.getSpawnPoint();
-                    chunkcoordinates.posY = entity.getWorld().getTopSolidOrLiquidBlock(chunkcoordinates.posX, chunkcoordinates.posZ);
-                    ent.setLocationAndAngles((double)chunkcoordinates.posX, (double)chunkcoordinates.posY, (double)chunkcoordinates.posZ, ent.rotationYaw, ent.rotationPitch);
-                }
-
-                worldserver1.spawnEntityInWorld(ent);
-            }
-
-            entity.setPersistentVariable("isDead", true);
-            entity.getWorld().theProfiler.endSection();
-            worldserver.resetUpdateEntityTick();
-            worldserver1.resetUpdateEntityTick();
-            entity.getWorld().theProfiler.endSection();
-        }
-    }
 }

@@ -960,7 +960,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     }
     
     private float syncPrevHealth, syncHealth;
-    private int syncHurtTime, syncMaxHurtTime, syncDeathTime, syncMaxHurtResistantTime, syncEntityAge;
+    private int syncHurtTime, syncMaxHurtTime, syncDeathTime, syncHurtResistantTime, syncMaxHurtResistantTime, syncEntityAge;
     
     private void syncHealth() {
     	if(syncPrevHealth != prevHealth) {
@@ -974,7 +974,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     		persistentFloat.put("health", getHealth());
     		syncHealth = getHealth();
     	} else if(syncHealth != getPersistentFloat("health")) {
-    		setHealth(getFloat("health"));
+    		setHealth(getPersistentFloat("health"));
     		syncHealth = getHealth();
     	}
     	if(syncHurtTime != hurtTime) {
@@ -985,10 +985,10 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     		syncHurtTime = hurtTime;
     	}
     	if(syncMaxHurtTime != maxHurtTime) {
-    		variableInteger.put("maxMaxHurtTime", maxHurtTime);
+    		variableInteger.put("maxHurtTime", maxHurtTime);
     		syncMaxHurtTime = maxHurtTime;
-    	} else if(syncMaxHurtTime != getInteger("maxMaxHurtTime")) {
-    		maxHurtTime = getInteger("maxMaxHurtTime");
+    	} else if(syncMaxHurtTime != getInteger("maxHurtTime")) {
+    		maxHurtTime = getInteger("maxHurtTime");
     		syncMaxHurtTime = maxHurtTime;
     	}
     	if(syncDeathTime != deathTime) {
@@ -997,6 +997,13 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     	} else if(syncDeathTime != getPersistentInteger("deathTime")) {
     		deathTime = getPersistentInteger("deathTime");
     		syncDeathTime = deathTime;
+    	}
+    	if(syncHurtResistantTime != hurtResistantTime) {
+    		variableInteger.put("hurtResistantTime", hurtResistantTime);
+    		syncHurtResistantTime = hurtResistantTime;
+    	} else if(syncHurtResistantTime != getInteger("hurtResistantTime")) {
+    		hurtResistantTime = getInteger("hurtResistantTime");
+    		syncHurtResistantTime = hurtResistantTime;
     	}
     	if(syncMaxHurtResistantTime != maxHurtResistantTime) {
     		variableInteger.put("maxHurtResistantTime", maxHurtResistantTime);
@@ -1014,10 +1021,10 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     	}
     }
     
-    private float syncLastDamage;
+    private float syncLastDamage, syncAbsorptionAmount;
     private int  syncAttackTime, syncRecentlyHit, syncScoreValue, syncLastAttackerTime, syncExperienceValue, syncNumTicksToChaseTarget;
     private EntityPlayer syncAttackingPlayer;
-    private EntityLivingBase syncLastAttacker, syncAttackTarget;
+    private EntityLivingBase syncLastAttacker, syncAttackTarget, syncEntityLivingToAttack;
     
     private void syncAttack() {
     	if(syncAttackTime != attackTime) {
@@ -1030,8 +1037,8 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     	if(syncAttackingPlayer != attackingPlayer) {
     		variableInteger.put("attackingPlayerID", attackingPlayer.getEntityId());
     		syncAttackingPlayer = attackingPlayer;
-    	} else if(syncAttackingPlayer != worldObj.getEntityByID(getInteger("attackingPlayer")) && getInteger("attackingPlayer") != 0) {
-    		attackingPlayer = (EntityPlayer) worldObj.getEntityByID(getInteger("attackingPlayer"));
+    	} else if(syncAttackingPlayer != worldObj.getEntityByID(getInteger("attackingPlayerID")) && getInteger("attackingPlayerID") != 0) {
+    		attackingPlayer = (EntityPlayer) worldObj.getEntityByID(getInteger("attackingPlayerID"));
     		syncAttackingPlayer = attackingPlayer;
     	}
        	if(syncRecentlyHit != recentlyHit) {
@@ -1056,10 +1063,10 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     		syncLastDamage = lastDamage;
     	}
     	if(syncLastAttacker != getLastAttacker()) {
-    		variableInteger.put("lastAttacker", getLastAttacker().getEntityId());
+    		variableInteger.put("lastAttackerID", getLastAttacker().getEntityId());
     		syncLastAttacker = getLastAttacker();
-    	} else if(syncLastAttacker != worldObj.getEntityByID(getInteger("lastAttacker"))) {
-    		setLastAttacker((EntityLivingBase) worldObj.getEntityByID(getInteger("lastAttacker")));
+    	} else if(syncLastAttacker != worldObj.getEntityByID(getInteger("lastAttackerID")) && getInteger("lastAttackerID") != 0) {
+    		setLastAttacker((EntityLivingBase) worldObj.getEntityByID(getInteger("lastAttackerID")));
     		syncLastAttacker = getLastAttacker();
     	}
        	if(syncLastAttackerTime != getLastAttackerTime()) {
@@ -1089,6 +1096,20 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     	} else if(syncAttackTime != getPersistentInteger("attackTime")) {
     		attackTime = getPersistentInteger("attackTime");
     		syncAttackTime = attackTime;
+    	}
+    	if(syncEntityLivingToAttack != getAITarget()) {
+    		variableInteger.put("entityLivingToAttackID", getAITarget().getEntityId());
+    		syncEntityLivingToAttack = getAITarget();
+    	} else if(syncEntityLivingToAttack != worldObj.getEntityByID(getInteger("entityLivingToAttackID")) && getInteger("entityLivingToAttackID") != 0) {
+    		setRevengeTarget((EntityLivingBase) worldObj.getEntityByID(getInteger("entityLivingToAttackID")));
+    		syncEntityLivingToAttack = getAITarget();
+    	}
+     	if(syncAbsorptionAmount != getAbsorptionAmount()) {
+       		persistentFloat.put("absorptionAmount", getAbsorptionAmount());
+       		syncAbsorptionAmount = getAbsorptionAmount();
+    	} else if(syncAbsorptionAmount != getPersistentFloat("absorptionAmount")) {
+    		setAbsorptionAmount(getPersistentFloat("absorptionAmount"));
+    		syncAbsorptionAmount = getAbsorptionAmount();
     	}
     }
     

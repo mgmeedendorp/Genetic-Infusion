@@ -35,7 +35,7 @@ public class TraitFire extends Trait {
                 float brightness = getBrightness(entity);
 
                 if(brightness > 0.5F && entity.getWorld().canBlockSeeTheSky((int) Math.floor(posX), (int) Math.floor(posY), (int) Math.floor(posZ))) {
-                    ItemStack headwear = UtilSoulEntity.getCurrentItemOrArmor(entity, 4);
+                    ItemStack headwear = UtilSoulEntity.getEquipmentInSlot(entity, 4);
 
                     if(headwear != null) {
                         if(headwear.isItemStackDamageable()) {
@@ -43,7 +43,7 @@ public class TraitFire extends Trait {
                             //TODO check if this works!
                             if(headwear.getItemDamageForDisplay() >= headwear.getMaxDamage()) {
                                 breakHeadwear(entity, headwear);
-                                UtilSoulEntity.setCurrentItemOrArmor(entity, 4, null);
+                                UtilSoulEntity.setEquipmentInSlot(entity, 4, null);
                             }
                         }
                     } else {
