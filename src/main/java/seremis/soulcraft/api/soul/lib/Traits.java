@@ -6,4 +6,6 @@ public class Traits {
 
 	public static final String TRAIT_FIRE = DefaultProps.nameLower + ".trait.fire";
 	public static final String TRAIT_MOVEMENT = DefaultProps.nameLower + ".trait.movement";
+	public static final String TRAIT_ATTACKED = DefaultProps.nameLower + ".trait.attacked";
+	public static final String TRAIT_ITEM_PICKUP = DefaultProps.nameLower + ".trait.itemPickup";
 }

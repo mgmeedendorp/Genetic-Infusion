@@ -1,13 +1,14 @@
 package seremis.soulcraft.api.soul.util;
 
-import seremis.soulcraft.api.soul.IEntitySoulCustom;
-import seremis.soulcraft.core.proxy.CommonProxy;
+import java.util.Random;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.server.MinecraftServer;
@@ -15,6 +16,14 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.event.ForgeEventFactory;
+import seremis.soulcraft.api.soul.GeneRegistry;
+import seremis.soulcraft.api.soul.IEntitySoulCustom;
+import seremis.soulcraft.api.soul.lib.Genes;
+import seremis.soulcraft.core.proxy.CommonProxy;
+import seremis.soulcraft.soul.allele.AlleleBoolean;
+import cpw.mods.fml.common.eventhandler.Event.Result;
 
 public class UtilSoulEntity {
 
@@ -23,11 +32,11 @@ public class UtilSoulEntity {
     }
     
     public static ItemStack getEquipmentInSlot(IEntitySoulCustom entity, int slot) {
-        return entity.getPersistentItemStack("equipment" + slot);
+        return entity.getPersistentItemStack("equipment." + slot);
     }
     
     public static void setEquipmentInSlot(IEntitySoulCustom entity, int slot, ItemStack stack) {
-        entity.setPersistentVariable("equipment" + slot, stack);
+        entity.setPersistentVariable("equipment." + slot, stack);
     }
     
     public static boolean handleLavaMovement(IEntitySoulCustom entity) {
@@ -108,63 +117,121 @@ public class UtilSoulEntity {
         }
     }
     
-	public static float applyArmorCalculations(IEntitySoulCustom entity, DamageSource source, float damage)
-    {
-        if (!source.isUnblockable())
-        {
+	public static float applyArmorCalculations(IEntitySoulCustom entity, DamageSource source, float damage) {
+        if (!source.isUnblockable()) {
             int i = 25 - ((EntityLiving)entity).getTotalArmorValue();
             float f1 = damage * (float)i;
-            entity.damageArmor(damage);
             damage = f1 / 25.0F;
         }
         return damage;
     }
 	
 	public static float applyPotionDamageCalculations(IEntitySoulCustom entity, DamageSource source, float damage) {
-        if (source.isDamageAbsolute())
-        {
+        if (source.isDamageAbsolute()) {
             return damage;
-        }
-        else
-        {
-            if (entity instanceof EntityZombie)
-            {
-                //par2 = par2; // Forge: Noop Warning
-            }
+        } else {
 
             int i;
             int j;
             float f1;
 
-            if (((EntityLiving)entity).isPotionActive(Potion.resistance) && source != DamageSource.outOfWorld)
-            {
+            if (((EntityLiving)entity).isPotionActive(Potion.resistance) && source != DamageSource.outOfWorld) {
                 i = (((EntityLiving)entity).getActivePotionEffect(Potion.resistance).getAmplifier() + 1) * 5;
                 j = 25 - i;
                 f1 = damage * (float)j;
                 damage = f1 / 25.0F;
             }
 
-            if (damage <= 0.0F)
-            {
+            if (damage <= 0.0F) {
                 return 0.0F;
-            }
-            else
-            {
+            } else {
                 i = EnchantmentHelper.getEnchantmentModifierDamage(((EntityLiving)entity).getLastActiveItems(), source);
 
-                if (i > 20)
-                {
+                if (i > 20) {
                     i = 20;
                 }
 
-                if (i > 0 && i <= 20)
-                {
+                if (i > 0 && i <= 20) {
                     j = 25 - i;
                     f1 = damage * (float)j;
                     damage = f1 / 25.0F;
                 }
 
                 return damage;
+            }
+        }
+    }
+	
+	public static void setPosition(IEntitySoulCustom entity, double x, double y, double z) {
+        entity.setPersistentVariable("posX", x);
+        entity.setPersistentVariable("posY", y);
+        entity.setPersistentVariable("posZ", z);
+        float f = entity.getFloat("width") / 2.0F;
+        float f1 = entity.getFloat("height");
+        float yOffset = entity.getFloat("yOffset");
+        float ySize = entity.getFloat("ySize");
+        
+        entity.getBoundingBox().setBounds(x - (double)f, y - (double)yOffset + (double)ySize, z - (double)f, x + (double)f, y - (double)yOffset + (double)ySize + (double)f1, z + (double)f);
+    }
+	
+    public static void setRotation(IEntitySoulCustom entity, float yaw, float pitch) {
+        entity.setPersistentVariable("rotationYaw", yaw % 360.0F);
+        entity.setPersistentVariable("rotationPitch", pitch % 360.0F);
+    }
+    
+    public static void jump(IEntitySoulCustom entity) {
+        entity.setPersistentVariable("motionY", 0.41999998688697815D);
+
+        if (((EntityLiving)entity).isPotionActive(Potion.jump)) {
+        	entity.setPersistentVariable("motionY", entity.getPersistentDouble("motionY") + (double)((float)(((EntityLiving)entity).getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F));
+        }
+
+        if (((EntityLiving)entity).isSprinting()) {
+            float f = entity.getPersistentFloat("rotationYaw") * 0.017453292F;
+            entity.setPersistentVariable("motionX", entity.getPersistentDouble("motionX") - (double)(MathHelper.sin(f) * 0.2F));
+            entity.setPersistentVariable("motionZ", entity.getPersistentDouble("motionZ") + (double)(MathHelper.cos(f) * 0.2F));
+        }
+
+        entity.setVariable("isAirBorne", true);
+        ForgeHooks.onLivingJump((EntityLivingBase) entity);
+    }
+    
+    public static void despawnEntity(IEntitySoulCustom entity) {
+        Result result = null;
+        boolean shouldDespawn = ((AlleleBoolean)GeneRegistry.getActiveFor(entity, Genes.GENE_SHOULD_DESPAWN)).value;
+        
+        int entityAge = entity.getInteger("entityAge");
+        
+        if (!shouldDespawn) {
+        	entity.setVariable("entityAge", 0);
+        } else if ((entityAge & 0x1F) == 0x1F && (result = ForgeEventFactory.canEntityDespawn((EntityLiving) entity)) != Result.DEFAULT) {
+            if (result == Result.DENY) {
+            	entity.setVariable("entityAge", 0);
+            } else {
+                ((EntityLiving)entity).setDead();
+            }
+        } else {
+            EntityPlayer entityplayer = entity.getWorld().getClosestPlayerToEntity((Entity) entity, -1.0D);
+
+            if (entityplayer != null) {
+            	double posX = entity.getPersistentDouble("posX");
+            	double posY = entity.getPersistentDouble("posY");
+            	double posZ = entity.getPersistentDouble("posZ");
+            	
+                double d0 = entityplayer.posX - posX;
+                double d1 = entityplayer.posY - posY;
+                double d2 = entityplayer.posZ - posZ;
+                double d3 = d0 * d0 + d1 * d1 + d2 * d2;
+
+                if (shouldDespawn && d3 > 16384.0D) {
+                	((EntityLiving)entity).setDead();
+                }
+
+                if (entity.getInteger("entityAge") > 600 && new Random().nextInt(800) == 0 && d3 > 1024.0D && shouldDespawn) {
+                	((EntityLiving)entity).setDead();
+                } else if (d3 < 1024.0D) {
+                	entity.setVariable("entityAge", 0);
+                }
             }
         }
     }

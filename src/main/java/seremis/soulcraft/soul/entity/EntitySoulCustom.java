@@ -112,7 +112,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     
     @Override
     public CombatTracker getCombatTracker() {
-    	return getCombatTracker();
+    	return super.func_110142_aN();
     }
     
     @Override
@@ -181,6 +181,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     	syncChunk();
     	syncDimension();
     	syncCollisions();
+    	syncInventory();
     	syncWalking();
     	syncRender();
     	syncRiding();
@@ -1098,7 +1099,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     		syncAttackTime = attackTime;
     	}
     	if(syncEntityLivingToAttack != getAITarget()) {
-    		variableInteger.put("entityLivingToAttackID", getAITarget().getEntityId());
+    		variableInteger.put("entityLivingToAttackID", getAITarget() != null ? getAITarget().getEntityId() : 0);
     		syncEntityLivingToAttack = getAITarget();
     	} else if(syncEntityLivingToAttack != worldObj.getEntityByID(getInteger("entityLivingToAttackID")) && getInteger("entityLivingToAttackID") != 0) {
     		setRevengeTarget((EntityLivingBase) worldObj.getEntityByID(getInteger("entityLivingToAttackID")));
@@ -1329,6 +1330,11 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     }
     
     @Override
+    public void updateAITick() {
+    	TraitHandler.updateAITick(this);
+    }
+    
+    @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         soul = new Soul(compound);
@@ -1530,9 +1536,12 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
 		        
 		        NBTTagCompound itemStackCompound = new NBTTagCompound();
 		        for(int i = 0; i < persistentItemStack.size(); i++) {
-		            itemStackCompound.setString("itemStack" + i + "Name", stringList.get(i));
-		            NBTTagCompound compoundStack = new NBTTagCompound();
-		            itemStackCompound.setTag("itemStack" + i + "Value", persistentItemStack.get(i).writeToNBT(compoundStack));
+		        	List<ItemStack> stacks = new ArrayList<ItemStack>(persistentItemStack.values());
+		        	if(stacks.get(i) != null && stacks.get(i).getItem() != null && stacks.get(i).stackSize > 0) {
+			            itemStackCompound.setString("itemStack" + i + "Name", stringList.get(i));
+			            NBTTagCompound compoundStack = new NBTTagCompound();
+			            itemStackCompound.setTag("itemStack" + i + "Value", stacks.get(i).writeToNBT(compoundStack));
+		        	}
 		        }
 		        itemStackCompound.setString("type", "itemStack");
 		        itemStackCompound.setInteger("size", persistentString.size());
@@ -1609,7 +1618,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
 	            }
 	        }
     	}
-        persistentDouble.put(name, variable);
+    	persistentDouble.put(name, variable);
     }
 
     @Override
@@ -1621,7 +1630,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
 	            }
 	        }
     	}
-        persistentString.put(name, variable);
+    	persistentString.put(name, variable);
     }
     
     @Override
@@ -1633,7 +1642,8 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
 	            }
 	        }
     	}
-        persistentItemStack.put(name, variable);
+    	if(variable != null)
+    		persistentItemStack.put(name, variable);
     }
     
     @Override

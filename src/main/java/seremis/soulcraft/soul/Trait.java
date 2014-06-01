@@ -1,29 +1,40 @@
 package seremis.soulcraft.soul;
 
-import seremis.soulcraft.api.soul.IEntitySoulCustom;
-import seremis.soulcraft.api.soul.ITrait;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
+import seremis.soulcraft.api.soul.IEntitySoulCustom;
+import seremis.soulcraft.api.soul.ITrait;
 
 public class Trait implements ITrait {
-    
-    public void onInit(IEntitySoulCustom entity){}
-    
-    public void onUpdate(IEntitySoulCustom entity){}
-    
-    public void onInteract(IEntitySoulCustom entity, EntityPlayer player){}
-    
-    public void onDeath(IEntitySoulCustom entity, DamageSource source){}
 
-    public void onKillEntity(IEntitySoulCustom entity, EntityLivingBase killed){}
+	@Override
+	public void onInit(IEntitySoulCustom entity){}
 
-    public boolean onEntityAttacked(IEntitySoulCustom entity, DamageSource source, float damage){return true;}
+	@Override
+	public void onUpdate(IEntitySoulCustom entity){}
 
-    public void onSpawnWithEgg(IEntitySoulCustom entity, IEntityLivingData data){}
-    
-    public void playSound(IEntitySoulCustom entity, String name, float volume, float pitch){}
+	@Override
+	public void onInteract(IEntitySoulCustom entity, EntityPlayer player){}
 
-    public void damageEntity(IEntitySoulCustom entity, DamageSource source, float damage){}
+	@Override
+	public void onDeath(IEntitySoulCustom entity, DamageSource source){}
+
+	@Override
+	public void onKillEntity(IEntitySoulCustom entity, EntityLivingBase killed){}
+
+	@Override
+	public boolean onEntityAttacked(IEntitySoulCustom entity, DamageSource source, float damage){return true;}
+
+	@Override
+	public void onSpawnWithEgg(IEntitySoulCustom entity, IEntityLivingData data){}
+
+	public void playSound(IEntitySoulCustom entity, String name, float volume, float pitch){}
+
+	@Override
+	public void damageEntity(IEntitySoulCustom entity, DamageSource source, float damage){}
+
+	@Override
+	public void updateAITick(IEntitySoulCustom entity) {}
 }

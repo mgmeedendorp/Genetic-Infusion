@@ -56,6 +56,7 @@ public class TraitRegistry {
 		TraitHandler.spawnEntityFromEgg = new LinkedList<ITrait>();
 		TraitHandler.playSoundAtEntity = new LinkedList<ITrait>();
 		TraitHandler.damageEntity = new LinkedList<ITrait>();
+		TraitHandler.updateAITick = new LinkedList<ITrait>();
 		
 		for(ITrait trait : getTraits()) {
 			TraitHandler.entityInit.add(trait);
@@ -67,6 +68,7 @@ public class TraitRegistry {
 			TraitHandler.spawnEntityFromEgg.add(trait);
 			TraitHandler.playSoundAtEntity.add(trait);
 			TraitHandler.damageEntity.add(trait);
+			TraitHandler.updateAITick.add(trait);
 		}
 		
 		for(ITrait trait : getTraits()) {
@@ -185,6 +187,18 @@ public class TraitRegistry {
 								} else if(dep == "last") {
 									ITrait trait2 = traits.get(dep);
 									TraitHandler.damageEntity.addLast(trait);
+								}
+							} else if(method.getName() == "updateAITask") {
+								if(traits.containsKey(dep)) {
+									ITrait trait2 = traits.get(dep);
+									int traitIndex = TraitHandler.updateAITick.indexOf(trait2);
+									TraitHandler.updateAITick.add(traitIndex, trait);
+								} else if(dep == "first") {
+									ITrait trait2 = traits.get(dep);
+									TraitHandler.updateAITick.addFirst(trait);
+								} else if(dep == "last") {
+									ITrait trait2 = traits.get(dep);
+									TraitHandler.updateAITick.addLast(trait);
 								}
 							}
 						}

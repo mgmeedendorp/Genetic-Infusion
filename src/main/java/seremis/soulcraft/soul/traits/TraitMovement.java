@@ -1,10 +1,12 @@
 package seremis.soulcraft.soul.traits;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
@@ -27,7 +29,7 @@ public class TraitMovement extends Trait {
         boolean isImmuneToFire = ((AlleleBoolean) GeneRegistry.getActiveFor(entity, Genes.GENE_IMMUNE_TO_FIRE)).value;
         int timeInPortalUntilTeleport = ((AlleleInteger) GeneRegistry.getActiveFor(entity, Genes.GENE_TELEPORT_TIME_IN_PORTAL)).value;
         int portalCooldown = ((AlleleInteger) GeneRegistry.getActiveFor(entity, Genes.GENE_PORTAL_COOLDOWN)).value;
-        
+
         double posX = entity.getPersistentDouble("posX");
         double posY = entity.getPersistentDouble("posY");
         double posZ = entity.getPersistentDouble("posZ");
@@ -77,7 +79,7 @@ public class TraitMovement extends Trait {
                 if(minecraftserver.getAllowNether()) {
                     if(ridingEntity == null) {
                         entity.setVariable("portalCounter", portalCounter + 1);
-                        
+
                         if(portalCounter + 1 >= timeInPortalUntilTeleport) {
                         	entity.setVariable("portalCounter", timeInPortalUntilTeleport);
 
@@ -140,19 +142,166 @@ public class TraitMovement extends Trait {
         if (isImmuneToFire || CommonProxy.proxy.isRenderWorld(entity.getWorld())) {
             UtilSoulEntity.extinguish(entity);
         }
-        
-        
         //entity.updatePotionEffects();
         
         entity.getWorld().theProfiler.endSection();
         
-        //entity.handleWaterMovement();
+        int jumpTicks = entity.getInteger("jumpTicks");
+        int newPosRotationIncrements = entity.getInteger("newPosRotationIncrements");
+        
+        double newPosX = entity.getDouble("newPosX");
+        double newPosY = entity.getDouble("newPosY");
+        double newPosZ = entity.getDouble("newPosZ");
+        
+        double newRotationYaw = entity.getDouble("newRotationYaw");
+        double newRotationPitch = entity.getDouble("newRotationPitch");
+        
+        if (jumpTicks > 0) {
+            entity.setVariable("jumpTicks", --jumpTicks);
+        }
 
-        //entity.collideWithNearbyEntities();
-        // if(CommonProxy.proxy.isServerWorld(entity.getWorld())) {
-//        entity.setMotion(motionX * 0.98, motionY * 0.98, motionZ * 0.98);
-//        entity.addVelocity(0, -1, 0);
-//        entity.moveEntity(motionX, motionY, motionZ);
-        // }
+        if (newPosRotationIncrements > 0) {
+            double d0 = posX + (newPosX - posX) / (double)newPosRotationIncrements;
+            double d1 = posY + (newPosY - posY) / (double)newPosRotationIncrements;
+            double d2 = posZ + (newPosZ - posZ) / (double)newPosRotationIncrements;
+            double d3 = MathHelper.wrapAngleTo180_double(newRotationYaw - (double)rotationYaw);
+            entity.setPersistentVariable("rotationYaw", (float)((double)rotationYaw + d3 / (double)newPosRotationIncrements));
+            entity.setPersistentVariable("rotationPitch", (float)((double)rotationPitch + (newRotationPitch - (double)rotationPitch) / (double)newPosRotationIncrements));
+            entity.setVariable("newPosRotationIncrements", newPosRotationIncrements-1);
+            UtilSoulEntity.setPosition(entity, d0, d1, d2);
+            UtilSoulEntity.setRotation(entity, rotationYaw, rotationPitch);
+        } else if (CommonProxy.proxy.isServerWorld(entity.getWorld())) {
+        	entity.setPersistentVariable("motionX", entity.getPersistentDouble("motionX") * 0.98D);
+        	entity.setPersistentVariable("motionY", entity.getPersistentDouble("motionY") * 0.98D);
+        	entity.setPersistentVariable("motionZ", entity.getPersistentDouble("motionZ") * 0.98D);
+        }
+        
+        motionX = entity.getPersistentDouble("motionX");
+        motionY = entity.getPersistentDouble("motionY");
+        motionZ = entity.getPersistentDouble("motionZ");
+        
+        posX = entity.getPersistentDouble("posX");
+        posY = entity.getPersistentDouble("posY");
+        posZ = entity.getPersistentDouble("posZ");
+        
+        rotationPitch = entity.getPersistentFloat("rotationPitch");
+        rotationYaw = entity.getPersistentFloat("rotationYaw");
+
+        if (Math.abs(motionX) < 0.005D) {
+        	entity.setPersistentVariable("motionX", 0.0D);
+        }
+
+        if (Math.abs(motionY) < 0.005D) {
+        	entity.setPersistentVariable("motionY", 0.0D);
+        }
+
+        if (Math.abs(motionZ) < 0.005D) {
+        	entity.setPersistentVariable("motionZ", 0.0D);
+        }
+
+        entity.getWorld().theProfiler.startSection("ai");
+
+        float health = entity.getPersistentFloat("health");
+        
+        //TODO check for this
+        boolean hasAI = true;
+        
+        if (health <= 0.0F) {
+            entity.setVariable("isJumping", false);
+            entity.setVariable("moveStrafing", 0.0F);
+            entity.setVariable("moveForward", 0.0F);
+            entity.setVariable("randomYawVelocity", 0.0F);
+        } else if (CommonProxy.proxy.isRenderWorld(entity.getWorld())) {
+            if (hasAI) {
+                entity.getWorld().theProfiler.startSection("newAi");
+                this.updateAITasks(entity);
+                entity.getWorld().theProfiler.endSection();
+            } else {
+            	entity.getWorld().theProfiler.startSection("oldAi");
+                entity.setVariable("entityAge", entity.getInteger("entityAge")+1);
+                entity.getWorld().theProfiler.endSection();
+                entity.setVariable("rotationYawHead", rotationYaw);
+            }
+        }
+
+        entity.getWorld().theProfiler.endSection();
+        entity.getWorld().theProfiler.startSection("jump");
+        
+        boolean isJumping = entity.getBoolean("isJumping");
+        boolean isInWater = entity.getBoolean("inWater");
+        boolean onGround = entity.getPersistentBoolean("onGround");
+
+        if (isJumping) {
+            if (!isInWater && !UtilSoulEntity.handleLavaMovement(entity)) {
+                if (onGround && jumpTicks == 0) {
+                    UtilSoulEntity.jump(entity);
+                    entity.setVariable("jumpTicks", 10);
+                }
+            } else {
+            	entity.setPersistentVariable("motionY", entity.getPersistentDouble("motionY") + 0.03999999910593033D);
+            }
+        } else {
+        	entity.setVariable("jumpTicks", 0);
+        }
+
+        entity.getWorld().theProfiler.endSection();
+        entity.getWorld().theProfiler.startSection("travel");
+        entity.setVariable("moveStrafing", entity.getFloat("moveStrafing") * 0.98F);
+        entity.setVariable("moveForward", entity.getFloat("moveForward") * 0.98F);
+        entity.setVariable("randomYawVelocity", entity.getFloat("randomYawVelocity") * 0.9F);
+        ((EntityLiving)entity).moveEntityWithHeading(entity.getFloat("moveStrafing"), entity.getFloat("moveForward"));
+        entity.getWorld().theProfiler.endSection();
+        entity.getWorld().theProfiler.startSection("push");
+
+        if (CommonProxy.proxy.isServerWorld(entity.getWorld())) {
+            this.collideWithNearbyEntities(entity);
+        }
+
+        entity.getWorld().theProfiler.endSection();
 	}
+	
+	public void updateAITasks(IEntitySoulCustom entity) {
+        entity.setVariable("entityAge", entity.getInteger("entityAge")+1);
+        entity.getWorld().theProfiler.startSection("checkDespawn");
+        UtilSoulEntity.despawnEntity(entity);
+        entity.getWorld().theProfiler.endSection();
+        entity.getWorld().theProfiler.startSection("sensing");
+        entity.getEntitySenses().clearSensingCache();
+        entity.getWorld().theProfiler.endSection();
+        entity.getWorld().theProfiler.startSection("targetSelector");
+        entity.getTargetTasks().onUpdateTasks();
+        entity.getWorld().theProfiler.endSection();
+        entity.getWorld().theProfiler.startSection("goalSelector");
+        entity.getTasks().onUpdateTasks();
+        entity.getWorld().theProfiler.endSection();
+        entity.getWorld().theProfiler.startSection("navigation");
+        entity.getNavigator().onUpdateNavigation();
+        entity.getWorld().theProfiler.endSection();
+        entity.getWorld().theProfiler.startSection("mob tick");
+        entity.updateAITick();
+        entity.getWorld().theProfiler.endSection();
+        entity.getWorld().theProfiler.startSection("controls");
+        entity.getWorld().theProfiler.startSection("move");
+        entity.getMoveHelper().onUpdateMoveHelper();
+        entity.getWorld().theProfiler.endStartSection("look");
+        entity.getLookHelper().onUpdateLook();
+        entity.getWorld().theProfiler.endStartSection("jump");
+        entity.getJumpHelper().doJump();
+        entity.getWorld().theProfiler.endSection();
+        entity.getWorld().theProfiler.endSection();
+    }
+	
+	public void collideWithNearbyEntities(IEntitySoulCustom entity) {
+        List list = entity.getWorld().getEntitiesWithinAABBExcludingEntity((Entity) entity, entity.getBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
+
+        if (list != null && !list.isEmpty()) {
+            for (int i = 0; i < list.size(); ++i) {
+                Entity ent = (Entity)list.get(i);
+
+                if (ent.canBePushed()) {
+                    ent.applyEntityCollision((Entity) entity);
+                }
+            }
+        }
+    }
 }

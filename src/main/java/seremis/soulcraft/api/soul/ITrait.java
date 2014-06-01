@@ -24,4 +24,6 @@ public interface ITrait {
     public void playSound(IEntitySoulCustom entity, String name, float volume, float pitch);
 
     public void damageEntity(IEntitySoulCustom entity, DamageSource source, float damage);
+    
+    public void updateAITick(IEntitySoulCustom entity);
 }

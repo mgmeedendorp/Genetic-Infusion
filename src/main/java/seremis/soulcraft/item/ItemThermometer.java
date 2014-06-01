@@ -8,9 +8,11 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import seremis.soulcraft.api.magnet.tile.IMagnetConnector;
 import seremis.soulcraft.api.soul.GeneRegistry;
+import seremis.soulcraft.api.soul.util.UtilSoulEntity;
 import seremis.soulcraft.core.lib.Items;
 import seremis.soulcraft.core.proxy.CommonProxy;
 import seremis.soulcraft.soul.entity.EntitySoulCustom;
+import seremis.soulcraft.util.UtilBlock;
 
 public class ItemThermometer extends SCItem {
 

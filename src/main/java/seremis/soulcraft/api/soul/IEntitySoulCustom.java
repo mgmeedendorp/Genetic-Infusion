@@ -105,4 +105,6 @@ public interface IEntitySoulCustom {
     void onDeathUpdate();
     
     void damageEntity(DamageSource source, float damage);
+    
+    void updateAITick();
 }

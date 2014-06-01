@@ -23,10 +23,13 @@ import seremis.soulcraft.soul.gene.GenePicksUpItems;
 import seremis.soulcraft.soul.gene.GenePortalCooldown;
 import seremis.soulcraft.soul.gene.GeneRareItemDropChances;
 import seremis.soulcraft.soul.gene.GeneRareItemDrops;
+import seremis.soulcraft.soul.gene.GeneShouldDespawn;
 import seremis.soulcraft.soul.gene.GeneSoundVolume;
 import seremis.soulcraft.soul.gene.GeneTeleportTimeInPortal;
 import seremis.soulcraft.soul.gene.GeneWalkSound;
+import seremis.soulcraft.soul.traits.TraitAttacked;
 import seremis.soulcraft.soul.traits.TraitFire;
+import seremis.soulcraft.soul.traits.TraitItemPickup;
 import seremis.soulcraft.soul.traits.TraitMovement;
 
 public class ModSouls {
@@ -54,8 +57,11 @@ public class ModSouls {
         GeneRegistry.registerGene(Genes.GENE_TELEPORT_TIME_IN_PORTAL, new GeneTeleportTimeInPortal());
         GeneRegistry.registerGene(Genes.GENE_PORTAL_COOLDOWN, new GenePortalCooldown());
         GeneRegistry.registerGene(Genes.GENE_KNOCKBACK_RESISTANCE, new GeneKnockbackResistance());
+        GeneRegistry.registerGene(Genes.GENE_SHOULD_DESPAWN, new GeneShouldDespawn());
         
         TraitRegistry.registerTrait(Traits.TRAIT_FIRE, new TraitFire());
         TraitRegistry.registerTrait(Traits.TRAIT_MOVEMENT, new TraitMovement());
+        TraitRegistry.registerTrait(Traits.TRAIT_ATTACKED, new TraitAttacked());
+        TraitRegistry.registerTrait(Traits.TRAIT_ITEM_PICKUP, new TraitItemPickup());
     }
 }

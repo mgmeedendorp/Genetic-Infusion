@@ -87,4 +87,12 @@ public class TraitHandler {
             trait.damageEntity(entity, source, damage);
         }
     }
+    
+    static LinkedList<ITrait> updateAITick;
+    
+    public static void updateAITick(IEntitySoulCustom entity) {
+        for(ITrait trait : updateAITick) {
+            trait.updateAITick(entity);
+        }
+    }
 }

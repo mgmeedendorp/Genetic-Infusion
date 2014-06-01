@@ -33,14 +33,14 @@ public class TraitFire extends Trait {
             if(CommonProxy.proxy.isServerWorld(entity.getWorld()) && entity.getWorld().isDaytime()) {
 
                 float brightness = getBrightness(entity);
+                Random rand = new Random();
 
-                if(brightness > 0.5F && entity.getWorld().canBlockSeeTheSky((int) Math.floor(posX), (int) Math.floor(posY), (int) Math.floor(posZ))) {
+                if(brightness > 0.5F && rand.nextFloat() * 30.0F < (brightness - 0.4F) * 2.0F && entity.getWorld().canBlockSeeTheSky((int) Math.floor(posX), (int) Math.floor(posY), (int) Math.floor(posZ))) {
                     ItemStack headwear = UtilSoulEntity.getEquipmentInSlot(entity, 4);
 
                     if(headwear != null) {
                         if(headwear.isItemStackDamageable()) {
                             headwear.setItemDamage(headwear.getItemDamageForDisplay() + new Random().nextInt(2));
-                            //TODO check if this works!
                             if(headwear.getItemDamageForDisplay() >= headwear.getMaxDamage()) {
                                 breakHeadwear(entity, headwear);
                                 UtilSoulEntity.setEquipmentInSlot(entity, 4, null);
