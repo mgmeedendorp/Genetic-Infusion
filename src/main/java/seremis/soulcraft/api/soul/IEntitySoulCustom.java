@@ -1,6 +1,7 @@
 package seremis.soulcraft.api.soul;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.ai.EntityAITasks;
@@ -47,6 +48,8 @@ public interface IEntitySoulCustom {
     EntityAITasks getTargetTasks();
     
     NBTTagCompound getLeashedCompound();
+    
+    Random getRandom();
     
     /*
      * Use these methods to set and get a persistent variable. This variable will save and load with NBT.

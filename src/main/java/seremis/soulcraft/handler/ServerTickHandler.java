@@ -49,7 +49,7 @@ public class ServerTickHandler implements ITimerCaller {
 
         System.out.println("Timer ended. Entity: " + entity + " With id: " + timer.timerId);
         
-        if(entity != null && entity instanceof EntityPlayer && CommonProxy.proxy.isServerWorld(entity.worldObj)) {
+        if(entity != null && entity instanceof EntityPlayer && CommonProxy.instance.isServerWorld(entity.worldObj)) {
             MagnetLinkHelper.instance.updatePlayerWithNetworks((EntityPlayer) entity);
         }
     }

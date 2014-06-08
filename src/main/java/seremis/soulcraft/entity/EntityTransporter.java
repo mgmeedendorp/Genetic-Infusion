@@ -94,7 +94,7 @@ public class EntityTransporter extends SCEntity implements IEntityAdditionalSpaw
     @Override
     public void onUpdate() {
         super.onUpdate();
-        if(CommonProxy.proxy.isServerWorld(worldObj)) {
+        if(CommonProxy.instance.isServerWorld(worldObj)) {
             if(!logic.hasEntity) {
                 logic.init(this);
             }

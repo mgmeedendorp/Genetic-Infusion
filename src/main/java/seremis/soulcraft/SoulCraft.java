@@ -65,8 +65,8 @@ public class SoulCraft {
     @EventHandler
     public void init(FMLInitializationEvent event) {
         ModStructures.init();
-        CommonProxy.proxy.registerRendering();
-        CommonProxy.proxy.registerHandlers();
+        CommonProxy.instance.registerRendering();
+        CommonProxy.instance.registerHandlers();
         
         if(event.getSide() == Side.SERVER)
         	FMLCommonHandler.instance().bus().register(ServerTickHandler.instance);

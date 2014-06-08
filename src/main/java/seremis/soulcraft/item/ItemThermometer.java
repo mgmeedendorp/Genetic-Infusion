@@ -33,7 +33,7 @@ public class ItemThermometer extends SCItem {
 
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
-        if(CommonProxy.proxy.isServerWorld(world)) {
+        if(CommonProxy.instance.isServerWorld(world)) {
             TileEntity tile = world.getTileEntity(x, y, z);
             if(tile != null && tile instanceof IMagnetConnector) {
                 player.addChatComponentMessage(new ChatComponentText("Reading..."));

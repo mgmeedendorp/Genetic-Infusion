@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -71,7 +72,7 @@ public class UtilSoulEntity {
     public static void travelToDimension(IEntitySoulCustom entity, int dimensionId) {
 		boolean isDead = entity.getPersistentBoolean("isDead");
 		
-        if (CommonProxy.proxy.isServerWorld(entity.getWorld()) && !isDead) {
+        if (CommonProxy.instance.isServerWorld(entity.getWorld()) && !isDead) {
             entity.getWorld().theProfiler.startSection("changeDimension");
             MinecraftServer minecraftserver = MinecraftServer.getServer();
             int currentDimension = entity.getPersistentInteger("dimension");
@@ -233,6 +234,28 @@ public class UtilSoulEntity {
                 	entity.setVariable("entityAge", 0);
                 }
             }
+        }
+    }
+    
+    public static EntityItem dropItem(IEntitySoulCustom entity, ItemStack droppedStack, float dropHeight) {
+        if(droppedStack.stackSize != 0 && droppedStack.getItem() != null) {
+        	double posX = entity.getPersistentDouble("posX");
+        	double posY = entity.getPersistentDouble("posY");
+        	double posZ = entity.getPersistentDouble("posZ");
+        	
+            EntityItem entityitem = new EntityItem(entity.getWorld(), posX, posY + (double)dropHeight, posZ, droppedStack);
+            entityitem.delayBeforeCanPickup = 10;
+            
+            if(entity.getBoolean("captureDrops")) {
+            	int capturedDropsSize = entity.getPersistentInteger("capturedDrops.size");
+            	entity.setPersistentVariable("capturedDrops."+capturedDropsSize, entityitem.getEntityItem());
+            } else {
+                entity.getWorld().spawnEntityInWorld(entityitem);
+            }
+            System.out.println("getPersistent " + entity.getItemStack("capturedDrops."+entity.getPersistentInteger("captureDrops.size"))+ " name " + "capturedDrops."+entity.getPersistentInteger("captureDrops.size"));
+            return entityitem;
+        } else {
+            return null;
         }
     }
 }

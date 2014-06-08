@@ -68,7 +68,7 @@ public class TileStationController extends SCTileMagnetConsumer implements IInve
     }
 
     public void invalidateMultiblock() {
-        if(isMultiblock && CommonProxy.proxy.isServerWorld(worldObj)) {
+        if(isMultiblock && CommonProxy.instance.isServerWorld(worldObj)) {
             List<Coordinate3D> crystalStandCoordinates = structure.getBlockCoordinates(ModBlocks.crystalStand, 0);
             
             if(structure.doesBlockExistInStructure(ModBlocks.crystalStand, 0, 1)) {
@@ -95,7 +95,7 @@ public class TileStationController extends SCTileMagnetConsumer implements IInve
     }
 
     public void initiateMultiblock() {
-        if(!isMultiblock && CommonProxy.proxy.isServerWorld(worldObj)) {
+        if(!isMultiblock && CommonProxy.instance.isServerWorld(worldObj)) {
             
             List<Coordinate3D> crystalStandCoordinates = structure.getBlockCoordinates(ModBlocks.crystalStand, 0);
             List<Coordinate3D> itemIOCoordinates = structure.getBlockCoordinates(ModBlocks.itemIO, 0);
@@ -144,7 +144,7 @@ public class TileStationController extends SCTileMagnetConsumer implements IInve
     @Override
     public void updateEntity() {
         super.updateEntity();
-        if(CommonProxy.proxy.isRenderWorld(worldObj)) {
+        if(CommonProxy.instance.isRenderWorld(worldObj)) {
             return;
         }
 
@@ -293,7 +293,7 @@ public class TileStationController extends SCTileMagnetConsumer implements IInve
     @Override
     public void markDirty() {
         super.markDirty();
-        if(CommonProxy.proxy.isRenderWorld(worldObj)) {
+        if(CommonProxy.instance.isRenderWorld(worldObj)) {
             return;
         }
 
@@ -355,7 +355,7 @@ public class TileStationController extends SCTileMagnetConsumer implements IInve
     }
 
     public void sendCurrentTransporterTo(TileStationController tile) {
-        if(CommonProxy.proxy.isServerWorld(worldObj) && tile != null && tile != this && this.hasTransporter()) {
+        if(CommonProxy.instance.isServerWorld(worldObj) && tile != null && tile != this && this.hasTransporter()) {
             if(heat < neededHeat) {
                 heatNeeded = true;
                 tempDestination = new Coordinate3D(tile);

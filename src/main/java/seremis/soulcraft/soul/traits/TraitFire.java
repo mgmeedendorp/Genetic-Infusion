@@ -30,7 +30,7 @@ public class TraitFire extends Trait {
         float fallDistance = entity.getPersistentFloat("fallDistance");
         
         if(burnsInDayLight && !isImmuneToFire) {
-            if(CommonProxy.proxy.isServerWorld(entity.getWorld()) && entity.getWorld().isDaytime()) {
+            if(CommonProxy.instance.isServerWorld(entity.getWorld()) && entity.getWorld().isDaytime()) {
 
                 float brightness = getBrightness(entity);
                 Random rand = new Random();
@@ -55,7 +55,7 @@ public class TraitFire extends Trait {
 
         int fireTicks = entity.getPersistentInteger("fire");
         
-        if(CommonProxy.proxy.isRenderWorld(entity.getWorld())) {
+        if(CommonProxy.instance.isRenderWorld(entity.getWorld())) {
             UtilSoulEntity.extinguish(entity);
         } else if(fireTicks > 0) {
             if(isImmuneToFire) {

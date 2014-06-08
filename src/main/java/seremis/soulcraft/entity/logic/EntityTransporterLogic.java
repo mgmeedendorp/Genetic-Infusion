@@ -58,7 +58,7 @@ public class EntityTransporterLogic {
         update = true;
         hasEntity = true;
 
-        if(CommonProxy.proxy.isServerWorld(ent.worldObj)) {
+        if(CommonProxy.instance.isServerWorld(ent.worldObj)) {
             sendLogicToClient();
         }
     }

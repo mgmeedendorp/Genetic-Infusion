@@ -23,7 +23,7 @@ public class BlockStationController extends SCBlockContainerRotateable {
 
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
-        if(CommonProxy.proxy.isServerWorld(world)) {
+        if(CommonProxy.instance.isServerWorld(world)) {
             if(isNeighbourBlockPowered(world, x, y, z)) {
                 TileStationController tile = (TileStationController) world.getTileEntity(x, y, z);
                 tile.onRedstoneSignal();
@@ -67,7 +67,7 @@ public class BlockStationController extends SCBlockContainerRotateable {
         if(player.isSneaking()) {
             return false;
         }
-        if(CommonProxy.proxy.isServerWorld(world)) {
+        if(CommonProxy.instance.isServerWorld(world)) {
             TileStationController tile = (TileStationController) world.getTileEntity(x, y, z);
             if(multiblockCheck(world, x, y, z)) {
                 tile.initiateMultiblock();
@@ -80,7 +80,7 @@ public class BlockStationController extends SCBlockContainerRotateable {
     }
 
     private boolean multiblockCheck(World world, int x, int y, int z) {
-        if(CommonProxy.proxy.isServerWorld(world)) {
+        if(CommonProxy.instance.isServerWorld(world)) {
             TileStationController tile = (TileStationController) world.getTileEntity(x, y, z);
             if(tile != null) {
                 if(tile.isValid()) {

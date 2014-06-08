@@ -29,6 +29,7 @@ import seremis.soulcraft.soul.gene.GeneTeleportTimeInPortal;
 import seremis.soulcraft.soul.gene.GeneWalkSound;
 import seremis.soulcraft.soul.traits.TraitAttacked;
 import seremis.soulcraft.soul.traits.TraitFire;
+import seremis.soulcraft.soul.traits.TraitItemDrops;
 import seremis.soulcraft.soul.traits.TraitItemPickup;
 import seremis.soulcraft.soul.traits.TraitMovement;
 
@@ -63,5 +64,6 @@ public class ModSouls {
         TraitRegistry.registerTrait(Traits.TRAIT_MOVEMENT, new TraitMovement());
         TraitRegistry.registerTrait(Traits.TRAIT_ATTACKED, new TraitAttacked());
         TraitRegistry.registerTrait(Traits.TRAIT_ITEM_PICKUP, new TraitItemPickup());
+        TraitRegistry.registerTrait(Traits.TRAIT_ITEM_DROPS, new TraitItemDrops());
     }
 }

@@ -85,10 +85,10 @@ public class TraitRegistry {
 									ITrait trait2 = traits.get(dep);
 									int traitIndex = TraitHandler.entityInit.indexOf(trait2);
 									TraitHandler.entityInit.add(traitIndex, trait);
-								} else if(dep == "first") {
+								} else if(dep.equals("first")) {
 									ITrait trait2 = traits.get(dep);
 									TraitHandler.entityInit.addFirst(trait);
-								} else if(dep == "last") {
+								} else if(dep.equals("last")) {
 									ITrait trait2 = traits.get(dep);
 									TraitHandler.entityInit.addLast(trait);
 								}
@@ -97,10 +97,10 @@ public class TraitRegistry {
 									ITrait trait2 = traits.get(dep);
 									int traitIndex = TraitHandler.entityUpdate.indexOf(trait2);
 									TraitHandler.entityUpdate.add(traitIndex, trait);
-								} else if(dep == "first") {
+								} else if(dep.equals("first")) {
 									ITrait trait2 = traits.get(dep);
 									TraitHandler.entityUpdate.addFirst(trait);
-								} else if(dep == "last") {
+								} else if(dep.equals("last")) {
 									ITrait trait2 = traits.get(dep);
 									TraitHandler.entityUpdate.addLast(trait);
 								}
@@ -109,10 +109,10 @@ public class TraitRegistry {
 									ITrait trait2 = traits.get(dep);
 									int traitIndex = TraitHandler.entityRightClicked.indexOf(trait2);
 									TraitHandler.entityRightClicked.add(traitIndex, trait);
-								} else if(dep == "first") {
+								} else if(dep.equals("first")) {
 									ITrait trait2 = traits.get(dep);
 									TraitHandler.entityRightClicked.addFirst(trait);
-								} else if(dep == "last") {
+								} else if(dep.equals("last")) {
 									ITrait trait2 = traits.get(dep);
 									TraitHandler.entityRightClicked.addLast(trait);
 								}
@@ -121,10 +121,10 @@ public class TraitRegistry {
 									ITrait trait2 = traits.get(dep);
 									int traitIndex = TraitHandler.entityDeath.indexOf(trait2);
 									TraitHandler.entityDeath.add(traitIndex, trait);
-								} else if(dep == "first") {
+								} else if(dep.equals("first")) {
 									ITrait trait2 = traits.get(dep);
 									TraitHandler.entityDeath.addFirst(trait);
-								} else if(dep == "last") {
+								} else if(dep.equals("last")) {
 									ITrait trait2 = traits.get(dep);
 									TraitHandler.entityDeath.addLast(trait);
 								}
@@ -133,10 +133,10 @@ public class TraitRegistry {
 									ITrait trait2 = traits.get(dep);
 									int traitIndex = TraitHandler.onKillEntity.indexOf(trait2);
 									TraitHandler.onKillEntity.add(traitIndex, trait);
-								} else if(dep == "first") {
+								} else if(dep.equals("first")) {
 									ITrait trait2 = traits.get(dep);
 									TraitHandler.onKillEntity.addFirst(trait);
-								} else if(dep == "last") {
+								} else if(dep.equals("last")) {
 									ITrait trait2 = traits.get(dep);
 									TraitHandler.onKillEntity.addLast(trait);
 								}
@@ -145,10 +145,10 @@ public class TraitRegistry {
 									ITrait trait2 = traits.get(dep);
 									int traitIndex = TraitHandler.attackEntityFrom.indexOf(trait2);
 									TraitHandler.attackEntityFrom.add(traitIndex, trait);
-								} else if(dep == "first") {
+								} else if(dep.equals("first")) {
 									ITrait trait2 = traits.get(dep);
 									TraitHandler.attackEntityFrom.addFirst(trait);
-								} else if(dep == "last") {
+								} else if(dep.equals("last")) {
 									ITrait trait2 = traits.get(dep);
 									TraitHandler.attackEntityFrom.addLast(trait);
 								}
@@ -157,10 +157,10 @@ public class TraitRegistry {
 									ITrait trait2 = traits.get(dep);
 									int traitIndex = TraitHandler.spawnEntityFromEgg.indexOf(trait2);
 									TraitHandler.spawnEntityFromEgg.add(traitIndex, trait);
-								} else if(dep == "first") {
+								} else if(dep.equals("first")) {
 									ITrait trait2 = traits.get(dep);
 									TraitHandler.spawnEntityFromEgg.addFirst(trait);
-								} else if(dep == "last") {
+								} else if(dep.equals("last")) {
 									ITrait trait2 = traits.get(dep);
 									TraitHandler.spawnEntityFromEgg.addLast(trait);
 								}
@@ -169,10 +169,10 @@ public class TraitRegistry {
 									ITrait trait2 = traits.get(dep);
 									int traitIndex = TraitHandler.playSoundAtEntity.indexOf(trait2);
 									TraitHandler.playSoundAtEntity.add(traitIndex, trait);
-								} else if(dep == "first") {
+								} else if(dep.equals("first")) {
 									ITrait trait2 = traits.get(dep);
 									TraitHandler.playSoundAtEntity.addFirst(trait);
-								} else if(dep == "last") {
+								} else if(dep.equals("last")) {
 									ITrait trait2 = traits.get(dep);
 									TraitHandler.playSoundAtEntity.addLast(trait);
 								}
@@ -181,10 +181,10 @@ public class TraitRegistry {
 									ITrait trait2 = traits.get(dep);
 									int traitIndex = TraitHandler.damageEntity.indexOf(trait2);
 									TraitHandler.damageEntity.add(traitIndex, trait);
-								} else if(dep == "first") {
+								} else if(dep.equals("first")) {
 									ITrait trait2 = traits.get(dep);
 									TraitHandler.damageEntity.addFirst(trait);
-								} else if(dep == "last") {
+								} else if(dep.equals("last")) {
 									ITrait trait2 = traits.get(dep);
 									TraitHandler.damageEntity.addLast(trait);
 								}
@@ -193,10 +193,10 @@ public class TraitRegistry {
 									ITrait trait2 = traits.get(dep);
 									int traitIndex = TraitHandler.updateAITick.indexOf(trait2);
 									TraitHandler.updateAITick.add(traitIndex, trait);
-								} else if(dep == "first") {
+								} else if(dep.equals("first")) {
 									ITrait trait2 = traits.get(dep);
 									TraitHandler.updateAITick.addFirst(trait);
-								} else if(dep == "last") {
+								} else if(dep.equals("last")) {
 									ITrait trait2 = traits.get(dep);
 									TraitHandler.updateAITick.addLast(trait);
 								}
@@ -205,7 +205,6 @@ public class TraitRegistry {
 					}
 				}
 			}
-			
 		}
 	}
 }

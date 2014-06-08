@@ -62,7 +62,7 @@ public class UtilBlock {
     public static void dropItemsFromTile(World world, int x, int y, int z) {
 
         TileEntity tileEntity = world.getTileEntity(x, y, z);
-        if(!(tileEntity instanceof IInventory) || CommonProxy.proxy.isRenderWorld(tileEntity.getWorldObj())) {
+        if(!(tileEntity instanceof IInventory) || CommonProxy.instance.isRenderWorld(tileEntity.getWorldObj())) {
             return;
         }
         IInventory inventory = (IInventory) tileEntity;
@@ -82,7 +82,7 @@ public class UtilBlock {
      */
     public static void dropItemsFromTile(World world, int x, int y, int z, int slot) {        
         TileEntity tileEntity = world.getTileEntity(x, y, z);
-        if(!(tileEntity instanceof IInventory) || CommonProxy.proxy.isRenderWorld(tileEntity.getWorldObj())) {
+        if(!(tileEntity instanceof IInventory) || CommonProxy.instance.isRenderWorld(tileEntity.getWorldObj())) {
             return;
         }
         IInventory inventory = (IInventory) tileEntity;

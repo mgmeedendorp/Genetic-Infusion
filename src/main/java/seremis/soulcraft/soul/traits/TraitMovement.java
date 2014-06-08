@@ -71,7 +71,7 @@ public class TraitMovement extends Trait {
         entity.setVariable("prevRotationYawHead", entity.getFloat("rotationYawHead"));
         entity.setVariable("prevCameraPitch", entity.getFloat("cameraPitch"));
 
-        if(CommonProxy.proxy.isServerWorld(entity.getWorld()) && entity.getWorld() instanceof WorldServer) {
+        if(CommonProxy.instance.isServerWorld(entity.getWorld()) && entity.getWorld() instanceof WorldServer) {
             entity.getWorld().theProfiler.startSection("portal");
             MinecraftServer minecraftserver = ((WorldServer) entity.getWorld()).func_73046_m();
 
@@ -139,7 +139,7 @@ public class TraitMovement extends Trait {
             entity.attackEntityFrom(DamageSource.inWall, 1.0F);
         }
 
-        if (isImmuneToFire || CommonProxy.proxy.isRenderWorld(entity.getWorld())) {
+        if (isImmuneToFire || CommonProxy.instance.isRenderWorld(entity.getWorld())) {
             UtilSoulEntity.extinguish(entity);
         }
         //entity.updatePotionEffects();
@@ -170,7 +170,7 @@ public class TraitMovement extends Trait {
             entity.setVariable("newPosRotationIncrements", newPosRotationIncrements-1);
             UtilSoulEntity.setPosition(entity, d0, d1, d2);
             UtilSoulEntity.setRotation(entity, rotationYaw, rotationPitch);
-        } else if (CommonProxy.proxy.isServerWorld(entity.getWorld())) {
+        } else if (CommonProxy.instance.isServerWorld(entity.getWorld())) {
         	entity.setPersistentVariable("motionX", entity.getPersistentDouble("motionX") * 0.98D);
         	entity.setPersistentVariable("motionY", entity.getPersistentDouble("motionY") * 0.98D);
         	entity.setPersistentVariable("motionZ", entity.getPersistentDouble("motionZ") * 0.98D);
@@ -211,7 +211,7 @@ public class TraitMovement extends Trait {
             entity.setVariable("moveStrafing", 0.0F);
             entity.setVariable("moveForward", 0.0F);
             entity.setVariable("randomYawVelocity", 0.0F);
-        } else if (CommonProxy.proxy.isRenderWorld(entity.getWorld())) {
+        } else if (CommonProxy.instance.isRenderWorld(entity.getWorld())) {
             if (hasAI) {
                 entity.getWorld().theProfiler.startSection("newAi");
                 this.updateAITasks(entity);
@@ -253,7 +253,7 @@ public class TraitMovement extends Trait {
         entity.getWorld().theProfiler.endSection();
         entity.getWorld().theProfiler.startSection("push");
 
-        if (CommonProxy.proxy.isServerWorld(entity.getWorld())) {
+        if (CommonProxy.instance.isServerWorld(entity.getWorld())) {
             this.collideWithNearbyEntities(entity);
         }
 

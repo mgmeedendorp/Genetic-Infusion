@@ -18,7 +18,7 @@ public class StructureBlockCrystalStand extends StructureBlock {
 
     @Override
     public boolean canFormStructure(StructureMap structureMap, World world, int x, int y, int z) {
-        if(CommonProxy.proxy.isServerWorld(world)) {
+        if(CommonProxy.instance.isServerWorld(world)) {
             TileEntity tile = world.getTileEntity(x, y, z);
 
             if(tile != null && tile instanceof TileCrystalStand) {

@@ -47,7 +47,7 @@ public class SCBlockContainerRotateable extends SCBlockContainer {
         if(!useTile) {
             world.setBlockMetadataWithNotify(x, y, z, direction - 2, 3);
         }
-        if(useTile && CommonProxy.proxy.isServerWorld(world)) {
+        if(useTile && CommonProxy.instance.isServerWorld(world)) {
             TileEntity tile = world.getTileEntity(x, y, z);
             if(tile != null && tile instanceof SCTile) {
                 ((SCTile) tile).setDirection(direction);

@@ -55,8 +55,6 @@ public class ChromosomeHandlerAttacked extends EntityEventHandler {
             entity.setAge(0);
             
             boolean isInvulnerable = ((AlleleBoolean)SoulHandler.getChromosomeFrom(entity, EnumChromosome.INVULNERABLE).getActive()).value;
-
-            System.out.println(source.damageType);
             
             if(isInvulnerable) {
                 return false;

@@ -25,7 +25,7 @@ public class BlockCrystalStand extends SCBlockContainer {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
         super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
-        if(CommonProxy.proxy.isRenderWorld(world)) {
+        if(CommonProxy.instance.isRenderWorld(world)) {
             return true;
         }
         TileCrystalStand tile = (TileCrystalStand) world.getTileEntity(x, y, z);
@@ -77,7 +77,7 @@ public class BlockCrystalStand extends SCBlockContainer {
     
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
-        if(CommonProxy.proxy.isServerWorld(world)) {
+        if(CommonProxy.instance.isServerWorld(world)) {
             Block id = world.getBlock(x, y-1, z);
             
             if(id.isAir(world, x, y-1, z) || !id.isBlockSolid(world, x, y-1, z, ForgeDirection.UP.ordinal())) {

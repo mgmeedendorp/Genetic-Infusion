@@ -20,7 +20,7 @@ public class GeneRareItemDropChances implements IGene {
 	@Override
 	public IChromosome getStandardForEntity(EntityLiving entity) {
 		if(entity instanceof EntityZombie) {
-			float[] array = new float[] {1, 1, 1};
+			float[] array = new float[] {0.33F, 0.33F, 0.33F};
 			return new Chromosome(new AlleleFloatArray(true, array), new AlleleFloatArray(false, array));
 		}
 		return null;

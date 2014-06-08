@@ -37,7 +37,7 @@ public class TraitItemPickup extends Trait {
 		boolean canPickUpItems = ((AlleleBoolean)GeneRegistry.getActiveFor(entity, Genes.GENE_PICKS_UP_ITEMS)).value;
 		boolean isDead = entity.getPersistentBoolean("isDead");
 
-        if (CommonProxy.proxy.isServerWorld(entity.getWorld()) && canPickUpItems && !isDead && entity.getWorld().getGameRules().getGameRuleBooleanValue("mobGriefing")) {
+        if (CommonProxy.instance.isServerWorld(entity.getWorld()) && canPickUpItems && !isDead && entity.getWorld().getGameRules().getGameRuleBooleanValue("mobGriefing")) {
             List list = entity.getWorld().getEntitiesWithinAABB(EntityItem.class, entity.getBoundingBox().expand(1.0D, 0.0D, 1.0D));
             Iterator iterator = list.iterator();
 
@@ -88,7 +88,7 @@ public class TraitItemPickup extends Trait {
                         	float equipmentDropChance = entity.getPersistentFloat("equipmentDropChances."+i);
                         	
                             if (itemstack1 != null && new Random().nextFloat() - 0.1F < equipmentDropChance) {
-                                ((EntityLiving)entity).entityDropItem(itemstack1, 0.0F);
+                                UtilSoulEntity.dropItem(entity, itemstack1, 0.0F);
                             }
 
                             if (itemstack.getItem() == Items.diamond && entityitem.func_145800_j() != null) {
@@ -135,7 +135,7 @@ public class TraitItemPickup extends Trait {
     }
 	
 	public void onItemPickup(IEntitySoulCustom entity, Entity ent, int stackSize) {
-        if (!ent.isDead && !entity.getWorld().isRemote) {
+        if (!ent.isDead && CommonProxy.instance.isServerWorld(entity.getWorld())) {
             EntityTracker entitytracker = ((WorldServer)entity.getWorld()).getEntityTracker();
 
             if (ent instanceof EntityItem) {

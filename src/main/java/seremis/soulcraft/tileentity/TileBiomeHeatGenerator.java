@@ -19,7 +19,7 @@ public class TileBiomeHeatGenerator extends SCTileMagnetConnector {
     
     @Override
     public void updateEntity() {
-        if(CommonProxy.proxy.isRenderWorld(worldObj)) {
+        if(CommonProxy.instance.isRenderWorld(worldObj)) {
             return;
         }
         getCurrentBiome();

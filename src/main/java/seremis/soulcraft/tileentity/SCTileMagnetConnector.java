@@ -64,7 +64,7 @@ public abstract class SCTileMagnetConnector extends TileMagnetConnector {
     }
 
     public void sendTileDataToServer(int id, byte[] data) {
-        if(CommonProxy.proxy.isRenderWorld(worldObj)) {
+        if(CommonProxy.instance.isRenderWorld(worldObj)) {
             SoulCraft.packetPipeline.sendToServer(new PacketTileData(data, id, this.xCoord, this.yCoord, this.zCoord));
         } else {
             setTileDataFromClient(id, data);
@@ -76,7 +76,7 @@ public abstract class SCTileMagnetConnector extends TileMagnetConnector {
     }
 
     public void sendTileDataToClient(int id, byte[] data) {
-        if(CommonProxy.proxy.isServerWorld(worldObj)) {
+        if(CommonProxy.instance.isServerWorld(worldObj)) {
             SoulCraft.packetPipeline.sendToAllAround(new PacketTileData(data, id, xCoord, yCoord, zCoord), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 128));
         } else {
             setTileDataFromServer(id, data);

@@ -10,7 +10,7 @@ import cpw.mods.fml.common.SidedProxy;
 public class CommonProxy {
 
     @SidedProxy(clientSide = Localizations.LOC_CLIENTPROXY, serverSide = Localizations.LOC_COMMONPROXY)
-    public static CommonProxy proxy;
+    public static CommonProxy instance;
 
     public void registerRendering() {}// client only
 

@@ -76,7 +76,7 @@ public class TraitAttacked extends Trait {
 		if (ForgeHooks.onLivingAttack((EntityLivingBase) entity, source, damage)) return false;
         if (((EntityLiving)entity).isEntityInvulnerable()) {
             return false;
-        } else if (CommonProxy.proxy.isRenderWorld(entity.getWorld())) {
+        } else if (CommonProxy.instance.isRenderWorld(entity.getWorld())) {
             return false;
         } else {
             entity.setVariable("entityAge", 0);
@@ -171,6 +171,8 @@ public class TraitAttacked extends Trait {
                 float soundVolume = ((AlleleFloat)GeneRegistry.getActiveFor(entity, Genes.GENE_SOUND_VOLUME)).value;
                 float soundPitch = ((EntityLiving)entity).isChild() ? (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.5F : (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F;
 
+                health = entity.getPersistentFloat("health");
+                
                 if (health <= 0.0F) {
                 	String deathSound =((AlleleString)GeneRegistry.getActiveFor(entity, Genes.GENE_DEATH_SOUND)).value;
                     sound = deathSound;
@@ -202,8 +204,6 @@ public class TraitAttacked extends Trait {
 			float health = entity.getPersistentFloat("health");
 			float absorptionAmount = entity.getPersistentFloat("absorptionAmount");
 			
-			 System.out.println(damage);
-			
             damage = ForgeHooks.onLivingHurt((EntityLivingBase) entity, source, damage);
             if (damage <= 0) return;
             damage = UtilSoulEntity.applyArmorCalculations(entity, source, damage);
@@ -211,8 +211,6 @@ public class TraitAttacked extends Trait {
             float f1 = damage;
             damage = Math.max(damage - absorptionAmount, 0.0F);
             entity.setPersistentVariable("absorptionAmount", Math.max(absorptionAmount - (f1 - damage), 0.0F));
-
-            System.out.println(damage);
             
             if (damage != 0.0F) {
                 float f2 = health;
@@ -222,5 +220,24 @@ public class TraitAttacked extends Trait {
             }
             
         }
+	}
+	
+	@Override
+	public void onDeath(IEntitySoulCustom entity, DamageSource source) {
+		if (ForgeHooks.onLivingDeath((EntityLiving)entity, source)) return;
+        Entity ent = source.getEntity();
+        EntityLivingBase entitylivingbase = ((EntityLiving)entity).func_94060_bK();
+
+        int scoreValue = entity.getInteger("scoreValue");
+        
+        if (scoreValue >= 0 && entitylivingbase != null) {
+            entitylivingbase.addToPlayerScore((Entity) entity, scoreValue);
+        }
+
+        if (ent != null) {
+            ent.onKillEntity((EntityLiving) entity);
+        }
+
+        entity.setPersistentVariable("isDead", true);
 	}
 }

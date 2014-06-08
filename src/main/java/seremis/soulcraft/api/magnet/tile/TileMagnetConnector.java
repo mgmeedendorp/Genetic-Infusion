@@ -24,7 +24,7 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
     @Override
     public void updateEntity() {
         super.updateEntity();
-        if(CommonProxy.proxy.isRenderWorld(worldObj)) {
+        if(CommonProxy.instance.isRenderWorld(worldObj)) {
             return;
         }
         currTime++;

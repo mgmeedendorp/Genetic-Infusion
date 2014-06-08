@@ -14,7 +14,7 @@ public class DamageCompressor extends DamageSource {
 
     @Override
     public IChatComponent func_151519_b(EntityLivingBase entity) {
-        return new ChatComponentText(CommonProxy.proxy.playerName() + " was compressed in an Atomic Compressor.");
+        return new ChatComponentText(CommonProxy.instance.playerName() + " was compressed in an Atomic Compressor.");
     }
 
 }

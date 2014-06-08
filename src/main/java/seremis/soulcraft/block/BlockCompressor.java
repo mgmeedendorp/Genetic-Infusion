@@ -89,14 +89,14 @@ public class BlockCompressor extends SCBlockContainer {
 
     @Override
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-        if(CommonProxy.proxy.isRenderWorld(world)) {
+        if(CommonProxy.instance.isRenderWorld(world)) {
             return;
         }
         TileCompressor tile = (TileCompressor) world.getTileEntity(x, y, z);
         if(tile != null && entity instanceof EntityItem) {
             if(((EntityItem) entity).getEntityItem().isItemEqual(new ItemStack(ModItems.crystalShard))) {
                 if(tile.setInventorySlot(0, ((EntityItem) entity).getEntityItem())) {
-                    CommonProxy.proxy.removeEntity(entity);
+                    CommonProxy.instance.removeEntity(entity);
                 }
             }
         } else if(entity instanceof EntityLiving) {
@@ -107,7 +107,7 @@ public class BlockCompressor extends SCBlockContainer {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
         TileCompressor tile = (TileCompressor) world.getTileEntity(x, y, z);
-        if(tile == null || CommonProxy.proxy.isRenderWorld(world)) {
+        if(tile == null || CommonProxy.instance.isRenderWorld(world)) {
             return true;
         }
         ItemStack cont = tile.getStackInSlot(0);
@@ -186,7 +186,7 @@ public class BlockCompressor extends SCBlockContainer {
 
     @Override
     public void updateTick(World world, int x, int y, int z, Random random) {
-        if(CommonProxy.proxy.isServerWorld(world) && (world.isBlockIndirectlyGettingPowered(x, y, z) || world.isBlockIndirectlyGettingPowered(x, y + 1, z))) {
+        if(CommonProxy.instance.isServerWorld(world) && (world.isBlockIndirectlyGettingPowered(x, y, z) || world.isBlockIndirectlyGettingPowered(x, y + 1, z))) {
             dispense(world, x, y, z, random, 64);
         }
     }

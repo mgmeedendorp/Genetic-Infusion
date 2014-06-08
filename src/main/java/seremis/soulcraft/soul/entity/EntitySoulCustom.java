@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.entity.DataWatcher;
@@ -166,6 +167,13 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     @Override
     public void setFlag(int id, boolean value) {
         super.setFlag(id, value);
+    }
+    
+    Random rand = new Random();
+    
+    @Override
+    public Random getRandom() {
+    	return rand;
     }
     
     //Syncing variables//
@@ -482,7 +490,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     
     private float syncAttackedAtYaw;
     private int syncFire, syncFireResistance;
-    public boolean syncInWater, syncOnGround, syncIsInWeb, syncIsDead, syncIsAirBorne, syncPreventEntitySpawning, syncForceSpawn, syncNoClip, syncInvulnerable, syncIsJumping;
+    public boolean syncInWater, syncOnGround, syncIsInWeb, syncIsDead, syncIsAirBorne, syncPreventEntitySpawning, syncForceSpawn, syncNoClip, syncInvulnerable, syncIsJumping, syncIsChild;
     
     private void syncEnvironment() {
     	if(syncFire != getFire()) {
@@ -924,7 +932,8 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     		captureDrops = getBoolean("captureDrops");
     		syncCaptureDrops = captureDrops;
     	}
-       	for(int i = 0; i < capturedDrops.size(); i++) {
+       	System.out.println(getPersistentItemStackArrayLength("capturedDrops"));
+       	for(int i = 0; i < Math.max(capturedDrops.size(), getPersistentItemStackArrayLength("capturedDrops")); i++) {
        		if(syncCapturedDrops.get(i) != capturedDrops.get(i)) {
        			persistentItemStack.put("capturedDrops." + i, capturedDrops.get(i).getEntityItem());
        			syncCapturedDrops.add(i, capturedDrops.get(i));
@@ -933,6 +942,8 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
        			syncCapturedDrops.add(i, capturedDrops.get(i));
        		}
        	}
+       	//TODO debug this more (not doing size things correctly)
+       	persistentInteger.put("capturedDrops.size", Math.max(capturedDrops.size(), getPersistentItemStackArrayLength("capturedDrops")));
        	for(int i = 0; i < getLastActiveItems().length; i++) {
        		if(syncEquipment[i] != getLastActiveItems()[i]) {
        			persistentItemStack.put("equipment." + i, getLastActiveItems()[i]);
@@ -1126,6 +1137,36 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     	}
     }
     
+    private int getVariableItemStackArrayLength(String name) {
+    	if(variableItemStack.contains(name + ".0")) {
+    		int length = 0;
+    		boolean keepGoing = true;
+    		while(keepGoing) {
+    			if(variableItemStack.contains(name + "." + length)) {
+    				length++;
+    			} else {
+    				keepGoing = false;
+    			}
+    		}
+    	}
+    	return 0;
+    }
+    
+    private int getPersistentItemStackArrayLength(String name) {
+    	if(persistentItemStack.contains(name + ".0")) {
+    		int length = 0;
+    		boolean keepGoing = true;
+    		while(keepGoing) {
+    			if(persistentItemStack.contains(name + "." + length)) {
+    				length++;
+    			} else {
+    				keepGoing = false;
+    			}
+    		}
+    	}
+    	return 0;
+    }
+    
     //Change private variables//
     private int getFire() {
         int fire = 0;
@@ -1285,6 +1326,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
         
         if(firstTick) {
         	TraitHandler.entityInit(this);
+        	firstTick = false;
             ObfuscationReflectionHelper.setPrivateValue(Entity.class, this, false, "firstUpdate", "field_70151_c");
         }
         
@@ -1300,7 +1342,6 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
         }
         
         TraitHandler.entityDeath(this, source);
-        worldObj.setEntityState(this, (byte)3);
     }
     
     @Override
@@ -1642,6 +1683,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
 	            }
 	        }
     	}
+    	System.out.println("setPersistent "+variable + " name " + name);
     	if(variable != null)
     		persistentItemStack.put(name, variable);
     }
