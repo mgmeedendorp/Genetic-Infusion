@@ -19,6 +19,7 @@ import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.attributes.BaseAttributeMap;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,6 +33,7 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.Constants;
 import seremis.soulcraft.api.soul.IEntitySoulCustom;
 import seremis.soulcraft.api.soul.TraitHandler;
+import seremis.soulcraft.core.proxy.CommonProxy;
 import seremis.soulcraft.entity.SCEntityLiving;
 import seremis.soulcraft.item.ModItems;
 import seremis.soulcraft.soul.Soul;
@@ -251,26 +253,28 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     		prevPosZ = getDouble("prevPosZ");
     		syncPrevPosZ = prevPosZ;
     	}
-    	if(syncServerPosX != serverPosX) {
-    		variableInteger.put("serverPosX", serverPosX);
-    		syncServerPosX = serverPosX;
-    	} else if(syncServerPosX != getInteger("serverPosX")) {
-    		serverPosX = getInteger("serverPosX");
-    		syncServerPosX = serverPosX;
-    	}
-    	if(syncServerPosY != serverPosY) {
-    		variableInteger.put("serverPosY", serverPosY);
-    		syncServerPosY = serverPosY;
-    	} else if(syncServerPosY != getInteger("serverPosY")) {
-    		serverPosY = getInteger("serverPosY");
-    		syncServerPosY = serverPosY;
-    	}
-    	if(syncServerPosZ != serverPosZ) {
-    		variableInteger.put("serverPosZ", serverPosZ);
-    		syncServerPosZ = serverPosZ;
-    	} else if(syncServerPosZ != getInteger("serverPosZ")) {
-    		serverPosZ = getInteger("serverPosZ");
-    		syncServerPosZ = serverPosZ;
+    	if(CommonProxy.instance.isRenderWorld(worldObj)) {
+	    	if(syncServerPosX != serverPosX) {
+	    		variableInteger.put("serverPosX", serverPosX);
+	    		syncServerPosX = serverPosX;
+	    	} else if(syncServerPosX != getInteger("serverPosX")) {
+	    		serverPosX = getInteger("serverPosX");
+	    		syncServerPosX = serverPosX;
+	    	}
+	    	if(syncServerPosY != serverPosY) {
+	    		variableInteger.put("serverPosY", serverPosY);
+	    		syncServerPosY = serverPosY;
+	    	} else if(syncServerPosY != getInteger("serverPosY")) {
+	    		serverPosY = getInteger("serverPosY");
+	    		syncServerPosY = serverPosY;
+	    	}
+	    	if(syncServerPosZ != serverPosZ) {
+	    		variableInteger.put("serverPosZ", serverPosZ);
+	    		syncServerPosZ = serverPosZ;
+	    	} else if(syncServerPosZ != getInteger("serverPosZ")) {
+	    		serverPosZ = getInteger("serverPosZ");
+	    		syncServerPosZ = serverPosZ;
+	    	}
     	}
     	if(syncLastTickPosX != lastTickPosX) {
     		variableDouble.put("lastTickPosX", lastTickPosX);
@@ -921,7 +925,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     
     private float[] syncEquipmentDropChances = new float[5];
     private boolean syncCaptureDrops, syncCanPickUpLoot;
-    private List<EntityItem> syncCapturedDrops;
+    private ArrayList<EntityItem> syncCapturedDrops = new ArrayList<EntityItem>();
     private ItemStack[] syncEquipment = new ItemStack[5];
     
     private void syncInventory() {
@@ -932,17 +936,30 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     		captureDrops = getBoolean("captureDrops");
     		syncCaptureDrops = captureDrops;
     	}
-       	System.out.println(getPersistentItemStackArrayLength("capturedDrops"));
+       	if(syncCapturedDrops.size() != capturedDrops.size() || syncCapturedDrops.size() != getPersistentItemStackArrayLength("capturedDrops")) {
+       		int max = Math.max(capturedDrops.size(), getPersistentItemStackArrayLength("capturedDrops"));
+       		if(max > capturedDrops.size()) {
+       			int diff = max - capturedDrops.size();
+       			for(int i = 0; i < diff; i++) {
+       				syncCapturedDrops.add(null);
+       				capturedDrops.add(null);
+       			}
+       		} else if(max > getPersistentItemStackArrayLength("capturedDrops")) {
+       			int diff = max - getPersistentItemStackArrayLength("capturedDrops");
+       			for(int i = 0; i < diff; i++) {
+       				syncCapturedDrops.add(null);
+       			}
+       		}
+       	}
        	for(int i = 0; i < Math.max(capturedDrops.size(), getPersistentItemStackArrayLength("capturedDrops")); i++) {
        		if(syncCapturedDrops.get(i) != capturedDrops.get(i)) {
-       			persistentItemStack.put("capturedDrops." + i, capturedDrops.get(i).getEntityItem());
+       			persistentItemStack.put("capturedDrops." + i, capturedDrops.get(i) != null ? capturedDrops.get(i).getEntityItem() : null);
        			syncCapturedDrops.add(i, capturedDrops.get(i));
-       		} else if(syncCapturedDrops.get(i).getEntityItem() != getPersistentItemStack("capturedDrops." + i)) {
+       		} else if(syncCapturedDrops.get(i) != null && syncCapturedDrops.get(i).getEntityItem() != getPersistentItemStack("capturedDrops." + i)) {
        			capturedDrops.add(i, new EntityItem(worldObj, posX, posY, posZ, getPersistentItemStack("capturedDrops." + i)));
        			syncCapturedDrops.add(i, capturedDrops.get(i));
        		}
        	}
-       	//TODO debug this more (not doing size things correctly)
        	persistentInteger.put("capturedDrops.size", Math.max(capturedDrops.size(), getPersistentItemStackArrayLength("capturedDrops")));
        	for(int i = 0; i < getLastActiveItems().length; i++) {
        		if(syncEquipment[i] != getLastActiveItems()[i]) {
@@ -1148,21 +1165,23 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     				keepGoing = false;
     			}
     		}
+    		return length;
     	}
     	return 0;
     }
     
     private int getPersistentItemStackArrayLength(String name) {
-    	if(persistentItemStack.contains(name + ".0")) {
+    	if(persistentItemStack.containsKey(name + ".0")) {
     		int length = 0;
     		boolean keepGoing = true;
     		while(keepGoing) {
-    			if(persistentItemStack.contains(name + "." + length)) {
+    			if(persistentItemStack.containsKey(name + "." + length)) {
     				length++;
     			} else {
     				keepGoing = false;
     			}
     		}
+    		return length;
     	}
     	return 0;
     }
@@ -1326,11 +1345,12 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
         
         if(firstTick) {
         	TraitHandler.entityInit(this);
-        	firstTick = false;
             ObfuscationReflectionHelper.setPrivateValue(Entity.class, this, false, "firstUpdate", "field_70151_c");
         }
         
         TraitHandler.entityUpdate(this);
+        if(firstTick)
+        	firstTick = false;
     }
     
     @Override
@@ -1604,86 +1624,37 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     
     @Override
     public void setPersistentVariable(String name, boolean variable) {
-    	if(!persistentBoolean.isEmpty()) {
-	        for(String string : persistentBoolean.keySet()) {
-	            if(string.equals(name)) {
-	                persistentBoolean.remove(name);
-	            }
-	        }
-    	}
         persistentBoolean.put(name, variable);
     }
 
     @Override
     public void setPersistentVariable(String name, byte variable) {
-    	if(!persistentByte.isEmpty()) {
-	        for(String string : persistentByte.keySet()) {
-	            if(string.equals(name)) {
-	                persistentByte.remove(name);
-	            }
-	        }
-    	}
         persistentByte.put(name, variable);
     }
 
     @Override
     public void setPersistentVariable(String name, int variable) {
-    	if(!persistentInteger.isEmpty()) {
-	        for(String string : persistentInteger.keySet()) {
-	            if(string.equals(name)) {
-	                persistentInteger.remove(name);
-	            }
-	        }
-    	}
         persistentInteger.put(name, variable);
     }
 
     @Override
     public void setPersistentVariable(String name, float variable) {
-    	if(!persistentFloat.isEmpty()) {
-	        for(String string : persistentFloat.keySet()) {
-	            if(string.equals(name)) {
-	                persistentFloat.remove(name);
-	            }
-	        }
-    	}
         persistentFloat.put(name, variable);        
     }
 
     @Override
     public void setPersistentVariable(String name, double variable) {
-    	if(!persistentDouble.isEmpty()) {
-	        for(String string : persistentDouble.keySet()) {
-	            if(string.equals(name)) {
-	                persistentDouble.remove(name);
-	            }
-	        }
-    	}
     	persistentDouble.put(name, variable);
     }
 
     @Override
     public void setPersistentVariable(String name, String variable) {
-    	if(!persistentString.isEmpty()) {
-	        for(String string : persistentString.keySet()) {
-	            if(string.equals(name)) {
-	                persistentString.remove(name);
-	            }
-	        }
-    	}
     	persistentString.put(name, variable);
     }
     
     @Override
     public void setPersistentVariable(String name, ItemStack variable) {
-    	if(!persistentItemStack.isEmpty()) {
-	        for(String string : persistentItemStack.keySet()) {
-	            if(string.equals(name)) {
-	                persistentItemStack.remove(name);
-	            }
-	        }
-    	}
-    	System.out.println("setPersistent "+variable + " name " + name);
+    	persistentItemStack.remove(name);
     	if(variable != null)
     		persistentItemStack.put(name, variable);
     }
@@ -1725,85 +1696,36 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
 
     @Override
     public void setVariable(String name, boolean variable) {
-    	if(!variableBoolean.isEmpty()) {
-	        for(String string : variableBoolean.keySet()) {
-	            if(string.equals(name)) {
-	                variableBoolean.remove(name);
-	            }
-	        }	
-    	}
         variableBoolean.put(name, variable);
     }
 
     @Override
     public void setVariable(String name, byte variable) {
-    	if(!variableByte.isEmpty()) {
-	        for(String string : variableByte.keySet()) {
-	            if(string.equals(name)) {
-	                persistentByte.remove(name);
-	            }
-	        }
-    	}
         persistentByte.put(name, variable);
     }
 
     @Override
     public void setVariable(String name, int variable) {
-    	if(!variableInteger.isEmpty()) {
-	        for(String string : variableInteger.keySet()) {
-	            if(string.equals(name)) {
-	                variableInteger.remove(name);
-	            }
-	        }
-    	}
         variableInteger.put(name, variable);
     }
 
     @Override
     public void setVariable(String name, float variable) {
-    	if(variableFloat.isEmpty()) {
-	        for(String string : variableFloat.keySet()) {
-	            if(string.equals(name)) {
-	                variableFloat.remove(name);
-	            }
-	        }
-    	}
         variableFloat.put(name, variable);        
     }
 
     @Override
     public void setVariable(String name, double variable) {
-    	if(!variableDouble.isEmpty()) {
-	        for(String string : variableDouble.keySet()) {
-	            if(string.equals(name)) {
-	                variableDouble.remove(name);
-	            }
-	        }
-    	}
         variableDouble.put(name, variable);
     }
 
     @Override
     public void setVariable(String name, String variable) {
-    	if(!variableString.isEmpty()) {
-	        for(String string : variableString.keySet()) {
-	            if(string.equals(name)) {
-	                variableString.remove(name);
-	            }
-	        }
-    	}
         variableString.put(name, variable);
     }
     
     @Override
     public void setVariable(String name, ItemStack variable) {
-    	if(variableItemStack.isEmpty()) {
-	        for(String string : variableItemStack.keySet()) {
-	            if(string.equals(name)) {
-	                variableItemStack.remove(name);
-	            }
-	        }
-    	}
         variableItemStack.put(name, variable);
     }
 

@@ -252,7 +252,6 @@ public class UtilSoulEntity {
             } else {
                 entity.getWorld().spawnEntityInWorld(entityitem);
             }
-            System.out.println("getPersistent " + entity.getItemStack("capturedDrops."+entity.getPersistentInteger("captureDrops.size"))+ " name " + "capturedDrops."+entity.getPersistentInteger("captureDrops.size"));
             return entityitem;
         } else {
             return null;

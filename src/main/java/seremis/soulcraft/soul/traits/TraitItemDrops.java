@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -34,7 +35,7 @@ public class TraitItemDrops extends Trait {
             if (entity instanceof EntityPlayer) {
                 i = EnchantmentHelper.getLootingModifier((EntityLivingBase)entity);
             }
-
+            
             entity.setVariable("captureDrops", true);
 
             int capturedDropsSize = entity.getPersistentInteger("capturedDrops.size");
@@ -59,7 +60,7 @@ public class TraitItemDrops extends Trait {
                     }
                 }
             }
-
+            
             entity.setVariable("captureDrops", false);
 
             ArrayList<EntityItem> capturedDrops = new ArrayList<EntityItem>();
@@ -67,13 +68,20 @@ public class TraitItemDrops extends Trait {
             double posY = entity.getPersistentDouble("posY");
             double posZ = entity.getPersistentDouble("posZ");
             
+            entity.setPersistentVariable("equipment.0", new ItemStack(Blocks.brewing_stand));
+            
+            entity.forceVariableSync();
+            
             capturedDropsSize = entity.getPersistentInteger("capturedDrops.size");
             
             System.out.println(entity.getItemStack("capturedDrops.0"));
             
             for(int k = 0; k < capturedDropsSize; k++) {
-            	capturedDrops.add(new EntityItem(entity.getWorld(), posX, posY, posZ, entity.getItemStack("capturedDrops."+k)));
+            	if(entity.getItemStack("capturedDrops."+k) != null)
+            		capturedDrops.add(new EntityItem(entity.getWorld(), posX, posY, posZ, entity.getItemStack("capturedDrops."+k)));
             }
+            
+            System.out.println("af" + capturedDrops.size());
             
             if (!ForgeHooks.onLivingDrops((EntityLiving)entity, source, capturedDrops, i, recentlyHit > 0, j)) {
                 for (EntityItem item : capturedDrops) {
