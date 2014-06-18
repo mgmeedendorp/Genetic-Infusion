@@ -1,25 +1,14 @@
 package seremis.soulcraft.soul.entity;
 
+import cpw.mods.fml.common.ObfuscationReflectionHelper;
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import io.netty.buffer.ByteBuf;
-
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
-
-import net.minecraft.entity.DataWatcher;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.attributes.BaseAttributeMap;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,9 +26,14 @@ import seremis.soulcraft.core.proxy.CommonProxy;
 import seremis.soulcraft.entity.SCEntityLiving;
 import seremis.soulcraft.item.ModItems;
 import seremis.soulcraft.soul.Soul;
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
-import cpw.mods.fml.relauncher.ReflectionHelper;
+
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCustom, IEntityAdditionalSpawnData {
     
@@ -62,7 +56,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
         NBTTagCompound compound = new NBTTagCompound();
         writeToNBT(compound);
         
-        byte[] abyte = null;
+        byte[] abyte;
         try {
             abyte = CompressedStreamTools.compress(compound);
         } catch(IOException e) {
@@ -122,7 +116,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     public HashMap<Integer, PotionEffect> getActivePotionsMap() {
     	HashMap<Integer, PotionEffect> var = new HashMap<Integer, PotionEffect>();
         try {
-            Field field = ReflectionHelper.findField(Entity.class, new String[] {"activePotionsMap", "field_70147_f"});
+            Field field = ReflectionHelper.findField(Entity.class, "activePotionsMap", "field_70147_f");
             field.setAccessible(true);
             var = (HashMap<Integer, PotionEffect>) field.get(this);
             field.setAccessible(false);
@@ -151,7 +145,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
 	public NBTTagCompound getLeashedCompound() {
 		NBTTagCompound var = new NBTTagCompound();
         try {
-            Field field = ReflectionHelper.findField(Entity.class, new String[] {"field_110170_bx", "field_110170_bx"});
+            Field field = ReflectionHelper.findField(Entity.class, "field_110170_bx", "field_110170_bx");
             field.setAccessible(true);
             var = (NBTTagCompound) field.get(this);
             field.setAccessible(false);
@@ -177,7 +171,12 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     public Random getRandom() {
     	return rand;
     }
-    
+
+    @Override
+    public boolean isChild() {
+        return isChild;
+    }
+
     //Syncing variables//
     
     private int syncTicksExisted;
@@ -197,6 +196,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     	syncRiding();
     	syncHealth();
     	syncAttack();
+        syncSound();
     	
     	if(syncTicksExisted != ticksExisted) {
     		persistentInteger.put("ticksExisted", ticksExisted);
@@ -494,8 +494,10 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     
     private float syncAttackedAtYaw;
     private int syncFire, syncFireResistance;
-    public boolean syncInWater, syncOnGround, syncIsInWeb, syncIsDead, syncIsAirBorne, syncPreventEntitySpawning, syncForceSpawn, syncNoClip, syncInvulnerable, syncIsJumping, syncIsChild;
-    
+    private boolean syncInWater, syncOnGround, syncIsInWeb, syncIsDead, syncIsAirBorne, syncPreventEntitySpawning, syncForceSpawn, syncNoClip, syncInvulnerable, syncIsJumping, syncIsChild;
+
+    private boolean isChild;
+
     private void syncEnvironment() {
     	if(syncFire != getFire()) {
     		persistentInteger.put("fire", getFire());
@@ -588,6 +590,20 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     		isJumping = getBoolean("isJumping");
     		syncIsJumping = isJumping;
     	}
+        if(syncInPortal != inPortal) {
+            variableBoolean.put("inPortal", inPortal);
+            syncInPortal = inPortal;
+        } else if(syncInPortal != getBoolean("inPortal")) {
+            inPortal = getBoolean("inPortal");
+            syncInPortal = inPortal;
+        }
+        if(syncIsChild != isChild) {
+            variableBoolean.put("isChild", isChild);
+            syncIsChild = isChild;
+        } else if(syncIsChild != getBoolean("isChild")) {
+            isChild = getBoolean("isChild");
+            syncIsChild = isChild;
+        }
     }
     
     private boolean syncAddedToChunk, syncPersistenceRequired;
@@ -955,14 +971,20 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
        		if(syncCapturedDrops.get(i) != capturedDrops.get(i)) {
        			persistentItemStack.put("capturedDrops." + i, capturedDrops.get(i) != null ? capturedDrops.get(i).getEntityItem() : null);
        			syncCapturedDrops.add(i, capturedDrops.get(i));
-       		} else if(syncCapturedDrops.get(i) != null && syncCapturedDrops.get(i).getEntityItem() != getPersistentItemStack("capturedDrops." + i)) {
-       			capturedDrops.add(i, new EntityItem(worldObj, posX, posY, posZ, getPersistentItemStack("capturedDrops." + i)));
-       			syncCapturedDrops.add(i, capturedDrops.get(i));
+       		} else if(syncCapturedDrops.get(i) == null && getPersistentItemStack("capturedDrops."+i) != null || syncCapturedDrops.get(i) != null && !syncCapturedDrops.get(i).getEntityItem().isItemEqual(getPersistentItemStack("capturedDrops."+i))) {
+                if(getPersistentItemStack("capturedDrops."+i) != null) {
+                    capturedDrops.add(i, new EntityItem(worldObj, posX, posY, posZ, getPersistentItemStack("capturedDrops." + i)));
+                    syncCapturedDrops.add(i, capturedDrops.get(i));
+                } else {
+                    capturedDrops.remove(i);
+                    syncCapturedDrops.remove(i);
+                }
        		}
        	}
-       	persistentInteger.put("capturedDrops.size", Math.max(capturedDrops.size(), getPersistentItemStackArrayLength("capturedDrops")));
+        persistentInteger.put("capturedDrops.size", Math.max(capturedDrops.size(), getPersistentItemStackArrayLength("capturedDrops")));
        	for(int i = 0; i < getLastActiveItems().length; i++) {
        		if(syncEquipment[i] != getLastActiveItems()[i]) {
+                System.out.println(getLastActiveItems()[i]);
        			persistentItemStack.put("equipment." + i, getLastActiveItems()[i]);
        			syncEquipment[i] = getLastActiveItems()[i];
        		} else if(syncEquipment[i] != getPersistentItemStack("equipment." + i)) {
@@ -1095,7 +1117,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     		variableInteger.put("lastAttackerID", getLastAttacker().getEntityId());
     		syncLastAttacker = getLastAttacker();
     	} else if(syncLastAttacker != worldObj.getEntityByID(getInteger("lastAttackerID")) && getInteger("lastAttackerID") != 0) {
-    		setLastAttacker((EntityLivingBase) worldObj.getEntityByID(getInteger("lastAttackerID")));
+    		setLastAttacker(worldObj.getEntityByID(getInteger("lastAttackerID")));
     		syncLastAttacker = getLastAttacker();
     	}
        	if(syncLastAttackerTime != getLastAttackerTime()) {
@@ -1155,11 +1177,11 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     }
     
     private int getVariableItemStackArrayLength(String name) {
-    	if(variableItemStack.contains(name + ".0")) {
+    	if(variableItemStack.contains(name + ".0") && variableItemStack.get(name + ".0") != null) {
     		int length = 0;
     		boolean keepGoing = true;
     		while(keepGoing) {
-    			if(variableItemStack.contains(name + "." + length)) {
+    			if(variableItemStack.contains(name + "." + length) && variableItemStack.get(name + "." + length) != null) {
     				length++;
     			} else {
     				keepGoing = false;
@@ -1171,11 +1193,11 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     }
     
     private int getPersistentItemStackArrayLength(String name) {
-    	if(persistentItemStack.containsKey(name + ".0")) {
+    	if(persistentItemStack.containsKey(name + ".0") && persistentItemStack.get(name + ".0") != null) {
     		int length = 0;
     		boolean keepGoing = true;
     		while(keepGoing) {
-    			if(persistentItemStack.containsKey(name + "." + length)) {
+    			if(persistentItemStack.containsKey(name + "." + length) && persistentItemStack.get(name + "." + length) != null) {
     				length++;
     			} else {
     				keepGoing = false;
@@ -1190,7 +1212,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     private int getFire() {
         int fire = 0;
         try {
-            Field onFire = ReflectionHelper.findField(Entity.class, new String[] {"fire", "field_70151_c"});
+            Field onFire = ReflectionHelper.findField(Entity.class, "fire", "field_70151_c");
             onFire.setAccessible(true);
             fire = onFire.getInt(this);
             onFire.setAccessible(false);
@@ -1207,7 +1229,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     private double getEntityRiderPitchDelta() {
         double var = 0;
         try {
-            Field field = ReflectionHelper.findField(Entity.class, new String[] {"entityRiderPitchDelta", "field_70149_e"});
+            Field field = ReflectionHelper.findField(Entity.class, "entityRiderPitchDelta", "field_70149_e");
             field.setAccessible(true);
             var = field.getDouble(this);
             field.setAccessible(false);
@@ -1220,7 +1242,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     private double getEntityRiderYawDelta() {
         double var = 0;
         try {
-            Field field = ReflectionHelper.findField(Entity.class, new String[] {"entityRiderYawDelta", "field_70147_f"});
+            Field field = ReflectionHelper.findField(Entity.class, "entityRiderYawDelta", "field_70147_f");
             field.setAccessible(true);
             var = field.getDouble(this);
             field.setAccessible(false);
@@ -1232,7 +1254,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     
     private void setEntityRiderPitchDelta(double value) {
         try {
-            Field field = ReflectionHelper.findField(Entity.class, new String[] {"entityRiderPitchDelta", "field_70149_e"});
+            Field field = ReflectionHelper.findField(Entity.class, "entityRiderPitchDelta", "field_70149_e");
             field.setAccessible(true);
             field.setDouble(this, value);
             field.setAccessible(false);
@@ -1243,7 +1265,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     
     private void setEntityRiderYawDelta(double value) {
         try {
-            Field field = ReflectionHelper.findField(Entity.class, new String[] {"entityRiderYawDelta", "field_70147_f"});
+            Field field = ReflectionHelper.findField(Entity.class, "entityRiderYawDelta", "field_70147_f");
             field.setAccessible(true);
             field.setDouble(this, value);
             field.setAccessible(false);
@@ -1254,7 +1276,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     
     private void setInvulnerable(boolean value) {
         try {
-            Field field = ReflectionHelper.findField(Entity.class, new String[] {"invulnerable", "field_83001_bt"});
+            Field field = ReflectionHelper.findField(Entity.class, "invulnerable", "field_83001_bt");
             field.setAccessible(true);
             field.setBoolean(this, value);
             field.setAccessible(false);
@@ -1265,7 +1287,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     
     private void setLastAttackerTime(int value) {
         try {
-            Field field = ReflectionHelper.findField(Entity.class, new String[] {"lastAttackerTime", "field_142016_bo"});
+            Field field = ReflectionHelper.findField(Entity.class, "lastAttackerTime", "field_142016_bo");
             field.setAccessible(true);
             field.setInt(this, value);
             field.setAccessible(false);
@@ -1277,7 +1299,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     private float getLandMovementFactor() {
         int value = 0;
         try {
-            Field field = ReflectionHelper.findField(Entity.class, new String[] {"landMovementFactor", "field_70746_aG"});
+            Field field = ReflectionHelper.findField(Entity.class, "landMovementFactor", "field_70746_aG");
             field.setAccessible(true);
             value = field.getInt(this);
             field.setAccessible(false);
@@ -1289,7 +1311,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     
     private void setPersistenceRequired(boolean value) {
         try {
-            Field field = ReflectionHelper.findField(Entity.class, new String[] {"persistenceRequired", "field_82179_bU"});
+            Field field = ReflectionHelper.findField(Entity.class, "persistenceRequired", "field_82179_bU");
             field.setAccessible(true);
             field.setBoolean(this, value);
             field.setAccessible(false);
@@ -1300,7 +1322,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     
     private void setIsLeashed(boolean value) {
         try {
-            Field field = ReflectionHelper.findField(Entity.class, new String[] {"isLeashed", "field_110169_bv"});
+            Field field = ReflectionHelper.findField(Entity.class, "isLeashed", "field_110169_bv");
             field.setAccessible(true);
             field.setBoolean(this, value);
             field.setAccessible(false);
@@ -1311,7 +1333,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     
     private void setLeashedToEntity(Entity value) {
         try {
-            Field field = ReflectionHelper.findField(Entity.class, new String[] {"leashedToEntity", "field_110168_bw"});
+            Field field = ReflectionHelper.findField(Entity.class, "leashedToEntity", "field_110168_bw");
             field.setAccessible(true);
             field.set(this, value);
             field.setAccessible(false);
@@ -1371,8 +1393,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     
     @Override
     public boolean attackEntityFrom(DamageSource source, float damage) {
-        if(ForgeHooks.onLivingAttack(this, source, damage)) return false;
-        return TraitHandler.attackEntityFrom(this, source, damage);
+        return !ForgeHooks.onLivingAttack(this, source, damage) && TraitHandler.attackEntityFrom(this, source, damage);
     }
     
     @Override
@@ -1412,19 +1433,19 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
             NBTTagCompound compoundItemStack = null;
             
             for(int i = 0; i < tagList.tagCount(); i++) {
-                if(tagList.getCompoundTagAt(i).getString("type") == "boolean") {
+                if(tagList.getCompoundTagAt(i).getString("type").equals("boolean")) {
                     compoundBoolean = tagList.getCompoundTagAt(i);
-                } else if(tagList.getCompoundTagAt(i).getString("type") == "byte") {
+                } else if(tagList.getCompoundTagAt(i).getString("type").equals("byte")) {
                     compoundByte = tagList.getCompoundTagAt(i);
-                } else if(tagList.getCompoundTagAt(i).getString("type") == "integer") {
+                } else if(tagList.getCompoundTagAt(i).getString("type").equals("integer")) {
                     compoundInteger = tagList.getCompoundTagAt(i);
-                } else if(tagList.getCompoundTagAt(i).getString("type") == "float") {
+                } else if(tagList.getCompoundTagAt(i).getString("type").equals("float")) {
                     compoundFloat = tagList.getCompoundTagAt(i);
-                } else if(tagList.getCompoundTagAt(i).getString("type") == "double") {
+                } else if(tagList.getCompoundTagAt(i).getString("type").equals("double")) {
                     compoundDouble = tagList.getCompoundTagAt(i);
-                } else if(tagList.getCompoundTagAt(i).getString("type") == "string") {
+                } else if(tagList.getCompoundTagAt(i).getString("type").equals("string")) {
                     compoundString = tagList.getCompoundTagAt(i);
-                } else if(tagList.getCompoundTagAt(i).getString("type") == "itemStack") {
+                } else if(tagList.getCompoundTagAt(i).getString("type").equals("itemStack")) {
                     compoundItemStack = tagList.getCompoundTagAt(i);
                 }
             }
@@ -1701,7 +1722,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
 
     @Override
     public void setVariable(String name, byte variable) {
-        persistentByte.put(name, variable);
+        variableByte.put(name, variable);
     }
 
     @Override

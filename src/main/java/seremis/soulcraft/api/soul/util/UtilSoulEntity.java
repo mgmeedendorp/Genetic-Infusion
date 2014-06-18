@@ -242,13 +242,22 @@ public class UtilSoulEntity {
         	double posX = entity.getPersistentDouble("posX");
         	double posY = entity.getPersistentDouble("posY");
         	double posZ = entity.getPersistentDouble("posZ");
-        	
+
             EntityItem entityitem = new EntityItem(entity.getWorld(), posX, posY + (double)dropHeight, posZ, droppedStack);
             entityitem.delayBeforeCanPickup = 10;
-            
+
             if(entity.getBoolean("captureDrops")) {
+                entity.forceVariableSync();
+                //TODO one way or another this doesn't work properly
             	int capturedDropsSize = entity.getPersistentInteger("capturedDrops.size");
-            	entity.setPersistentVariable("capturedDrops."+capturedDropsSize, entityitem.getEntityItem());
+                System.out.println("capturedDropssize during dropItem: " + capturedDropsSize);
+            	entity.setPersistentVariable("capturedDrops."+capturedDropsSize, droppedStack);
+                entity.forceVariableSync();
+                capturedDropsSize = entity.getPersistentInteger("capturedDrops.size");
+                System.out.println("capturedDropssize after dropItem: " + capturedDropsSize);
+                for(int i = 0; i < capturedDropsSize; i++) {
+                    System.out.println("capturedDrops." + i + " is: " + entity.getPersistentItemStack("capturedDrops."+i));
+                }
             } else {
                 entity.getWorld().spawnEntityInWorld(entityitem);
             }

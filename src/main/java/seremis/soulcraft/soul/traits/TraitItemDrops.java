@@ -1,15 +1,12 @@
 package seremis.soulcraft.soul.traits;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.ForgeHooks;
@@ -22,14 +19,29 @@ import seremis.soulcraft.core.proxy.CommonProxy;
 import seremis.soulcraft.soul.Trait;
 import seremis.soulcraft.soul.allele.AlleleFloatArray;
 import seremis.soulcraft.soul.allele.AlleleInventory;
-import seremis.soulcraft.util.inventory.Inventory;
+
+import java.util.ArrayList;
 
 public class TraitItemDrops extends Trait {
 
 	@Override
-	@TraitDependencies(dependencies = "first")
 	public void onDeath(IEntitySoulCustom entity, DamageSource source) {
-		if (CommonProxy.instance.isServerWorld(entity.getWorld())) {
+        Entity ent = source.getEntity();
+        EntityPlayer attackingPlayer = entity.getInteger("attackingPlayerID") != 0 ? (EntityPlayer) entity.getWorld().getEntityByID(entity.getInteger("attackingPlayerID")) : null;
+        EntityLivingBase entityLivingToAttack = entity.getInteger("entityLivingToAttack") != 0 ? (EntityLivingBase) entity.getWorld().getEntityByID(entity.getInteger("entityLivingToAttackID")) : null;
+        EntityLivingBase entitylivingbase = entity.getCombatTracker().func_94550_c() != null ? entity.getCombatTracker().func_94550_c() : (attackingPlayer != null ? attackingPlayer : (entityLivingToAttack != null ? entityLivingToAttack : null));
+
+        int scoreValue = entity.getInteger("scoreValue");
+
+        if (scoreValue >= 0 && entitylivingbase != null) {
+            entitylivingbase.addToPlayerScore((Entity) entity, scoreValue);
+        }
+
+        if (ent != null) {
+            ent.onKillEntity((EntityLivingBase)entity);
+        }
+
+        if (CommonProxy.instance.isServerWorld(entity.getWorld())) {
             int i = 0;
 
             if (entity instanceof EntityPlayer) {
@@ -67,21 +79,15 @@ public class TraitItemDrops extends Trait {
             double posX = entity.getPersistentDouble("posX");
             double posY = entity.getPersistentDouble("posY");
             double posZ = entity.getPersistentDouble("posZ");
-            
-            entity.setPersistentVariable("equipment.0", new ItemStack(Blocks.brewing_stand));
-            
-            entity.forceVariableSync();
-            
+
             capturedDropsSize = entity.getPersistentInteger("capturedDrops.size");
             
-            System.out.println(entity.getItemStack("capturedDrops.0"));
-            
             for(int k = 0; k < capturedDropsSize; k++) {
-            	if(entity.getItemStack("capturedDrops."+k) != null)
-            		capturedDrops.add(new EntityItem(entity.getWorld(), posX, posY, posZ, entity.getItemStack("capturedDrops."+k)));
+            	if(entity.getPersistentItemStack("capturedDrops."+k) != null)
+            		capturedDrops.add(new EntityItem(entity.getWorld(), posX, posY, posZ, entity.getPersistentItemStack("capturedDrops."+k)));
             }
-            
-            System.out.println("af" + capturedDrops.size());
+
+            System.out.println("dropsizeAfterall! " + capturedDrops.size());
             
             if (!ForgeHooks.onLivingDrops((EntityLiving)entity, source, capturedDrops, i, recentlyHit > 0, j)) {
                 for (EntityItem item : capturedDrops) {
@@ -95,7 +101,7 @@ public class TraitItemDrops extends Trait {
 		ItemStack[] drops = ((AlleleInventory)GeneRegistry.getActiveFor(entity, Genes.GENE_ITEM_DROPS)).inventory.getItemStacks();
 		
         if (drops.length != 0) {
-            int j = entity.getRandom().nextInt(3);
+            int j = entity.getRandom().nextInt(300);
 
             if (lootingLevel > 0) {
                 j += entity.getRandom().nextInt(lootingLevel + 1);
@@ -103,6 +109,7 @@ public class TraitItemDrops extends Trait {
 
             for (int k = 0; k < j; ++k) {
             	for(ItemStack stack : drops) {
+                    System.out.println("entity dropping item: "+ stack);
             		UtilSoulEntity.dropItem(entity, stack, 0.0F);
             	}
             }
@@ -117,7 +124,7 @@ public class TraitItemDrops extends Trait {
             
             boolean flag1 = dropChance > 1.0F;
 
-            if (itemstack != null && (recentlyHit || flag1) && entity.getRandom().nextFloat() - (float)lootingLevel * 0.01F < dropChance) {
+            if (itemstack != null && itemstack.getItem() != null && (recentlyHit || flag1) && entity.getRandom().nextFloat() - (float)lootingLevel * 0.01F < dropChance) {
                 if (!flag1 && itemstack.isItemStackDamageable()) {
                     int k = Math.max(itemstack.getMaxDamage() - 25, 1);
                     int l = itemstack.getMaxDamage() - entity.getRandom().nextInt(entity.getRandom().nextInt(k) + 1);
@@ -132,7 +139,6 @@ public class TraitItemDrops extends Trait {
 
                     itemstack.setItemDamage(l);
                 }
-
                 UtilSoulEntity.dropItem(entity, itemstack, 0.0F);
             }
         }

@@ -101,7 +101,7 @@ public class TraitItemPickup extends Trait {
 
                             UtilSoulEntity.setEquipmentInSlot(entity, i, itemstack);
                             entity.setPersistentVariable("equipmentDropChances."+i, 2.0F);
-                            entity.setPersistentVariable("persistenceRequierd", true);
+                            entity.setPersistentVariable("persistenceRequired", true);
                             onItemPickup(entity, entityitem, 1);
                             entityitem.setDead();
                         }
