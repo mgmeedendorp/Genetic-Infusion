@@ -27,7 +27,6 @@ public class SCBlock extends Block {
         super(material);
         setBlockName("");
         setCreativeTab(SoulCraft.CreativeTab);
-       // setBlockTextureName(DefaultProps.ID + ":" + getUnlocalizedName().substring(5));
     }
 
     @Override

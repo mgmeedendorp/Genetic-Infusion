@@ -37,14 +37,14 @@ public class ModBlocks {
 
     public static void init() {
 
-        oreTitanium = new SCBlock(Material.rock).setHardness(20F).setBlockName("oreTitanium");
+        oreTitanium = new SCBlock(Material.rock).setHardness(20F).setBlockName(Blocks.ORE_TITANIUM_UNLOCALIZED_NAME);
         oreIsolatzium = new BlockOreIsolatzium(Material.rock);
         compressor = new BlockCompressor(Material.rock);
         crystal = new BlockCrystal(Material.coral);
         crystalStand = new BlockCrystalStand(Material.wood);
         heatIO = new BlockHeatIO(Material.rock);
         connectedGlass = new BlockConnectedGlass(Material.glass);
-        titaniumBrick = new SCBlock(Material.rock).setBlockName("titaniumBrick");
+        titaniumBrick = new SCBlock(Material.rock).setBlockName(Blocks.TITANIUM_BRICK_UNLOCALIZED_NAME);
         stationController = new BlockStationController(Material.rock);
         itemIO = new BlockItemIO(Material.rock);
         biomeHeatGenerator = new BlockBiomeHeatGenerator(Material.rock);

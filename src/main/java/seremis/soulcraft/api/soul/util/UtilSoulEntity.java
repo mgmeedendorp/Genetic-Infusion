@@ -1,7 +1,6 @@
 package seremis.soulcraft.api.soul.util;
 
-import java.util.Random;
-
+import cpw.mods.fml.common.eventhandler.Event.Result;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -24,7 +23,8 @@ import seremis.soulcraft.api.soul.IEntitySoulCustom;
 import seremis.soulcraft.api.soul.lib.Genes;
 import seremis.soulcraft.core.proxy.CommonProxy;
 import seremis.soulcraft.soul.allele.AlleleBoolean;
-import cpw.mods.fml.common.eventhandler.Event.Result;
+
+import java.util.Random;
 
 public class UtilSoulEntity {
 
@@ -247,17 +247,9 @@ public class UtilSoulEntity {
             entityitem.delayBeforeCanPickup = 10;
 
             if(entity.getBoolean("captureDrops")) {
-                entity.forceVariableSync();
-                //TODO one way or another this doesn't work properly
             	int capturedDropsSize = entity.getPersistentInteger("capturedDrops.size");
-                System.out.println("capturedDropssize during dropItem: " + capturedDropsSize);
-            	entity.setPersistentVariable("capturedDrops."+capturedDropsSize, droppedStack);
+            	entity.setPersistentVariable("capturedDrops." + capturedDropsSize, droppedStack);
                 entity.forceVariableSync();
-                capturedDropsSize = entity.getPersistentInteger("capturedDrops.size");
-                System.out.println("capturedDropssize after dropItem: " + capturedDropsSize);
-                for(int i = 0; i < capturedDropsSize; i++) {
-                    System.out.println("capturedDrops." + i + " is: " + entity.getPersistentItemStack("capturedDrops."+i));
-                }
             } else {
                 entity.getWorld().spawnEntityInWorld(entityitem);
             }

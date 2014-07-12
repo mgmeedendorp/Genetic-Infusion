@@ -23,11 +23,8 @@ public class TileCrystalStandRenderer extends TileEntitySpecialRenderer {
         GL11.glTranslatef(x, y, z);
         GL11.glScalef(1.0F, 1.0F, 1.0F);
 
-        GL11.glDisable(GL11.GL_CULL_FACE);
-
         crystalStand.render();
 
-        GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glPopMatrix();
     }
 

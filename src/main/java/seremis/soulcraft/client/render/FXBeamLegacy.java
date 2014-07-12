@@ -15,6 +15,8 @@ import seremis.soulcraft.helper.SCRenderHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+
+//Legacy code for the beam renderer
 @SideOnly(Side.CLIENT)
 public class FXBeamLegacy extends EntityFX {
 

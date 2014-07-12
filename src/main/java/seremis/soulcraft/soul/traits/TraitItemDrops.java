@@ -6,13 +6,11 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.ForgeHooks;
 import seremis.soulcraft.api.soul.GeneRegistry;
 import seremis.soulcraft.api.soul.IEntitySoulCustom;
-import seremis.soulcraft.api.soul.TraitDependencies;
 import seremis.soulcraft.api.soul.lib.Genes;
 import seremis.soulcraft.api.soul.util.UtilSoulEntity;
 import seremis.soulcraft.core.proxy.CommonProxy;
@@ -56,11 +54,11 @@ public class TraitItemDrops extends Trait {
             }
            
             int j = 0;
-            
+
         	int recentlyHit = entity.getInteger("recentlyHit");
             
             if (!((EntityLiving)entity).isChild() && entity.getWorld().getGameRules().getGameRuleBooleanValue("doMobLoot")) {
-          	
+
                 this.dropFewItems(entity, recentlyHit > 0, i);
                 this.dropEquipment(entity, recentlyHit > 0, i);
 
@@ -86,8 +84,6 @@ public class TraitItemDrops extends Trait {
             	if(entity.getPersistentItemStack("capturedDrops."+k) != null)
             		capturedDrops.add(new EntityItem(entity.getWorld(), posX, posY, posZ, entity.getPersistentItemStack("capturedDrops."+k)));
             }
-
-            System.out.println("dropsizeAfterall! " + capturedDrops.size());
             
             if (!ForgeHooks.onLivingDrops((EntityLiving)entity, source, capturedDrops, i, recentlyHit > 0, j)) {
                 for (EntityItem item : capturedDrops) {
@@ -101,7 +97,7 @@ public class TraitItemDrops extends Trait {
 		ItemStack[] drops = ((AlleleInventory)GeneRegistry.getActiveFor(entity, Genes.GENE_ITEM_DROPS)).inventory.getItemStacks();
 		
         if (drops.length != 0) {
-            int j = entity.getRandom().nextInt(300);
+            int j = entity.getRandom().nextInt(3);
 
             if (lootingLevel > 0) {
                 j += entity.getRandom().nextInt(lootingLevel + 1);
@@ -109,7 +105,6 @@ public class TraitItemDrops extends Trait {
 
             for (int k = 0; k < j; ++k) {
             	for(ItemStack stack : drops) {
-                    System.out.println("entity dropping item: "+ stack);
             		UtilSoulEntity.dropItem(entity, stack, 0.0F);
             	}
             }

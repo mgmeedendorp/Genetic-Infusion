@@ -35,43 +35,43 @@ public class BlockMonsterEggRenderer implements ISimpleBlockRenderingHandler {
         boolean var5 = false;
         int var6 = 0;
 
-        for(int var7 = 0; var7 < 8; ++var7) {
+        for(int i = 0; i < 8; ++i) {
             byte var8 = 0;
             byte var9 = 1;
 
-            if(var7 == 0) {
+            if(i == 0) {
                 var8 = 2;
             }
 
-            if(var7 == 1) {
+            if(i == 1) {
                 var8 = 3;
             }
 
-            if(var7 == 2) {
+            if(i == 2) {
                 var8 = 4;
             }
 
-            if(var7 == 3) {
+            if(i == 3) {
                 var8 = 5;
                 var9 = 2;
             }
 
-            if(var7 == 4) {
+            if(i == 4) {
                 var8 = 6;
                 var9 = 3;
             }
 
-            if(var7 == 5) {
+            if(i == 5) {
                 var8 = 7;
                 var9 = 5;
             }
 
-            if(var7 == 6) {
+            if(i == 6) {
                 var8 = 6;
                 var9 = 2;
             }
 
-            if(var7 == 7) {
+            if(i == 7) {
                 var8 = 3;
             }
 

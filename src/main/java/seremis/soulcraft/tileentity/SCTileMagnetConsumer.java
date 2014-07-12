@@ -4,7 +4,7 @@ import seremis.soulcraft.SoulCraft;
 import seremis.soulcraft.api.magnet.tile.IMagnetConsumer;
 import seremis.soulcraft.api.magnet.tile.TileMagnetConnector;
 import seremis.soulcraft.core.proxy.CommonProxy;
-import seremis.soulcraft.networknew.packet.PacketTileData;
+import seremis.soulcraft.network.packet.PacketTileData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;

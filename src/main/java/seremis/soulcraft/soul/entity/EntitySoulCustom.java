@@ -11,6 +11,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTSizeTracker;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.PotionEffect;
@@ -74,7 +75,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
         data.readBytes(abyte);
         NBTTagCompound compound;
         try {
-            compound = CompressedStreamTools.decompress(abyte);
+            compound = CompressedStreamTools.func_152457_a(abyte, NBTSizeTracker.field_152451_a);
         } catch(IOException e) {
             e.printStackTrace();
             return;
@@ -967,7 +968,8 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
        			}
        		}
        	}
-       	for(int i = 0; i < Math.max(capturedDrops.size(), getPersistentItemStackArrayLength("capturedDrops")); i++) {
+        int max = Math.max(capturedDrops.size(), getPersistentItemStackArrayLength("capturedDrops"));
+       	for(int i = 0; i < max; i++) {
        		if(syncCapturedDrops.get(i) != capturedDrops.get(i)) {
        			persistentItemStack.put("capturedDrops." + i, capturedDrops.get(i) != null ? capturedDrops.get(i).getEntityItem() : null);
        			syncCapturedDrops.add(i, capturedDrops.get(i));
@@ -981,10 +983,9 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
                 }
        		}
        	}
-        persistentInteger.put("capturedDrops.size", Math.max(capturedDrops.size(), getPersistentItemStackArrayLength("capturedDrops")));
+        persistentInteger.put("capturedDrops.size", syncCapturedDrops.size());
        	for(int i = 0; i < getLastActiveItems().length; i++) {
        		if(syncEquipment[i] != getLastActiveItems()[i]) {
-                System.out.println(getLastActiveItems()[i]);
        			persistentItemStack.put("equipment." + i, getLastActiveItems()[i]);
        			syncEquipment[i] = getLastActiveItems()[i];
        		} else if(syncEquipment[i] != getPersistentItemStack("equipment." + i)) {
@@ -1675,9 +1676,9 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     
     @Override
     public void setPersistentVariable(String name, ItemStack variable) {
-    	persistentItemStack.remove(name);
-    	if(variable != null)
-    		persistentItemStack.put(name, variable);
+        persistentItemStack.remove(name);
+        if(variable != null)
+            persistentItemStack.put(name, variable);
     }
     
     @Override

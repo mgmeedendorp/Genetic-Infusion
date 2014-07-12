@@ -23,7 +23,7 @@ import seremis.soulcraft.handler.ServerTickHandler;
 import seremis.soulcraft.helper.RecipeHelper;
 import seremis.soulcraft.item.ModItems;
 import seremis.soulcraft.misc.DamageCompressor;
-import seremis.soulcraft.networknew.PacketPipeline;
+import seremis.soulcraft.network.PacketPipeline;
 import seremis.soulcraft.soul.ModSouls;
 import seremis.soulcraft.util.structure.ModStructures;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -34,7 +34,6 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid = DefaultProps.ID, name = DefaultProps.name, version = DefaultProps.version, acceptedMinecraftVersions = DefaultProps.acceptedMinecraftVersions)

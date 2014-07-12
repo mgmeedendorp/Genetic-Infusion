@@ -1,7 +1,5 @@
 package seremis.soulcraft.soul.traits;
 
-import java.util.Random;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -9,12 +7,13 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import seremis.soulcraft.api.soul.GeneRegistry;
 import seremis.soulcraft.api.soul.IEntitySoulCustom;
-import seremis.soulcraft.api.soul.TraitDependencies;
 import seremis.soulcraft.api.soul.lib.Genes;
 import seremis.soulcraft.api.soul.util.UtilSoulEntity;
 import seremis.soulcraft.core.proxy.CommonProxy;
 import seremis.soulcraft.soul.Trait;
 import seremis.soulcraft.soul.allele.AlleleBoolean;
+
+import java.util.Random;
 
 public class TraitFire extends Trait {
 
@@ -64,7 +63,7 @@ public class TraitFire extends Trait {
                 if(fireTicks % 20 == 0) {
                     entity.attackEntityFrom(DamageSource.onFire, 1.0F);
                 }
-                entity.setPersistentVariable("fire", (int)(fireTicks - 1));
+                entity.setPersistentVariable("fire", fireTicks - 1);
                 entity.setFlag(0, fireTicks > 0);
             }
         } else if(fireTicks <= 0) {
@@ -102,8 +101,6 @@ public class TraitFire extends Trait {
     }
 
     public void breakHeadwear(IEntitySoulCustom entity, ItemStack stack) {
-        Random rand = new Random();
-
         float pitch = entity.getPersistentFloat("rotationPitch");
         float yaw = entity.getPersistentFloat("rotationYaw");
         
@@ -113,13 +110,13 @@ public class TraitFire extends Trait {
         
         float eyeHeight = entity.getPersistentFloat("eyeHeight");
         
-        entity.playSound("random.break", 0.8F, 0.8F + rand.nextFloat() * 0.4F);
+        entity.playSound("random.break", 0.8F, 0.8F + entity.getRandom().nextFloat() * 0.4F);
 
         for(int i = 0; i < 5; ++i) {
-            Vec3 vec3 = entity.getWorld().getWorldVec3Pool().getVecFromPool((rand.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
+            Vec3 vec3 = Vec3.createVectorHelper(((double)entity.getRandom().nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
             vec3.rotateAroundX(-pitch * (float) Math.PI / 180.0F);
             vec3.rotateAroundY(-yaw * (float) Math.PI / 180.0F);
-            Vec3 vec31 = entity.getWorld().getWorldVec3Pool().getVecFromPool((rand.nextFloat() - 0.5D) * 0.3D, -rand.nextFloat() * 0.6D - 0.3D, 0.6D);
+            Vec3 vec31 = Vec3.createVectorHelper(((double)entity.getRandom().nextFloat() - 0.5D) * 0.3D, (double)(-entity.getRandom().nextFloat()) * 0.6D - 0.3D, 0.6D);
             vec31.rotateAroundX(-pitch * (float) Math.PI / 180.0F);
             vec31.rotateAroundY(-yaw * (float) Math.PI / 180.0F);
             vec31 = vec31.addVector(posX, posY + eyeHeight, posZ);

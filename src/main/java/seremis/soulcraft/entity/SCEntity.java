@@ -2,7 +2,7 @@ package seremis.soulcraft.entity;
 
 import seremis.soulcraft.SoulCraft;
 import seremis.soulcraft.core.proxy.CommonProxy;
-import seremis.soulcraft.networknew.packet.PacketEntityData;
+import seremis.soulcraft.network.packet.PacketEntityData;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
