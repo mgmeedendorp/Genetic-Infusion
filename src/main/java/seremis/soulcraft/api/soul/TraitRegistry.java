@@ -2,10 +2,8 @@ package seremis.soulcraft.api.soul;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
-import java.util.List;
 
 public class TraitRegistry {
 
@@ -42,7 +40,7 @@ public class TraitRegistry {
 	}
 	
 	/**
-	 * This gets called in postinit, register your ITraits before that.
+	 * This gets called in init, register your ITraits before that.
 	 * Do NOT call this method yourself!
 	 */
 	public static void orderTraits() {
@@ -57,6 +55,7 @@ public class TraitRegistry {
 		TraitHandler.playSoundAtEntity = new LinkedList<ITrait>();
 		TraitHandler.damageEntity = new LinkedList<ITrait>();
 		TraitHandler.updateAITick = new LinkedList<ITrait>();
+        TraitHandler.firstTick = new LinkedList<ITrait>();
 		
 		for(ITrait trait : getTraits()) {
 			TraitHandler.entityInit.add(trait);
@@ -69,6 +68,7 @@ public class TraitRegistry {
 			TraitHandler.playSoundAtEntity.add(trait);
 			TraitHandler.damageEntity.add(trait);
 			TraitHandler.updateAITick.add(trait);
+            TraitHandler.firstTick.add(trait);
 		}
 		
 		for(ITrait trait : getTraits()) {
@@ -80,127 +80,117 @@ public class TraitRegistry {
 					if(annotation instanceof TraitDependencies) {
 						String[] dependencies = ((TraitDependencies) annotation).dependencies();
 						for(String dep : dependencies) {
-							if(method.getName() == "onInit") {
+							if(method.getName().equals("onInit")) {
 								if(traits.containsKey(dep)) {
 									ITrait trait2 = traits.get(dep);
 									int traitIndex = TraitHandler.entityInit.indexOf(trait2);
 									TraitHandler.entityInit.add(traitIndex, trait);
 								} else if(dep.equals("first")) {
-									ITrait trait2 = traits.get(dep);
 									TraitHandler.entityInit.addFirst(trait);
 								} else if(dep.equals("last")) {
-									ITrait trait2 = traits.get(dep);
 									TraitHandler.entityInit.addLast(trait);
 								}
-							} else if(method.getName() == "onUpdate") {
+							} else if(method.getName().equals("onUpdate")) {
 								if(traits.containsKey(dep)) {
 									ITrait trait2 = traits.get(dep);
 									int traitIndex = TraitHandler.entityUpdate.indexOf(trait2);
 									TraitHandler.entityUpdate.add(traitIndex, trait);
 								} else if(dep.equals("first")) {
-									ITrait trait2 = traits.get(dep);
 									TraitHandler.entityUpdate.addFirst(trait);
 								} else if(dep.equals("last")) {
-									ITrait trait2 = traits.get(dep);
 									TraitHandler.entityUpdate.addLast(trait);
 								}
-							} else if(method.getName() == "onInteract") {
+							} else if(method.getName().equals("onInteract")) {
 								if(traits.containsKey(dep)) {
 									ITrait trait2 = traits.get(dep);
 									int traitIndex = TraitHandler.entityRightClicked.indexOf(trait2);
 									TraitHandler.entityRightClicked.add(traitIndex, trait);
 								} else if(dep.equals("first")) {
-									ITrait trait2 = traits.get(dep);
 									TraitHandler.entityRightClicked.addFirst(trait);
 								} else if(dep.equals("last")) {
-									ITrait trait2 = traits.get(dep);
 									TraitHandler.entityRightClicked.addLast(trait);
 								}
-							} else if(method.getName() == "onDeath") {
+							} else if(method.getName().equals("onDeath")) {
 								if(traits.containsKey(dep)) {
 									ITrait trait2 = traits.get(dep);
 									int traitIndex = TraitHandler.entityDeath.indexOf(trait2);
 									TraitHandler.entityDeath.add(traitIndex, trait);
 								} else if(dep.equals("first")) {
-									ITrait trait2 = traits.get(dep);
 									TraitHandler.entityDeath.addFirst(trait);
 								} else if(dep.equals("last")) {
-									ITrait trait2 = traits.get(dep);
 									TraitHandler.entityDeath.addLast(trait);
 								}
-							} else if(method.getName() == "onKillEntity") {
+							} else if(method.getName().equals("onKillEntity")) {
 								if(traits.containsKey(dep)) {
 									ITrait trait2 = traits.get(dep);
 									int traitIndex = TraitHandler.onKillEntity.indexOf(trait2);
 									TraitHandler.onKillEntity.add(traitIndex, trait);
 								} else if(dep.equals("first")) {
-									ITrait trait2 = traits.get(dep);
 									TraitHandler.onKillEntity.addFirst(trait);
 								} else if(dep.equals("last")) {
-									ITrait trait2 = traits.get(dep);
 									TraitHandler.onKillEntity.addLast(trait);
 								}
-							} else if(method.getName() == "onEntityAttacked") {
+							} else if(method.getName().equals("onEntityAttacked")) {
 								if(traits.containsKey(dep)) {
 									ITrait trait2 = traits.get(dep);
 									int traitIndex = TraitHandler.attackEntityFrom.indexOf(trait2);
 									TraitHandler.attackEntityFrom.add(traitIndex, trait);
 								} else if(dep.equals("first")) {
-									ITrait trait2 = traits.get(dep);
 									TraitHandler.attackEntityFrom.addFirst(trait);
 								} else if(dep.equals("last")) {
-									ITrait trait2 = traits.get(dep);
 									TraitHandler.attackEntityFrom.addLast(trait);
 								}
-							} else if(method.getName() == "onSpawnWithEgg") {
+							} else if(method.getName().equals("onSpawnWithEgg")) {
 								if(traits.containsKey(dep)) {
 									ITrait trait2 = traits.get(dep);
 									int traitIndex = TraitHandler.spawnEntityFromEgg.indexOf(trait2);
 									TraitHandler.spawnEntityFromEgg.add(traitIndex, trait);
 								} else if(dep.equals("first")) {
-									ITrait trait2 = traits.get(dep);
 									TraitHandler.spawnEntityFromEgg.addFirst(trait);
 								} else if(dep.equals("last")) {
-									ITrait trait2 = traits.get(dep);
 									TraitHandler.spawnEntityFromEgg.addLast(trait);
 								}
-							} else if(method.getName() == "playSound") {
+							} else if(method.getName().equals("playSound")) {
 								if(traits.containsKey(dep)) {
 									ITrait trait2 = traits.get(dep);
 									int traitIndex = TraitHandler.playSoundAtEntity.indexOf(trait2);
 									TraitHandler.playSoundAtEntity.add(traitIndex, trait);
 								} else if(dep.equals("first")) {
-									ITrait trait2 = traits.get(dep);
 									TraitHandler.playSoundAtEntity.addFirst(trait);
 								} else if(dep.equals("last")) {
-									ITrait trait2 = traits.get(dep);
 									TraitHandler.playSoundAtEntity.addLast(trait);
 								}
-							} else if(method.getName() == "damageEntity") {
+							} else if(method.getName().equals("damageEntity")) {
 								if(traits.containsKey(dep)) {
 									ITrait trait2 = traits.get(dep);
 									int traitIndex = TraitHandler.damageEntity.indexOf(trait2);
 									TraitHandler.damageEntity.add(traitIndex, trait);
 								} else if(dep.equals("first")) {
-									ITrait trait2 = traits.get(dep);
 									TraitHandler.damageEntity.addFirst(trait);
 								} else if(dep.equals("last")) {
-									ITrait trait2 = traits.get(dep);
 									TraitHandler.damageEntity.addLast(trait);
 								}
-							} else if(method.getName() == "updateAITask") {
-								if(traits.containsKey(dep)) {
-									ITrait trait2 = traits.get(dep);
-									int traitIndex = TraitHandler.updateAITick.indexOf(trait2);
-									TraitHandler.updateAITick.add(traitIndex, trait);
-								} else if(dep.equals("first")) {
-									ITrait trait2 = traits.get(dep);
-									TraitHandler.updateAITick.addFirst(trait);
-								} else if(dep.equals("last")) {
-									ITrait trait2 = traits.get(dep);
-									TraitHandler.updateAITick.addLast(trait);
-								}
-							}
+							} else if(method.getName().equals("updateAITask")) {
+                                if(traits.containsKey(dep)) {
+                                    ITrait trait2 = traits.get(dep);
+                                    int traitIndex = TraitHandler.updateAITick.indexOf(trait2);
+                                    TraitHandler.updateAITick.add(traitIndex, trait);
+                                } else if(dep.equals("first")) {
+                                    TraitHandler.updateAITick.addFirst(trait);
+                                } else if(dep.equals("last")) {
+                                    TraitHandler.updateAITick.addLast(trait);
+                                }
+                            } else if(method.getName().equals("firstTick")) {
+                                if(traits.containsKey(dep)) {
+                                    ITrait trait2 = traits.get(dep);
+                                    int traitIndex = TraitHandler.firstTick.indexOf(trait2);
+                                    TraitHandler.firstTick.add(traitIndex, trait);
+                                } else if(dep.equals("first")) {
+                                    TraitHandler.firstTick.addFirst(trait);
+                                } else if(dep.equals("last")) {
+                                    TraitHandler.firstTick.addLast(trait);
+                                }
+                            }
 						}
 					}
 				}

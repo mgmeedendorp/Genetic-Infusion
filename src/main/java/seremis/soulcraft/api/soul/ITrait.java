@@ -26,4 +26,6 @@ public interface ITrait {
     public void damageEntity(IEntitySoulCustom entity, DamageSource source, float damage);
     
     public void updateAITick(IEntitySoulCustom entity);
+
+    public void firstTick(IEntitySoulCustom entity);
 }

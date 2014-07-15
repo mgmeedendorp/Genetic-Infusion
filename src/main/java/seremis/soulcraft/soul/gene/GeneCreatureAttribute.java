@@ -1,7 +1,5 @@
 package seremis.soulcraft.soul.gene;
 
-import java.util.List;
-
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntityZombie;
@@ -23,6 +21,6 @@ public class GeneCreatureAttribute implements IGene {
 		if(entity instanceof EntityZombie) {
 			return new Chromosome(new AlleleInteger(true, EnumCreatureAttribute.UNDEAD.ordinal()), new AlleleInteger(true, EnumCreatureAttribute.UNDEAD.ordinal()));
 		}
-		return null;
+        return new Chromosome(new AlleleInteger(true, EnumCreatureAttribute.ARTHROPOD.ordinal()), new AlleleInteger(true, EnumCreatureAttribute.ARTHROPOD.ordinal()));
 	}
 }

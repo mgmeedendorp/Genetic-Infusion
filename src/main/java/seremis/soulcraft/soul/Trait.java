@@ -30,6 +30,7 @@ public class Trait implements ITrait {
 	@Override
 	public void onSpawnWithEgg(IEntitySoulCustom entity, IEntityLivingData data){}
 
+    @Override
 	public void playSound(IEntitySoulCustom entity, String name, float volume, float pitch){}
 
 	@Override
@@ -37,4 +38,7 @@ public class Trait implements ITrait {
 
 	@Override
 	public void updateAITick(IEntitySoulCustom entity) {}
+
+    @Override
+    public void firstTick(IEntitySoulCustom entity) {}
 }

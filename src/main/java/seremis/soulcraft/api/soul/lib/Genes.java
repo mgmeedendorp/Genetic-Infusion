@@ -8,6 +8,7 @@ public class Genes {
 	public static final String GENE_INVULNERABLE = DefaultProps.nameLower + ".gene.invulnerable";
 	public static final String GENE_ATTACK_DAMAGE = DefaultProps.nameLower + ".gene.attackDamage";
 	public static final String GENE_MOVEMENT_SPEED = DefaultProps.nameLower + ".gene.movementSpeed";
+    public static final String GENE_FOLLOW_RANGE = DefaultProps.nameLower + ".gene.followRange";
 	public static final String GENE_BURNS_IN_DAYLIGHT = DefaultProps.nameLower + ".gene.burnsInDaylight";
 	public static final String GENE_DROWNS_IN_WATER = DefaultProps.nameLower + ".gene.drownsInWater";
 	public static final String GENE_DROWNS_IN_AIR = DefaultProps.nameLower + ".gene.drownsInAir";
@@ -22,6 +23,8 @@ public class Genes {
 	public static final String GENE_HURT_SOUND = DefaultProps.nameLower + ".gene.hurtSound";
 	public static final String GENE_DEATH_SOUND = DefaultProps.nameLower + ".gene.deathSound";
 	public static final String GENE_WALK_SOUND = DefaultProps.nameLower + ".gene.walkSound";
+    public static final String GENE_SPLASH_SOUND = DefaultProps.nameLower + ".gene.splashSound";
+    public static final String GENE_SWIM_SOUND = DefaultProps.nameLower + ".gene.swimSound";
 	public static final String GENE_SOUND_VOLUME = DefaultProps.nameLower + ".gene.soundVolume";	
 	public static final String GENE_CREATURE_ATTRIBUTE = DefaultProps.nameLower + ".gene.creatureAttribute";
 	public static final String GENE_TELEPORT_TIME_IN_PORTAL = DefaultProps.nameLower + ".gene.teleportTimeInPortal";

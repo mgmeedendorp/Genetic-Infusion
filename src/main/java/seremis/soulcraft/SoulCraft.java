@@ -59,11 +59,12 @@ public class SoulCraft {
         ModBlocks.init();
         ModItems.init();
         ModEntity.init();
+        ModSouls.init();
+        ModStructures.init();
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
-        ModStructures.init();
         CommonProxy.instance.registerRendering();
         CommonProxy.instance.registerHandlers();
         
@@ -74,14 +75,13 @@ public class SoulCraft {
         RecipeHelper.initRecipes();
         RecipeHelper.initSmelting();
         MinecraftForge.EVENT_BUS.register(new EventHandlerSC());
-        ModSouls.init();
         packetPipeline.initialise();
+        TraitRegistry.orderTraits();
     }
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         packetPipeline.postInitialise();
-        TraitRegistry.orderTraits();
         logger.log(Level.INFO, DefaultProps.name + " is loaded successfully.");
     }
 }

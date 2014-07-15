@@ -1,10 +1,10 @@
 package seremis.soulcraft.api.soul;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-
 import net.minecraft.entity.EntityLiving;
 import seremis.soulcraft.soul.Soul;
+
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 
 public class GeneRegistry {
 
@@ -55,12 +55,8 @@ public class GeneRegistry {
 		return null;
 	}
 	
-	public static Soul getSoulFor(IEntitySoulCustom entity) {
-		return getSoulFor((EntityLiving) entity);
-	}
-	
 	public static IChromosome getChromosomeFor(EntityLiving entity, String name) {
-		return entity instanceof IEntitySoulCustom ? getSoulFor(entity).getChromosomes()[getGeneId(name)] : entity instanceof EntityLiving ? getGene(name) != null ? getGene(name).getStandardForEntity(entity) : null : null;
+		return entity instanceof IEntitySoulCustom ? getSoulFor(entity).getChromosomes()[getGeneId(name)] : getGene(name).getStandardForEntity(entity);
 	}
 	
 	public static IChromosome getChromosomeFor(IEntitySoulCustom entity, String name) {

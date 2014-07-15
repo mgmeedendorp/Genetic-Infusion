@@ -21,12 +21,16 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.Constants;
+import seremis.soulcraft.api.soul.GeneRegistry;
 import seremis.soulcraft.api.soul.IEntitySoulCustom;
 import seremis.soulcraft.api.soul.TraitHandler;
+import seremis.soulcraft.api.soul.lib.Genes;
 import seremis.soulcraft.core.proxy.CommonProxy;
 import seremis.soulcraft.entity.SCEntityLiving;
 import seremis.soulcraft.item.ModItems;
 import seremis.soulcraft.soul.Soul;
+import seremis.soulcraft.soul.allele.AlleleFloat;
+import seremis.soulcraft.soul.allele.AlleleString;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -37,19 +41,25 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCustom, IEntityAdditionalSpawnData {
-    
+
+    public static Soul tempSoulStorage;
+
+    public static EntitySoulCustom createSoulEntity(World world, Soul soul, double x, double y, double z) {
+        tempSoulStorage = soul;
+        return new EntitySoulCustom(world, soul, x, y, z);
+    }
+
     private Soul soul;
     
     public EntitySoulCustom(World world) {
         super(world);
     }
     
-    public EntitySoulCustom(World world, Soul soul, double x, double y, double z) {
+    private EntitySoulCustom(World world, Soul soul, double x, double y, double z) {
         this(world);
         setPosition(x, y, z);
         setSize(0.8F, 1.7F);
         this.soul = soul;
-        moveEntity(1, 0, 0);
     }
 
     @Override
@@ -85,7 +95,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     
     @Override
 	public Soul getSoul() {
-        return soul;
+        return soul != null ? soul : tempSoulStorage;
     }
     
     @Override
@@ -111,6 +121,13 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     @Override
     public CombatTracker getCombatTracker() {
     	return super.func_110142_aN();
+    }
+
+    private EnumCreatureAttribute creatureAttribute;
+
+    @Override
+    public EnumCreatureAttribute getCreatureAttribute() {
+        return null;
     }
     
     @Override
@@ -177,6 +194,37 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     public boolean isChild() {
         return isChild;
     }
+
+    @Override
+    public String getDeathSound() {
+        return ((AlleleString) GeneRegistry.getActiveFor((IEntitySoulCustom) this, Genes.GENE_DEATH_SOUND)).value;
+    }
+
+    @Override
+    public String getLivingSound() {
+        return ((AlleleString) GeneRegistry.getActiveFor((IEntitySoulCustom) this, Genes.GENE_LIVING_SOUND)).value;
+    }
+
+    @Override
+    public String getHurtSound() {
+        return ((AlleleString) GeneRegistry.getActiveFor((IEntitySoulCustom) this, Genes.GENE_HURT_SOUND)).value;
+    }
+
+    @Override
+    public String getSplashSound() {
+        return ((AlleleString) GeneRegistry.getActiveFor((IEntitySoulCustom) this, Genes.GENE_SPLASH_SOUND)).value;
+    }
+
+    @Override
+    public String getSwimSound() {
+        return ((AlleleString) GeneRegistry.getActiveFor((IEntitySoulCustom) this, Genes.GENE_SWIM_SOUND)).value;
+    }
+
+    @Override
+    public float getSoundVolume() {
+        return ((AlleleFloat) GeneRegistry.getActiveFor((IEntitySoulCustom) this, Genes.GENE_SOUND_VOLUME)).value;
+    }
+
 
     //Syncing variables//
     
@@ -494,7 +542,7 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     }
     
     private float syncAttackedAtYaw;
-    private int syncFire, syncFireResistance;
+    private int syncFire, syncFireResistance, syncAir;
     private boolean syncInWater, syncOnGround, syncIsInWeb, syncIsDead, syncIsAirBorne, syncPreventEntitySpawning, syncForceSpawn, syncNoClip, syncInvulnerable, syncIsJumping, syncIsChild;
 
     private boolean isChild;
@@ -507,6 +555,13 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
     		setFireTicks(getPersistentInteger("fire"));
     		syncFire = getFire();
     	}
+        if(syncAir != getAir()) {
+            persistentInteger.put("air", getAir());
+            syncAir = getAir();
+        } else if(syncAir != getPersistentInteger("air")) {
+            setAir(getPersistentInteger("air"));
+            syncAir = getAir();
+        }
     	if(syncFireResistance != fireResistance) {
     		variableInteger.put("fireResistance", fireResistance);
     		syncFireResistance = fireResistance;
@@ -604,6 +659,9 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
         } else if(syncIsChild != getBoolean("isChild")) {
             isChild = getBoolean("isChild");
             syncIsChild = isChild;
+        }
+        if(creatureAttribute != EnumCreatureAttribute.values()[getInteger("creatureAttribute")]) {
+            creatureAttribute = EnumCreatureAttribute.values()[getInteger("creatureAttribute")];
         }
     }
     
@@ -1352,28 +1410,28 @@ public class EntitySoulCustom extends SCEntityLiving implements IEntitySoulCusto
         TraitHandler.entityRightClicked(this, player);
         return true;
     }
-    
+
     @Override
-    public void onLivingUpdate(){}
-    
+    public void applyEntityAttributes() {}
+
     @Override
-    public void onEntityUpdate(){}
-    
-    private boolean firstTick = true;
-    
+    public void entityInit() {
+        TraitHandler.entityInit(this);
+    }
+
+    private boolean firstUpdate = true;
+
     @Override
     public void onUpdate() {
     	syncVariables();
         if(ForgeHooks.onLivingUpdate(this))return;
-        
-        if(firstTick) {
-        	TraitHandler.entityInit(this);
-            ObfuscationReflectionHelper.setPrivateValue(Entity.class, this, false, "firstUpdate", "field_70151_c");
+
+        if(firstUpdate) {
+            firstUpdate = false;
+            TraitHandler.firstTick(this);
         }
-        
+
         TraitHandler.entityUpdate(this);
-        if(firstTick)
-        	firstTick = false;
     }
     
     @Override

@@ -1,13 +1,12 @@
 package seremis.soulcraft.api.soul;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
+import seremis.soulcraft.soul.entity.EntitySoulCustom;
+
+import java.util.LinkedList;
 
 public class TraitHandler {
     
@@ -93,6 +92,14 @@ public class TraitHandler {
     public static void updateAITick(IEntitySoulCustom entity) {
         for(ITrait trait : updateAITick) {
             trait.updateAITick(entity);
+        }
+    }
+
+    static LinkedList<ITrait> firstTick;
+
+    public static void firstTick(IEntitySoulCustom entity) {
+        for(ITrait trait : firstTick) {
+            trait.firstTick(entity);
         }
     }
 }
