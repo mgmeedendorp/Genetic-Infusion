@@ -1,0 +1,22 @@
+[
+{
+  "modid": "SC",
+  "name": "SoulCraft",
+  "description": "A mod by Seremis",
+  "version": "SoulCraft 0.0.1a",
+  "mcversion": "1.6.4",
+  "url": "",
+  "updateUrl": "",
+  "authors": [
+    "Seremis"
+  ],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "parent":"",
+  "dependencies": [
+ "mod_MinecraftForge"
+  ]
+}
+]
