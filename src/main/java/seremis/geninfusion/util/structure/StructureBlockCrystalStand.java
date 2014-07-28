@@ -1,5 +1,7 @@
 package seremis.geninfusion.util.structure;
 
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import seremis.geninfusion.api.util.Coordinate3D;
 import seremis.geninfusion.api.util.structure.IStructureBlock;
 import seremis.geninfusion.api.util.structure.StructureBlock;
@@ -7,8 +9,6 @@ import seremis.geninfusion.api.util.structure.StructureMap;
 import seremis.geninfusion.block.ModBlocks;
 import seremis.geninfusion.core.proxy.CommonProxy;
 import seremis.geninfusion.tileentity.TileCrystalStand;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 
 public class StructureBlockCrystalStand extends StructureBlock {
 

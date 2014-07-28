@@ -1,11 +1,11 @@
 package seremis.geninfusion.util.inventory;
 
-import seremis.geninfusion.util.UtilTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import seremis.geninfusion.util.UtilTileEntity;
 
 public class Inventory implements IInventory {
     

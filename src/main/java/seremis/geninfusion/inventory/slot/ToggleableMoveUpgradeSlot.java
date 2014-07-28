@@ -1,8 +1,8 @@
 package seremis.geninfusion.inventory.slot;
 
-import seremis.geninfusion.item.ItemTransporterModules;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import seremis.geninfusion.item.ItemTransporterModules;
 
 public class ToggleableMoveUpgradeSlot extends ToggleableMoveSlot {
 

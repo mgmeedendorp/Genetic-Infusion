@@ -1,25 +1,7 @@
 package seremis.geninfusion.tileentity;
 
-import java.nio.ByteBuffer;
-import java.util.List;
-
-import seremis.geninfusion.GeneticInfusion;
-import seremis.geninfusion.api.magnet.MagnetLink;
-import seremis.geninfusion.api.magnet.MagnetLinkHelper;
-import seremis.geninfusion.api.util.Coordinate3D;
-import seremis.geninfusion.api.util.structure.IStructureChangeReceiver;
-import seremis.geninfusion.api.util.structure.Structure;
-import seremis.geninfusion.block.ModBlocks;
-import seremis.geninfusion.lib.GuiIds;
-import seremis.geninfusion.lib.Tiles;
-import seremis.geninfusion.core.proxy.CommonProxy;
-import seremis.geninfusion.entity.EntityTransporter;
-import seremis.geninfusion.entity.logic.EntityTransporterLogic;
-import seremis.geninfusion.event.TransporterSendEvent;
-import seremis.geninfusion.item.ModItems;
-import seremis.geninfusion.util.UtilBlock;
-import seremis.geninfusion.util.inventory.Inventory;
-import seremis.geninfusion.util.structure.ModStructures;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -29,8 +11,26 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import seremis.geninfusion.GeneticInfusion;
+import seremis.geninfusion.api.magnet.MagnetLink;
+import seremis.geninfusion.api.magnet.MagnetLinkHelper;
+import seremis.geninfusion.api.util.Coordinate3D;
+import seremis.geninfusion.api.util.structure.IStructureChangeReceiver;
+import seremis.geninfusion.api.util.structure.Structure;
+import seremis.geninfusion.block.ModBlocks;
+import seremis.geninfusion.core.proxy.CommonProxy;
+import seremis.geninfusion.entity.EntityTransporter;
+import seremis.geninfusion.entity.logic.EntityTransporterLogic;
+import seremis.geninfusion.event.TransporterSendEvent;
+import seremis.geninfusion.item.ModItems;
+import seremis.geninfusion.lib.GuiIds;
+import seremis.geninfusion.lib.Tiles;
+import seremis.geninfusion.util.UtilBlock;
+import seremis.geninfusion.util.inventory.Inventory;
+import seremis.geninfusion.util.structure.ModStructures;
+
+import java.nio.ByteBuffer;
+import java.util.List;
 
 public class TileStationController extends GITileMagnetConsumer implements IInventory, ISidedInventory, IStructureChangeReceiver {
 

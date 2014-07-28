@@ -1,10 +1,9 @@
 package seremis.geninfusion.gui.util;
 
 import org.lwjgl.opengl.GL11;
-
-import seremis.geninfusion.lib.Localizations;
 import seremis.geninfusion.gui.GIGui;
 import seremis.geninfusion.helper.GIRenderHelper;
+import seremis.geninfusion.lib.Localizations;
 
 public class GuiLine extends GuiRectangle {
 

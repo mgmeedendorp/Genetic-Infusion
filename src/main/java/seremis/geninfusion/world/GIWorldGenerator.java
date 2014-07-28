@@ -1,13 +1,13 @@
 package seremis.geninfusion.world;
 
-import java.util.Random;
-
-import seremis.geninfusion.block.ModBlocks;
+import cpw.mods.fml.common.IWorldGenerator;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
-import cpw.mods.fml.common.IWorldGenerator;
+import seremis.geninfusion.block.ModBlocks;
+
+import java.util.Random;
 
 public class GIWorldGenerator implements IWorldGenerator {
 

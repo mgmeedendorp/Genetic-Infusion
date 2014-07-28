@@ -1,33 +1,31 @@
 package seremis.geninfusion.gui;
 
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
-
 import seremis.geninfusion.api.magnet.MagnetLink;
 import seremis.geninfusion.api.magnet.MagnetLinkHelper;
 import seremis.geninfusion.api.magnet.MagnetNetwork;
 import seremis.geninfusion.api.util.Coordinate3D;
 import seremis.geninfusion.api.util.HeatColorHelper;
 import seremis.geninfusion.api.util.Line2D;
-import seremis.geninfusion.lib.Localizations;
 import seremis.geninfusion.gui.util.GuiLine;
 import seremis.geninfusion.gui.util.GuiLineStation;
 import seremis.geninfusion.gui.util.GuiTab;
 import seremis.geninfusion.gui.util.GuiTabTop;
 import seremis.geninfusion.helper.GIRenderHelper;
 import seremis.geninfusion.inventory.ContainerStationControllerSend;
+import seremis.geninfusion.lib.Localizations;
 import seremis.geninfusion.tileentity.TileStationController;
+
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class GuiStationControllerSend extends GIGui {
 

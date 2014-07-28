@@ -1,22 +1,16 @@
 package seremis.geninfusion.block;
 
-import seremis.geninfusion.lib.Blocks;
-import seremis.geninfusion.lib.DefaultProps;
-import seremis.geninfusion.lib.Tiles;
-import seremis.geninfusion.tileentity.TileBiomeHeatGenerator;
-import seremis.geninfusion.tileentity.TileCompressor;
-import seremis.geninfusion.tileentity.TileCrystal;
-import seremis.geninfusion.tileentity.TileCrystalStand;
-import seremis.geninfusion.tileentity.TileHeatIO;
-import seremis.geninfusion.tileentity.TileItemIO;
-import seremis.geninfusion.tileentity.TileStationController;
-import seremis.geninfusion.world.GIWorldGenerator;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import cpw.mods.fml.common.registry.GameRegistry;
+import seremis.geninfusion.lib.Blocks;
+import seremis.geninfusion.lib.DefaultProps;
+import seremis.geninfusion.lib.Tiles;
+import seremis.geninfusion.tileentity.*;
+import seremis.geninfusion.world.GIWorldGenerator;
 
 public class ModBlocks {
 

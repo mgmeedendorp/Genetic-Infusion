@@ -9,8 +9,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.ForgeHooks;
-import seremis.geninfusion.api.soul.GeneRegistry;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
+import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.UtilSoulEntity;
 import seremis.geninfusion.core.proxy.CommonProxy;
@@ -94,7 +94,7 @@ public class TraitItemDrops extends Trait {
 	}
 
 	private void dropFewItems(IEntitySoulCustom entity, boolean recentlyHit, int lootingLevel) {
-		ItemStack[] drops = ((AlleleInventory)GeneRegistry.getActiveFor(entity, Genes.GENE_ITEM_DROPS)).inventory.getItemStacks();
+		ItemStack[] drops = ((AlleleInventory) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_ITEM_DROPS)).inventory.getItemStacks();
 		
         if (drops.length != 0) {
             int j = entity.getRandom().nextInt(3);
@@ -140,8 +140,8 @@ public class TraitItemDrops extends Trait {
 	}
 	
 	private void dropRareDrop(IEntitySoulCustom entity, boolean reallyRandomThingy) {
-		ItemStack[] drops = ((AlleleInventory)GeneRegistry.getActiveFor(entity, Genes.GENE_RARE_ITEM_DROPS)).inventory.getItemStacks();
-		float[] dropChances = ((AlleleFloatArray)GeneRegistry.getActiveFor(entity, Genes.GENE_RARE_ITEM_DROP_CHANCES)).value;
+		ItemStack[] drops = ((AlleleInventory)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_RARE_ITEM_DROPS)).inventory.getItemStacks();
+		float[] dropChances = ((AlleleFloatArray)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_RARE_ITEM_DROP_CHANCES)).value;
 		
 		for(int i = 0; i < drops.length; i++) {
 			if(entity.getRandom().nextInt((int)(dropChances[i]*100F)) == 0) {

@@ -1,7 +1,5 @@
 package seremis.geninfusion.soul.traits;
 
-import java.util.Random;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -10,16 +8,19 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.ForgeHooks;
-import seremis.geninfusion.api.soul.GeneRegistry;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
+import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.UtilSoulEntity;
 import seremis.geninfusion.core.proxy.CommonProxy;
+import seremis.geninfusion.soul.GeneRegistry;
 import seremis.geninfusion.soul.Trait;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
 import seremis.geninfusion.soul.allele.AlleleFloat;
 import seremis.geninfusion.soul.allele.AlleleInteger;
 import seremis.geninfusion.soul.allele.AlleleString;
+
+import java.util.Random;
 
 public class TraitAttacked extends Trait {
 
@@ -83,7 +84,7 @@ public class TraitAttacked extends Trait {
 
             float health = entity.getPersistentFloat("health");
     		int hurtResistantTime = entity.getInteger("hurtResistantTime");
-    		int maxHurtResistantTime = ((AlleleInteger)GeneRegistry.getActiveFor(entity, Genes.GENE_MAX_HURT_RESISTANT_TIME)).value;
+    		int maxHurtResistantTime = ((AlleleInteger) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_MAX_HURT_RESISTANT_TIME)).value;
             int hurtTime = entity.getPersistentInteger("hurtTime");
             int maxHurtTime = entity.getInteger("maxHurtTime");
     		float lastDamage = entity.getFloat("lastDamage");
@@ -143,7 +144,7 @@ public class TraitAttacked extends Trait {
                     entity.getWorld().setEntityState((Entity) entity, (byte)2);
 
                     if (source != DamageSource.drown) {
-                    	double knockbackResistance = ((AlleleFloat)GeneRegistry.getActiveFor(entity, Genes.GENE_KNOCKBACK_RESISTANCE)).value;
+                    	double knockbackResistance = ((AlleleFloat)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_KNOCKBACK_RESISTANCE)).value;
                     	entity.setVariable("velocityChanged", this.rand.nextDouble() >= knockbackResistance);
                     }
 
@@ -168,13 +169,13 @@ public class TraitAttacked extends Trait {
                 }
 
                 String sound;
-                float soundVolume = ((AlleleFloat)GeneRegistry.getActiveFor(entity, Genes.GENE_SOUND_VOLUME)).value;
+                float soundVolume = ((AlleleFloat)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_SOUND_VOLUME)).value;
                 float soundPitch = ((EntityLiving)entity).isChild() ? (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.5F : (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F;
 
                 health = entity.getPersistentFloat("health");
                 
                 if (health <= 0.0F) {
-                	String deathSound =((AlleleString)GeneRegistry.getActiveFor(entity, Genes.GENE_DEATH_SOUND)).value;
+                	String deathSound =((AlleleString)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_DEATH_SOUND)).value;
                     sound = deathSound;
 
                     if (flag && sound != null) {
@@ -183,7 +184,7 @@ public class TraitAttacked extends Trait {
 
                     ((EntityLiving)entity).onDeath(source);
                 } else {
-                	String hurtSound =((AlleleString)GeneRegistry.getActiveFor(entity, Genes.GENE_HURT_SOUND)).value;
+                	String hurtSound =((AlleleString)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_HURT_SOUND)).value;
                     sound = hurtSound;
 
                     if (flag && sound != null) {
@@ -198,7 +199,7 @@ public class TraitAttacked extends Trait {
 
 	@Override
 	public void damageEntity(IEntitySoulCustom entity, DamageSource source, float damage) {
-		boolean isInvulnerable = ((AlleleBoolean)GeneRegistry.getActiveFor(entity, Genes.GENE_INVULNERABLE)).value;
+		boolean isInvulnerable = ((AlleleBoolean)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_INVULNERABLE)).value;
 
 		if (!isInvulnerable) {
 			float health = entity.getPersistentFloat("health");

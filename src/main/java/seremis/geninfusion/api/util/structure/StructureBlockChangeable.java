@@ -1,8 +1,8 @@
 package seremis.geninfusion.api.util.structure;
 
-import java.util.List;
-
 import seremis.geninfusion.api.util.Coordinate3D;
+
+import java.util.List;
 
 public class StructureBlockChangeable extends StructureBlock {
 

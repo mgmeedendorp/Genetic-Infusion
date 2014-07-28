@@ -1,24 +1,18 @@
 package seremis.geninfusion.gui;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-
 import org.lwjgl.opengl.GL11;
-
-import seremis.geninfusion.lib.Localizations;
-import seremis.geninfusion.gui.util.GuiTab;
-import seremis.geninfusion.gui.util.GuiTabEngine;
-import seremis.geninfusion.gui.util.GuiTabInventory;
-import seremis.geninfusion.gui.util.GuiTabName;
-import seremis.geninfusion.gui.util.GuiTabTop;
+import seremis.geninfusion.gui.util.*;
 import seremis.geninfusion.helper.GIRenderHelper;
 import seremis.geninfusion.inventory.ContainerStationControllerTransporter;
 import seremis.geninfusion.item.ModItems;
+import seremis.geninfusion.lib.Localizations;
 import seremis.geninfusion.tileentity.TileStationController;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class GuiStationControllerTransporter extends GIGui {
 

@@ -14,13 +14,4 @@ public class GeneEquipmentDropChances implements IGene {
 	public Class<? extends IAllele> possibleAlleles() {
 		return AlleleFloatArray.class;
 	}
-
-	@Override
-	public IChromosome getStandardForEntity(EntityLiving entity) {
-		float[] array = new float[] {0.085F, 0.085F, 0.085F, 0.085F, 0.085F};
-		if(entity instanceof EntityZombie) {
-			return new Chromosome(new AlleleFloatArray(true, array), new AlleleFloatArray(false, array));
-		}
-		return null;
-	}
 }

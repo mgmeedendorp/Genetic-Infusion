@@ -1,16 +1,16 @@
 package seremis.geninfusion.item;
 
-import java.util.List;
-
-import seremis.geninfusion.GeneticInfusion;
-import seremis.geninfusion.lib.DefaultProps;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import seremis.geninfusion.GeneticInfusion;
+import seremis.geninfusion.lib.DefaultProps;
+
+import java.util.List;
 
 public class GIItem extends Item {
 

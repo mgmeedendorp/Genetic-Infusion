@@ -1,17 +1,22 @@
-package seremis.geninfusion.api.soul;
+package seremis.geninfusion.soul;
+
+import seremis.geninfusion.api.soul.ITrait;
+import seremis.geninfusion.api.soul.ITraitRegistry;
+import seremis.geninfusion.api.soul.SoulHelper;
+import seremis.geninfusion.api.soul.TraitDependencies;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
-public class TraitRegistry {
+public class TraitRegistry implements ITraitRegistry {
 
-	public static LinkedHashMap<String, ITrait> traits = new LinkedHashMap<String, ITrait>();
-	public static LinkedHashMap<ITrait, String> names = new LinkedHashMap<ITrait, String>();
-	public static LinkedHashMap<ITrait, Integer> ids = new LinkedHashMap<ITrait, Integer>();
+	public LinkedHashMap<String, ITrait> traits = new LinkedHashMap<String, ITrait>();
+	public LinkedHashMap<ITrait, String> names = new LinkedHashMap<ITrait, String>();
+	public LinkedHashMap<ITrait, Integer> ids = new LinkedHashMap<ITrait, Integer>();
 	
-	public static void registerTrait(String name, ITrait trait) {
+	public void registerTrait(String name, ITrait trait) {
 		if(!traits.containsKey(name)) {
 			traits.put(name, trait);
 			names.put(trait, name);
@@ -19,30 +24,26 @@ public class TraitRegistry {
 		}
 	}
 	
-	public static ITrait getTrait(String name) {
+	public ITrait getTrait(String name) {
 		return traits.containsKey(name) ? traits.get(name) : null;
 	}
 	
-	public static String getName(ITrait trait) {
+	public String getName(ITrait trait) {
 		return names.containsKey(trait) ? names.get(trait) : null;
 	}
 	
-	public static int getId(String name) {
+	public int getId(String name) {
 		return ids.containsKey(name) ? ids.get(name) : null;
 	}
 	
-	public static int getId(ITrait trait) {
+	public int getId(ITrait trait) {
 		return getId(getName(trait));
 	}
 	
-	public static LinkedList<ITrait> getTraits() {
+	public LinkedList<ITrait> getTraits() {
 		return new LinkedList<ITrait>(traits.values());
 	}
-	
-	/**
-	 * This gets called in init, register your ITraits before that.
-	 * Do NOT call this method yourself!
-	 */
+
 	public static void orderTraits() {
 		
 		TraitHandler.entityInit = new LinkedList<ITrait>();
@@ -57,7 +58,7 @@ public class TraitRegistry {
 		TraitHandler.updateAITick = new LinkedList<ITrait>();
         TraitHandler.firstTick = new LinkedList<ITrait>();
 		
-		for(ITrait trait : getTraits()) {
+		for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
 			TraitHandler.entityInit.add(trait);
 			TraitHandler.entityUpdate.add(trait);
 			TraitHandler.entityRightClicked.add(trait);
@@ -71,7 +72,7 @@ public class TraitRegistry {
             TraitHandler.firstTick.add(trait);
 		}
 		
-		for(ITrait trait : getTraits()) {
+		for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
 			Class clazz = trait.getClass();
 			Method[] methods = clazz.getMethods();
 			for(Method method : methods) {
@@ -81,8 +82,8 @@ public class TraitRegistry {
 						String[] dependencies = ((TraitDependencies) annotation).dependencies();
 						for(String dep : dependencies) {
 							if(method.getName().equals("onInit")) {
-								if(traits.containsKey(dep)) {
-									ITrait trait2 = traits.get(dep);
+								if(SoulHelper.traitRegistry.getTraits().contains(SoulHelper.traitRegistry.getTrait(dep))) {
+									ITrait trait2 = SoulHelper.traitRegistry.getTrait(dep);
 									int traitIndex = TraitHandler.entityInit.indexOf(trait2);
 									TraitHandler.entityInit.add(traitIndex, trait);
 								} else if(dep.equals("first")) {
@@ -91,8 +92,8 @@ public class TraitRegistry {
 									TraitHandler.entityInit.addLast(trait);
 								}
 							} else if(method.getName().equals("onUpdate")) {
-								if(traits.containsKey(dep)) {
-									ITrait trait2 = traits.get(dep);
+								if(SoulHelper.traitRegistry.getTraits().contains(SoulHelper.traitRegistry.getTrait(dep))) {
+									ITrait trait2 = SoulHelper.traitRegistry.getTrait(dep);
 									int traitIndex = TraitHandler.entityUpdate.indexOf(trait2);
 									TraitHandler.entityUpdate.add(traitIndex, trait);
 								} else if(dep.equals("first")) {
@@ -101,8 +102,8 @@ public class TraitRegistry {
 									TraitHandler.entityUpdate.addLast(trait);
 								}
 							} else if(method.getName().equals("onInteract")) {
-								if(traits.containsKey(dep)) {
-									ITrait trait2 = traits.get(dep);
+								if(SoulHelper.traitRegistry.getTraits().contains(SoulHelper.traitRegistry.getTrait(dep))) {
+									ITrait trait2 = SoulHelper.traitRegistry.getTrait(dep);
 									int traitIndex = TraitHandler.entityRightClicked.indexOf(trait2);
 									TraitHandler.entityRightClicked.add(traitIndex, trait);
 								} else if(dep.equals("first")) {
@@ -111,8 +112,8 @@ public class TraitRegistry {
 									TraitHandler.entityRightClicked.addLast(trait);
 								}
 							} else if(method.getName().equals("onDeath")) {
-								if(traits.containsKey(dep)) {
-									ITrait trait2 = traits.get(dep);
+								if(SoulHelper.traitRegistry.getTraits().contains(SoulHelper.traitRegistry.getTrait(dep))) {
+									ITrait trait2 = SoulHelper.traitRegistry.getTrait(dep);
 									int traitIndex = TraitHandler.entityDeath.indexOf(trait2);
 									TraitHandler.entityDeath.add(traitIndex, trait);
 								} else if(dep.equals("first")) {
@@ -121,8 +122,8 @@ public class TraitRegistry {
 									TraitHandler.entityDeath.addLast(trait);
 								}
 							} else if(method.getName().equals("onKillEntity")) {
-								if(traits.containsKey(dep)) {
-									ITrait trait2 = traits.get(dep);
+								if(SoulHelper.traitRegistry.getTraits().contains(SoulHelper.traitRegistry.getTrait(dep))) {
+									ITrait trait2 = SoulHelper.traitRegistry.getTrait(dep);
 									int traitIndex = TraitHandler.onKillEntity.indexOf(trait2);
 									TraitHandler.onKillEntity.add(traitIndex, trait);
 								} else if(dep.equals("first")) {
@@ -131,8 +132,8 @@ public class TraitRegistry {
 									TraitHandler.onKillEntity.addLast(trait);
 								}
 							} else if(method.getName().equals("onEntityAttacked")) {
-								if(traits.containsKey(dep)) {
-									ITrait trait2 = traits.get(dep);
+								if(SoulHelper.traitRegistry.getTraits().contains(SoulHelper.traitRegistry.getTrait(dep))) {
+									ITrait trait2 = SoulHelper.traitRegistry.getTrait(dep);
 									int traitIndex = TraitHandler.attackEntityFrom.indexOf(trait2);
 									TraitHandler.attackEntityFrom.add(traitIndex, trait);
 								} else if(dep.equals("first")) {
@@ -141,8 +142,8 @@ public class TraitRegistry {
 									TraitHandler.attackEntityFrom.addLast(trait);
 								}
 							} else if(method.getName().equals("onSpawnWithEgg")) {
-								if(traits.containsKey(dep)) {
-									ITrait trait2 = traits.get(dep);
+								if(SoulHelper.traitRegistry.getTraits().contains(SoulHelper.traitRegistry.getTrait(dep))) {
+									ITrait trait2 = SoulHelper.traitRegistry.getTrait(dep);
 									int traitIndex = TraitHandler.spawnEntityFromEgg.indexOf(trait2);
 									TraitHandler.spawnEntityFromEgg.add(traitIndex, trait);
 								} else if(dep.equals("first")) {
@@ -151,8 +152,8 @@ public class TraitRegistry {
 									TraitHandler.spawnEntityFromEgg.addLast(trait);
 								}
 							} else if(method.getName().equals("playSound")) {
-								if(traits.containsKey(dep)) {
-									ITrait trait2 = traits.get(dep);
+								if(SoulHelper.traitRegistry.getTraits().contains(SoulHelper.traitRegistry.getTrait(dep))) {
+									ITrait trait2 = SoulHelper.traitRegistry.getTrait(dep);
 									int traitIndex = TraitHandler.playSoundAtEntity.indexOf(trait2);
 									TraitHandler.playSoundAtEntity.add(traitIndex, trait);
 								} else if(dep.equals("first")) {
@@ -161,8 +162,8 @@ public class TraitRegistry {
 									TraitHandler.playSoundAtEntity.addLast(trait);
 								}
 							} else if(method.getName().equals("damageEntity")) {
-								if(traits.containsKey(dep)) {
-									ITrait trait2 = traits.get(dep);
+								if(SoulHelper.traitRegistry.getTraits().contains(SoulHelper.traitRegistry.getTrait(dep))) {
+									ITrait trait2 = SoulHelper.traitRegistry.getTrait(dep);
 									int traitIndex = TraitHandler.damageEntity.indexOf(trait2);
 									TraitHandler.damageEntity.add(traitIndex, trait);
 								} else if(dep.equals("first")) {
@@ -171,8 +172,8 @@ public class TraitRegistry {
 									TraitHandler.damageEntity.addLast(trait);
 								}
 							} else if(method.getName().equals("updateAITask")) {
-                                if(traits.containsKey(dep)) {
-                                    ITrait trait2 = traits.get(dep);
+                                if(SoulHelper.traitRegistry.getTraits().contains(SoulHelper.traitRegistry.getTrait(dep))) {
+                                    ITrait trait2 = SoulHelper.traitRegistry.getTrait(dep);
                                     int traitIndex = TraitHandler.updateAITick.indexOf(trait2);
                                     TraitHandler.updateAITick.add(traitIndex, trait);
                                 } else if(dep.equals("first")) {
@@ -181,8 +182,8 @@ public class TraitRegistry {
                                     TraitHandler.updateAITick.addLast(trait);
                                 }
                             } else if(method.getName().equals("firstTick")) {
-                                if(traits.containsKey(dep)) {
-                                    ITrait trait2 = traits.get(dep);
+                                if(SoulHelper.traitRegistry.getTraits().contains(SoulHelper.traitRegistry.getTrait(dep))) {
+                                    ITrait trait2 = SoulHelper.traitRegistry.getTrait(dep);
                                     int traitIndex = TraitHandler.firstTick.indexOf(trait2);
                                     TraitHandler.firstTick.add(traitIndex, trait);
                                 } else if(dep.equals("first")) {

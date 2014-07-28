@@ -1,12 +1,12 @@
 package seremis.geninfusion.network.packet;
 
-import seremis.geninfusion.entity.GIEntity;
-import seremis.geninfusion.entity.GIEntityLiving;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
+import seremis.geninfusion.entity.GIEntity;
+import seremis.geninfusion.entity.GIEntityLiving;
 
 public class PacketEntityData extends AbstractPacket {
 

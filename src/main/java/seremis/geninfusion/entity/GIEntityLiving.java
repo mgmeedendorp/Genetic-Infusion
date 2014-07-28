@@ -1,11 +1,11 @@
 package seremis.geninfusion.entity;
 
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.world.World;
 import seremis.geninfusion.GeneticInfusion;
 import seremis.geninfusion.core.proxy.CommonProxy;
 import seremis.geninfusion.network.packet.PacketEntityData;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.world.World;
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 
 public class GIEntityLiving extends EntityLiving {
     

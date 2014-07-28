@@ -7,9 +7,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import seremis.geninfusion.api.magnet.tile.IMagnetConnector;
-import seremis.geninfusion.api.soul.GeneRegistry;
-import seremis.geninfusion.lib.Items;
+import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.core.proxy.CommonProxy;
+import seremis.geninfusion.lib.Items;
 import seremis.geninfusion.soul.entity.EntitySoulCustom;
 
 public class ItemThermometer extends GIItem {
@@ -38,7 +38,7 @@ public class ItemThermometer extends GIItem {
                 player.addChatComponentMessage(new ChatComponentText("Heat: " + ((IMagnetConnector) tile).getHeat()));
             }
             if(stack.getItemDamage() == 1) {
-                EntitySoulCustom entity = EntitySoulCustom.createSoulEntity(world,GeneRegistry.getSoulFor(new EntityZombie(world)), x+0.5F, y+1F, z+0.5F);
+                EntitySoulCustom entity = EntitySoulCustom.createSoulEntity(world, SoulHelper.geneRegistry.getSoulFor(new EntityZombie(world)), x+0.5F, y+1F, z+0.5F);
                 world.spawnEntityInWorld(entity);
             }
         }

@@ -1,10 +1,10 @@
 package seremis.geninfusion.gui;
 
-import java.util.List;
-
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
+
+import java.util.List;
 
 public class GIGui extends GuiContainer {
 

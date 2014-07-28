@@ -1,9 +1,5 @@
 package seremis.geninfusion.block;
 
-import seremis.geninfusion.lib.RenderIds;
-import seremis.geninfusion.core.proxy.CommonProxy;
-import seremis.geninfusion.tileentity.TileCrystalStand;
-import seremis.geninfusion.util.UtilBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,6 +7,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import seremis.geninfusion.core.proxy.CommonProxy;
+import seremis.geninfusion.lib.RenderIds;
+import seremis.geninfusion.tileentity.TileCrystalStand;
+import seremis.geninfusion.util.UtilBlock;
 
 public class BlockCrystalStand extends GIBlockContainer {
 

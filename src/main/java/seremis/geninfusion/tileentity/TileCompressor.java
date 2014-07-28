@@ -1,13 +1,13 @@
 package seremis.geninfusion.tileentity;
 
-import seremis.geninfusion.lib.Tiles;
-import seremis.geninfusion.item.ModItems;
-import seremis.geninfusion.util.inventory.Inventory;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import seremis.geninfusion.item.ModItems;
+import seremis.geninfusion.lib.Tiles;
+import seremis.geninfusion.util.inventory.Inventory;
 
 public class TileCompressor extends GITile implements IInventory {
     

@@ -1,9 +1,9 @@
 package seremis.geninfusion.soul.allele;
 
-import seremis.geninfusion.soul.Allele;
-import seremis.geninfusion.util.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import seremis.geninfusion.soul.Allele;
+import seremis.geninfusion.util.inventory.Inventory;
 
 /*
  * Just a multiple itemstack allele

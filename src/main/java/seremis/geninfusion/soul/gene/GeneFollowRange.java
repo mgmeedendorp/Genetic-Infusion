@@ -16,9 +16,4 @@ public class GeneFollowRange implements IGene {
     public Class<? extends IAllele> possibleAlleles() {
         return AlleleFloat.class;
     }
-
-    @Override
-    public IChromosome getStandardForEntity(EntityLiving entity) {
-        return new Chromosome(new AlleleFloat(true, 16), new AlleleFloat(false, 16));
-    }
 }

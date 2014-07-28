@@ -1,15 +1,15 @@
 package seremis.geninfusion.api.magnet.tile;
 
-import java.util.List;
-
-import seremis.geninfusion.api.magnet.MagnetLink;
-import seremis.geninfusion.api.magnet.MagnetLinkHelper;
-import seremis.geninfusion.api.util.Coordinate3D;
-import seremis.geninfusion.core.proxy.CommonProxy;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import seremis.geninfusion.api.magnet.MagnetLink;
+import seremis.geninfusion.api.magnet.MagnetLinkHelper;
+import seremis.geninfusion.api.util.Coordinate3D;
+import seremis.geninfusion.core.proxy.CommonProxy;
+
+import java.util.List;
 
 public abstract class TileMagnetConnector extends TileEntity implements IMagnetConnector {
 

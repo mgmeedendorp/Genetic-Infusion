@@ -1,8 +1,8 @@
 package seremis.geninfusion.gui.util;
 
+import net.minecraft.client.gui.GuiTextField;
 import seremis.geninfusion.gui.GIGui;
 import seremis.geninfusion.gui.GuiStationControllerTransporter;
-import net.minecraft.client.gui.GuiTextField;
 
 public class GuiTabName extends GuiTab {
 

@@ -1,12 +1,12 @@
 package seremis.geninfusion.network.packet;
 
-import seremis.geninfusion.tileentity.GITile;
-import seremis.geninfusion.tileentity.GITileMagnetConnector;
-import seremis.geninfusion.tileentity.GITileMagnetConsumer;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
+import seremis.geninfusion.tileentity.GITile;
+import seremis.geninfusion.tileentity.GITileMagnetConnector;
+import seremis.geninfusion.tileentity.GITileMagnetConsumer;
 
 public class PacketTileData extends AbstractPacket {
 

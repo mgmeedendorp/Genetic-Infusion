@@ -1,8 +1,8 @@
 package seremis.geninfusion.soul.traits;
 
 import net.minecraft.util.DamageSource;
-import seremis.geninfusion.api.soul.GeneRegistry;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
+import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.UtilSoulEntity;
 import seremis.geninfusion.soul.Trait;
@@ -15,7 +15,7 @@ public class TraitFluids extends Trait {
 
     @Override
     public void onUpdate(IEntitySoulCustom entity) {
-        boolean drownsInWater = ((AlleleBoolean) GeneRegistry.getActiveFor(entity, Genes.GENE_DROWNS_IN_WATER)).value;
+        boolean drownsInWater = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_DROWNS_IN_WATER)).value;
 
         if(drownsInWater) {
             int air = entity.getPersistentInteger("air");
@@ -32,7 +32,7 @@ public class TraitFluids extends Trait {
             }
         }
 
-        boolean drownsInAir = ((AlleleBoolean) GeneRegistry.getActiveFor(entity, Genes.GENE_DROWNS_IN_AIR)).value;
+        boolean drownsInAir = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_DROWNS_IN_AIR)).value;
 
         if(drownsInAir) {
             int air = entity.getPersistentInteger("air");

@@ -1,9 +1,9 @@
 package seremis.geninfusion.tileentity;
 
-import seremis.geninfusion.block.ModBlocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
+import seremis.geninfusion.block.ModBlocks;
 
 
 public class TileItemIO extends GITile implements IInventory, ISidedInventory {

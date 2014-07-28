@@ -2,12 +2,10 @@ package seremis.geninfusion.client.render;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-
 import org.lwjgl.opengl.GL11;
-
 import seremis.geninfusion.client.model.ModelCrystalStand;
-import seremis.geninfusion.lib.Localizations;
 import seremis.geninfusion.helper.GIRenderHelper;
+import seremis.geninfusion.lib.Localizations;
 import seremis.geninfusion.tileentity.TileCrystalStand;
 
 public class TileCrystalStandRenderer extends TileEntitySpecialRenderer {

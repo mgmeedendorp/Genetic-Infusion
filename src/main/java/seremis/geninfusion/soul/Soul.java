@@ -1,10 +1,10 @@
 package seremis.geninfusion.soul;
 
-import seremis.geninfusion.api.soul.IChromosome;
-import seremis.geninfusion.api.soul.ISoul;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
+import seremis.geninfusion.api.soul.IChromosome;
+import seremis.geninfusion.api.soul.ISoul;
 
 public class Soul implements ISoul {
 

@@ -1,13 +1,13 @@
 package seremis.geninfusion.block;
 
-import seremis.geninfusion.lib.Blocks;
-import seremis.geninfusion.lib.RenderIds;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import seremis.geninfusion.lib.Blocks;
+import seremis.geninfusion.lib.RenderIds;
 
 public class BlockMonsterEgg extends GIBlock {
 

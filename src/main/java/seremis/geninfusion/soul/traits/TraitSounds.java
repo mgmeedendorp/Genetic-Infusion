@@ -2,8 +2,8 @@ package seremis.geninfusion.soul.traits;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import seremis.geninfusion.api.soul.GeneRegistry;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
+import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.soul.Trait;
 import seremis.geninfusion.soul.allele.AlleleInteger;
@@ -34,6 +34,6 @@ public class TraitSounds extends Trait {
 
     @Override
     public void firstTick(IEntitySoulCustom entity) {
-        entity.setVariable("talkInterval", ((AlleleInteger) GeneRegistry.getActiveFor(entity, Genes.GENE_TALK_INTERVAL)).value);
+        entity.setVariable("talkInterval", ((AlleleInteger) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_TALK_INTERVAL)).value);
     }
 }

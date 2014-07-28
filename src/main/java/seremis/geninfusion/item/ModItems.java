@@ -1,11 +1,11 @@
 package seremis.geninfusion.item;
 
-import seremis.geninfusion.lib.DefaultProps;
-import seremis.geninfusion.lib.Items;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import cpw.mods.fml.common.registry.GameRegistry;
+import seremis.geninfusion.lib.DefaultProps;
+import seremis.geninfusion.lib.Items;
 
 public class ModItems {
 

@@ -1,13 +1,11 @@
 package seremis.geninfusion.client.render;
 
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
-
 import org.lwjgl.opengl.GL11;
-
 import seremis.geninfusion.lib.RenderIds;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class BlockCrystalRenderer implements ISimpleBlockRenderingHandler {
 

@@ -1,9 +1,11 @@
-package seremis.geninfusion.api.soul;
+package seremis.geninfusion.soul;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
+import seremis.geninfusion.api.soul.IEntitySoulCustom;
+import seremis.geninfusion.api.soul.ITrait;
 
 import java.util.LinkedList;
 

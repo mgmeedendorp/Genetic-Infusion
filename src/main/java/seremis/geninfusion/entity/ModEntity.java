@@ -1,10 +1,10 @@
 package seremis.geninfusion.entity;
 
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 import seremis.geninfusion.GeneticInfusion;
 import seremis.geninfusion.lib.EntityIds;
 import seremis.geninfusion.soul.entity.EntitySoulCustom;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class ModEntity {
 

@@ -1,8 +1,5 @@
 package seremis.geninfusion.soul.traits;
 
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -11,8 +8,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldServer;
-import seremis.geninfusion.api.soul.GeneRegistry;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
+import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.TraitDependencies;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.UtilSoulEntity;
@@ -21,14 +18,17 @@ import seremis.geninfusion.soul.Trait;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
 import seremis.geninfusion.soul.allele.AlleleInteger;
 
+import java.util.List;
+import java.util.Random;
+
 public class TraitMovement extends Trait {
 
 	@Override
 	@TraitDependencies(dependencies = "first")
     public void onUpdate(IEntitySoulCustom entity) {
-        boolean isImmuneToFire = ((AlleleBoolean) GeneRegistry.getActiveFor(entity, Genes.GENE_IMMUNE_TO_FIRE)).value;
-        int timeInPortalUntilTeleport = ((AlleleInteger) GeneRegistry.getActiveFor(entity, Genes.GENE_TELEPORT_TIME_IN_PORTAL)).value;
-        int portalCooldown = ((AlleleInteger) GeneRegistry.getActiveFor(entity, Genes.GENE_PORTAL_COOLDOWN)).value;
+        boolean isImmuneToFire = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_IMMUNE_TO_FIRE)).value;
+        int timeInPortalUntilTeleport = ((AlleleInteger) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_TELEPORT_TIME_IN_PORTAL)).value;
+        int portalCooldown = ((AlleleInteger) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_PORTAL_COOLDOWN)).value;
 
         double posX = entity.getPersistentDouble("posX");
         double posY = entity.getPersistentDouble("posY");

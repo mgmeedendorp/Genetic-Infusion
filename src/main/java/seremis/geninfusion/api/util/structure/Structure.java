@@ -1,11 +1,11 @@
 package seremis.geninfusion.api.util.structure;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import seremis.geninfusion.api.util.Coordinate3D;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
+import seremis.geninfusion.api.util.Coordinate3D;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Structure {
 

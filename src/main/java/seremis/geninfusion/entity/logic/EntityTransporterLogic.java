@@ -1,12 +1,12 @@
 package seremis.geninfusion.entity.logic;
 
-import java.nio.ByteBuffer;
-import java.nio.DoubleBuffer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.PriorityQueue;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.Constants;
 import seremis.geninfusion.api.magnet.MagnetLink;
 import seremis.geninfusion.api.magnet.MagnetLinkHelper;
 import seremis.geninfusion.api.magnet.MagnetNetwork;
@@ -19,13 +19,13 @@ import seremis.geninfusion.entity.EntityTransporter;
 import seremis.geninfusion.event.TransporterArriveEvent;
 import seremis.geninfusion.event.TransporterHitBlockEvent;
 import seremis.geninfusion.tileentity.TileStationController;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.Constants;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import java.nio.ByteBuffer;
+import java.nio.DoubleBuffer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.PriorityQueue;
 
 public class EntityTransporterLogic {
 

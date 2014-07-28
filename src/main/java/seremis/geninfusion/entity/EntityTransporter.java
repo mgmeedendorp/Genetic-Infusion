@@ -1,9 +1,7 @@
 package seremis.geninfusion.entity;
 
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import io.netty.buffer.ByteBuf;
-
-import java.nio.ByteBuffer;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -12,15 +10,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
-
 import org.apache.logging.log4j.Level;
-
 import seremis.geninfusion.GeneticInfusion;
 import seremis.geninfusion.core.proxy.CommonProxy;
 import seremis.geninfusion.entity.logic.EntityTransporterLogic;
 import seremis.geninfusion.tileentity.TileStationController;
 import seremis.geninfusion.util.UtilBlock;
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+
+import java.nio.ByteBuffer;
 
 public class EntityTransporter extends GIEntity implements IEntityAdditionalSpawnData {
 

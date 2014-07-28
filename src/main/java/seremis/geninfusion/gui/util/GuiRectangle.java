@@ -1,8 +1,8 @@
 package seremis.geninfusion.gui.util;
 
-import java.util.Arrays;
-
 import seremis.geninfusion.gui.GIGui;
+
+import java.util.Arrays;
 
 public class GuiRectangle {
 

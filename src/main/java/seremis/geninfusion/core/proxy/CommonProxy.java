@@ -1,11 +1,11 @@
 package seremis.geninfusion.core.proxy;
 
-import seremis.geninfusion.lib.Localizations;
-import seremis.geninfusion.handler.ServerTickHandler;
-import net.minecraft.entity.Entity;
-import net.minecraft.world.World;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.SidedProxy;
+import net.minecraft.entity.Entity;
+import net.minecraft.world.World;
+import seremis.geninfusion.handler.ServerTickHandler;
+import seremis.geninfusion.lib.Localizations;
 
 public class CommonProxy {
 

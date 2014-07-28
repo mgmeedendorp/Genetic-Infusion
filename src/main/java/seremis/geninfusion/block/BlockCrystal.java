@@ -1,11 +1,11 @@
 package seremis.geninfusion.block;
 
-import seremis.geninfusion.lib.Blocks;
-import seremis.geninfusion.lib.RenderIds;
-import seremis.geninfusion.tileentity.TileCrystal;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import seremis.geninfusion.lib.Blocks;
+import seremis.geninfusion.lib.RenderIds;
+import seremis.geninfusion.tileentity.TileCrystal;
 
 public class BlockCrystal extends GIBlockContainer {
 

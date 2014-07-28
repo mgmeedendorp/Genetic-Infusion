@@ -1,11 +1,11 @@
 package seremis.geninfusion.client.render;
 
-import seremis.geninfusion.lib.RenderIds;
-import seremis.geninfusion.helper.GIRenderHelper;
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import seremis.geninfusion.helper.GIRenderHelper;
+import seremis.geninfusion.lib.RenderIds;
 
 public class BlockCompressorRenderer implements ISimpleBlockRenderingHandler {
 

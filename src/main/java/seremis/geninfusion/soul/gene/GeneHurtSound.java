@@ -14,12 +14,4 @@ public class GeneHurtSound implements IGene {
 	public Class<? extends IAllele> possibleAlleles() {
 		return AlleleString.class;
 	}
-
-	@Override
-	public IChromosome getStandardForEntity(EntityLiving entity) {
-		if(entity instanceof EntityZombie) {
-			return new Chromosome(new AlleleString(true, "mob.zombie.hurt"), new AlleleString(false, "mob.zombie.hurt"));
-		}
-		return null;
-	}
 }

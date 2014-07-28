@@ -1,16 +1,16 @@
 package seremis.geninfusion.handler;
 
-import seremis.geninfusion.lib.GuiIds;
-import seremis.geninfusion.gui.GuiStationControllerSend;
-import seremis.geninfusion.gui.GuiStationControllerTransporter;
-import seremis.geninfusion.inventory.ContainerStationControllerSend;
-import seremis.geninfusion.inventory.ContainerStationControllerTransporter;
-import seremis.geninfusion.tileentity.TileStationController;
+import cpw.mods.fml.common.network.IGuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import cpw.mods.fml.common.network.IGuiHandler;
+import seremis.geninfusion.gui.GuiStationControllerSend;
+import seremis.geninfusion.gui.GuiStationControllerTransporter;
+import seremis.geninfusion.inventory.ContainerStationControllerSend;
+import seremis.geninfusion.inventory.ContainerStationControllerTransporter;
+import seremis.geninfusion.lib.GuiIds;
+import seremis.geninfusion.tileentity.TileStationController;
 
 public class GuiHandler implements IGuiHandler {
 

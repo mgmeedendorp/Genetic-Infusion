@@ -1,10 +1,10 @@
 package seremis.geninfusion.api.magnet;
 
+import seremis.geninfusion.api.magnet.tile.IMagnetConnector;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import seremis.geninfusion.api.magnet.tile.IMagnetConnector;
 
 public class MagnetNetwork {
 

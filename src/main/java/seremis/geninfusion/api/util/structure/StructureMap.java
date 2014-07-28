@@ -1,10 +1,10 @@
 package seremis.geninfusion.api.util.structure;
 
+import seremis.geninfusion.api.util.Coordinate3D;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import seremis.geninfusion.api.util.Coordinate3D;
 
 public class StructureMap {
 

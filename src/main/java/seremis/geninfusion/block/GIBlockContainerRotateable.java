@@ -1,9 +1,7 @@
 package seremis.geninfusion.block;
 
-import seremis.geninfusion.core.proxy.CommonProxy;
-import seremis.geninfusion.tileentity.GITile;
-import seremis.geninfusion.tileentity.GITileMagnetConnector;
-import seremis.geninfusion.tileentity.GITileMagnetConsumer;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -13,8 +11,10 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import seremis.geninfusion.core.proxy.CommonProxy;
+import seremis.geninfusion.tileentity.GITile;
+import seremis.geninfusion.tileentity.GITileMagnetConnector;
+import seremis.geninfusion.tileentity.GITileMagnetConsumer;
 
 public class GIBlockContainerRotateable extends GIBlockContainer {
 

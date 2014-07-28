@@ -3,14 +3,12 @@ package seremis.geninfusion.client.render;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-
 import org.lwjgl.opengl.GL11;
-
 import seremis.geninfusion.client.model.ModelTransporter;
 import seremis.geninfusion.client.model.ModelTransporterEngine;
-import seremis.geninfusion.lib.Localizations;
 import seremis.geninfusion.entity.EntityTransporter;
 import seremis.geninfusion.helper.GIRenderHelper;
+import seremis.geninfusion.lib.Localizations;
 
 public class EntityTransporterRenderer extends Render {
 

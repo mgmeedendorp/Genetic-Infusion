@@ -1,10 +1,10 @@
 package seremis.geninfusion.soul.entity;
 
-import seremis.geninfusion.lib.Localizations;
 import net.minecraft.client.model.ModelZombie;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import seremis.geninfusion.lib.Localizations;
 
 public class RenderEntitySoulCustom extends RenderLiving {
 

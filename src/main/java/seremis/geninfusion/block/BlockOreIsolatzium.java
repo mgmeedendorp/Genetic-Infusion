@@ -1,12 +1,12 @@
 package seremis.geninfusion.block;
 
-import java.util.Random;
-
-import seremis.geninfusion.lib.Blocks;
-import seremis.geninfusion.item.ModItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
+import seremis.geninfusion.item.ModItems;
+import seremis.geninfusion.lib.Blocks;
+
+import java.util.Random;
 
 public class BlockOreIsolatzium extends GIBlock {
 

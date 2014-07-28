@@ -1,31 +1,22 @@
 package seremis.geninfusion.core.proxy;
 
-import seremis.geninfusion.client.render.BlockCompressorRenderer;
-import seremis.geninfusion.client.render.BlockCrystalRenderer;
-import seremis.geninfusion.client.render.BlockCrystalStandRenderer;
-import seremis.geninfusion.client.render.BlockMonsterEggRenderer;
-import seremis.geninfusion.client.render.EntityTransporterRenderer;
-import seremis.geninfusion.client.render.ItemTransporterModulesRenderer;
-import seremis.geninfusion.client.render.RenderBeam;
-import seremis.geninfusion.client.render.TileCompressorRenderer;
-import seremis.geninfusion.client.render.TileCrystalRenderer;
-import seremis.geninfusion.client.render.TileCrystalStandRenderer;
-import seremis.geninfusion.lib.RenderIds;
-import seremis.geninfusion.entity.EntityTransporter;
-import seremis.geninfusion.item.ModItems;
-import seremis.geninfusion.soul.entity.EntitySoulCustom;
-import seremis.geninfusion.soul.entity.RenderEntitySoulCustom;
-import seremis.geninfusion.tileentity.TileCompressor;
-import seremis.geninfusion.tileentity.TileCrystal;
-import seremis.geninfusion.tileentity.TileCrystalStand;
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.client.registry.RenderingRegistry;
+import seremis.geninfusion.client.render.*;
+import seremis.geninfusion.entity.EntityTransporter;
+import seremis.geninfusion.item.ModItems;
+import seremis.geninfusion.lib.RenderIds;
+import seremis.geninfusion.soul.entity.EntitySoulCustom;
+import seremis.geninfusion.soul.entity.RenderEntitySoulCustom;
+import seremis.geninfusion.tileentity.TileCompressor;
+import seremis.geninfusion.tileentity.TileCrystal;
+import seremis.geninfusion.tileentity.TileCrystalStand;
 
 public class ClientProxy extends CommonProxy {
 	

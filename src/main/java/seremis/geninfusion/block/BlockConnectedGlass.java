@@ -1,13 +1,13 @@
 package seremis.geninfusion.block;
 
-import seremis.geninfusion.lib.Blocks;
-import seremis.geninfusion.helper.ConnectedTextureHelper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import seremis.geninfusion.helper.ConnectedTextureHelper;
+import seremis.geninfusion.lib.Blocks;
 
 public class BlockConnectedGlass extends GIBlock {
 

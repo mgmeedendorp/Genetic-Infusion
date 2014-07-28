@@ -1,12 +1,12 @@
 package seremis.geninfusion.tileentity;
 
-import java.util.Random;
-
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
 import seremis.geninfusion.api.magnet.MagnetLink;
 import seremis.geninfusion.api.util.Coordinate3D;
 import seremis.geninfusion.api.util.structure.Structure;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.Random;
 
 public class TileCrystalStand extends GITileMagnetConnector {
 

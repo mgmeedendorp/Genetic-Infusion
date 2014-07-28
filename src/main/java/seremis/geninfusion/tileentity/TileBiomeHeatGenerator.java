@@ -1,12 +1,12 @@
 package seremis.geninfusion.tileentity;
 
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.chunk.Chunk;
+import seremis.geninfusion.core.proxy.CommonProxy;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import seremis.geninfusion.core.proxy.CommonProxy;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.chunk.Chunk;
 
 public class TileBiomeHeatGenerator extends GITileMagnetConnector {
     

@@ -1,9 +1,5 @@
 package seremis.geninfusion.util;
 
-import java.util.Random;
-
-import seremis.geninfusion.api.util.Coordinate3D;
-import seremis.geninfusion.core.proxy.CommonProxy;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
@@ -11,6 +7,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import seremis.geninfusion.api.util.Coordinate3D;
+import seremis.geninfusion.core.proxy.CommonProxy;
+
+import java.util.Random;
 
 public class UtilBlock {
 

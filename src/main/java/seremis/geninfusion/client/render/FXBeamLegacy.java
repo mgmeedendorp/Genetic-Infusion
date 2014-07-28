@@ -1,19 +1,17 @@
 package seremis.geninfusion.client.render;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.world.World;
-
 import org.lwjgl.opengl.GL11;
-
 import seremis.geninfusion.api.util.Coordinate3D;
 import seremis.geninfusion.api.util.Line3D;
-import seremis.geninfusion.lib.Localizations;
 import seremis.geninfusion.helper.GIRenderHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import seremis.geninfusion.lib.Localizations;
 
 
 //Legacy code for the beam renderer

@@ -1,14 +1,5 @@
 package seremis.geninfusion.block;
 
-import java.util.List;
-import java.util.Random;
-
-import seremis.geninfusion.GeneticInfusion;
-import seremis.geninfusion.lib.Blocks;
-import seremis.geninfusion.lib.RenderIds;
-import seremis.geninfusion.core.proxy.CommonProxy;
-import seremis.geninfusion.item.ModItems;
-import seremis.geninfusion.tileentity.TileCompressor;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -24,6 +15,15 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import seremis.geninfusion.GeneticInfusion;
+import seremis.geninfusion.core.proxy.CommonProxy;
+import seremis.geninfusion.item.ModItems;
+import seremis.geninfusion.lib.Blocks;
+import seremis.geninfusion.lib.RenderIds;
+import seremis.geninfusion.tileentity.TileCompressor;
+
+import java.util.List;
+import java.util.Random;
 
 public class BlockCompressor extends GIBlockContainer {
 

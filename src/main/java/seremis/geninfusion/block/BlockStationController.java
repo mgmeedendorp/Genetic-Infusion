@@ -1,16 +1,16 @@
 package seremis.geninfusion.block;
 
-import seremis.geninfusion.GeneticInfusion;
-import seremis.geninfusion.lib.Blocks;
-import seremis.geninfusion.lib.GuiIds;
-import seremis.geninfusion.core.proxy.CommonProxy;
-import seremis.geninfusion.tileentity.TileStationController;
-import seremis.geninfusion.util.UtilBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import seremis.geninfusion.GeneticInfusion;
+import seremis.geninfusion.core.proxy.CommonProxy;
+import seremis.geninfusion.lib.Blocks;
+import seremis.geninfusion.lib.GuiIds;
+import seremis.geninfusion.tileentity.TileStationController;
+import seremis.geninfusion.util.UtilBlock;
 
 public class BlockStationController extends GIBlockContainerRotateable {
 

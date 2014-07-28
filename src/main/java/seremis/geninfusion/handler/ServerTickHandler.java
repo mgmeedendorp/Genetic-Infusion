@@ -1,17 +1,17 @@
 package seremis.geninfusion.handler;
 
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import seremis.geninfusion.api.magnet.MagnetLinkHelper;
-import seremis.geninfusion.core.proxy.CommonProxy;
-import seremis.geninfusion.util.ITimerCaller;
-import seremis.geninfusion.util.Timer;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldServer;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
+import seremis.geninfusion.api.magnet.MagnetLinkHelper;
+import seremis.geninfusion.core.proxy.CommonProxy;
+import seremis.geninfusion.util.ITimerCaller;
+import seremis.geninfusion.util.Timer;
+
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ServerTickHandler implements ITimerCaller {
 

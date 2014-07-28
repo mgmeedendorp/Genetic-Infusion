@@ -18,8 +18,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.ForgeEventFactory;
-import seremis.geninfusion.api.soul.GeneRegistry;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
+import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.core.proxy.CommonProxy;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
@@ -199,7 +199,7 @@ public class UtilSoulEntity {
     
     public static void despawnEntity(IEntitySoulCustom entity) {
         Result result = null;
-        boolean shouldDespawn = ((AlleleBoolean)GeneRegistry.getActiveFor(entity, Genes.GENE_SHOULD_DESPAWN)).value;
+        boolean shouldDespawn = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_SHOULD_DESPAWN)).value;
         
         int entityAge = entity.getInteger("entityAge");
         

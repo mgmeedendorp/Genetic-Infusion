@@ -1,14 +1,13 @@
 package seremis.geninfusion.client.render;
 
-import java.util.Random;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
-
 import seremis.geninfusion.api.util.HeatColorHelper;
 import seremis.geninfusion.client.model.ModelCrystal;
-import seremis.geninfusion.lib.Localizations;
 import seremis.geninfusion.helper.GIRenderHelper;
+import seremis.geninfusion.lib.Localizations;
+
+import java.util.Random;
 
 public class RenderCrystal {
 

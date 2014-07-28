@@ -1,10 +1,10 @@
 package seremis.geninfusion.block;
 
-import seremis.geninfusion.lib.Blocks;
-import seremis.geninfusion.tileentity.TileItemIO;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import seremis.geninfusion.lib.Blocks;
+import seremis.geninfusion.tileentity.TileItemIO;
 
 public class BlockItemIO extends GIBlockContainer {
     

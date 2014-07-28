@@ -1,21 +1,19 @@
 package seremis.geninfusion.api.magnet;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
-
 import org.apache.logging.log4j.Level;
-
 import seremis.geninfusion.GeneticInfusion;
 import seremis.geninfusion.api.magnet.tile.IMagnetConnector;
 import seremis.geninfusion.api.util.Coordinate3D;
 import seremis.geninfusion.api.util.Line3D;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MagnetLinkHelper {
 

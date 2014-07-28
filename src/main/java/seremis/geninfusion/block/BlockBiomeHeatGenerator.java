@@ -1,12 +1,12 @@
 package seremis.geninfusion.block;
 
-import java.util.Random;
-
-import seremis.geninfusion.lib.Blocks;
-import seremis.geninfusion.tileentity.TileBiomeHeatGenerator;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import seremis.geninfusion.lib.Blocks;
+import seremis.geninfusion.tileentity.TileBiomeHeatGenerator;
+
+import java.util.Random;
 
 public class BlockBiomeHeatGenerator extends GIBlockContainer {
 

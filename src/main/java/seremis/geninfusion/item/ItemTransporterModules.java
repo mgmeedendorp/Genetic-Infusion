@@ -1,7 +1,7 @@
 package seremis.geninfusion.item;
 
-import seremis.geninfusion.lib.Items;
 import net.minecraft.item.ItemStack;
+import seremis.geninfusion.lib.Items;
 
 public class ItemTransporterModules extends GIItem {
 

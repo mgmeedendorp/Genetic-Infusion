@@ -1,5 +1,6 @@
 package seremis.geninfusion.client.render;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -7,11 +8,8 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-
 import org.lwjgl.opengl.GL11;
-
 import seremis.geninfusion.tileentity.TileCompressor;
-import cpw.mods.fml.client.FMLClientHandler;
 
 public class TileCompressorRenderer extends TileEntitySpecialRenderer {
 

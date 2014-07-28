@@ -1,15 +1,15 @@
 package seremis.geninfusion.util.structure;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import net.minecraft.block.Block;
 import seremis.geninfusion.api.util.Coordinate3D;
 import seremis.geninfusion.api.util.structure.IStructureBlock;
 import seremis.geninfusion.api.util.structure.StructureBlock;
 import seremis.geninfusion.api.util.structure.StructureBlockChangeable;
 import seremis.geninfusion.api.util.structure.StructureMap;
 import seremis.geninfusion.block.ModBlocks;
-import net.minecraft.block.Block;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModStructures {
 

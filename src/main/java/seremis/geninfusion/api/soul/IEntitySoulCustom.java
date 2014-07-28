@@ -1,14 +1,7 @@
 package seremis.geninfusion.api.soul;
 
-import java.util.HashMap;
-import java.util.Random;
-
 import net.minecraft.entity.DataWatcher;
-import net.minecraft.entity.ai.EntityAITasks;
-import net.minecraft.entity.ai.EntityJumpHelper;
-import net.minecraft.entity.ai.EntityLookHelper;
-import net.minecraft.entity.ai.EntityMoveHelper;
-import net.minecraft.entity.ai.EntitySenses;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.BaseAttributeMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,11 +11,13 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.CombatTracker;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import seremis.geninfusion.soul.Soul;
+
+import java.util.HashMap;
+import java.util.Random;
 
 public interface IEntitySoulCustom {
 
-    Soul getSoul();
+    ISoul getSoul();
     
     World getWorld();
     

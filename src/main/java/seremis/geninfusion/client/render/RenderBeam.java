@@ -1,21 +1,19 @@
 package seremis.geninfusion.client.render;
 
-import java.util.List;
-
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
-
 import seremis.geninfusion.api.magnet.MagnetLink;
 import seremis.geninfusion.api.magnet.MagnetLinkHelper;
 import seremis.geninfusion.api.util.HeatColorHelper;
-import seremis.geninfusion.lib.Localizations;
 import seremis.geninfusion.helper.GIRenderHelper;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import seremis.geninfusion.lib.Localizations;
+
+import java.util.List;
 
 public class RenderBeam {
 

@@ -1,10 +1,10 @@
 package seremis.geninfusion.soul;
 
-import java.lang.reflect.Constructor;
-
+import net.minecraft.nbt.NBTTagCompound;
 import seremis.geninfusion.api.soul.IAllele;
 import seremis.geninfusion.soul.allele.EnumAlleleType;
-import net.minecraft.nbt.NBTTagCompound;
+
+import java.lang.reflect.Constructor;
 
 public class Allele implements IAllele {
 

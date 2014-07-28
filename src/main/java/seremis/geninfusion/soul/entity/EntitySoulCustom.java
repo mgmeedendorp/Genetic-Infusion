@@ -21,14 +21,15 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.Constants;
-import seremis.geninfusion.api.soul.GeneRegistry;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
-import seremis.geninfusion.api.soul.TraitHandler;
+import seremis.geninfusion.api.soul.ISoul;
+import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.core.proxy.CommonProxy;
 import seremis.geninfusion.entity.GIEntityLiving;
 import seremis.geninfusion.item.ModItems;
 import seremis.geninfusion.soul.Soul;
+import seremis.geninfusion.soul.TraitHandler;
 import seremis.geninfusion.soul.allele.AlleleFloat;
 import seremis.geninfusion.soul.allele.AlleleString;
 
@@ -42,20 +43,20 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class EntitySoulCustom extends GIEntityLiving implements IEntitySoulCustom, IEntityAdditionalSpawnData {
 
-    public static Soul tempSoulStorage;
+    public static ISoul tempSoulStorage;
 
-    public static EntitySoulCustom createSoulEntity(World world, Soul soul, double x, double y, double z) {
+    public static EntitySoulCustom createSoulEntity(World world, ISoul soul, double x, double y, double z) {
         tempSoulStorage = soul;
         return new EntitySoulCustom(world, soul, x, y, z);
     }
 
-    private Soul soul;
+    private ISoul soul;
     
     public EntitySoulCustom(World world) {
         super(world);
     }
     
-    private EntitySoulCustom(World world, Soul soul, double x, double y, double z) {
+    private EntitySoulCustom(World world, ISoul soul, double x, double y, double z) {
         this(world);
         setPosition(x, y, z);
         setSize(0.8F, 1.7F);
@@ -94,7 +95,7 @@ public class EntitySoulCustom extends GIEntityLiving implements IEntitySoulCusto
     }
     
     @Override
-	public Soul getSoul() {
+	public ISoul getSoul() {
         return soul != null ? soul : tempSoulStorage;
     }
     
@@ -202,32 +203,32 @@ public class EntitySoulCustom extends GIEntityLiving implements IEntitySoulCusto
 
     @Override
     public String getDeathSound() {
-        return ((AlleleString) GeneRegistry.getActiveFor((IEntitySoulCustom) this, Genes.GENE_DEATH_SOUND)).value;
+        return ((AlleleString) SoulHelper.geneRegistry.getActiveFor((IEntitySoulCustom) this, Genes.GENE_DEATH_SOUND)).value;
     }
 
     @Override
     public String getLivingSound() {
-        return ((AlleleString) GeneRegistry.getActiveFor((IEntitySoulCustom) this, Genes.GENE_LIVING_SOUND)).value;
+        return ((AlleleString) SoulHelper.geneRegistry.getActiveFor((IEntitySoulCustom) this, Genes.GENE_LIVING_SOUND)).value;
     }
 
     @Override
     public String getHurtSound() {
-        return ((AlleleString) GeneRegistry.getActiveFor((IEntitySoulCustom) this, Genes.GENE_HURT_SOUND)).value;
+        return ((AlleleString) SoulHelper.geneRegistry.getActiveFor((IEntitySoulCustom) this, Genes.GENE_HURT_SOUND)).value;
     }
 
     @Override
     public String getSplashSound() {
-        return ((AlleleString) GeneRegistry.getActiveFor((IEntitySoulCustom) this, Genes.GENE_SPLASH_SOUND)).value;
+        return ((AlleleString) SoulHelper.geneRegistry.getActiveFor((IEntitySoulCustom) this, Genes.GENE_SPLASH_SOUND)).value;
     }
 
     @Override
     public String getSwimSound() {
-        return ((AlleleString) GeneRegistry.getActiveFor((IEntitySoulCustom) this, Genes.GENE_SWIM_SOUND)).value;
+        return ((AlleleString) SoulHelper.geneRegistry.getActiveFor((IEntitySoulCustom) this, Genes.GENE_SWIM_SOUND)).value;
     }
 
     @Override
     public float getSoundVolume() {
-        return ((AlleleFloat) GeneRegistry.getActiveFor((IEntitySoulCustom) this, Genes.GENE_SOUND_VOLUME)).value;
+        return ((AlleleFloat) SoulHelper.geneRegistry.getActiveFor((IEntitySoulCustom) this, Genes.GENE_SOUND_VOLUME)).value;
     }
 
 

@@ -13,9 +13,4 @@ public class GeneImmuneToFire implements IGene {
 	public Class<? extends IAllele> possibleAlleles() {
 		return AlleleBoolean.class;
 	}
-
-	@Override
-	public IChromosome getStandardForEntity(EntityLiving entity) {
-		return new Chromosome(new AlleleBoolean(true, false), new AlleleBoolean(false, false));
-	}
 }

@@ -1,11 +1,11 @@
 package seremis.geninfusion.api.magnet.tile;
 
-import java.util.List;
-
-import seremis.geninfusion.api.magnet.MagnetLink;
-import seremis.geninfusion.api.util.Coordinate3D;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import seremis.geninfusion.api.magnet.MagnetLink;
+import seremis.geninfusion.api.util.Coordinate3D;
+
+import java.util.List;
 
 public interface IMagnetConnector {
 

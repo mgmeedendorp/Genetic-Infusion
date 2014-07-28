@@ -1,10 +1,10 @@
 package seremis.geninfusion.misc;
 
-import seremis.geninfusion.core.proxy.CommonProxy;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IChatComponent;
+import seremis.geninfusion.core.proxy.CommonProxy;
 
 public class DamageCompressor extends DamageSource {
 

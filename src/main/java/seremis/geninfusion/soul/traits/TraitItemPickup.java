@@ -1,9 +1,5 @@
 package seremis.geninfusion.soul.traits;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.item.EntityItem;
@@ -19,13 +15,17 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.network.play.server.S0DPacketCollectItem;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.world.WorldServer;
-import seremis.geninfusion.api.soul.GeneRegistry;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
+import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.UtilSoulEntity;
 import seremis.geninfusion.core.proxy.CommonProxy;
 import seremis.geninfusion.soul.Trait;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 
 public class TraitItemPickup extends Trait {
 	
@@ -33,7 +33,7 @@ public class TraitItemPickup extends Trait {
 	public void onUpdate(IEntitySoulCustom entity) {
 		entity.getWorld().theProfiler.startSection("looting");
 		
-		boolean canPickUpItems = ((AlleleBoolean)GeneRegistry.getActiveFor(entity, Genes.GENE_PICKS_UP_ITEMS)).value;
+		boolean canPickUpItems = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_PICKS_UP_ITEMS)).value;
 		boolean isDead = entity.getPersistentBoolean("isDead");
 
         if (CommonProxy.instance.isServerWorld(entity.getWorld()) && canPickUpItems && !isDead && entity.getWorld().getGameRules().getGameRuleBooleanValue("mobGriefing")) {

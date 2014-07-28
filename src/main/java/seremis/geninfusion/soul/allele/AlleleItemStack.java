@@ -1,8 +1,8 @@
 package seremis.geninfusion.soul.allele;
 
-import seremis.geninfusion.soul.Allele;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import seremis.geninfusion.soul.Allele;
 
 public class AlleleItemStack extends Allele {
 

@@ -1,8 +1,8 @@
 package seremis.geninfusion.tileentity;
 
-import seremis.geninfusion.api.magnet.tile.TileMagnetHeater;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import seremis.geninfusion.api.magnet.tile.TileMagnetHeater;
 
 public class TileHeatIO extends TileMagnetHeater {
 

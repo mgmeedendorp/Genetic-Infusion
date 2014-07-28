@@ -1,9 +1,9 @@
 package seremis.geninfusion.block;
 
-import seremis.geninfusion.lib.Blocks;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import seremis.geninfusion.lib.Blocks;
 
 public class BlockOreIsolatziumItem extends ItemBlock {
 
