@@ -40,6 +40,7 @@ public class ModSouls {
         SoulHelper.geneRegistry.registerGene(Genes.GENE_SHOULD_DESPAWN, new GeneShouldDespawn());
         SoulHelper.geneRegistry.registerGene(Genes.GENE_TALK_INTERVAL, new GeneTalkInterval());
         SoulHelper.geneRegistry.registerGene(Genes.GENE_SET_ON_FIRE_FROM_ATTACK, new GeneSetOnFireFromAttack());
+        SoulHelper.geneRegistry.registerGene(Genes.GENE_EXPERIENCE_VALUE, new GeneExperienceValue());
         
         SoulHelper.traitRegistry.registerTrait(Traits.TRAIT_FIRE, new TraitFire());
         SoulHelper.traitRegistry.registerTrait(Traits.TRAIT_MOVEMENT, new TraitMovement());
@@ -48,7 +49,8 @@ public class ModSouls {
         SoulHelper.traitRegistry.registerTrait(Traits.TRAIT_ITEM_DROPS, new TraitItemDrops());
         SoulHelper.traitRegistry.registerTrait(Traits.TRAIT_FLUIDS, new TraitFluids());
         SoulHelper.traitRegistry.registerTrait(Traits.TRAIT_SOUNDS, new TraitSounds());
-        SoulHelper.traitRegistry.registerTrait(Traits.TRAIT_ATTRIBUTES, new TraitAttributes());
+        SoulHelper.traitRegistry.registerTrait(Traits.TRAIT_ATTRIBUTES, new TraitInitialValues());
+        SoulHelper.traitRegistry.registerTrait(Traits.TRAIT_ATTACK, new TraitAttack());
 
         SoulHelper.standardSoulRegistry.register(new StandardSoulZombie(), EntityZombie.class);
     }

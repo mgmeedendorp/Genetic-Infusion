@@ -1,5 +1,6 @@
 package seremis.geninfusion.soul;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,14 +11,6 @@ import seremis.geninfusion.api.soul.ITrait;
 import java.util.LinkedList;
 
 public class TraitHandler {
-    
-    static LinkedList<ITrait> entityInit;
-    
-    public static void entityInit(IEntitySoulCustom entity) {
-        for(ITrait trait : entityInit) {
-            trait.onInit(entity);
-        }
-    }
     
     static LinkedList<ITrait> entityUpdate;
     
@@ -102,5 +95,16 @@ public class TraitHandler {
         for(ITrait trait : firstTick) {
             trait.firstTick(entity);
         }
+    }
+
+    static LinkedList<ITrait> attackEntityAsMob;
+
+    public static boolean attackEntityAsMob(IEntitySoulCustom entity, Entity entityToAttack) {
+        for(ITrait trait : attackEntityAsMob) {
+            if(!trait.attackEntityAsMob(entity, entityToAttack)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

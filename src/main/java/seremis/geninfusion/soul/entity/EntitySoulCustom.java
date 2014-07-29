@@ -43,20 +43,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class EntitySoulCustom extends GIEntityLiving implements IEntitySoulCustom, IEntityAdditionalSpawnData {
 
-    public static ISoul tempSoulStorage;
-
-    public static EntitySoulCustom createSoulEntity(World world, ISoul soul, double x, double y, double z) {
-        tempSoulStorage = soul;
-        return new EntitySoulCustom(world, soul, x, y, z);
-    }
-
     private ISoul soul;
     
-    public EntitySoulCustom(World world) {
-        super(world);
-    }
+    public EntitySoulCustom(World world) {super(world);}
     
-    private EntitySoulCustom(World world, ISoul soul, double x, double y, double z) {
+    public EntitySoulCustom(World world, ISoul soul, double x, double y, double z) {
         this(world);
         setPosition(x, y, z);
         setSize(0.8F, 1.7F);
@@ -96,7 +87,7 @@ public class EntitySoulCustom extends GIEntityLiving implements IEntitySoulCusto
     
     @Override
 	public ISoul getSoul() {
-        return soul != null ? soul : tempSoulStorage;
+        return soul;
     }
     
     @Override
@@ -182,6 +173,11 @@ public class EntitySoulCustom extends GIEntityLiving implements IEntitySoulCusto
     @Override
     public void setFlag(int id, boolean value) {
         super.setFlag(id, value);
+    }
+
+    @Override
+    public boolean getFlag(int id) {
+        return super.getFlag(id);
     }
     
     Random rand = new Random();
@@ -1432,11 +1428,9 @@ public class EntitySoulCustom extends GIEntityLiving implements IEntitySoulCusto
     }
 
     @Override
-    public void applyEntityAttributes() {}
-
-    @Override
-    public void entityInit() {
-        TraitHandler.entityInit(this);
+    public void applyEntityAttributes() {
+        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.maxHealth);
+        getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
     }
 
     private boolean firstUpdate = true;
@@ -1472,6 +1466,7 @@ public class EntitySoulCustom extends GIEntityLiving implements IEntitySoulCusto
     
     @Override
     public boolean attackEntityFrom(DamageSource source, float damage) {
+        super.attackEntityFrom(source, damage);
         return !ForgeHooks.onLivingAttack(this, source, damage) && TraitHandler.attackEntityFrom(this, source, damage);
     }
     
@@ -1493,6 +1488,11 @@ public class EntitySoulCustom extends GIEntityLiving implements IEntitySoulCusto
     @Override
     public void updateAITick() {
     	TraitHandler.updateAITick(this);
+    }
+
+    @Override
+    public boolean attackEntityAsMob(Entity entity) {
+        return TraitHandler.attackEntityAsMob(this, entity);
     }
     
     @Override

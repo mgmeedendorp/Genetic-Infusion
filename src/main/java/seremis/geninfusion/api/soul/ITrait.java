@@ -1,13 +1,12 @@
 package seremis.geninfusion.api.soul;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 
 public interface ITrait {
-
-	public void onInit(IEntitySoulCustom entity);
     
     public void onUpdate(IEntitySoulCustom entity);
     
@@ -28,4 +27,6 @@ public interface ITrait {
     public void updateAITick(IEntitySoulCustom entity);
 
     public void firstTick(IEntitySoulCustom entity);
+
+    public boolean attackEntityAsMob(IEntitySoulCustom entity, Entity entityToAttack);
 }

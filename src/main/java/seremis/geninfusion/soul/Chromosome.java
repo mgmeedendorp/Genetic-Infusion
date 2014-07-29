@@ -15,6 +15,11 @@ public class Chromosome implements IChromosome {
         this.allele1 = allele1;
         this.allele2 = allele2;
     }
+
+    public Chromosome(IAllele allele) {
+        this.allele1 = allele;
+        this.allele2 = allele;
+    }
     
     public Chromosome(NBTTagCompound compound) {
         readFromNBT(compound);

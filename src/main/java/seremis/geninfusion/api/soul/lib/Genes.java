@@ -33,4 +33,5 @@ public class Genes {
 	public static final String GENE_SHOULD_DESPAWN = DefaultProps.nameLower + ".gene.shouldDespawn";
     public static final String GENE_TALK_INTERVAL = DefaultProps.nameLower + ".gene.talkInterval";
     public static final String GENE_SET_ON_FIRE_FROM_ATTACK = DefaultProps.nameLower + ".gene.setOnFireFromAttack";
+    public static final String GENE_EXPERIENCE_VALUE = DefaultProps.nameLower + ".gene.experienceValue";
 }

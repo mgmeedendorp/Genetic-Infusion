@@ -14,8 +14,8 @@ public class ModEntity {
     }
 
     public static void register() {
-        EntityRegistry.registerModEntity(EntityTransporter.class, "EntityTransporter", EntityIds.transporterID, GeneticInfusion.instance, 80, 1, false);
-        EntityRegistry.registerModEntity(EntitySoulCustom.class, "EntitySoulCustom", EntityIds.soulEntityID, GeneticInfusion.instance, 80, 1, true);
+        EntityRegistry.registerModEntity(EntityTransporter.class, "transporter", EntityIds.transporterID, GeneticInfusion.instance, 80, 1, false);
+        EntityRegistry.registerModEntity(EntitySoulCustom.class, "soulCustom", EntityIds.soulEntityID, GeneticInfusion.instance, 80, 1, true);
     }
 
     public static void addNames() {

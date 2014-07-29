@@ -1,5 +1,6 @@
 package seremis.geninfusion.soul.traits;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
@@ -122,5 +123,15 @@ public class TraitFire extends Trait {
             vec31 = vec31.addVector(posX, posY + eyeHeight, posZ);
             entity.getWorld().spawnParticle("iconcrack_" + stack.getItem(), vec31.xCoord, vec31.yCoord, vec31.zCoord, vec3.xCoord, vec3.yCoord + 0.05D, vec3.zCoord);
         }
+    }
+
+    @Override
+    public boolean attackEntityAsMob(IEntitySoulCustom entity, Entity entityToAttack) {
+        int i = entity.getWorld().difficultySetting.getDifficultyId();
+
+        if (UtilSoulEntity.getEquipmentInSlot(entity, 0) == null && UtilSoulEntity.isBurning(entity) && entity.getRandom().nextFloat() < (float)i * 0.3F) {
+            entityToAttack.setFire(2 * i);
+        }
+        return true;
     }
 }

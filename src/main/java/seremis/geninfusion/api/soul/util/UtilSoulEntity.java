@@ -258,4 +258,9 @@ public class UtilSoulEntity {
             return null;
         }
     }
+
+    public static boolean isBurning(IEntitySoulCustom entity) {
+        boolean flag = entity.getWorld() != null && entity.getWorld().isRemote;
+        return !((AlleleBoolean)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_IMMUNE_TO_FIRE)).value && (entity.getPersistentInteger("fire") > 0 || flag && entity.getFlag(0));
+    }
 }

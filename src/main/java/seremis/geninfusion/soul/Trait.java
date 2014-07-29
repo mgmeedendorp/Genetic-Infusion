@@ -1,5 +1,6 @@
 package seremis.geninfusion.soul;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,9 +9,6 @@ import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.ITrait;
 
 public class Trait implements ITrait {
-
-	@Override
-	public void onInit(IEntitySoulCustom entity){}
 
 	@Override
 	public void onUpdate(IEntitySoulCustom entity){}
@@ -41,4 +39,7 @@ public class Trait implements ITrait {
 
     @Override
     public void firstTick(IEntitySoulCustom entity) {}
+
+    @Override
+    public boolean attackEntityAsMob(IEntitySoulCustom entity, Entity entityToAttack) {return true;}
 }
