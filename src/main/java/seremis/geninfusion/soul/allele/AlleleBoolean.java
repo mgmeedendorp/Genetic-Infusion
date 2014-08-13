@@ -1,6 +1,7 @@
 package seremis.geninfusion.soul.allele;
 
 import net.minecraft.nbt.NBTTagCompound;
+import seremis.geninfusion.api.soul.EnumAlleleType;
 import seremis.geninfusion.soul.Allele;
 
 public class AlleleBoolean extends Allele {
@@ -10,6 +11,11 @@ public class AlleleBoolean extends Allele {
     public AlleleBoolean(boolean isDominant, boolean value) {
         super(isDominant, EnumAlleleType.BOOLEAN);
         this.value = value;
+    }
+
+    public AlleleBoolean(Object... args) {
+        super(args);
+        value = (Boolean) args[1];
     }
     
     public AlleleBoolean(NBTTagCompound compound) {

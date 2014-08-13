@@ -2,6 +2,7 @@ package seremis.geninfusion.soul.allele;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import seremis.geninfusion.api.soul.EnumAlleleType;
 import seremis.geninfusion.soul.Allele;
 
 public class AlleleItemStack extends Allele {
@@ -10,8 +11,14 @@ public class AlleleItemStack extends Allele {
     
     public AlleleItemStack(boolean isDominant, ItemStack stack) {
         super(isDominant, EnumAlleleType.ITEMSTACK);
+        this.stack = stack;
     }
-    
+
+    public AlleleItemStack(Object... args) {
+        super(args);
+        stack = (ItemStack) args[1];
+    }
+
     public AlleleItemStack(NBTTagCompound compound) {
         super(compound);
         readFromNBT(compound);

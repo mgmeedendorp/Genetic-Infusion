@@ -47,7 +47,7 @@ public class TraitFire extends Trait {
                             }
                         }
                     } else {
-                        entity.setPersistentVariable("fire", (int)(8*20));
+                        entity.setPersistentVariable("fire", 8*20);
                     }
                 }
             }
@@ -74,7 +74,7 @@ public class TraitFire extends Trait {
         if(UtilSoulEntity.handleLavaMovement(entity)) {
             if(!isImmuneToFire) {
                 entity.attackEntityFrom(DamageSource.lava, 4.0F);
-                entity.setPersistentVariable("fire", (int)(15*20));
+                entity.setPersistentVariable("fire", 15*20);
             }
             entity.setPersistentVariable("fallDistance", fallDistance * 0.5F);
         }

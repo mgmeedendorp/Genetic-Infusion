@@ -17,13 +17,6 @@ public class TraitInitialValues extends Trait {
     @Override
     @TraitDependencies(dependencies = "first")
     public void firstTick(IEntitySoulCustom entity) {
-        //TODO attributes have to be registered in the attributes method in the entity specifically..
-        if(entity.getWorld().isRemote)
-        entity.getAttributeMap().registerAttribute(SharedMonsterAttributes.knockbackResistance);
-        entity.getAttributeMap().registerAttribute(SharedMonsterAttributes.movementSpeed);
-        entity.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
-        entity.getAttributeMap().registerAttribute(SharedMonsterAttributes.followRange);
-
         float maxHealth = ((AlleleFloat) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_MAX_HEALTH)).value;
         entity.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.maxHealth).setBaseValue(maxHealth);
 

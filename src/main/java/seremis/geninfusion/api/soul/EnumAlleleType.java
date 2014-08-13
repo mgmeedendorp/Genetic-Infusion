@@ -1,13 +1,14 @@
-package seremis.geninfusion.soul.allele;
+package seremis.geninfusion.api.soul;
 
 import seremis.geninfusion.api.soul.IAllele;
+import seremis.geninfusion.soul.allele.*;
 
 public enum EnumAlleleType {
 
-    BOOLEAN(AlleleBoolean.class), 
-    INTEGER(AlleleInteger.class), 
+    BOOLEAN(AlleleBoolean.class),
+    INTEGER(AlleleInteger.class),
     FLOAT(AlleleFloat.class),
-    STRING(AlleleString.class), 
+    STRING(AlleleString.class),
     BOOLEAN_ARRAY(AlleleBoolean.class), 
     INT_ARRAY(AlleleIntArray.class),
     FLOAT_ARRAY(AlleleFloatArray.class), 

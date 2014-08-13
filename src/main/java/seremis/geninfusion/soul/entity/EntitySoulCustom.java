@@ -541,6 +541,7 @@ public class EntitySoulCustom extends GIEntityLiving implements IEntitySoulCusto
     		defaultPitch = getFloat("defaultPitch");
     		syncDefaultPitch = defaultPitch;
     	}
+
     }
     
     private float syncAttackedAtYaw;
@@ -1430,6 +1431,11 @@ public class EntitySoulCustom extends GIEntityLiving implements IEntitySoulCusto
     @Override
     public void applyEntityAttributes() {
         this.getAttributeMap().registerAttribute(SharedMonsterAttributes.maxHealth);
+        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.knockbackResistance);
+        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.movementSpeed);
+        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
+        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.followRange);
+
         getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D);
     }
 

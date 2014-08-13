@@ -105,6 +105,18 @@ public class StandardSoul implements IStandardSoul {
         if(gene.equals(Genes.GENE_WALK_SOUND)) {
             return new Chromosome(new AlleleString(true, "mob.neutral.step"));
         }
+        if(gene.equals(Genes.GENE_USE_NEW_AI)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        }
+        if(gene.equals(Genes.GENE_USE_OLD_AI)) {
+            return new Chromosome(new AlleleBoolean(true, true));
+        }
+        if(gene.equals(Genes.GENE_VERTICAL_FACE_SPEED)) {
+            return new Chromosome(new AlleleInteger(true, 40));
+        }
+        if(gene.equals(Genes.GENE_IS_CREATURE)) {
+            return new Chromosome(new AlleleBoolean(true, true));
+        }
         return null;
     }
 }

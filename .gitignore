@@ -1,1 +1,8 @@
 .project
+.gradle
+build
+eclipse
+gradle
+out
+Genetic Infusion.iml
+gradlew.*

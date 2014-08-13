@@ -11,4 +11,6 @@ public class SoulHelper {
     public static IStandardSoulRegistry standardSoulRegistry;
 
     public static ITraitRegistry traitRegistry;
+
+    public static IInstanceHelper instanceHelper;
 }

@@ -44,6 +44,11 @@ public class StandardSoulZombie extends StandardSoul {
             return new Chromosome(new AlleleString(false, "game.hostile.swim"));
         if(gene.equals(Genes.GENE_WALK_SOUND))
             return new Chromosome(new AlleleString(true, "mob.zombie.step"));
+        if(gene.equals(Genes.GENE_USE_NEW_AI))
+            return new Chromosome(new AlleleBoolean(true, true));
+        if(gene.equals(Genes.GENE_USE_OLD_AI))
+            return new Chromosome(new AlleleBoolean(true, false));
+
         return super.getChromosomeFromGene(gene);
     }
 }

@@ -34,4 +34,8 @@ public class Genes {
     public static final String GENE_TALK_INTERVAL = DefaultProps.nameLower + ".gene.talkInterval";
     public static final String GENE_SET_ON_FIRE_FROM_ATTACK = DefaultProps.nameLower + ".gene.setOnFireFromAttack";
     public static final String GENE_EXPERIENCE_VALUE = DefaultProps.nameLower + ".gene.experienceValue";
+    public static final String GENE_USE_NEW_AI = DefaultProps.nameLower + ".gene.useNewAI";
+    public static final String GENE_USE_OLD_AI = DefaultProps.nameLower + ".gene.useOldAI";
+    public static final String GENE_VERTICAL_FACE_SPEED = DefaultProps.nameLower + ".gene.verticalFaceSpeed";
+    public static final String GENE_IS_CREATURE = DefaultProps.nameLower + ".gene.isCreature";
 }

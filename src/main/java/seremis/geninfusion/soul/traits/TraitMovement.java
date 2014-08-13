@@ -202,9 +202,9 @@ public class TraitMovement extends Trait {
         entity.getWorld().theProfiler.startSection("ai");
 
         float health = entity.getPersistentFloat("health");
-        
-        //TODO check for this
-        boolean hasAI = true;
+
+        //TODO make a more advanced check for this
+        boolean hasAI = entity.getBoolean("aiEnabled");
         
         if (health <= 0.0F) {
             entity.setVariable("isJumping", false);

@@ -2,7 +2,7 @@ package seremis.geninfusion.soul;
 
 import net.minecraft.nbt.NBTTagCompound;
 import seremis.geninfusion.api.soul.IAllele;
-import seremis.geninfusion.soul.allele.EnumAlleleType;
+import seremis.geninfusion.api.soul.EnumAlleleType;
 
 import java.lang.reflect.Constructor;
 
@@ -14,6 +14,10 @@ public class Allele implements IAllele {
     public Allele(boolean isDominant, EnumAlleleType type) {
         this.isDominant = isDominant;
         this.type = type;
+    }
+
+    public Allele(Object... args) {
+        isDominant = (Boolean) args[0];
     }
     
     public Allele(NBTTagCompound compound) {

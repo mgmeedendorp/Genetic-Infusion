@@ -13,4 +13,5 @@ public class Traits {
     public static final String TRAIT_SOUNDS = DefaultProps.nameLower + ".trait.sounds";
     public static final String TRAIT_ATTRIBUTES = DefaultProps.nameLower + ".trait.attributes";
     public static final String TRAIT_ATTACK = DefaultProps.nameLower + ".trait.attack";
+    public static final String TRAIT_AI = DefaultProps.nameLower + ".trait.ai";
 }

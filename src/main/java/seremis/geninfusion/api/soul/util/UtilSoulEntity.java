@@ -263,4 +263,43 @@ public class UtilSoulEntity {
         boolean flag = entity.getWorld() != null && entity.getWorld().isRemote;
         return !((AlleleBoolean)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_IMMUNE_TO_FIRE)).value && (entity.getPersistentInteger("fire") > 0 || flag && entity.getFlag(0));
     }
+
+    public static void faceEntity(IEntitySoulCustom entity, Entity lookEntity, float maxYawIncrement, float maxPitchIncrement) {
+        double d0 = lookEntity.posX - entity.getPersistentInteger("posX");
+        double d2 = lookEntity.posZ - entity.getPersistentInteger("posZ");
+        double d1;
+
+        if (lookEntity instanceof EntityLivingBase) {
+            EntityLivingBase entitylivingbase = (EntityLivingBase)lookEntity;
+            d1 = entitylivingbase.posY + (double)entitylivingbase.getEyeHeight() - (entity.getPersistentInteger("posY") + (double)getEyeHeight(entity));
+        } else {
+            d1 = (lookEntity.boundingBox.minY + lookEntity.boundingBox.maxY) / 2.0D - (entity.getPersistentInteger("posY") + (double)getEyeHeight(entity));
+        }
+
+        double d3 = (double)MathHelper.sqrt_double(d0 * d0 + d2 * d2);
+        float f2 = (float)(Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
+        float f3 = (float)(-(Math.atan2(d1, d3) * 180.0D / Math.PI));
+
+        float rotationYaw = entity.getPersistentFloat("rotationYaw");
+        float rotationPitch = entity.getPersistentFloat("rotationPitch");
+        setRotation(entity, updateRotation(rotationYaw, f2, maxYawIncrement), updateRotation(rotationPitch, f3, maxPitchIncrement));
+    }
+
+    public static float getEyeHeight(IEntitySoulCustom entity) {
+        return entity.getFloat("height") * 0.85F;
+    }
+
+    public static float updateRotation(float current, float intended, float maxIncrement) {
+        float f3 = MathHelper.wrapAngleTo180_float(intended - current);
+
+        if (f3 > maxIncrement) {
+            f3 = maxIncrement;
+        }
+
+        if (f3 < -maxIncrement) {
+            f3 = -maxIncrement;
+        }
+
+        return current + f3;
+    }
 }
