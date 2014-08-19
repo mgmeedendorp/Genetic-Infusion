@@ -5,7 +5,6 @@ import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.TraitDependencies;
 import seremis.geninfusion.api.soul.lib.Genes;
-import seremis.geninfusion.soul.Trait;
 import seremis.geninfusion.soul.allele.AlleleFloat;
 import seremis.geninfusion.soul.allele.AlleleInteger;
 

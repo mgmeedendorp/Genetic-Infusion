@@ -7,7 +7,6 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
-import seremis.geninfusion.soul.Trait;
 
 /**
  * @author Seremis

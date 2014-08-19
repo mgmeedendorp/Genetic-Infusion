@@ -4,6 +4,7 @@ build
 eclipse
 gradle
 out
-Genetic Infusion.iml
+Genetic-Infusion.ipr
 gradlew.*
 gradlew
+*.db

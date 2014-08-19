@@ -38,4 +38,5 @@ public class Genes {
     public static final String GENE_USE_OLD_AI = DefaultProps.nameLower + ".gene.useOldAI";
     public static final String GENE_VERTICAL_FACE_SPEED = DefaultProps.nameLower + ".gene.verticalFaceSpeed";
     public static final String GENE_IS_CREATURE = DefaultProps.nameLower + ".gene.isCreature";
+    public static final String GENE_AI_CAN_SWIM = DefaultProps.nameLower + ".gene.aiCanSwim";
 }

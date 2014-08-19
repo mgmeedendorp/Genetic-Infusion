@@ -1,0 +1,21 @@
+[
+{
+  "modid": "genInfusion",
+  "name": "Genetic Infusion",
+  "description": "A mod by Seremis",
+  "version": "Genetic Infusion 0.0.1a",
+  "mcversion": "1.7.10",
+  "url": "",
+  "updateUrl": "",
+  "authors": [
+    "Seremis"
+  ],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "parent":"",
+  "dependencies": [
+  ]
+}
+]

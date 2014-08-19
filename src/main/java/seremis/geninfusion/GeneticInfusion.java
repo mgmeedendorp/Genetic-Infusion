@@ -32,6 +32,7 @@ import seremis.geninfusion.lib.DefaultProps;
 import seremis.geninfusion.misc.DamageCompressor;
 import seremis.geninfusion.network.PacketPipeline;
 import seremis.geninfusion.soul.*;
+import seremis.geninfusion.soul.GeneGroupRegistry;
 import seremis.geninfusion.util.structure.ModStructures;
 
 @Mod(modid = DefaultProps.ID, name = DefaultProps.name, version = DefaultProps.version, acceptedMinecraftVersions = DefaultProps.acceptedMinecraftVersions)
@@ -58,6 +59,7 @@ public class GeneticInfusion {
         SoulHelper.traitRegistry = new TraitRegistry();
         SoulHelper.standardSoulRegistry = new StandardSoulRegistry();
         SoulHelper.instanceHelper = new InstanceHelper();
+        SoulHelper.geneGroupRegistry = new GeneGroupRegistry();
 
         ModBlocks.init();
         ModItems.init();

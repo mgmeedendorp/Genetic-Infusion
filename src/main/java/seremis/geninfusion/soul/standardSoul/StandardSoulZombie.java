@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import seremis.geninfusion.api.soul.IChromosome;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.soul.Chromosome;
-import seremis.geninfusion.soul.StandardSoul;
 import seremis.geninfusion.soul.allele.*;
 
 /**

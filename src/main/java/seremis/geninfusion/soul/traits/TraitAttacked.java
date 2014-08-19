@@ -13,7 +13,6 @@ import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.UtilSoulEntity;
 import seremis.geninfusion.core.proxy.CommonProxy;
-import seremis.geninfusion.soul.Trait;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
 import seremis.geninfusion.soul.allele.AlleleFloat;
 import seremis.geninfusion.soul.allele.AlleleInteger;
