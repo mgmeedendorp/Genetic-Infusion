@@ -23,7 +23,7 @@ public class GIBlockContainer extends BlockContainer {
     private boolean needsIcon = true;
     private IIcon[] sidedIconBuffer;
     private boolean needsSidedTexture = false;
-    private String[] sidedTextureNames = {"bottom", "top", "back", "front", "left", "right"};;
+    private String[] sidedTextureNames = {"bottom", "top", "back", "front", "left", "right"};
 
     public GIBlockContainer(Material material) {
         super(material);

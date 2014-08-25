@@ -57,8 +57,7 @@ public class TileStationController extends GITileMagnetConsumer implements IInve
     public int barHeat;
 
     public boolean isValid() {
-        if(structure.doesStructureExist()) return true;
-        return false;
+        return structure.doesStructureExist();
     }
 
     @Override

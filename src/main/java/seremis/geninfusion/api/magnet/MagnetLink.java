@@ -30,10 +30,7 @@ public class MagnetLink {
     }
 
     public boolean isConnectionPossible() {
-        if(connector1.getTile() != null && connector2.getTile() != null && connector1.canConnect(this) && connector2.canConnect(this) && !connector1.getTile().isInvalid() && !connector2.getTile().isInvalid()) {
-            return true;
-        }
-        return false;
+        return connector1.getTile() != null && connector2.getTile() != null && connector1.canConnect(this) && connector2.canConnect(this) && !connector1.getTile().isInvalid() && !connector2.getTile().isInvalid();
     }
 
     public IMagnetConnector getOther(IMagnetConnector connector) {

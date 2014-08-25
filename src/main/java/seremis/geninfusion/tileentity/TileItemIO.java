@@ -68,9 +68,7 @@ public class TileItemIO extends GITile implements IInventory, ISidedInventory {
     
     @Override
     public boolean hasCustomInventoryName() {
-        if(isStructureMagnetStation)
-            return stationController.inventory.hasCustomInventoryName();
-        return false;
+        return isStructureMagnetStation && stationController.inventory.hasCustomInventoryName();
     }
     
     @Override
@@ -88,9 +86,7 @@ public class TileItemIO extends GITile implements IInventory, ISidedInventory {
     
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        if(isStructureMagnetStation)
-            return stationController.isItemValidForSlot(slot, stack);
-        return false;
+        return isStructureMagnetStation && stationController.isItemValidForSlot(slot, stack);
     }
 
     //ISidedInventory//

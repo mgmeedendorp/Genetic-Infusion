@@ -294,8 +294,8 @@ public class TraitMovement extends Trait {
         List list = entity.getWorld().getEntitiesWithinAABBExcludingEntity((Entity) entity, entity.getBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
         if (list != null && !list.isEmpty()) {
-            for (int i = 0; i < list.size(); ++i) {
-                Entity ent = (Entity)list.get(i);
+            for (Object aList : list) {
+                Entity ent = (Entity) aList;
 
                 if (ent.canBePushed()) {
                     ent.applyEntityCollision((Entity) entity);

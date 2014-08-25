@@ -101,7 +101,6 @@ public class GIContainer extends Container {
                         slot.putStack(stack.splitStack(limit));
                         slot.onSlotChanged();
                         flag1 = true;
-                        continue;
                     }
                 }
             }

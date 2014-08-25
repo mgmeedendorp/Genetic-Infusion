@@ -5,10 +5,9 @@ import org.lwjgl.util.vector.Vector2f;
 public class UtilRender {
 
     public static Vector2f[] calculateUVMapping(int texture, int atlasWidth, int atlasHeight) {
-        int textureIndex = texture;
 
-        int u = textureIndex % atlasWidth;
-        int v = textureIndex / atlasHeight;
+        int u = texture % atlasWidth;
+        int v = texture / atlasHeight;
 
         float xOffset = 1f / atlasWidth;
         float yOffset = 1f / atlasHeight;

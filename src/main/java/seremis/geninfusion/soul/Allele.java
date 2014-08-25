@@ -46,7 +46,7 @@ public class Allele implements IAllele {
         
         try {
             Constructor<?> ctor = type.clazz.getConstructor(NBTTagCompound.class);
-            Object object = ctor.newInstance(new Object[] { compound });
+            Object object = ctor.newInstance(compound);
             
             return (IAllele) object;
         } catch(Exception e) {

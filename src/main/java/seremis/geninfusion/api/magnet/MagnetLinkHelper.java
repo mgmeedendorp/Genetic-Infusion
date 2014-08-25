@@ -39,7 +39,6 @@ public class MagnetLinkHelper {
     private void addClientLink(MagnetLink link) {
         if(link != null && link.connector1 != null && link.connector2 != null && link.connector1 != link.connector2 && !doesLinkExist(link)) {
             registeredMap.add(link);
-            return;
         }
     }
 

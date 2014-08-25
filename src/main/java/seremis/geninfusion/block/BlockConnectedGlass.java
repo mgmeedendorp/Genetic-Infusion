@@ -40,7 +40,7 @@ public class BlockConnectedGlass extends GIBlock {
 
     @Override
     public boolean shouldSideBeRendered(IBlockAccess blockaccess, int x, int y, int z, int side) {
-        return blockaccess.getBlock(x, y, z) == this ? false : super.shouldSideBeRendered(blockaccess, x, y, z, side);
+        return blockaccess.getBlock(x, y, z) != this && super.shouldSideBeRendered(blockaccess, x, y, z, side);
     }
 
     @Override

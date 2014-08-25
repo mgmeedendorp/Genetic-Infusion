@@ -15,10 +15,7 @@ public class ToggleableMoveUpgradeSlot extends ToggleableMoveSlot {
         if(stack.isItemEqual(ItemTransporterModules.engine()) && stack.getItemDamage() == ItemTransporterModules.engine().getItemDamage()) {
             return super.isItemValid(stack);
         }
-        if(stack.isItemEqual(ItemTransporterModules.storage()) && stack.getItemDamage() == ItemTransporterModules.storage().getItemDamage()) {
-            return super.isItemValid(stack);
-        }
-        return false;
+        return stack.isItemEqual(ItemTransporterModules.storage()) && stack.getItemDamage() == ItemTransporterModules.storage().getItemDamage() && super.isItemValid(stack);
     }
 
     @Override

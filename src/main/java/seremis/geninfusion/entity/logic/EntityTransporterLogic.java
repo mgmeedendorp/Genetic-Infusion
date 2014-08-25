@@ -152,7 +152,7 @@ public class EntityTransporterLogic {
                 
                 if(tile != null && tile instanceof IMagnetConnector && tile1 != null && tile1 instanceof IMagnetConnector) {
                     for(MagnetLink link : MagnetLinkHelper.instance.getLinksConnectedTo((IMagnetConnector)tile)) {
-                        if(link.getOther((IMagnetConnector)tile) == (IMagnetConnector)tile1) {
+                        if(link.getOther((IMagnetConnector)tile) == tile1) {
                             currentLink = link;
                         }
                     }

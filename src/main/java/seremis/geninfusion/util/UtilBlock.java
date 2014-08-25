@@ -29,16 +29,14 @@ public class UtilBlock {
     public static EntityItem dropItemInWorld(int x, int y, int z, World world, ItemStack stack) {
         Random rand = new Random();
 
-        ItemStack item = stack;
-
         float rx = rand.nextFloat() * 0.8F + 0.5F;
         float ry = rand.nextFloat() * 0.8F + 0.5F;
         float rz = rand.nextFloat() * 0.8F + 0.5F;
 
-        EntityItem entityItem = new EntityItem(world, x + rx, y + ry, z + rz, new ItemStack(item.getItem(), item.stackSize, item.getItemDamage()));
+        EntityItem entityItem = new EntityItem(world, x + rx, y + ry, z + rz, new ItemStack(stack.getItem(), stack.stackSize, stack.getItemDamage()));
 
-        if(item.hasTagCompound()) {
-            entityItem.getEntityItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());
+        if(stack.hasTagCompound()) {
+            entityItem.getEntityItem().setTagCompound((NBTTagCompound) stack.getTagCompound().copy());
         }
 
         float factor = 0.005F;
@@ -46,7 +44,7 @@ public class UtilBlock {
         entityItem.motionY = rand.nextGaussian() * factor + 0.2F;
         entityItem.motionZ = rand.nextGaussian() * factor;
         world.spawnEntityInWorld(entityItem);
-        item.stackSize = 0;
+        stack.stackSize = 0;
 
         return entityItem;
     }

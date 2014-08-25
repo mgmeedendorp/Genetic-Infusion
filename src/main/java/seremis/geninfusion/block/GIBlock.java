@@ -21,7 +21,7 @@ public class GIBlock extends Block {
     private boolean needsIcon = true;
     private IIcon[] sidedIconBuffer;
     private boolean needsSidedTexture = false;
-    private String[] sidedTextureNames = {"bottom", "top", "back", "front", "left", "right"};;
+    private String[] sidedTextureNames = {"bottom", "top", "back", "front", "left", "right"};
 
     public GIBlock(Material material) {
         super(material);

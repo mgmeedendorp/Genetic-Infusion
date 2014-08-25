@@ -63,9 +63,9 @@ public class TraitAttacked extends Trait {
 
 		if (entityLivingToAttack != null) {
 			if (!entityLivingToAttack.isEntityAlive()) {
-				((EntityLiving)entity).setRevengeTarget((EntityLivingBase)null);
+				((EntityLiving)entity).setRevengeTarget(null);
 			} else if (ticksExisted - ((EntityLiving)entity).func_142015_aE() > 100) {
-				((EntityLiving)entity).setRevengeTarget((EntityLivingBase)null);
+				((EntityLiving)entity).setRevengeTarget(null);
 			}
 		}
 	}
@@ -173,8 +173,7 @@ public class TraitAttacked extends Trait {
                 health = entity.getPersistentFloat("health");
                 
                 if (health <= 0.0F) {
-                	String deathSound =((AlleleString)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_DEATH_SOUND)).value;
-                    sound = deathSound;
+                    sound = ((AlleleString)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_DEATH_SOUND)).value;
 
                     if (flag && sound != null) {
                         entity.playSound(sound, soundVolume, soundPitch);
@@ -182,8 +181,7 @@ public class TraitAttacked extends Trait {
 
                     ((EntityLiving)entity).onDeath(source);
                 } else {
-                	String hurtSound =((AlleleString)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_HURT_SOUND)).value;
-                    sound = hurtSound;
+                    sound = ((AlleleString)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_HURT_SOUND)).value;
 
                     if (flag && sound != null) {
                         entity.playSound(sound, soundVolume, soundPitch);
@@ -212,9 +210,8 @@ public class TraitAttacked extends Trait {
             entity.setPersistentVariable("absorptionAmount", Math.max(absorptionAmount - (f1 - damage), 0.0F));
             
             if (damage != 0.0F) {
-                float f2 = health;
-                entity.setPersistentVariable("health", f2 - damage);
-                entity.getCombatTracker().func_94547_a(source, f2, damage);
+                entity.setPersistentVariable("health", health - damage);
+                entity.getCombatTracker().func_94547_a(source, health, damage);
                 entity.setPersistentVariable("absorptionAmount", Math.max(absorptionAmount - damage, 0));
             }
             

@@ -83,11 +83,11 @@ public class ContainerStationControllerTransporter extends GIContainer {
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        for(int i = 0; i < this.crafters.size(); ++i) {
-            ICrafting icrafting = (ICrafting) this.crafters.get(i);
-            if(this.transporterUpgradesEnabled != tile.hasTransporter()) {
+        for (Object crafter : this.crafters) {
+            ICrafting icrafting = (ICrafting) crafter;
+            if (this.transporterUpgradesEnabled != tile.hasTransporter()) {
                 icrafting.sendProgressBarUpdate(this, 0, tile.hasTransporter() ? 1 : 0);
-                if(tile.hasTransporter()) {
+                if (tile.hasTransporter()) {
                     enableUpgradeSlots();
                 } else {
                     disableUpgradeSlots();
@@ -97,20 +97,20 @@ public class ContainerStationControllerTransporter extends GIContainer {
 
             boolean tileCondition = tile.hasTransporterInventory() && tile.showTransporterInventory();
 
-            if(this.transporterSlotsEnabled != tileCondition) {
+            if (this.transporterSlotsEnabled != tileCondition) {
                 icrafting.sendProgressBarUpdate(this, 1, tileCondition ? 1 : 0);
-                if(tileCondition) {
+                if (tileCondition) {
                     enableToggleSlots();
                 } else {
                     disableToggleSlots();
                 }
             }
 
-            if(this.transporterSpeed != tile.getTransporterSpeed()) {
+            if (this.transporterSpeed != tile.getTransporterSpeed()) {
                 icrafting.sendProgressBarUpdate(this, 2, (int) (tile.getTransporterSpeed() * 100));
             }
-            
-            if(this.heat != tile.getHeat()) {
+
+            if (this.heat != tile.getHeat()) {
                 icrafting.sendProgressBarUpdate(this, 3, tile.getHeat());
             }
         }

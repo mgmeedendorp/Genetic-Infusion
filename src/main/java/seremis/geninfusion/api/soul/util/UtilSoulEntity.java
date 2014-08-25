@@ -86,11 +86,11 @@ public class UtilSoulEntity {
             }
 
             if (entity.getWorld().getEntityByID(entity.getInteger("riddenByEntityID")) != null) {
-            	entity.getWorld().getEntityByID(entity.getInteger("riddenByEntityID")).mountEntity((Entity)null);
+            	entity.getWorld().getEntityByID(entity.getInteger("riddenByEntityID")).mountEntity(null);
             }
 
             if (entity.getWorld().getEntityByID(entity.getPersistentInteger("ridingEntityID")) != null) {
-            	entity.getWorld().getEntityByID(entity.getEntityId()).mountEntity((Entity)null);
+            	entity.getWorld().getEntityByID(entity.getEntityId()).mountEntity(null);
             }
             entity.getWorld().theProfiler.startSection("reposition");            
             minecraftserver.getConfigurationManager().transferEntityToWorld((Entity) entity, currentDimension, worldserver, worldserver1);

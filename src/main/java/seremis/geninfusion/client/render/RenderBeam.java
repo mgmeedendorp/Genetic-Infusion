@@ -153,27 +153,21 @@ public class RenderBeam {
         float stepBlue = dBlue / maxScale;
 
         if(startRed > endRed) {
-            float scaledRed = startRed - scale * stepRed;
-            this.red = scaledRed;
+            this.red = startRed - scale * stepRed;
         } else {
-            float scaledRed = startRed + scale * stepRed;
-            this.red = scaledRed;
+            this.red = startRed + scale * stepRed;
         }
 
         if(startGreen > endGreen) {
-            float scaledGreen = startGreen - scale * stepGreen;
-            this.green = scaledGreen;
+            this.green = startGreen - scale * stepGreen;
         } else {
-            float scaledGreen = startGreen + scale * stepGreen;
-            this.green = scaledGreen;
+            this.green = startGreen + scale * stepGreen;
         }
 
         if(startBlue > endBlue) {
-            float scaledBlue = startBlue - scale * stepBlue;
-            this.blue = scaledBlue;
+            this.blue = startBlue - scale * stepBlue;
         } else {
-            float scaledBlue = startBlue + scale * stepBlue;
-            this.blue = scaledBlue;
+            this.blue = startBlue + scale * stepBlue;
         }
     }
 }

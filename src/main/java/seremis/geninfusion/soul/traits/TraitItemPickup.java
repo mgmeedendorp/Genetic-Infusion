@@ -28,7 +28,8 @@ import java.util.Random;
 
 public class TraitItemPickup extends Trait {
 	
-	@Override
+	@SuppressWarnings("WhileLoopReplaceableByForEach")
+    @Override
 	public void onUpdate(IEntitySoulCustom entity) {
 		entity.getWorld().theProfiler.startSection("looting");
 		

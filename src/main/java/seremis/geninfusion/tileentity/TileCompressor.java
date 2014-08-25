@@ -115,9 +115,6 @@ public class TileCompressor extends GITile implements IInventory {
 
     @Override
     public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-        if(itemstack.getItem() == ModItems.crystalShard) {
-            return true;
-        }
-        return false;
+        return itemstack.getItem() == ModItems.crystalShard;
     }
 }

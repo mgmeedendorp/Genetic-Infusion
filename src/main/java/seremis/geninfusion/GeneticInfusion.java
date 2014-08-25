@@ -1,7 +1,5 @@
 package seremis.geninfusion;
 
-
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -32,7 +30,6 @@ import seremis.geninfusion.lib.DefaultProps;
 import seremis.geninfusion.misc.DamageCompressor;
 import seremis.geninfusion.network.PacketPipeline;
 import seremis.geninfusion.soul.*;
-import seremis.geninfusion.soul.GeneGroupRegistry;
 import seremis.geninfusion.util.structure.ModStructures;
 
 @Mod(modid = DefaultProps.ID, name = DefaultProps.name, version = DefaultProps.version, acceptedMinecraftVersions = DefaultProps.acceptedMinecraftVersions)

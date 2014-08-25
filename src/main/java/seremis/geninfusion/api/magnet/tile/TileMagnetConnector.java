@@ -96,8 +96,7 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
 
     @Override
     public Coordinate3D applyBeamRenderOffset(Coordinate3D position, ForgeDirection side) {
-        Coordinate3D centerPosition = new Coordinate3D(position.x + 0.5D, position.y + 0.5D, position.z + 0.5D);
-        return centerPosition;
+        return new Coordinate3D(position.x + 0.5D, position.y + 0.5D, position.z + 0.5D);
     }
 
     @Override

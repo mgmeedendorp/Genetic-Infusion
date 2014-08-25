@@ -87,8 +87,7 @@ public class Coordinate3D implements Cloneable {
     }
 
     public int[] toArray() {
-        int[] array = {(int) x, (int) y, (int) z};
-        return array;
+        return new int[]{(int) x, (int) y, (int) z};
     }
 
     public Coordinate3D fromArray(double[] coords) {
@@ -130,10 +129,7 @@ public class Coordinate3D implements Cloneable {
     }
 
     public boolean equals(Coordinate3D coord) {
-        if(x == coord.x && y == coord.y && z == coord.z) {
-            return true;
-        }
-        return false;
+        return x == coord.x && y == coord.y && z == coord.z;
     }
 
     public boolean equals(double x, double y, double z) {
@@ -141,7 +137,7 @@ public class Coordinate3D implements Cloneable {
     }
     
     public static boolean equals(TileEntity tile1, TileEntity tile2) {
-        return new Coordinate3D(tile1).equals(tile2);
+        return new Coordinate3D(tile1).equals(new Coordinate3D(tile2));
     }
 
     @Override

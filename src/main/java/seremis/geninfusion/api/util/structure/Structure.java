@@ -45,8 +45,7 @@ public class Structure {
             Coordinate3D blockCoordinate = baseBlockCoords.clone();
             Coordinate3D blockCoordinate2 = structureMap.getBlockCoordinates(baseBlock).get(0);
             rotateOnYAxis(blockCoordinate2, rotation);
-            Coordinate3D baseCoordinate = blockCoordinate.moveBack(blockCoordinate2);
-            coordinate = baseCoordinate;
+            coordinate = blockCoordinate.moveBack(blockCoordinate2);
         }
     }
 
@@ -81,9 +80,8 @@ public class Structure {
     public IStructureBlock getBlockAtCoordinate(Coordinate3D coordinate) {
         if(initiated) {
             Coordinate3D structureCoords = convertToStructureCoords(coordinate);
-            IStructureBlock block = structureMap.getBlockAtCoordinate((int) structureCoords.x, (int) structureCoords.y, (int) structureCoords.z);
 
-            return block;
+            return structureMap.getBlockAtCoordinate((int) structureCoords.x, (int) structureCoords.y, (int) structureCoords.z);
         }
         return null;
     }
@@ -374,9 +372,6 @@ public class Structure {
                 index = 0;
             }
         }
-        if(shouldBeFull.size() == actuallyFull.size()) {
-            return true;
-        }
-        return false;
+        return shouldBeFull.size() == actuallyFull.size();
     }
 }
