@@ -152,10 +152,8 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
     super.getFlag(id)
   }
 
-  private[entity] var rand: Random = new Random
-
   override def getRandom: Random = {
-    rand
+    getRand
   }
 
   override def isChild: Boolean = {
@@ -516,29 +514,29 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
       prevRotationPitch = getFloat("prevRotationPitch")
       syncPrevPitch = prevRotationPitch
     }
-    if (syncNewYaw != newRotationYaw) {
-      variableDouble.put("newRotationYaw", newRotationYaw)
-      syncNewYaw = newRotationYaw
+    if (syncNewYaw != getNewRotationYaw) {
+      variableDouble.put("newRotationYaw", getNewRotationYaw)
+      syncNewYaw = getNewRotationYaw
     }
     else if (syncNewYaw != getDouble("newRotationYaw")) {
-      newRotationYaw = getDouble("newRotationYaw")
-      syncNewYaw = newRotationYaw
+      setNewRotationYaw(getDouble("newRotationYaw"))
+      syncNewYaw = getNewRotationYaw
     }
-    if (syncNewPitch != newRotationPitch) {
-      variableDouble.put("newRotationPitch", newRotationPitch)
-      syncNewPitch = newRotationPitch
+    if (syncNewPitch != getNewRotationPitch) {
+      variableDouble.put("newRotationPitch", getNewRotationPitch)
+      syncNewPitch = getNewRotationPitch
     }
     else if (syncNewPitch != getDouble("newRotationPitch")) {
-      newRotationPitch = getDouble("newRotationPitch")
-      syncNewPitch = newRotationPitch
+      setNewRotationPitch(getDouble("newRotationPitch"))
+      syncNewPitch = getNewRotationPitch
     }
-    if (syncDefaultPitch != defaultPitch) {
-      variableFloat.put("defaultPitch", defaultPitch)
-      syncDefaultPitch = defaultPitch
+    if (syncDefaultPitch != getDefaultPitch) {
+      variableFloat.put("defaultPitch", getDefaultPitch)
+      syncDefaultPitch = getDefaultPitch
     }
     else if (syncDefaultPitch != getFloat("defaultPitch")) {
-      defaultPitch = getFloat("defaultPitch")
-      syncDefaultPitch = defaultPitch
+      setDefaultPitch(getFloat("defaultPitch"))
+      syncDefaultPitch = getDefaultPitch
     }
   }
 
@@ -573,13 +571,13 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
       fireResistance = getInteger("fireResistance")
       syncFireResistance = fireResistance
     }
-    if (syncInWater != inWater) {
-      variableBoolean.put("inWater", inWater)
-      syncInWater = inWater
+    if (syncInWater != getInWater) {
+      variableBoolean.put("inWater", getInWater)
+      syncInWater = getInWater
     }
     else if (syncInWater != getBoolean("inWater")) {
-      inWater = getBoolean("inWater")
-      syncInWater = inWater
+      setInWater(getBoolean("inWater"))
+      syncInWater = getInWater
     }
     if (syncOnGround != onGround) {
       persistentBoolean.put("onGround", onGround)
@@ -589,13 +587,13 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
       onGround = getPersistentBoolean("onGround")
       syncOnGround = onGround
     }
-    if (syncIsInWeb != isInWeb) {
-      variableBoolean.put("isInWeb", isInWeb)
-      syncIsInWeb = isInWeb
+    if (syncIsInWeb != getIsInWeb) {
+      variableBoolean.put("isInWeb", getIsInWeb)
+      syncIsInWeb = getIsInWeb
     }
     else if (syncIsInWeb != getBoolean("isInWeb")) {
-      isInWeb = getBoolean("isInWeb")
-      syncIsInWeb = isInWeb
+      setIsInWeb(getBoolean("isInWeb"))
+      syncIsInWeb = getIsInWeb
     }
     if (syncIsDead != isDead) {
       persistentBoolean.put("isDead", isDead)
@@ -641,7 +639,7 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
       variableBoolean.put("invulnerable", isEntityInvulnerable)
       syncInvulnerable = isEntityInvulnerable
     }
-    else if (syncForceSpawn != getBoolean("invulnerable")) {
+    else if (syncInvulnerable != getBoolean("invulnerable")) {
       setInvulnerable(getBoolean("invulnerable"))
       syncInvulnerable = isEntityInvulnerable
     }
@@ -653,21 +651,13 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
       attackedAtYaw = getPersistentFloat("attackedAtYaw")
       syncAttackedAtYaw = attackedAtYaw
     }
-    if (syncIsJumping != isJumping) {
-      variableBoolean.put("isJumping", isJumping)
-      syncIsJumping = isJumping
+    if (syncIsJumping != getIsJumping) {
+      variableBoolean.put("isJumping", getIsJumping)
+      syncIsJumping = getIsJumping
     }
     else if (syncForceSpawn != getBoolean("isJumping")) {
-      isJumping = getBoolean("isJumping")
-      syncIsJumping = isJumping
-    }
-    if (syncInPortal != inPortal) {
-      variableBoolean.put("inPortal", inPortal)
-      syncInPortal = inPortal
-    }
-    else if (syncInPortal != getBoolean("inPortal")) {
-      inPortal = getBoolean("inPortal")
-      syncInPortal = inPortal
+      setIsJumping(getBoolean("isJumping"))
+      syncIsJumping = getIsJumping
     }
     if (syncIsChild != isChildVar) {
       variableBoolean.put("isChild", isChildVar)
@@ -740,13 +730,13 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
       dimension = getPersistentInteger("dimension")
       syncDimension = dimension
     }
-    if (syncPortalCounter != portalCounter) {
-      variableInteger.put("portalCounter", portalCounter)
-      syncPortalCounter = portalCounter
+    if (syncPortalCounter != getPortalCounter) {
+      variableInteger.put("portalCounter", getPortalCounter)
+      syncPortalCounter = getPortalCounter
     }
     else if (syncPortalCounter != getInteger("portalCounter")) {
-      portalCounter = getInteger("portalCounter")
-      syncPortalCounter = portalCounter
+      setPortalCounter(getInteger("portalCounter"))
+      syncPortalCounter = getPortalCounter
     }
     if (syncTimeUntilPortal != timeUntilPortal) {
       persistentInteger.put("timeUntilPortal", timeUntilPortal)
@@ -756,21 +746,21 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
       timeUntilPortal = getPersistentInteger("timeUntilPortal")
       syncTimeUntilPortal = timeUntilPortal
     }
-    if (syncTeleportDirection != teleportDirection) {
-      variableInteger.put("teleportDirection", teleportDirection)
-      syncTeleportDirection = teleportDirection
+    if (syncTeleportDirection != getTeleportDirection) {
+      variableInteger.put("teleportDirection", getTeleportDirection)
+      syncTeleportDirection = getTeleportDirection
     }
     else if (syncTeleportDirection != getInteger("teleportDirection")) {
-      teleportDirection = getInteger("teleportDirection")
-      syncTeleportDirection = teleportDirection
+      setTeleportDirection(getInteger("teleportDirection"))
+      syncTeleportDirection = getTeleportDirection
     }
-    if (syncInPortal != inPortal) {
-      variableBoolean.put("inPortal", inPortal)
-      syncInPortal = inPortal
+    if (syncInPortal != getInPortal) {
+      variableBoolean.put("inPortal", getInPortal)
+      syncInPortal = getInPortal
     }
     else if (syncInPortal != getBoolean("inPortal")) {
-      inPortal = getBoolean("inPortal")
-      syncInPortal = inPortal
+      setInPortal(getBoolean("inPortal"))
+      syncInPortal = getInPortal
     }
   }
 
@@ -1077,19 +1067,19 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
       val max = Math.max(capturedDrops.size(), getPersistentItemStackArrayLength("capturedDrops"))
       if (max > capturedDrops.size()) {
         val diff = max - capturedDrops.size()
-        for (i <- 0 to diff) {
+        for (i <- 0 until diff) {
           syncCapturedDrops.add(null)
           capturedDrops.add(null)
         }
       } else if (max > getPersistentItemStackArrayLength("capturedDrops")) {
         val diff = max - getPersistentItemStackArrayLength("capturedDrops")
-        for (i <- 0 to diff) {
+        for (i <- 0 until diff) {
           syncCapturedDrops.add(null)
         }
       }
     }
     val max = Math.max(capturedDrops.size(), getPersistentItemStackArrayLength("capturedDrops"))
-    for (i <- 0 to max) {
+    for (i <- 0 until max) {
       if (syncCapturedDrops.get(i) != capturedDrops.get(i)) {
         persistentItemStack.put("capturedDrops." + i, if (capturedDrops.get(i) != null) capturedDrops.get(i).getEntityItem else null)
         syncCapturedDrops.add(i, capturedDrops.get(i))
@@ -1105,7 +1095,7 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
     }
     persistentInteger.put("capturedDrops.size", syncCapturedDrops.size())
 
-    for (i <- 0 to getLastActiveItems.length) {
+    for (i <- 0 until getLastActiveItems.length) {
       if (syncEquipment(i) != getLastActiveItems()(i)) {
         persistentItemStack.put("equipment." + i, getLastActiveItems()(i))
         syncEquipment(i) = getLastActiveItems()(i)
@@ -1114,13 +1104,13 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
         syncEquipment(i) = getLastActiveItems()(i)
       }
     }
-    for (i <- 0 to equipmentDropChances.length) {
-      if (syncEquipmentDropChances(i) != equipmentDropChances(i)) {
-        persistentFloat.put("equipmentDropChances." + i, equipmentDropChances(i))
-        syncEquipmentDropChances(i) = equipmentDropChances(i)
+    for (i <- 0 until getEquipmentDropChances.length) {
+      if (syncEquipmentDropChances(i) != getEquipmentDropChances(i)) {
+        persistentFloat.put("equipmentDropChances." + i, getEquipmentDropChances(i))
+        syncEquipmentDropChances(i) = getEquipmentDropChances(i)
       } else if (syncEquipmentDropChances(i) != getPersistentFloat("equipmentDropChances." + i)) {
-        equipmentDropChances(i) = getPersistentFloat("equipmentDropChances." + i)
-        syncEquipmentDropChances(i) = equipmentDropChances(i)
+        setEquipmentDropChances(getPersistentFloat("equipmentDropChances." + i), i)
+        syncEquipmentDropChances(i) = getEquipmentDropChances(i)
       }
     }
     if (syncCanPickUpLoot != canPickUpLoot) {
@@ -1193,13 +1183,13 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
       maxHurtResistantTime = getInteger("maxHurtResistantTime")
       syncMaxHurtResistantTime = maxHurtResistantTime
     }
-    if (syncEntityAge != entityAge) {
-      variableInteger.put("entityAge", entityAge)
-      syncEntityAge = entityAge
+    if (syncEntityAge != getEntityAge) {
+      variableInteger.put("entityAge", getEntityAge)
+      syncEntityAge = getEntityAge
     }
     else if (syncEntityAge != getInteger("entityAge")) {
-      entityAge = getInteger("entityAge")
-      syncEntityAge = entityAge
+      setEntityAge(getInteger("entityAge"))
+      syncEntityAge = getEntityAge
     }
   }
 
@@ -1217,37 +1207,37 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
       attackTime = getPersistentInteger("attackTime")
       syncAttackTime = attackTime
     }
-    if (syncAttackingPlayer != attackingPlayer) {
-      variableInteger.put("attackingPlayerID", attackingPlayer.getEntityId)
-      syncAttackingPlayer = attackingPlayer
+    if (syncAttackingPlayer != getAttackingPlayer) {
+      variableInteger.put("attackingPlayerID", getAttackingPlayer.getEntityId)
+      syncAttackingPlayer = getAttackingPlayer
     }
     else if (syncAttackingPlayer != worldObj.getEntityByID(getInteger("attackingPlayerID")) && getInteger("attackingPlayerID") != 0) {
-      attackingPlayer = worldObj.getEntityByID(getInteger("attackingPlayerID")).asInstanceOf[EntityPlayer]
-      syncAttackingPlayer = attackingPlayer
+      setAttackingPlayer(worldObj.getEntityByID(getInteger("attackingPlayerID")).asInstanceOf[EntityPlayer])
+      syncAttackingPlayer = getAttackingPlayer
     }
-    if (syncRecentlyHit != recentlyHit) {
-      variableInteger.put("recentlyHit", recentlyHit)
-      syncRecentlyHit = recentlyHit
+    if (syncRecentlyHit != getRecentlyHit) {
+      variableInteger.put("recentlyHit", getRecentlyHit)
+      syncRecentlyHit = getRecentlyHit
     }
     else if (syncRecentlyHit != getInteger("recentlyHit")) {
-      recentlyHit = getInteger("recentlyHit")
-      syncRecentlyHit = recentlyHit
+      setRecentlyHit(getInteger("recentlyHit"))
+      syncRecentlyHit = getRecentlyHit
     }
-    if (syncScoreValue != scoreValue) {
-      variableInteger.put("scoreValue", scoreValue)
-      syncScoreValue = scoreValue
+    if (syncScoreValue != getScoreValue) {
+      variableInteger.put("scoreValue", getScoreValue)
+      syncScoreValue = getScoreValue
     }
     else if (syncScoreValue != getInteger("scoreValue")) {
-      scoreValue = getInteger("scoreValue")
-      syncScoreValue = scoreValue
+      setScoreValue(getInteger("scoreValue"))
+      syncScoreValue = getScoreValue
     }
-    if (syncLastDamage != lastDamage) {
-      variableFloat.put("lastDamage", lastDamage)
-      syncLastDamage = lastDamage
+    if (syncLastDamage != getLastDamage) {
+      variableFloat.put("lastDamage", getLastDamage)
+      syncLastDamage = getLastDamage
     }
     else if (syncLastDamage != getFloat("lastDamage")) {
-      lastDamage = getFloat("lastDamage")
-      syncLastDamage = lastDamage
+      setLastDamage(getFloat("lastDamage"))
+      syncLastDamage = getLastDamage
     }
     if (syncLastAttacker != getLastAttacker) {
       variableInteger.put("lastAttackerID", getLastAttacker.getEntityId)
@@ -1265,20 +1255,20 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
       setLastAttackerTime(getInteger("lastAttackerTime"))
       syncLastAttackerTime = getLastAttackerTime
     }
-    if (syncExperienceValue != experienceValue) {
-      variableInteger.put("experienceValue", experienceValue)
-      syncExperienceValue = experienceValue
+    if (syncExperienceValue != getExperienceValue) {
+      variableInteger.put("experienceValue", getExperienceValue)
+      syncExperienceValue = getExperienceValue
     }
     else if (syncExperienceValue != getInteger("experienceValue")) {
-      experienceValue = getInteger("experienceValue")
-      syncExperienceValue = experienceValue
+      setExperienceValue(getInteger("experienceValue"))
+      syncExperienceValue = getExperienceValue
     }
     if (syncAttackTarget != getAttackTarget) {
       variableInteger.put("attackTarget", getAttackTarget.getEntityId)
       syncAttackTarget = getAttackTarget
     }
-    else if (syncAttackTarget != worldObj.getEntityByID(getInteger("attackTarget"))) {
-      setAttackTarget(worldObj.getEntityByID(getInteger("attackTarget")).asInstanceOf[EntityLiving])
+    else if (getInteger("attackTarget") != 0 && syncAttackTarget != worldObj.getEntityByID(getInteger("attackTarget"))) {
+      setAttackTarget(worldObj.getEntityByID(getInteger("attackTarget")).asInstanceOf[EntityLivingBase])
       syncAttackTarget = getAttackTarget
     }
     if (syncAttackTime != attackTime) {
@@ -1310,13 +1300,13 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
   private var syncLivingSoundTime, syncTalkInterval: Int = 0
 
   private def syncSound() {
-    if (syncNumTicksToChaseTarget != numTicksToChaseTarget) {
-      variableInteger.put("numTicksToChaseTarget", numTicksToChaseTarget)
-      syncNumTicksToChaseTarget = numTicksToChaseTarget
+    if (syncNumTicksToChaseTarget != getNumTicksToChaseTarget) {
+      variableInteger.put("numTicksToChaseTarget", getNumTicksToChaseTarget)
+      syncNumTicksToChaseTarget = getNumTicksToChaseTarget
     }
     else if (syncNumTicksToChaseTarget != getInteger("numTicksToChaseTarget")) {
-      numTicksToChaseTarget = getInteger("numTicksToChaseTarget")
-      syncNumTicksToChaseTarget = numTicksToChaseTarget
+      setNumTicksToChaseTarget(getInteger("numTicksToChaseTarget"))
+      syncNumTicksToChaseTarget = getNumTicksToChaseTarget
     }
     if (syncLivingSoundTime != livingSoundTime) {
       persistentInteger.put("livingSoundTime", livingSoundTime)
@@ -1590,7 +1580,7 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
       var compoundDouble: NBTTagCompound = null
       var compoundString: NBTTagCompound = null
       var compoundItemStack: NBTTagCompound = null
-      for (i <- 0 to tagList.tagCount()) {
+      for (i <- 0 until tagList.tagCount()) {
         if (tagList.getCompoundTagAt(i).getString("type") == "boolean") {
           compoundBoolean = tagList.getCompoundTagAt(i)
         }
@@ -1615,7 +1605,7 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
       }
       if (compoundBoolean != null) {
         val size: Int = compoundBoolean.getInteger("size")
-        for (i <- 0 to size) {
+        for (i <- 0 until size) {
           val name: String = compoundBoolean.getString("boolean" + i + "Name")
           val value: Boolean = compoundBoolean.getBoolean("boolean" + i + "Value")
           persistentBoolean.put(name, value)
@@ -1623,7 +1613,7 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
       }
       if (compoundByte != null) {
         val size: Int = compoundByte.getInteger("size")
-        for (i <- 0 to size) {
+        for (i <- 0 until size) {
           val name: String = compoundByte.getString("byte" + i + "Name")
           val value: Byte = compoundByte.getByte("byte" + i + "Value")
           persistentByte.put(name, value)
@@ -1631,7 +1621,7 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
       }
       if (compoundInteger != null) {
         val size: Int = compoundInteger.getInteger("size")
-        for (i <- 0 to size) {
+        for (i <- 0 until size) {
           val name: String = compoundInteger.getString("integer" + i + "Name")
           val value: Int = compoundInteger.getInteger("integer" + i + "Value")
           persistentInteger.put(name, value)
@@ -1639,7 +1629,7 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
       }
       if (compoundFloat != null) {
         val size: Int = compoundFloat.getInteger("size")
-        for (i <- 0 to size) {
+        for (i <- 0 until size) {
           val name: String = compoundFloat.getString("float" + i + "Name")
           val value: Float = compoundFloat.getFloat("float" + i + "Value")
           persistentFloat.put(name, value)
@@ -1647,7 +1637,7 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
       }
       if (compoundDouble != null) {
         val size: Int = compoundDouble.getInteger("size")
-        for (i <- 0 to size) {
+        for (i <- 0 until size) {
           val name: String = compoundDouble.getString("double" + i + "Name")
           val value: Double = compoundDouble.getDouble("double" + i + "Value")
           persistentDouble.put(name, value)
@@ -1655,7 +1645,7 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
       }
       if (compoundString != null) {
         val size: Int = compoundString.getInteger("size")
-        for (i <- 0 to size) {
+        for (i <- 0 until size) {
           val name: String = compoundString.getString("string" + i + "Name")
           val value: String = compoundString.getString("string" + i + "Value")
           persistentString.put(name, value)
@@ -1663,7 +1653,7 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
       }
       if (compoundItemStack != null) {
         val size: Int = compoundItemStack.getInteger("size")
-        for (i <- 0 to size) {
+        for (i <- 0 until size) {
           val name: String = compoundItemStack.getString("itemStack" + i + "Name")
           val stackCompound: NBTTagCompound = compoundItemStack.getCompoundTag("itemStack" + i + "Value")
           val stack: ItemStack = ItemStack.loadItemStackFromNBT(stackCompound)
@@ -1896,7 +1886,7 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
 
 class GIEntityLivingScala(world: World) extends GIEntityLiving(world) {
 
-  def getNewPosRotationIncrements = newPosRotationIncrements;
+  def getNewPosRotationIncrements = newPosRotationIncrements
   def setNewPosRotationIncrements(value: Int) {newPosRotationIncrements = value}
 
   def getNewPosX = newPosX
@@ -1910,4 +1900,58 @@ class GIEntityLivingScala(world: World) extends GIEntityLiving(world) {
 
   def getRandomYawVelocity = randomYawVelocity
   def setRandomYawVelocity(value: Float) {randomYawVelocity = value}
+
+  def getNewRotationYaw = newRotationYaw
+  def setNewRotationYaw(value: Double) {newRotationYaw = value}
+
+  def getNewRotationPitch = newRotationPitch
+  def setNewRotationPitch(value: Double) {newRotationPitch = value}
+
+  def getDefaultPitch = defaultPitch
+  def setDefaultPitch(value: Float) {defaultPitch = value}
+
+  def getInWater = inWater
+  def setInWater(value: Boolean) {inWater = value}
+
+  def getIsInWeb = isInWeb
+  def setIsInWeb(value: Boolean) {isInWeb = value}
+
+  def getIsJumping = isJumping
+  def setIsJumping(value: Boolean) {isJumping = value}
+
+  def getInPortal = inPortal;
+  def setInPortal(value: Boolean) {inPortal = value}
+
+  def getPortalCounter = portalCounter
+  def setPortalCounter(value: Int) {portalCounter = value}
+
+  override def getTeleportDirection = teleportDirection
+  def setTeleportDirection(value: Int) {teleportDirection = value}
+
+  def getEquipmentDropChances = equipmentDropChances
+  def setEquipmentDropChances(value: Float, index: Int) {equipmentDropChances(index) = value}
+  def setEquipmentDropChances(value: Array[Float]) {equipmentDropChances = value}
+
+  def getEntityAge = entityAge
+  def setEntityAge(value: Int) {entityAge = value}
+
+  def getAttackingPlayer = attackingPlayer
+  def setAttackingPlayer(value: EntityPlayer) {attackingPlayer = value}
+
+  def getRecentlyHit = recentlyHit
+  def setRecentlyHit(value: Int) {recentlyHit = value}
+
+  def getScoreValue = scoreValue
+  def setScoreValue(value: Int) {scoreValue = value}
+
+  def getLastDamage = lastDamage
+  def setLastDamage(value: Float) {lastDamage = value}
+
+  def getExperienceValue = experienceValue
+  def setExperienceValue(value: Int) {experienceValue = value}
+
+  def getNumTicksToChaseTarget = numTicksToChaseTarget
+  def setNumTicksToChaseTarget(value: Int) {numTicksToChaseTarget = value}
+
+  def getRand = rand;
 }
