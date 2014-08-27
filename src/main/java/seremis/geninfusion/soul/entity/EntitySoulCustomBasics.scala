@@ -34,7 +34,7 @@ import seremis.geninfusion.soul.{Soul, TraitHandler}
 /**
  * @author Seremis
  */
-trait EntitySoulCustomBasics extends GIEntityLiving with IEntityAdditionalSpawnData with IEntitySoulCustom {
+trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalSpawnData with IEntitySoulCustom {
 
   protected var soul: ISoul = null
 
@@ -322,37 +322,37 @@ trait EntitySoulCustomBasics extends GIEntityLiving with IEntityAdditionalSpawnD
       lastTickPosZ = getDouble("lastTickPosZ")
       syncLastTickPosZ = lastTickPosZ
     }
-    if (syncNewPosRotationIncrements != newPosRotationIncrements) {
-      variableInteger.put("newPosRotationIncrements", newPosRotationIncrements)
-      syncNewPosRotationIncrements = newPosRotationIncrements
+    if (syncNewPosRotationIncrements != getNewPosRotationIncrements) {
+      variableInteger.put("newPosRotationIncrements", getNewPosRotationIncrements)
+      syncNewPosRotationIncrements = getNewPosRotationIncrements
     }
     else if (syncNewPosRotationIncrements != getInteger("newPosRotationIncrements")) {
-      newPosRotationIncrements = getInteger("newPosRotationIncrements")
-      syncNewPosRotationIncrements = newPosRotationIncrements
+      setNewPosRotationIncrements(getInteger("newPosRotationIncrements"))
+      syncNewPosRotationIncrements = getNewPosRotationIncrements
     }
-    if (syncNewPosX != newPosX) {
-      variableDouble.put("newPosX", newPosX)
-      syncNewPosX = newPosX
+    if (syncNewPosX != getNewPosX) {
+      variableDouble.put("newPosX", getNewPosX)
+      syncNewPosX = getNewPosX
     }
     else if (syncNewPosX != getDouble("newPosX")) {
-      newPosX = getDouble("newPosX")
-      syncNewPosX = newPosX
+      setNewPosX(getDouble("newPosX"))
+      syncNewPosX = getNewPosX
     }
-    if (syncNewPosY != newPosY) {
-      variableDouble.put("newPosY", newPosY)
-      syncNewPosY = newPosY
+    if (syncNewPosY != getNewPosY) {
+      variableDouble.put("newPosY", getNewPosY)
+      syncNewPosY = getNewPosY
     }
     else if (syncNewPosY != getDouble("newPosY")) {
-      newPosY = getDouble("newPosY")
-      syncNewPosY = newPosY
+      setNewPosY(getDouble("newPosY"))
+      syncNewPosY = getNewPosY
     }
-    if (syncNewPosZ != newPosZ) {
-      variableDouble.put("newPosZ", newPosZ)
-      syncNewPosZ = newPosZ
+    if (syncNewPosZ != getNewPosZ) {
+      variableDouble.put("newPosZ", getNewPosZ)
+      syncNewPosZ = getNewPosZ
     }
     else if (syncNewPosZ != getDouble("newPosZ")) {
-      newPosZ = getDouble("newPosZ")
-      syncNewPosZ = newPosZ
+      setNewPosZ(getDouble("newPosZ"))
+      syncNewPosZ = getNewPosZ
     }
   }
 
@@ -408,13 +408,13 @@ trait EntitySoulCustomBasics extends GIEntityLiving with IEntityAdditionalSpawnD
       moveForward = getFloat("moveForward")
       syncMoveForward = moveForward
     }
-    if (syncRandomYawVelocity != randomYawVelocity) {
-      variableFloat.put("randomYawVelocity", randomYawVelocity)
-      syncRandomYawVelocity = randomYawVelocity
+    if (syncRandomYawVelocity != getRandomYawVelocity) {
+      variableFloat.put("randomYawVelocity", getRandomYawVelocity)
+      syncRandomYawVelocity = getRandomYawVelocity
     }
     else if (syncRandomYawVelocity != getFloat("randomYawVelocity")) {
-      randomYawVelocity = getFloat("randomYawVelocity")
-      syncRandomYawVelocity = randomYawVelocity
+      setRandomYawVelocity(getFloat("randomYawVelocity"))
+      syncRandomYawVelocity = getRandomYawVelocity
     }
     if (syncLandMovementFactor != getLandMovementFactor) {
       variableFloat.put("landMovementFactor", getLandMovementFactor)
@@ -1889,7 +1889,25 @@ trait EntitySoulCustomBasics extends GIEntityLiving with IEntityAdditionalSpawnD
     if (!variableItemStack.containsKey(name)) null else variableItemStack.get(name)
   }
 
-  def forceVariableSync {
+  override def forceVariableSync {
     this.syncVariables
   }
+}
+
+class GIEntityLivingScala(world: World) extends GIEntityLiving(world) {
+
+  def getNewPosRotationIncrements = newPosRotationIncrements;
+  def setNewPosRotationIncrements(value: Int) {newPosRotationIncrements = value}
+
+  def getNewPosX = newPosX
+  def setNewPosX(value: Double) {newPosX = value}
+
+  def getNewPosY = newPosX
+  def setNewPosY(value: Double) {newPosY = value}
+
+  def getNewPosZ = newPosX
+  def setNewPosZ(value: Double) {newPosZ = value}
+
+  def getRandomYawVelocity = randomYawVelocity
+  def setRandomYawVelocity(value: Float) {randomYawVelocity = value}
 }

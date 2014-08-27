@@ -46,5 +46,4 @@ public class GIEntityLiving extends EntityLiving {
     public void receivePacketOnServer(int id, byte[] value) {
 
     }
-
 }
