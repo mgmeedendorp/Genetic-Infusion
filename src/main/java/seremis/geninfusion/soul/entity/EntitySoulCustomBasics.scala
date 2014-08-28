@@ -1060,9 +1060,6 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
       captureDrops = getBoolean("captureDrops")
       syncCaptureDrops = captureDrops
     }
-
-    // var i = 0
-
     if (syncCapturedDrops.size() != capturedDrops.size() || syncCapturedDrops.size() != getPersistentItemStackArrayLength("capturedDrops")) {
       val max = Math.max(capturedDrops.size(), getPersistentItemStackArrayLength("capturedDrops"))
       if (max > capturedDrops.size()) {
@@ -1892,10 +1889,10 @@ class GIEntityLivingScala(world: World) extends GIEntityLiving(world) {
   def getNewPosX = newPosX
   def setNewPosX(value: Double) {newPosX = value}
 
-  def getNewPosY = newPosX
+  def getNewPosY = newPosY
   def setNewPosY(value: Double) {newPosY = value}
 
-  def getNewPosZ = newPosX
+  def getNewPosZ = newPosZ
   def setNewPosZ(value: Double) {newPosZ = value}
 
   def getRandomYawVelocity = randomYawVelocity
