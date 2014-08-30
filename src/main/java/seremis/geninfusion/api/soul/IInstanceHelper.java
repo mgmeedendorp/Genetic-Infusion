@@ -1,9 +1,13 @@
 package seremis.geninfusion.api.soul;
 
+import net.minecraft.world.World;
+
 /**
  * @author Seremis
  */
 public interface IInstanceHelper {
+
+    IEntitySoulCustom getSoulEntityInstance(World world, ISoul soul, double x, double y, double z);
 
     ISoul getISoulInstance(IChromosome[] chromosomes);
 

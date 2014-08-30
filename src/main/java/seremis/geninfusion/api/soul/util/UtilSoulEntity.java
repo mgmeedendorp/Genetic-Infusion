@@ -57,6 +57,7 @@ public class UtilSoulEntity {
             float f1 = ((float)((i >> 1) % 2) - 0.5F) * 0.1F;
             float f2 = ((float)((i >> 2) % 2) - 0.5F) * width * 0.8F;
             int x = MathHelper.floor_double(posX + (double)f);
+            //TODO add this line
             //int y = MathHelper.floor_double(posY + (double)this.getEyeHeight() + (double)f1);
             int y = MathHelper.floor_double(posY + (double)f1);
             int z = MathHelper.floor_double(posZ + (double)f2);

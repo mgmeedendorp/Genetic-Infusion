@@ -31,10 +31,7 @@ import seremis.geninfusion.item.ModItems
 import seremis.geninfusion.soul.allele.{AlleleFloat, AlleleString}
 import seremis.geninfusion.soul.{Soul, TraitHandler}
 
-/**
- * @author Seremis
- */
-trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalSpawnData with IEntitySoulCustom {
+trait EntitySoulCustomTrait extends GIEntityLivingScala with IEntityAdditionalSpawnData with IEntitySoulCustom {
 
   protected var soul: ISoul = null
 
@@ -192,7 +189,7 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
 
   private var syncTicksExisted: Int = 0
 
-  private def syncVariables() {
+  protected def syncVariables() {
     syncCoordinates()
     syncMovement()
     syncRotation()
@@ -1755,13 +1752,13 @@ trait EntitySoulCustomBasics extends GIEntityLivingScala with IEntityAdditionalS
     }
   }
 
-  private var persistentBoolean, variableBoolean: ConcurrentHashMap[String, Boolean] = new ConcurrentHashMap[String, Boolean]
-  private var persistentByte, variableByte: ConcurrentHashMap[String, Byte] = new ConcurrentHashMap[String, Byte]
-  private var persistentInteger, variableInteger: ConcurrentHashMap[String, Integer] = new ConcurrentHashMap[String, Integer]
-  private var persistentFloat, variableFloat: ConcurrentHashMap[String, Float] = new ConcurrentHashMap[String, Float]
-  private var persistentDouble, variableDouble: ConcurrentHashMap[String, Double] = new ConcurrentHashMap[String, Double]
-  private var persistentString, variableString: ConcurrentHashMap[String, String] = new ConcurrentHashMap[String, String]
-  private var persistentItemStack, variableItemStack: ConcurrentHashMap[String, ItemStack] = new ConcurrentHashMap[String, ItemStack]
+  protected val persistentBoolean, variableBoolean: ConcurrentHashMap[String, Boolean] = new ConcurrentHashMap[String, Boolean]
+  protected val persistentByte, variableByte: ConcurrentHashMap[String, Byte] = new ConcurrentHashMap[String, Byte]
+  protected val persistentInteger, variableInteger: ConcurrentHashMap[String, Integer] = new ConcurrentHashMap[String, Integer]
+  protected val persistentFloat, variableFloat: ConcurrentHashMap[String, Float] = new ConcurrentHashMap[String, Float]
+  protected val persistentDouble, variableDouble: ConcurrentHashMap[String, Double] = new ConcurrentHashMap[String, Double]
+  protected val persistentString, variableString: ConcurrentHashMap[String, String] = new ConcurrentHashMap[String, String]
+  protected val persistentItemStack, variableItemStack: ConcurrentHashMap[String, ItemStack] = new ConcurrentHashMap[String, ItemStack]
 
   def setPersistentVariable(name: String, variable: Boolean) {
     persistentBoolean.put(name, variable)

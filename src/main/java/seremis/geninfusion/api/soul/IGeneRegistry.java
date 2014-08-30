@@ -3,6 +3,7 @@ package seremis.geninfusion.api.soul;
 import net.minecraft.entity.EntityLiving;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Seremis
@@ -10,6 +11,8 @@ import java.util.LinkedList;
 public interface IGeneRegistry {
 
     public void registerGene(String name, IGene gene);
+
+    public void registerMasterGene(String name, IMasterGene gene);
 
     public IGene getGene(String name);
 
@@ -32,4 +35,6 @@ public interface IGeneRegistry {
     public IAllele getActiveFor(EntityLiving entity, String name);
 
     public IAllele getActiveFor(IEntitySoulCustom entity, String name);
+
+    public List<IGene> getControlledGenes(String masterGeneName);
 }

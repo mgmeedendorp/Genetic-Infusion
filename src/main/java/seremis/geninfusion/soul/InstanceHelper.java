@@ -1,7 +1,12 @@
 package seremis.geninfusion.soul;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import seremis.geninfusion.api.soul.*;
+import seremis.geninfusion.api.soul.lib.Genes;
+import seremis.geninfusion.soul.allele.AlleleBoolean;
+import seremis.geninfusion.soul.entity.EntitySoulCustom;
+import seremis.geninfusion.soul.entity.EntitySoulCustomCreature;
 
 import java.lang.reflect.Constructor;
 
@@ -9,6 +14,16 @@ import java.lang.reflect.Constructor;
  * @author Seremis
  */
 public class InstanceHelper implements IInstanceHelper {
+
+    @Override
+    public IEntitySoulCustom getSoulEntityInstance(World world, ISoul soul, double x, double y, double z) {
+        IEntitySoulCustom entity = new EntitySoulCustom(world, soul, x, y, z);
+
+        if(((AlleleBoolean)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_IS_CREATURE)).value) {
+            entity = new EntitySoulCustomCreature(world, soul, x, y, z);
+        }
+        return entity;
+    }
 
     @Override
     public ISoul getISoulInstance(IChromosome[] chromosomes) {

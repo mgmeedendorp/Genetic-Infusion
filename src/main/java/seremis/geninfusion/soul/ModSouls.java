@@ -1,14 +1,11 @@
 package seremis.geninfusion.soul;
 
 import net.minecraft.entity.monster.EntityZombie;
-import seremis.geninfusion.api.soul.lib.GeneGroups;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.lib.Traits;
 import seremis.geninfusion.soul.gene.*;
-import seremis.geninfusion.soul.gene.newAI.canSwim.GeneAICanSwim;
 import seremis.geninfusion.soul.gene.newAI.GeneUseNewAI;
-import seremis.geninfusion.soul.geneGroup.ai.GeneGroupNewAI;
-import seremis.geninfusion.soul.geneGroup.ai.GeneGroupNewAISwim;
+import seremis.geninfusion.soul.gene.newAI.canSwim.GeneAICanSwim;
 import seremis.geninfusion.soul.standardSoul.StandardSoulZombie;
 import seremis.geninfusion.soul.traits.*;
 
@@ -47,14 +44,12 @@ public class ModSouls {
         geneRegistry.registerGene(Genes.GENE_TALK_INTERVAL, new GeneTalkInterval());
         geneRegistry.registerGene(Genes.GENE_SET_ON_FIRE_FROM_ATTACK, new GeneSetOnFireFromAttack());
         geneRegistry.registerGene(Genes.GENE_EXPERIENCE_VALUE, new GeneExperienceValue());
-        geneRegistry.registerGene(Genes.GENE_USE_NEW_AI, new GeneUseNewAI());
         geneRegistry.registerGene(Genes.GENE_USE_OLD_AI, new GeneUseOldAI());
         geneRegistry.registerGene(Genes.GENE_VERTICAL_FACE_SPEED, new GeneVerticalFaceSpeed());
         geneRegistry.registerGene(Genes.GENE_IS_CREATURE, new GeneIsCreature());
         geneRegistry.registerGene(Genes.GENE_AI_CAN_SWIM, new GeneAICanSwim());
 
-        geneGroupRegistry.registerGeneGroup(GeneGroups.GENE_GROUP_NEW_AI, new GeneGroupNewAI());
-        geneGroupRegistry.registerGeneGroup(GeneGroups.GENE_GROUP_NEW_AI_CAN_SWIM, new GeneGroupNewAISwim());
+        geneRegistry.registerMasterGene(Genes.GENE_USE_NEW_AI, new GeneUseNewAI());
         
         traitRegistry.registerTrait(Traits.TRAIT_FIRE, new TraitFire());
         traitRegistry.registerTrait(Traits.TRAIT_MOVEMENT, new TraitMovement());

@@ -5,6 +5,7 @@ import seremis.geninfusion.api.soul.*;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 public class GeneRegistry implements IGeneRegistry {
 
@@ -12,6 +13,7 @@ public class GeneRegistry implements IGeneRegistry {
     public LinkedHashMap<IGene, String> genesInv = new LinkedHashMap<IGene, String>();
     public LinkedHashMap<IGene, Integer> ids = new LinkedHashMap<IGene, Integer>();
     public LinkedHashMap<Integer, IGene> idsInv = new LinkedHashMap<Integer, IGene>();
+    public LinkedHashMap<String, IMasterGene> masterGenes = new LinkedHashMap<String, IMasterGene>();
 
     @Override
     public void registerGene(String name, IGene gene) {
@@ -21,6 +23,12 @@ public class GeneRegistry implements IGeneRegistry {
             ids.put(gene, ids.size());
             idsInv.put(idsInv.size(), gene);
         }
+    }
+
+    @Override
+    public void registerMasterGene(String name, IMasterGene gene) {
+        registerGene(name, gene);
+        masterGenes.put(name, gene);
     }
 
     @Override
@@ -84,5 +92,10 @@ public class GeneRegistry implements IGeneRegistry {
     @Override
     public IAllele getActiveFor(IEntitySoulCustom entity, String name) {
         return getChromosomeFor(entity, name) != null ? getChromosomeFor(entity, name).getActive() : null;
+    }
+
+    @Override
+    public List<IGene> getControlledGenes(String masterGeneName) {
+        return ((IMasterGene)getGene(masterGeneName)).getControlledGenes();
     }
 }

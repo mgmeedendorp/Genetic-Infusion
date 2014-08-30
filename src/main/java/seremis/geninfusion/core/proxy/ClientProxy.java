@@ -13,6 +13,7 @@ import seremis.geninfusion.entity.EntityTransporter;
 import seremis.geninfusion.item.ModItems;
 import seremis.geninfusion.lib.RenderIds;
 import seremis.geninfusion.soul.entity.EntitySoulCustom;
+import seremis.geninfusion.soul.entity.EntitySoulCustomCreature;
 import seremis.geninfusion.soul.entity.RenderEntitySoulCustom;
 import seremis.geninfusion.tileentity.TileCompressor;
 import seremis.geninfusion.tileentity.TileCrystal;
@@ -30,7 +31,9 @@ public class ClientProxy extends CommonProxy {
         RenderingRegistry.registerBlockHandler(RenderIds.CrystalStandRenderID, new BlockCrystalStandRenderer(crystalStand));
 
         RenderingRegistry.registerEntityRenderingHandler(EntityTransporter.class, new EntityTransporterRenderer());
+
         RenderingRegistry.registerEntityRenderingHandler(EntitySoulCustom.class, new RenderEntitySoulCustom());
+        RenderingRegistry.registerEntityRenderingHandler(EntitySoulCustomCreature.class, new RenderEntitySoulCustom());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileCompressor.class, new TileCompressorRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileCrystal.class, new TileCrystalRenderer());

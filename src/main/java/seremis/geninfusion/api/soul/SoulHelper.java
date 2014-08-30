@@ -13,6 +13,4 @@ public class SoulHelper {
     public static ITraitRegistry traitRegistry;
 
     public static IInstanceHelper instanceHelper;
-
-    public static IGeneGroupRegistry geneGroupRegistry;
 }
