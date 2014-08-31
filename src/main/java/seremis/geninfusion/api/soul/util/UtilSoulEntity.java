@@ -15,6 +15,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -302,5 +303,12 @@ public class UtilSoulEntity {
         }
 
         return current + f3;
+    }
+
+    public static boolean canEntityBeSeen(IEntitySoulCustom entity, Entity ent) {
+        double posX = entity.getPersistentDouble("posX");
+        double posY = entity.getPersistentDouble("posY");
+        double posZ = entity.getPersistentDouble("posZ");
+        return entity.getWorld().rayTraceBlocks(Vec3.createVectorHelper(posX, posY + (double) getEyeHeight(entity), posZ), Vec3.createVectorHelper(ent.posX, ent.posY + (double)ent.getEyeHeight(), ent.posZ)) == null;
     }
 }

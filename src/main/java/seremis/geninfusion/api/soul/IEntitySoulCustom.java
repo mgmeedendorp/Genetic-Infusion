@@ -1,6 +1,7 @@
 package seremis.geninfusion.api.soul;
 
 import net.minecraft.entity.DataWatcher;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.BaseAttributeMap;
@@ -98,6 +99,8 @@ public interface IEntitySoulCustom {
     void playSound(String sound, float volume, float pitch);
     
     boolean attackEntityFrom(DamageSource source, float damage);
+
+    void attackEntity(Entity entity, float distance);
 
     void setFlag(int id, boolean value);
 

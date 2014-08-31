@@ -29,4 +29,6 @@ public interface ITrait {
     public void firstTick(IEntitySoulCustom entity);
 
     public boolean attackEntityAsMob(IEntitySoulCustom entity, Entity entityToAttack);
+
+    public void attackEntity(IEntitySoulCustom entity, Entity entityToAttack, float distance);
 }

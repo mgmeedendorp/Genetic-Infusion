@@ -19,25 +19,23 @@ trait EntitySoulCustomCreatureTrait extends GIEntityCreatureScala with EntitySou
 
   private def syncCreature() {
     if(syncEntityToAttack != getEntityToAttack) {
-      variableInteger.put("entityToAttackID", getEntityToAttack.getEntityId)
+      variableInteger.put("entityToAttack", getEntityToAttack.getEntityId)
       syncEntityToAttack = getEntityToAttack
-    } else if(syncEntityToAttack.getEntityId != getInteger("entityToAttackID")) {
-      setEntityToAttack(worldObj.getEntityByID(getInteger("entityToAttackID")))
+    } else if(syncEntityToAttack.getEntityId != getInteger("entityToAttack")) {
+      setEntityToAttack(worldObj.getEntityByID(getInteger("entityToAttack")))
       syncEntityToAttack = getEntityToAttack
     }
     if (syncHasAttacked != getHasAttacked) {
       variableBoolean.put("hasAttacked", getHasAttacked)
       syncHasAttacked = getHasAttacked
-    }
-    else if (syncHasAttacked != getBoolean("hasAttacked")) {
+    } else if (syncHasAttacked != getBoolean("hasAttacked")) {
       setHasAttacked(getBoolean("hasAttacked"))
       syncHasAttacked = getHasAttacked
     }
     if (syncFleeingTick != getFleeingTick) {
-      persistentInteger.put("fleeingTick", getFleeingTick)
+      variableInteger.put("fleeingTick", getFleeingTick)
       syncFleeingTick = getFleeingTick
-    }
-    else if (syncFleeingTick != getPersistentInteger("fleeingTick")) {
+    } else if (syncFleeingTick != getPersistentInteger("fleeingTick")) {
       setFleeingTick(getPersistentInteger("fleeingTick"))
       syncFleeingTick = getFleeingTick
     }

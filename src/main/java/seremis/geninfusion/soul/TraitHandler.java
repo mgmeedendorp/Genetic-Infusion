@@ -55,6 +55,14 @@ public class TraitHandler {
         }
         return flag;
     }
+
+    static LinkedList<ITrait> attackEntity;
+
+    public static void attackEntity(IEntitySoulCustom entity, Entity entityToAttack, float distance) {
+        for(ITrait trait : attackEntity) {
+            trait.attackEntity(entity, entityToAttack, distance);
+        }
+    }
     
     static LinkedList<ITrait> spawnEntityFromEgg;
     

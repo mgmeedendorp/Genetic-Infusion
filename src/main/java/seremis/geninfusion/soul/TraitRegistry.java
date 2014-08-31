@@ -57,6 +57,7 @@ public class TraitRegistry implements ITraitRegistry {
 		TraitHandler.updateAITick = new LinkedList<ITrait>();
         TraitHandler.firstTick = new LinkedList<ITrait>();
         TraitHandler.attackEntityAsMob = new LinkedList<ITrait>();
+        TraitHandler.attackEntity = new LinkedList<ITrait>();
 		
 		for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
 			TraitHandler.entityUpdate.add(trait);
@@ -70,6 +71,7 @@ public class TraitRegistry implements ITraitRegistry {
 			TraitHandler.updateAITick.add(trait);
             TraitHandler.firstTick.add(trait);
             TraitHandler.attackEntityAsMob.add(trait);
+            TraitHandler.attackEntity.add(trait);
 		}
 		
 		for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
@@ -190,6 +192,16 @@ public class TraitRegistry implements ITraitRegistry {
                                     TraitHandler.attackEntityAsMob.addFirst(trait);
                                 } else if(dep.equals("last")) {
                                     TraitHandler.attackEntityAsMob.addLast(trait);
+                                }
+                            } else if(method.getName().equals("attackEntity")) {
+                                if(SoulHelper.traitRegistry.getTraits().contains(SoulHelper.traitRegistry.getTrait(dep))) {
+                                    ITrait trait2 = SoulHelper.traitRegistry.getTrait(dep);
+                                    int traitIndex = TraitHandler.attackEntity.indexOf(trait2);
+                                    TraitHandler.attackEntity.add(traitIndex, trait);
+                                } else if(dep.equals("first")) {
+                                    TraitHandler.attackEntity.addFirst(trait);
+                                } else if(dep.equals("last")) {
+                                    TraitHandler.attackEntity.addLast(trait);
                                 }
                             }
 						}

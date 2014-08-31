@@ -42,4 +42,7 @@ public class Trait implements ITrait {
 
     @Override
     public boolean attackEntityAsMob(IEntitySoulCustom entity, Entity entityToAttack) {return true;}
+
+    @Override
+    public void attackEntity(IEntitySoulCustom entity, Entity entityToAttack, float distance) {}
 }

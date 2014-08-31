@@ -1538,8 +1538,11 @@ trait EntitySoulCustomTrait extends GIEntityLivingScala with IEntityAdditionalSp
   }
 
   override def attackEntityFrom(source: DamageSource, damage: Float): Boolean = {
-    super.attackEntityFrom(source, damage)
     !ForgeHooks.onLivingAttack(this, source, damage) && TraitHandler.attackEntityFrom(this, source, damage)
+  }
+
+  override def attackEntity(entity: Entity, distance: Float) {
+    TraitHandler.attackEntity(this, entity, distance);
   }
 
   override def damageEntity(source: DamageSource, damage: Float) {
