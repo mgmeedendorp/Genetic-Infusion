@@ -3,7 +3,7 @@ package seremis.geninfusion.soul.entity
 import java.io.IOException
 import java.lang.reflect.Field
 import java.util
-import java.util.{Random, ArrayList, HashMap}
+import java.util.Random
 import java.util.concurrent.ConcurrentHashMap
 
 import cpw.mods.fml.common.ObfuscationReflectionHelper
@@ -11,20 +11,20 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData
 import cpw.mods.fml.relauncher.ReflectionHelper
 import io.netty.buffer.ByteBuf
 import net.minecraft.entity.Entity.EnumEntitySize
+import net.minecraft.entity._
 import net.minecraft.entity.ai.EntityAITasks
 import net.minecraft.entity.ai.attributes.BaseAttributeMap
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity._
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.{NBTSizeTracker, CompressedStreamTools, NBTTagCompound, NBTTagList}
+import net.minecraft.nbt.{CompressedStreamTools, NBTSizeTracker, NBTTagCompound, NBTTagList}
 import net.minecraft.potion.PotionEffect
-import net.minecraft.util.{CombatTracker, AxisAlignedBB, DamageSource}
+import net.minecraft.util.{AxisAlignedBB, CombatTracker, DamageSource}
 import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
 import net.minecraftforge.common.util.Constants
 import seremis.geninfusion.api.soul.lib.Genes
-import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper, ISoul}
+import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
 import seremis.geninfusion.core.proxy.CommonProxy
 import seremis.geninfusion.entity.GIEntityLiving
 import seremis.geninfusion.item.ModItems
@@ -45,8 +45,7 @@ trait EntitySoulCustomTrait extends GIEntityLivingScala with IEntityAdditionalSp
       abyte = CompressedStreamTools.compress(compound)
     }
     catch {
-      case e: IOException =>
-        e.printStackTrace()
+      case e: Exception => e.printStackTrace()
         return
     }
     data.writeShort(abyte.length.asInstanceOf[Short])

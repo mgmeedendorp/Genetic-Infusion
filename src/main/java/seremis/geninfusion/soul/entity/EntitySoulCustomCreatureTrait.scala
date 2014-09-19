@@ -6,16 +6,16 @@ import net.minecraft.world.World
 import seremis.geninfusion.api.soul.IEntitySoulCustom
 import seremis.geninfusion.entity.GIEntityCreature
 
-trait EntitySoulCustomCreatureTrait extends GIEntityCreatureScala with EntitySoulCustomTrait with IEntityAdditionalSpawnData with IEntitySoulCustom {
+trait EntitySoulCustomCreatureTrait extends EntityCreature with EntitySoulCustomTrait with IEntityAdditionalSpawnData with IEntitySoulCustom {
 
   override def syncVariables() {
     super.syncVariables()
     syncCreature()
   }
 
-  var syncEntityToAttack: Entity
-  var syncHasAttacked: Boolean
-  var syncFleeingTick: Int
+  private var syncEntityToAttack: Entity = null;
+  private var syncHasAttacked: Boolean = false;
+  private var syncFleeingTick: Int = 0;
 
   private def syncCreature() {
     if(syncEntityToAttack != getEntityToAttack) {

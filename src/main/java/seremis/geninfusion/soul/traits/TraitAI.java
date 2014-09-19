@@ -17,6 +17,9 @@ import seremis.geninfusion.core.proxy.CommonProxy;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
 import seremis.geninfusion.soul.allele.AlleleInteger;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
+
 /**
  * @author Seremis
  */
