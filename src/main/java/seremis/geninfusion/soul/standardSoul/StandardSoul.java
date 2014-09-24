@@ -21,6 +21,9 @@ public class StandardSoul implements IStandardSoul {
         if(gene.equals(Genes.GENE_BURNS_IN_DAYLIGHT)) {
             return new Chromosome(new AlleleBoolean(true, false));
         }
+        if(gene.equals(Genes.GENE_AI_CAN_SWIM)) {
+            return new Chromosome(new AlleleBoolean(true, true));
+        }
         if(gene.equals(Genes.GENE_CREATURE_ATTRIBUTE)) {
             return new Chromosome(new AlleleInteger(true, EnumCreatureAttribute.UNDEFINED.ordinal()));
         }

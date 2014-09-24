@@ -56,7 +56,6 @@ public class GeneticInfusion {
         SoulHelper.traitRegistry = new TraitRegistry();
         SoulHelper.standardSoulRegistry = new StandardSoulRegistry();
         SoulHelper.instanceHelper = new InstanceHelper();
-        SoulHelper.geneGroupRegistry = new GeneGroupRegistry();
 
         ModBlocks.init();
         ModItems.init();

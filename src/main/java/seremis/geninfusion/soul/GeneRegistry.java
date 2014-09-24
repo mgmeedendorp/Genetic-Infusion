@@ -33,10 +33,7 @@ public class GeneRegistry implements IGeneRegistry {
 
     @Override
     public IGene getGene(String name) {
-        if(genes.containsKey(name)) {
-            return genes.get(name);
-        }
-        return null;
+        return genes.get(name);
     }
 
     @Override

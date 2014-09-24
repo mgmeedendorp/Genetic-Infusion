@@ -5,7 +5,6 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import seremis.geninfusion.GeneticInfusion;
 import seremis.geninfusion.lib.EntityIds;
 import seremis.geninfusion.soul.entity.EntitySoulCustom;
-import seremis.geninfusion.soul.entity.EntitySoulCustomCreature;
 
 public class ModEntity {
 
@@ -16,6 +15,5 @@ public class ModEntity {
     public static void register() {
         EntityRegistry.registerModEntity(EntityTransporter.class, "transporter", EntityIds.transporterID, GeneticInfusion.instance, 80, 1, false);
         EntityRegistry.registerModEntity(EntitySoulCustom.class, "soulCustom", EntityIds.soulEntityID, GeneticInfusion.instance, 80, 1, true);
-        EntityRegistry.registerModEntity(EntitySoulCustomCreature.class, "soulCustom", EntityIds.soulEntityCreatureID, GeneticInfusion.instance, 80, 1, true);
     }
 }
