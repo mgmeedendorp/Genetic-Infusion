@@ -2,9 +2,8 @@ package seremis.geninfusion.soul.entity
 
 import java.io.IOException
 import java.lang.reflect.Field
-import java.util
 import java.util.Random
-import java.util.HashMap
+import java.{lang, util}
 
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData
 import cpw.mods.fml.relauncher.ReflectionHelper
@@ -13,12 +12,11 @@ import net.minecraft.entity._
 import net.minecraft.entity.ai.EntityAITasks
 import net.minecraft.entity.ai.attributes.BaseAttributeMap
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.{CompressedStreamTools, NBTSizeTracker, NBTTagCompound, NBTTagList}
+import net.minecraft.nbt.{CompressedStreamTools, NBTSizeTracker, NBTTagCompound}
 import net.minecraft.potion.PotionEffect
 import net.minecraft.util.{AxisAlignedBB, CombatTracker, DamageSource}
 import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
-import net.minecraftforge.common.util.Constants
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
 import seremis.geninfusion.entity.GIEntityLiving
@@ -27,7 +25,7 @@ import seremis.geninfusion.misc.Data
 import seremis.geninfusion.soul.allele.{AlleleFloat, AlleleString}
 import seremis.geninfusion.soul.{Soul, TraitHandler}
 
-import scala.collection.{JavaConverters, JavaConversions}
+import scala.collection.JavaConversions._
 
 class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntitySoulCustom with IEntityAdditionalSpawnData {
 
@@ -256,342 +254,161 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
   override def readFromNBT(compound: NBTTagCompound) {
     super.readFromNBT(compound)
     soul = new Soul(compound)
-    if (compound.hasKey("traitVariables")) {
-      val tagList: NBTTagList = compound.getTagList("traitVariables", Constants.NBT.TAG_COMPOUND)
-      var compoundBoolean: NBTTagCompound = null
-      var compoundByte: NBTTagCompound = null
-      var compoundInteger: NBTTagCompound = null
-      var compoundFloat: NBTTagCompound = null
-      var compoundDouble: NBTTagCompound = null
-      var compoundString: NBTTagCompound = null
-      var compoundItemStack: NBTTagCompound = null
-      for (i <- 0 until tagList.tagCount()) {
-        if (tagList.getCompoundTagAt(i).getString("type") == "boolean") {
-          compoundBoolean = tagList.getCompoundTagAt(i)
-        }
-        else if (tagList.getCompoundTagAt(i).getString("type") == "byte") {
-          compoundByte = tagList.getCompoundTagAt(i)
-        }
-        else if (tagList.getCompoundTagAt(i).getString("type") == "integer") {
-          compoundInteger = tagList.getCompoundTagAt(i)
-        }
-        else if (tagList.getCompoundTagAt(i).getString("type") == "float") {
-          compoundFloat = tagList.getCompoundTagAt(i)
-        }
-        else if (tagList.getCompoundTagAt(i).getString("type") == "double") {
-          compoundDouble = tagList.getCompoundTagAt(i)
-        }
-        else if (tagList.getCompoundTagAt(i).getString("type") == "string") {
-          compoundString = tagList.getCompoundTagAt(i)
-        }
-        else if (tagList.getCompoundTagAt(i).getString("type") == "itemStack") {
-          compoundItemStack = tagList.getCompoundTagAt(i)
-        }
-      }
-      if (compoundBoolean != null) {
-        val size: Int = compoundBoolean.getInteger("size")
-        for (i <- 0 until size) {
-          val name: String = compoundBoolean.getString("boolean" + i + "Name")
-          val value: Boolean = compoundBoolean.getBoolean("boolean" + i + "Value")
-          persistentBoolean.put(name, value)
-        }
-      }
-      if (compoundByte != null) {
-        val size: Int = compoundByte.getInteger("size")
-        for (i <- 0 until size) {
-          val name: String = compoundByte.getString("byte" + i + "Name")
-          val value: Byte = compoundByte.getByte("byte" + i + "Value")
-          persistentByte.put(name, value)
-        }
-      }
-      if (compoundInteger != null) {
-        val size: Int = compoundInteger.getInteger("size")
-        for (i <- 0 until size) {
-          val name: String = compoundInteger.getString("integer" + i + "Name")
-          val value: Int = compoundInteger.getInteger("integer" + i + "Value")
-          persistentInteger.put(name, value)
-        }
-      }
-      if (compoundFloat != null) {
-        val size: Int = compoundFloat.getInteger("size")
-        for (i <- 0 until size) {
-          val name: String = compoundFloat.getString("float" + i + "Name")
-          val value: Float = compoundFloat.getFloat("float" + i + "Value")
-          persistentFloat.put(name, value)
-        }
-      }
-      if (compoundDouble != null) {
-        val size: Int = compoundDouble.getInteger("size")
-        for (i <- 0 until size) {
-          val name: String = compoundDouble.getString("double" + i + "Name")
-          val value: Double = compoundDouble.getDouble("double" + i + "Value")
-          persistentDouble.put(name, value)
-        }
-      }
-      if (compoundString != null) {
-        val size: Int = compoundString.getInteger("size")
-        for (i <- 0 until size) {
-          val name: String = compoundString.getString("string" + i + "Name")
-          val value: String = compoundString.getString("string" + i + "Value")
-          persistentString.put(name, value)
-        }
-      }
-      if (compoundItemStack != null) {
-        val size: Int = compoundItemStack.getInteger("size")
-        for (i <- 0 until size) {
-          val name: String = compoundItemStack.getString("itemStack" + i + "Name")
-          val stackCompound: NBTTagCompound = compoundItemStack.getCompoundTag("itemStack" + i + "Value")
-          val stack: ItemStack = ItemStack.loadItemStackFromNBT(stackCompound)
-          persistentItemStack.put(name, stack)
-        }
-      }
-    }
+    persistentData = new Data(compound)
   }
 
   override def writeToNBT(compound: NBTTagCompound) {
     super.writeToNBT(compound)
     soul.writeToNBT(compound)
-    if (persistentBoolean != null) {
-      val tagList = new NBTTagList()
-      val stringList = new util.ArrayList[String]()
-      if (!persistentBoolean.isEmpty) {
-        stringList.addAll(persistentBoolean.keySet)
-        val booleanCompound = new NBTTagCompound()
-        for (i <- 0 until persistentBoolean.size) {
-          booleanCompound.setString("boolean" + i + "Name", stringList.get(i))
-          booleanCompound.setBoolean("boolean" + i + "Value", persistentBoolean.get(stringList.get(i)))
-        }
-        booleanCompound.setString("type", "boolean")
-        booleanCompound.setInteger("size", persistentBoolean.size)
-        tagList.appendTag(booleanCompound)
-        stringList.clear()
-      }
-      if (!persistentByte.isEmpty) {
-        stringList.addAll(persistentByte.keySet)
-        val byteCompound = new NBTTagCompound()
-        for (i <- 0 until persistentByte.size) {
-          byteCompound.setString("byte" + i + "Name", stringList.get(i))
-          byteCompound.setByte("byte" + i + "Value", persistentByte.get(stringList.get(i)))
-        }
-        byteCompound.setString("type", "byte")
-        byteCompound.setInteger("size", persistentByte.size)
-        tagList.appendTag(byteCompound)
-        stringList.clear()
-      }
-      if (!persistentInteger.isEmpty) {
-        stringList.addAll(persistentInteger.keySet)
-        val integerCompound = new NBTTagCompound()
-        for (i <- 0 until persistentInteger.size) {
-          integerCompound.setString("integer" + i + "Name", stringList.get(i))
-          integerCompound.setInteger("integer" + i + "Value", persistentInteger.get(stringList.get(i)))
-        }
-        integerCompound.setString("type", "integer")
-        integerCompound.setInteger("size", persistentInteger.size)
-        tagList.appendTag(integerCompound)
-        stringList.clear()
-      }
-      if (!persistentFloat.isEmpty) {
-        stringList.addAll(persistentFloat.keySet)
-        val floatCompound = new NBTTagCompound()
-        for (i <- 0 until persistentFloat.size) {
-          floatCompound.setString("float" + i + "Name", stringList.get(i))
-          floatCompound.setFloat("float" + i + "Value", persistentFloat.get(stringList.get(i)))
-        }
-        floatCompound.setString("type", "float")
-        floatCompound.setInteger("size", persistentFloat.size)
-        stringList.clear()
-      }
-      if (!persistentDouble.isEmpty) {
-        stringList.addAll(persistentDouble.keySet)
-        val doubleCompound = new NBTTagCompound()
-        for (i <- 0 until persistentDouble.size) {
-          doubleCompound.setString("double" + i + "Name", stringList.get(i))
-          doubleCompound.setDouble("double" + i + "Value", persistentDouble.get(stringList.get(i)))
-        }
-        doubleCompound.setString("type", "double")
-        doubleCompound.setInteger("size", persistentDouble.size)
-        stringList.clear()
-      }
-      if (!persistentString.isEmpty) {
-        stringList.addAll(persistentString.keySet)
-        val stringCompound = new NBTTagCompound()
-        for (i <- 0 until persistentString.size) {
-          stringCompound.setString("string" + i + "Name", stringList.get(i))
-          stringCompound.setString("string" + i + "Value", persistentString.get(stringList.get(i)))
-        }
-        stringCompound.setString("type", "string")
-        stringCompound.setInteger("size", persistentString.size)
-        stringList.clear()
-      }
-      if (!persistentItemStack.isEmpty) {
-        stringList.addAll(persistentItemStack.keySet)
-        val itemStackCompound = new NBTTagCompound()
-        for (i <- 0 until persistentItemStack.size) {
-          val stacks = new util.ArrayList[ItemStack](persistentItemStack.values)
-          if (stacks.get(i) != null && stacks.get(i).getItem != null &&
-            stacks.get(i).stackSize > 0) {
-            itemStackCompound.setString("itemStack" + i + "Name", stringList.get(i))
-            val compoundStack = new NBTTagCompound()
-            itemStackCompound.setTag("itemStack" + i + "Value", stacks.get(i).writeToNBT(compoundStack))
-          }
-        }
-        itemStackCompound.setString("type", "itemStack")
-        itemStackCompound.setInteger("size", persistentString.size)
-        stringList.clear()
-      }
-      compound.setTag("traitVariables", tagList)
-    }
+    persistentData.writeToNBT(compound)
   }
 
-  protected val persistentBoolean, variableBoolean: HashMap[String, Boolean] = new HashMap[String, Boolean]
-  protected val persistentByte, variableByte: HashMap[String, Byte] = new HashMap[String, Byte]
-  protected val persistentInteger, variableInteger: HashMap[String, Integer] = new HashMap[String, Integer]
-  protected val persistentFloat, variableFloat: HashMap[String, Float] = new HashMap[String, Float]
-  protected val persistentDouble, variableDouble: HashMap[String, Double] = new HashMap[String, Double]
-  protected val persistentString, variableString: HashMap[String, String] = new HashMap[String, String]
-  protected val persistentItemStack, variableItemStack: HashMap[String, ItemStack] = new HashMap[String, ItemStack]
+  protected var persistentData, variableData = new Data();
 
   override def setPersistentVariable(name: String, variable: Boolean) {
-    persistentBoolean.put(name, variable)
+    persistentData.setBoolean(name, variable)
   }
 
   override def setPersistentVariable(name: String, variable: Byte) {
-    persistentByte.put(name, variable)
+    persistentData.setByte(name, variable)
   }
 
   override def setPersistentVariable(name: String, variable: Int) {
-    persistentInteger.put(name, variable)
+    persistentData.setInteger(name, variable)
   }
 
   override def setPersistentVariable(name: String, variable: Float) {
-    persistentFloat.put(name, variable)
+    persistentData.setFloat(name, variable)
   }
 
   override def setPersistentVariable(name: String, variable: Double) {
-    persistentDouble.put(name, variable)
+    persistentData.setDouble(name, variable)
   }
 
   override def setPersistentVariable(name: String, variable: String) {
-    persistentString.put(name, variable)
+    persistentData.setString(name, variable)
   }
 
   override def setPersistentVariable(name: String, variable: ItemStack) {
-    persistentItemStack.remove(name)
-    if (variable != null) persistentItemStack.put(name, variable)
+    persistentData.setNBT(name, variable.writeToNBT(new NBTTagCompound()))
   }
 
   override def getPersistentBoolean(name: String): Boolean = {
-    if (!persistentBoolean.containsKey(name)) false else persistentBoolean.get(name)
+    persistentData.getBoolean(name)
   }
 
   override def getPersistentByte(name: String): Byte = {
-    if (!persistentByte.containsKey(name)) 0 else persistentByte.get(name)
+    persistentData.getByte(name)
   }
 
   override def getPersistentInteger(name: String): Int = {
-    if (!persistentInteger.containsKey(name)) 0 else persistentInteger.get(name)
+    persistentData.getInteger(name)
   }
 
   override def getPersistentFloat(name: String): Float = {
-    if (!persistentFloat.containsKey(name)) 0 else persistentFloat.get(name)
+    persistentData.getFloat(name)
   }
 
   override def getPersistentDouble(name: String): Double = {
-    if (!persistentDouble.containsKey(name)) 0 else persistentDouble.get(name)
+    persistentData.getDouble(name)
   }
 
   override def getPersistentString(name: String): String = {
-    if (!persistentString.containsKey(name)) null else persistentString.get(name)
+    persistentData.getString(name)
   }
 
   override def getPersistentItemStack(name: String): ItemStack = {
-    if (!persistentItemStack.containsKey(name)) null else persistentItemStack.get(name)
+    if(persistentData.getNBT(name) == null) null else ItemStack.loadItemStackFromNBT(persistentData.getNBT(name))
   }
 
   override def setVariable(name: String, variable: Boolean) {
-    variableBoolean.put(name, variable)
+    variableData.setBoolean(name, variable)
   }
 
   override def setVariable(name: String, variable: Byte) {
-    variableByte.put(name, variable)
+    variableData.setByte(name, variable)
   }
 
   override def setVariable(name: String, variable: Int) {
-    variableInteger.put(name, variable)
+    variableData.setInteger(name, variable)
   }
 
   override def setVariable(name: String, variable: Float) {
-    variableFloat.put(name, variable)
+    variableData.setFloat(name, variable)
   }
 
   override def setVariable(name: String, variable: Double) {
-    variableDouble.put(name, variable)
+    variableData.setDouble(name, variable)
   }
 
   override def setVariable(name: String, variable: String) {
-    variableString.put(name, variable)
+    variableData.setString(name, variable)
   }
 
   override def setVariable(name: String, variable: ItemStack) {
-    variableItemStack.put(name, variable)
+    variableData.setNBT(name, variable.writeToNBT(new NBTTagCompound()))
   }
 
   override def getBoolean(name: String): Boolean = {
-    if (!variableBoolean.containsKey(name)) false else variableBoolean.get(name)
+    variableData.getBoolean(name)
   }
 
   override def getByte(name: String): Byte = {
-    if (!variableByte.containsKey(name)) 0 else variableByte.get(name)
+    variableData.getByte(name)
   }
 
   override def getInteger(name: String): Int = {
-    if (!variableInteger.containsKey(name)) 0 else variableInteger.get(name)
+    variableData.getInteger(name)
   }
 
   override def getFloat(name: String): Float = {
-    if (!variableFloat.containsKey(name)) 0 else variableFloat.get(name)
+    variableData.getFloat(name)
   }
 
   override def getDouble(name: String): Double = {
-    if (!variableDouble.containsKey(name)) 0 else variableDouble.get(name)
+    variableData.getDouble(name)
   }
 
   override def getString(name: String): String = {
-    if (!variableString.containsKey(name)) null else variableString.get(name)
+    variableData.getString(name)
   }
 
   override def getItemStack(name: String): ItemStack = {
-    if (!variableItemStack.containsKey(name)) null else variableItemStack.get(name)
+    ItemStack.loadItemStackFromNBT(variableData.getNBT(name))
   }
 
   override def forceVariableSync() {
-    this.syncVariables
+    this.syncVariables()
   }
 
   //The variables as they were the last tick
-  protected var oldData: Data = DataHelper.writePrimitives(this)
-  //The variables in the custom system
-  protected var newData: Data = new Data()
+  protected var syncData: Data = DataHelper.writePrimitives(this)
 
   def syncVariables() {
     //The variables in the entity class
     val data = DataHelper.writePrimitives(this)
 
-    newData.booleanDataMap.putAll(persistentBoolean)
-    newData.booleanDataMap.putAll(variableBoolean)
-
     val clss = this.getClass
 
-    for ((key, value) <- data) {
-      if(oldData.booleanDataMap.containsKey(key) && oldData.booleanDataMap.get(key) != value) {
-        oldData.booleanDataMap.put(key, value)
-        clss.getField(key).setAccessible(true)
-        clss.getField(key).setBoolean(this, value)
-      }
-    }
+//    val iterator: util.Iterator[Entry[String, lang.Boolean]] = syncData.booleanDataMap.entrySet().iterator()
+//
+//    while(iterator.hasNext()) {
+//      val entry: Entry[String, lang.Boolean] = iterator.next()
+//      val key = entry.getKey()
+//      val value = entry.getValue()
+//
+//    }
+//    for ((a, b) <- syncData.booleanDataMap) {
+//      if(data.booleanDataMap.containsKey(key) && data.booleanDataMap.get(key) != value) {
+//        syncData.booleanDataMap.put(key, value)
+//        clss.getField(key).setAccessible(true)
+//        clss.getField(key).setBoolean(this, value)
+//      }
 
-
-    oldData = data;
-    //TODO save forge custom nbt data
+      syncData.booleanDataMap = new java.util.HashMap[String, lang.Boolean](syncData.booleanDataMap).transform((key, value) => { var returnType = value;
+        if(value != data.booleanDataMap.apply(key)) { persistentData.booleanDataMap.put(key, data.booleanDataMap.apply(key)); returnType = data.booleanDataMap.apply(key) }
+        else if(value != persistentData.booleanDataMap.apply(key)){ data.booleanDataMap.put(key, persistentData.booleanDataMap.apply(key)); returnType = persistentData.booleanDataMap.apply(key) }
+        returnType });
+//    }
   }
 }

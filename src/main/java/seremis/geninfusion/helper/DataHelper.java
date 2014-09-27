@@ -24,7 +24,6 @@ public class DataHelper {
                         else if (field.getType().equals(float.class)) data.setFloat(field.getName(), field.getFloat(obj));
                         else if (field.getType().equals(double.class)) data.setDouble(field.getName(), field.getDouble(obj));
                         else if (field.getType().equals(long.class)) data.setLong(field.getName(), field.getLong(obj));
-                        else if (field.getType().equals(char.class)) data.setChar(field.getName(), field.getChar(obj));
                         else if (field.getType().equals(String.class)) data.setString(field.getName(), (String) field.get(obj));
 
                         else if (field.getType().equals(byte[].class)) {
@@ -67,13 +66,6 @@ public class DataHelper {
                             for (int i = 0; i < ((long[]) field.get(obj)).length; i++) {
                                 long d = ((long[]) field.get(obj))[i];
                                 data2.setLong(field.getName() + "." + i, d);
-                            }
-                            data.setData(field.getName(), data2);
-                        } else if (field.getType().equals(char[].class)) {
-                            Data data2 = new Data();
-                            for (int i = 0; i < ((char[]) field.get(obj)).length; i++) {
-                                char d = ((char[]) field.get(obj))[i];
-                                data2.setChar(field.getName() + "." + i, d);
                             }
                             data.setData(field.getName(), data2);
                         } else if (field.getType().equals(String[].class)) {
