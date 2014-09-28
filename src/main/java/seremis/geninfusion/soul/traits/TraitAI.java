@@ -39,9 +39,6 @@ public class TraitAI extends Trait {
 
         entity.getWorld().theProfiler.startSection("ai");
 
-        //TODO test if this works
-        System.out.println(entity.getPersistentBoolean("isCollidedHorizontally"));
-
         if(entity.getPersistentBoolean("isDead")) {
             entity.setVariable("isJumping", false);
             entity.setVariable("moveForward", 0.0F);

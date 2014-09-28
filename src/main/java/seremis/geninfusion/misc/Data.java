@@ -12,11 +12,11 @@ import java.util.Map;
 
 public class Data implements INBTTagable {
 
-    public Map<String, Integer> integerDataMap = new HashMap<String, Integer>();
+    public HashMap<String, Integer> integerDataMap = new HashMap<String, Integer>();
     public HashMap<String, Float> floatDataMap = new HashMap<String, Float>();
     public HashMap<String, Double> doubleDataMap = new HashMap<String, Double>();
     public HashMap<String, Long> longDataMap = new HashMap<String, Long>();
-    public Map<String, Boolean> booleanDataMap = new HashMap<String, Boolean>();
+    public HashMap<String, Boolean> booleanDataMap = new HashMap<String, Boolean>();
     public HashMap<String, String> stringDataMap = new HashMap<String, String>();
     public HashMap<String, Byte> byteDataMap = new HashMap<String, Byte>();
     public HashMap<String, Short> shortDataMap = new HashMap<String, Short>();

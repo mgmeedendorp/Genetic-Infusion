@@ -18,7 +18,8 @@ public class DataHelper {
 
                         field.setAccessible(true);
 
-                        if (field.getType().equals(byte.class)) data.setByte(field.getName(), field.getByte(obj));
+                        if(field.getType().equals(boolean.class)) data.setBoolean(field.getName(), field.getBoolean(obj));
+                        else if (field.getType().equals(byte.class)) data.setByte(field.getName(), field.getByte(obj));
                         else if (field.getType().equals(short.class)) data.setShort(field.getName(), field.getShort(obj));
                         else if (field.getType().equals(int.class)) data.setInteger(field.getName(), field.getInt(obj));
                         else if (field.getType().equals(float.class)) data.setFloat(field.getName(), field.getFloat(obj));
@@ -26,7 +27,14 @@ public class DataHelper {
                         else if (field.getType().equals(long.class)) data.setLong(field.getName(), field.getLong(obj));
                         else if (field.getType().equals(String.class)) data.setString(field.getName(), (String) field.get(obj));
 
-                        else if (field.getType().equals(byte[].class)) {
+                        else if (field.getType().equals(boolean[].class)) {
+                            Data data2 = new Data();
+                            for (int i = 0; i < ((boolean[]) field.get(obj)).length; i++) {
+                                boolean d = ((boolean[]) field.get(obj))[i];
+                                data2.setBoolean(field.getName() + "." + i, d);
+                            }
+                            data.setData(field.getName(), data2);
+                        } else if (field.getType().equals(byte[].class)) {
                             Data data2 = new Data();
                             for (int i = 0; i < ((byte[]) field.get(obj)).length; i++) {
                                 byte d = ((byte[]) field.get(obj))[i];
