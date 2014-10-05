@@ -400,7 +400,10 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
       persistentData.setDouble("rotationPitch", rotationPitch)
       persistentData.setBoolean("onGround", onGround)
       persistentData.setBoolean("isDead", isDead)
-
+      persistentData.setInteger("dimension", dimension)
+      persistentData.setInteger("timeUntilPortal", timeUntilPortal)
+      persistentData.setInteger("hurtTime", hurtTime)
+      persistentData.setInteger("deathTime", deathTime)
     }
 
     variableData.setDouble("prevPosX", prevPosX)
@@ -439,6 +442,46 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     variableData.setBoolean("preventEntitySpawning", preventEntitySpawning)
     variableData.setBoolean("forceSpawn", forceSpawn)
     variableData.setBoolean("noClip", noClip)
+    variableData.setFloat("attackedAtYaw", attackedAtYaw)
+    variableData.setBoolean("isJumping", isJumping)
+    variableData.setBoolean("addedToChunk", addedToChunk)
+    variableData.setInteger("chunkCoordX", chunkCoordX)
+    variableData.setInteger("chunkCoordY", chunkCoordY)
+    variableData.setInteger("chunkCoordZ", chunkCoordZ)
+    variableData.setInteger("portalCounter", portalCounter)
+    variableData.setInteger("teleportDirection", teleportDirection)
+    variableData.setBoolean("inPortal", inPortal)
+    variableData.setBoolean("isCollided", isCollided)
+    variableData.setBoolean("isCollidedHorizontally", isCollidedHorizontally)
+    variableData.setBoolean("isCollidedVertically", isCollidedVertically)
+    variableData.setBoolean("velocityChanged", velocityChanged)
+    variableData.setFloat("entityCollisionReduction", entityCollisionReduction)
+    variableData.setFloat("distanceWalkedModified", distanceWalkedModified)
+    variableData.setFloat("prevDistanceWalkedModfied", prevDistanceWalkedModified)
+    variableData.setFloat("distanceWalkedOnStepModified", distanceWalkedOnStepModified)
+    variableData.setFloat("fallDistance", fallDistance)
+    variableData.setDouble("renderDistanceWeight", renderDistanceWeight)
+    variableData.setBoolean("ignoreFrustumCheck", ignoreFrustumCheck)
+    variableData.setBoolean("isSwingInProgress", isSwingInProgress)
+    variableData.setInteger("swingProgressInt", swingProgressInt)
+    variableData.setInteger("arrowHitTimer", arrowHitTimer)
+    variableData.setFloat("prevSwingProgress", prevSwingProgress)
+    variableData.setFloat("swingProgress", swingProgress)
+    variableData.setFloat("prevLimbSwingAmount", prevLimbSwingAmount)
+    variableData.setFloat("limbSwingAmount", limbSwingAmount)
+    variableData.setFloat("limbSwing", limbSwing)
+    variableData.setFloat("prevCameraPitch", prevCameraPitch)
+    variableData.setFloat("cameraPitch", cameraPitch)
+    variableData.setFloat("prevRenderYawOffset", prevRenderYawOffset)
+    variableData.setFloat("renderYawOffset", renderYawOffset)
+    variableData.setFloat("prevRotationYawHead", prevRotationYawHead)
+    variableData.setFloat("rotationYawHead", rotationYawHead)
+    variableData.setBoolean("captureDrops", captureDrops)
+    variableData.setFloat("prevHealth", prevHealth)
+    variableData.setInteger("maxHurtTime", maxHurtTime)
+    variableData.setInteger("hurtResistantTime", hurtResistantTime)
+    variableData.setInteger("maxHurtResistantTime", maxHurtResistantTime)
+    variableData.setInteger("entityAge", entityAge)
 
 
 
@@ -446,6 +489,20 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     //TODO fire (datawatcher)
     //TODO landMovementFactor
     //TODO invulnerable
+    //TODO isChild
+    //TODO creatureAttribute
+    //TODO persistencRequired
+    //TODO isSprinting (get&setFlag)
+    //TODO riddenByEntity
+    //TODO ridingEntity
+    //TODO entityRiderYawDelta
+    //TODO entityRiderPitchDelta
+    //TODO isLeashed
+    //TODO leashedToEntity
+    //TODO capturedDrops
+    //TODO equipment
+    //TODO canPickUpLoot
+    //TODO health
   }
 
   //The variables as they were the last tick
