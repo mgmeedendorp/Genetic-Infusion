@@ -17,6 +17,7 @@ public class TraitFluids extends Trait {
         boolean drownsInWater = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_DROWNS_IN_WATER)).value;
 
         if(drownsInWater) {
+            //TODO replace all entity.getPersistentInteger("air") with datawatcher thingies
             int air = entity.getPersistentInteger("air");
             boolean inWater = entity.getBoolean("inWater");
             boolean isDead = entity.getPersistentBoolean("isDead");

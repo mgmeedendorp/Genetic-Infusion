@@ -113,6 +113,10 @@ public class Data implements INBTTagable {
         return "Data[booleans: " + booleanDataMap + ", bytes: " + byteDataMap + ", shorts: " + shortDataMap + ", integers: " + integerDataMap + ", floats: " + floatDataMap + ", doubles: " + doubleDataMap + ", longs: " + longDataMap + ", strings: " + stringDataMap + ", data: " + dataDataMap + ", nbt: " + nbtDataMap + "]";
     }
 
+    public boolean isEmpty() {
+        return booleanDataMap.isEmpty() && byteDataMap.isEmpty() && shortDataMap.isEmpty() && integerDataMap.isEmpty() && floatDataMap.isEmpty() && doubleDataMap.isEmpty() && longDataMap.isEmpty() && stringDataMap.isEmpty() && nbtDataMap.isEmpty() && dataDataMap.isEmpty();
+    }
+
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         if (booleanDataMap != null) {

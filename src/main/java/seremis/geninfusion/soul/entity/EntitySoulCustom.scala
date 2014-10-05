@@ -20,6 +20,7 @@ import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
+import seremis.geninfusion.core.proxy.CommonProxy
 import seremis.geninfusion.entity.GIEntityLiving
 import seremis.geninfusion.helper.DataHelper
 import seremis.geninfusion.misc.Data
@@ -255,6 +256,9 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     super.readFromNBT(compound)
     soul = new Soul(compound)
     persistentData = new Data(compound)
+    if(!persistentData.isEmpty) {
+      initPersistent = false
+    }
   }
 
   override def writeToNBT(compound: NBTTagCompound) {
@@ -381,10 +385,67 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     this.syncVariables()
   }
 
+  private var initPersistent = true;
+
   protected def initVariables() {
-    variableData.setBoolean("isCollidedHorizontally", isCollidedHorizontally)
-    variableData.setBoolean("isCollidedVertically", isCollidedVertically)
-    variableData.setBoolean("isCollided", isCollided)
+    if(initPersistent) {
+      persistentData.setInteger("ticksExisted", ticksExisted)
+      persistentData.setDouble("posX", posX)
+      persistentData.setDouble("posY", posY)
+      persistentData.setDouble("posZ", posZ)
+      persistentData.setDouble("motionX", motionX)
+      persistentData.setDouble("motionY", motionY)
+      persistentData.setDouble("motionZ", motionZ)
+      persistentData.setDouble("rotationYaw", rotationYaw)
+      persistentData.setDouble("rotationPitch", rotationPitch)
+      persistentData.setBoolean("onGround", onGround)
+      persistentData.setBoolean("isDead", isDead)
+
+    }
+
+    variableData.setDouble("prevPosX", prevPosX)
+    variableData.setDouble("prevPosY", prevPosY)
+    variableData.setDouble("prevPosZ", prevPosZ)
+    if(CommonProxy.instance.isRenderWorld(worldObj)) {
+      variableData.setInteger("serverPosX", serverPosX)
+      variableData.setInteger("serverPosY", serverPosY)
+      variableData.setInteger("serverPosZ", serverPosZ)
+    }
+    variableData.setDouble("lastTickPosX", lastTickPosX)
+    variableData.setDouble("lastTickPosY", lastTickPosY)
+    variableData.setDouble("lastTickPosZ", lastTickPosZ)
+    variableData.setDouble("newPosX", newPosX)
+    variableData.setDouble("newPosY", newPosY)
+    variableData.setDouble("newPosZ", newPosZ)
+    variableData.setInteger("newPosRotationIncrements", newPosRotationIncrements)
+    variableData.setFloat("jumpMovementFActor", jumpMovementFactor)
+    variableData.setFloat("moveStrafing", moveStrafing)
+    variableData.setFloat("moveForward", moveForward)
+    variableData.setFloat("randomYawVelocity", randomYawVelocity)
+    variableData.setFloat("width", width)
+    variableData.setFloat("height", height)
+    variableData.setFloat("ySize", ySize)
+    variableData.setFloat("yOffset", yOffset)
+    variableData.setFloat("stepHeight", stepHeight)
+    variableData.setFloat("prevRotationYaw", prevRotationYaw)
+    variableData.setFloat("prevRotationPitch", prevRotationPitch)
+    variableData.setDouble("newRotationYaw", newRotationYaw)
+    variableData.setDouble("newRotationPitch", newRotationPitch)
+    variableData.setFloat("defaultPitch", defaultPitch)
+    variableData.setInteger("fireResistance", fireResistance)
+    variableData.setBoolean("inWater", inWater)
+    variableData.setBoolean("isInWeb", isInWeb)
+    variableData.setBoolean("isAirBorne", isAirBorne)
+    variableData.setBoolean("preventEntitySpawning", preventEntitySpawning)
+    variableData.setBoolean("forceSpawn", forceSpawn)
+    variableData.setBoolean("noClip", noClip)
+
+
+
+    //TODO myEntitySize
+    //TODO fire (datawatcher)
+    //TODO landMovementFactor
+    //TODO invulnerable
   }
 
   //The variables as they were the last tick
