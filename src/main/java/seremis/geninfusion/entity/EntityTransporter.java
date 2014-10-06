@@ -1,6 +1,8 @@
 package seremis.geninfusion.entity;
 
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -222,6 +224,7 @@ public class EntityTransporter extends GIEntity implements IEntityAdditionalSpaw
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void receivePacketOnClient(int id, byte[] data) {
         if(id == 1) {
             GeneticInfusion.logger.log(Level.INFO, "Received transporter data on client!");

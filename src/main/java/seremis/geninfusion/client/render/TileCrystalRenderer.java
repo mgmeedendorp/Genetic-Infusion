@@ -1,8 +1,11 @@
 package seremis.geninfusion.client.render;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 
+@SideOnly(Side.CLIENT)
 public class TileCrystalRenderer extends TileEntitySpecialRenderer {
 
     @Override

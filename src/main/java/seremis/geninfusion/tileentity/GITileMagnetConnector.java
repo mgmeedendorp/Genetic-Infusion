@@ -1,6 +1,8 @@
 package seremis.geninfusion.tileentity;
 
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -52,6 +54,7 @@ public abstract class GITileMagnetConnector extends TileMagnetConnector {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
         readFromNBT(packet.func_148857_g());
     }

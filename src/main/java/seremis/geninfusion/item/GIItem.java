@@ -29,6 +29,7 @@ public class GIItem extends Item {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
         if(this.metadata == 0) {
             itemIcon = iconRegister.registerIcon(DefaultProps.ID + ":" + this.getUnlocalizedName().substring(5));
@@ -41,6 +42,7 @@ public class GIItem extends Item {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IIcon getIconFromDamage(int metadata) {
         if(this.metadata != 0) {
             itemIcon = iconBuffer[metadata];

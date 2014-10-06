@@ -1,12 +1,15 @@
 package seremis.geninfusion.client.render;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
 import seremis.geninfusion.helper.GIRenderHelper;
 import seremis.geninfusion.lib.RenderIds;
 
+@SideOnly(Side.CLIENT)
 public class BlockCompressorRenderer implements ISimpleBlockRenderingHandler {
 
     @Override

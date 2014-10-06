@@ -217,6 +217,7 @@ public class TileStationController extends GITileMagnetConsumer implements IInve
     }
     
     @Override
+    @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
         return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1.5, zCoord + 1);
     }

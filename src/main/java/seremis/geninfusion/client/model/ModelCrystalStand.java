@@ -1,5 +1,7 @@
 package seremis.geninfusion.client.model;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
@@ -32,6 +34,7 @@ public class ModelCrystalStand extends ModelBase {
         standPart1.mirror = true;
     }
 
+    @SideOnly(Side.CLIENT)
     public void render() {
         float scale = 0.0625F;
         standBase.render(scale);

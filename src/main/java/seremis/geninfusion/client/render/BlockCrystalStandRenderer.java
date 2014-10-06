@@ -1,6 +1,8 @@
 package seremis.geninfusion.client.render;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -9,6 +11,7 @@ import org.lwjgl.opengl.GL11;
 import seremis.geninfusion.lib.RenderIds;
 import seremis.geninfusion.tileentity.TileCrystalStand;
 
+@SideOnly(Side.CLIENT)
 public class BlockCrystalStandRenderer implements ISimpleBlockRenderingHandler {
 
 	public TileEntitySpecialRenderer render;

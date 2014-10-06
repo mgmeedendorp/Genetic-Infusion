@@ -1,5 +1,7 @@
 package seremis.geninfusion.network.packet;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.Entity;
@@ -45,6 +47,7 @@ public class PacketEntityData extends AbstractPacket {
 	}
 
 	@Override
+    @SideOnly(Side.CLIENT)
 	public void handleClientSide(EntityPlayer player) {
 		Entity ent = player.worldObj.getEntityByID(entityId);
 		

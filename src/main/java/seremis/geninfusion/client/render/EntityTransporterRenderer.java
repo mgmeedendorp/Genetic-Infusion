@@ -1,5 +1,7 @@
 package seremis.geninfusion.client.render;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -10,6 +12,7 @@ import seremis.geninfusion.entity.EntityTransporter;
 import seremis.geninfusion.helper.GIRenderHelper;
 import seremis.geninfusion.lib.Localizations;
 
+@SideOnly(Side.CLIENT)
 public class EntityTransporterRenderer extends Render {
 
     private ModelTransporter model = new ModelTransporter();

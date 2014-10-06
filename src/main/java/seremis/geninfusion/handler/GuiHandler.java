@@ -1,6 +1,8 @@
 package seremis.geninfusion.handler;
 
 import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
@@ -12,6 +14,7 @@ import seremis.geninfusion.inventory.ContainerStationControllerTransporter;
 import seremis.geninfusion.lib.GuiIds;
 import seremis.geninfusion.tileentity.TileStationController;
 
+@SideOnly(Side.CLIENT)
 public class GuiHandler implements IGuiHandler {
 
     @Override

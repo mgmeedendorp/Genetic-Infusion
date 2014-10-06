@@ -1,5 +1,7 @@
 package seremis.geninfusion.client.render;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
@@ -8,6 +10,7 @@ import seremis.geninfusion.helper.GIRenderHelper;
 import seremis.geninfusion.lib.Localizations;
 import seremis.geninfusion.tileentity.TileCrystalStand;
 
+@SideOnly(Side.CLIENT)
 public class TileCrystalStandRenderer extends TileEntitySpecialRenderer {
 
     private ModelCrystalStand crystalStand;

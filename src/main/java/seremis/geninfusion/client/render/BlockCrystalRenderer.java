@@ -1,12 +1,15 @@
 package seremis.geninfusion.client.render;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 import seremis.geninfusion.lib.RenderIds;
 
+@SideOnly(Side.CLIENT)
 public class BlockCrystalRenderer implements ISimpleBlockRenderingHandler {
 
     @Override
@@ -29,6 +32,7 @@ public class BlockCrystalRenderer implements ISimpleBlockRenderingHandler {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public int getRenderId() {
         return RenderIds.CrystalRenderID;
     }

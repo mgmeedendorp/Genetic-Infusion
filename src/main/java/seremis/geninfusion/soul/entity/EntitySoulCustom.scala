@@ -27,6 +27,8 @@ import seremis.geninfusion.misc.Data
 import seremis.geninfusion.soul.allele.{AlleleFloat, AlleleString}
 import seremis.geninfusion.soul.{Soul, TraitHandler}
 
+import scala.util.control.Breaks
+
 class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntitySoulCustom with IEntityAdditionalSpawnData {
 
   def this(world: World, soul: ISoul, x: Double, y: Double, z: Double) {
@@ -404,6 +406,10 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
       persistentData.setInteger("timeUntilPortal", timeUntilPortal)
       persistentData.setInteger("hurtTime", hurtTime)
       persistentData.setInteger("deathTime", deathTime)
+      persistentData.setInteger("attackTime", attackTime)
+      persistentData.setInteger("livingSoundTime", livingSoundTime)
+      persistentData.setInteger("talkInterval", talkInterval)
+      //TODO absorptionAmount
     }
 
     variableData.setDouble("prevPosX", prevPosX)
@@ -482,6 +488,11 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     variableData.setInteger("hurtResistantTime", hurtResistantTime)
     variableData.setInteger("maxHurtResistantTime", maxHurtResistantTime)
     variableData.setInteger("entityAge", entityAge)
+    variableData.setInteger("recentlyHit", recentlyHit)
+    variableData.setInteger("scoreValue", scoreValue)
+    variableData.setFloat("lastDamage", lastDamage)
+    variableData.setInteger("experienceValue", experienceValue)
+    variableData.setInteger("numTicksToChaseTarget", numTicksToChaseTarget)
 
 
 
@@ -503,6 +514,11 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     //TODO equipment
     //TODO canPickUpLoot
     //TODO health
+    //TODO attackingPlayer
+    //TODO lastAttacker
+    //TODO attackTarget
+    //TODO lastAttackerTime
+    //TODO entityLivingToAttack
   }
 
   //The variables as they were the last tick
@@ -707,11 +723,21 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
   }
 
   private def setField(name: String, value: Any) {
-    var superClass:Class[EntitySoulCustom] = this.getClass
+    var superClass: Any = this.getClass
 
-    while(superClass != null) {
+    val outer = new Breaks
 
-      superClass:Class[DeSuperClass] = this.getClass.getSuperClass
+    outer.breakable {
+      while (superClass != null) {
+        for (field <- superClass.asInstanceOf[Class[_]].getDeclaredFields()) {
+          if (field.getName().equals(name)) {
+            field.setAccessible(true)
+            field.set(this, value)
+            outer.break
+          }
+        }
+        superClass = this.getClass.getSuperclass
+      }
     }
   }
 }

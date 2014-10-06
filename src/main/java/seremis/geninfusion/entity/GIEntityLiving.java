@@ -1,6 +1,8 @@
 package seremis.geninfusion.entity;
 
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
 import seremis.geninfusion.GeneticInfusion;
@@ -30,6 +32,7 @@ public class GIEntityLiving extends EntityLiving {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void setPositionAndRotation2(double par1, double par3, double par5, float par7, float par8, int par9) {
         if(noClip) {
             setPosition(par1, par3, par5);

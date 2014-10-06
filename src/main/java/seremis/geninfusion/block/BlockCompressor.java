@@ -1,5 +1,7 @@
 package seremis.geninfusion.block;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -50,6 +52,7 @@ public class BlockCompressor extends GIBlockContainer {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
         return true;
     }
@@ -76,6 +79,7 @@ public class BlockCompressor extends GIBlockContainer {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int metadata) {
         switch(side) {
             case 0:

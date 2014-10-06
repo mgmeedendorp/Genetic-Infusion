@@ -3,6 +3,8 @@ package seremis.geninfusion.core.proxy;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
@@ -21,6 +23,7 @@ import seremis.geninfusion.tileentity.TileCrystalStand;
 public class ClientProxy extends CommonProxy {
 	
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerRendering() {
     	TileEntitySpecialRenderer crystalStand = new TileCrystalStandRenderer();
     	

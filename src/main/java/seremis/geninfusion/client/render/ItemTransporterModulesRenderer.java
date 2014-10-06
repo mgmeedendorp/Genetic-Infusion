@@ -1,5 +1,7 @@
 package seremis.geninfusion.client.render;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
@@ -8,6 +10,7 @@ import seremis.geninfusion.client.model.ModelTransporterEngine;
 import seremis.geninfusion.helper.GIRenderHelper;
 import seremis.geninfusion.lib.Localizations;
 
+@SideOnly(Side.CLIENT)
 public class ItemTransporterModulesRenderer implements IItemRenderer {
 
     @Override
