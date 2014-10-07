@@ -724,7 +724,6 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
 
   private def setField(name: String, value: Any) {
     var superClass: Any = this.getClass
-
     val outer = new Breaks
 
     outer.breakable {
@@ -736,8 +735,9 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
             outer.break
           }
         }
-        superClass = this.getClass.getSuperclass
+        superClass = superClass.asInstanceOf[Class[_]].getSuperclass
       }
+      outer.break
     }
   }
 }
