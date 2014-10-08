@@ -2,9 +2,8 @@ package seremis.geninfusion.soul.entity
 
 import java.io.IOException
 import java.lang.reflect.Field
-import java.util.Map.Entry
+import java.util
 import java.util.Random
-import java.{lang, util}
 
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData
 import cpw.mods.fml.relauncher.ReflectionHelper
@@ -22,24 +21,24 @@ import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
 import seremis.geninfusion.core.proxy.CommonProxy
 import seremis.geninfusion.entity.GIEntityLiving
-import seremis.geninfusion.helper.DataHelper
 import seremis.geninfusion.misc.Data
 import seremis.geninfusion.soul.allele.{AlleleFloat, AlleleString}
+import seremis.geninfusion.soul.entity.logic.{IVariableSyncEntity, VariableSyncLogic}
 import seremis.geninfusion.soul.{Soul, TraitHandler}
 
-import scala.util.control.Breaks
+class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntitySoulCustom with IEntityAdditionalSpawnData with IVariableSyncEntity {
 
-class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntitySoulCustom with IEntityAdditionalSpawnData {
+  var soul: ISoul = _
+  var syncLogic: VariableSyncLogic = new VariableSyncLogic(this)
 
   def this(world: World, soul: ISoul, x: Double, y: Double, z: Double) {
     this(world)
     setPosition(x, y, z)
     setSize(0.8F, 1.7F)
     this.soul = soul
-    initVariables();
+    initVariables()
   }
 
-  var soul: ISoul = null
 
   override def getSoul: ISoul = soul
 
@@ -205,7 +204,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
   private var firstUpdate: Boolean = true
 
   override def onUpdate {
-    syncVariables
+    syncLogic.syncVariables()
     if (ForgeHooks.onLivingUpdate(this)) return
     if (firstUpdate) {
       firstUpdate = false
@@ -257,8 +256,8 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
   override def readFromNBT(compound: NBTTagCompound) {
     super.readFromNBT(compound)
     soul = new Soul(compound)
-    persistentData = new Data(compound)
-    if(!persistentData.isEmpty) {
+    syncLogic.persistentData = new Data(compound)
+    if(!syncLogic.persistentData.isEmpty) {
       initPersistent = false
     }
   }
@@ -266,130 +265,131 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
   override def writeToNBT(compound: NBTTagCompound) {
     super.writeToNBT(compound)
     soul.writeToNBT(compound)
-    persistentData.writeToNBT(compound)
+    syncLogic.persistentData.writeToNBT(compound)
   }
 
-  protected var persistentData, variableData = new Data();
-
   override def setPersistentVariable(name: String, variable: Boolean) {
-    persistentData.setBoolean(name, variable)
+    syncLogic.setPersistentVariable(name, variable)
   }
 
   override def setPersistentVariable(name: String, variable: Byte) {
-    persistentData.setByte(name, variable)
+    syncLogic.setPersistentVariable(name, variable)
   }
 
   override def setPersistentVariable(name: String, variable: Int) {
-    persistentData.setInteger(name, variable)
+    syncLogic.setPersistentVariable(name, variable)
   }
 
   override def setPersistentVariable(name: String, variable: Float) {
-    persistentData.setFloat(name, variable)
+    syncLogic.setPersistentVariable(name, variable)
   }
 
   override def setPersistentVariable(name: String, variable: Double) {
-    persistentData.setDouble(name, variable)
+    syncLogic.setPersistentVariable(name, variable)
   }
 
   override def setPersistentVariable(name: String, variable: String) {
-    persistentData.setString(name, variable)
+    syncLogic.setPersistentVariable(name, variable)
   }
 
   override def setPersistentVariable(name: String, variable: ItemStack) {
-    persistentData.setNBT(name, variable.writeToNBT(new NBTTagCompound()))
+    syncLogic.setPersistentVariable(name, variable)
   }
 
   override def getPersistentBoolean(name: String): Boolean = {
-    persistentData.getBoolean(name)
+    syncLogic.getPersistentBoolean(name)
   }
 
   override def getPersistentByte(name: String): Byte = {
-    persistentData.getByte(name)
+    syncLogic.getPersistentByte(name)
   }
 
   override def getPersistentInteger(name: String): Int = {
-    persistentData.getInteger(name)
+    syncLogic.getPersistentInteger(name)
   }
 
   override def getPersistentFloat(name: String): Float = {
-    persistentData.getFloat(name)
+    syncLogic.getPersistentFloat(name)
   }
 
   override def getPersistentDouble(name: String): Double = {
-    persistentData.getDouble(name)
+    syncLogic.getPersistentDouble(name)
   }
 
   override def getPersistentString(name: String): String = {
-    persistentData.getString(name)
+    syncLogic.getPersistentString(name)
   }
 
   override def getPersistentItemStack(name: String): ItemStack = {
-    if(persistentData.getNBT(name) == null) null else ItemStack.loadItemStackFromNBT(persistentData.getNBT(name))
+    syncLogic.getPersistentItemStack(name)
   }
 
   override def setVariable(name: String, variable: Boolean) {
-    variableData.setBoolean(name, variable)
+    syncLogic.setVariable(name, variable)
   }
 
   override def setVariable(name: String, variable: Byte) {
-    variableData.setByte(name, variable)
+    syncLogic.setVariable(name, variable)
   }
 
   override def setVariable(name: String, variable: Int) {
-    variableData.setInteger(name, variable)
+    syncLogic.setVariable(name, variable)
   }
 
   override def setVariable(name: String, variable: Float) {
-    variableData.setFloat(name, variable)
+    syncLogic.setVariable(name, variable)
   }
 
   override def setVariable(name: String, variable: Double) {
-    variableData.setDouble(name, variable)
+    syncLogic.setVariable(name, variable)
   }
 
   override def setVariable(name: String, variable: String) {
-    variableData.setString(name, variable)
+    syncLogic.setVariable(name, variable)
   }
 
   override def setVariable(name: String, variable: ItemStack) {
-    variableData.setNBT(name, variable.writeToNBT(new NBTTagCompound()))
+    syncLogic.setVariable(name, variable)
   }
 
   override def getBoolean(name: String): Boolean = {
-    variableData.getBoolean(name)
+    syncLogic.getBoolean(name)
   }
 
   override def getByte(name: String): Byte = {
-    variableData.getByte(name)
+    syncLogic.getByte(name)
   }
 
   override def getInteger(name: String): Int = {
-    variableData.getInteger(name)
+    syncLogic.getInteger(name)
   }
 
   override def getFloat(name: String): Float = {
-    variableData.getFloat(name)
+    syncLogic.getFloat(name)
   }
 
   override def getDouble(name: String): Double = {
-    variableData.getDouble(name)
+    syncLogic.getDouble(name)
   }
 
   override def getString(name: String): String = {
-    variableData.getString(name)
+    syncLogic.getString(name)
   }
 
   override def getItemStack(name: String): ItemStack = {
-    ItemStack.loadItemStackFromNBT(variableData.getNBT(name))
+    syncLogic.getItemStack(name)
   }
 
   override def forceVariableSync() {
-    this.syncVariables()
+    syncLogic.syncVariables()
   }
 
   private var initPersistent = true;
 
-  protected def initVariables() {
+  def initVariables() {
+    val persistentData = syncLogic.persistentData
+    val variableData = syncLogic.variableData
+
     if(initPersistent) {
       persistentData.setInteger("ticksExisted", ticksExisted)
       persistentData.setDouble("posX", posX)
@@ -409,7 +409,6 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
       persistentData.setInteger("attackTime", attackTime)
       persistentData.setInteger("livingSoundTime", livingSoundTime)
       persistentData.setInteger("talkInterval", talkInterval)
-      //TODO absorptionAmount
     }
 
     variableData.setDouble("prevPosX", prevPosX)
@@ -493,7 +492,10 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     variableData.setFloat("lastDamage", lastDamage)
     variableData.setInteger("experienceValue", experienceValue)
     variableData.setInteger("numTicksToChaseTarget", numTicksToChaseTarget)
+  }
 
+  protected def syncNonPrimitives() {
+    //TODO absorptionAmount persistent
 
 
     //TODO myEntitySize
@@ -519,225 +521,5 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     //TODO attackTarget
     //TODO lastAttackerTime
     //TODO entityLivingToAttack
-  }
-
-  //The variables as they were the last tick
-  protected var syncData: Data = DataHelper.writePrimitives(this)
-
-  private def syncVariables() {
-    //The variables in the entity class
-    val data = DataHelper.writePrimitives(this)
-    val clss = this.getClass
-
-    val boolIterator: util.Iterator[Entry[String, lang.Boolean]] = syncData.booleanDataMap.entrySet().iterator()
-
-    while(boolIterator.hasNext()) {
-      val entry: Entry[String, lang.Boolean] = boolIterator.next()
-      val key = entry.getKey()
-      val value = entry.getValue()
-
-      if(data.booleanDataMap.containsKey(key) && data.booleanDataMap.get(key) != value) {
-        syncData.booleanDataMap.put(key, data.booleanDataMap.get(key))
-        if(persistentData.booleanDataMap.containsKey(key))
-          persistentData.booleanDataMap.put(key, data.booleanDataMap.get(key))
-        if(variableData.booleanDataMap.containsKey(key))
-          variableData.booleanDataMap.put(key, data.booleanDataMap.get(key))
-      } else if(persistentData.booleanDataMap.containsKey(key) && persistentData.getBoolean(key) != value) {
-        syncData.booleanDataMap.put(key, persistentData.getBoolean(key))
-        data.booleanDataMap.put(key, persistentData.getBoolean(key))
-        setField(key, persistentData.getBoolean(key))
-      } else if(variableData.booleanDataMap.containsKey(key) && variableData.getBoolean(key) != value) {
-        syncData.booleanDataMap.put(key, variableData.getBoolean(key))
-        data.booleanDataMap.put(key, variableData.getBoolean(key))
-        setField(key, variableData.getBoolean(key))
-      }
-    }
-
-    val byteIterator: util.Iterator[Entry[String, lang.Byte]] = syncData.byteDataMap.entrySet().iterator()
-
-    while(byteIterator.hasNext()) {
-      val entry: Entry[String, lang.Byte] = byteIterator.next()
-      val key = entry.getKey()
-      val value = entry.getValue()
-
-      if(data.byteDataMap.containsKey(key) && data.byteDataMap.get(key) != value) {
-        syncData.byteDataMap.put(key, data.byteDataMap.get(key))
-        if(persistentData.byteDataMap.containsKey(key))
-          persistentData.byteDataMap.put(key, data.byteDataMap.get(key))
-        if(variableData.byteDataMap.containsKey(key))
-          variableData.byteDataMap.put(key, data.byteDataMap.get(key))
-      } else if(persistentData.byteDataMap.containsKey(key) && persistentData.getByte(key) != value) {
-        syncData.byteDataMap.put(key, persistentData.getByte(key))
-        data.byteDataMap.put(key, persistentData.getByte(key))
-        setField(key, persistentData.getByte(key))
-      } else if(variableData.byteDataMap.containsKey(key) && variableData.getByte(key) != value) {
-        syncData.byteDataMap.put(key, variableData.getByte(key))
-        data.byteDataMap.put(key, variableData.getByte(key))
-        setField(key, variableData.getByte(key))
-      }
-    }
-
-    val shortIterator: util.Iterator[Entry[String, lang.Short]] = syncData.shortDataMap.entrySet().iterator()
-
-    while(shortIterator.hasNext()) {
-      val entry: Entry[String, lang.Short] = shortIterator.next()
-      val key = entry.getKey()
-      val value = entry.getValue()
-
-      if(data.shortDataMap.containsKey(key) && data.shortDataMap.get(key) != value) {
-        syncData.shortDataMap.put(key, data.shortDataMap.get(key))
-        if(persistentData.shortDataMap.containsKey(key))
-          persistentData.shortDataMap.put(key, data.shortDataMap.get(key))
-        if(variableData.shortDataMap.containsKey(key))
-          variableData.shortDataMap.put(key, data.shortDataMap.get(key))
-      } else if(persistentData.shortDataMap.containsKey(key) && persistentData.getShort(key) != value) {
-        syncData.shortDataMap.put(key, persistentData.getShort(key))
-        data.shortDataMap.put(key, persistentData.getShort(key))
-        setField(key, persistentData.getShort(key))
-      } else if(variableData.shortDataMap.containsKey(key) && variableData.getShort(key) != value) {
-        syncData.shortDataMap.put(key, variableData.getShort(key))
-        data.shortDataMap.put(key, variableData.getShort(key))
-        setField(key, variableData.getShort(key))
-      }
-    }
-
-    val intIterator: util.Iterator[Entry[String, lang.Integer]] = syncData.integerDataMap.entrySet().iterator()
-
-    while(intIterator.hasNext()) {
-      val entry: Entry[String, lang.Integer] = intIterator.next()
-      val key = entry.getKey()
-      val value = entry.getValue()
-
-      if(data.integerDataMap.containsKey(key) && data.integerDataMap.get(key) != value) {
-        syncData.integerDataMap.put(key, data.integerDataMap.get(key))
-        if(persistentData.integerDataMap.containsKey(key))
-          persistentData.integerDataMap.put(key, data.integerDataMap.get(key))
-        if(variableData.integerDataMap.containsKey(key))
-          variableData.integerDataMap.put(key, data.integerDataMap.get(key))
-      } else if(persistentData.integerDataMap.containsKey(key) && persistentData.getInteger(key) != value) {
-        syncData.integerDataMap.put(key, persistentData.getInteger(key))
-        data.integerDataMap.put(key, persistentData.getInteger(key))
-        setField(key, persistentData.getInteger(key))
-      } else if(variableData.integerDataMap.containsKey(key) && variableData.getInteger(key) != value) {
-        syncData.integerDataMap.put(key, variableData.getInteger(key))
-        data.integerDataMap.put(key, variableData.getInteger(key))
-        setField(key, variableData.getInteger(key))
-      }
-    }
-
-    val floatIterator: util.Iterator[Entry[String, lang.Float]] = syncData.floatDataMap.entrySet().iterator()
-
-    while(floatIterator.hasNext()) {
-      val entry: Entry[String, lang.Float] = floatIterator.next()
-      val key = entry.getKey()
-      val value = entry.getValue()
-
-      if(data.floatDataMap.containsKey(key) && data.floatDataMap.get(key) != value) {
-        syncData.floatDataMap.put(key, data.floatDataMap.get(key))
-        if(persistentData.floatDataMap.containsKey(key))
-          persistentData.floatDataMap.put(key, data.floatDataMap.get(key))
-        if(variableData.floatDataMap.containsKey(key))
-          variableData.floatDataMap.put(key, data.floatDataMap.get(key))
-      } else if(persistentData.floatDataMap.containsKey(key) && persistentData.getFloat(key) != value) {
-        syncData.floatDataMap.put(key, persistentData.getFloat(key))
-        data.floatDataMap.put(key, persistentData.getFloat(key))
-        setField(key, persistentData.getFloat(key))
-      } else if(variableData.floatDataMap.containsKey(key) && variableData.getFloat(key) != value) {
-        syncData.floatDataMap.put(key, variableData.getFloat(key))
-        data.floatDataMap.put(key, variableData.getFloat(key))
-        setField(key, variableData.getFloat(key))
-      }
-    }
-
-    val doubleIterator: util.Iterator[Entry[String, lang.Double]] = syncData.doubleDataMap.entrySet().iterator()
-
-    while(doubleIterator.hasNext()) {
-      val entry: Entry[String, lang.Double] = doubleIterator.next()
-      val key = entry.getKey()
-      val value = entry.getValue()
-
-      if(data.doubleDataMap.containsKey(key) && data.doubleDataMap.get(key) != value) {
-        syncData.doubleDataMap.put(key, data.doubleDataMap.get(key))
-        if(persistentData.doubleDataMap.containsKey(key))
-          persistentData.doubleDataMap.put(key, data.doubleDataMap.get(key))
-        if(variableData.doubleDataMap.containsKey(key))
-          variableData.doubleDataMap.put(key, data.doubleDataMap.get(key))
-      } else if(persistentData.doubleDataMap.containsKey(key) && persistentData.getDouble(key) != value) {
-        syncData.doubleDataMap.put(key, persistentData.getDouble(key))
-        data.doubleDataMap.put(key, persistentData.getDouble(key))
-        setField(key, persistentData.getDouble(key))
-      } else if(variableData.doubleDataMap.containsKey(key) && variableData.getDouble(key) != value) {
-        syncData.doubleDataMap.put(key, variableData.getDouble(key))
-        data.doubleDataMap.put(key, variableData.getDouble(key))
-        setField(key, variableData.getDouble(key))
-      }
-    }
-
-    val longIterator: util.Iterator[Entry[String, lang.Long]] = syncData.longDataMap.entrySet().iterator()
-
-    while(longIterator.hasNext()) {
-      val entry: Entry[String, lang.Long] = longIterator.next()
-      val key = entry.getKey()
-      val value = entry.getValue()
-
-      if(data.longDataMap.containsKey(key) && data.longDataMap.get(key) != value) {
-        syncData.longDataMap.put(key, data.longDataMap.get(key))
-        if(persistentData.longDataMap.containsKey(key))
-          persistentData.longDataMap.put(key, data.longDataMap.get(key))
-        if(variableData.longDataMap.containsKey(key))
-          variableData.longDataMap.put(key, data.longDataMap.get(key))
-      } else if(persistentData.longDataMap.containsKey(key) && persistentData.getLong(key) != value) {
-        syncData.longDataMap.put(key, persistentData.getLong(key))
-        data.longDataMap.put(key, persistentData.getLong(key))
-        setField(key, persistentData.getLong(key))
-      } else if(variableData.longDataMap.containsKey(key) && variableData.getLong(key) != value) {
-        syncData.longDataMap.put(key, variableData.getLong(key))
-        data.longDataMap.put(key, variableData.getLong(key))
-        setField(key, variableData.getLong(key))
-      }
-    }
-
-    val stringIterator: util.Iterator[Entry[String, lang.String]] = syncData.stringDataMap.entrySet().iterator()
-
-    while(stringIterator.hasNext()) {
-      val entry: Entry[String, lang.String] = stringIterator.next()
-      val key = entry.getKey()
-      val value = entry.getValue()
-
-      if(data.stringDataMap.containsKey(key) && data.stringDataMap.get(key) != value) {
-        syncData.stringDataMap.put(key, data.stringDataMap.get(key))
-        if(persistentData.stringDataMap.containsKey(key))
-          persistentData.stringDataMap.put(key, data.stringDataMap.get(key))
-        if(variableData.stringDataMap.containsKey(key))
-          variableData.stringDataMap.put(key, data.stringDataMap.get(key))
-      } else if(persistentData.stringDataMap.containsKey(key) && persistentData.getString(key) != value) {
-        syncData.stringDataMap.put(key, persistentData.getString(key))
-        data.stringDataMap.put(key, persistentData.getString(key))
-        setField(key, persistentData.getString(key))
-      } else if(variableData.stringDataMap.containsKey(key) && variableData.getString(key) != value) {
-        syncData.stringDataMap.put(key, variableData.getString(key))
-        data.stringDataMap.put(key, variableData.getString(key))
-        setField(key, variableData.getString(key))
-      }
-    }
-  }
-
-  private def setField(name: String, value: Any) {
-    var superClass: Any = this.getClass
-    val outer = new Breaks
-
-    outer.breakable {
-      while (superClass != null) {
-        for (field <- superClass.asInstanceOf[Class[_]].getDeclaredFields()) {
-          if (field.getName().equals(name)) {
-            field.setAccessible(true)
-            field.set(this, value)
-            outer.break
-          }
-        }
-        superClass = superClass.asInstanceOf[Class[_]].getSuperclass
-      }
-      outer.break
-    }
   }
 }
