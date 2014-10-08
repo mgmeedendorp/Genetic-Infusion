@@ -119,129 +119,126 @@ public class Data implements INBTTagable {
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
-        if (booleanDataMap != null) {
-            NBTTagList tagList = new NBTTagList();
-            ArrayList<String> stringList = new ArrayList<String>();
-            if (!booleanDataMap.isEmpty()) {
-                stringList.addAll(booleanDataMap.keySet());
-                NBTTagCompound booleanCompound = new NBTTagCompound();
-                for (int i = 0; i < booleanDataMap.size(); i++) {
-                    booleanCompound.setString("boolean" + i + "Name", stringList.get(i));
-                    booleanCompound.setBoolean("boolean" + i + "Value", booleanDataMap.get(stringList.get(i)));
-                }
-                booleanCompound.setString("type", "boolean");
-                booleanCompound.setInteger("size", booleanDataMap.size());
-                tagList.appendTag(booleanCompound);
-                stringList.clear();
+        NBTTagList tagList = new NBTTagList();
+        ArrayList<String> stringList = new ArrayList<String>();
+        if (!booleanDataMap.isEmpty()) {
+            stringList.addAll(booleanDataMap.keySet());
+            NBTTagCompound booleanCompound = new NBTTagCompound();
+            for (int i = 0; i < booleanDataMap.size(); i++) {
+                booleanCompound.setString("boolean" + i + "Name", stringList.get(i));
+                booleanCompound.setBoolean("boolean" + i + "Value", booleanDataMap.get(stringList.get(i)));
             }
-            if (!byteDataMap.isEmpty()) {
-                stringList.addAll(byteDataMap.keySet());
-                NBTTagCompound byteCompound = new NBTTagCompound();
-                for (int i = 0; i < byteDataMap.size(); i++) {
-                    byteCompound.setString("byte" + i + "Name", stringList.get(i));
-                    byteCompound.setByte("byte" + i + "Value", byteDataMap.get(stringList.get(i)));
-                }
-                byteCompound.setString("type", "byte");
-                byteCompound.setInteger("size", byteDataMap.size());
-                tagList.appendTag(byteCompound);
-                stringList.clear();
-            }
-            if (!shortDataMap.isEmpty()) {
-                stringList.addAll(shortDataMap.keySet());
-                NBTTagCompound shortCompound = new NBTTagCompound();
-                for (int i = 0; i < shortDataMap.size(); i++) {
-                    shortCompound.setString("short" + i + "Name", stringList.get(i));
-                    shortCompound.setShort("short" + i + "Value", shortDataMap.get(stringList.get(i)));
-                }
-                shortCompound.setString("type", "short");
-                shortCompound.setInteger("size", shortDataMap.size());
-                tagList.appendTag(shortCompound);
-                stringList.clear();
-            }
-            if (!integerDataMap.isEmpty()) {
-                stringList.addAll(integerDataMap.keySet());
-                NBTTagCompound integerCompound = new NBTTagCompound();
-                for (int i = 0; i < integerDataMap.size(); i++) {
-                    integerCompound.setString("integer" + i + "Name", stringList.get(i));
-                    integerCompound.setInteger("integer" + i + "Value", integerDataMap.get(stringList.get(i)));
-                }
-                integerCompound.setString("type", "integer");
-                integerCompound.setInteger("size", integerDataMap.size());
-                tagList.appendTag(integerCompound);
-                stringList.clear();
-            }
-            if (!floatDataMap.isEmpty()) {
-                stringList.addAll(floatDataMap.keySet());
-                NBTTagCompound floatCompound = new NBTTagCompound();
-                for (int i = 0; i < floatDataMap.size(); i++) {
-                    floatCompound.setString("float" + i + "Name", stringList.get(i));
-                    floatCompound.setFloat("float" + i + "Value", floatDataMap.get(stringList.get(i)));
-                }
-                floatCompound.setString("type", "float");
-                floatCompound.setInteger("size", floatDataMap.size());
-                stringList.clear();
-            }
-            if (!doubleDataMap.isEmpty()) {
-                stringList.addAll(doubleDataMap.keySet());
-                NBTTagCompound doubleCompound = new NBTTagCompound();
-                for (int i = 0; i < doubleDataMap.size(); i++) {
-                    doubleCompound.setString("double" + i + "Name", stringList.get(i));
-                    doubleCompound.setDouble("double" + i + "Value", doubleDataMap.get(stringList.get(i)));
-                }
-                doubleCompound.setString("type", "double");
-                doubleCompound.setInteger("size", doubleDataMap.size());
-                stringList.clear();
-            }
-            if (!longDataMap.isEmpty()) {
-                stringList.addAll(longDataMap.keySet());
-                NBTTagCompound longCompound = new NBTTagCompound();
-                for (int i = 0; i < longDataMap.size(); i++) {
-                    longCompound.setString("long" + i + "Name", stringList.get(i));
-                    longCompound.setLong("long" + i + "Value", longDataMap.get(stringList.get(i)));
-                }
-                longCompound.setString("type", "long");
-                longCompound.setInteger("size", longDataMap.size());
-                stringList.clear();
-            }
-            if (!stringDataMap.isEmpty()) {
-                stringList.addAll(stringDataMap.keySet());
-                NBTTagCompound stringCompound = new NBTTagCompound();
-                for (int i = 0; i < stringDataMap.size(); i++) {
-                    stringCompound.setString("string" + i + "Name", stringList.get(i));
-                    stringCompound.setString("string" + i + "Value", stringDataMap.get(stringList.get(i)));
-                }
-                stringCompound.setString("type", "string");
-                stringCompound.setInteger("size", stringDataMap.size());
-                stringList.clear();
-            }
-            if (!nbtDataMap.isEmpty()) {
-                stringList.addAll(nbtDataMap.keySet());
-                NBTTagCompound nbtCompound = new NBTTagCompound();
-                for (int i = 0; i < nbtDataMap.size(); i++) {
-                    nbtCompound.setString("nbt" + i + "Name", stringList.get(i));
-                    nbtCompound.setTag("nbt" + i + "Value", nbtDataMap.get(stringList.get(i)));
-                }
-                nbtCompound.setString("type", "nbt");
-                nbtCompound.setInteger("size", nbtDataMap.size());
-                stringList.clear();
-            }
-            if (!dataDataMap.isEmpty()) {
-                stringList.addAll(dataDataMap.keySet());
-                NBTTagCompound dataCompound = new NBTTagCompound();
-                for (int i = 0; i < dataDataMap.size(); i++) {
-                    dataCompound.setString("data" + i + "Name", stringList.get(i));
-                    NBTTagCompound cmp = new NBTTagCompound();
-                    dataDataMap.get(stringList.get(i)).writeToNBT(cmp);
-
-                    dataCompound.setTag("data" + i + "Value", cmp);
-                }
-                dataCompound.setString("type", "data");
-                dataCompound.setInteger("size", dataDataMap.size());
-                stringList.clear();
-            }
-            compound.setTag("data", tagList);
+            booleanCompound.setString("type", "boolean");
+            booleanCompound.setInteger("size", booleanDataMap.size());
+            tagList.appendTag(booleanCompound);
+            stringList.clear();
         }
+        if (!byteDataMap.isEmpty()) {
+            stringList.addAll(byteDataMap.keySet());
+            NBTTagCompound byteCompound = new NBTTagCompound();
+            for (int i = 0; i < byteDataMap.size(); i++) {
+                byteCompound.setString("byte" + i + "Name", stringList.get(i));
+                byteCompound.setByte("byte" + i + "Value", byteDataMap.get(stringList.get(i)));
+            }
+            byteCompound.setString("type", "byte");
+            byteCompound.setInteger("size", byteDataMap.size());
+            tagList.appendTag(byteCompound);
+            stringList.clear();
+        }
+        if (!shortDataMap.isEmpty()) {
+            stringList.addAll(shortDataMap.keySet());
+            NBTTagCompound shortCompound = new NBTTagCompound();
+            for (int i = 0; i < shortDataMap.size(); i++) {
+                shortCompound.setString("short" + i + "Name", stringList.get(i));
+                shortCompound.setShort("short" + i + "Value", shortDataMap.get(stringList.get(i)));
+            }
+            shortCompound.setString("type", "short");
+            shortCompound.setInteger("size", shortDataMap.size());
+            tagList.appendTag(shortCompound);
+            stringList.clear();
+        }
+        if (!integerDataMap.isEmpty()) {
+            stringList.addAll(integerDataMap.keySet());
+            NBTTagCompound integerCompound = new NBTTagCompound();
+            for (int i = 0; i < integerDataMap.size(); i++) {
+                integerCompound.setString("integer" + i + "Name", stringList.get(i));
+                integerCompound.setInteger("integer" + i + "Value", integerDataMap.get(stringList.get(i)));
+            }
+            integerCompound.setString("type", "integer");
+            integerCompound.setInteger("size", integerDataMap.size());
+            tagList.appendTag(integerCompound);
+            stringList.clear();
+        }
+        if (!floatDataMap.isEmpty()) {
+            stringList.addAll(floatDataMap.keySet());
+            NBTTagCompound floatCompound = new NBTTagCompound();
+            for (int i = 0; i < floatDataMap.size(); i++) {
+                floatCompound.setString("float" + i + "Name", stringList.get(i));
+                floatCompound.setFloat("float" + i + "Value", floatDataMap.get(stringList.get(i)));
+            }
+            floatCompound.setString("type", "float");
+            floatCompound.setInteger("size", floatDataMap.size());
+            stringList.clear();
+        }
+        if (!doubleDataMap.isEmpty()) {
+            stringList.addAll(doubleDataMap.keySet());
+            NBTTagCompound doubleCompound = new NBTTagCompound();
+            for (int i = 0; i < doubleDataMap.size(); i++) {
+                doubleCompound.setString("double" + i + "Name", stringList.get(i));
+                doubleCompound.setDouble("double" + i + "Value", doubleDataMap.get(stringList.get(i)));
+            }
+            doubleCompound.setString("type", "double");
+            doubleCompound.setInteger("size", doubleDataMap.size());
+            stringList.clear();
+        }
+        if (!longDataMap.isEmpty()) {
+            stringList.addAll(longDataMap.keySet());
+            NBTTagCompound longCompound = new NBTTagCompound();
+            for (int i = 0; i < longDataMap.size(); i++) {
+                longCompound.setString("long" + i + "Name", stringList.get(i));
+                longCompound.setLong("long" + i + "Value", longDataMap.get(stringList.get(i)));
+            }
+            longCompound.setString("type", "long");
+            longCompound.setInteger("size", longDataMap.size());
+            stringList.clear();
+        }
+        if (!stringDataMap.isEmpty()) {
+            stringList.addAll(stringDataMap.keySet());
+            NBTTagCompound stringCompound = new NBTTagCompound();
+            for (int i = 0; i < stringDataMap.size(); i++) {
+                stringCompound.setString("string" + i + "Name", stringList.get(i));
+                stringCompound.setString("string" + i + "Value", stringDataMap.get(stringList.get(i)));
+            }
+            stringCompound.setString("type", "string");
+            stringCompound.setInteger("size", stringDataMap.size());
+            stringList.clear();
+        }
+        if (!nbtDataMap.isEmpty()) {
+            stringList.addAll(nbtDataMap.keySet());
+            NBTTagCompound nbtCompound = new NBTTagCompound();
+            for (int i = 0; i < nbtDataMap.size(); i++) {
+                nbtCompound.setString("nbt" + i + "Name", stringList.get(i));
+                nbtCompound.setTag("nbt" + i + "Value", nbtDataMap.get(stringList.get(i)));
+            }
+            nbtCompound.setString("type", "nbt");
+            nbtCompound.setInteger("size", nbtDataMap.size());
+            stringList.clear();
+        }
+        if (!dataDataMap.isEmpty()) {
+            stringList.addAll(dataDataMap.keySet());
+            NBTTagCompound dataCompound = new NBTTagCompound();
+            for (int i = 0; i < dataDataMap.size(); i++) {
+                dataCompound.setString("data" + i + "Name", stringList.get(i));
+                NBTTagCompound cmp = new NBTTagCompound();
+                dataDataMap.get(stringList.get(i)).writeToNBT(cmp);
 
+                dataCompound.setTag("data" + i + "Value", cmp);
+            }
+            dataCompound.setString("type", "data");
+            dataCompound.setInteger("size", dataDataMap.size());
+            stringList.clear();
+        }
+        compound.setTag("data", tagList);
     }
 
     @Override

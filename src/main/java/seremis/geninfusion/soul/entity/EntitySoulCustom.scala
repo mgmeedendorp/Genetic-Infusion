@@ -21,7 +21,6 @@ import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
 import seremis.geninfusion.core.proxy.CommonProxy
 import seremis.geninfusion.entity.GIEntityLiving
-import seremis.geninfusion.misc.Data
 import seremis.geninfusion.soul.allele.{AlleleFloat, AlleleString}
 import seremis.geninfusion.soul.entity.logic.{IVariableSyncEntity, VariableSyncLogic}
 import seremis.geninfusion.soul.{Soul, TraitHandler}
@@ -256,129 +255,60 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
   override def readFromNBT(compound: NBTTagCompound) {
     super.readFromNBT(compound)
     soul = new Soul(compound)
-    syncLogic.persistentData = new Data(compound)
-    if(!syncLogic.persistentData.isEmpty) {
-      initPersistent = false
+    if(compound.hasKey("data")) {
+      syncLogic.readFromNBT(compound)
+    } else {
+      initPersistent = true
     }
   }
 
   override def writeToNBT(compound: NBTTagCompound) {
     super.writeToNBT(compound)
     soul.writeToNBT(compound)
-    syncLogic.persistentData.writeToNBT(compound)
+    syncLogic.writeToNBT(compound)
   }
 
-  override def setPersistentVariable(name: String, variable: Boolean) {
-    syncLogic.setPersistentVariable(name, variable)
-  }
+  override def makePersistent(name: String) = syncLogic.makePersistent(name)
 
-  override def setPersistentVariable(name: String, variable: Byte) {
-    syncLogic.setPersistentVariable(name, variable)
-  }
+  override def setBoolean(name: String, variable: Boolean) = syncLogic.setBoolean(name, variable)
 
-  override def setPersistentVariable(name: String, variable: Int) {
-    syncLogic.setPersistentVariable(name, variable)
-  }
+  override def setByte(name: String, variable: Byte) = syncLogic.setByte(name, variable)
 
-  override def setPersistentVariable(name: String, variable: Float) {
-    syncLogic.setPersistentVariable(name, variable)
-  }
+  override def setShort(name: String, variable: Short) = syncLogic.setShort(name, variable)
 
-  override def setPersistentVariable(name: String, variable: Double) {
-    syncLogic.setPersistentVariable(name, variable)
-  }
+  override def setInteger(name: String, variable: Int) = syncLogic.setInteger(name, variable)
 
-  override def setPersistentVariable(name: String, variable: String) {
-    syncLogic.setPersistentVariable(name, variable)
-  }
+  override def setFloat(name: String, variable: Float) = syncLogic.setFloat(name, variable)
 
-  override def setPersistentVariable(name: String, variable: ItemStack) {
-    syncLogic.setPersistentVariable(name, variable)
-  }
+  override def setDouble(name: String, variable: Double) = syncLogic.setDouble(name, variable)
 
-  override def getPersistentBoolean(name: String): Boolean = {
-    syncLogic.getPersistentBoolean(name)
-  }
+  override def setLong(name: String, variable: Long) = syncLogic.setDouble(name, variable)
 
-  override def getPersistentByte(name: String): Byte = {
-    syncLogic.getPersistentByte(name)
-  }
+  override def setString(name: String, variable: String) = syncLogic.setString(name, variable)
 
-  override def getPersistentInteger(name: String): Int = {
-    syncLogic.getPersistentInteger(name)
-  }
+  override def setItemStack(name: String, variable: ItemStack) = syncLogic.setItemStack(name, variable)
 
-  override def getPersistentFloat(name: String): Float = {
-    syncLogic.getPersistentFloat(name)
-  }
+  override def setNBT(name: String, variable: NBTTagCompound) = syncLogic.setNBT(name, variable)
 
-  override def getPersistentDouble(name: String): Double = {
-    syncLogic.getPersistentDouble(name)
-  }
+  override def getBoolean(name: String): Boolean = syncLogic.getBoolean(name)
 
-  override def getPersistentString(name: String): String = {
-    syncLogic.getPersistentString(name)
-  }
+  override def getByte(name: String): Byte = syncLogic.getByte(name)
 
-  override def getPersistentItemStack(name: String): ItemStack = {
-    syncLogic.getPersistentItemStack(name)
-  }
+  override def getShort(name: String): Short = syncLogic.getShort(name)
 
-  override def setVariable(name: String, variable: Boolean) {
-    syncLogic.setVariable(name, variable)
-  }
+  override def getInteger(name: String): Int = syncLogic.getInteger(name)
 
-  override def setVariable(name: String, variable: Byte) {
-    syncLogic.setVariable(name, variable)
-  }
+  override def getFloat(name: String): Float = syncLogic.getFloat(name)
 
-  override def setVariable(name: String, variable: Int) {
-    syncLogic.setVariable(name, variable)
-  }
+  override def getDouble(name: String): Double = syncLogic.getDouble(name)
 
-  override def setVariable(name: String, variable: Float) {
-    syncLogic.setVariable(name, variable)
-  }
+  override def getLong(name: String): Long = syncLogic.getLong(name)
 
-  override def setVariable(name: String, variable: Double) {
-    syncLogic.setVariable(name, variable)
-  }
+  override def getString(name: String): String = syncLogic.getString(name)
 
-  override def setVariable(name: String, variable: String) {
-    syncLogic.setVariable(name, variable)
-  }
+  override def getItemStack(name: String): ItemStack = syncLogic.getItemStack(name)
 
-  override def setVariable(name: String, variable: ItemStack) {
-    syncLogic.setVariable(name, variable)
-  }
-
-  override def getBoolean(name: String): Boolean = {
-    syncLogic.getBoolean(name)
-  }
-
-  override def getByte(name: String): Byte = {
-    syncLogic.getByte(name)
-  }
-
-  override def getInteger(name: String): Int = {
-    syncLogic.getInteger(name)
-  }
-
-  override def getFloat(name: String): Float = {
-    syncLogic.getFloat(name)
-  }
-
-  override def getDouble(name: String): Double = {
-    syncLogic.getDouble(name)
-  }
-
-  override def getString(name: String): String = {
-    syncLogic.getString(name)
-  }
-
-  override def getItemStack(name: String): ItemStack = {
-    syncLogic.getItemStack(name)
-  }
+  override def getNBT(name: String): NBTTagCompound = syncLogic.getNBT(name)
 
   override def forceVariableSync() {
     syncLogic.syncVariables()
@@ -387,111 +317,127 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
   private var initPersistent = true;
 
   def initVariables() {
-    val persistentData = syncLogic.persistentData
-    val variableData = syncLogic.variableData
+    syncLogic.makePersistent("ticksExisted")
+    syncLogic.makePersistent("posX")
+    syncLogic.makePersistent("posY")
+    syncLogic.makePersistent("posZ")
+    syncLogic.makePersistent("motionX")
+    syncLogic.makePersistent("motionY")
+    syncLogic.makePersistent("motionZ")
+    syncLogic.makePersistent("rotationYaw")
+    syncLogic.makePersistent("rotationPitch")
+    syncLogic.makePersistent("onGround")
+    syncLogic.makePersistent("isDead")
+    syncLogic.makePersistent("dimension")
+    syncLogic.makePersistent("timeUntilPortal")
+    syncLogic.makePersistent("hurtTime")
+    syncLogic.makePersistent("deathTime")
+    syncLogic.makePersistent("attackTime")
+    syncLogic.makePersistent("livingSoundTime")
+    syncLogic.makePersistent("talkInterval")
 
     if(initPersistent) {
-      persistentData.setInteger("ticksExisted", ticksExisted)
-      persistentData.setDouble("posX", posX)
-      persistentData.setDouble("posY", posY)
-      persistentData.setDouble("posZ", posZ)
-      persistentData.setDouble("motionX", motionX)
-      persistentData.setDouble("motionY", motionY)
-      persistentData.setDouble("motionZ", motionZ)
-      persistentData.setDouble("rotationYaw", rotationYaw)
-      persistentData.setDouble("rotationPitch", rotationPitch)
-      persistentData.setBoolean("onGround", onGround)
-      persistentData.setBoolean("isDead", isDead)
-      persistentData.setInteger("dimension", dimension)
-      persistentData.setInteger("timeUntilPortal", timeUntilPortal)
-      persistentData.setInteger("hurtTime", hurtTime)
-      persistentData.setInteger("deathTime", deathTime)
-      persistentData.setInteger("attackTime", attackTime)
-      persistentData.setInteger("livingSoundTime", livingSoundTime)
-      persistentData.setInteger("talkInterval", talkInterval)
+      syncLogic.setInteger("ticksExisted", ticksExisted)
+      syncLogic.setDouble("posX", posX)
+      syncLogic.setDouble("posY", posY)
+      syncLogic.setDouble("posZ", posZ)
+      syncLogic.setDouble("motionX", motionX)
+      syncLogic.setDouble("motionY", motionY)
+      syncLogic.setDouble("motionZ", motionZ)
+      syncLogic.setDouble("rotationYaw", rotationYaw)
+      syncLogic.setDouble("rotationPitch", rotationPitch)
+      syncLogic.setBoolean("onGround", onGround)
+      syncLogic.setBoolean("isDead", isDead)
+      syncLogic.setInteger("dimension", dimension)
+      syncLogic.setInteger("timeUntilPortal", timeUntilPortal)
+      syncLogic.setInteger("hurtTime", hurtTime)
+      syncLogic.setInteger("deathTime", deathTime)
+      syncLogic.setInteger("attackTime", attackTime)
+      syncLogic.setInteger("livingSoundTime", livingSoundTime)
+      syncLogic.setInteger("talkInterval", talkInterval)
     }
 
-    variableData.setDouble("prevPosX", prevPosX)
-    variableData.setDouble("prevPosY", prevPosY)
-    variableData.setDouble("prevPosZ", prevPosZ)
+    syncLogic.setDouble("prevPosX", prevPosX)
+    syncLogic.setDouble("prevPosY", prevPosY)
+    syncLogic.setDouble("prevPosZ", prevPosZ)
     if(CommonProxy.instance.isRenderWorld(worldObj)) {
-      variableData.setInteger("serverPosX", serverPosX)
-      variableData.setInteger("serverPosY", serverPosY)
-      variableData.setInteger("serverPosZ", serverPosZ)
+      syncLogic.setInteger("serverPosX", serverPosX)
+      syncLogic.setInteger("serverPosY", serverPosY)
+      syncLogic.setInteger("serverPosZ", serverPosZ)
     }
-    variableData.setDouble("lastTickPosX", lastTickPosX)
-    variableData.setDouble("lastTickPosY", lastTickPosY)
-    variableData.setDouble("lastTickPosZ", lastTickPosZ)
-    variableData.setDouble("newPosX", newPosX)
-    variableData.setDouble("newPosY", newPosY)
-    variableData.setDouble("newPosZ", newPosZ)
-    variableData.setInteger("newPosRotationIncrements", newPosRotationIncrements)
-    variableData.setFloat("jumpMovementFActor", jumpMovementFactor)
-    variableData.setFloat("moveStrafing", moveStrafing)
-    variableData.setFloat("moveForward", moveForward)
-    variableData.setFloat("randomYawVelocity", randomYawVelocity)
-    variableData.setFloat("width", width)
-    variableData.setFloat("height", height)
-    variableData.setFloat("ySize", ySize)
-    variableData.setFloat("yOffset", yOffset)
-    variableData.setFloat("stepHeight", stepHeight)
-    variableData.setFloat("prevRotationYaw", prevRotationYaw)
-    variableData.setFloat("prevRotationPitch", prevRotationPitch)
-    variableData.setDouble("newRotationYaw", newRotationYaw)
-    variableData.setDouble("newRotationPitch", newRotationPitch)
-    variableData.setFloat("defaultPitch", defaultPitch)
-    variableData.setInteger("fireResistance", fireResistance)
-    variableData.setBoolean("inWater", inWater)
-    variableData.setBoolean("isInWeb", isInWeb)
-    variableData.setBoolean("isAirBorne", isAirBorne)
-    variableData.setBoolean("preventEntitySpawning", preventEntitySpawning)
-    variableData.setBoolean("forceSpawn", forceSpawn)
-    variableData.setBoolean("noClip", noClip)
-    variableData.setFloat("attackedAtYaw", attackedAtYaw)
-    variableData.setBoolean("isJumping", isJumping)
-    variableData.setBoolean("addedToChunk", addedToChunk)
-    variableData.setInteger("chunkCoordX", chunkCoordX)
-    variableData.setInteger("chunkCoordY", chunkCoordY)
-    variableData.setInteger("chunkCoordZ", chunkCoordZ)
-    variableData.setInteger("portalCounter", portalCounter)
-    variableData.setInteger("teleportDirection", teleportDirection)
-    variableData.setBoolean("inPortal", inPortal)
-    variableData.setBoolean("isCollided", isCollided)
-    variableData.setBoolean("isCollidedHorizontally", isCollidedHorizontally)
-    variableData.setBoolean("isCollidedVertically", isCollidedVertically)
-    variableData.setBoolean("velocityChanged", velocityChanged)
-    variableData.setFloat("entityCollisionReduction", entityCollisionReduction)
-    variableData.setFloat("distanceWalkedModified", distanceWalkedModified)
-    variableData.setFloat("prevDistanceWalkedModfied", prevDistanceWalkedModified)
-    variableData.setFloat("distanceWalkedOnStepModified", distanceWalkedOnStepModified)
-    variableData.setFloat("fallDistance", fallDistance)
-    variableData.setDouble("renderDistanceWeight", renderDistanceWeight)
-    variableData.setBoolean("ignoreFrustumCheck", ignoreFrustumCheck)
-    variableData.setBoolean("isSwingInProgress", isSwingInProgress)
-    variableData.setInteger("swingProgressInt", swingProgressInt)
-    variableData.setInteger("arrowHitTimer", arrowHitTimer)
-    variableData.setFloat("prevSwingProgress", prevSwingProgress)
-    variableData.setFloat("swingProgress", swingProgress)
-    variableData.setFloat("prevLimbSwingAmount", prevLimbSwingAmount)
-    variableData.setFloat("limbSwingAmount", limbSwingAmount)
-    variableData.setFloat("limbSwing", limbSwing)
-    variableData.setFloat("prevCameraPitch", prevCameraPitch)
-    variableData.setFloat("cameraPitch", cameraPitch)
-    variableData.setFloat("prevRenderYawOffset", prevRenderYawOffset)
-    variableData.setFloat("renderYawOffset", renderYawOffset)
-    variableData.setFloat("prevRotationYawHead", prevRotationYawHead)
-    variableData.setFloat("rotationYawHead", rotationYawHead)
-    variableData.setBoolean("captureDrops", captureDrops)
-    variableData.setFloat("prevHealth", prevHealth)
-    variableData.setInteger("maxHurtTime", maxHurtTime)
-    variableData.setInteger("hurtResistantTime", hurtResistantTime)
-    variableData.setInteger("maxHurtResistantTime", maxHurtResistantTime)
-    variableData.setInteger("entityAge", entityAge)
-    variableData.setInteger("recentlyHit", recentlyHit)
-    variableData.setInteger("scoreValue", scoreValue)
-    variableData.setFloat("lastDamage", lastDamage)
-    variableData.setInteger("experienceValue", experienceValue)
-    variableData.setInteger("numTicksToChaseTarget", numTicksToChaseTarget)
+    syncLogic.setDouble("lastTickPosX", lastTickPosX)
+    syncLogic.setDouble("lastTickPosY", lastTickPosY)
+    syncLogic.setDouble("lastTickPosZ", lastTickPosZ)
+    syncLogic.setDouble("newPosX", newPosX)
+    syncLogic.setDouble("newPosY", newPosY)
+    syncLogic.setDouble("newPosZ", newPosZ)
+    syncLogic.setInteger("newPosRotationIncrements", newPosRotationIncrements)
+    syncLogic.setFloat("jumpMovementFActor", jumpMovementFactor)
+    syncLogic.setFloat("moveStrafing", moveStrafing)
+    syncLogic.setFloat("moveForward", moveForward)
+    syncLogic.setFloat("randomYawVelocity", randomYawVelocity)
+    syncLogic.setFloat("width", width)
+    syncLogic.setFloat("height", height)
+    syncLogic.setFloat("ySize", ySize)
+    syncLogic.setFloat("yOffset", yOffset)
+    syncLogic.setFloat("stepHeight", stepHeight)
+    syncLogic.setFloat("prevRotationYaw", prevRotationYaw)
+    syncLogic.setFloat("prevRotationPitch", prevRotationPitch)
+    syncLogic.setDouble("newRotationYaw", newRotationYaw)
+    syncLogic.setDouble("newRotationPitch", newRotationPitch)
+    syncLogic.setFloat("defaultPitch", defaultPitch)
+    syncLogic.setInteger("fireResistance", fireResistance)
+    syncLogic.setBoolean("inWater", inWater)
+    syncLogic.setBoolean("isInWeb", isInWeb)
+    syncLogic.setBoolean("isAirBorne", isAirBorne)
+    syncLogic.setBoolean("preventEntitySpawning", preventEntitySpawning)
+    syncLogic.setBoolean("forceSpawn", forceSpawn)
+    syncLogic.setBoolean("noClip", noClip)
+    syncLogic.setFloat("attackedAtYaw", attackedAtYaw)
+    syncLogic.setBoolean("isJumping", isJumping)
+    syncLogic.setBoolean("addedToChunk", addedToChunk)
+    syncLogic.setInteger("chunkCoordX", chunkCoordX)
+    syncLogic.setInteger("chunkCoordY", chunkCoordY)
+    syncLogic.setInteger("chunkCoordZ", chunkCoordZ)
+    syncLogic.setInteger("portalCounter", portalCounter)
+    syncLogic.setInteger("teleportDirection", teleportDirection)
+    syncLogic.setBoolean("inPortal", inPortal)
+    syncLogic.setBoolean("isCollided", isCollided)
+    syncLogic.setBoolean("isCollidedHorizontally", isCollidedHorizontally)
+    syncLogic.setBoolean("isCollidedVertically", isCollidedVertically)
+    syncLogic.setBoolean("velocityChanged", velocityChanged)
+    syncLogic.setFloat("entityCollisionReduction", entityCollisionReduction)
+    syncLogic.setFloat("distanceWalkedModified", distanceWalkedModified)
+    syncLogic.setFloat("prevDistanceWalkedModfied", prevDistanceWalkedModified)
+    syncLogic.setFloat("distanceWalkedOnStepModified", distanceWalkedOnStepModified)
+    syncLogic.setFloat("fallDistance", fallDistance)
+    syncLogic.setDouble("renderDistanceWeight", renderDistanceWeight)
+    syncLogic.setBoolean("ignoreFrustumCheck", ignoreFrustumCheck)
+    syncLogic.setBoolean("isSwingInProgress", isSwingInProgress)
+    syncLogic.setInteger("swingProgressInt", swingProgressInt)
+    syncLogic.setInteger("arrowHitTimer", arrowHitTimer)
+    syncLogic.setFloat("prevSwingProgress", prevSwingProgress)
+    syncLogic.setFloat("swingProgress", swingProgress)
+    syncLogic.setFloat("prevLimbSwingAmount", prevLimbSwingAmount)
+    syncLogic.setFloat("limbSwingAmount", limbSwingAmount)
+    syncLogic.setFloat("limbSwing", limbSwing)
+    syncLogic.setFloat("prevCameraPitch", prevCameraPitch)
+    syncLogic.setFloat("cameraPitch", cameraPitch)
+    syncLogic.setFloat("prevRenderYawOffset", prevRenderYawOffset)
+    syncLogic.setFloat("renderYawOffset", renderYawOffset)
+    syncLogic.setFloat("prevRotationYawHead", prevRotationYawHead)
+    syncLogic.setFloat("rotationYawHead", rotationYawHead)
+    syncLogic.setBoolean("captureDrops", captureDrops)
+    syncLogic.setFloat("prevHealth", prevHealth)
+    syncLogic.setInteger("maxHurtTime", maxHurtTime)
+    syncLogic.setInteger("hurtResistantTime", hurtResistantTime)
+    syncLogic.setInteger("maxHurtResistantTime", maxHurtResistantTime)
+    syncLogic.setInteger("entityAge", entityAge)
+    syncLogic.setInteger("recentlyHit", recentlyHit)
+    syncLogic.setInteger("scoreValue", scoreValue)
+    syncLogic.setFloat("lastDamage", lastDamage)
+    syncLogic.setInteger("experienceValue", experienceValue)
+    syncLogic.setInteger("numTicksToChaseTarget", numTicksToChaseTarget)
   }
 
   protected def syncNonPrimitives() {

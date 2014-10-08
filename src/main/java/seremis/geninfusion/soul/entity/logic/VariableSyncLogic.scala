@@ -4,126 +4,265 @@ import java.util.Map.Entry
 import java.{lang, util}
 
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import seremis.geninfusion.helper.DataHelper
 import seremis.geninfusion.misc.Data
+import seremis.geninfusion.util.INBTTagable
 
+import scala.collection.mutable.ListBuffer
 import scala.util.control.Breaks
 
-class VariableSyncLogic(entity: IVariableSyncEntity) {
+class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
 
-  var variableData, persistentData = new Data()
+  protected var data = new Data()
+  protected var persistent: ListBuffer[String] = ListBuffer()
 
-  def setPersistentVariable(name: String, variable: Boolean) {
-    persistentData.setBoolean(name, variable)
+  def makePersistent(name: String): Unit = {
+    persistent+(name)
   }
 
-  def setPersistentVariable(name: String, variable: Byte) {
-    persistentData.setByte(name, variable)
+  def setBoolean(name: String, variable: Boolean) = data.setBoolean(name, variable)
+
+  def setByte(name: String, variable: Byte) = data.setByte(name, variable)
+
+  def setShort(name: String, variable: Short) = data.setShort(name, variable)
+
+  def setInteger(name: String, variable: Int) = data.setInteger(name, variable)
+
+  def setFloat(name: String, variable: Float) = data.setFloat(name, variable)
+
+  def setDouble(name: String, variable: Double) = data.setDouble(name, variable)
+
+  def setLong(name: String, variable: Long) = data.setLong(name, variable)
+
+  def setString(name: String, variable: String) = data.setString(name, variable)
+
+  def setItemStack(name: String, variable: ItemStack) = data.setNBT(name, variable.writeToNBT(new NBTTagCompound()))
+
+  def setNBT(name: String, variable: NBTTagCompound) = data.setNBT(name, variable)
+
+  def getBoolean(name: String): Boolean = data.getBoolean(name)
+
+  def getByte(name: String): Byte = data.getByte(name)
+
+  def getShort(name: String): Short = data.getShort(name)
+
+  def getInteger(name: String): Int = data.getInteger(name)
+
+  def getFloat(name: String): Float = data.getFloat(name)
+
+  def getDouble(name: String): Double = data.getDouble(name)
+
+  def getLong(name: String): Long = data.getLong(name)
+
+  def getString(name: String): String = data.getString(name)
+
+  def getItemStack(name: String): ItemStack = ItemStack.loadItemStackFromNBT(data.getNBT(name))
+
+  def getNBT(name: String): NBTTagCompound = data.getNBT(name)
+
+  protected val persistentData: Data = new Data()
+
+  override def writeToNBT(compound: NBTTagCompound) {
+    if(!persistent.isEmpty) {
+      val tagList = new NBTTagList()
+      val stringList = new util.ArrayList[String]()
+      if (!data.booleanDataMap.isEmpty) {
+        stringList.addAll(data.booleanDataMap.keySet)
+        val booleanCompound = new NBTTagCompound()
+        var j = 0
+        for (i <- 0 until data.booleanDataMap.size) {
+          if (persistent.contains(stringList.get(i))) {
+            booleanCompound.setString("boolean" + j + "Name", stringList.get(i))
+            booleanCompound.setBoolean("boolean" + j + "Value", data.booleanDataMap.get(stringList.get(i)))
+            j += 1
+          }
+        }
+        if (j > 0) {
+          booleanCompound.setString("type", "boolean")
+          booleanCompound.setInteger("size", j)
+          tagList.appendTag(booleanCompound)
+        }
+        stringList.clear()
+      }
+      if (!data.byteDataMap.isEmpty) {
+        stringList.addAll(data.byteDataMap.keySet)
+        val byteCompound = new NBTTagCompound()
+        var j = 0
+        for (i <- 0 until data.byteDataMap.size) {
+          if (persistent.contains(stringList.get(i))) {
+            byteCompound.setString("byte" + j + "Name", stringList.get(i))
+            byteCompound.setByte("byte" + j + "Value", data.byteDataMap.get(stringList.get(i)))
+            j += 1
+          }
+        }
+        if (j > 0) {
+          byteCompound.setString("type", "byte")
+          byteCompound.setInteger("size", j)
+          tagList.appendTag(byteCompound)
+        }
+        stringList.clear()
+      }
+      if (!data.shortDataMap.isEmpty) {
+        stringList.addAll(data.shortDataMap.keySet)
+        val shortCompound = new NBTTagCompound()
+        var j = 0
+        for (i <- 0 until data.shortDataMap.size) {
+          if (persistent.contains(stringList.get(i))) {
+            shortCompound.setString("short" + j + "Name", stringList.get(i))
+            shortCompound.setShort("short" + j + "Value", data.shortDataMap.get(stringList.get(i)))
+            j += 1
+          }
+        }
+        if (j > 0) {
+          shortCompound.setString("type", "short")
+          shortCompound.setInteger("size", j)
+          tagList.appendTag(shortCompound)
+        }
+        stringList.clear()
+      }
+      if (!data.integerDataMap.isEmpty) {
+        stringList.addAll(data.integerDataMap.keySet)
+        val integerCompound = new NBTTagCompound()
+        var j = 0
+        for (i <- 0 until data.integerDataMap.size) {
+          if (persistent.contains(stringList.get(i))) {
+            integerCompound.setString("integer" + j + "Name", stringList.get(i))
+            integerCompound.setInteger("integer" + j + "Value", data.integerDataMap.get(stringList.get(i)))
+            j += 1
+          }
+        }
+        if (j > 0) {
+          integerCompound.setString("type", "integer")
+          integerCompound.setInteger("size", j)
+          tagList.appendTag(integerCompound)
+        }
+        stringList.clear()
+      }
+      if (!data.floatDataMap.isEmpty) {
+        stringList.addAll(data.floatDataMap.keySet)
+        val floatCompound = new NBTTagCompound()
+        var j = 0
+        for (i <- 0 until data.floatDataMap.size) {
+          if (persistent.contains(stringList.get(i))) {
+            floatCompound.setString("float" + j + "Name", stringList.get(i))
+            floatCompound.setFloat("float" + j + "Value", data.floatDataMap.get(stringList.get(i)))
+            j += 1
+          }
+        }
+        if (j > 0) {
+          floatCompound.setString("type", "float")
+          floatCompound.setInteger("size", j)
+          tagList.appendTag(floatCompound)
+        }
+        stringList.clear()
+      }
+      if (!data.doubleDataMap.isEmpty) {
+        stringList.addAll(data.doubleDataMap.keySet)
+        val doubleCompound = new NBTTagCompound()
+        var j = 0
+        for (i <- 0 until data.doubleDataMap.size) {
+          if (persistent.contains(stringList.get(i))) {
+            doubleCompound.setString("double" + j + "Name", stringList.get(i))
+            doubleCompound.setDouble("double" + j + "Value", data.doubleDataMap.get(stringList.get(i)))
+            j += 1
+          }
+        }
+        if (j > 0) {
+          doubleCompound.setString("type", "double")
+          doubleCompound.setInteger("size", j)
+          tagList.appendTag(doubleCompound)
+        }
+        stringList.clear()
+      }
+      if (!data.longDataMap.isEmpty) {
+        stringList.addAll(data.longDataMap.keySet)
+        val longCompound = new NBTTagCompound()
+        var j = 0
+        for (i <- 0 until data.longDataMap.size) {
+          if (persistent.contains(stringList.get(i))) {
+            longCompound.setString("long" + j + "Name", stringList.get(i))
+            longCompound.setLong("long" + j + "Value", data.longDataMap.get(stringList.get(i)))
+            j += 1
+          }
+        }
+        if (j > 0) {
+          longCompound.setString("type", "long")
+          longCompound.setInteger("size", j)
+          tagList.appendTag(longCompound)
+        }
+        stringList.clear()
+      }
+      if (!data.stringDataMap.isEmpty) {
+        stringList.addAll(data.stringDataMap.keySet)
+        val stringCompound = new NBTTagCompound()
+        var j = 0
+        for (i <- 0 until data.stringDataMap.size) {
+          if (persistent.contains(stringList.get(i))) {
+            stringCompound.setString("string" + j + "Name", stringList.get(i))
+            stringCompound.setString("string" + j + "Value", data.stringDataMap.get(stringList.get(i)))
+            j += 1
+          }
+        }
+        if (j > 0) {
+          stringCompound.setString("type", "string")
+          stringCompound.setInteger("size", j)
+          tagList.appendTag(stringCompound)
+        }
+        stringList.clear()
+      }
+      if (!data.nbtDataMap.isEmpty) {
+        stringList.addAll(data.nbtDataMap.keySet)
+        val nbtCompound = new NBTTagCompound()
+        var j = 0
+        for (i <- 0 until data.nbtDataMap.size) {
+          if (persistent.contains(stringList.get(i))) {
+            nbtCompound.setString("nbt" + j + "Name", stringList.get(i))
+            nbtCompound.setTag("nbt" + j + "Value", data.nbtDataMap.get(stringList.get(i)))
+            j += 1
+          }
+        }
+        if (j > 0) {
+          nbtCompound.setString("type", "nbt")
+          nbtCompound.setInteger("size", j)
+          tagList.appendTag(nbtCompound)
+        }
+        stringList.clear()
+      }
+      if (!data.dataDataMap.isEmpty) {
+        stringList.addAll(data.dataDataMap.keySet)
+        val dataCompound = new NBTTagCompound()
+        var j = 0
+        for (i <- 0 until data.dataDataMap.size) {
+          if (persistent.contains(stringList.get(i))) {
+            dataCompound.setString("data" + j + "Name", stringList.get(i))
+            val cmp = new NBTTagCompound()
+            data.dataDataMap.get(stringList.get(i)).writeToNBT(cmp)
+            dataCompound.setTag("data" + j + "Value", cmp)
+            j += 1
+          }
+        }
+        if (j > 0) {
+          dataCompound.setString("type", "data")
+          dataCompound.setInteger("size", j)
+          tagList.appendTag(dataCompound)
+        }
+        stringList.clear()
+      }
+      if (tagList.tagCount() > 0) {
+        compound.setTag("data", tagList)
+
+        val persistentCompound = new NBTTagCompound()
+        for((variable, count) <- persistent.zipWithIndex) {
+          persistentCompound.setString("persistent" + count, variable)
+        }
+        compound.setTag("persistent", persistentCompound)
+      }
+    }
   }
 
-  def setPersistentVariable(name: String, variable: Int) {
-    persistentData.setInteger(name, variable)
-  }
-
-  def setPersistentVariable(name: String, variable: Float) {
-    persistentData.setFloat(name, variable)
-  }
-
-  def setPersistentVariable(name: String, variable: Double) {
-    persistentData.setDouble(name, variable)
-  }
-
-  def setPersistentVariable(name: String, variable: String) {
-    persistentData.setString(name, variable)
-  }
-
-  def setPersistentVariable(name: String, variable: ItemStack) {
-    persistentData.setNBT(name, variable.writeToNBT(new NBTTagCompound()))
-  }
-
-  def getPersistentBoolean(name: String): Boolean = {
-    persistentData.getBoolean(name)
-  }
-
-  def getPersistentByte(name: String): Byte = {
-    persistentData.getByte(name)
-  }
-
-  def getPersistentInteger(name: String): Int = {
-    persistentData.getInteger(name)
-  }
-
-  def getPersistentFloat(name: String): Float = {
-    persistentData.getFloat(name)
-  }
-
-  def getPersistentDouble(name: String): Double = {
-    persistentData.getDouble(name)
-  }
-
-  def getPersistentString(name: String): String = {
-    persistentData.getString(name)
-  }
-
-  def getPersistentItemStack(name: String): ItemStack = {
-    if(persistentData.getNBT(name) == null) null else ItemStack.loadItemStackFromNBT(persistentData.getNBT(name))
-  }
-
-  def setVariable(name: String, variable: Boolean) {
-    variableData.setBoolean(name, variable)
-  }
-
-  def setVariable(name: String, variable: Byte) {
-    variableData.setByte(name, variable)
-  }
-
-  def setVariable(name: String, variable: Int) {
-    variableData.setInteger(name, variable)
-  }
-
-  def setVariable(name: String, variable: Float) {
-    variableData.setFloat(name, variable)
-  }
-
-  def setVariable(name: String, variable: Double) {
-    variableData.setDouble(name, variable)
-  }
-
-  def setVariable(name: String, variable: String) {
-    variableData.setString(name, variable)
-  }
-
-  def setVariable(name: String, variable: ItemStack) {
-    variableData.setNBT(name, variable.writeToNBT(new NBTTagCompound()))
-  }
-
-  def getBoolean(name: String): Boolean = {
-    variableData.getBoolean(name)
-  }
-
-  def getByte(name: String): Byte = {
-    variableData.getByte(name)
-  }
-
-  def getInteger(name: String): Int = {
-    variableData.getInteger(name)
-  }
-
-  def getFloat(name: String): Float = {
-    variableData.getFloat(name)
-  }
-
-  def getDouble(name: String): Double = {
-    variableData.getDouble(name)
-  }
-
-  def getString(name: String): String = {
-    variableData.getString(name)
-  }
-
-  def getItemStack(name: String): ItemStack = {
-    ItemStack.loadItemStackFromNBT(variableData.getNBT(name))
+  override def readFromNBT(compound: NBTTagCompound) {
+    data.readFromNBT(compound)
   }
 
   def forceVariableSync() {
@@ -147,18 +286,11 @@ class VariableSyncLogic(entity: IVariableSyncEntity) {
 
       if(data.booleanDataMap.containsKey(key) && data.booleanDataMap.get(key) != value) {
         syncData.booleanDataMap.put(key, data.booleanDataMap.get(key))
-        if(persistentData.booleanDataMap.containsKey(key))
-          persistentData.booleanDataMap.put(key, data.booleanDataMap.get(key))
-        if(variableData.booleanDataMap.containsKey(key))
-          variableData.booleanDataMap.put(key, data.booleanDataMap.get(key))
-      } else if(persistentData.booleanDataMap.containsKey(key) && persistentData.getBoolean(key) != value) {
-        syncData.booleanDataMap.put(key, persistentData.getBoolean(key))
-        data.booleanDataMap.put(key, persistentData.getBoolean(key))
-        setField(key, persistentData.getBoolean(key))
-      } else if(variableData.booleanDataMap.containsKey(key) && variableData.getBoolean(key) != value) {
-        syncData.booleanDataMap.put(key, variableData.getBoolean(key))
-        data.booleanDataMap.put(key, variableData.getBoolean(key))
-        setField(key, variableData.getBoolean(key))
+        data.booleanDataMap.put(key, data.booleanDataMap.get(key))
+      } else if(data.booleanDataMap.containsKey(key) && data.getBoolean(key) != value) {
+        syncData.booleanDataMap.put(key, data.getBoolean(key))
+        data.booleanDataMap.put(key, data.getBoolean(key))
+        setField(key, data.getBoolean(key))
       }
     }
 
@@ -171,18 +303,11 @@ class VariableSyncLogic(entity: IVariableSyncEntity) {
 
       if(data.byteDataMap.containsKey(key) && data.byteDataMap.get(key) != value) {
         syncData.byteDataMap.put(key, data.byteDataMap.get(key))
-        if(persistentData.byteDataMap.containsKey(key))
-          persistentData.byteDataMap.put(key, data.byteDataMap.get(key))
-        if(variableData.byteDataMap.containsKey(key))
-          variableData.byteDataMap.put(key, data.byteDataMap.get(key))
-      } else if(persistentData.byteDataMap.containsKey(key) && persistentData.getByte(key) != value) {
-        syncData.byteDataMap.put(key, persistentData.getByte(key))
-        data.byteDataMap.put(key, persistentData.getByte(key))
-        setField(key, persistentData.getByte(key))
-      } else if(variableData.byteDataMap.containsKey(key) && variableData.getByte(key) != value) {
-        syncData.byteDataMap.put(key, variableData.getByte(key))
-        data.byteDataMap.put(key, variableData.getByte(key))
-        setField(key, variableData.getByte(key))
+        data.byteDataMap.put(key, data.byteDataMap.get(key))
+      } else if(data.byteDataMap.containsKey(key) && data.getByte(key) != value) {
+        syncData.byteDataMap.put(key, data.getByte(key))
+        data.byteDataMap.put(key, data.getByte(key))
+        setField(key, data.getByte(key))
       }
     }
 
@@ -195,18 +320,11 @@ class VariableSyncLogic(entity: IVariableSyncEntity) {
 
       if(data.shortDataMap.containsKey(key) && data.shortDataMap.get(key) != value) {
         syncData.shortDataMap.put(key, data.shortDataMap.get(key))
-        if(persistentData.shortDataMap.containsKey(key))
-          persistentData.shortDataMap.put(key, data.shortDataMap.get(key))
-        if(variableData.shortDataMap.containsKey(key))
-          variableData.shortDataMap.put(key, data.shortDataMap.get(key))
-      } else if(persistentData.shortDataMap.containsKey(key) && persistentData.getShort(key) != value) {
-        syncData.shortDataMap.put(key, persistentData.getShort(key))
-        data.shortDataMap.put(key, persistentData.getShort(key))
-        setField(key, persistentData.getShort(key))
-      } else if(variableData.shortDataMap.containsKey(key) && variableData.getShort(key) != value) {
-        syncData.shortDataMap.put(key, variableData.getShort(key))
-        data.shortDataMap.put(key, variableData.getShort(key))
-        setField(key, variableData.getShort(key))
+        data.shortDataMap.put(key, data.shortDataMap.get(key))
+      } else if(data.shortDataMap.containsKey(key) && data.getShort(key) != value) {
+        syncData.shortDataMap.put(key, data.getShort(key))
+        data.shortDataMap.put(key, data.getShort(key))
+        setField(key, data.getShort(key))
       }
     }
 
@@ -219,18 +337,11 @@ class VariableSyncLogic(entity: IVariableSyncEntity) {
 
       if(data.integerDataMap.containsKey(key) && data.integerDataMap.get(key) != value) {
         syncData.integerDataMap.put(key, data.integerDataMap.get(key))
-        if(persistentData.integerDataMap.containsKey(key))
-          persistentData.integerDataMap.put(key, data.integerDataMap.get(key))
-        if(variableData.integerDataMap.containsKey(key))
-          variableData.integerDataMap.put(key, data.integerDataMap.get(key))
-      } else if(persistentData.integerDataMap.containsKey(key) && persistentData.getInteger(key) != value) {
-        syncData.integerDataMap.put(key, persistentData.getInteger(key))
-        data.integerDataMap.put(key, persistentData.getInteger(key))
-        setField(key, persistentData.getInteger(key))
-      } else if(variableData.integerDataMap.containsKey(key) && variableData.getInteger(key) != value) {
-        syncData.integerDataMap.put(key, variableData.getInteger(key))
-        data.integerDataMap.put(key, variableData.getInteger(key))
-        setField(key, variableData.getInteger(key))
+        data.integerDataMap.put(key, data.integerDataMap.get(key))
+      } else if(data.integerDataMap.containsKey(key) && data.getInteger(key) != value) {
+        syncData.integerDataMap.put(key, data.getInteger(key))
+        data.integerDataMap.put(key, data.getInteger(key))
+        setField(key, data.getInteger(key))
       }
     }
 
@@ -243,18 +354,11 @@ class VariableSyncLogic(entity: IVariableSyncEntity) {
 
       if(data.floatDataMap.containsKey(key) && data.floatDataMap.get(key) != value) {
         syncData.floatDataMap.put(key, data.floatDataMap.get(key))
-        if(persistentData.floatDataMap.containsKey(key))
-          persistentData.floatDataMap.put(key, data.floatDataMap.get(key))
-        if(variableData.floatDataMap.containsKey(key))
-          variableData.floatDataMap.put(key, data.floatDataMap.get(key))
-      } else if(persistentData.floatDataMap.containsKey(key) && persistentData.getFloat(key) != value) {
-        syncData.floatDataMap.put(key, persistentData.getFloat(key))
-        data.floatDataMap.put(key, persistentData.getFloat(key))
-        setField(key, persistentData.getFloat(key))
-      } else if(variableData.floatDataMap.containsKey(key) && variableData.getFloat(key) != value) {
-        syncData.floatDataMap.put(key, variableData.getFloat(key))
-        data.floatDataMap.put(key, variableData.getFloat(key))
-        setField(key, variableData.getFloat(key))
+        data.floatDataMap.put(key, data.floatDataMap.get(key))
+      } else if(data.floatDataMap.containsKey(key) && data.getFloat(key) != value) {
+        syncData.floatDataMap.put(key, data.getFloat(key))
+        data.floatDataMap.put(key, data.getFloat(key))
+        setField(key, data.getFloat(key))
       }
     }
 
@@ -267,18 +371,11 @@ class VariableSyncLogic(entity: IVariableSyncEntity) {
 
       if(data.doubleDataMap.containsKey(key) && data.doubleDataMap.get(key) != value) {
         syncData.doubleDataMap.put(key, data.doubleDataMap.get(key))
-        if(persistentData.doubleDataMap.containsKey(key))
-          persistentData.doubleDataMap.put(key, data.doubleDataMap.get(key))
-        if(variableData.doubleDataMap.containsKey(key))
-          variableData.doubleDataMap.put(key, data.doubleDataMap.get(key))
-      } else if(persistentData.doubleDataMap.containsKey(key) && persistentData.getDouble(key) != value) {
-        syncData.doubleDataMap.put(key, persistentData.getDouble(key))
-        data.doubleDataMap.put(key, persistentData.getDouble(key))
-        setField(key, persistentData.getDouble(key))
-      } else if(variableData.doubleDataMap.containsKey(key) && variableData.getDouble(key) != value) {
-        syncData.doubleDataMap.put(key, variableData.getDouble(key))
-        data.doubleDataMap.put(key, variableData.getDouble(key))
-        setField(key, variableData.getDouble(key))
+        data.doubleDataMap.put(key, data.doubleDataMap.get(key))
+      } else if(data.doubleDataMap.containsKey(key) && data.getDouble(key) != value) {
+        syncData.doubleDataMap.put(key, data.getDouble(key))
+        data.doubleDataMap.put(key, data.getDouble(key))
+        setField(key, data.getDouble(key))
       }
     }
 
@@ -291,18 +388,11 @@ class VariableSyncLogic(entity: IVariableSyncEntity) {
 
       if(data.longDataMap.containsKey(key) && data.longDataMap.get(key) != value) {
         syncData.longDataMap.put(key, data.longDataMap.get(key))
-        if(persistentData.longDataMap.containsKey(key))
-          persistentData.longDataMap.put(key, data.longDataMap.get(key))
-        if(variableData.longDataMap.containsKey(key))
-          variableData.longDataMap.put(key, data.longDataMap.get(key))
-      } else if(persistentData.longDataMap.containsKey(key) && persistentData.getLong(key) != value) {
-        syncData.longDataMap.put(key, persistentData.getLong(key))
-        data.longDataMap.put(key, persistentData.getLong(key))
-        setField(key, persistentData.getLong(key))
-      } else if(variableData.longDataMap.containsKey(key) && variableData.getLong(key) != value) {
-        syncData.longDataMap.put(key, variableData.getLong(key))
-        data.longDataMap.put(key, variableData.getLong(key))
-        setField(key, variableData.getLong(key))
+        data.longDataMap.put(key, data.longDataMap.get(key))
+      } else if(data.longDataMap.containsKey(key) && data.getLong(key) != value) {
+        syncData.longDataMap.put(key, data.getLong(key))
+        data.longDataMap.put(key, data.getLong(key))
+        setField(key, data.getLong(key))
       }
     }
 
@@ -315,18 +405,11 @@ class VariableSyncLogic(entity: IVariableSyncEntity) {
 
       if(data.stringDataMap.containsKey(key) && data.stringDataMap.get(key) != value) {
         syncData.stringDataMap.put(key, data.stringDataMap.get(key))
-        if(persistentData.stringDataMap.containsKey(key))
-          persistentData.stringDataMap.put(key, data.stringDataMap.get(key))
-        if(variableData.stringDataMap.containsKey(key))
-          variableData.stringDataMap.put(key, data.stringDataMap.get(key))
-      } else if(persistentData.stringDataMap.containsKey(key) && persistentData.getString(key) != value) {
-        syncData.stringDataMap.put(key, persistentData.getString(key))
-        data.stringDataMap.put(key, persistentData.getString(key))
-        setField(key, persistentData.getString(key))
-      } else if(variableData.stringDataMap.containsKey(key) && variableData.getString(key) != value) {
-        syncData.stringDataMap.put(key, variableData.getString(key))
-        data.stringDataMap.put(key, variableData.getString(key))
-        setField(key, variableData.getString(key))
+        data.stringDataMap.put(key, data.stringDataMap.get(key))
+      } else if(data.stringDataMap.containsKey(key) && data.getString(key) != value) {
+        syncData.stringDataMap.put(key, data.getString(key))
+        data.stringDataMap.put(key, data.getString(key))
+        setField(key, data.getString(key))
       }
     }
     entity.syncNonPrimitives()
@@ -350,5 +433,4 @@ class VariableSyncLogic(entity: IVariableSyncEntity) {
       outer.break
     }
   }
-
 }
