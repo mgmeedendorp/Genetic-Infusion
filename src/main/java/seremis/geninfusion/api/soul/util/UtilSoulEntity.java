@@ -30,15 +30,15 @@ import java.util.Random;
 public class UtilSoulEntity {
 
     public static void extinguish(IEntitySoulCustom entity) {
-        entity.setPersistentVariable("fire", 0);
+        entity.setInteger("fire", 0);
     }
     
     public static ItemStack getEquipmentInSlot(IEntitySoulCustom entity, int slot) {
-        return entity.getPersistentItemStack("equipment." + slot);
+        return entity.getItemStack("equipment." + slot);
     }
     
     public static void setEquipmentInSlot(IEntitySoulCustom entity, int slot, ItemStack stack) {
-        entity.setPersistentVariable("equipment." + slot, stack);
+        entity.setItemStack("equipment." + slot, stack);
     }
     
     public static boolean handleLavaMovement(IEntitySoulCustom entity) {
@@ -48,9 +48,9 @@ public class UtilSoulEntity {
     public static boolean isEntityInsideOpaqueBlock(IEntitySoulCustom entity)
     {
     	float width = entity.getFloat("width");
-    	double posX = entity.getPersistentDouble("posX");
-    	double posY = entity.getPersistentDouble("posY");
-    	double posZ = entity.getPersistentDouble("posZ");
+    	double posX = entity.getDouble("posX");
+    	double posY = entity.getDouble("posY");
+    	double posZ = entity.getDouble("posZ");
     	
         for (int i = 0; i < 8; ++i)
         {
@@ -72,26 +72,26 @@ public class UtilSoulEntity {
     }
     
     public static void travelToDimension(IEntitySoulCustom entity, int dimensionId) {
-		boolean isDead = entity.getPersistentBoolean("isDead");
+		boolean isDead = entity.getBoolean("isDead");
 		
         if (CommonProxy.instance.isServerWorld(entity.getWorld()) && !isDead) {
             entity.getWorld().theProfiler.startSection("changeDimension");
             MinecraftServer minecraftserver = MinecraftServer.getServer();
-            int currentDimension = entity.getPersistentInteger("dimension");
+            int currentDimension = entity.getInteger("dimension");
             WorldServer worldserver = minecraftserver.worldServerForDimension(currentDimension);
             WorldServer worldserver1 = minecraftserver.worldServerForDimension(dimensionId);
-            entity.setPersistentVariable("dimension", dimensionId);
+            entity.setInteger("dimension", dimensionId);
 
             if (currentDimension == 1 && dimensionId == 1) {
                 worldserver1 = minecraftserver.worldServerForDimension(0);
-                entity.setPersistentVariable("dimension", 0);
+                entity.setInteger("dimension", 0);
             }
 
             if (entity.getWorld().getEntityByID(entity.getInteger("riddenByEntityID")) != null) {
             	entity.getWorld().getEntityByID(entity.getInteger("riddenByEntityID")).mountEntity(null);
             }
 
-            if (entity.getWorld().getEntityByID(entity.getPersistentInteger("ridingEntityID")) != null) {
+            if (entity.getWorld().getEntityByID(entity.getInteger("ridingEntityID")) != null) {
             	entity.getWorld().getEntityByID(entity.getEntityId()).mountEntity(null);
             }
             entity.getWorld().theProfiler.startSection("reposition");            
@@ -112,7 +112,7 @@ public class UtilSoulEntity {
                 worldserver1.spawnEntityInWorld(ent);
             }
 
-            entity.setPersistentVariable("isDead", true);
+            entity.setBoolean("isDead", true);
             entity.getWorld().theProfiler.endSection();
             worldserver.resetUpdateEntityTick();
             worldserver1.resetUpdateEntityTick();
@@ -166,9 +166,9 @@ public class UtilSoulEntity {
     }
 	
 	public static void setPosition(IEntitySoulCustom entity, double x, double y, double z) {
-        entity.setPersistentVariable("posX", x);
-        entity.setPersistentVariable("posY", y);
-        entity.setPersistentVariable("posZ", z);
+        entity.setDouble("posX", x);
+        entity.setDouble("posY", y);
+        entity.setDouble("posZ", z);
         float f = entity.getFloat("width") / 2.0F;
         float f1 = entity.getFloat("height");
         float yOffset = entity.getFloat("yOffset");
@@ -178,24 +178,24 @@ public class UtilSoulEntity {
     }
 	
     public static void setRotation(IEntitySoulCustom entity, float yaw, float pitch) {
-        entity.setPersistentVariable("rotationYaw", yaw % 360.0F);
-        entity.setPersistentVariable("rotationPitch", pitch % 360.0F);
+        entity.setFloat("rotationYaw", yaw % 360.0F);
+        entity.setFloat("rotationPitch", pitch % 360.0F);
     }
     
     public static void jump(IEntitySoulCustom entity) {
-        entity.setPersistentVariable("motionY", 0.41999998688697815D);
+        entity.setDouble("motionY", 0.41999998688697815D);
 
         if (((EntityLiving)entity).isPotionActive(Potion.jump)) {
-        	entity.setPersistentVariable("motionY", entity.getPersistentDouble("motionY") + (double)((float)(((EntityLiving)entity).getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F));
+        	entity.setDouble("motionY", entity.getDouble("motionY") + (double)((float)(((EntityLiving)entity).getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F));
         }
 
         if (((EntityLiving)entity).isSprinting()) {
-            float f = entity.getPersistentFloat("rotationYaw") * 0.017453292F;
-            entity.setPersistentVariable("motionX", entity.getPersistentDouble("motionX") - (double)(MathHelper.sin(f) * 0.2F));
-            entity.setPersistentVariable("motionZ", entity.getPersistentDouble("motionZ") + (double)(MathHelper.cos(f) * 0.2F));
+            float f = entity.getFloat("rotationYaw") * 0.017453292F;
+            entity.setDouble("motionX", entity.getDouble("motionX") - (double)(MathHelper.sin(f) * 0.2F));
+            entity.setDouble("motionZ", entity.getDouble("motionZ") + (double)(MathHelper.cos(f) * 0.2F));
         }
 
-        entity.setVariable("isAirBorne", true);
+        entity.setBoolean("isAirBorne", true);
         ForgeHooks.onLivingJump((EntityLivingBase) entity);
     }
     
@@ -206,10 +206,10 @@ public class UtilSoulEntity {
         int entityAge = entity.getInteger("entityAge");
         
         if (!shouldDespawn) {
-        	entity.setVariable("entityAge", 0);
+        	entity.setInteger("entityAge", 0);
         } else if ((entityAge & 0x1F) == 0x1F && (result = ForgeEventFactory.canEntityDespawn((EntityLiving) entity)) != Result.DEFAULT) {
             if (result == Result.DENY) {
-            	entity.setVariable("entityAge", 0);
+            	entity.setInteger("entityAge", 0);
             } else {
                 ((EntityLiving)entity).setDead();
             }
@@ -217,9 +217,9 @@ public class UtilSoulEntity {
             EntityPlayer entityplayer = entity.getWorld().getClosestPlayerToEntity((Entity) entity, -1.0D);
 
             if (entityplayer != null) {
-            	double posX = entity.getPersistentDouble("posX");
-            	double posY = entity.getPersistentDouble("posY");
-            	double posZ = entity.getPersistentDouble("posZ");
+            	double posX = entity.getDouble("posX");
+            	double posY = entity.getDouble("posY");
+            	double posZ = entity.getDouble("posZ");
             	
                 double d0 = entityplayer.posX - posX;
                 double d1 = entityplayer.posY - posY;
@@ -233,7 +233,7 @@ public class UtilSoulEntity {
                 if (entity.getInteger("entityAge") > 600 && new Random().nextInt(800) == 0 && d3 > 1024.0D && shouldDespawn) {
                 	((EntityLiving)entity).setDead();
                 } else if (d3 < 1024.0D) {
-                	entity.setVariable("entityAge", 0);
+                	entity.setInteger("entityAge", 0);
                 }
             }
         }
@@ -241,16 +241,16 @@ public class UtilSoulEntity {
     
     public static EntityItem dropItem(IEntitySoulCustom entity, ItemStack droppedStack, float dropHeight) {
         if(droppedStack.stackSize != 0 && droppedStack.getItem() != null) {
-        	double posX = entity.getPersistentDouble("posX");
-        	double posY = entity.getPersistentDouble("posY");
-        	double posZ = entity.getPersistentDouble("posZ");
+        	double posX = entity.getDouble("posX");
+        	double posY = entity.getDouble("posY");
+        	double posZ = entity.getDouble("posZ");
 
             EntityItem entityitem = new EntityItem(entity.getWorld(), posX, posY + (double)dropHeight, posZ, droppedStack);
             entityitem.delayBeforeCanPickup = 10;
 
             if(entity.getBoolean("captureDrops")) {
-            	int capturedDropsSize = entity.getPersistentInteger("capturedDrops.size");
-            	entity.setPersistentVariable("capturedDrops." + capturedDropsSize, droppedStack);
+            	int capturedDropsSize = entity.getInteger("capturedDrops.size");
+            	entity.setItemStack("capturedDrops." + capturedDropsSize, droppedStack);
                 entity.forceVariableSync();
             } else {
                 entity.getWorld().spawnEntityInWorld(entityitem);
@@ -263,27 +263,27 @@ public class UtilSoulEntity {
 
     public static boolean isBurning(IEntitySoulCustom entity) {
         boolean flag = entity.getWorld() != null && entity.getWorld().isRemote;
-        return !((AlleleBoolean)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_IMMUNE_TO_FIRE)).value && (entity.getPersistentInteger("fire") > 0 || flag && entity.getFlag(0));
+        return !((AlleleBoolean)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_IMMUNE_TO_FIRE)).value && (entity.getInteger("fire") > 0 || flag && entity.getFlag(0));
     }
 
     public static void faceEntity(IEntitySoulCustom entity, Entity lookEntity, float maxYawIncrement, float maxPitchIncrement) {
-        double d0 = lookEntity.posX - entity.getPersistentInteger("posX");
-        double d2 = lookEntity.posZ - entity.getPersistentInteger("posZ");
+        double d0 = lookEntity.posX - entity.getInteger("posX");
+        double d2 = lookEntity.posZ - entity.getInteger("posZ");
         double d1;
 
         if (lookEntity instanceof EntityLivingBase) {
             EntityLivingBase entitylivingbase = (EntityLivingBase)lookEntity;
-            d1 = entitylivingbase.posY + (double)entitylivingbase.getEyeHeight() - (entity.getPersistentInteger("posY") + (double)getEyeHeight(entity));
+            d1 = entitylivingbase.posY + (double)entitylivingbase.getEyeHeight() - (entity.getInteger("posY") + (double)getEyeHeight(entity));
         } else {
-            d1 = (lookEntity.boundingBox.minY + lookEntity.boundingBox.maxY) / 2.0D - (entity.getPersistentInteger("posY") + (double)getEyeHeight(entity));
+            d1 = (lookEntity.boundingBox.minY + lookEntity.boundingBox.maxY) / 2.0D - (entity.getInteger("posY") + (double)getEyeHeight(entity));
         }
 
         double d3 = (double)MathHelper.sqrt_double(d0 * d0 + d2 * d2);
         float f2 = (float)(Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
         float f3 = (float)(-(Math.atan2(d1, d3) * 180.0D / Math.PI));
 
-        float rotationYaw = entity.getPersistentFloat("rotationYaw");
-        float rotationPitch = entity.getPersistentFloat("rotationPitch");
+        float rotationYaw = entity.getFloat("rotationYaw");
+        float rotationPitch = entity.getFloat("rotationPitch");
         setRotation(entity, updateRotation(rotationYaw, f2, maxYawIncrement), updateRotation(rotationPitch, f3, maxPitchIncrement));
     }
 
@@ -306,9 +306,9 @@ public class UtilSoulEntity {
     }
 
     public static boolean canEntityBeSeen(IEntitySoulCustom entity, Entity ent) {
-        double posX = entity.getPersistentDouble("posX");
-        double posY = entity.getPersistentDouble("posY");
-        double posZ = entity.getPersistentDouble("posZ");
+        double posX = entity.getDouble("posX");
+        double posY = entity.getDouble("posY");
+        double posZ = entity.getDouble("posZ");
         return entity.getWorld().rayTraceBlocks(Vec3.createVectorHelper(posX, posY + (double) getEyeHeight(entity), posZ), Vec3.createVectorHelper(ent.posX, ent.posY + (double)ent.getEyeHeight(), ent.posZ)) == null;
     }
 }

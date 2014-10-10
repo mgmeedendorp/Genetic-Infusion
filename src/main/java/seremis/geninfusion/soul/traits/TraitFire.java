@@ -22,11 +22,11 @@ public class TraitFire extends Trait {
         boolean burnsInDayLight = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_BURNS_IN_DAYLIGHT)).value;
         boolean isImmuneToFire = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_IMMUNE_TO_FIRE)).value;
 
-        double posX = entity.getPersistentDouble("posX");
-        double posY = entity.getPersistentDouble("posY");
-        double posZ = entity.getPersistentDouble("posZ");
+        double posX = entity.getDouble("posX");
+        double posY = entity.getDouble("posY");
+        double posZ = entity.getDouble("posZ");
         
-        float fallDistance = entity.getPersistentFloat("fallDistance");
+        float fallDistance = entity.getFloat("fallDistance");
         
         if(burnsInDayLight && !isImmuneToFire) {
             if(CommonProxy.instance.isServerWorld(entity.getWorld()) && entity.getWorld().isDaytime()) {
@@ -46,13 +46,13 @@ public class TraitFire extends Trait {
                             }
                         }
                     } else {
-                        entity.setPersistentVariable("fire", 8*20);
+                        entity.setInteger("fire", 8*20);
                     }
                 }
             }
         }
 
-        int fireTicks = entity.getPersistentInteger("fire");
+        int fireTicks = entity.getInteger("fire");
         
         if(CommonProxy.instance.isRenderWorld(entity.getWorld())) {
             UtilSoulEntity.extinguish(entity);
@@ -63,7 +63,7 @@ public class TraitFire extends Trait {
                 if(fireTicks % 20 == 0) {
                     entity.attackEntityFrom(DamageSource.onFire, 1.0F);
                 }
-                entity.setPersistentVariable("fire", fireTicks - 1);
+                entity.setInteger("fire", fireTicks - 1);
                 entity.setFlag(0, fireTicks > 0);
             }
         } else if(fireTicks <= 0) {
@@ -73,18 +73,18 @@ public class TraitFire extends Trait {
         if(UtilSoulEntity.handleLavaMovement(entity)) {
             if(!isImmuneToFire) {
                 entity.attackEntityFrom(DamageSource.lava, 4.0F);
-                entity.setPersistentVariable("fire", 15*20);
+                entity.setInteger("fire", 15*20);
             }
-            entity.setPersistentVariable("fallDistance", fallDistance * 0.5F);
+            entity.setFloat("fallDistance", fallDistance * 0.5F);
         }
     }
     
     public float getBrightness(IEntitySoulCustom entity) {
-        double posX = entity.getPersistentDouble("posX");
-        double posY = entity.getPersistentDouble("posY");
-        double posZ = entity.getPersistentDouble("posZ");
+        double posX = entity.getDouble("posX");
+        double posY = entity.getDouble("posY");
+        double posZ = entity.getDouble("posZ");
 
-        float yOffset = entity.getPersistentFloat("yOffset");
+        float yOffset = entity.getFloat("yOffset");
 
         AxisAlignedBB boundingBox = entity.getBoundingBox();
         
@@ -101,14 +101,14 @@ public class TraitFire extends Trait {
     }
 
     public void breakHeadwear(IEntitySoulCustom entity, ItemStack stack) {
-        float pitch = entity.getPersistentFloat("rotationPitch");
-        float yaw = entity.getPersistentFloat("rotationYaw");
+        float pitch = entity.getFloat("rotationPitch");
+        float yaw = entity.getFloat("rotationYaw");
         
-        double posX = entity.getPersistentDouble("posX");
-        double posY = entity.getPersistentDouble("posY");
-        double posZ = entity.getPersistentDouble("posZ");
+        double posX = entity.getDouble("posX");
+        double posY = entity.getDouble("posY");
+        double posZ = entity.getDouble("posZ");
         
-        float eyeHeight = entity.getPersistentFloat("eyeHeight");
+        float eyeHeight = entity.getFloat("eyeHeight");
         
         entity.playSound("random.break", 0.8F, 0.8F + entity.getRandom().nextFloat() * 0.4F);
 

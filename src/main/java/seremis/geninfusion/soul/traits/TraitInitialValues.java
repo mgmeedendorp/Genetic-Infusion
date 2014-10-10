@@ -19,7 +19,7 @@ public class TraitInitialValues extends Trait {
         float maxHealth = ((AlleleFloat) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_MAX_HEALTH)).value;
         entity.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.maxHealth).setBaseValue(maxHealth);
 
-        entity.setPersistentVariable("health", maxHealth);
+        entity.setFloat("health", maxHealth);
 
         float attackDamage = ((AlleleFloat) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_ATTACK_DAMAGE)).value;
         entity.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.attackDamage).setBaseValue(attackDamage);
@@ -33,8 +33,8 @@ public class TraitInitialValues extends Trait {
         float followRange = ((AlleleFloat) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_FOLLOW_RANGE)).value;
         entity.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.followRange).setBaseValue(followRange);
 
-        entity.setVariable("creatureAttribute", ((AlleleInteger) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_CREATURE_ATTRIBUTE)).value);
-        entity.setVariable("experienceValue", ((AlleleInteger) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_EXPERIENCE_VALUE)).value);
+        entity.setInteger("creatureAttribute", ((AlleleInteger) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_CREATURE_ATTRIBUTE)).value);
+        entity.setInteger("experienceValue", ((AlleleInteger) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_EXPERIENCE_VALUE)).value);
 
         if (!entity.getBoolean("aiEnabled")) {
             entity.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed).setBaseValue(0.10000000149011612D);

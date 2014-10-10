@@ -45,11 +45,11 @@ public class TraitItemDrops extends Trait {
                 i = EnchantmentHelper.getLootingModifier((EntityLivingBase)entity);
             }
             
-            entity.setVariable("captureDrops", true);
+            entity.setBoolean("captureDrops", true);
 
-            int capturedDropsSize = entity.getPersistentInteger("capturedDrops.size");
+            int capturedDropsSize = entity.getInteger("capturedDrops.size");
             for(int k = 0; k < capturedDropsSize; k++) {
-            	entity.setPersistentVariable("capturedDrops."+k, (ItemStack)null);
+            	entity.setItemStack("capturedDrops."+k, (ItemStack)null);
             }
            
             int j = 0;
@@ -70,18 +70,18 @@ public class TraitItemDrops extends Trait {
                 }
             }
             
-            entity.setVariable("captureDrops", false);
+            entity.setBoolean("captureDrops", false);
 
             ArrayList<EntityItem> capturedDrops = new ArrayList<EntityItem>();
-            double posX = entity.getPersistentDouble("posX");
-            double posY = entity.getPersistentDouble("posY");
-            double posZ = entity.getPersistentDouble("posZ");
+            double posX = entity.getDouble("posX");
+            double posY = entity.getDouble("posY");
+            double posZ = entity.getDouble("posZ");
 
-            capturedDropsSize = entity.getPersistentInteger("capturedDrops.size");
+            capturedDropsSize = entity.getInteger("capturedDrops.size");
             
             for(int k = 0; k < capturedDropsSize; k++) {
-            	if(entity.getPersistentItemStack("capturedDrops."+k) != null)
-            		capturedDrops.add(new EntityItem(entity.getWorld(), posX, posY, posZ, entity.getPersistentItemStack("capturedDrops."+k)));
+            	if(entity.getItemStack("capturedDrops."+k) != null)
+            		capturedDrops.add(new EntityItem(entity.getWorld(), posX, posY, posZ, entity.getItemStack("capturedDrops."+k)));
             }
             
             if (!ForgeHooks.onLivingDrops((EntityLiving)entity, source, capturedDrops, i, recentlyHit > 0, j)) {
@@ -114,7 +114,7 @@ public class TraitItemDrops extends Trait {
 		for (int j = 0; j < 5; ++j) {
             ItemStack itemstack = UtilSoulEntity.getEquipmentInSlot(entity, j);
             
-            float dropChance = entity.getPersistentFloat("equipmentDropChances." + j);
+            float dropChance = entity.getFloat("equipmentDropChances." + j);
             
             boolean flag1 = dropChance > 1.0F;
 

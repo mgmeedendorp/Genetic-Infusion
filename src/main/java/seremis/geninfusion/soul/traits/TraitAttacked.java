@@ -26,25 +26,25 @@ public class TraitAttacked extends Trait {
 
 	@Override
 	public void onUpdate(IEntitySoulCustom entity) {
-		float health = entity.getPersistentFloat("health");
-		int attackTime = entity.getPersistentInteger("attackTime");
-		int hurtTime = entity.getPersistentInteger("hurtTime");
+		float health = entity.getFloat("health");
+		int attackTime = entity.getInteger("attackTime");
+		int hurtTime = entity.getInteger("hurtTime");
 		int hurtResistantTime = entity.getInteger("hurtResistantTime");
 		int recentlyHit = entity.getInteger("recentlyHit");
-		int ticksExisted = entity.getPersistentInteger("ticksExisted");
+		int ticksExisted = entity.getInteger("ticksExisted");
 		EntityLivingBase lastAttacker = entity.getInteger("lastAttackerID") != 0 ? (EntityLivingBase) entity.getWorld().getEntityByID(entity.getInteger("lastAttacker")) : null;
 		EntityLivingBase entityLivingToAttack = entity.getInteger("entityLivingToAttackID") != 0 ? (EntityLivingBase) entity.getWorld().getEntityByID(entity.getInteger("entityLivingToAttackID")) : null; 
 
 		if(attackTime > 0) {
-			entity.setPersistentVariable("attackTime", --attackTime);
+			entity.setInteger("attackTime", --attackTime);
 		}
 
 		if(hurtTime > 0) {
-			entity.setPersistentVariable("hurtTime", --hurtTime);
+			entity.setInteger("hurtTime", --hurtTime);
 		}
 
 		if(hurtResistantTime > 0) {
-			entity.setVariable("hurtResistantTime", --hurtResistantTime);
+			entity.setInteger("hurtResistantTime", --hurtResistantTime);
 		}
 
 		if(health <= 0.0F) {
@@ -52,13 +52,13 @@ public class TraitAttacked extends Trait {
 		}
 
 		if(recentlyHit > 0) {
-			entity.setVariable("recentlyHit", --recentlyHit);
+			entity.setInteger("recentlyHit", --recentlyHit);
 		} else {
-			entity.setVariable("attackingPlayerID", 0);
+			entity.setInteger("attackingPlayerID", 0);
 		}
 
 		if(lastAttacker != null && !lastAttacker.isEntityAlive()) {
-			entity.setVariable("lastAttackerID", 0);
+			entity.setInteger("lastAttackerID", 0);
 		}
 
 		if (entityLivingToAttack != null) {
@@ -78,12 +78,12 @@ public class TraitAttacked extends Trait {
         } else if (CommonProxy.instance.isRenderWorld(entity.getWorld())) {
             return false;
         } else {
-            entity.setVariable("entityAge", 0);
+            entity.setInteger("entityAge", 0);
 
-            float health = entity.getPersistentFloat("health");
+            float health = entity.getFloat("health");
     		int hurtResistantTime = entity.getInteger("hurtResistantTime");
     		int maxHurtResistantTime = ((AlleleInteger) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_MAX_HURT_RESISTANT_TIME)).value;
-            int hurtTime = entity.getPersistentInteger("hurtTime");
+            int hurtTime = entity.getInteger("hurtTime");
             int maxHurtTime = entity.getInteger("maxHurtTime");
     		float lastDamage = entity.getFloat("lastDamage");
     		
@@ -98,7 +98,7 @@ public class TraitAttacked extends Trait {
                     damage *= 0.75F;
                 }
                 
-                entity.setVariable("limbSwingAmount", 1.5F);
+                entity.setFloat("limbSwingAmount", 1.5F);
                 boolean flag = true;
 
                 if ((float)hurtResistantTime > (float)maxHurtResistantTime / 2.0F) {
@@ -107,17 +107,17 @@ public class TraitAttacked extends Trait {
                     }
 
                     entity.damageEntity(source, damage - lastDamage);
-                    entity.setVariable("lastDamage", damage);
+                    entity.setFloat("lastDamage", damage);
                     flag = false;
                 } else {
-                	entity.setVariable("lastDamage", damage);
-                	entity.setVariable("prevHealth", health);
-                    entity.setVariable("hurtResistantTime" , maxHurtResistantTime);
+                	entity.setFloat("lastDamage", damage);
+                	entity.setFloat("prevHealth", health);
+                    entity.setInteger("hurtResistantTime" , maxHurtResistantTime);
                     entity.damageEntity(source, damage);
-                    entity.setVariable("hurtTime", maxHurtTime);
+                    entity.setInteger("hurtTime", maxHurtTime);
                 }
 
-                entity.setPersistentVariable("attackedAtYaw", 0.0F);
+                entity.setFloat("attackedAtYaw", 0.0F);
                 Entity ent = source.getEntity();
 
                 if (ent != null) {
@@ -126,14 +126,14 @@ public class TraitAttacked extends Trait {
                     }
 
                     if (ent instanceof EntityPlayer) {
-                    	entity.setVariable("recentlyHit", 100);
-                    	entity.setVariable("attackingPlayerID", ent.getEntityId());
+                    	entity.setInteger("recentlyHit", 100);
+                    	entity.setInteger("attackingPlayerID", ent.getEntityId());
                     } else if (ent instanceof EntityWolf) {
                         EntityWolf entitywolf = (EntityWolf)ent;
 
                         if (entitywolf.isTamed()) {
-                        	entity.setVariable("recentlyHit", 100);
-                        	entity.setVariable("attackingPlayerID", 0);
+                        	entity.setInteger("recentlyHit", 100);
+                        	entity.setInteger("attackingPlayerID", 0);
                         }
                     }
                 }
@@ -143,13 +143,13 @@ public class TraitAttacked extends Trait {
 
                     if (source != DamageSource.drown) {
                     	double knockbackResistance = ((AlleleFloat)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_KNOCKBACK_RESISTANCE)).value;
-                    	entity.setVariable("velocityChanged", this.rand.nextDouble() >= knockbackResistance);
+                    	entity.setBoolean("velocityChanged", this.rand.nextDouble() >= knockbackResistance);
                     }
 
                     if (ent != null) {
-                    	double posX = entity.getPersistentDouble("posX");
-                        double posZ = entity.getPersistentDouble("posZ");
-                        float rotationYaw = entity.getPersistentFloat("rotationYaw");
+                    	double posX = entity.getDouble("posX");
+                        double posZ = entity.getDouble("posZ");
+                        float rotationYaw = entity.getFloat("rotationYaw");
                     	
                         double d1 = ent.posX - posX;
                         double d0;
@@ -159,10 +159,10 @@ public class TraitAttacked extends Trait {
                             d1 = (Math.random() - Math.random()) * 0.01D;
                         }
 
-                        entity.setPersistentVariable("attackedAtYaw", (float)(Math.atan2(d0, d1) * 180.0D / Math.PI) - rotationYaw);
+                        entity.setFloat("attackedAtYaw", (float)(Math.atan2(d0, d1) * 180.0D / Math.PI) - rotationYaw);
                         ((EntityLiving)entity).knockBack(ent, damage, d1, d0);
                     } else {
-                    	entity.setPersistentVariable("attackedAtYaw", (float)((int)(Math.random() * 2.0D) * 180));
+                    	entity.setFloat("attackedAtYaw", (float)((int)(Math.random() * 2.0D) * 180));
                     }
                 }
 
@@ -170,7 +170,7 @@ public class TraitAttacked extends Trait {
                 float soundVolume = ((AlleleFloat)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_SOUND_VOLUME)).value;
                 float soundPitch = ((EntityLiving)entity).isChild() ? (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.5F : (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F;
 
-                health = entity.getPersistentFloat("health");
+                health = entity.getFloat("health");
                 
                 if (health <= 0.0F) {
                     sound = ((AlleleString)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_DEATH_SOUND)).value;
@@ -198,8 +198,8 @@ public class TraitAttacked extends Trait {
 		boolean isInvulnerable = ((AlleleBoolean)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_INVULNERABLE)).value;
 
 		if (!isInvulnerable) {
-			float health = entity.getPersistentFloat("health");
-			float absorptionAmount = entity.getPersistentFloat("absorptionAmount");
+			float health = entity.getFloat("health");
+			float absorptionAmount = entity.getFloat("absorptionAmount");
 			
             damage = ForgeHooks.onLivingHurt((EntityLivingBase) entity, source, damage);
             if (damage <= 0) return;
@@ -207,12 +207,12 @@ public class TraitAttacked extends Trait {
             damage = UtilSoulEntity.applyPotionDamageCalculations(entity, source, damage);
             float f1 = damage;
             damage = Math.max(damage - absorptionAmount, 0.0F);
-            entity.setPersistentVariable("absorptionAmount", Math.max(absorptionAmount - (f1 - damage), 0.0F));
+            entity.setFloat("absorptionAmount", Math.max(absorptionAmount - (f1 - damage), 0.0F));
             
             if (damage != 0.0F) {
-                entity.setPersistentVariable("health", health - damage);
+                entity.setFloat("health", health - damage);
                 entity.getCombatTracker().func_94547_a(source, health, damage);
-                entity.setPersistentVariable("absorptionAmount", Math.max(absorptionAmount - damage, 0));
+                entity.setFloat("absorptionAmount", Math.max(absorptionAmount - damage, 0));
             }
             
         }
@@ -234,6 +234,6 @@ public class TraitAttacked extends Trait {
             ent.onKillEntity((EntityLiving) entity);
         }
 
-        entity.setPersistentVariable("isDead", true);
+        entity.setBoolean("isDead", true);
 	}
 }

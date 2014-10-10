@@ -22,9 +22,9 @@ public class TraitSounds extends Trait {
         entity.getWorld().theProfiler.startSection("mobBaseTick");
 
         int livingSoundTime = entity.getInteger("livingSoundTime");
-        entity.setVariable("livingSoundTime", livingSoundTime++);
-        if(!entity.getPersistentBoolean("isDead") && entity.getRandom().nextInt(1000) < livingSoundTime) {
-            entity.setVariable("livingSoundTime", -entity.getInteger("talkInterval"));
+        entity.setInteger("livingSoundTime", livingSoundTime++);
+        if(!entity.getBoolean("isDead") && entity.getRandom().nextInt(1000) < livingSoundTime) {
+            entity.setInteger("livingSoundTime", -entity.getInteger("talkInterval"));
             ((EntityLiving) entity).playLivingSound();
         }
 
@@ -33,6 +33,6 @@ public class TraitSounds extends Trait {
 
     @Override
     public void firstTick(IEntitySoulCustom entity) {
-        entity.setVariable("talkInterval", ((AlleleInteger) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_TALK_INTERVAL)).value);
+        entity.setInteger("talkInterval", ((AlleleInteger) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_TALK_INTERVAL)).value);
     }
 }

@@ -34,7 +34,7 @@ public class TraitItemPickup extends Trait {
 		entity.getWorld().theProfiler.startSection("looting");
 		
 		boolean canPickUpItems = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_PICKS_UP_ITEMS)).value;
-		boolean isDead = entity.getPersistentBoolean("isDead");
+		boolean isDead = entity.getBoolean("isDead");
 
         if (CommonProxy.instance.isServerWorld(entity.getWorld()) && canPickUpItems && !isDead && entity.getWorld().getGameRules().getGameRuleBooleanValue("mobGriefing")) {
             List list = entity.getWorld().getEntitiesWithinAABB(EntityItem.class, entity.getBoundingBox().expand(1.0D, 0.0D, 1.0D));
@@ -55,7 +55,7 @@ public class TraitItemPickup extends Trait {
                             if (i == 0) {
                                 if (itemstack.getItem() instanceof ItemSword && !(itemstack1.getItem() instanceof ItemSword)) {
                                     flag = true;
-                                } else if (itemstack.getItem() instanceof ItemSword && itemstack1.getItem() instanceof ItemSword) {
+                                } else if (itemstack.getItem() instanceof ItemSword) {
                                     ItemSword itemsword = (ItemSword)itemstack.getItem();
                                     ItemSword itemsword1 = (ItemSword)itemstack1.getItem();
 
@@ -69,7 +69,7 @@ public class TraitItemPickup extends Trait {
                                 }
                             } else if (itemstack.getItem() instanceof ItemArmor && !(itemstack1.getItem() instanceof ItemArmor)) {
                                 flag = true;
-                            } else if (itemstack.getItem() instanceof ItemArmor && itemstack1.getItem() instanceof ItemArmor) {
+                            } else if (itemstack.getItem() instanceof ItemArmor) {
                                 ItemArmor itemarmor = (ItemArmor)itemstack.getItem();
                                 ItemArmor itemarmor1 = (ItemArmor)itemstack1.getItem();
 
@@ -84,7 +84,7 @@ public class TraitItemPickup extends Trait {
                         }
 
                         if (flag) {
-                        	float equipmentDropChance = entity.getPersistentFloat("equipmentDropChances."+i);
+                        	float equipmentDropChance = entity.getFloat("equipmentDropChances." + i);
                         	
                             if (itemstack1 != null && new Random().nextFloat() - 0.1F < equipmentDropChance) {
                                 UtilSoulEntity.dropItem(entity, itemstack1, 0.0F);
@@ -99,8 +99,8 @@ public class TraitItemPickup extends Trait {
                             }
 
                             UtilSoulEntity.setEquipmentInSlot(entity, i, itemstack);
-                            entity.setPersistentVariable("equipmentDropChances."+i, 2.0F);
-                            entity.setPersistentVariable("persistenceRequired", true);
+                            entity.setFloat("equipmentDropChances." + i, 2.0F);
+                            entity.setBoolean("persistenceRequired", true);
                             onItemPickup(entity, entityitem, 1);
                             entityitem.setDead();
                         }

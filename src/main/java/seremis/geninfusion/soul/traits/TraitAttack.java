@@ -27,11 +27,11 @@ public class TraitAttack extends Trait {
 
         if (flag) {
             if (i > 0) {
-                float rotationYaw = entity.getPersistentFloat("rotationYaw");
+                float rotationYaw = entity.getFloat("rotationYaw");
 
                 entityToAttack.addVelocity((double)(-MathHelper.sin(rotationYaw * (float) Math.PI / 180.0F) * (float)i * 0.5F), 0.1D, (double)(MathHelper.cos(rotationYaw * (float)Math.PI / 180.0F) * (float)i * 0.5F));
-                entity.setPersistentVariable("motionX", entity.getPersistentDouble("motionX")*0.6D);
-                entity.setPersistentVariable("motionZ", entity.getPersistentDouble("motionZ")*0.6D);
+                entity.setDouble("motionX", entity.getDouble("motionX")*0.6D);
+                entity.setDouble("motionZ", entity.getDouble("motionZ")*0.6D);
             }
 
             int j = EnchantmentHelper.getFireAspectModifier((EntityLivingBase) entity);

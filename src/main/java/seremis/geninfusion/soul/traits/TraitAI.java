@@ -39,11 +39,11 @@ public class TraitAI extends Trait {
 
         entity.getWorld().theProfiler.startSection("ai");
 
-        if(entity.getPersistentBoolean("isDead")) {
-            entity.setVariable("isJumping", false);
-            entity.setVariable("moveForward", 0.0F);
-            entity.setVariable("moveStrafing", 0.0F);
-            entity.setVariable("randomYawVelocity", 0.0F);
+        if(entity.getBoolean("isDead")) {
+            entity.setBoolean("isJumping", false);
+            entity.setFloat("moveForward", 0.0F);
+            entity.setFloat("moveStrafing", 0.0F);
+            entity.setFloat("randomYawVelocity", 0.0F);
         } else if(CommonProxy.instance.isServerWorld(entity.getWorld())) {
             if(useNewAI) {
                 entity.getWorld().theProfiler.startSection("newAi");
@@ -58,7 +58,7 @@ public class TraitAI extends Trait {
                     updateEntityActionState(entity);
                 }
                 entity.getWorld().theProfiler.endSection();
-                entity.setVariable("rotationYawHead", entity.getPersistentFloat("rotationYaw"));
+                entity.setFloat("rotationYawHead", entity.getFloat("rotationYaw"));
             }
         }
 
@@ -73,12 +73,12 @@ public class TraitAI extends Trait {
         int fleeingTick = entity.getInteger("fleeingTick");
         int entityAge = entity.getInteger("entityAge");
 
-        float rotationYaw = entity.getPersistentFloat("rotationYaw");
+        float rotationYaw = entity.getFloat("rotationYaw");
         float moveForward = entity.getFloat("moveForward");
         float moveStrafing = entity.getFloat("moveStrafing");
 
-        double posX = entity.getPersistentDouble("posX");
-        double posZ = entity.getPersistentDouble("posZ");
+        double posX = entity.getDouble("posX");
+        double posZ = entity.getDouble("posZ");
 
         PathEntity pathToEntity = null;
         Entity entityToAttack = entity.getWorld().getEntityByID(entity.getInteger("entityToAttack"));
@@ -123,7 +123,7 @@ public class TraitAI extends Trait {
         int i = MathHelper.floor_double(entity.getBoundingBox().minY + 0.5D);
         boolean flag = entity.getBoolean("inWater");
         boolean flag1 = UtilSoulEntity.handleLavaMovement(entity);
-        entity.setPersistentVariable("rotationPitch", 0.0F);
+        entity.setFloat("rotationPitch", 0.0F);
 
         boolean flag3 = pathToEntity != null && entity.getRandom().nextInt(100) != 0;
 
@@ -143,7 +143,7 @@ public class TraitAI extends Trait {
                 }
             }
 
-            entity.setVariable("isJumping", false);
+            entity.setBoolean("isJumping", false);
 
             if(vec3 != null) {
                 double d1 = vec3.xCoord - posX;
@@ -175,7 +175,7 @@ public class TraitAI extends Trait {
                 }
 
                 if(d3 > 0.0D) {
-                    entity.setVariable("isJumping", true);
+                    entity.setBoolean("isJumping", true);
                 }
             }
 
@@ -184,24 +184,24 @@ public class TraitAI extends Trait {
             }
 
             if(entity.getBoolean("isCollidedHorizontally") && pathToEntity == null) {
-                entity.setVariable("isJumping", true);
+                entity.setBoolean("isJumping", true);
             }
 
             if(entity.getRandom().nextFloat() < 0.8F && (flag || flag1)) {
-                entity.setVariable("isJumping", true);
+                entity.setBoolean("isJumping", true);
             }
 
             entity.getWorld().theProfiler.endSection();
         }
 
-        entity.setVariable("fleeingTick", fleeingTick);
-        entity.setVariable("entityAge", entityAge);
-        entity.setPersistentVariable("rotationYaw", rotationYaw);
-        entity.setVariable("moveForward", moveForward);
-        entity.setVariable("moveStrafing", moveStrafing);
-        entity.setPersistentVariable("posX", posX);
-        entity.setPersistentVariable("posZ", posZ);
-        entity.setVariable("entityToAttack", entityToAttack != null ? entityToAttack.getEntityId() : 0);
+        entity.setInteger("fleeingTick", fleeingTick);
+        entity.setInteger("entityAge", entityAge);
+        entity.setFloat("rotationYaw", rotationYaw);
+        entity.setFloat("moveForward", moveForward);
+        entity.setFloat("moveStrafing", moveStrafing);
+        entity.setDouble("posX", posX);
+        entity.setDouble("posZ", posZ);
+        entity.setInteger("entityToAttack", entityToAttack != null ? entityToAttack.getEntityId() : 0);
         //TODO save pathEntity
 
         if(!flag3) {
@@ -219,9 +219,9 @@ public class TraitAI extends Trait {
     }
 
     private void updateEntityActionState(IEntitySoulCustom entity) {
-        entity.setVariable("entityAge", entity.getInteger("entityAge") + 1);
-        entity.setVariable("moveForward", 0.0F);
-        entity.setVariable("moveStrafing", 0.0F);
+        entity.setInteger("entityAge", entity.getInteger("entityAge") + 1);
+        entity.setFloat("moveForward", 0.0F);
+        entity.setFloat("moveStrafing", 0.0F);
         UtilSoulEntity.despawnEntity(entity);
         float f = 8.0F;
 
@@ -229,10 +229,10 @@ public class TraitAI extends Trait {
             EntityPlayer entityplayer = entity.getWorld().getClosestPlayerToEntity((Entity) entity, (double) f);
 
             if(entityplayer != null) {
-                entity.setVariable("currentTarget", entityplayer.getEntityId());
-                entity.setVariable("numTicksToChaseTarget", 10 + entity.getRandom().nextInt(20));
+                entity.setInteger("currentTarget", entityplayer.getEntityId());
+                entity.setInteger("numTicksToChaseTarget", 10 + entity.getRandom().nextInt(20));
             } else {
-                entity.setVariable("randomYawVelocity", (entity.getRandom().nextFloat() - 0.5F) * 20.0F);
+                entity.setFloat("randomYawVelocity", (entity.getRandom().nextFloat() - 0.5F) * 20.0F);
             }
         }
 
@@ -243,29 +243,29 @@ public class TraitAI extends Trait {
 
             int numTicksToChaseTarget = entity.getInteger("numTicksToChaseTarget");
 
-            entity.setVariable("numTicksToChaseTarget", numTicksToChaseTarget - 1);
+            entity.setInteger("numTicksToChaseTarget", numTicksToChaseTarget - 1);
             if(numTicksToChaseTarget - 1 <= 0 || currentTarget.isDead || currentTarget.getDistanceSqToEntity((Entity) entity) > (double) (f * f)) {
-                entity.setVariable("currentTarget", 0);
+                entity.setInteger("currentTarget", 0);
             }
         } else {
             if(entity.getRandom().nextFloat() < 0.05F) {
-                entity.setVariable("randomYawVelocity", (entity.getRandom().nextFloat() - 0.5F) * 20.0F);
+                entity.setFloat("randomYawVelocity", (entity.getRandom().nextFloat() - 0.5F) * 20.0F);
             }
 
-            entity.setPersistentVariable("rotationYaw", entity.getPersistentFloat("rotationYaw") + entity.getFloat("randomYawVelocity"));
-            entity.setPersistentVariable("rotationPitch", entity.getFloat("defaultPitch"));
+            entity.setFloat("rotationYaw", entity.getFloat("rotationYaw") + entity.getFloat("randomYawVelocity"));
+            entity.setFloat("rotationPitch", entity.getFloat("defaultPitch"));
         }
 
         boolean flag1 = entity.getBoolean("inWater");
         boolean flag = UtilSoulEntity.handleLavaMovement(entity);
 
         if(flag1 || flag) {
-            entity.setVariable("isJumping", entity.getRandom().nextFloat() < 0.8F);
+            entity.setBoolean("isJumping", entity.getRandom().nextFloat() < 0.8F);
         }
     }
 
     private void updateAITasks(IEntitySoulCustom entity) {
-        entity.setVariable("entityAge", entity.getInteger("entityAge") + 1);
+        entity.setInteger("entityAge", entity.getInteger("entityAge") + 1);
         entity.getWorld().theProfiler.startSection("checkDespawn");
         UtilSoulEntity.despawnEntity(entity);
         entity.getWorld().theProfiler.endSection();
