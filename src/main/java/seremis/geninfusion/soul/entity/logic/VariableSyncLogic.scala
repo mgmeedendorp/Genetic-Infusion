@@ -57,7 +57,7 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
 
   def getString(name: String): String = data.getString(name)
 
-  def getItemStack(name: String): ItemStack = ItemStack.loadItemStackFromNBT(data.getNBT(name))
+  def getItemStack(name: String): ItemStack = if(data.getNBT(name) != null) ItemStack.loadItemStackFromNBT(data.getNBT(name)) else null
 
   def getNBT(name: String): NBTTagCompound = data.getNBT(name)
 

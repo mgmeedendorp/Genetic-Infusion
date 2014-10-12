@@ -25,16 +25,14 @@ public class TraitFire extends Trait {
         double posX = entity.getDouble("posX");
         double posY = entity.getDouble("posY");
         double posZ = entity.getDouble("posZ");
-        
+
         float fallDistance = entity.getFloat("fallDistance");
         
         if(burnsInDayLight && !isImmuneToFire) {
             if(CommonProxy.instance.isServerWorld(entity.getWorld()) && entity.getWorld().isDaytime()) {
-
                 float brightness = getBrightness(entity);
-                Random rand = new Random();
 
-                if(brightness > 0.5F && rand.nextFloat() * 30.0F < (brightness - 0.4F) * 2.0F && entity.getWorld().canBlockSeeTheSky((int) Math.floor(posX), (int) Math.floor(posY), (int) Math.floor(posZ))) {
+                if(brightness > 0.5F && entity.getRandom().nextFloat() * 30.0F < (brightness - 0.4F) * 2.0F && entity.getWorld().canBlockSeeTheSky((int) Math.floor(posX), (int) Math.floor(posY), (int) Math.floor(posZ))) {
                     ItemStack headwear = UtilSoulEntity.getEquipmentInSlot(entity, 4);
 
                     if(headwear != null) {

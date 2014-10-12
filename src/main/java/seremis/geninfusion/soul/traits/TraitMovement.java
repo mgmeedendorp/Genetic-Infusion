@@ -134,14 +134,14 @@ public class TraitMovement extends Trait {
         
         entity.getWorld().theProfiler.startSection("livingEntityBaseTick");
 
-        if (!entity.getBoolean("isDead") && entity.getFloat("health") > 0.0F && UtilSoulEntity.isEntityInsideOpaqueBlock(entity)) {
+        if(!entity.getBoolean("isDead") && entity.getFloat("health") > 0.0F && UtilSoulEntity.isEntityInsideOpaqueBlock(entity)) {
             entity.attackEntityFrom(DamageSource.inWall, 1.0F);
         }
 
         if (isImmuneToFire || CommonProxy.instance.isRenderWorld(entity.getWorld())) {
             UtilSoulEntity.extinguish(entity);
         }
-        //entity.updatePotionEffects();
+        //TODO entity.updatePotionEffects();
         
         entity.getWorld().theProfiler.endSection();
         

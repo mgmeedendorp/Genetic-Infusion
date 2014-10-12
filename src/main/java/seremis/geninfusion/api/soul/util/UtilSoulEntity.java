@@ -45,29 +45,26 @@ public class UtilSoulEntity {
         return entity.getWorld().isMaterialInBB(entity.getBoundingBox().expand(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), Material.lava);
     }
     
-    public static boolean isEntityInsideOpaqueBlock(IEntitySoulCustom entity)
-    {
+    public static boolean isEntityInsideOpaqueBlock(IEntitySoulCustom entity) {
     	float width = entity.getFloat("width");
     	double posX = entity.getDouble("posX");
     	double posY = entity.getDouble("posY");
     	double posZ = entity.getDouble("posZ");
+        //TODO added the + 1.0F to comensate for the absence of a calculation for eyeHeight
+        float eyeHeight = entity.getFloat("eyeHeight") + 1.0F;
     	
-        for (int i = 0; i < 8; ++i)
-        {
+        for (int i = 0; i < 8; ++i) {
             float f = ((float)((i >> 0) % 2) - 0.5F) * width * 0.8F;
             float f1 = ((float)((i >> 1) % 2) - 0.5F) * 0.1F;
             float f2 = ((float)((i >> 2) % 2) - 0.5F) * width * 0.8F;
             int x = MathHelper.floor_double(posX + (double)f);
-            //TODO add this line
-            //int y = MathHelper.floor_double(posY + (double)this.getEyeHeight() + (double)f1);
-            int y = MathHelper.floor_double(posY + (double)f1);
+            int y = MathHelper.floor_double(posY + (double)eyeHeight + (double)f1);
             int z = MathHelper.floor_double(posZ + (double)f2);
 
             if (entity.getWorld().getBlock(x, y, z).isNormalCube()) {
                 return true;
             }
         }
-
         return false;
     }
     
