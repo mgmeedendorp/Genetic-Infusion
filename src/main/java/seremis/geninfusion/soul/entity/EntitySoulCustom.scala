@@ -23,6 +23,7 @@ import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
 import seremis.geninfusion.api.soul.util.Data
 import seremis.geninfusion.core.proxy.CommonProxy
 import seremis.geninfusion.entity.GIEntityLiving
+import seremis.geninfusion.helper.ReflectionHelper
 import seremis.geninfusion.soul.allele.{AlleleFloat, AlleleString}
 import seremis.geninfusion.soul.entity.logic.{IVariableSyncEntity, VariableSyncLogic}
 import seremis.geninfusion.soul.{Soul, TraitHandler}
@@ -342,6 +343,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     syncLogic.makePersistent("livingSoundTime")
     syncLogic.makePersistent("talkInterval")
     syncLogic.makePersistent("absorptionAmount")
+    syncLogic.makePersistent("fire")
 
     if(initPersistent) {
       syncLogic.setInteger("ticksExisted", ticksExisted)
@@ -451,6 +453,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
 
   var syncMyEntitySize: EnumEntitySize = null
   var syncFire: Int = 0
+  var syncHealth: Float = 0.0F
 
   protected def syncNonPrimitives() {
     //TODO absorptionAmount persistent
@@ -463,9 +466,26 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
       syncMyEntitySize = myEntitySize
     }
 
-    if(syncFire != fire)
+    val fire: Int = ReflectionHelper.getField(this, "fire").asInstanceOf[Int]
+    if(syncFire != fire) {
+      syncLogic.setInteger("fire", fire)
+      syncFire = fire
+    } else if(syncFire != getInteger("fire")) {
+      ReflectionHelper.setField(this, "fire", getInteger("fire"))
+      syncFire = getInteger("fire")
+    }
 
-    //TODO fire (datawatcher)
+    val health: Float = dataWatcher.getWatchableObjectFloat(6)
+    if(syncHealth != health) {
+      syncLogic.setFloat("health", health)
+      syncHealth = health
+    } else if(syncHealth != getFloat("health")) {
+      ReflectionHelper.setField(this, "health", getInteger("health"))
+      dataWatcher.updateObject(6, getFloat("health"))
+      syncHealth = getInteger("health")
+    }
+
+    //TODO fire
     //TODO landMovementFactor
     //TODO invulnerable
     //TODO isChild

@@ -6,11 +6,10 @@ import java.{lang, util}
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import seremis.geninfusion.api.soul.util.Data
-import seremis.geninfusion.helper.DataHelper
+import seremis.geninfusion.helper.{DataHelper, ReflectionHelper}
 import seremis.geninfusion.util.INBTTagable
 
 import scala.collection.mutable.ListBuffer
-import scala.util.control.Breaks
 
 class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
 
@@ -420,21 +419,6 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
   }
 
   private def setField(name: String, value: Any) {
-    var superClass: Any = entity.getClass
-    val outer = new Breaks
-
-    outer.breakable {
-      while (superClass != null) {
-        for (field <- superClass.asInstanceOf[Class[_]].getDeclaredFields()) {
-          if (field.getName().equals(name)) {
-            field.setAccessible(true)
-            field.set(entity, value)
-            outer.break
-          }
-        }
-        superClass = superClass.asInstanceOf[Class[_]].getSuperclass
-      }
-      outer.break
-    }
+    ReflectionHelper.setField(this, name, value)
   }
 }
