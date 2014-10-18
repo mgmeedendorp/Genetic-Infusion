@@ -2,7 +2,7 @@ package seremis.geninfusion.helper
 
 import scala.util.control.Breaks
 
-object ReflectionHelper {
+object GIReflectionHelper {
 
   def setField(obj: Object, name: String, value: Any) {
     var superClass: Any = obj.getClass

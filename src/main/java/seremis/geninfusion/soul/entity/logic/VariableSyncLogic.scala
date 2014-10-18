@@ -6,7 +6,7 @@ import java.{lang, util}
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import seremis.geninfusion.api.soul.util.Data
-import seremis.geninfusion.helper.{DataHelper, ReflectionHelper}
+import seremis.geninfusion.helper.{DataHelper, GIReflectionHelper}
 import seremis.geninfusion.util.INBTTagable
 
 import scala.collection.mutable.ListBuffer
@@ -419,6 +419,6 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
   }
 
   private def setField(name: String, value: Any) {
-    ReflectionHelper.setField(this, name, value)
+    GIReflectionHelper.setField(this, name, value)
   }
 }

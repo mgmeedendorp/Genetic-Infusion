@@ -23,7 +23,7 @@ import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
 import seremis.geninfusion.api.soul.util.Data
 import seremis.geninfusion.core.proxy.CommonProxy
 import seremis.geninfusion.entity.GIEntityLiving
-import seremis.geninfusion.helper.ReflectionHelper
+import seremis.geninfusion.helper.GIReflectionHelper
 import seremis.geninfusion.soul.allele.{AlleleFloat, AlleleString}
 import seremis.geninfusion.soul.entity.logic.{IVariableSyncEntity, VariableSyncLogic}
 import seremis.geninfusion.soul.{Soul, TraitHandler}
@@ -79,120 +79,63 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     worldObj
   }
 
-  override def getBoundingBox: AxisAlignedBB = {
-    boundingBox
-  }
+  override def getBoundingBox: AxisAlignedBB = boundingBox
 
-  override def getEntityId: Int = {
-    super.getEntityId
-  }
+  override def getEntityId: Int = super.getEntityId
 
-  override def getAttributeMap: BaseAttributeMap = {
-    super.getAttributeMap
-  }
+  override def getAttributeMap: BaseAttributeMap = super.getAttributeMap
 
-  override def getCombatTracker: CombatTracker = {
-    super.func_110142_aN
-  }
+  override def getCombatTracker: CombatTracker = super.func_110142_aN
 
-  private var creatureAttribute: EnumCreatureAttribute = null
-
-  override def getCreatureAttribute: EnumCreatureAttribute = {
-    creatureAttribute
-  }
+  //TODO look into this
+  override def getCreatureAttribute: EnumCreatureAttribute = super.getCreatureAttribute
 
   override def getActivePotionsMap: util.HashMap[Integer, PotionEffect] = {
-    var `var`: util.HashMap[Integer, PotionEffect] = new util.HashMap[Integer, PotionEffect]
+    var value: util.HashMap[Integer, PotionEffect] = new util.HashMap[Integer, PotionEffect]
     try {
       val field: Field = ReflectionHelper.findField(classOf[Entity], "activePotionsMap", "field_70147_f")
       field.setAccessible(true)
-      `var` = field.get(this).asInstanceOf[util.HashMap[Integer, PotionEffect]]
+      value = field.get(this).asInstanceOf[util.HashMap[Integer, PotionEffect]]
       field.setAccessible(false)
     }
     catch {
       case e: Exception =>
         e.printStackTrace()
     }
-    `var`
+    value
   }
 
-  override def getDataWatcher: DataWatcher = {
-    super.getDataWatcher()
-  }
+  override def getDataWatcher: DataWatcher = super.getDataWatcher
 
-  override def getTasks: EntityAITasks = {
-    tasks
-  }
+  override def getTasks: EntityAITasks = tasks
 
-  override def getTargetTasks: EntityAITasks = {
-    targetTasks
-  }
+  override def getTargetTasks: EntityAITasks = targetTasks
 
-  override def getLeashedCompound: NBTTagCompound = {
-    var `var`: NBTTagCompound = new NBTTagCompound
-    try {
-      val field: Field = ReflectionHelper.findField(classOf[Entity], "field_110170_bx", "field_110170_bx")
-      field.setAccessible(true)
-      `var` = field.get(this).asInstanceOf[NBTTagCompound]
-      field.setAccessible(false)
-    }
-    catch {
-      case e: Exception =>
-        e.printStackTrace()
-    }
-    `var`
-  }
+  override def onDeathUpdate = super.onDeathUpdate
 
-  override def onDeathUpdate {
-    super.onDeathUpdate()
-  }
+  override def setFlag(id: Int, value: Boolean) = super.setFlag(id, value)
 
-  override def setFlag(id: Int, value: Boolean) {
-    super.setFlag(id, value)
-  }
+  override def getFlag(id: Int): Boolean = super.getFlag(id)
 
-  override def getFlag(id: Int): Boolean = {
-    super.getFlag(id)
-  }
+  override def getRandom: Random = rand
 
-  override def getRandom: Random = {
-    rand
-  }
-
-  override def isChild: Boolean = {
-    false
-    //TODO this
-  }
+  override def isChild: Boolean = getBoolean("isChild")
 
   private var talkInterval: Int = 0
+//TODO this
+  override def getTalkInterval: Int = talkInterval
 
-  override def getTalkInterval: Int = {
-    talkInterval
-  }
+  override def getDeathSound: String = SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_DEATH_SOUND).asInstanceOf[AlleleString].value
 
-  override def getDeathSound: String = {
-    SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_DEATH_SOUND).asInstanceOf[AlleleString].value
-  }
+  override def getLivingSound: String = SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_LIVING_SOUND).asInstanceOf[AlleleString].value
 
-  override def getLivingSound: String = {
-    SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_LIVING_SOUND).asInstanceOf[AlleleString].value
-  }
+  override def getHurtSound: String = SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_HURT_SOUND).asInstanceOf[AlleleString].value
 
-  override def getHurtSound: String = {
-    SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_HURT_SOUND).asInstanceOf[AlleleString].value
-  }
+  override def getSplashSound: String = SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_SPLASH_SOUND).asInstanceOf[AlleleString].value
 
-  override def getSplashSound: String = {
-    SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_SPLASH_SOUND).asInstanceOf[AlleleString].value
-  }
+  override def getSwimSound: String = SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_SWIM_SOUND).asInstanceOf[AlleleString].value
 
-  override def getSwimSound: String = {
-    SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_SWIM_SOUND).asInstanceOf[AlleleString].value
-  }
-
-  override def getSoundVolume: Float = {
-    SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_SOUND_VOLUME).asInstanceOf[AlleleFloat].value
-  }
+  override def getSoundVolume: Float = SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_SOUND_VOLUME).asInstanceOf[AlleleFloat].value
 
   override def applyEntityAttributes {
     this.getAttributeMap.registerAttribute(SharedMonsterAttributes.maxHealth)
@@ -251,9 +194,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     TraitHandler.updateAITick(this)
   }
 
-  override def attackEntityAsMob(entity: Entity): Boolean = {
-    TraitHandler.attackEntityAsMob(this, entity)
-  }
+  override def attackEntityAsMob(entity: Entity): Boolean = TraitHandler.attackEntityAsMob(this, entity)
 
   override def readFromNBT(compound: NBTTagCompound) {
     super.readFromNBT(compound)
@@ -274,47 +215,27 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
   override def makePersistent(name: String) = syncLogic.makePersistent(name)
 
   override def setBoolean(name: String, variable: Boolean) = syncLogic.setBoolean(name, variable)
-
   override def setByte(name: String, variable: Byte) = syncLogic.setByte(name, variable)
-
   override def setShort(name: String, variable: Short) = syncLogic.setShort(name, variable)
-
   override def setInteger(name: String, variable: Int) = syncLogic.setInteger(name, variable)
-
   override def setFloat(name: String, variable: Float) = syncLogic.setFloat(name, variable)
-
   override def setDouble(name: String, variable: Double) = syncLogic.setDouble(name, variable)
-
   override def setLong(name: String, variable: Long) = syncLogic.setDouble(name, variable)
-
   override def setString(name: String, variable: String) = syncLogic.setString(name, variable)
-
   override def setItemStack(name: String, variable: ItemStack) = syncLogic.setItemStack(name, variable)
-
   override def setNBT(name: String, variable: NBTTagCompound) = syncLogic.setNBT(name, variable)
-
   override def setData(name: String, variable: Data) = syncLogic.setData(name, variable)
 
   override def getBoolean(name: String): Boolean = syncLogic.getBoolean(name)
-
   override def getByte(name: String): Byte = syncLogic.getByte(name)
-
   override def getShort(name: String): Short = syncLogic.getShort(name)
-
   override def getInteger(name: String): Int = syncLogic.getInteger(name)
-
   override def getFloat(name: String): Float = syncLogic.getFloat(name)
-
   override def getDouble(name: String): Double = syncLogic.getDouble(name)
-
   override def getLong(name: String): Long = syncLogic.getLong(name)
-
   override def getString(name: String): String = syncLogic.getString(name)
-
   override def getItemStack(name: String): ItemStack = syncLogic.getItemStack(name)
-
   override def getNBT(name: String): NBTTagCompound = syncLogic.getNBT(name)
-
   override def getData(name: String): Data = syncLogic.getData(name)
 
   override def forceVariableSync() {
@@ -466,12 +387,12 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
       syncMyEntitySize = myEntitySize
     }
 
-    val fire: Int = ReflectionHelper.getField(this, "fire").asInstanceOf[Int]
+    val fire: Int = GIReflectionHelper.getField(this, "fire").asInstanceOf[Int]
     if(syncFire != fire) {
       syncLogic.setInteger("fire", fire)
       syncFire = fire
     } else if(syncFire != getInteger("fire")) {
-      ReflectionHelper.setField(this, "fire", getInteger("fire"))
+      GIReflectionHelper.setField(this, "fire", getInteger("fire"))
       syncFire = getInteger("fire")
     }
 
@@ -480,12 +401,11 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
       syncLogic.setFloat("health", health)
       syncHealth = health
     } else if(syncHealth != getFloat("health")) {
-      ReflectionHelper.setField(this, "health", getInteger("health"))
+      GIReflectionHelper.setField(this, "health", getInteger("health"))
       dataWatcher.updateObject(6, getFloat("health"))
       syncHealth = getInteger("health")
     }
 
-    //TODO fire
     //TODO landMovementFactor
     //TODO invulnerable
     //TODO isChild
@@ -501,11 +421,11 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     //TODO capturedDrops
     //TODO equipment
     //TODO canPickUpLoot
-    //TODO health
     //TODO attackingPlayer
     //TODO lastAttacker
     //TODO attackTarget
     //TODO lastAttackerTime
     //TODO entityLivingToAttack
+    //TODO leashedCompound
   }
 }

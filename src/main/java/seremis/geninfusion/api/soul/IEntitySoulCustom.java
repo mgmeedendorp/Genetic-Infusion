@@ -2,7 +2,6 @@ package seremis.geninfusion.api.soul;
 
 import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.BaseAttributeMap;
 import net.minecraft.item.ItemStack;
@@ -44,8 +43,6 @@ public interface IEntitySoulCustom {
     
     EntityAITasks getTasks();
     EntityAITasks getTargetTasks();
-    
-    NBTTagCompound getLeashedCompound();
     
     Random getRandom();
     
