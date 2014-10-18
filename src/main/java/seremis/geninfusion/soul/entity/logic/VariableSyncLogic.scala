@@ -5,8 +5,8 @@ import java.{lang, util}
 
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
+import seremis.geninfusion.api.soul.util.Data
 import seremis.geninfusion.helper.DataHelper
-import seremis.geninfusion.misc.Data
 import seremis.geninfusion.util.INBTTagable
 
 import scala.collection.mutable.ListBuffer
@@ -41,6 +41,8 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
 
   def setNBT(name: String, variable: NBTTagCompound) = data.setNBT(name, variable)
 
+  def setData(name: String, variable: Data) = data.setData(name, variable)
+
   def getBoolean(name: String): Boolean = data.getBoolean(name)
 
   def getByte(name: String): Byte = data.getByte(name)
@@ -60,6 +62,8 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
   def getItemStack(name: String): ItemStack = if(data.getNBT(name) != null) ItemStack.loadItemStackFromNBT(data.getNBT(name)) else null
 
   def getNBT(name: String): NBTTagCompound = data.getNBT(name)
+
+  def getData(name: String): Data = data.getData(name)
 
   protected val persistentData: Data = new Data()
 
@@ -270,14 +274,14 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
   }
 
   //The variables as they were the last tick
-  protected var syncData: Data = new Data()
+  protected var prevData: Data = new Data()
 
   def syncVariables() {
     //The variables in the entity class
     val data = DataHelper.writePrimitives(entity)
     val clss = entity.getClass
 
-    val boolIterator: util.Iterator[Entry[String, lang.Boolean]] = syncData.booleanDataMap.entrySet().iterator()
+    val boolIterator: util.Iterator[Entry[String, lang.Boolean]] = prevData.booleanDataMap.entrySet().iterator()
 
     while(boolIterator.hasNext()) {
       val entry: Entry[String, lang.Boolean] = boolIterator.next()
@@ -285,16 +289,16 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
       val value = entry.getValue()
 
       if(data.booleanDataMap.containsKey(key) && data.booleanDataMap.get(key) != value) {
-        syncData.booleanDataMap.put(key, data.booleanDataMap.get(key))
+        prevData.booleanDataMap.put(key, data.booleanDataMap.get(key))
         data.booleanDataMap.put(key, data.booleanDataMap.get(key))
       } else if(data.booleanDataMap.containsKey(key) && data.getBoolean(key) != value) {
-        syncData.booleanDataMap.put(key, data.getBoolean(key))
+        prevData.booleanDataMap.put(key, data.getBoolean(key))
         data.booleanDataMap.put(key, data.getBoolean(key))
         setField(key, data.getBoolean(key))
       }
     }
 
-    val byteIterator: util.Iterator[Entry[String, lang.Byte]] = syncData.byteDataMap.entrySet().iterator()
+    val byteIterator: util.Iterator[Entry[String, lang.Byte]] = prevData.byteDataMap.entrySet().iterator()
 
     while(byteIterator.hasNext()) {
       val entry: Entry[String, lang.Byte] = byteIterator.next()
@@ -302,16 +306,16 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
       val value = entry.getValue()
 
       if(data.byteDataMap.containsKey(key) && data.byteDataMap.get(key) != value) {
-        syncData.byteDataMap.put(key, data.byteDataMap.get(key))
+        prevData.byteDataMap.put(key, data.byteDataMap.get(key))
         data.byteDataMap.put(key, data.byteDataMap.get(key))
       } else if(data.byteDataMap.containsKey(key) && data.getByte(key) != value) {
-        syncData.byteDataMap.put(key, data.getByte(key))
+        prevData.byteDataMap.put(key, data.getByte(key))
         data.byteDataMap.put(key, data.getByte(key))
         setField(key, data.getByte(key))
       }
     }
 
-    val shortIterator: util.Iterator[Entry[String, lang.Short]] = syncData.shortDataMap.entrySet().iterator()
+    val shortIterator: util.Iterator[Entry[String, lang.Short]] = prevData.shortDataMap.entrySet().iterator()
 
     while(shortIterator.hasNext()) {
       val entry: Entry[String, lang.Short] = shortIterator.next()
@@ -319,16 +323,16 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
       val value = entry.getValue()
 
       if(data.shortDataMap.containsKey(key) && data.shortDataMap.get(key) != value) {
-        syncData.shortDataMap.put(key, data.shortDataMap.get(key))
+        prevData.shortDataMap.put(key, data.shortDataMap.get(key))
         data.shortDataMap.put(key, data.shortDataMap.get(key))
       } else if(data.shortDataMap.containsKey(key) && data.getShort(key) != value) {
-        syncData.shortDataMap.put(key, data.getShort(key))
+        prevData.shortDataMap.put(key, data.getShort(key))
         data.shortDataMap.put(key, data.getShort(key))
         setField(key, data.getShort(key))
       }
     }
 
-    val intIterator: util.Iterator[Entry[String, lang.Integer]] = syncData.integerDataMap.entrySet().iterator()
+    val intIterator: util.Iterator[Entry[String, lang.Integer]] = prevData.integerDataMap.entrySet().iterator()
 
     while(intIterator.hasNext()) {
       val entry: Entry[String, lang.Integer] = intIterator.next()
@@ -336,16 +340,16 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
       val value = entry.getValue()
 
       if(data.integerDataMap.containsKey(key) && data.integerDataMap.get(key) != value) {
-        syncData.integerDataMap.put(key, data.integerDataMap.get(key))
+        prevData.integerDataMap.put(key, data.integerDataMap.get(key))
         data.integerDataMap.put(key, data.integerDataMap.get(key))
       } else if(data.integerDataMap.containsKey(key) && data.getInteger(key) != value) {
-        syncData.integerDataMap.put(key, data.getInteger(key))
+        prevData.integerDataMap.put(key, data.getInteger(key))
         data.integerDataMap.put(key, data.getInteger(key))
         setField(key, data.getInteger(key))
       }
     }
 
-    val floatIterator: util.Iterator[Entry[String, lang.Float]] = syncData.floatDataMap.entrySet().iterator()
+    val floatIterator: util.Iterator[Entry[String, lang.Float]] = prevData.floatDataMap.entrySet().iterator()
 
     while(floatIterator.hasNext()) {
       val entry: Entry[String, lang.Float] = floatIterator.next()
@@ -353,16 +357,16 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
       val value = entry.getValue()
 
       if(data.floatDataMap.containsKey(key) && data.floatDataMap.get(key) != value) {
-        syncData.floatDataMap.put(key, data.floatDataMap.get(key))
+        prevData.floatDataMap.put(key, data.floatDataMap.get(key))
         data.floatDataMap.put(key, data.floatDataMap.get(key))
       } else if(data.floatDataMap.containsKey(key) && data.getFloat(key) != value) {
-        syncData.floatDataMap.put(key, data.getFloat(key))
+        prevData.floatDataMap.put(key, data.getFloat(key))
         data.floatDataMap.put(key, data.getFloat(key))
         setField(key, data.getFloat(key))
       }
     }
 
-    val doubleIterator: util.Iterator[Entry[String, lang.Double]] = syncData.doubleDataMap.entrySet().iterator()
+    val doubleIterator: util.Iterator[Entry[String, lang.Double]] = prevData.doubleDataMap.entrySet().iterator()
 
     while(doubleIterator.hasNext()) {
       val entry: Entry[String, lang.Double] = doubleIterator.next()
@@ -370,16 +374,16 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
       val value = entry.getValue()
 
       if(data.doubleDataMap.containsKey(key) && data.doubleDataMap.get(key) != value) {
-        syncData.doubleDataMap.put(key, data.doubleDataMap.get(key))
+        prevData.doubleDataMap.put(key, data.doubleDataMap.get(key))
         data.doubleDataMap.put(key, data.doubleDataMap.get(key))
       } else if(data.doubleDataMap.containsKey(key) && data.getDouble(key) != value) {
-        syncData.doubleDataMap.put(key, data.getDouble(key))
+        prevData.doubleDataMap.put(key, data.getDouble(key))
         data.doubleDataMap.put(key, data.getDouble(key))
         setField(key, data.getDouble(key))
       }
     }
 
-    val longIterator: util.Iterator[Entry[String, lang.Long]] = syncData.longDataMap.entrySet().iterator()
+    val longIterator: util.Iterator[Entry[String, lang.Long]] = prevData.longDataMap.entrySet().iterator()
 
     while(longIterator.hasNext()) {
       val entry: Entry[String, lang.Long] = longIterator.next()
@@ -387,16 +391,16 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
       val value = entry.getValue()
 
       if(data.longDataMap.containsKey(key) && data.longDataMap.get(key) != value) {
-        syncData.longDataMap.put(key, data.longDataMap.get(key))
+        prevData.longDataMap.put(key, data.longDataMap.get(key))
         data.longDataMap.put(key, data.longDataMap.get(key))
       } else if(data.longDataMap.containsKey(key) && data.getLong(key) != value) {
-        syncData.longDataMap.put(key, data.getLong(key))
+        prevData.longDataMap.put(key, data.getLong(key))
         data.longDataMap.put(key, data.getLong(key))
         setField(key, data.getLong(key))
       }
     }
 
-    val stringIterator: util.Iterator[Entry[String, lang.String]] = syncData.stringDataMap.entrySet().iterator()
+    val stringIterator: util.Iterator[Entry[String, lang.String]] = prevData.stringDataMap.entrySet().iterator()
 
     while(stringIterator.hasNext()) {
       val entry: Entry[String, lang.String] = stringIterator.next()
@@ -404,10 +408,10 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
       val value = entry.getValue()
 
       if(data.stringDataMap.containsKey(key) && data.stringDataMap.get(key) != value) {
-        syncData.stringDataMap.put(key, data.stringDataMap.get(key))
+        prevData.stringDataMap.put(key, data.stringDataMap.get(key))
         data.stringDataMap.put(key, data.stringDataMap.get(key))
       } else if(data.stringDataMap.containsKey(key) && data.getString(key) != value) {
-        syncData.stringDataMap.put(key, data.getString(key))
+        prevData.stringDataMap.put(key, data.getString(key))
         data.stringDataMap.put(key, data.getString(key))
         setField(key, data.getString(key))
       }

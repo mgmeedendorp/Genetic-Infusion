@@ -13,6 +13,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.CombatTracker;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import seremis.geninfusion.api.soul.util.Data;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -67,6 +68,7 @@ public interface IEntitySoulCustom {
     void setLong(String name, long variable);
     void setItemStack(String name, ItemStack variable);
     void setNBT(String name, NBTTagCompound variable);
+    void setData(String name, Data variable);
 
     boolean getBoolean(String name);
     byte getByte(String name);
@@ -78,6 +80,7 @@ public interface IEntitySoulCustom {
     String getString(String name);
     ItemStack getItemStack(String name);
     NBTTagCompound getNBT(String name);
+    Data getData(String name);
     
     /*
      * Forces a synchronization between the standard entity variables and the custom ones

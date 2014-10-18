@@ -1,6 +1,6 @@
 package seremis.geninfusion.helper;
 
-import seremis.geninfusion.misc.Data;
+import seremis.geninfusion.api.soul.util.Data;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

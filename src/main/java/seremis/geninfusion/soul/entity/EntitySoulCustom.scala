@@ -8,6 +8,7 @@ import java.util.Random
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData
 import cpw.mods.fml.relauncher.ReflectionHelper
 import io.netty.buffer.ByteBuf
+import net.minecraft.entity.Entity.EnumEntitySize
 import net.minecraft.entity._
 import net.minecraft.entity.ai.EntityAITasks
 import net.minecraft.entity.ai.attributes.BaseAttributeMap
@@ -19,6 +20,7 @@ import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
+import seremis.geninfusion.api.soul.util.Data
 import seremis.geninfusion.core.proxy.CommonProxy
 import seremis.geninfusion.entity.GIEntityLiving
 import seremis.geninfusion.soul.allele.{AlleleFloat, AlleleString}
@@ -290,6 +292,8 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
 
   override def setNBT(name: String, variable: NBTTagCompound) = syncLogic.setNBT(name, variable)
 
+  override def setData(name: String, variable: Data) = syncLogic.setData(name, variable)
+
   override def getBoolean(name: String): Boolean = syncLogic.getBoolean(name)
 
   override def getByte(name: String): Byte = syncLogic.getByte(name)
@@ -309,6 +313,8 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
   override def getItemStack(name: String): ItemStack = syncLogic.getItemStack(name)
 
   override def getNBT(name: String): NBTTagCompound = syncLogic.getNBT(name)
+
+  override def getData(name: String): Data = syncLogic.getData(name)
 
   override def forceVariableSync() {
     syncLogic.syncVariables()
@@ -335,6 +341,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     syncLogic.makePersistent("attackTime")
     syncLogic.makePersistent("livingSoundTime")
     syncLogic.makePersistent("talkInterval")
+    syncLogic.makePersistent("absorptionAmount")
 
     if(initPersistent) {
       syncLogic.setInteger("ticksExisted", ticksExisted)
@@ -438,13 +445,26 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     syncLogic.setFloat("lastDamage", lastDamage)
     syncLogic.setInteger("experienceValue", experienceValue)
     syncLogic.setInteger("numTicksToChaseTarget", numTicksToChaseTarget)
+
+    syncLogic.setInteger("myEntitySize", myEntitySize.ordinal())
   }
+
+  var syncMyEntitySize: EnumEntitySize = null
+  var syncFire: Int = 0
 
   protected def syncNonPrimitives() {
     //TODO absorptionAmount persistent
 
+    if (syncMyEntitySize != myEntitySize) {
+      syncLogic.setInteger("myEntitySize", myEntitySize.ordinal)
+      syncMyEntitySize = myEntitySize
+    } else if (syncMyEntitySize != EnumEntitySize.values()(getInteger("myEntitySize"))) {
+      myEntitySize = EnumEntitySize.values()(getInteger("myEntitySize"))
+      syncMyEntitySize = myEntitySize
+    }
 
-    //TODO myEntitySize
+    if(syncFire != fire)
+
     //TODO fire (datawatcher)
     //TODO landMovementFactor
     //TODO invulnerable

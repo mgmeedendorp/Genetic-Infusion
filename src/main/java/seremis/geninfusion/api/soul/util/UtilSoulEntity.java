@@ -50,9 +50,9 @@ public class UtilSoulEntity {
     	double posX = entity.getDouble("posX");
     	double posY = entity.getDouble("posY");
     	double posZ = entity.getDouble("posZ");
-        //TODO added the + 1.0F to comensate for the absence of a calculation for eyeHeight
+        //TODO added the + 1.0F to compensate for the absence of a calculation for eyeHeight
         float eyeHeight = entity.getFloat("eyeHeight") + 1.0F;
-    	
+
         for (int i = 0; i < 8; ++i) {
             float f = ((float)((i >> 0) % 2) - 0.5F) * width * 0.8F;
             float f1 = ((float)((i >> 1) % 2) - 0.5F) * 0.1F;

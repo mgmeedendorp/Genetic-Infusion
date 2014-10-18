@@ -1,6 +1,5 @@
-package seremis.geninfusion.misc;
+package seremis.geninfusion.api.soul.util;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
@@ -8,7 +7,6 @@ import seremis.geninfusion.util.INBTTagable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class Data implements INBTTagable {
 
@@ -357,7 +355,7 @@ public class Data implements INBTTagable {
                 for(int i = 0; i < size; i++) {
                     String name = compoundData.getString("data" + i + "Name");
                     NBTTagCompound value = compoundData.getCompoundTag("data" + i + "Value");
-                    nbtDataMap.put(name, value);
+                    dataDataMap.put(name, new Data(value));
                 }
             }
         }
