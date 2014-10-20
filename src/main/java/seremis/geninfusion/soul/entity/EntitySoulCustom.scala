@@ -373,14 +373,21 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
   }
 
   var syncMyEntitySize: EnumEntitySize = null
+  var syncInvulnerable: Boolean = false
   var syncFire: Int = 0
-  var syncHealth: Float = 0.0F
+  var syncHealth, syncAbsorptionAmount, syncLandMovementFactor: Float = 0.0F
 
   protected def syncNonPrimitives() {
-    //TODO absorptionAmount persistent
+    if(syncAbsorptionAmount != getAbsorptionAmount) {
+      setFloat("absorptionAmount", getAbsorptionAmount)
+      syncAbsorptionAmount = getAbsorptionAmount
+    } else if(syncAbsorptionAmount != getFloat("absorptionAmount")) {
+      setAbsorptionAmount(getFloat("absorptionAmount"))
+      syncAbsorptionAmount = getFloat("absorptionAmount")
+    }
 
     if (syncMyEntitySize != myEntitySize) {
-      syncLogic.setInteger("myEntitySize", myEntitySize.ordinal)
+      setInteger("myEntitySize", myEntitySize.ordinal)
       syncMyEntitySize = myEntitySize
     } else if (syncMyEntitySize != EnumEntitySize.values()(getInteger("myEntitySize"))) {
       myEntitySize = EnumEntitySize.values()(getInteger("myEntitySize"))
@@ -389,7 +396,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
 
     val fire: Int = GIReflectionHelper.getField(this, "fire").asInstanceOf[Int]
     if(syncFire != fire) {
-      syncLogic.setInteger("fire", fire)
+      setInteger("fire", fire)
       syncFire = fire
     } else if(syncFire != getInteger("fire")) {
       GIReflectionHelper.setField(this, "fire", getInteger("fire"))
@@ -398,15 +405,33 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
 
     val health: Float = dataWatcher.getWatchableObjectFloat(6)
     if(syncHealth != health) {
-      syncLogic.setFloat("health", health)
+      setFloat("health", health)
       syncHealth = health
     } else if(syncHealth != getFloat("health")) {
-      GIReflectionHelper.setField(this, "health", getInteger("health"))
       dataWatcher.updateObject(6, getFloat("health"))
-      syncHealth = getInteger("health")
+      syncHealth = getFloat("health")
     }
 
-    //TODO landMovementFactor
+    val landMovementFactor: Float = GIReflectionHelper.getField(this, "landMovementFactor").asInstanceOf[Float]
+    if(syncLandMovementFactor != landMovementFactor) {
+      setFloat("landMovementFactor", landMovementFactor)
+      syncLandMovementFactor = landMovementFactor
+    } else if (syncLandMovementFactor != getFloat("landMovementFactor")) {
+      GIReflectionHelper.setField(this, "landMovementFactor", getFloat("landMovementFactor"))
+      syncLandMovementFactor = getFloat("landMovementFactor")
+    }
+
+    val invulnerable: Boolean = GIReflectionHelper.getField(this, "invulnerable").asInstanceOf[Boolean]
+    if(syncInvulnerable != invulnerable) {
+      setBoolean("invulnerable", invulnerable)
+      syncInvulnerable = invulnerable
+    } else if(syncInvulnerable != getBoolean("invulnerable")) {
+      GIReflectionHelper.setField(this, "invulnerable", getBoolean("invulnerable"))
+      syncInvulnerable = getBoolean("invulnerable")
+    }
+
+    //TODO Change things, this doesn't work in obfuscated environments
+
     //TODO invulnerable
     //TODO isChild
     //TODO creatureAttribute
