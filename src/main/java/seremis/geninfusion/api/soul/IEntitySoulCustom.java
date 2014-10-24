@@ -78,6 +78,30 @@ public interface IEntitySoulCustom {
     ItemStack getItemStack(String name);
     NBTTagCompound getNBT(String name);
     Data getData(String name);
+
+    void setBooleanArray(String name, boolean[] variable);
+    void setByteArray(String name, byte[] variable);
+    void setShortArray(String name, short[] variable);
+    void setIntegerArray(String name, int[] variable);
+    void setFloatArray(String name, float[] variable);
+    void setDoubleArray(String name, double[] variable);
+    void setLongArray(String name, long[] variable);
+    void setStringArray(String name, String[] variable);
+    void setItemStackArray(String name, ItemStack[] variable);
+    void setNBTArray(String name, NBTTagCompound[] variable);
+    void setDataArray(String name, Data[] variable);
+
+    boolean[] getBooleanArray(String name);
+    byte[] getByteArray(String name);
+    short[] getShortArray(String name);
+    int[] getIntegerArray(String name);
+    float[] getFloatArray(String name);
+    double[] getDoubleArray(String name);
+    long[] getLongArray(String name);
+    String[] getStringArray(String name);
+    ItemStack[] getItemStackArray(String name);
+    NBTTagCompound[] getNBTArray(String name);
+    Data[] getDataArray(String name);
     
     /*
      * Forces a synchronization between the standard entity variables and the custom ones

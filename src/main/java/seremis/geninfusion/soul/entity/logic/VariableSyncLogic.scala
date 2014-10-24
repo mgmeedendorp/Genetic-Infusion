@@ -17,7 +17,7 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
   protected var persistent: ListBuffer[String] = ListBuffer()
 
   def makePersistent(name: String): Unit = {
-    persistent+(name)
+    persistent+name
   }
 
   def setBoolean(name: String, variable: Boolean) = data.setBoolean(name, variable)
@@ -63,6 +63,50 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
   def getNBT(name: String): NBTTagCompound = data.getNBT(name)
 
   def getData(name: String): Data = data.getData(name)
+
+  def setBooleanArray(name: String, value: Array[Boolean]) = data.setBooleanArray(name, value)
+
+  def setByteArray(name: String, value: Array[Byte]) = data.setByteArray(name, value)
+
+  def setShortArray(name: String, value: Array[Short]) = data.setShortArray(name, value)
+
+  def setIntegerArray(name: String, value: Array[Int]) = data.setIntegerArray(name, value)
+
+  def setFloatArray(name: String, value: Array[Float]) = data.setFloatArray(name, value)
+
+  def setDoubleArray(name: String, value: Array[Double]) = data.setDoubleArray(name, value)
+
+  def setLongArray(name: String, value: Array[Long]) = data.setLongArray(name, value)
+
+  def setStringArray(name: String, value: Array[String]) = data.setStringArray(name, value)
+
+  def setItemStackArray(name: String, value: Array[ItemStack]) = data.setNBTArray(name, Array.tabulate(value.length)(value(_).writeToNBT(new NBTTagCompound())))
+
+  def setNBTArray(name: String, value: Array[NBTTagCompound]) = data.setNBTArray(name, value)
+
+  def setDataArray(name: String, value: Array[Data]) = data.setDataArray(name, value)
+
+  def getBooleanArray(name: String) = data.getBooleanArray(name)
+
+  def getByteArray(name: String) = data.getByteArray(name)
+
+  def getShortArray(name: String) = data.getShortArray(name)
+
+  def getIntegerArray(name: String) = data.getIntegerArray(name)
+
+  def getFloatArray(name: String) = data.getFloatArray(name)
+
+  def getDoubleArray(name: String) = data.getDoubleArray(name)
+
+  def getLongArray(name: String) = data.getLongArray(name)
+
+  def getStringArray(name: String) = data.getStringArray(name)
+
+  def getItemStackArray(name: String) = Array.tabulate(getNBTArray(name).length)(index => ItemStack.loadItemStackFromNBT(getNBTArray(name)(index)))
+
+  def getNBTArray(name: String) = data.getNBTArray(name)
+
+  def getDataArray(name: String) = data.getDataArray(name)
 
   protected val persistentData: Data = new Data()
 

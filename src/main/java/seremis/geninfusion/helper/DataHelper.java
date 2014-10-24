@@ -7,7 +7,7 @@ import java.lang.reflect.Modifier;
 
 public class DataHelper {
 
-    public static Data writePrimitives(Object obj) {
+    public static Data writePrimitives(Object obj, boolean doBoolean, boolean doByte, boolean doShort, boolean doInt, boolean doFloat, boolean doDouble, boolean doLong, boolean doString, boolean doBooleanArr, boolean doByteArr, boolean doShortArr, boolean doIntArr, boolean doFloatArr, boolean doDoubleArr, boolean doLongArr, boolean doStringArr) {
         Data data = new Data();
 
         Class superClass = obj.getClass();
@@ -15,84 +15,36 @@ public class DataHelper {
             for(Field field : superClass.getDeclaredFields()) {
                 try {
                     if ((Modifier.isPublic(field.getModifiers()) || Modifier.isProtected(field.getModifiers()) || field.getModifiers() == 0) && !Modifier.isFinal(field.getModifiers())) {
-
                         field.setAccessible(true);
 
-                        if(field.getType().equals(boolean.class)) data.setBoolean(field.getName(), field.getBoolean(obj));
-                        else if (field.getType().equals(byte.class)) data.setByte(field.getName(), field.getByte(obj));
-                        else if (field.getType().equals(short.class)) data.setShort(field.getName(), field.getShort(obj));
-                        else if (field.getType().equals(int.class)) data.setInteger(field.getName(), field.getInt(obj));
-                        else if (field.getType().equals(float.class)) data.setFloat(field.getName(), field.getFloat(obj));
-                        else if (field.getType().equals(double.class)) data.setDouble(field.getName(), field.getDouble(obj));
-                        else if (field.getType().equals(long.class)) data.setLong(field.getName(), field.getLong(obj));
-                        else if (field.getType().equals(String.class)) data.setString(field.getName(), (String) field.get(obj));
+                        if(doBoolean && field.getType().equals(boolean.class)) data.setBoolean(field.getName(), field.getBoolean(obj));
+                        else if (doByte && field.getType().equals(byte.class)) data.setByte(field.getName(), field.getByte(obj));
+                        else if (doShort && field.getType().equals(short.class)) data.setShort(field.getName(), field.getShort(obj));
+                        else if (doInt && field.getType().equals(int.class)) data.setInteger(field.getName(), field.getInt(obj));
+                        else if (doFloat && field.getType().equals(float.class)) data.setFloat(field.getName(), field.getFloat(obj));
+                        else if (doDouble && field.getType().equals(double.class)) data.setDouble(field.getName(), field.getDouble(obj));
+                        else if (doLong && field.getType().equals(long.class)) data.setLong(field.getName(), field.getLong(obj));
+                        else if (doString && field.getType().equals(String.class)) data.setString(field.getName(), (String) field.get(obj));
 
-                        else if (field.getType().equals(boolean[].class)) {
-                            Data data2 = new Data();
-                            for (int i = 0; i < ((boolean[]) field.get(obj)).length; i++) {
-                                boolean d = ((boolean[]) field.get(obj))[i];
-                                data2.setBoolean(field.getName() + "." + i, d);
-                            }
-                            data.setData(field.getName(), data2);
-                        } else if (field.getType().equals(byte[].class)) {
-                            Data data2 = new Data();
-                            for (int i = 0; i < ((byte[]) field.get(obj)).length; i++) {
-                                byte d = ((byte[]) field.get(obj))[i];
-                                data2.setByte(field.getName() + "." + i, d);
-                            }
-                            data.setData(field.getName(), data2);
-                        } else if (field.getType().equals(short[].class)) {
-                            Data data2 = new Data();
-                            for (int i = 0; i < ((short[]) field.get(obj)).length; i++) {
-                                short d = ((short[]) field.get(obj))[i];
-                                data2.setShort(field.getName() + "." + i, d);
-                            }
-                            data.setData(field.getName(), data2);
-                        } else if (field.getType().equals(int[].class)) {
-                            Data data2 = new Data();
-                            for (int i = 0; i < ((int[]) field.get(obj)).length; i++) {
-                                int d = ((int[]) field.get(obj))[i];
-                                data2.setInteger(field.getName() + "." + i, d);
-                            }
-                            data.setData(field.getName(), data2);
-                        } else if (field.getType().equals(float[].class)) {
-                            Data data2 = new Data();
-                            for (int i = 0; i < ((float[]) field.get(obj)).length; i++) {
-                                float d = ((float[]) field.get(obj))[i];
-                                data2.setFloat(field.getName() + "." + i, d);
-                            }
-                            data.setData(field.getName(), data2);
-                        } else if (field.getType().equals(double[].class)) {
-                            Data data2 = new Data();
-                            for (int i = 0; i < ((double[]) field.get(obj)).length; i++) {
-                                double d = ((double[]) field.get(obj))[i];
-                                data2.setDouble(field.getName() + "." + i, d);
-                            }
-                            data.setData(field.getName(), data2);
-                        } else if (field.getType().equals(long[].class)) {
-                            Data data2 = new Data();
-                            for (int i = 0; i < ((long[]) field.get(obj)).length; i++) {
-                                long d = ((long[]) field.get(obj))[i];
-                                data2.setLong(field.getName() + "." + i, d);
-                            }
-                            data.setData(field.getName(), data2);
-                        } else if (field.getType().equals(String[].class)) {
-                            Data data2 = new Data();
-                            for (int i = 0; i < ((String[]) field.get(obj)).length; i++) {
-                                String d = ((String[]) field.get(obj))[i];
-                                data2.setString(field.getName() + "." + i, d);
-                            }
-                            data.setData(field.getName(), data2);
-
-                        }
+                        else if (doBooleanArr && field.getType().equals(boolean[].class)) data.setBooleanArray(field.getName(), (boolean[]) field.get(obj));
+                        else if (doByteArr && field.getType().equals(byte[].class)) data.setByteArray(field.getName(), (byte[]) field.get(obj));
+                        else if (doShortArr && field.getType().equals(short[].class)) data.setShortArray(field.getName(), (short[]) field.get(obj));
+                        else if (doIntArr && field.getType().equals(int[].class)) data.setIntegerArray(field.getName(), (int[]) field.get(obj));
+                        else if (doFloatArr && field.getType().equals(float[].class)) data.setFloatArray(field.getName(), (float[]) field.get(obj));
+                        else if (doDoubleArr && field.getType().equals(double[].class)) data.setDoubleArray(field.getName(), (double[]) field.get(obj));
+                        else if (doLongArr && field.getType().equals(long[].class)) data.setLongArray(field.getName(), (long[]) field.get(obj));
+                        else if (doStringArr && field.getType().equals(String[].class)) data.setStringArray(field.getName(), (String[]) field.get(obj));
                     }
-                } catch (
-                        Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
             superClass = superClass.getSuperclass();
         }
         return data;
+    }
+
+    public static Data writePrimitives(Object obj) {
+        return writePrimitives(obj, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
     }
 }

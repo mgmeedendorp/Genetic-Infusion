@@ -5,6 +5,8 @@ import java.lang.reflect.Field
 import java.util
 import java.util.Random
 
+import scala.collection.JavaConverters._
+
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData
 import cpw.mods.fml.relauncher.ReflectionHelper
 import io.netty.buffer.ByteBuf
@@ -12,6 +14,7 @@ import net.minecraft.entity.Entity.EnumEntitySize
 import net.minecraft.entity._
 import net.minecraft.entity.ai.EntityAITasks
 import net.minecraft.entity.ai.attributes.BaseAttributeMap
+import net.minecraft.entity.item.EntityItem
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{CompressedStreamTools, NBTSizeTracker, NBTTagCompound}
 import net.minecraft.potion.PotionEffect
@@ -87,8 +90,9 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
 
   override def getCombatTracker: CombatTracker = super.func_110142_aN
 
-  //TODO look into this
-  override def getCreatureAttribute: EnumCreatureAttribute = super.getCreatureAttribute
+  var creatureAttribute: EnumCreatureAttribute = null
+
+  override def getCreatureAttribute: EnumCreatureAttribute = creatureAttribute
 
   override def getActivePotionsMap: util.HashMap[Integer, PotionEffect] = {
     var value: util.HashMap[Integer, PotionEffect] = new util.HashMap[Integer, PotionEffect]
@@ -119,7 +123,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
 
   override def getRandom: Random = rand
 
-  override def isChild: Boolean = getBoolean("isChild")
+  //override def isChild: Boolean = getBoolean("isChild")
 
   private var talkInterval: Int = 0
 //TODO this
@@ -238,6 +242,30 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
   override def getNBT(name: String): NBTTagCompound = syncLogic.getNBT(name)
   override def getData(name: String): Data = syncLogic.getData(name)
 
+  override def setBooleanArray(name: String, value: Array[Boolean]) = syncLogic.setBooleanArray(name, value)
+  override def setByteArray(name: String, value: Array[Byte]) = syncLogic.setByteArray(name, value)
+  override def setShortArray(name: String, value: Array[Short]) = syncLogic.setShortArray(name, value)
+  override def setIntegerArray(name: String, value: Array[Int]) = syncLogic.setIntegerArray(name, value)
+  override def setFloatArray(name: String, value: Array[Float]) = syncLogic.setFloatArray(name, value)
+  override def setDoubleArray(name: String, value: Array[Double]) = syncLogic.setDoubleArray(name, value)
+  override def setLongArray(name: String, value: Array[Long]) = syncLogic.setLongArray(name, value)
+  override def setStringArray(name: String, value: Array[String]) = syncLogic.setStringArray(name, value)
+  override def setItemStackArray(name: String, value: Array[ItemStack]) = syncLogic.setItemStackArray(name, value)
+  override def setNBTArray(name: String, value: Array[NBTTagCompound]) = syncLogic.setNBTArray(name, value)
+  override def setDataArray(name: String, value: Array[Data]) = syncLogic.setDataArray(name, value)
+
+  override def getBooleanArray(name: String): Array[Boolean] = syncLogic.getBooleanArray(name)
+  override def getByteArray(name: String): Array[Byte] = syncLogic.getByteArray(name)
+  override def getShortArray(name: String): Array[Short] = syncLogic.getShortArray(name)
+  override def getIntegerArray(name: String): Array[Int] = syncLogic.getIntegerArray(name)
+  override def getFloatArray(name: String): Array[Float] = syncLogic.getFloatArray(name)
+  override def getDoubleArray(name: String): Array[Double] = syncLogic.getDoubleArray(name)
+  override def getLongArray(name: String): Array[Long] = syncLogic.getLongArray(name)
+  override def getStringArray(name: String): Array[String] = syncLogic.getStringArray(name)
+  override def getItemStackArray(name: String): Array[ItemStack] = syncLogic.getItemStackArray(name)
+  override def getNBTArray(name: String): Array[NBTTagCompound] = syncLogic.getNBTArray(name)
+  override def getDataArray(name: String): Array[Data] = syncLogic.getDataArray(name)
+
   override def forceVariableSync() {
     syncLogic.syncVariables()
   }
@@ -265,6 +293,8 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     syncLogic.makePersistent("talkInterval")
     syncLogic.makePersistent("absorptionAmount")
     syncLogic.makePersistent("fire")
+    syncLogic.makePersistent("persistenceRequired")
+    syncLogic.makePersistent("capturedDrops")
 
     if(initPersistent) {
       syncLogic.setInteger("ticksExisted", ticksExisted)
@@ -285,6 +315,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
       syncLogic.setInteger("attackTime", attackTime)
       syncLogic.setInteger("livingSoundTime", livingSoundTime)
       syncLogic.setInteger("talkInterval", talkInterval)
+      syncLogic.setIntegerArray("capturedDrops", Array.fill(1)(0))
     }
 
     syncLogic.setDouble("prevPosX", prevPosX)
@@ -369,13 +400,16 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     syncLogic.setInteger("experienceValue", experienceValue)
     syncLogic.setInteger("numTicksToChaseTarget", numTicksToChaseTarget)
 
-    syncLogic.setInteger("myEntitySize", myEntitySize.ordinal())
+    System.out.println(syncLogic.getData("capturedDrops"))
   }
 
   var syncMyEntitySize: EnumEntitySize = null
-  var syncInvulnerable: Boolean = false
+  var syncRiddenByEntity, syncRidingEntity, syncLeashedToEntity: Entity = null
+  var syncCapturedDrops: util.ArrayList[EntityItem] = new util.ArrayList[EntityItem]()
+  var syncInvulnerable, syncIsChild, syncPersistenceRequired, syncIsLeashed: Boolean = false
   var syncFire: Int = 0
   var syncHealth, syncAbsorptionAmount, syncLandMovementFactor: Float = 0.0F
+  var syncEntityRiderPitchDelta, syncEntityRiderYawDelta: Double = 0.0D
 
   protected def syncNonPrimitives() {
     if(syncAbsorptionAmount != getAbsorptionAmount) {
@@ -430,19 +464,85 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
       syncInvulnerable = getBoolean("invulnerable")
     }
 
+    if(creatureAttribute != EnumCreatureAttribute.values()(getInteger("creatureAttribute"))) {
+      creatureAttribute = EnumCreatureAttribute.values()(getInteger("creatureAttribute"))
+    }
+
+    val persistenceRequired: Boolean = GIReflectionHelper.getField(this, "persistenceRequired").asInstanceOf[Boolean]
+    if(syncPersistenceRequired != persistenceRequired) {
+      setBoolean("persistenceRequired", persistenceRequired)
+      syncPersistenceRequired = persistenceRequired
+    } else if(syncPersistenceRequired != getBoolean("persistenceRequired")) {
+      GIReflectionHelper.setField(this, "persistenceRequired", getBoolean("persistenceRequired"))
+      syncPersistenceRequired = getBoolean("persistenceRequired")
+    }
+
+    if(syncRiddenByEntity != riddenByEntity) {
+      setInteger("riddenByEntity", if(riddenByEntity != null) riddenByEntity.getEntityId else 0)
+      syncRiddenByEntity = riddenByEntity
+    } else if(syncRiddenByEntity != (if(getInteger("riddenByEntity") != 0) getWorld.getEntityByID(getInteger("riddenByEntity")) else null)) {
+      riddenByEntity = if (getInteger("riddenByEntity") != 0) getWorld.getEntityByID(getInteger("riddenByEntity")) else null
+      syncRiddenByEntity = riddenByEntity
+    }
+
+    if(syncRidingEntity != ridingEntity) {
+      setInteger("ridingEntity", if(ridingEntity != null) ridingEntity.getEntityId else 0)
+      syncRidingEntity = ridingEntity
+    } else if(syncRidingEntity != (if(getInteger("ridingEntity") != 0) getWorld.getEntityByID(getInteger("ridingEntity")) else null)) {
+      ridingEntity = if (getInteger("ridingEntity") != 0) getWorld.getEntityByID(getInteger("ridingEntity")) else null
+      syncRidingEntity = ridingEntity
+    }
+
+    val entityRiderPitchDelta: Double = GIReflectionHelper.getField(this, "entityRiderPitchDelta").asInstanceOf[Double]
+    if (syncEntityRiderPitchDelta != entityRiderPitchDelta) {
+      setDouble("entityRiderPitchDelta", entityRiderPitchDelta)
+      syncEntityRiderPitchDelta = entityRiderPitchDelta
+    } else if (syncEntityRiderPitchDelta != getDouble("entityRiderPitchDelta")) {
+      GIReflectionHelper.setField(this, "entityRiderPitchDelta", getDouble("entityRiderPitchDelta"))
+      syncEntityRiderPitchDelta = entityRiderPitchDelta
+    }
+
+    val entityRiderYawDelta: Double = GIReflectionHelper.getField(this, "entityRiderYawDelta").asInstanceOf[Double]
+    if (syncEntityRiderYawDelta != entityRiderYawDelta) {
+      setDouble("entityRiderYawDelta", entityRiderYawDelta)
+      syncEntityRiderYawDelta = entityRiderYawDelta
+    } else if (syncEntityRiderYawDelta != getDouble("entityRiderYawDelta")) {
+      GIReflectionHelper.setField(this, "entityRiderYawDelta", getDouble("entityRiderYawDelta"))
+      syncEntityRiderYawDelta = entityRiderYawDelta
+    }
+
+    val isLeashed: Boolean = GIReflectionHelper.getField(this, "isLeashed").asInstanceOf[Boolean]
+    if(syncIsLeashed != isLeashed) {
+      setBoolean("isLeashed", isLeashed)
+      syncIsLeashed = isLeashed
+    } else if(syncIsLeashed != getBoolean("isLeashed")) {
+      GIReflectionHelper.setField(this, "isLeashed", getBoolean("isLeashed"))
+      syncIsLeashed = getBoolean("isLeashed")
+    }
+
+    val leashedToEntity: Entity = GIReflectionHelper.getField(this, "leashedToEntity").asInstanceOf[Entity]
+    if(syncLeashedToEntity != leashedToEntity) {
+      setInteger("leashedToEntity", if(leashedToEntity != null) leashedToEntity.getEntityId else 0)
+      syncLeashedToEntity = leashedToEntity
+    } else if(syncLeashedToEntity != (if(getInteger("leashedToEntity") != 0) getWorld.getEntityByID(getInteger("leashedToEntity")) else null)) {
+      GIReflectionHelper.setField(this, "leashedToEntity", (if(getInteger("leashedToEntity") != 0) getWorld.getEntityByID(getInteger("leashedToEntity")) else null))
+      syncLeashedToEntity = leashedToEntity
+    }
+
+
+    //TODO fix this for not-existing entities
+    val customCapturedDropsInts = getIntegerArray("capturedDrops")
+    val customCapturedDrops = new util.ArrayList(Array.tabulate(customCapturedDropsInts.length)(index => getWorld.getEntityByID(customCapturedDropsInts(index)).asInstanceOf[EntityItem]).toList.asJava)
+    if(!syncCapturedDrops.equals(capturedDrops)) {
+      setIntegerArray("capturedDrops", capturedDrops.asScala.map(item => item.getEntityId).toArray)
+      syncCapturedDrops = capturedDrops
+    } else if(syncCapturedDrops.equals(customCapturedDrops)) {
+      capturedDrops = customCapturedDrops
+      syncCapturedDrops = capturedDrops
+    }
+
     //TODO Change things, this doesn't work in obfuscated environments
 
-    //TODO invulnerable
-    //TODO isChild
-    //TODO creatureAttribute
-    //TODO persistencRequired
-    //TODO isSprinting (get&setFlag)
-    //TODO riddenByEntity
-    //TODO ridingEntity
-    //TODO entityRiderYawDelta
-    //TODO entityRiderPitchDelta
-    //TODO isLeashed
-    //TODO leashedToEntity
     //TODO capturedDrops
     //TODO equipment
     //TODO canPickUpLoot
