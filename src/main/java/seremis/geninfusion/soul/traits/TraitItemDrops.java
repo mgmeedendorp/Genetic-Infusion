@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.ForgeHooks;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
@@ -47,10 +48,9 @@ public class TraitItemDrops extends Trait {
             
             entity.setBoolean("captureDrops", true);
 
-            int capturedDropsSize = entity.getInteger("capturedDrops.size");
-            for(int k = 0; k < capturedDropsSize; k++) {
-            	entity.setItemStack("capturedDrops."+k, (ItemStack)null);
-            }
+            NBTTagCompound[] capturedDropsNBT = entity.getNBTArray("capturedDrops");
+
+            entity.setNBTArray("capturedDrops", new NBTTagCompound[capturedDropsNBT.length]);
            
             int j = 0;
 
@@ -72,16 +72,20 @@ public class TraitItemDrops extends Trait {
             
             entity.setBoolean("captureDrops", false);
 
-            ArrayList<EntityItem> capturedDrops = new ArrayList<EntityItem>();
             double posX = entity.getDouble("posX");
             double posY = entity.getDouble("posY");
             double posZ = entity.getDouble("posZ");
 
-            capturedDropsSize = entity.getInteger("capturedDrops.size");
+            ArrayList<EntityItem> capturedDrops = new ArrayList<EntityItem>();
+
+            capturedDropsNBT = entity.getNBTArray("capturedDrops");
             
-            for(int k = 0; k < capturedDropsSize; k++) {
-            	if(entity.getItemStack("capturedDrops."+k) != null)
-            		capturedDrops.add(new EntityItem(entity.getWorld(), posX, posY, posZ, entity.getItemStack("capturedDrops."+k)));
+            for(int k = 0; k < capturedDropsNBT.length; k++) {
+            	if(entity.getNBTArray("capturedDrops")[k] != null) {
+                    EntityItem item = new EntityItem(entity.getWorld());
+                    item.readEntityFromNBT(entity.getNBTArray("capturedDrops")[k]);
+                    capturedDrops.add(new EntityItem(entity.getWorld(), posX, posY, posZ, item.getEntityItem()));
+                }
             }
             
             if (!ForgeHooks.onLivingDrops((EntityLiving)entity, source, capturedDrops, i, recentlyHit > 0, j)) {
@@ -94,7 +98,7 @@ public class TraitItemDrops extends Trait {
 
 	private void dropFewItems(IEntitySoulCustom entity, boolean recentlyHit, int lootingLevel) {
 		ItemStack[] drops = ((AlleleInventory) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_ITEM_DROPS)).inventory.getItemStacks();
-		
+
         if (drops.length != 0) {
             int j = entity.getRandom().nextInt(3);
 
@@ -110,11 +114,13 @@ public class TraitItemDrops extends Trait {
         }
 	}
 	
-	private void dropEquipment(IEntitySoulCustom entity, boolean recentlyHit, int lootingLevel) {		
+	private void dropEquipment(IEntitySoulCustom entity, boolean recentlyHit, int lootingLevel) {
+        float[] equipmentDropChances = ((AlleleFloatArray) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_EQUIPMENT_DROP_CHANCES)).value;
+
 		for (int j = 0; j < 5; ++j) {
             ItemStack itemstack = UtilSoulEntity.getEquipmentInSlot(entity, j);
             
-            float dropChance = entity.getFloat("equipmentDropChances." + j);
+            float dropChance = equipmentDropChances[j];
             
             boolean flag1 = dropChance > 1.0F;
 

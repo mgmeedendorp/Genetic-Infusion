@@ -27,8 +27,7 @@ import java.util.List;
 import java.util.Random;
 
 public class TraitItemPickup extends Trait {
-	
-	@SuppressWarnings("WhileLoopReplaceableByForEach")
+
     @Override
 	public void onUpdate(IEntitySoulCustom entity) {
 		entity.getWorld().theProfiler.startSection("looting");
@@ -38,26 +37,25 @@ public class TraitItemPickup extends Trait {
 
         if (CommonProxy.instance.isServerWorld(entity.getWorld()) && canPickUpItems && !isDead && entity.getWorld().getGameRules().getGameRuleBooleanValue("mobGriefing")) {
             List list = entity.getWorld().getEntitiesWithinAABB(EntityItem.class, entity.getBoundingBox().expand(1.0D, 0.0D, 1.0D));
-            Iterator iterator = list.iterator();
 
-            while (iterator.hasNext()) {
-                EntityItem entityitem = (EntityItem)iterator.next();
+            for (Object aList : list) {
+                EntityItem entityitem = (EntityItem) aList;
 
                 if (!entityitem.isDead && entityitem.getEntityItem() != null) {
                     ItemStack itemstack = entityitem.getEntityItem();
                     int i = getArmorPosition(itemstack);
-                    
+
                     if (i > -1) {
                         boolean flag = true;
                         ItemStack itemstack1 = UtilSoulEntity.getEquipmentInSlot(entity, i);
-                        
+
                         if (itemstack1 != null) {
                             if (i == 0) {
                                 if (itemstack.getItem() instanceof ItemSword && !(itemstack1.getItem() instanceof ItemSword)) {
                                     flag = true;
                                 } else if (itemstack.getItem() instanceof ItemSword) {
-                                    ItemSword itemsword = (ItemSword)itemstack.getItem();
-                                    ItemSword itemsword1 = (ItemSword)itemstack1.getItem();
+                                    ItemSword itemsword = (ItemSword) itemstack.getItem();
+                                    ItemSword itemsword1 = (ItemSword) itemstack1.getItem();
 
                                     if (itemsword.func_150931_i() == itemsword1.func_150931_i()) {
                                         flag = itemstack.getItemDamage() > itemstack1.getItemDamage() || itemstack.hasTagCompound() && !itemstack1.hasTagCompound();
@@ -70,8 +68,8 @@ public class TraitItemPickup extends Trait {
                             } else if (itemstack.getItem() instanceof ItemArmor && !(itemstack1.getItem() instanceof ItemArmor)) {
                                 flag = true;
                             } else if (itemstack.getItem() instanceof ItemArmor) {
-                                ItemArmor itemarmor = (ItemArmor)itemstack.getItem();
-                                ItemArmor itemarmor1 = (ItemArmor)itemstack1.getItem();
+                                ItemArmor itemarmor = (ItemArmor) itemstack.getItem();
+                                ItemArmor itemarmor1 = (ItemArmor) itemstack1.getItem();
 
                                 if (itemarmor.damageReduceAmount == itemarmor1.damageReduceAmount) {
                                     flag = itemstack.getItemDamage() > itemstack1.getItemDamage() || itemstack.hasTagCompound() && !itemstack1.hasTagCompound();
@@ -84,8 +82,8 @@ public class TraitItemPickup extends Trait {
                         }
 
                         if (flag) {
-                        	float equipmentDropChance = entity.getFloat("equipmentDropChances." + i);
-                        	
+                            float equipmentDropChance = entity.getFloat("equipmentDropChances." + i);
+
                             if (itemstack1 != null && new Random().nextFloat() - 0.1F < equipmentDropChance) {
                                 UtilSoulEntity.dropItem(entity, itemstack1, 0.0F);
                             }

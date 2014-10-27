@@ -74,6 +74,8 @@ public class TraitMovement extends Trait {
             entity.getWorld().theProfiler.startSection("portal");
             MinecraftServer minecraftserver = ((WorldServer) entity.getWorld()).func_73046_m();
 
+            System.out.println(inPortal);
+
             if(inPortal) {
                 if(minecraftserver.getAllowNether()) {
                     if(ridingEntity == null) {

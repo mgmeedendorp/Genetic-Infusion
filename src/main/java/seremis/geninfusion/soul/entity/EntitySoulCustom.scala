@@ -18,12 +18,12 @@ import net.minecraft.entity.item.EntityItem
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{CompressedStreamTools, NBTSizeTracker, NBTTagCompound}
 import net.minecraft.potion.PotionEffect
-import net.minecraft.util.{AxisAlignedBB, CombatTracker, DamageSource}
+import net.minecraft.util.{Direction, AxisAlignedBB, CombatTracker, DamageSource}
 import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
 import seremis.geninfusion.api.soul.lib.Genes
-import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
 import seremis.geninfusion.api.soul.util.Data
+import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
 import seremis.geninfusion.core.proxy.CommonProxy
 import seremis.geninfusion.entity.GIEntityLiving
 import seremis.geninfusion.helper.GIReflectionHelper
@@ -272,7 +272,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
 
   private var initPersistent = true;
 
-  def initVariables() {
+  override def initVariables() {
     syncLogic.makePersistent("ticksExisted")
     syncLogic.makePersistent("posX")
     syncLogic.makePersistent("posY")
@@ -295,6 +295,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     syncLogic.makePersistent("fire")
     syncLogic.makePersistent("persistenceRequired")
     syncLogic.makePersistent("capturedDrops")
+    syncLogic.makePersistent("equipment")
 
     if(initPersistent) {
       syncLogic.setInteger("ticksExisted", ticksExisted)
@@ -316,7 +317,9 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
       syncLogic.setInteger("livingSoundTime", livingSoundTime)
       syncLogic.setInteger("talkInterval", talkInterval)
       syncLogic.setIntegerArray("capturedDrops", Array.fill(1)(0))
+      syncLogic.setItemStackArray("equipment", Array.fill(5)(null))
     }
+    syncLogic.setNBTArray("capturedDrops", Array.fill(1)(null))
 
     syncLogic.setDouble("prevPosX", prevPosX)
     syncLogic.setDouble("prevPosY", prevPosY)
@@ -399,8 +402,6 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     syncLogic.setFloat("lastDamage", lastDamage)
     syncLogic.setInteger("experienceValue", experienceValue)
     syncLogic.setInteger("numTicksToChaseTarget", numTicksToChaseTarget)
-
-    System.out.println(syncLogic.getData("capturedDrops"))
   }
 
   var syncMyEntitySize: EnumEntitySize = null
@@ -525,21 +526,26 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
       setInteger("leashedToEntity", if(leashedToEntity != null) leashedToEntity.getEntityId else 0)
       syncLeashedToEntity = leashedToEntity
     } else if(syncLeashedToEntity != (if(getInteger("leashedToEntity") != 0) getWorld.getEntityByID(getInteger("leashedToEntity")) else null)) {
-      GIReflectionHelper.setField(this, "leashedToEntity", (if(getInteger("leashedToEntity") != 0) getWorld.getEntityByID(getInteger("leashedToEntity")) else null))
+      GIReflectionHelper.setField(this, "leashedToEntity", if (getInteger("leashedToEntity") != 0) getWorld.getEntityByID(getInteger("leashedToEntity")) else null)
       syncLeashedToEntity = leashedToEntity
     }
 
-
-    //TODO fix this for not-existing entities
-    val customCapturedDropsInts = getIntegerArray("capturedDrops")
-    val customCapturedDrops = new util.ArrayList(Array.tabulate(customCapturedDropsInts.length)(index => getWorld.getEntityByID(customCapturedDropsInts(index)).asInstanceOf[EntityItem]).toList.asJava)
-    if(!syncCapturedDrops.equals(capturedDrops)) {
-      setIntegerArray("capturedDrops", capturedDrops.asScala.map(item => item.getEntityId).toArray)
+    var customCapturedDropsNBT = getNBTArray("capturedDrops")
+    if(customCapturedDropsNBT == null) customCapturedDropsNBT = Array.fill(1)(null)
+    val customCapturedDrops = new util.ArrayList(Array.tabulate(customCapturedDropsNBT.length)(index => {if (customCapturedDropsNBT(index) != null) {val ent = new EntityItem(worldObj); ent.readFromNBT(customCapturedDropsNBT(index)); ent; } else null}).toList.asJava)
+    if (!syncCapturedDrops.equals(capturedDrops)) {
+      setNBTArray("capturedDrops", capturedDrops.asScala.map(item => {
+          val nbt = new NBTTagCompound()
+          item.writeEntityToNBT(nbt)
+          nbt
+        }).toArray)
       syncCapturedDrops = capturedDrops
-    } else if(syncCapturedDrops.equals(customCapturedDrops)) {
+    } else if (syncCapturedDrops.equals(customCapturedDrops)) {
       capturedDrops = customCapturedDrops
       syncCapturedDrops = capturedDrops
     }
+
+    inPortal
 
     //TODO Change things, this doesn't work in obfuscated environments
 
@@ -552,5 +558,26 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     //TODO lastAttackerTime
     //TODO entityLivingToAttack
     //TODO leashedCompound
+  }
+
+  /**
+   * Called by portal blocks when an entity is within it.
+   */
+  override def setInPortal {
+//    println("setInPortal")
+    if (this.timeUntilPortal > 0) {
+//      println("setInPortal1")
+      this.timeUntilPortal = this.getPortalCooldown
+    }
+    else {
+//      println("setInPortal2")
+      val d0: Double = this.prevPosX - this.posX
+      val d1: Double = this.prevPosZ - this.posZ
+      if (!this.worldObj.isRemote && !this.inPortal) {
+//        println("setInPortal3")
+        this.teleportDirection = Direction.getMovementDirection(d0, d1)
+      }
+      this.inPortal = true
+    }
   }
 }

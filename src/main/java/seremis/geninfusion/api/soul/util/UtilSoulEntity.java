@@ -10,6 +10,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChunkCoordinates;
@@ -25,6 +26,8 @@ import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.core.proxy.CommonProxy;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class UtilSoulEntity {
@@ -34,11 +37,13 @@ public class UtilSoulEntity {
     }
     
     public static ItemStack getEquipmentInSlot(IEntitySoulCustom entity, int slot) {
-        return entity.getItemStack("equipment." + slot);
+        return entity.getItemStackArray("equipment")[slot];
     }
     
     public static void setEquipmentInSlot(IEntitySoulCustom entity, int slot, ItemStack stack) {
-        entity.setItemStack("equipment." + slot, stack);
+        ItemStack[] equipment = entity.getItemStackArray("equipment");
+        equipment[slot] = stack;
+        entity.setItemStackArray("equipment", equipment);
     }
     
     public static boolean handleLavaMovement(IEntitySoulCustom entity) {
@@ -84,11 +89,11 @@ public class UtilSoulEntity {
                 entity.setInteger("dimension", 0);
             }
 
-            if (entity.getWorld().getEntityByID(entity.getInteger("riddenByEntityID")) != null) {
-            	entity.getWorld().getEntityByID(entity.getInteger("riddenByEntityID")).mountEntity(null);
+            if (entity.getWorld().getEntityByID(entity.getInteger("riddenByEntity")) != null) {
+            	entity.getWorld().getEntityByID(entity.getInteger("riddenByEntity")).mountEntity(null);
             }
 
-            if (entity.getWorld().getEntityByID(entity.getInteger("ridingEntityID")) != null) {
+            if (entity.getWorld().getEntityByID(entity.getInteger("ridingEntity")) != null) {
             	entity.getWorld().getEntityByID(entity.getEntityId()).mountEntity(null);
             }
             entity.getWorld().theProfiler.startSection("reposition");            
@@ -246,8 +251,15 @@ public class UtilSoulEntity {
             entityitem.delayBeforeCanPickup = 10;
 
             if(entity.getBoolean("captureDrops")) {
-            	int capturedDropsSize = entity.getInteger("capturedDrops.size");
-            	entity.setItemStack("capturedDrops." + capturedDropsSize, droppedStack);
+            	NBTTagCompound[] capturedDrops = entity.getNBTArray("capturedDrops");
+                NBTTagCompound[] capturedDrops2 = new NBTTagCompound[capturedDrops.length+1];
+                System.arraycopy(capturedDrops, 0, capturedDrops2, 0, capturedDrops.length);
+
+                NBTTagCompound nbt = new NBTTagCompound();
+                entityitem.writeEntityToNBT(nbt);
+                capturedDrops2[capturedDrops.length] = nbt;
+
+            	entity.setNBTArray("capturedDrops", capturedDrops2);
                 entity.forceVariableSync();
             } else {
                 entity.getWorld().spawnEntityInWorld(entityitem);
