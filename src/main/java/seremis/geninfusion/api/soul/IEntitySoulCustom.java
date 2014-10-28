@@ -107,6 +107,12 @@ public interface IEntitySoulCustom {
      * Forces a synchronization between the standard entity variables and the custom ones
      */
     void forceVariableSync();
+
+    /*
+     * Forces a synchronization between the standard entity variables and custom ones specified, make sure to use
+     * this method rather than the non-parameter method.
+     */
+    void forceVariableSync(String[] variables);
     
     
     NBTTagCompound getEntityData();

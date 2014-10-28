@@ -71,10 +71,10 @@ public class GeneticInfusion {
         
         if(event.getSide() == Side.SERVER)
         	FMLCommonHandler.instance().bus().register(ServerTickHandler.instance);
-        
-        NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
+
         RecipeHelper.initRecipes();
         RecipeHelper.initSmelting();
+        FMLCommonHandler.instance().bus().register(new GIEventHandler());
         MinecraftForge.EVENT_BUS.register(new GIEventHandler());
         packetPipeline.initialise();
     }

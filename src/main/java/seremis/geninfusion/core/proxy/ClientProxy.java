@@ -3,6 +3,7 @@ package seremis.geninfusion.core.proxy;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -10,8 +11,10 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
+import seremis.geninfusion.GeneticInfusion;
 import seremis.geninfusion.client.render.*;
 import seremis.geninfusion.entity.EntityTransporter;
+import seremis.geninfusion.handler.GuiHandler;
 import seremis.geninfusion.item.ModItems;
 import seremis.geninfusion.lib.RenderIds;
 import seremis.geninfusion.soul.entity.EntitySoulCustom;
@@ -41,6 +44,8 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(TileCrystalStand.class, crystalStand);
 
         MinecraftForgeClient.registerItemRenderer(ModItems.transporterModules, new ItemTransporterModulesRenderer());
+
+        NetworkRegistry.INSTANCE.registerGuiHandler(GeneticInfusion.instance, new GuiHandler());
     }
 
     @Override

@@ -454,7 +454,7 @@ public class Data implements INBTTagable {
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         if (compound.hasKey("data")) {
-            NBTTagList tagList = compound.getTagList("data", Constants.NBT.TAG_COMPOUND);
+            NBTTagList tagList = (NBTTagList) compound.getTag("data");
             NBTTagCompound compoundBoolean = null;
             NBTTagCompound compoundByte = null;
             NBTTagCompound compoundShort = null;

@@ -37,7 +37,7 @@ public class UtilSoulEntity {
     }
     
     public static ItemStack getEquipmentInSlot(IEntitySoulCustom entity, int slot) {
-        return entity.getItemStackArray("equipment")[slot];
+        return entity.getItemStackArray("equipment") != null ? entity.getItemStackArray("equipment")[slot] : null;
     }
     
     public static void setEquipmentInSlot(IEntitySoulCustom entity, int slot, ItemStack stack) {
@@ -89,13 +89,11 @@ public class UtilSoulEntity {
                 entity.setInteger("dimension", 0);
             }
 
-            if (entity.getWorld().getEntityByID(entity.getInteger("riddenByEntity")) != null) {
-            	entity.getWorld().getEntityByID(entity.getInteger("riddenByEntity")).mountEntity(null);
-            }
+            entity.getWorld().removeEntity((Entity)entity);
+            entity.forceVariableSync(new String[] {"isDead"});
+            entity.setBoolean("isDead", false);
+            entity.forceVariableSync(new String[] {"isDead"});
 
-            if (entity.getWorld().getEntityByID(entity.getInteger("ridingEntity")) != null) {
-            	entity.getWorld().getEntityByID(entity.getEntityId()).mountEntity(null);
-            }
             entity.getWorld().theProfiler.startSection("reposition");            
             minecraftserver.getConfigurationManager().transferEntityToWorld((Entity) entity, currentDimension, worldserver, worldserver1);
             entity.getWorld().theProfiler.endStartSection("reloading");
@@ -115,6 +113,7 @@ public class UtilSoulEntity {
             }
 
             entity.setBoolean("isDead", true);
+            entity.forceVariableSync(new String[] {"isDead"});
             entity.getWorld().theProfiler.endSection();
             worldserver.resetUpdateEntityTick();
             worldserver1.resetUpdateEntityTick();
@@ -260,7 +259,7 @@ public class UtilSoulEntity {
                 capturedDrops2[capturedDrops.length] = nbt;
 
             	entity.setNBTArray("capturedDrops", capturedDrops2);
-                entity.forceVariableSync();
+                entity.forceVariableSync(new String[] {"capturedDrops"});
             } else {
                 entity.getWorld().spawnEntityInWorld(entityitem);
             }

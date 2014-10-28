@@ -3,7 +3,6 @@ package seremis.geninfusion.soul.entity.logic
 import java.util.Map.Entry
 import java.{lang, util}
 
-import net.minecraft.entity.Entity
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import seremis.geninfusion.api.soul.util.Data
@@ -17,8 +16,8 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
   protected var data = new Data()
   protected var persistent: ListBuffer[String] = ListBuffer()
 
-  def makePersistent(name: String): Unit = {
-    persistent+name
+  def makePersistent(name: String) {
+    persistent+=name
   }
 
   def setBoolean(name: String, variable: Boolean) = data.setBoolean(name, variable)
@@ -299,12 +298,12 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
       }
       if (tagList.tagCount() > 0) {
         compound.setTag("data", tagList)
-
-        val persistentCompound = new NBTTagCompound()
-        for((variable, count) <- persistent.zipWithIndex) {
-          persistentCompound.setString("persistent" + count, variable)
-        }
-        compound.setTag("persistent", persistentCompound)
+//        TODO figure out if this is needed.
+//        val persistentCompound = new NBTTagCompound()
+//        for((variable, count) <- persistent.zipWithIndex) {
+//          persistentCompound.setString("persistent" + count, variable)
+//        }
+//        compound.setTag("persistent", persistentCompound)
       }
     }
   }
@@ -321,9 +320,15 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
   protected var prevData: Data = DataHelper.writePrimitives(entity)
 
   def syncVariables() {
+    syncVariables(Array("all"))
+  }
+
+  def syncVariables(variables: Array[String]) {
     //The variables in the entity class
     val entityData = DataHelper.writePrimitives(entity)
     val clss = entity.getClass
+
+    val all = variables(0).equals("all")
 
     val boolIterator: util.Iterator[Entry[String, lang.Boolean]] = prevData.booleanDataMap.entrySet().iterator()
 
@@ -332,15 +337,15 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
       val key = entry.getKey
       val value = entry.getValue
 
-      if(key.equals("inPortal")) println(value + " " + entityData.getBoolean(key) + " " + data.getBoolean(key) + " server?: " + !entity.asInstanceOf[Entity].worldObj.isRemote)
-
-      if(entityData.booleanDataMap.containsKey(key) && entityData.getBoolean(key) != value) {
-        prevData.booleanDataMap.put(key, entityData.getBoolean(key))
-        data.booleanDataMap.put(key, entityData.getBoolean(key))
-      } else if(data.booleanDataMap.containsKey(key) && data.getBoolean(key) != value) {
-        prevData.booleanDataMap.put(key, data.getBoolean(key))
-        entityData.setBoolean(key, data.getBoolean(key))
-        setField(key, data.getBoolean(key))
+      if(variables.contains(key) || all) {
+        if (entityData.booleanDataMap.containsKey(key) && entityData.getBoolean(key) != value) {
+          prevData.setBoolean(key, entityData.getBoolean(key))
+          data.setBoolean(key, entityData.getBoolean(key))
+        } else if (data.getBoolean(key) != value) {
+          prevData.setBoolean(key, data.getBoolean(key))
+          entityData.setBoolean(key, data.getBoolean(key))
+          setField(key, data.getBoolean(key))
+        }
       }
     }
 
@@ -351,13 +356,15 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
       val key = entry.getKey
       val value = entry.getValue
 
-      if(data.byteDataMap.containsKey(key) && data.byteDataMap.get(key) != value) {
-        prevData.byteDataMap.put(key, data.byteDataMap.get(key))
-        data.byteDataMap.put(key, data.byteDataMap.get(key))
-      } else if(data.byteDataMap.containsKey(key) && data.getByte(key) != value) {
-        prevData.byteDataMap.put(key, data.getByte(key))
-        data.byteDataMap.put(key, data.getByte(key))
-        setField(key, data.getByte(key))
+      if(variables.contains(key) || all) {
+        if (entityData.byteDataMap.containsKey(key) && entityData.getByte(key) != value) {
+          prevData.setByte(key, entityData.getByte(key))
+          data.setByte(key, entityData.getByte(key))
+        } else if (data.getByte(key) != value) {
+          prevData.setByte(key, data.getByte(key))
+          entityData.setByte(key, data.getByte(key))
+          setField(key, data.getByte(key))
+        }
       }
     }
 
@@ -368,13 +375,15 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
       val key = entry.getKey
       val value = entry.getValue
 
-      if(data.shortDataMap.containsKey(key) && data.shortDataMap.get(key) != value) {
-        prevData.shortDataMap.put(key, data.shortDataMap.get(key))
-        data.shortDataMap.put(key, data.shortDataMap.get(key))
-      } else if(data.shortDataMap.containsKey(key) && data.getShort(key) != value) {
-        prevData.shortDataMap.put(key, data.getShort(key))
-        data.shortDataMap.put(key, data.getShort(key))
-        setField(key, data.getShort(key))
+      if(variables.contains(key) || all) {
+        if (entityData.shortDataMap.containsKey(key) && entityData.getShort(key) != value) {
+          prevData.setShort(key, entityData.getShort(key))
+          data.setShort(key, entityData.getShort(key))
+        } else if (data.getShort(key) != value) {
+          prevData.setShort(key, data.getShort(key))
+          entityData.setShort(key, data.getShort(key))
+          setField(key, data.getShort(key))
+        }
       }
     }
 
@@ -385,13 +394,15 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
       val key = entry.getKey
       val value = entry.getValue
 
-      if(data.integerDataMap.containsKey(key) && data.integerDataMap.get(key) != value) {
-        prevData.integerDataMap.put(key, data.integerDataMap.get(key))
-        data.integerDataMap.put(key, data.integerDataMap.get(key))
-      } else if(data.integerDataMap.containsKey(key) && data.getInteger(key) != value) {
-        prevData.integerDataMap.put(key, data.getInteger(key))
-        data.integerDataMap.put(key, data.getInteger(key))
-        setField(key, data.getInteger(key))
+      if(variables.contains(key) || all) {
+        if (entityData.integerDataMap.containsKey(key) && entityData.getInteger(key) != value) {
+          prevData.setInteger(key, entityData.getInteger(key))
+          data.setInteger(key, entityData.getInteger(key))
+        } else if (data.getInteger(key) != value) {
+          prevData.setInteger(key, data.getInteger(key))
+          entityData.setInteger(key, data.getInteger(key))
+          setField(key, data.getInteger(key))
+        }
       }
     }
 
@@ -402,13 +413,15 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
       val key = entry.getKey
       val value = entry.getValue
 
-      if(data.floatDataMap.containsKey(key) && data.floatDataMap.get(key) != value) {
-        prevData.floatDataMap.put(key, data.floatDataMap.get(key))
-        data.floatDataMap.put(key, data.floatDataMap.get(key))
-      } else if(data.floatDataMap.containsKey(key) && data.getFloat(key) != value) {
-        prevData.floatDataMap.put(key, data.getFloat(key))
-        data.floatDataMap.put(key, data.getFloat(key))
-        setField(key, data.getFloat(key))
+      if(variables.contains(key) || all) {
+        if (entityData.floatDataMap.containsKey(key) && entityData.getFloat(key) != value) {
+          prevData.setFloat(key, entityData.getFloat(key))
+          data.setFloat(key, entityData.getFloat(key))
+        } else if (data.getFloat(key) != value) {
+          prevData.setFloat(key, data.getFloat(key))
+          entityData.setFloat(key, data.getFloat(key))
+          setField(key, data.getFloat(key))
+        }
       }
     }
 
@@ -419,13 +432,15 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
       val key = entry.getKey
       val value = entry.getValue
 
-      if(data.doubleDataMap.containsKey(key) && data.doubleDataMap.get(key) != value) {
-        prevData.doubleDataMap.put(key, data.doubleDataMap.get(key))
-        data.doubleDataMap.put(key, data.doubleDataMap.get(key))
-      } else if(data.doubleDataMap.containsKey(key) && data.getDouble(key) != value) {
-        prevData.doubleDataMap.put(key, data.getDouble(key))
-        data.doubleDataMap.put(key, data.getDouble(key))
-        setField(key, data.getDouble(key))
+      if(variables.contains(key) || all) {
+        if (entityData.doubleDataMap.containsKey(key) && entityData.getDouble(key) != value) {
+          prevData.setDouble(key, entityData.getDouble(key))
+          data.setDouble(key, entityData.getDouble(key))
+        } else if (data.getDouble(key) != value) {
+          prevData.setDouble(key, data.getDouble(key))
+          entityData.setDouble(key, data.getDouble(key))
+          setField(key, data.getDouble(key))
+        }
       }
     }
 
@@ -436,13 +451,15 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
       val key = entry.getKey
       val value = entry.getValue
 
-      if(data.longDataMap.containsKey(key) && data.longDataMap.get(key) != value) {
-        prevData.longDataMap.put(key, data.longDataMap.get(key))
-        data.longDataMap.put(key, data.longDataMap.get(key))
-      } else if(data.longDataMap.containsKey(key) && data.getLong(key) != value) {
-        prevData.longDataMap.put(key, data.getLong(key))
-        data.longDataMap.put(key, data.getLong(key))
-        setField(key, data.getLong(key))
+      if(variables.contains(key) || all) {
+        if (entityData.longDataMap.containsKey(key) && entityData.getByte(key) != value) {
+          prevData.setByte(key, entityData.getByte(key))
+          data.setByte(key, entityData.getByte(key))
+        } else if (data.getLong(key) != value) {
+          prevData.setLong(key, data.getLong(key))
+          entityData.setLong(key, data.getLong(key))
+          setField(key, data.getLong(key))
+        }
       }
     }
 
@@ -453,16 +470,18 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
       val key = entry.getKey
       val value = entry.getValue
 
-      if(data.stringDataMap.containsKey(key) && data.stringDataMap.get(key) != value) {
-        prevData.stringDataMap.put(key, data.stringDataMap.get(key))
-        data.stringDataMap.put(key, data.stringDataMap.get(key))
-      } else if(data.stringDataMap.containsKey(key) && data.getString(key) != value) {
-        prevData.stringDataMap.put(key, data.getString(key))
-        data.stringDataMap.put(key, data.getString(key))
-        setField(key, data.getString(key))
+      if(variables.contains(key) || all) {
+        if (entityData.stringDataMap.containsKey(key) && entityData.getString(key) != value) {
+          prevData.setString(key, entityData.getString(key))
+          data.setString(key, entityData.getString(key))
+        } else if (data.getString(key) != value) {
+          prevData.setString(key, data.getString(key))
+          entityData.setString(key, data.getString(key))
+          setField(key, data.getString(key))
+        }
       }
     }
-    entity.syncNonPrimitives()
+    entity.syncNonPrimitives(variables)
   }
 
   private def setField(name: String, value: Any) {

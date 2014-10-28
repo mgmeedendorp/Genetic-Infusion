@@ -5,8 +5,6 @@ import java.lang.reflect.Field
 import java.util
 import java.util.Random
 
-import scala.collection.JavaConverters._
-
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData
 import cpw.mods.fml.relauncher.ReflectionHelper
 import io.netty.buffer.ByteBuf
@@ -18,7 +16,7 @@ import net.minecraft.entity.item.EntityItem
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{CompressedStreamTools, NBTSizeTracker, NBTTagCompound}
 import net.minecraft.potion.PotionEffect
-import net.minecraft.util.{Direction, AxisAlignedBB, CombatTracker, DamageSource}
+import net.minecraft.util.{AxisAlignedBB, CombatTracker, DamageSource}
 import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
 import seremis.geninfusion.api.soul.lib.Genes
@@ -31,9 +29,11 @@ import seremis.geninfusion.soul.allele.{AlleleFloat, AlleleString}
 import seremis.geninfusion.soul.entity.logic.{IVariableSyncEntity, VariableSyncLogic}
 import seremis.geninfusion.soul.{Soul, TraitHandler}
 
+import scala.collection.JavaConverters._
+
 class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntitySoulCustom with IEntityAdditionalSpawnData with IVariableSyncEntity {
 
-  var soul: ISoul = _
+  var soul: ISoul = null
   var syncLogic: VariableSyncLogic = new VariableSyncLogic(this)
 
   def this(world: World, soul: ISoul, x: Double, y: Double, z: Double) {
@@ -41,9 +41,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     setPosition(x, y, z)
     setSize(0.8F, 1.7F)
     this.soul = soul
-    initVariables()
   }
-
 
   override def getSoul: ISoul = soul
 
@@ -53,8 +51,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     var abyte: Array[Byte] = null
     try {
       abyte = CompressedStreamTools.compress(compound)
-    }
-    catch {
+    } catch {
       case e: Exception => e.printStackTrace()
         return
     }
@@ -69,8 +66,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     var compound: NBTTagCompound = null
     try {
       compound = CompressedStreamTools.func_152457_a(abyte, NBTSizeTracker.field_152451_a)
-    }
-    catch {
+    } catch {
       case e: IOException =>
         e.printStackTrace()
         return
@@ -101,8 +97,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
       field.setAccessible(true)
       value = field.get(this).asInstanceOf[util.HashMap[Integer, PotionEffect]]
       field.setAccessible(false)
-    }
-    catch {
+    } catch {
       case e: Exception =>
         e.printStackTrace()
     }
@@ -201,17 +196,18 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
   override def attackEntityAsMob(entity: Entity): Boolean = TraitHandler.attackEntityAsMob(this, entity)
 
   override def readFromNBT(compound: NBTTagCompound) {
-    super.readFromNBT(compound)
     soul = new Soul(compound)
     if(compound.hasKey("data")) {
       syncLogic.readFromNBT(compound)
-    } else {
-      initPersistent = true
+      initPersistent = false
+      posX = syncLogic.getDouble("posX")
+      posY = syncLogic.getDouble("posY")
+      posZ = syncLogic.getDouble("posZ")
+      setPosition(posX, posY, posZ)
     }
   }
 
   override def writeToNBT(compound: NBTTagCompound) {
-    super.writeToNBT(compound)
     soul.writeToNBT(compound)
     syncLogic.writeToNBT(compound)
   }
@@ -270,7 +266,13 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     syncLogic.syncVariables()
   }
 
-  private var initPersistent = true;
+  override def forceVariableSync(variables: Array[String]) {
+    syncLogic.syncVariables(variables)
+  }
+
+  private var initPersistent = true
+
+  initVariables()
 
   override def initVariables() {
     syncLogic.makePersistent("ticksExisted")
@@ -319,8 +321,6 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
       syncLogic.setIntegerArray("capturedDrops", Array.fill(1)(0))
       syncLogic.setItemStackArray("equipment", Array.fill(5)(null))
     }
-    syncLogic.setNBTArray("capturedDrops", Array.fill(1)(null))
-
     syncLogic.setDouble("prevPosX", prevPosX)
     syncLogic.setDouble("prevPosY", prevPosY)
     syncLogic.setDouble("prevPosZ", prevPosZ)
@@ -412,140 +412,174 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
   var syncHealth, syncAbsorptionAmount, syncLandMovementFactor: Float = 0.0F
   var syncEntityRiderPitchDelta, syncEntityRiderYawDelta: Double = 0.0D
 
-  protected def syncNonPrimitives() {
-    if(syncAbsorptionAmount != getAbsorptionAmount) {
-      setFloat("absorptionAmount", getAbsorptionAmount)
-      syncAbsorptionAmount = getAbsorptionAmount
-    } else if(syncAbsorptionAmount != getFloat("absorptionAmount")) {
-      setAbsorptionAmount(getFloat("absorptionAmount"))
-      syncAbsorptionAmount = getFloat("absorptionAmount")
+  override def syncNonPrimitives(variables: Array[String]) {
+    val all = variables(0).equals("all")
+
+    if (variables.contains("absorptionAmount") || all) {
+      if (syncAbsorptionAmount != getAbsorptionAmount) {
+        setFloat("absorptionAmount", getAbsorptionAmount)
+        syncAbsorptionAmount = getAbsorptionAmount
+      } else if (syncAbsorptionAmount != getFloat("absorptionAmount")) {
+        setAbsorptionAmount(getFloat("absorptionAmount"))
+        syncAbsorptionAmount = getFloat("absorptionAmount")
+      }
     }
 
-    if (syncMyEntitySize != myEntitySize) {
-      setInteger("myEntitySize", myEntitySize.ordinal)
-      syncMyEntitySize = myEntitySize
-    } else if (syncMyEntitySize != EnumEntitySize.values()(getInteger("myEntitySize"))) {
-      myEntitySize = EnumEntitySize.values()(getInteger("myEntitySize"))
-      syncMyEntitySize = myEntitySize
+    if (variables.contains("myEntitySize") || all) {
+      if (syncMyEntitySize != myEntitySize) {
+        setInteger("myEntitySize", myEntitySize.ordinal)
+        syncMyEntitySize = myEntitySize
+      } else if (syncMyEntitySize != EnumEntitySize.values()(getInteger("myEntitySize"))) {
+        myEntitySize = EnumEntitySize.values()(getInteger("myEntitySize"))
+        syncMyEntitySize = myEntitySize
+      }
     }
 
-    val fire: Int = GIReflectionHelper.getField(this, "fire").asInstanceOf[Int]
-    if(syncFire != fire) {
-      setInteger("fire", fire)
-      syncFire = fire
-    } else if(syncFire != getInteger("fire")) {
-      GIReflectionHelper.setField(this, "fire", getInteger("fire"))
-      syncFire = getInteger("fire")
+    if (variables.contains("fire") || all) {
+      val fire: Int = GIReflectionHelper.getField(this, "fire").asInstanceOf[Int]
+      if (syncFire != fire) {
+        setInteger("fire", fire)
+        syncFire = fire
+      } else if (syncFire != getInteger("fire")) {
+        GIReflectionHelper.setField(this, "fire", getInteger("fire"))
+        syncFire = getInteger("fire")
+      }
     }
 
-    val health: Float = dataWatcher.getWatchableObjectFloat(6)
-    if(syncHealth != health) {
-      setFloat("health", health)
-      syncHealth = health
-    } else if(syncHealth != getFloat("health")) {
-      dataWatcher.updateObject(6, getFloat("health"))
-      syncHealth = getFloat("health")
+    if (variables.contains("health") || all) {
+      val health: Float = dataWatcher.getWatchableObjectFloat(6)
+      if (syncHealth != health) {
+        setFloat("health", health)
+        syncHealth = health
+      } else if (syncHealth != getFloat("health")) {
+        dataWatcher.updateObject(6, getFloat("health"))
+        syncHealth = getFloat("health")
+      }
     }
 
-    val landMovementFactor: Float = GIReflectionHelper.getField(this, "landMovementFactor").asInstanceOf[Float]
-    if(syncLandMovementFactor != landMovementFactor) {
-      setFloat("landMovementFactor", landMovementFactor)
-      syncLandMovementFactor = landMovementFactor
-    } else if (syncLandMovementFactor != getFloat("landMovementFactor")) {
-      GIReflectionHelper.setField(this, "landMovementFactor", getFloat("landMovementFactor"))
-      syncLandMovementFactor = getFloat("landMovementFactor")
+    if (variables.contains("landMovementFactor") || all) {
+      val landMovementFactor: Float = GIReflectionHelper.getField(this, "landMovementFactor").asInstanceOf[Float]
+      if (syncLandMovementFactor != landMovementFactor) {
+        setFloat("landMovementFactor", landMovementFactor)
+        syncLandMovementFactor = landMovementFactor
+      } else if (syncLandMovementFactor != getFloat("landMovementFactor")) {
+        GIReflectionHelper.setField(this, "landMovementFactor", getFloat("landMovementFactor"))
+        syncLandMovementFactor = getFloat("landMovementFactor")
+      }
     }
 
-    val invulnerable: Boolean = GIReflectionHelper.getField(this, "invulnerable").asInstanceOf[Boolean]
-    if(syncInvulnerable != invulnerable) {
-      setBoolean("invulnerable", invulnerable)
-      syncInvulnerable = invulnerable
-    } else if(syncInvulnerable != getBoolean("invulnerable")) {
-      GIReflectionHelper.setField(this, "invulnerable", getBoolean("invulnerable"))
-      syncInvulnerable = getBoolean("invulnerable")
+    if (variables.contains("invulnerable") || all) {
+      val invulnerable: Boolean = GIReflectionHelper.getField(this, "invulnerable").asInstanceOf[Boolean]
+      if (syncInvulnerable != invulnerable) {
+        setBoolean("invulnerable", invulnerable)
+        syncInvulnerable = invulnerable
+      } else if (syncInvulnerable != getBoolean("invulnerable")) {
+        GIReflectionHelper.setField(this, "invulnerable", getBoolean("invulnerable"))
+        syncInvulnerable = getBoolean("invulnerable")
+      }
     }
 
-    if(creatureAttribute != EnumCreatureAttribute.values()(getInteger("creatureAttribute"))) {
-      creatureAttribute = EnumCreatureAttribute.values()(getInteger("creatureAttribute"))
+    if (variables.contains("creatureAttribute") || all) {
+      if (creatureAttribute != EnumCreatureAttribute.values()(getInteger("creatureAttribute"))) {
+        creatureAttribute = EnumCreatureAttribute.values()(getInteger("creatureAttribute"))
+      }
     }
 
-    val persistenceRequired: Boolean = GIReflectionHelper.getField(this, "persistenceRequired").asInstanceOf[Boolean]
-    if(syncPersistenceRequired != persistenceRequired) {
-      setBoolean("persistenceRequired", persistenceRequired)
-      syncPersistenceRequired = persistenceRequired
-    } else if(syncPersistenceRequired != getBoolean("persistenceRequired")) {
-      GIReflectionHelper.setField(this, "persistenceRequired", getBoolean("persistenceRequired"))
-      syncPersistenceRequired = getBoolean("persistenceRequired")
+    if (variables.contains("persistenceRequired") || all) {
+      val persistenceRequired: Boolean = GIReflectionHelper.getField(this, "persistenceRequired").asInstanceOf[Boolean]
+      if (syncPersistenceRequired != persistenceRequired) {
+        setBoolean("persistenceRequired", persistenceRequired)
+        syncPersistenceRequired = persistenceRequired
+      } else if (syncPersistenceRequired != getBoolean("persistenceRequired")) {
+        GIReflectionHelper.setField(this, "persistenceRequired", getBoolean("persistenceRequired"))
+        syncPersistenceRequired = getBoolean("persistenceRequired")
+      }
     }
 
-    if(syncRiddenByEntity != riddenByEntity) {
-      setInteger("riddenByEntity", if(riddenByEntity != null) riddenByEntity.getEntityId else 0)
-      syncRiddenByEntity = riddenByEntity
-    } else if(syncRiddenByEntity != (if(getInteger("riddenByEntity") != 0) getWorld.getEntityByID(getInteger("riddenByEntity")) else null)) {
-      riddenByEntity = if (getInteger("riddenByEntity") != 0) getWorld.getEntityByID(getInteger("riddenByEntity")) else null
-      syncRiddenByEntity = riddenByEntity
+    if (variables.contains("riddenByEntity") || all) {
+      if (syncRiddenByEntity != riddenByEntity) {
+        setInteger("riddenByEntity", if (riddenByEntity != null) riddenByEntity.getEntityId else 0)
+        syncRiddenByEntity = riddenByEntity
+      } else if (syncRiddenByEntity != (if (getInteger("riddenByEntity") != 0) getWorld.getEntityByID(getInteger("riddenByEntity")) else null)) {
+        riddenByEntity = if (getInteger("riddenByEntity") != 0) getWorld.getEntityByID(getInteger("riddenByEntity")) else null
+        syncRiddenByEntity = riddenByEntity
+      }
     }
 
-    if(syncRidingEntity != ridingEntity) {
-      setInteger("ridingEntity", if(ridingEntity != null) ridingEntity.getEntityId else 0)
-      syncRidingEntity = ridingEntity
-    } else if(syncRidingEntity != (if(getInteger("ridingEntity") != 0) getWorld.getEntityByID(getInteger("ridingEntity")) else null)) {
-      ridingEntity = if (getInteger("ridingEntity") != 0) getWorld.getEntityByID(getInteger("ridingEntity")) else null
-      syncRidingEntity = ridingEntity
+    if (variables.contains("ridingEntity") || all) {
+      if (syncRidingEntity != ridingEntity) {
+        setInteger("ridingEntity", if (ridingEntity != null) ridingEntity.getEntityId else 0)
+        syncRidingEntity = ridingEntity
+      } else if (syncRidingEntity != (if (getInteger("ridingEntity") != 0) getWorld.getEntityByID(getInteger("ridingEntity")) else null)) {
+        ridingEntity = if (getInteger("ridingEntity") != 0) getWorld.getEntityByID(getInteger("ridingEntity")) else null
+        syncRidingEntity = ridingEntity
+      }
     }
 
-    val entityRiderPitchDelta: Double = GIReflectionHelper.getField(this, "entityRiderPitchDelta").asInstanceOf[Double]
-    if (syncEntityRiderPitchDelta != entityRiderPitchDelta) {
-      setDouble("entityRiderPitchDelta", entityRiderPitchDelta)
-      syncEntityRiderPitchDelta = entityRiderPitchDelta
-    } else if (syncEntityRiderPitchDelta != getDouble("entityRiderPitchDelta")) {
-      GIReflectionHelper.setField(this, "entityRiderPitchDelta", getDouble("entityRiderPitchDelta"))
-      syncEntityRiderPitchDelta = entityRiderPitchDelta
+    if (variables.contains("entityRiderPitchDelta") || all) {
+      val entityRiderPitchDelta: Double = GIReflectionHelper.getField(this, "entityRiderPitchDelta").asInstanceOf[Double]
+      if (syncEntityRiderPitchDelta != entityRiderPitchDelta) {
+        setDouble("entityRiderPitchDelta", entityRiderPitchDelta)
+        syncEntityRiderPitchDelta = entityRiderPitchDelta
+      } else if (syncEntityRiderPitchDelta != getDouble("entityRiderPitchDelta")) {
+        GIReflectionHelper.setField(this, "entityRiderPitchDelta", getDouble("entityRiderPitchDelta"))
+        syncEntityRiderPitchDelta = entityRiderPitchDelta
+      }
     }
 
-    val entityRiderYawDelta: Double = GIReflectionHelper.getField(this, "entityRiderYawDelta").asInstanceOf[Double]
-    if (syncEntityRiderYawDelta != entityRiderYawDelta) {
-      setDouble("entityRiderYawDelta", entityRiderYawDelta)
-      syncEntityRiderYawDelta = entityRiderYawDelta
-    } else if (syncEntityRiderYawDelta != getDouble("entityRiderYawDelta")) {
-      GIReflectionHelper.setField(this, "entityRiderYawDelta", getDouble("entityRiderYawDelta"))
-      syncEntityRiderYawDelta = entityRiderYawDelta
+    if (variables.contains("entityRiderYawDelta") || all) {
+      val entityRiderYawDelta: Double = GIReflectionHelper.getField(this, "entityRiderYawDelta").asInstanceOf[Double]
+      if (syncEntityRiderYawDelta != entityRiderYawDelta) {
+        setDouble("entityRiderYawDelta", entityRiderYawDelta)
+        syncEntityRiderYawDelta = entityRiderYawDelta
+      } else if (syncEntityRiderYawDelta != getDouble("entityRiderYawDelta")) {
+        GIReflectionHelper.setField(this, "entityRiderYawDelta", getDouble("entityRiderYawDelta"))
+        syncEntityRiderYawDelta = entityRiderYawDelta
+      }
     }
 
-    val isLeashed: Boolean = GIReflectionHelper.getField(this, "isLeashed").asInstanceOf[Boolean]
-    if(syncIsLeashed != isLeashed) {
-      setBoolean("isLeashed", isLeashed)
-      syncIsLeashed = isLeashed
-    } else if(syncIsLeashed != getBoolean("isLeashed")) {
-      GIReflectionHelper.setField(this, "isLeashed", getBoolean("isLeashed"))
-      syncIsLeashed = getBoolean("isLeashed")
+    if (variables.contains("isLeashed") || all) {
+      val isLeashed: Boolean = GIReflectionHelper.getField(this, "isLeashed").asInstanceOf[Boolean]
+      if (syncIsLeashed != isLeashed) {
+        setBoolean("isLeashed", isLeashed)
+        syncIsLeashed = isLeashed
+      } else if (syncIsLeashed != getBoolean("isLeashed")) {
+        GIReflectionHelper.setField(this, "isLeashed", getBoolean("isLeashed"))
+        syncIsLeashed = getBoolean("isLeashed")
+      }
     }
 
-    val leashedToEntity: Entity = GIReflectionHelper.getField(this, "leashedToEntity").asInstanceOf[Entity]
-    if(syncLeashedToEntity != leashedToEntity) {
-      setInteger("leashedToEntity", if(leashedToEntity != null) leashedToEntity.getEntityId else 0)
-      syncLeashedToEntity = leashedToEntity
-    } else if(syncLeashedToEntity != (if(getInteger("leashedToEntity") != 0) getWorld.getEntityByID(getInteger("leashedToEntity")) else null)) {
-      GIReflectionHelper.setField(this, "leashedToEntity", if (getInteger("leashedToEntity") != 0) getWorld.getEntityByID(getInteger("leashedToEntity")) else null)
-      syncLeashedToEntity = leashedToEntity
+    if (variables.contains("leashedToEntity") || all) {
+      val leashedToEntity: Entity = GIReflectionHelper.getField(this, "leashedToEntity").asInstanceOf[Entity]
+      if (syncLeashedToEntity != leashedToEntity) {
+        setInteger("leashedToEntity", if (leashedToEntity != null) leashedToEntity.getEntityId else 0)
+        syncLeashedToEntity = leashedToEntity
+      } else if (syncLeashedToEntity != (if (getInteger("leashedToEntity") != 0) getWorld.getEntityByID(getInteger("leashedToEntity")) else null)) {
+        GIReflectionHelper.setField(this, "leashedToEntity", if (getInteger("leashedToEntity") != 0) getWorld.getEntityByID(getInteger("leashedToEntity")) else null)
+        syncLeashedToEntity = leashedToEntity
+      }
     }
 
-    var customCapturedDropsNBT = getNBTArray("capturedDrops")
-    if(customCapturedDropsNBT == null) customCapturedDropsNBT = Array.fill(1)(null)
-    val customCapturedDrops = new util.ArrayList(Array.tabulate(customCapturedDropsNBT.length)(index => {if (customCapturedDropsNBT(index) != null) {val ent = new EntityItem(worldObj); ent.readFromNBT(customCapturedDropsNBT(index)); ent; } else null}).toList.asJava)
-    if (!syncCapturedDrops.equals(capturedDrops)) {
-      setNBTArray("capturedDrops", capturedDrops.asScala.map(item => {
+    if (variables.contains("capturedDrops") || all) {
+      var customCapturedDropsNBT = getNBTArray("capturedDrops")
+      if (customCapturedDropsNBT == null) customCapturedDropsNBT = Array.fill(1)(null)
+      val customCapturedDrops = new util.ArrayList(Array.tabulate(customCapturedDropsNBT.length)(index => {
+        if (customCapturedDropsNBT(index) != null) {
+          val ent = new EntityItem(worldObj); ent.readFromNBT(customCapturedDropsNBT(index)); ent;
+        } else null
+      }).toList.asJava)
+      if (!syncCapturedDrops.equals(capturedDrops)) {
+        setNBTArray("capturedDrops", capturedDrops.asScala.map(item => {
           val nbt = new NBTTagCompound()
           item.writeEntityToNBT(nbt)
           nbt
         }).toArray)
-      syncCapturedDrops = capturedDrops
-    } else if (syncCapturedDrops.equals(customCapturedDrops)) {
-      capturedDrops = customCapturedDrops
-      syncCapturedDrops = capturedDrops
+        syncCapturedDrops = capturedDrops
+      } else if (syncCapturedDrops.equals(customCapturedDrops)) {
+        capturedDrops = customCapturedDrops
+        syncCapturedDrops = capturedDrops
+      }
     }
-
-    inPortal
 
     //TODO Change things, this doesn't work in obfuscated environments
 
@@ -558,26 +592,5 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     //TODO lastAttackerTime
     //TODO entityLivingToAttack
     //TODO leashedCompound
-  }
-
-  /**
-   * Called by portal blocks when an entity is within it.
-   */
-  override def setInPortal {
-//    println("setInPortal")
-    if (this.timeUntilPortal > 0) {
-//      println("setInPortal1")
-      this.timeUntilPortal = this.getPortalCooldown
-    }
-    else {
-//      println("setInPortal2")
-      val d0: Double = this.prevPosX - this.posX
-      val d1: Double = this.prevPosZ - this.posZ
-      if (!this.worldObj.isRemote && !this.inPortal) {
-//        println("setInPortal3")
-        this.teleportDirection = Direction.getMovementDirection(d0, d1)
-      }
-      this.inPortal = true
-    }
   }
 }

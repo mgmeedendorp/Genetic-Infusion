@@ -50,7 +50,7 @@ public class TraitItemDrops extends Trait {
 
             NBTTagCompound[] capturedDropsNBT = entity.getNBTArray("capturedDrops");
 
-            entity.setNBTArray("capturedDrops", new NBTTagCompound[capturedDropsNBT.length]);
+            entity.setNBTArray("capturedDrops", new NBTTagCompound[capturedDropsNBT != null ? capturedDropsNBT.length : 1]);
            
             int j = 0;
 
