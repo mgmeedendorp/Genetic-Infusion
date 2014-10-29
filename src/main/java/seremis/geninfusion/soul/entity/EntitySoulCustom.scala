@@ -348,7 +348,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     syncLogic.setFloat("prevRotationPitch", prevRotationPitch)
     syncLogic.setDouble("newRotationYaw", newRotationYaw)
     syncLogic.setDouble("newRotationPitch", newRotationPitch)
-    syncLogic.setFloat("defaultPisyncEntityLivingToAttacktch", defaultPitch)
+    syncLogic.setFloat("defaultPitch", defaultPitch)
     syncLogic.setInteger("fireResistance", fireResistance)
     syncLogic.setBoolean("inWater", inWater)
     syncLogic.setBoolean("isInWeb", isInWeb)
