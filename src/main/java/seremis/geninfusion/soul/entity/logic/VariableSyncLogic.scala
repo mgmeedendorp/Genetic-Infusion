@@ -5,8 +5,8 @@ import java.{lang, util}
 
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
-import seremis.geninfusion.api.soul.util.Data
-import seremis.geninfusion.helper.{DataHelper, GIReflectionHelper}
+import seremis.geninfusion.api.soul.util.{DataHelper, Data}
+import seremis.geninfusion.helper.GIReflectionHelper
 import seremis.geninfusion.util.INBTTagable
 
 import scala.collection.mutable.ListBuffer
@@ -112,6 +112,8 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
 
   override def writeToNBT(compound: NBTTagCompound) {
     if(persistent.nonEmpty) {
+      syncVariables()
+
       val tagList = new NBTTagList()
       val stringList = new util.ArrayList[String]()
       if (!data.booleanDataMap.isEmpty) {
@@ -298,12 +300,6 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
       }
       if (tagList.tagCount() > 0) {
         compound.setTag("data", tagList)
-//        TODO figure out if this is needed.
-//        val persistentCompound = new NBTTagCompound()
-//        for((variable, count) <- persistent.zipWithIndex) {
-//          persistentCompound.setString("persistent" + count, variable)
-//        }
-//        compound.setTag("persistent", persistentCompound)
       }
     }
   }

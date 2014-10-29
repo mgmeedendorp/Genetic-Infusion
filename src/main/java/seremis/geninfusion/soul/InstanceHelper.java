@@ -6,6 +6,7 @@ import seremis.geninfusion.api.soul.*;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
 import seremis.geninfusion.soul.entity.EntitySoulCustom;
+import seremis.geninfusion.soul.entity.EntitySoulCustomCreature;
 
 import java.lang.reflect.Constructor;
 
@@ -18,10 +19,9 @@ public class InstanceHelper implements IInstanceHelper {
     public IEntitySoulCustom getSoulEntityInstance(World world, ISoul soul, double x, double y, double z) {
         IEntitySoulCustom entity = new EntitySoulCustom(world, soul, x, y, z);
 
-//TODO this as well
-//        if(((AlleleBoolean)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_IS_CREATURE)).value) {
-//            entity = new EntitySoulCustomCreature(world, soul, x, y, z);
-//        }
+        if(((AlleleBoolean)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_IS_CREATURE)).value) {
+            entity = new EntitySoulCustomCreature(world, soul, x, y, z);
+        }
         return entity;
     }
 

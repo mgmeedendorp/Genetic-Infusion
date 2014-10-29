@@ -1,10 +1,10 @@
 package seremis.geninfusion.entity;
 
 import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 import seremis.geninfusion.GeneticInfusion;
-import seremis.geninfusion.lib.EntityIds;
+import seremis.geninfusion.lib.Entities;
 import seremis.geninfusion.soul.entity.EntitySoulCustom;
+import seremis.geninfusion.soul.entity.EntitySoulCustomCreature;
 
 public class ModEntity {
 
@@ -13,7 +13,8 @@ public class ModEntity {
     }
 
     public static void register() {
-        EntityRegistry.registerModEntity(EntityTransporter.class, "transporter", EntityIds.transporterID, GeneticInfusion.instance, 80, 1, false);
-        EntityRegistry.registerModEntity(EntitySoulCustom.class, "soulCustom", EntityIds.soulEntityID, GeneticInfusion.instance, 80, 1, true);
+        EntityRegistry.registerModEntity(EntityTransporter.class, Entities.transporterName, Entities.transporterID, GeneticInfusion.instance, 80, 1, false);
+        EntityRegistry.registerModEntity(EntitySoulCustom.class, Entities.soulEntityName, Entities.soulEntityID, GeneticInfusion.instance, 80, 1, true);
+        EntityRegistry.registerModEntity(EntitySoulCustomCreature.class, Entities.soulEntityCreatureName, Entities.soulEntityCreatureID, GeneticInfusion.instance, 80, 1, true);
     }
 }

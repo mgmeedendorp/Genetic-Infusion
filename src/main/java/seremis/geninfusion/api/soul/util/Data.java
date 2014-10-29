@@ -21,8 +21,7 @@ public class Data implements INBTTagable {
     public HashMap<String, Data> dataDataMap = new HashMap<String, Data>();
     public HashMap<String, NBTTagCompound> nbtDataMap = new HashMap<String, NBTTagCompound>();
 
-    public Data() {
-    }
+    public Data() {}
 
     public Data(NBTTagCompound compound) {
         readFromNBT(compound);
@@ -571,5 +570,13 @@ public class Data implements INBTTagable {
                 }
             }
         }
+    }
+
+    public boolean equals(Object obj) {
+        if(obj != null && obj instanceof Data) {
+            Data data = (Data) obj;
+            return booleanDataMap.equals(data.booleanDataMap) && byteDataMap.equals(data.byteDataMap) && shortDataMap.equals(data.shortDataMap) && integerDataMap.equals(data.integerDataMap) && floatDataMap.equals(data.floatDataMap) && doubleDataMap.equals(data.doubleDataMap) && longDataMap.equals(data.longDataMap) && stringDataMap.equals(data.stringDataMap) && nbtDataMap.equals(data.nbtDataMap) && dataDataMap.equals(data.dataDataMap);
+        }
+        return false;
     }
 }

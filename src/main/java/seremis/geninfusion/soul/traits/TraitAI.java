@@ -51,7 +51,6 @@ public class TraitAI extends Trait {
                 entity.getWorld().theProfiler.endSection();
             } else if(useOldAI) {
                 entity.getWorld().theProfiler.startSection("oldAi");
-                //TODO this
                 if(isCreature) {
                     updateEntityCreatureActionState(entity);
                 } else {
