@@ -13,6 +13,7 @@ import net.minecraft.entity._
 import net.minecraft.entity.ai.EntityAITasks
 import net.minecraft.entity.ai.attributes.BaseAttributeMap
 import net.minecraft.entity.item.EntityItem
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{CompressedStreamTools, NBTSizeTracker, NBTTagCompound}
 import net.minecraft.potion.PotionEffect
@@ -25,7 +26,7 @@ import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
 import seremis.geninfusion.core.proxy.CommonProxy
 import seremis.geninfusion.entity.GIEntityLiving
 import seremis.geninfusion.helper.GIReflectionHelper
-import seremis.geninfusion.soul.allele.{AlleleFloat, AlleleString}
+import seremis.geninfusion.soul.allele.{AlleleInteger, AlleleFloat, AlleleString}
 import seremis.geninfusion.soul.entity.logic.{IVariableSyncEntity, VariableSyncLogic}
 import seremis.geninfusion.soul.{Soul, TraitHandler}
 
@@ -110,19 +111,17 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
 
   override def getTargetTasks: EntityAITasks = targetTasks
 
-  override def onDeathUpdate = super.onDeathUpdate
+  override def onDeathUpdate() = super.onDeathUpdate()
 
   override def setFlag(id: Int, value: Boolean) = super.setFlag(id, value)
 
   override def getFlag(id: Int): Boolean = super.getFlag(id)
 
   override def getRandom: Random = rand
-
+  //TODO
   //override def isChild: Boolean = getBoolean("isChild")
 
-  private var talkInterval: Int = 0
-//TODO this
-  override def getTalkInterval: Int = talkInterval
+  override def getTalkInterval: Int = SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_TALK_INTERVAL).asInstanceOf[AlleleInteger].value
 
   override def getDeathSound: String = SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_DEATH_SOUND).asInstanceOf[AlleleString].value
 
@@ -136,7 +135,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
 
   override def getSoundVolume: Float = SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_SOUND_VOLUME).asInstanceOf[AlleleFloat].value
 
-  override def applyEntityAttributes {
+  override def applyEntityAttributes() {
     this.getAttributeMap.registerAttribute(SharedMonsterAttributes.maxHealth)
     this.getAttributeMap.registerAttribute(SharedMonsterAttributes.knockbackResistance)
     this.getAttributeMap.registerAttribute(SharedMonsterAttributes.movementSpeed)
@@ -147,7 +146,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
 
   private var firstUpdate: Boolean = true
 
-  override def onUpdate {
+  override def onUpdate() {
     syncLogic.syncVariables()
     if (ForgeHooks.onLivingUpdate(this)) return
     if (firstUpdate) {
@@ -174,7 +173,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
   }
 
   override def attackEntity(entity: Entity, distance: Float) {
-    TraitHandler.attackEntity(this, entity, distance);
+    TraitHandler.attackEntity(this, entity, distance)
   }
 
   override def damageEntity(source: DamageSource, damage: Float) {
@@ -189,7 +188,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     TraitHandler.playSoundAtEntity(this, name, volume, pitch)
   }
 
-  override def updateAITick {
+  override def updateAITick() {
     TraitHandler.updateAITick(this)
   }
 
@@ -292,12 +291,12 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     syncLogic.makePersistent("deathTime")
     syncLogic.makePersistent("attackTime")
     syncLogic.makePersistent("livingSoundTime")
-    syncLogic.makePersistent("talkInterval")
     syncLogic.makePersistent("absorptionAmount")
     syncLogic.makePersistent("fire")
     syncLogic.makePersistent("persistenceRequired")
     syncLogic.makePersistent("capturedDrops")
     syncLogic.makePersistent("equipment")
+    syncLogic.makePersistent("canPickUpLoot")
 
     if(initPersistent) {
       syncLogic.setInteger("ticksExisted", ticksExisted)
@@ -317,9 +316,9 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
       syncLogic.setInteger("deathTime", deathTime)
       syncLogic.setInteger("attackTime", attackTime)
       syncLogic.setInteger("livingSoundTime", livingSoundTime)
-      syncLogic.setInteger("talkInterval", talkInterval)
       syncLogic.setIntegerArray("capturedDrops", Array.fill(1)(0))
       syncLogic.setItemStackArray("equipment", Array.fill(5)(null))
+      syncLogic.setBoolean("canPickUpLoot", canPickUpLoot)
     }
     syncLogic.setDouble("prevPosX", prevPosX)
     syncLogic.setDouble("prevPosY", prevPosY)
@@ -349,7 +348,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     syncLogic.setFloat("prevRotationPitch", prevRotationPitch)
     syncLogic.setDouble("newRotationYaw", newRotationYaw)
     syncLogic.setDouble("newRotationPitch", newRotationPitch)
-    syncLogic.setFloat("defaultPitch", defaultPitch)
+    syncLogic.setFloat("defaultPisyncEntityLivingToAttacktch", defaultPitch)
     syncLogic.setInteger("fireResistance", fireResistance)
     syncLogic.setBoolean("inWater", inWater)
     syncLogic.setBoolean("isInWeb", isInWeb)
@@ -402,17 +401,26 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     syncLogic.setFloat("lastDamage", lastDamage)
     syncLogic.setInteger("experienceValue", experienceValue)
     syncLogic.setInteger("numTicksToChaseTarget", numTicksToChaseTarget)
+    syncLogic.setInteger("attackingPlayer", 0)
+    syncLogic.setInteger("lastAttacker", 0)
+    syncLogic.setInteger("attackTarget", 0)
+    syncLogic.setInteger("lastAttackerTime", getLastAttackerTime)
+    syncLogic.setInteger("entityLivingToAttack", 0)
   }
 
   var syncMyEntitySize: EnumEntitySize = null
   var syncRiddenByEntity, syncRidingEntity, syncLeashedToEntity: Entity = null
+  var syncLastAttacker, syncAttackTarget, syncEntityLivingToAttack: EntityLivingBase = null
+  var syncAttackingPlayer: EntityPlayer = null
   var syncCapturedDrops: util.ArrayList[EntityItem] = new util.ArrayList[EntityItem]()
-  var syncInvulnerable, syncIsChild, syncPersistenceRequired, syncIsLeashed: Boolean = false
-  var syncFire: Int = 0
+  var syncEquipment: Array[ItemStack] = Array.fill(5)(null)
+  var syncInvulnerable, syncIsChild, syncPersistenceRequired, syncIsLeashed, syncCanPickUpLoot: Boolean = false
+  var syncFire, syncLastAttackerTime: Int = 0
   var syncHealth, syncAbsorptionAmount, syncLandMovementFactor: Float = 0.0F
   var syncEntityRiderPitchDelta, syncEntityRiderYawDelta: Double = 0.0D
 
   override def syncNonPrimitives(variables: Array[String]) {
+    //TODO Change things, this doesn't work in obfuscated environments
     val all = variables(0).equals("all")
 
     if (variables.contains("absorptionAmount") || all) {
@@ -565,7 +573,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
       if (customCapturedDropsNBT == null) customCapturedDropsNBT = Array.fill(1)(null)
       val customCapturedDrops = new util.ArrayList(Array.tabulate(customCapturedDropsNBT.length)(index => {
         if (customCapturedDropsNBT(index) != null) {
-          val ent = new EntityItem(worldObj); ent.readFromNBT(customCapturedDropsNBT(index)); ent;
+          val ent = new EntityItem(worldObj); ent.readFromNBT(customCapturedDropsNBT(index)); ent
         } else null
       }).toList.asJava)
       if (!syncCapturedDrops.equals(capturedDrops)) {
@@ -581,16 +589,78 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
       }
     }
 
-    //TODO Change things, this doesn't work in obfuscated environments
+    if (variables.contains("equipment") || all) {
+      val equipment = GIReflectionHelper.getField(this, "equipment").asInstanceOf[Array[ItemStack]]
+      if (syncEquipment.deep != equipment.deep) {
+        setItemStackArray("equipment", equipment)
+        syncEquipment = equipment
+      } else if (syncEquipment.deep != getItemStackArray("equipment").deep) {
+        GIReflectionHelper.setField(this, "equipment", getItemStackArray("equipment"))
+        syncEquipment = getItemStackArray("equipment")
+      }
+    }
 
-    //TODO capturedDrops
-    //TODO equipment
-    //TODO canPickUpLoot
-    //TODO attackingPlayer
-    //TODO lastAttacker
-    //TODO attackTarget
-    //TODO lastAttackerTime
-    //TODO entityLivingToAttack
-    //TODO leashedCompound
+    if(variables.contains("canPickUpLoot") || all) {
+      if (syncCanPickUpLoot != canPickUpLoot) {
+        setBoolean("canPickUpLoot", canPickUpLoot)
+        syncCanPickUpLoot = canPickUpLoot
+      } else if (syncCanPickUpLoot != getBoolean("canPickUpLoot")) {
+        setCanPickUpLoot(getBoolean("canPickUpLoot"))
+        syncCanPickUpLoot = canPickUpLoot
+      }
+    }
+
+    if (variables.contains("attackingPlayer") || all) {
+      if (syncAttackingPlayer != attackingPlayer) {
+        setInteger("attackingPlayer", if (attackingPlayer != null) attackingPlayer.getEntityId else 0)
+        syncAttackingPlayer = attackingPlayer
+      } else if (syncAttackingPlayer != (if (getInteger("attackingPlayer") != 0) getWorld.getEntityByID(getInteger("attackingPlayer")) else null)) {
+        attackingPlayer = if (getInteger("attackingPlayer") != 0) getWorld.getEntityByID(getInteger("attackingPlayer")).asInstanceOf[EntityPlayer] else null
+        syncAttackingPlayer = attackingPlayer
+      }
+    }
+
+    if (variables.contains("lastAttacker") || all) {
+      val lastAttacker: EntityLivingBase = GIReflectionHelper.getField(this, "lastAttacker").asInstanceOf[EntityLivingBase]
+      if (syncLastAttacker != lastAttacker) {
+        setInteger("lastAttacker", if (lastAttacker != null) lastAttacker.getEntityId else 0)
+        syncLastAttacker = lastAttacker
+      } else if (syncLastAttacker != (if (getInteger("lastAttacker") != 0) getWorld.getEntityByID(getInteger("lastAttacker")) else null)) {
+        GIReflectionHelper.setField(this, "lastAttacker", if (getInteger("lastAttacker") != 0) getWorld.getEntityByID(getInteger("lastAttacker")) else null)
+        syncLastAttacker = lastAttacker
+      }
+    }
+
+    if (variables.contains("attackTarget") || all) {
+      if (syncAttackTarget != getAttackTarget) {
+        setInteger("attackTarget", if (getAttackTarget != null) getAttackTarget.getEntityId else 0)
+        syncAttackTarget = getAttackTarget
+      } else if (syncAttackTarget != (if (getInteger("attackTarget") != 0) getWorld.getEntityByID(getInteger("attackTarget")) else null)) {
+        setAttackTarget(if (getInteger("attackTarget") != 0) getWorld.getEntityByID(getInteger("attackTarget")).asInstanceOf[EntityPlayer] else null)
+        syncAttackTarget = getAttackTarget
+      }
+    }
+
+    if (variables.contains("lastAttackerTime") || all) {
+      val lastAttackerTime: Int = getLastAttackerTime
+      if (syncLastAttackerTime != lastAttackerTime) {
+        setInteger("lastAttackerTime", lastAttackerTime)
+        syncLastAttackerTime = lastAttackerTime
+      } else if (syncLastAttackerTime != getInteger("lastAttackerTime")) {
+        GIReflectionHelper.setField(this, "lastAttackerTime", getInteger("lastAttackerTime"))
+        syncLastAttackerTime = getInteger("lastAttackerTime")
+      }
+    }
+
+    if (variables.contains("entityLivingToAttack") || all) {
+      val entityLivingToAttack: EntityLivingBase = GIReflectionHelper.getField(this, "entityLivingToAttack").asInstanceOf[EntityLivingBase]
+      if (syncEntityLivingToAttack != entityLivingToAttack) {
+        setInteger("entityLivingToAttack", if (entityLivingToAttack != null) entityLivingToAttack.getEntityId else 0)
+        syncEntityLivingToAttack = entityLivingToAttack
+      } else if (syncEntityLivingToAttack != (if (getInteger("entityLivingToAttack") != 0) getWorld.getEntityByID(getInteger("entityLivingToAttack")) else null)) {
+        GIReflectionHelper.setField(this, "entityLivingToAttack", if (getInteger("entityLivingToAttack") != 0) getWorld.getEntityByID(getInteger("entityLivingToAttack")) else null)
+        syncEntityLivingToAttack = entityLivingToAttack
+      }
+    }
   }
 }

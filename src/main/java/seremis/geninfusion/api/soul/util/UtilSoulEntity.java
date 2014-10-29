@@ -59,7 +59,7 @@ public class UtilSoulEntity {
         float eyeHeight = entity.getFloat("eyeHeight") + 1.0F;
 
         for (int i = 0; i < 8; ++i) {
-            float f = ((float)((i >> 0) % 2) - 0.5F) * width * 0.8F;
+            float f = ((float)((i) % 2) - 0.5F) * width * 0.8F;
             float f1 = ((float)((i >> 1) % 2) - 0.5F) * 0.1F;
             float f2 = ((float)((i >> 2) % 2) - 0.5F) * width * 0.8F;
             int x = MathHelper.floor_double(posX + (double)f);
@@ -227,7 +227,7 @@ public class UtilSoulEntity {
                 double d2 = entityplayer.posZ - posZ;
                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 
-                if (shouldDespawn && d3 > 16384.0D) {
+                if (d3 > 16384.0D) {
                 	((EntityLiving)entity).setDead();
                 }
 
