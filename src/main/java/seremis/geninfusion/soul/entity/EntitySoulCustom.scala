@@ -192,6 +192,18 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     TraitHandler.updateAITick(this)
   }
 
+  override def interact(player: EntityPlayer): Boolean = {
+    //TODO interactboolean
+    TraitHandler.entityRightClicked(this, player)
+    true
+  }
+
+  override def applyEntityCollision(entity: Entity) {
+    forceVariableSync(Array("riddenByEntity", "ridingEntity", "posX", "posZ", "posY", "entityCollisionReduction", "motionX", "motionY", "motionZ", "isAirBorne"))
+    super.applyEntityCollision(entity)
+    forceVariableSync(Array("riddenByEntity", "ridingEntity", "posX", "posZ", "posY", "entityCollisionReduction", "motionX", "motionY", "motionZ", "isAirBorne"))
+  }
+
   override def attackEntityAsMob(entity: Entity): Boolean = TraitHandler.attackEntityAsMob(this, entity)
 
   override def readFromNBT(compound: NBTTagCompound) {

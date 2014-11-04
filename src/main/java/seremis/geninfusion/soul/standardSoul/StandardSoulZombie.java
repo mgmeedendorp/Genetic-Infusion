@@ -30,7 +30,7 @@ public class StandardSoulZombie extends StandardSoul {
         if(gene.equals(Genes.GENE_LIVING_SOUND))
             return new Chromosome(new AlleleString(false, "mob.zombie.say"));
         if(gene.equals(Genes.GENE_MOVEMENT_SPEED))
-            return new Chromosome(new AlleleFloat(true, 0.23F));
+            return new Chromosome(new AlleleFloat(true, 0.23000000417232513F));
         if(gene.equals(Genes.GENE_PICKS_UP_ITEMS))
             return new Chromosome(new AlleleBoolean(false, true));
         if(gene.equals(Genes.GENE_RARE_ITEM_DROPS))

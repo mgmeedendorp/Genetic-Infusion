@@ -7,14 +7,14 @@ import java.lang.reflect.Modifier;
 
 public class DataHelper {
 
-    public static Data writePrimitives(Object obj, boolean doBoolean, boolean doByte, boolean doShort, boolean doInt, boolean doFloat, boolean doDouble, boolean doLong, boolean doString, boolean doBooleanArr, boolean doByteArr, boolean doShortArr, boolean doIntArr, boolean doFloatArr, boolean doDoubleArr, boolean doLongArr, boolean doStringArr) {
+    public static Data writePrimitives(Object obj, boolean doPublic, boolean doProtected, boolean doPrivate, boolean doEmpty, boolean doFinal, boolean doBoolean, boolean doByte, boolean doShort, boolean doInt, boolean doFloat, boolean doDouble, boolean doLong, boolean doString, boolean doBooleanArr, boolean doByteArr, boolean doShortArr, boolean doIntArr, boolean doFloatArr, boolean doDoubleArr, boolean doLongArr, boolean doStringArr) {
         Data data = new Data();
 
         Class superClass = obj.getClass();
         while(superClass != null) {
             for(Field field : superClass.getDeclaredFields()) {
                 try {
-                    if ((Modifier.isPublic(field.getModifiers()) || Modifier.isProtected(field.getModifiers()) || field.getModifiers() == 0) && !Modifier.isFinal(field.getModifiers())) {
+                    if (!Modifier.isStatic(field.getModifiers()) && (((Modifier.isPublic(field.getModifiers()) || !doPublic) || (Modifier.isProtected(field.getModifiers()) || !doProtected) || (Modifier.isPrivate(field.getModifiers()) || !doPrivate) || (field.getModifiers() == 0 || !doEmpty) || (Modifier.isFinal(field.getModifiers()) || !doFinal)))) {
                         field.setAccessible(true);
 
                         if(doBoolean && field.getType().equals(boolean.class)) data.setBoolean(field.getName(), field.getBoolean(obj));
@@ -45,15 +45,19 @@ public class DataHelper {
     }
 
     public static Data writePrimitives(Object obj) {
-        return writePrimitives(obj, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+        return writePrimitives(obj, true, true, false, true, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
     }
 
-    public static Object applyData(Data data, Object obj, boolean doBoolean, boolean doByte, boolean doShort, boolean doInt, boolean doFloat, boolean doDouble, boolean doLong, boolean doString, boolean doBooleanArr, boolean doByteArr, boolean doShortArr, boolean doIntArr, boolean doFloatArr, boolean doDoubleArr, boolean doLongArr, boolean doStringArr) {
+    public static Data writeAllPrimitives(Object obj) {
+        return writePrimitives(obj, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+    }
+
+    public static Object applyData(Data data, Object obj, boolean doPublic, boolean doProtected, boolean doPrivate, boolean doEmpty, boolean doFinal, boolean doBoolean, boolean doByte, boolean doShort, boolean doInt, boolean doFloat, boolean doDouble, boolean doLong, boolean doString, boolean doBooleanArr, boolean doByteArr, boolean doShortArr, boolean doIntArr, boolean doFloatArr, boolean doDoubleArr, boolean doLongArr, boolean doStringArr) {
         Class superClass = obj.getClass();
         while(superClass != null) {
             for(Field field : superClass.getDeclaredFields()) {
                 try {
-                    if ((Modifier.isPublic(field.getModifiers()) || Modifier.isProtected(field.getModifiers()) || field.getModifiers() == 0) && !Modifier.isFinal(field.getModifiers())) {
+                    if (!Modifier.isStatic(field.getModifiers()) && ((Modifier.isPublic(field.getModifiers()) || !doPublic) || (Modifier.isProtected(field.getModifiers()) || !doProtected) || (Modifier.isPrivate(field.getModifiers()) || !doPrivate) || (field.getModifiers() == 0 || !doEmpty) || (Modifier.isFinal(field.getModifiers()) || !doFinal))) {
                         field.setAccessible(true);
 
                         if (doBoolean && field.getType().equals(boolean.class) && data.booleanDataMap.containsKey(field.getName())) field.setBoolean(obj, data.booleanDataMap.get(field.getName()));
@@ -84,6 +88,10 @@ public class DataHelper {
     }
 
     public static Object applyData(Data data, Object obj) {
-        return applyData(data, obj, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+        return applyData(data, obj, true, true, false, true, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+    }
+
+    public static Object applyAllData(Data data, Object obj) {
+        return applyData(data, obj, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
     }
 }

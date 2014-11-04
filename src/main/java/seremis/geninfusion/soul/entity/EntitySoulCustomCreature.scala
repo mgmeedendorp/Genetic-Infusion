@@ -9,26 +9,27 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData
 import cpw.mods.fml.relauncher.ReflectionHelper
 import io.netty.buffer.ByteBuf
 import net.minecraft.entity.Entity.EnumEntitySize
-import net.minecraft.entity.ai.EntityAITasks
 import net.minecraft.entity._
+import net.minecraft.entity.ai.EntityAITasks
 import net.minecraft.entity.ai.attributes.BaseAttributeMap
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.{NBTSizeTracker, CompressedStreamTools, NBTTagCompound}
+import net.minecraft.nbt.{CompressedStreamTools, NBTSizeTracker, NBTTagCompound}
+import net.minecraft.pathfinding.PathEntity
 import net.minecraft.potion.PotionEffect
-import net.minecraft.util.{ChunkCoordinates, DamageSource, CombatTracker, AxisAlignedBB}
+import net.minecraft.util.{AxisAlignedBB, ChunkCoordinates, CombatTracker, DamageSource}
 import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
 import seremis.geninfusion.api.soul.lib.Genes
-import seremis.geninfusion.api.soul.util.{DataHelper, Data}
-import seremis.geninfusion.api.soul.{SoulHelper, ISoul, IEntitySoulCustom}
+import seremis.geninfusion.api.soul.util.{Data, DataHelper, UtilSoulEntity}
+import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
 import seremis.geninfusion.core.proxy.CommonProxy
 import seremis.geninfusion.entity.GIEntityCreature
 import seremis.geninfusion.helper.GIReflectionHelper
+import seremis.geninfusion.soul.allele.{AlleleFloat, AlleleInteger, AlleleString}
+import seremis.geninfusion.soul.entity.logic.{IVariableSyncEntity, VariableSyncLogic}
 import seremis.geninfusion.soul.{Soul, TraitHandler}
-import seremis.geninfusion.soul.allele.{AlleleFloat, AlleleString, AlleleInteger}
-import seremis.geninfusion.soul.entity.logic.{VariableSyncLogic, IVariableSyncEntity}
 
 import scala.collection.JavaConverters._
 
@@ -190,6 +191,13 @@ class EntitySoulCustomCreature(world: World) extends GIEntityCreature(world) wit
 
   override def updateAITick() {
     TraitHandler.updateAITick(this)
+  }
+
+  override def interact(player: EntityPlayer): Boolean = {
+    //TODO interactboolean
+    TraitHandler.entityRightClicked(this, player)
+    println(UtilSoulEntity.readPathEntity(this, "pathToEntity"))
+    true
   }
 
   override def attackEntityAsMob(entity: Entity): Boolean = TraitHandler.attackEntityAsMob(this, entity)
@@ -421,6 +429,7 @@ class EntitySoulCustomCreature(world: World) extends GIEntityCreature(world) wit
   var syncAttackingPlayer: EntityPlayer = null
   var syncCapturedDrops: util.ArrayList[EntityItem] = new util.ArrayList[EntityItem]()
   var syncEquipment: Array[ItemStack] = Array.fill(5)(null)
+  var syncPathToEntity: PathEntity = null
   var syncInvulnerable, syncIsChild, syncPersistenceRequired, syncIsLeashed, syncCanPickUpLoot, syncHasAttacked: Boolean = false
   var syncFire, syncLastAttackerTime, syncFleeingTick: Int = 0
   var syncHealth, syncAbsorptionAmount, syncLandMovementFactor, syncMaximumHomeDistance: Float = 0.0F
@@ -701,6 +710,17 @@ class EntitySoulCustomCreature(world: World) extends GIEntityCreature(world) wit
       }
     }
 
-    //TODO pathToEntity
+    if(variables.contains("pathToEntity") || all) {
+      val pathToEntity = GIReflectionHelper.getField(this, "pathToEntity").asInstanceOf[PathEntity]
+      val customPathToEntity = UtilSoulEntity.readPathEntity(this, "pathToEntity")
+
+      if (syncPathToEntity != pathToEntity) {
+        UtilSoulEntity.writePathEntity(this, pathToEntity, "pathToEntity")
+        syncPathToEntity = pathToEntity
+      } else if(syncPathToEntity != customPathToEntity) {
+        GIReflectionHelper.setField(this, "pathToEntity", customPathToEntity)
+        syncPathToEntity = customPathToEntity
+      }
+    }
   }
 }

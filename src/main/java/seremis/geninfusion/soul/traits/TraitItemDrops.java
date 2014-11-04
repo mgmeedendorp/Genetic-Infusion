@@ -26,7 +26,7 @@ public class TraitItemDrops extends Trait {
 	public void onDeath(IEntitySoulCustom entity, DamageSource source) {
         Entity ent = source.getEntity();
         EntityPlayer attackingPlayer = entity.getInteger("attackingPlayerID") != 0 ? (EntityPlayer) entity.getWorld().getEntityByID(entity.getInteger("attackingPlayerID")) : null;
-        EntityLivingBase entityLivingToAttack = entity.getInteger("entityLivingToAttack") != 0 ? (EntityLivingBase) entity.getWorld().getEntityByID(entity.getInteger("entityLivingToAttackID")) : null;
+        EntityLivingBase entityLivingToAttack = entity.getInteger("entityLivingToAttack") != 0 ? (EntityLivingBase) entity.getWorld().getEntityByID(entity.getInteger("entityLivingToAttack")) : null;
         EntityLivingBase entitylivingbase = entity.getCombatTracker().func_94550_c() != null ? entity.getCombatTracker().func_94550_c() : (attackingPlayer != null ? attackingPlayer : (entityLivingToAttack != null ? entityLivingToAttack : null));
 
         int scoreValue = entity.getInteger("scoreValue");

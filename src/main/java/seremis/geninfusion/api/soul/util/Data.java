@@ -579,4 +579,18 @@ public class Data implements INBTTagable {
         }
         return false;
     }
+
+    public Data add(Data data) {
+        booleanDataMap.putAll(data.booleanDataMap);
+        byteDataMap.putAll(data.byteDataMap);
+        shortDataMap.putAll(data.shortDataMap);
+        integerDataMap.putAll(data.integerDataMap);
+        floatDataMap.putAll(data.floatDataMap);
+        doubleDataMap.putAll(data.doubleDataMap);
+        longDataMap.putAll(data.longDataMap);
+        stringDataMap.putAll(data.stringDataMap);
+        nbtDataMap.putAll(data.nbtDataMap);
+        dataDataMap.putAll(data.dataDataMap);
+        return this;
+    }
 }

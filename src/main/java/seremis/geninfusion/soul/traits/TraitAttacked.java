@@ -62,6 +62,7 @@ public class TraitAttacked extends Trait {
 		}
 
 		if (entityLivingToAttack != null) {
+            //TODO Look into this
 			if (!entityLivingToAttack.isEntityAlive()) {
 				((EntityLiving)entity).setRevengeTarget(null);
 			} else if (ticksExisted - ((EntityLiving)entity).func_142015_aE() > 100) {

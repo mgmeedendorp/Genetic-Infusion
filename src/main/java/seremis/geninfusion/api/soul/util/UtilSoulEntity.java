@@ -11,6 +11,8 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.potion.Potion;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChunkCoordinates;
@@ -24,6 +26,7 @@ import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.core.proxy.CommonProxy;
+import seremis.geninfusion.helper.GIReflectionHelper;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
 
 import java.util.ArrayList;
@@ -55,8 +58,7 @@ public class UtilSoulEntity {
     	double posX = entity.getDouble("posX");
     	double posY = entity.getDouble("posY");
     	double posZ = entity.getDouble("posZ");
-        //TODO added the + 1.0F to compensate for the absence of a calculation for eyeHeight
-        float eyeHeight = entity.getFloat("eyeHeight") + 1.0F;
+        float eyeHeight = getEyeHeight(entity);
 
         for (int i = 0; i < 8; ++i) {
             float f = ((float)((i) % 2) - 0.5F) * width * 0.8F;
@@ -181,6 +183,7 @@ public class UtilSoulEntity {
     public static void setRotation(IEntitySoulCustom entity, float yaw, float pitch) {
         entity.setFloat("rotationYaw", yaw % 360.0F);
         entity.setFloat("rotationPitch", pitch % 360.0F);
+        entity.forceVariableSync(new String[] {"rotationYaw", "rotationPitch"}) ;
     }
     
     public static void jump(IEntitySoulCustom entity) {
@@ -201,7 +204,7 @@ public class UtilSoulEntity {
     }
     
     public static void despawnEntity(IEntitySoulCustom entity) {
-        Result result = null;
+        Result result;
         boolean shouldDespawn = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_SHOULD_DESPAWN)).value;
         
         int entityAge = entity.getInteger("entityAge");
@@ -231,7 +234,7 @@ public class UtilSoulEntity {
                 	((EntityLiving)entity).setDead();
                 }
 
-                if (entity.getInteger("entityAge") > 600 && new Random().nextInt(800) == 0 && d3 > 1024.0D && shouldDespawn) {
+                if (entity.getInteger("entityAge") > 600 && new Random().nextInt(800) == 0 && d3 > 1024.0D) {
                 	((EntityLiving)entity).setDead();
                 } else if (d3 < 1024.0D) {
                 	entity.setInteger("entityAge", 0);
@@ -275,6 +278,7 @@ public class UtilSoulEntity {
     }
 
     public static void faceEntity(IEntitySoulCustom entity, Entity lookEntity, float maxYawIncrement, float maxPitchIncrement) {
+        entity.forceVariableSync(new String[] {"posX", "posY", "posZ", "rotationYaw", "rotationPitch"});
         double d0 = lookEntity.posX - entity.getInteger("posX");
         double d2 = lookEntity.posZ - entity.getInteger("posZ");
         double d1;
@@ -318,5 +322,49 @@ public class UtilSoulEntity {
         double posY = entity.getDouble("posY");
         double posZ = entity.getDouble("posZ");
         return entity.getWorld().rayTraceBlocks(Vec3.createVectorHelper(posX, posY + (double) getEyeHeight(entity), posZ), Vec3.createVectorHelper(ent.posX, ent.posY + (double)ent.getEyeHeight(), ent.posZ)) == null;
+    }
+
+    public static void writePathEntity(IEntitySoulCustom entity, PathEntity path, String variableName) {
+        if(path != null) {
+            Data data = DataHelper.writeAllPrimitives(path);
+            PathPoint[] points = (PathPoint[]) GIReflectionHelper.getField(path, "points");
+            Data[] pointsData = new Data[points.length];
+            for(int n = 0; n < points.length; n++) {
+                pointsData[n] = DataHelper.writeAllPrimitives(points[n]);
+                PathPoint previous = (PathPoint) GIReflectionHelper.getField(points[n], "previous");
+                if(previous != null) {
+                    for(int m = 0; m < points.length; m++) {
+                        if(points[m].equals(previous)) {
+                            pointsData[n].setInteger("previous", m);
+                            break;
+                        }
+                    }
+                }
+            }
+            data.setDataArray("points", pointsData);
+            entity.setData(variableName, data);
+        } else {
+            entity.setData(variableName, null);
+        }
+    }
+
+    public static PathEntity readPathEntity(IEntitySoulCustom entity, String variableName) {
+        if(entity.getData(variableName) != null) {
+            Data data = entity.getData(variableName);
+            Data[] pointsData = data.getDataArray("points");
+            PathPoint[] points = new PathPoint[pointsData.length];
+            for(int i = 0; i < pointsData.length; i++) {
+                points[i] = new PathPoint(0, 0, 0);
+                DataHelper.applyAllData(pointsData[i], points[i]);
+                GIReflectionHelper.setField(points[i], "hash", PathPoint.makeHash(points[i].xCoord, points[i].yCoord, points[i].zCoord));
+            }
+            for(int i = 0; i < points.length; i++) {
+                GIReflectionHelper.setField(points[i], "previous", points[pointsData[i].getInteger("previous")]);
+            }
+            PathEntity path = new PathEntity(points);
+            DataHelper.applyAllData(data, path);
+            return path;
+        }
+        return null;
     }
 }

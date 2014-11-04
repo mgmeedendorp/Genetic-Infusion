@@ -57,7 +57,7 @@ public class TraitMovement extends Trait {
         entity.getWorld().theProfiler.startSection("entityBaseTick");
         
         if(ridingEntity != null && ridingEntity.isDead) {
-            entity.setInteger("ridingEntityID", 0);
+            entity.setInteger("ridingEntity", 0);
         }
         
         entity.setFloat("prevDistanceWalkedModified", entity.getFloat("distanceWalkedOnStepModified"));
@@ -202,28 +202,6 @@ public class TraitMovement extends Trait {
 
         float health = entity.getFloat("health");
 
-        //TODO make a more advanced check for this
-        boolean hasAI = entity.getBoolean("aiEnabled");
-        
-        if (health <= 0.0F) {
-            entity.setBoolean("isJumping", false);
-            entity.setFloat("moveStrafing", 0.0F);
-            entity.setFloat("moveForward", 0.0F);
-            entity.setFloat("randomYawVelocity", 0.0F);
-        } else if (CommonProxy.instance.isRenderWorld(entity.getWorld())) {
-            if (hasAI) {
-                entity.getWorld().theProfiler.startSection("newAi");
-                this.updateAITasks(entity);
-                entity.getWorld().theProfiler.endSection();
-            } else {
-            	entity.getWorld().theProfiler.startSection("oldAi");
-                entity.setInteger("entityAge", entity.getInteger("entityAge")+1);
-                entity.getWorld().theProfiler.endSection();
-                entity.setFloat("rotationYawHead", rotationYaw);
-            }
-        }
-
-        entity.getWorld().theProfiler.endSection();
         entity.getWorld().theProfiler.startSection("jump");
         
         boolean isJumping = entity.getBoolean("isJumping");
@@ -255,42 +233,11 @@ public class TraitMovement extends Trait {
         if (CommonProxy.instance.isServerWorld(entity.getWorld())) {
             this.collideWithNearbyEntities(entity);
         }
-
         entity.getWorld().theProfiler.endSection();
 	}
 	
-	public void updateAITasks(IEntitySoulCustom entity) {
-        entity.setInteger("entityAge", entity.getInteger("entityAge")+1);
-        entity.getWorld().theProfiler.startSection("checkDespawn");
-        UtilSoulEntity.despawnEntity(entity);
-        entity.getWorld().theProfiler.endSection();
-        entity.getWorld().theProfiler.startSection("sensing");
-        entity.getEntitySenses().clearSensingCache();
-        entity.getWorld().theProfiler.endSection();
-        entity.getWorld().theProfiler.startSection("targetSelector");
-        entity.getTargetTasks().onUpdateTasks();
-        entity.getWorld().theProfiler.endSection();
-        entity.getWorld().theProfiler.startSection("goalSelector");
-        entity.getTasks().onUpdateTasks();
-        entity.getWorld().theProfiler.endSection();
-        entity.getWorld().theProfiler.startSection("navigation");
-        entity.getNavigator().onUpdateNavigation();
-        entity.getWorld().theProfiler.endSection();
-        entity.getWorld().theProfiler.startSection("mob tick");
-        entity.updateAITick();
-        entity.getWorld().theProfiler.endSection();
-        entity.getWorld().theProfiler.startSection("controls");
-        entity.getWorld().theProfiler.startSection("move");
-        entity.getMoveHelper().onUpdateMoveHelper();
-        entity.getWorld().theProfiler.endStartSection("look");
-        entity.getLookHelper().onUpdateLook();
-        entity.getWorld().theProfiler.endStartSection("jump");
-        entity.getJumpHelper().doJump();
-        entity.getWorld().theProfiler.endSection();
-        entity.getWorld().theProfiler.endSection();
-    }
-	
 	public void collideWithNearbyEntities(IEntitySoulCustom entity) {
+        entity.forceVariableSync(new String[] {"posX", "posY", "posZ"});
         List list = entity.getWorld().getEntitiesWithinAABBExcludingEntity((Entity) entity, entity.getBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
 
         if (list != null && !list.isEmpty()) {
