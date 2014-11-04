@@ -61,7 +61,7 @@ public class TileCrystalStand extends GITileMagnetConnector {
     public int getMaxHeat() {
         return 400;
     }
-    
+
     @Override
     public int getHeatTransmissionSpeed() {
         return 20;

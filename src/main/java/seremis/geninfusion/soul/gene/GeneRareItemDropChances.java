@@ -6,8 +6,8 @@ import seremis.geninfusion.soul.allele.AlleleFloatArray;
 
 public class GeneRareItemDropChances implements IGene {
 
-	@Override
-	public Class<? extends IAllele> possibleAlleles() {
-		return AlleleFloatArray.class;
-	}
+    @Override
+    public Class<? extends IAllele> possibleAlleles() {
+        return AlleleFloatArray.class;
+    }
 }

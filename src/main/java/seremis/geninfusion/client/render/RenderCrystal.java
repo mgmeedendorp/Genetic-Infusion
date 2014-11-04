@@ -21,7 +21,7 @@ public class RenderCrystal {
         GL11.glPushMatrix();
 
         GIRenderHelper.bindTexture(Localizations.LOC_MODEL_TEXTURES + Localizations.CRYSTAL);
-        
+
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         GL11.glDisable(GL11.GL_CULL_FACE);
@@ -29,7 +29,7 @@ public class RenderCrystal {
         GL11.glTranslatef((float) x + 0.35F, (float) y - 0.85F, (float) z + 0.35F);
 
         Color color = HeatColorHelper.instance.convertHeatToColor(heat);
-        
+
         GL11.glColor4f(color.getRed(), color.getGreen(), color.getBlue(), 0.8F);
 
         if(heat > 0) {

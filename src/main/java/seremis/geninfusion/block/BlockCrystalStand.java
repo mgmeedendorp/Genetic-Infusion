@@ -74,13 +74,13 @@ public class BlockCrystalStand extends GIBlockContainer {
         return new TileCrystalStand();
     }
 
-    
+
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
         if(CommonProxy.instance.isServerWorld(world)) {
-            Block id = world.getBlock(x, y-1, z);
-            
-            if(id.isAir(world, x, y-1, z) || !id.isBlockSolid(world, x, y-1, z, ForgeDirection.UP.ordinal())) {
+            Block id = world.getBlock(x, y - 1, z);
+
+            if(id.isAir(world, x, y - 1, z) || !id.isBlockSolid(world, x, y - 1, z, ForgeDirection.UP.ordinal())) {
                 dropBlockAsItem(world, x, y, z, new ItemStack(block, 1, 0));
                 world.setBlock(x, y, z, null);
             }

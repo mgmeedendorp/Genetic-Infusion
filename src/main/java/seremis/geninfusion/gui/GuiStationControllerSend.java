@@ -45,7 +45,7 @@ public class GuiStationControllerSend extends GIGui {
     public boolean firstDragTick = true;
     public int mouseStartX;
     public int mouseStartY;
-    
+
     public List<GuiTab> tabsTop = new ArrayList<GuiTab>();
 
     public GuiStationControllerSend(EntityPlayer player, IInventory tile) {
@@ -55,7 +55,7 @@ public class GuiStationControllerSend extends GIGui {
         super.ySize = 222;
 
         this.tile = (TileStationController) tile;
-        
+
         tabsTop.add(new GuiTabTop(0, 2, -16, 16, 16, 175, 0, "Transporter"));
         tabsTop.add(new GuiTabTop(1, 18, -16, 16, 19, 192, 0, "Destination"));
     }
@@ -81,12 +81,12 @@ public class GuiStationControllerSend extends GIGui {
         GL11.glTranslatef(dragOffsetX, dragOffsetY, 0);
 
         for(GuiLine line : stations) {
-            if(isInBetween(mapSendX, mapSendX + mapSendWidth-9, line.x + dragOffsetX) && isInBetween(mapSendY, mapSendY + mapSendHeight-9, line.y + dragOffsetY)) {
+            if(isInBetween(mapSendX, mapSendX + mapSendWidth - 9, line.x + dragOffsetX) && isInBetween(mapSendY, mapSendY + mapSendHeight - 9, line.y + dragOffsetY)) {
                 line.render(this);
             }
         }
         for(GuiLine line : lines) {
-            if(isInBetween(mapSendX, mapSendX + mapSendWidth-9, line.x + dragOffsetX) && isInBetween(mapSendY, mapSendY + mapSendHeight-9, line.y + dragOffsetY)) {
+            if(isInBetween(mapSendX, mapSendX + mapSendWidth - 9, line.x + dragOffsetX) && isInBetween(mapSendY, mapSendY + mapSendHeight - 9, line.y + dragOffsetY)) {
                 line.render(this);
             }
         }
@@ -103,10 +103,10 @@ public class GuiStationControllerSend extends GIGui {
         for(GuiTab tab : tabsTop) {
             tab.drawForeground(this, x, y);
         }
-        
+
         fontRendererObj.drawString("Magnet Station Controller", 8, 5, 0x404040);
         fontRendererObj.drawString("Inventory", 8, this.ySize - 92, 0x404040);
-        
+
         if(!isDragging) {
             for(GuiLineStation station : stations) {
                 if(tile.selectedDestination != null && tile.selectedDestination.equals(new Coordinate3D(station.tile))) {
@@ -114,24 +114,24 @@ public class GuiStationControllerSend extends GIGui {
                 } else {
                     station.green = 0;
                 }
-                if(station.inRect(this, x-dragOffsetX, y-dragOffsetY)) {
+                if(station.inRect(this, x - dragOffsetX, y - dragOffsetY)) {
                     List<String> list = new ArrayList<String>();
-    
+
                     list.add("Magnet Station");
-                    
+
                     if(new Coordinate3D(station.tile).equals(new Coordinate3D(tile))) {
                         list.add(EnumChatFormatting.BLUE + "Current");
                     }
-    
+
                     if(station.tile.name != null) {
                         list.add(EnumChatFormatting.ITALIC + station.tile.name);
                     }
-    
+
                     drawHoveringString(list, x - guiLeft, y - guiTop);
                 }
             }
         }
-        
+
         for(GuiTab tab : tabsTop) {
             tab.drawString(this, x, y, tab.getName());
         }
@@ -154,7 +154,7 @@ public class GuiStationControllerSend extends GIGui {
 
     private void calculateLines() {
         MagnetNetwork network = MagnetLinkHelper.instance.getNetworkFrom(tile);
-        
+
         Iterator<MagnetLink> it = network.getLinks().iterator();
 
         int x = xSize / 2 - 1;
@@ -167,7 +167,7 @@ public class GuiStationControllerSend extends GIGui {
             GuiLine line = new GuiLine();
 
             MagnetLink link = it.next();
-            
+
             TileEntity tile1 = link.connector1.getTile();
             TileEntity tile2 = link.connector2.getTile();
 
@@ -200,11 +200,11 @@ public class GuiStationControllerSend extends GIGui {
             line.setY(line.getY() - line.getHeight());
 
             Color color = HeatColorHelper.instance.convertHeatToColor(link.connector1.getHeat());
-            
+
             line.red = color.getRed();
             line.green = color.getGreen();
             line.blue = color.getBlue();
-            
+
             lines.add(line);
 
             // Check for stations
@@ -248,7 +248,7 @@ public class GuiStationControllerSend extends GIGui {
         super.mouseClicked(x, y, button);
         for(GuiLineStation station : stations) {
             if(station.inRect(this, x - dragOffsetX, y - dragOffsetY) && station.tile != tile) {
-                int[] coordinates = new int[] {station.tile.xCoord, station.tile.yCoord, station.tile.zCoord, button};
+                int[] coordinates = new int[]{station.tile.xCoord, station.tile.yCoord, station.tile.zCoord, button};
 
                 ByteBuffer byteBuffer = ByteBuffer.allocate(coordinates.length * 4);
                 IntBuffer intBuffer = byteBuffer.asIntBuffer();
@@ -262,19 +262,18 @@ public class GuiStationControllerSend extends GIGui {
             }
         }
 
-        if(isInBetween(this.mapSendX, this.mapSendX + this.mapSendWidth, x-guiLeft) && isInBetween(this.mapSendY, this.mapSendY + this.mapSendHeight, y-guiTop)) {
+        if(isInBetween(this.mapSendX, this.mapSendX + this.mapSendWidth, x - guiLeft) && isInBetween(this.mapSendY, this.mapSendY + this.mapSendHeight, y - guiTop)) {
             this.isDragging = true;
         }
-        
+
         GuiTab tab = tabsTop.get(0);
-        if(tab.inRect(this, x, y))
-            tab.mouseClick(this, x, y, button);
+        if(tab.inRect(this, x, y)) tab.mouseClick(this, x, y, button);
     }
-    
+
     @Override
     public void mouseClickMove(int x, int y, int button, long timeSinceClicked) {
         super.mouseClickMove(x, y, button, timeSinceClicked);
-        if(isDragging && firstDragTick) {       
+        if(isDragging && firstDragTick) {
             mouseStartX = x - dragOffsetX;
             mouseStartY = y - dragOffsetY;
             firstDragTick = false;
@@ -283,7 +282,7 @@ public class GuiStationControllerSend extends GIGui {
             dragOffsetY = -(mouseStartY - y);
         }
     }
-    
+
     @Override
     public void mouseMovedOrUp(int x, int y, int movedOrUp) {
         super.mouseMovedOrUp(x, y, movedOrUp);

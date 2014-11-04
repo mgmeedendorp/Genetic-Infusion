@@ -8,5 +8,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface TraitDependencies {
-	public String[] dependencies();
+    public String[] dependencies();
 }

@@ -108,7 +108,7 @@ public class EntityTransporter extends GIEntity implements IEntityAdditionalSpaw
     public void arrive() {
         TileEntity tile = worldObj.getTileEntity((int) Math.floor(posX), (int) Math.floor(posY), (int) Math.floor(posZ));
 
-        if(tile != null && tile instanceof TileStationController && ((TileStationController)tile).isMultiblock) {
+        if(tile != null && tile instanceof TileStationController && ((TileStationController) tile).isMultiblock) {
             ((TileStationController) tile).handleIncoming(this);
         } else {
             for(ItemStack stack : inv) {
@@ -135,9 +135,8 @@ public class EntityTransporter extends GIEntity implements IEntityAdditionalSpaw
         logic = new EntityTransporterLogic();
         logic.readFromNBT(compound);
 
-        if(logic.getTurnPoints() == null || logic.getTurnPoints().size() < 1)
-            setDead();
-        
+        if(logic.getTurnPoints() == null || logic.getTurnPoints().size() < 1) setDead();
+
         hasInventory = compound.getBoolean("hasInventory");
         hasEngine = compound.getBoolean("hasEngine");
         speed = compound.getFloat("speed");
@@ -197,12 +196,12 @@ public class EntityTransporter extends GIEntity implements IEntityAdditionalSpaw
     public boolean hasInventory() {
         return hasInventory;
     }
-    
+
     public void setHeat(int heat) {
         this.sendEntityDataToClient(3, ByteBuffer.allocate(4).putInt(heat).array());
         this.heat = heat;
     }
-    
+
     public int getHeat() {
         return heat;
     }

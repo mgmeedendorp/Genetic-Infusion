@@ -30,7 +30,7 @@ public class BlockCrystal extends GIBlockContainer {
     public int getRenderType() {
         return RenderIds.CrystalRenderID;
     }
-    
+
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
         return new TileCrystal();

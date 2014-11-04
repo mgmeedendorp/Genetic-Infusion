@@ -33,7 +33,7 @@ public class StandardSoul implements IStandardSoul {
             return new Chromosome(new AlleleBoolean(false, true));
         }
         if(gene.equals(Genes.GENE_EQUIPMENT_DROP_CHANCES)) {
-            return new Chromosome(new AlleleFloatArray(true, new float[] {0.085F, 0.085F, 0.085F, 0.085F, 0.085F}));
+            return new Chromosome(new AlleleFloatArray(true, new float[]{0.085F, 0.085F, 0.085F, 0.085F, 0.085F}));
         }
         if(gene.equals(Genes.GENE_EXPERIENCE_VALUE)) {
             return new Chromosome(new AlleleInteger(true, 5));
@@ -51,7 +51,7 @@ public class StandardSoul implements IStandardSoul {
             return new Chromosome(new AlleleBoolean(true, false));
         }
         if(gene.equals(Genes.GENE_ITEM_DROPS)) {
-            return new Chromosome(new AlleleInventory(true, new ItemStack[] {}));
+            return new Chromosome(new AlleleInventory(true, new ItemStack[]{}));
         }
         if(gene.equals(Genes.GENE_KNOCKBACK_RESISTANCE)) {
             return new Chromosome(new AlleleFloat(true, 0));
@@ -75,11 +75,11 @@ public class StandardSoul implements IStandardSoul {
             return new Chromosome(new AlleleInteger(true, 900));
         }
         if(gene.equals(Genes.GENE_RARE_ITEM_DROP_CHANCES)) {
-            float[] array = new float[] {0.33F, 0.33F, 0.33F};
+            float[] array = new float[]{0.33F, 0.33F, 0.33F};
             return new Chromosome(new AlleleFloatArray(true, array));
         }
         if(gene.equals(Genes.GENE_RARE_ITEM_DROPS)) {
-            return new Chromosome(new AlleleInventory(true, new ItemStack[] {}));
+            return new Chromosome(new AlleleInventory(true, new ItemStack[]{}));
         }
         if(gene.equals(Genes.GENE_SET_ON_FIRE_FROM_ATTACK)) {
             return new Chromosome(new AlleleBoolean(true, false));

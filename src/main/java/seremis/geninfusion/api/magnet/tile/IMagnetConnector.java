@@ -14,10 +14,7 @@ public interface IMagnetConnector {
     double getRange();
 
     /**
-     * This gets checked every tick, so use it for dynamic checking like
-     * inventories.
-     * 
-     * @return
+     * This gets checked every tick, so use it for dynamic checking like inventories.
      */
     boolean canConnect(MagnetLink link);
 
@@ -28,27 +25,24 @@ public interface IMagnetConnector {
     Coordinate3D applyBeamRenderOffset(Coordinate3D position, ForgeDirection side);
 
     int getHeat();
-    
+
     /**
      * Returns the speed this connector will transmit heat with.
+     *
      * @return heat per tick
      */
     int getHeatTransmissionSpeed();
 
     /**
-     * Heats up the connector This shouln't be used by blocks that are not in
-     * the network. (Network-internal)
-     * 
-     * @param heat
+     * Heats up the connector This shouln't be used by blocks that are not in the network. (Network-internal)
+     *
      * @return the heat that couldn't be applied
      */
     int warm(int heat);
 
     /**
-     * Cools down the connector This shouln't be used by blocks that are not in
-     * the network. (Network-internal)
-     * 
-     * @param heat
+     * Cools down the connector This shouln't be used by blocks that are not in the network. (Network-internal)
+     *
      * @return the 'coolness' left.
      */
     int cool(int heat);

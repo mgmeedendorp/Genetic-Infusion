@@ -3,7 +3,6 @@ package seremis.geninfusion.api.magnet;
 import seremis.geninfusion.api.magnet.tile.IMagnetConnector;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class MagnetNetwork {
@@ -21,11 +20,11 @@ public class MagnetNetwork {
     }
 
     private void addConnectors() {
-        for (MagnetLink link : links) {
-            if (!connectors.contains(link.connector1)) {
+        for(MagnetLink link : links) {
+            if(!connectors.contains(link.connector1)) {
                 connectors.add(link.connector1);
             }
-            if (!connectors.contains(link.connector2)) {
+            if(!connectors.contains(link.connector2)) {
                 connectors.add(link.connector2);
             }
         }

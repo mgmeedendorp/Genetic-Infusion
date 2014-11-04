@@ -7,7 +7,6 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.DamageSource;
@@ -22,7 +21,6 @@ import seremis.geninfusion.core.GICreativeTab;
 import seremis.geninfusion.core.proxy.CommonProxy;
 import seremis.geninfusion.entity.ModEntity;
 import seremis.geninfusion.handler.GIEventHandler;
-import seremis.geninfusion.handler.GuiHandler;
 import seremis.geninfusion.handler.ServerTickHandler;
 import seremis.geninfusion.helper.RecipeHelper;
 import seremis.geninfusion.item.ModItems;
@@ -39,11 +37,11 @@ public class GeneticInfusion {
     public static GeneticInfusion instance;
 
     public static final PacketPipeline packetPipeline = new PacketPipeline();
-    
+
     public static CreativeTabs CreativeTab = new GICreativeTab(DefaultProps.ID);
 
     public static DamageSource damageCompressor = new DamageCompressor("compressed");
-    
+
     public static Logger logger;
 
     @EventHandler
@@ -68,9 +66,8 @@ public class GeneticInfusion {
     public void init(FMLInitializationEvent event) {
         CommonProxy.instance.registerRendering();
         CommonProxy.instance.registerHandlers();
-        
-        if(event.getSide() == Side.SERVER)
-        	FMLCommonHandler.instance().bus().register(ServerTickHandler.instance);
+
+        if(event.getSide() == Side.SERVER) FMLCommonHandler.instance().bus().register(ServerTickHandler.instance);
 
         RecipeHelper.initRecipes();
         RecipeHelper.initSmelting();

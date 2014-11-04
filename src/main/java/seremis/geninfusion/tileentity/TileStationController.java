@@ -43,16 +43,16 @@ public class TileStationController extends GITileMagnetConsumer implements IInve
     private long currTime = 0;
     private long lastUpdateTick = 0;
     private long ticksBeforeUpdate = 100;
-    
+
     private boolean heatNeeded = false;
     private Coordinate3D tempDestination;
     private final int neededHeat = 1000;
-    
+
     public Coordinate3D selectedDestination;
-    
+
     private TileItemIO itemIO1;
     private TileItemIO itemIO2;
-    
+
     @SideOnly(Side.CLIENT)
     public int barHeat;
 
@@ -69,7 +69,7 @@ public class TileStationController extends GITileMagnetConsumer implements IInve
     public void invalidateMultiblock() {
         if(isMultiblock && CommonProxy.instance.isServerWorld(worldObj)) {
             List<Coordinate3D> crystalStandCoordinates = structure.getBlockCoordinates(ModBlocks.crystalStand, 0);
-            
+
             if(structure.doesBlockExistInStructure(ModBlocks.crystalStand, 0, 1)) {
                 Coordinate3D crystalStandCoord = crystalStandCoordinates.get(0);
                 TileEntity tile = worldObj.getTileEntity((int) crystalStandCoord.x, (int) crystalStandCoord.y, (int) crystalStandCoord.z);
@@ -77,7 +77,7 @@ public class TileStationController extends GITileMagnetConsumer implements IInve
                     ((TileCrystalStand) tile).isStructureMagnetStation = false;
                     ((TileCrystalStand) tile).structure = null;
                 }
-                
+
                 if(itemIO1 != null) {
                     itemIO1.isStructureMagnetStation = false;
                     itemIO1.stationController = null;
@@ -95,38 +95,38 @@ public class TileStationController extends GITileMagnetConsumer implements IInve
 
     public void initiateMultiblock() {
         if(!isMultiblock && CommonProxy.instance.isServerWorld(worldObj)) {
-            
+
             List<Coordinate3D> crystalStandCoordinates = structure.getBlockCoordinates(ModBlocks.crystalStand, 0);
             List<Coordinate3D> itemIOCoordinates = structure.getBlockCoordinates(ModBlocks.itemIO, 0);
-            
+
             if(structure.doesBlockExistInStructure(ModBlocks.crystalStand, 0, 1)) {
                 Coordinate3D crystalStandCoord = crystalStandCoordinates.get(0);
-                
+
                 TileEntity tile = worldObj.getTileEntity((int) crystalStandCoord.x, (int) crystalStandCoord.y, (int) crystalStandCoord.z);
-                
+
                 if(tile != null && tile instanceof TileCrystalStand) {
 
                     isMultiblock = true;
-                    
+
                     ((TileCrystalStand) tile).isStructureMagnetStation = true;
                     ((TileCrystalStand) tile).structure = structure;
-                    
+
                     MagnetLinkHelper.instance.addLink(new MagnetLink(this, (TileCrystalStand) tile));
                 } else {
                     isMultiblock = false;
                     return;
                 }
-                
+
                 if(itemIOCoordinates != null) {
                     for(Coordinate3D itemIOCoord : itemIOCoordinates) {
                         TileEntity itemIO = worldObj.getTileEntity((int) itemIOCoord.x, (int) itemIOCoord.y, (int) itemIOCoord.z);
-                        
-                        if(itemIO != null && itemIO instanceof TileItemIO) {                        
-                            TileItemIO tileIO = (TileItemIO)itemIO;
-                            
+
+                        if(itemIO != null && itemIO instanceof TileItemIO) {
+                            TileItemIO tileIO = (TileItemIO) itemIO;
+
 
                             tileIO.stationController = this;
-                            
+
                             if(itemIO1 == null) {
                                 itemIO1 = tileIO;
                             } else {
@@ -166,7 +166,7 @@ public class TileStationController extends GITileMagnetConsumer implements IInve
                 }
             }
         }
-        
+
         if(heatNeeded && heat == neededHeat) {
             sendCurrentTransporterTo((TileStationController) worldObj.getTileEntity((int) tempDestination.x, (int) tempDestination.y, (int) tempDestination.z));
             heatNeeded = false;
@@ -177,7 +177,7 @@ public class TileStationController extends GITileMagnetConsumer implements IInve
 
     @Override
     public void onStructureChange() {
-        
+
     }
 
     @Override
@@ -188,40 +188,38 @@ public class TileStationController extends GITileMagnetConsumer implements IInve
             compound.setString("name", name);
         }
         compound.setBoolean("heatNeeded", heatNeeded);
-        if(tempDestination != null)
-            compound.setIntArray("tempDestination", tempDestination.toArray());
-        if(selectedDestination != null)
-            compound.setIntArray("selectedDestination", selectedDestination.toArray());
+        if(tempDestination != null) compound.setIntArray("tempDestination", tempDestination.toArray());
+        if(selectedDestination != null) compound.setIntArray("selectedDestination", selectedDestination.toArray());
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         inventory.readFromNBT(compound);
-        
+
         if(compound.hasKey("name")) {
             name = compound.getString("name");
         } else {
             name = "";
         }
-        
+
         heatNeeded = compound.getBoolean("heatNeeded");
 
         if(compound.hasKey("tempDestination")) {
             tempDestination = new Coordinate3D().fromArray(compound.getIntArray("tempDestination"));
         }
-        
+
         if(compound.hasKey("selectedDestination")) {
             selectedDestination = new Coordinate3D().fromArray(compound.getIntArray("selectedDestination"));
         }
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox() {
         return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1.5, zCoord + 1);
     }
-    
+
     // IInventory//    
     public Inventory inventory = new Inventory(13, Tiles.INV_STATION_CONTROLLER_UNLOCALIZED_NAME, 64, this);
 
@@ -361,7 +359,7 @@ public class TileStationController extends GITileMagnetConsumer implements IInve
                 tempDestination = new Coordinate3D(tile);
                 return;
             }
-            
+
             EntityTransporterLogic logic = EntityTransporterLogic.getLogic(this, tile);
 
             EntityTransporter transporter = new EntityTransporter(worldObj, xCoord, yCoord, zCoord, logic);
@@ -382,9 +380,9 @@ public class TileStationController extends GITileMagnetConsumer implements IInve
             transporter.setYaw(structure.getRotation() * 90F);
 
             transporter.setInventory(inventory);
-            
+
             transporter.setHeat(heat);
-            
+
             worldObj.spawnEntityInWorld(transporter);
 
             MinecraftForge.EVENT_BUS.post(new TransporterSendEvent(transporter, this, tile));
@@ -392,31 +390,29 @@ public class TileStationController extends GITileMagnetConsumer implements IInve
             emptySlots(0, 13);
         }
     }
-    
+
     public void handleIncoming(EntityTransporter transporter) {
         if(isInvEmpty()) {
-            for(int i = 3; i<transporter.getInventory().length; i++) {
+            for(int i = 3; i < transporter.getInventory().length; i++) {
                 setInventorySlotContents(i, transporter.getInventory()[i]);
             }
             setInventorySlotContents(0, new ItemStack(ModItems.transporterModules, 1, 2));
-            if(transporter.hasEngine())
-                setInventorySlotContents(1, new ItemStack(ModItems.transporterModules, 1, 1));
-            if(transporter.hasInventory()) 
+            if(transporter.hasEngine()) setInventorySlotContents(1, new ItemStack(ModItems.transporterModules, 1, 1));
+            if(transporter.hasInventory())
                 setInventorySlotContents(2, new ItemStack(ModItems.transporterModules, 1, 0));
         } else {
             UtilBlock.dropItemsFromTile(worldObj, xCoord, yCoord, zCoord);
-            
-            for(int i = 3; i<transporter.getInventory().length; i++) {
+
+            for(int i = 3; i < transporter.getInventory().length; i++) {
                 setInventorySlotContents(i, transporter.getInventory()[i]);
             }
             setInventorySlotContents(0, new ItemStack(ModItems.transporterModules, 1, 2));
-            if(transporter.hasEngine())
-                setInventorySlotContents(1, new ItemStack(ModItems.transporterModules, 1, 1));
-            if(transporter.hasInventory()) 
+            if(transporter.hasEngine()) setInventorySlotContents(1, new ItemStack(ModItems.transporterModules, 1, 1));
+            if(transporter.hasInventory())
                 setInventorySlotContents(2, new ItemStack(ModItems.transporterModules, 1, 0));
         }
     }
-    
+
     public boolean isInvEmpty() {
         for(ItemStack stack : inventory.getItemStacks()) {
             if(stack != null) {
@@ -500,7 +496,7 @@ public class TileStationController extends GITileMagnetConsumer implements IInve
             }
         }
     }
-    
+
     public void onRedstoneSignal() {
         System.out.println(this);
         if(selectedDestination != null)
@@ -511,7 +507,7 @@ public class TileStationController extends GITileMagnetConsumer implements IInve
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
-        return new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
+        return new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
     }
 
     @Override
@@ -565,7 +561,7 @@ public class TileStationController extends GITileMagnetConsumer implements IInve
     public int getMaxHeat() {
         return heatNeeded ? neededHeat : 0;
     }
-    
+
     @Override
     public int getHeatTransmissionSpeed() {
         return 5;

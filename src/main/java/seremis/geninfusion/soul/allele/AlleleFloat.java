@@ -7,7 +7,7 @@ import seremis.geninfusion.soul.Allele;
 public class AlleleFloat extends Allele {
 
     public float value;
-    
+
     public AlleleFloat(boolean isDominant, float value) {
         super(isDominant, EnumAlleleType.FLOAT);
         this.value = value;
@@ -17,7 +17,7 @@ public class AlleleFloat extends Allele {
         super(args);
         value = (Float) args[1];
     }
-    
+
     public AlleleFloat(NBTTagCompound compound) {
         super(compound);
         readFromNBT(compound);
@@ -28,7 +28,7 @@ public class AlleleFloat extends Allele {
         super.writeToNBT(compound);
         compound.setFloat("value", value);
     }
-    
+
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);

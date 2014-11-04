@@ -36,7 +36,7 @@ public class TraitInitialValues extends Trait {
         entity.setInteger("creatureAttribute", ((AlleleInteger) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_CREATURE_ATTRIBUTE)).value);
         entity.setInteger("experienceValue", ((AlleleInteger) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_EXPERIENCE_VALUE)).value);
 
-        if (!entity.getBoolean("aiEnabled")) {
+        if(!entity.getBoolean("aiEnabled")) {
             entity.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed).setBaseValue(0.10000000149011612D);
         }
     }

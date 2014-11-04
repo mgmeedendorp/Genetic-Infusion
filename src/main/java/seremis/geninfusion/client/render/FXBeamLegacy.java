@@ -25,15 +25,15 @@ public class FXBeamLegacy extends EntityFX {
     private double blue = 0;
 
     private boolean render = true;
-    
+
     private int redHead;
     private int greenHead;
     private int blueHead;
-    
+
     private int redTail;
     private int greenTail;
     private int blueTail;
-    
+
     private int transitionSteps = 20;
 
     public FXBeamLegacy(World world, Coordinate3D position, Coordinate3D target, int r1, int g1, int b1, int r2, int g2, int b2) {
@@ -43,16 +43,16 @@ public class FXBeamLegacy extends EntityFX {
         this.motionX = 0.0D;
         this.motionY = 0.0D;
         this.motionZ = 0.0D;
-        
+
         this.line = new Line3D(position, target);
-        
+
         this.redHead = r1;
         this.greenHead = g1;
         this.blueHead = b1;
         this.redTail = r2;
         this.greenTail = g2;
         this.blueTail = b2;
-        
+
         this.prevPosX = posX;
         this.prevPosY = posY;
         this.prevPosZ = posZ;
@@ -151,18 +151,18 @@ public class FXBeamLegacy extends EntityFX {
     }
 
     private float rotateSpeed = 5F;
-    
+
     @Override
     public void renderParticle(Tessellator tess, float partialTickTime, float f1, float f2, float f3, float f4, float f5) {
         if(render) {
             float opacity = 0.4F;
 
             float rot = this.worldObj.getWorldInfo().getWorldTime() % (360.0F / this.rotateSpeed) * this.rotateSpeed + this.rotateSpeed * partialTickTime;
-            
+
             GL11.glPushMatrix();
 
             GIRenderHelper.bindTexture(Localizations.LOC_PARTICLE_TEXTURES + Localizations.BEAM);
-            
+
             GL11.glTexParameterf(3553, 10242, 10497.0F);
             GL11.glTexParameterf(3553, 10243, 10497.0F);
 
@@ -176,7 +176,7 @@ public class FXBeamLegacy extends EntityFX {
             float yy = (float) (this.prevPosY + (this.posY - this.prevPosY) * partialTickTime - interpPosY);
             float zz = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * partialTickTime - interpPosZ);
             GL11.glTranslated(xx, yy, zz);
-            
+
             GL11.glRotated(90.0, 1.0, 0.0, 0.0);
             GL11.glRotated(180.0 + line.getYaw(), 0.0, 0.0, -1.0);
             GL11.glRotated(line.getPitch(), 1.0, 0.0, 0.0);
@@ -185,7 +185,7 @@ public class FXBeamLegacy extends EntityFX {
             double transitionSpace = line.getLength() / 10;
 
             GL11.glRotatef(rot, 0.0F, 1.0F, 0.0F);
-            
+
             for(int t = 0; t < 3; t++) {
                 GL11.glRotatef(60.0F, 0.0F, 1.0F, 0.0F);
 
@@ -229,8 +229,8 @@ public class FXBeamLegacy extends EntityFX {
 
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glDepthMask(true);
-            GL11.glEnable(GL11.GL_CULL_FACE);            
-            
+            GL11.glEnable(GL11.GL_CULL_FACE);
+
             GL11.glPopMatrix();
         }
         GIRenderHelper.bindTexture("minecraft:textures/particle/particles.png");

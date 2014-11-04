@@ -2,7 +2,6 @@ package seremis.geninfusion.api.soul.util;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraftforge.common.util.Constants;
 import seremis.geninfusion.util.INBTTagable;
 
 import java.util.ArrayList;
@@ -110,7 +109,7 @@ public class Data implements INBTTagable {
 
     public void setBooleanArray(String key, boolean[] value) {
         Data arrayData = new Data();
-        for (int i = 0; i < value.length; i++) {
+        for(int i = 0; i < value.length; i++) {
             arrayData.setBoolean(key + "." + i, value[i]);
         }
         arrayData.setInteger("length", value.length);
@@ -119,7 +118,7 @@ public class Data implements INBTTagable {
 
     public void setByteArray(String key, byte[] value) {
         Data arrayData = new Data();
-        for (int i = 0; i < value.length; i++) {
+        for(int i = 0; i < value.length; i++) {
             arrayData.setByte(key + "." + i, value[i]);
         }
         arrayData.setInteger("length", value.length);
@@ -128,7 +127,7 @@ public class Data implements INBTTagable {
 
     public void setShortArray(String key, short[] value) {
         Data arrayData = new Data();
-        for (int i = 0; i < value.length; i++) {
+        for(int i = 0; i < value.length; i++) {
             arrayData.setShort(key + "." + i, value[i]);
         }
         arrayData.setInteger("length", value.length);
@@ -137,7 +136,7 @@ public class Data implements INBTTagable {
 
     public void setIntegerArray(String key, int[] value) {
         Data arrayData = new Data();
-        for (int i = 0; i < value.length; i++) {
+        for(int i = 0; i < value.length; i++) {
             arrayData.setInteger(key + "." + i, value[i]);
         }
         arrayData.setInteger("length", value.length);
@@ -146,7 +145,7 @@ public class Data implements INBTTagable {
 
     public void setFloatArray(String key, float[] value) {
         Data arrayData = new Data();
-        for (int i = 0; i < value.length; i++) {
+        for(int i = 0; i < value.length; i++) {
             arrayData.setFloat(key + "." + i, value[i]);
         }
         arrayData.setInteger("length", value.length);
@@ -155,7 +154,7 @@ public class Data implements INBTTagable {
 
     public void setDoubleArray(String key, double[] value) {
         Data arrayData = new Data();
-        for (int i = 0; i < value.length; i++) {
+        for(int i = 0; i < value.length; i++) {
             arrayData.setDouble(key + "." + i, value[i]);
         }
         arrayData.setInteger("length", value.length);
@@ -164,7 +163,7 @@ public class Data implements INBTTagable {
 
     public void setLongArray(String key, long[] value) {
         Data arrayData = new Data();
-        for (int i = 0; i < value.length; i++) {
+        for(int i = 0; i < value.length; i++) {
             arrayData.setLong(key + "." + i, value[i]);
         }
         arrayData.setInteger("length", value.length);
@@ -173,7 +172,7 @@ public class Data implements INBTTagable {
 
     public void setStringArray(String key, String[] value) {
         Data arrayData = new Data();
-        for (int i = 0; i < value.length; i++) {
+        for(int i = 0; i < value.length; i++) {
             arrayData.setString(key + "." + i, value[i]);
         }
         arrayData.setInteger("length", value.length);
@@ -182,7 +181,7 @@ public class Data implements INBTTagable {
 
     public void setNBTArray(String key, NBTTagCompound[] value) {
         Data arrayData = new Data();
-        for (int i = 0; i < value.length; i++) {
+        for(int i = 0; i < value.length; i++) {
             arrayData.setNBT(key + "." + i, value[i]);
         }
         arrayData.setInteger("length", value.length);
@@ -191,7 +190,7 @@ public class Data implements INBTTagable {
 
     public void setDataArray(String key, Data[] value) {
         Data arrayData = new Data();
-        for (int i = 0; i < value.length; i++) {
+        for(int i = 0; i < value.length; i++) {
             arrayData.setData(key + "." + i, value[i]);
         }
         arrayData.setInteger("length", value.length);
@@ -200,9 +199,9 @@ public class Data implements INBTTagable {
 
     public boolean[] getBooleanArray(String key) {
         Data arrayData = getData(key);
-        if (arrayData != null) {
+        if(arrayData != null) {
             boolean[] array = new boolean[arrayData.getInteger("length")];
-            for (int i = 0; i < array.length; i++) {
+            for(int i = 0; i < array.length; i++) {
                 array[i] = arrayData.getBoolean(key + "." + i);
             }
             return array;
@@ -212,9 +211,9 @@ public class Data implements INBTTagable {
 
     public byte[] getByteArray(String key) {
         Data arrayData = getData(key);
-        if (arrayData != null) {
+        if(arrayData != null) {
             byte[] array = new byte[arrayData.getInteger("length")];
-            for (int i = 0; i < array.length; i++) {
+            for(int i = 0; i < array.length; i++) {
                 array[i] = arrayData.getByte(key + "." + i);
             }
             return array;
@@ -224,9 +223,9 @@ public class Data implements INBTTagable {
 
     public short[] getShortArray(String key) {
         Data arrayData = getData(key);
-        if (arrayData != null) {
+        if(arrayData != null) {
             short[] array = new short[arrayData.getInteger("length")];
-            for (int i = 0; i < array.length; i++) {
+            for(int i = 0; i < array.length; i++) {
                 array[i] = arrayData.getShort(key + "." + i);
             }
             return array;
@@ -236,9 +235,9 @@ public class Data implements INBTTagable {
 
     public int[] getIntegerArray(String key) {
         Data arrayData = getData(key);
-        if (arrayData != null) {
+        if(arrayData != null) {
             int[] array = new int[arrayData.getInteger("length")];
-            for (int i = 0; i < array.length; i++) {
+            for(int i = 0; i < array.length; i++) {
                 array[i] = arrayData.getInteger(key + "." + i);
             }
             return array;
@@ -248,9 +247,9 @@ public class Data implements INBTTagable {
 
     public float[] getFloatArray(String key) {
         Data arrayData = getData(key);
-        if (arrayData != null) {
+        if(arrayData != null) {
             float[] array = new float[arrayData.getInteger("length")];
-            for (int i = 0; i < array.length; i++) {
+            for(int i = 0; i < array.length; i++) {
                 array[i] = arrayData.getFloat(key + "." + i);
             }
             return array;
@@ -260,9 +259,9 @@ public class Data implements INBTTagable {
 
     public double[] getDoubleArray(String key) {
         Data arrayData = getData(key);
-        if (arrayData != null) {
+        if(arrayData != null) {
             double[] array = new double[arrayData.getInteger("length")];
-            for (int i = 0; i < array.length; i++) {
+            for(int i = 0; i < array.length; i++) {
                 array[i] = arrayData.getDouble(key + "." + i);
             }
             return array;
@@ -272,9 +271,9 @@ public class Data implements INBTTagable {
 
     public long[] getLongArray(String key) {
         Data arrayData = getData(key);
-        if (arrayData != null) {
+        if(arrayData != null) {
             long[] array = new long[arrayData.getInteger("length")];
-            for (int i = 0; i < array.length; i++) {
+            for(int i = 0; i < array.length; i++) {
                 array[i] = arrayData.getLong(key + "." + i);
             }
             return array;
@@ -284,9 +283,9 @@ public class Data implements INBTTagable {
 
     public String[] getStringArray(String key) {
         Data arrayData = getData(key);
-        if (arrayData != null) {
+        if(arrayData != null) {
             String[] array = new String[arrayData.getInteger("length")];
-            for (int i = 0; i < array.length; i++) {
+            for(int i = 0; i < array.length; i++) {
                 array[i] = arrayData.getString(key + "." + i);
             }
             return array;
@@ -296,9 +295,9 @@ public class Data implements INBTTagable {
 
     public NBTTagCompound[] getNBTArray(String key) {
         Data arrayData = getData(key);
-        if (arrayData != null) {
+        if(arrayData != null) {
             NBTTagCompound[] array = new NBTTagCompound[arrayData.getInteger("length")];
-            for (int i = 0; i < array.length; i++) {
+            for(int i = 0; i < array.length; i++) {
                 array[i] = arrayData.getNBT(key + "." + i);
             }
             return array;
@@ -308,9 +307,9 @@ public class Data implements INBTTagable {
 
     public Data[] getDataArray(String key) {
         Data arrayData = getData(key);
-        if (arrayData != null) {
+        if(arrayData != null) {
             Data[] array = new Data[arrayData.getInteger("length")];
-            for (int i = 0; i < array.length; i++) {
+            for(int i = 0; i < array.length; i++) {
                 array[i] = arrayData.getData(key + "." + i);
             }
             return array;
@@ -330,10 +329,10 @@ public class Data implements INBTTagable {
     public void writeToNBT(NBTTagCompound compound) {
         NBTTagList tagList = new NBTTagList();
         ArrayList<String> stringList = new ArrayList<String>();
-        if (!booleanDataMap.isEmpty()) {
+        if(!booleanDataMap.isEmpty()) {
             stringList.addAll(booleanDataMap.keySet());
             NBTTagCompound booleanCompound = new NBTTagCompound();
-            for (int i = 0; i < booleanDataMap.size(); i++) {
+            for(int i = 0; i < booleanDataMap.size(); i++) {
                 booleanCompound.setString("boolean" + i + "Name", stringList.get(i));
                 booleanCompound.setBoolean("boolean" + i + "Value", booleanDataMap.get(stringList.get(i)));
             }
@@ -342,10 +341,10 @@ public class Data implements INBTTagable {
             tagList.appendTag(booleanCompound);
             stringList.clear();
         }
-        if (!byteDataMap.isEmpty()) {
+        if(!byteDataMap.isEmpty()) {
             stringList.addAll(byteDataMap.keySet());
             NBTTagCompound byteCompound = new NBTTagCompound();
-            for (int i = 0; i < byteDataMap.size(); i++) {
+            for(int i = 0; i < byteDataMap.size(); i++) {
                 byteCompound.setString("byte" + i + "Name", stringList.get(i));
                 byteCompound.setByte("byte" + i + "Value", byteDataMap.get(stringList.get(i)));
             }
@@ -354,10 +353,10 @@ public class Data implements INBTTagable {
             tagList.appendTag(byteCompound);
             stringList.clear();
         }
-        if (!shortDataMap.isEmpty()) {
+        if(!shortDataMap.isEmpty()) {
             stringList.addAll(shortDataMap.keySet());
             NBTTagCompound shortCompound = new NBTTagCompound();
-            for (int i = 0; i < shortDataMap.size(); i++) {
+            for(int i = 0; i < shortDataMap.size(); i++) {
                 shortCompound.setString("short" + i + "Name", stringList.get(i));
                 shortCompound.setShort("short" + i + "Value", shortDataMap.get(stringList.get(i)));
             }
@@ -366,10 +365,10 @@ public class Data implements INBTTagable {
             tagList.appendTag(shortCompound);
             stringList.clear();
         }
-        if (!integerDataMap.isEmpty()) {
+        if(!integerDataMap.isEmpty()) {
             stringList.addAll(integerDataMap.keySet());
             NBTTagCompound integerCompound = new NBTTagCompound();
-            for (int i = 0; i < integerDataMap.size(); i++) {
+            for(int i = 0; i < integerDataMap.size(); i++) {
                 integerCompound.setString("integer" + i + "Name", stringList.get(i));
                 integerCompound.setInteger("integer" + i + "Value", integerDataMap.get(stringList.get(i)));
             }
@@ -378,10 +377,10 @@ public class Data implements INBTTagable {
             tagList.appendTag(integerCompound);
             stringList.clear();
         }
-        if (!floatDataMap.isEmpty()) {
+        if(!floatDataMap.isEmpty()) {
             stringList.addAll(floatDataMap.keySet());
             NBTTagCompound floatCompound = new NBTTagCompound();
-            for (int i = 0; i < floatDataMap.size(); i++) {
+            for(int i = 0; i < floatDataMap.size(); i++) {
                 floatCompound.setString("float" + i + "Name", stringList.get(i));
                 floatCompound.setFloat("float" + i + "Value", floatDataMap.get(stringList.get(i)));
             }
@@ -389,10 +388,10 @@ public class Data implements INBTTagable {
             floatCompound.setInteger("size", floatDataMap.size());
             stringList.clear();
         }
-        if (!doubleDataMap.isEmpty()) {
+        if(!doubleDataMap.isEmpty()) {
             stringList.addAll(doubleDataMap.keySet());
             NBTTagCompound doubleCompound = new NBTTagCompound();
-            for (int i = 0; i < doubleDataMap.size(); i++) {
+            for(int i = 0; i < doubleDataMap.size(); i++) {
                 doubleCompound.setString("double" + i + "Name", stringList.get(i));
                 doubleCompound.setDouble("double" + i + "Value", doubleDataMap.get(stringList.get(i)));
             }
@@ -400,10 +399,10 @@ public class Data implements INBTTagable {
             doubleCompound.setInteger("size", doubleDataMap.size());
             stringList.clear();
         }
-        if (!longDataMap.isEmpty()) {
+        if(!longDataMap.isEmpty()) {
             stringList.addAll(longDataMap.keySet());
             NBTTagCompound longCompound = new NBTTagCompound();
-            for (int i = 0; i < longDataMap.size(); i++) {
+            for(int i = 0; i < longDataMap.size(); i++) {
                 longCompound.setString("long" + i + "Name", stringList.get(i));
                 longCompound.setLong("long" + i + "Value", longDataMap.get(stringList.get(i)));
             }
@@ -411,10 +410,10 @@ public class Data implements INBTTagable {
             longCompound.setInteger("size", longDataMap.size());
             stringList.clear();
         }
-        if (!stringDataMap.isEmpty()) {
+        if(!stringDataMap.isEmpty()) {
             stringList.addAll(stringDataMap.keySet());
             NBTTagCompound stringCompound = new NBTTagCompound();
-            for (int i = 0; i < stringDataMap.size(); i++) {
+            for(int i = 0; i < stringDataMap.size(); i++) {
                 stringCompound.setString("string" + i + "Name", stringList.get(i));
                 stringCompound.setString("string" + i + "Value", stringDataMap.get(stringList.get(i)));
             }
@@ -422,10 +421,10 @@ public class Data implements INBTTagable {
             stringCompound.setInteger("size", stringDataMap.size());
             stringList.clear();
         }
-        if (!nbtDataMap.isEmpty()) {
+        if(!nbtDataMap.isEmpty()) {
             stringList.addAll(nbtDataMap.keySet());
             NBTTagCompound nbtCompound = new NBTTagCompound();
-            for (int i = 0; i < nbtDataMap.size(); i++) {
+            for(int i = 0; i < nbtDataMap.size(); i++) {
                 nbtCompound.setString("nbt" + i + "Name", stringList.get(i));
                 nbtCompound.setTag("nbt" + i + "Value", nbtDataMap.get(stringList.get(i)));
             }
@@ -433,10 +432,10 @@ public class Data implements INBTTagable {
             nbtCompound.setInteger("size", nbtDataMap.size());
             stringList.clear();
         }
-        if (!dataDataMap.isEmpty()) {
+        if(!dataDataMap.isEmpty()) {
             stringList.addAll(dataDataMap.keySet());
             NBTTagCompound dataCompound = new NBTTagCompound();
-            for (int i = 0; i < dataDataMap.size(); i++) {
+            for(int i = 0; i < dataDataMap.size(); i++) {
                 dataCompound.setString("data" + i + "Name", stringList.get(i));
                 NBTTagCompound cmp = new NBTTagCompound();
                 dataDataMap.get(stringList.get(i)).writeToNBT(cmp);
@@ -452,7 +451,7 @@ public class Data implements INBTTagable {
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
-        if (compound.hasKey("data")) {
+        if(compound.hasKey("data")) {
             NBTTagList tagList = (NBTTagList) compound.getTag("data");
             NBTTagCompound compoundBoolean = null;
             NBTTagCompound compoundByte = null;
@@ -465,105 +464,105 @@ public class Data implements INBTTagable {
             NBTTagCompound compoundNBT = null;
             NBTTagCompound compoundData = null;
 
-            for (int i = 0; i < tagList.tagCount(); i++) {
-                if (tagList.getCompoundTagAt(i).getString("type").equals("boolean")) {
+            for(int i = 0; i < tagList.tagCount(); i++) {
+                if(tagList.getCompoundTagAt(i).getString("type").equals("boolean")) {
                     compoundBoolean = tagList.getCompoundTagAt(i);
-                } else if (tagList.getCompoundTagAt(i).getString("type").equals("byte")) {
+                } else if(tagList.getCompoundTagAt(i).getString("type").equals("byte")) {
                     compoundByte = tagList.getCompoundTagAt(i);
-                } else if (tagList.getCompoundTagAt(i).getString("type").equals("short")) {
+                } else if(tagList.getCompoundTagAt(i).getString("type").equals("short")) {
                     compoundShort = tagList.getCompoundTagAt(i);
-                } else if (tagList.getCompoundTagAt(i).getString("type").equals("integer")) {
+                } else if(tagList.getCompoundTagAt(i).getString("type").equals("integer")) {
                     compoundInteger = tagList.getCompoundTagAt(i);
-                } else if (tagList.getCompoundTagAt(i).getString("type").equals("float")) {
+                } else if(tagList.getCompoundTagAt(i).getString("type").equals("float")) {
                     compoundFloat = tagList.getCompoundTagAt(i);
-                } else if (tagList.getCompoundTagAt(i).getString("type").equals("double")) {
+                } else if(tagList.getCompoundTagAt(i).getString("type").equals("double")) {
                     compoundDouble = tagList.getCompoundTagAt(i);
-                } else if (tagList.getCompoundTagAt(i).getString("type").equals("long")) {
+                } else if(tagList.getCompoundTagAt(i).getString("type").equals("long")) {
                     compoundLong = tagList.getCompoundTagAt(i);
-                } else if (tagList.getCompoundTagAt(i).getString("type").equals("string")) {
+                } else if(tagList.getCompoundTagAt(i).getString("type").equals("string")) {
                     compoundString = tagList.getCompoundTagAt(i);
-                } else if (tagList.getCompoundTagAt(i).getString("type").equals("nbt")) {
+                } else if(tagList.getCompoundTagAt(i).getString("type").equals("nbt")) {
                     compoundNBT = tagList.getCompoundTagAt(i);
-                } else if (tagList.getCompoundTagAt(i).getString("type").equals("data")) {
+                } else if(tagList.getCompoundTagAt(i).getString("type").equals("data")) {
                     compoundData = tagList.getCompoundTagAt(i);
                 }
             }
 
-            if (compoundBoolean != null) {
+            if(compoundBoolean != null) {
                 int size = compoundBoolean.getInteger("size");
-                for (int i = 0; i < size; i++) {
+                for(int i = 0; i < size; i++) {
                     String name = compoundBoolean.getString("boolean" + i + "Name");
                     Boolean value = compoundBoolean.getBoolean("boolean" + i + "Value");
                     booleanDataMap.put(name, value);
                 }
             }
-            if (compoundByte != null) {
+            if(compoundByte != null) {
                 int size = compoundByte.getInteger("size");
-                for (int i = 0; i < size; i++) {
+                for(int i = 0; i < size; i++) {
                     String name = compoundByte.getString("byte" + i + "Name");
                     byte value = compoundByte.getByte("byte" + i + "Value");
                     byteDataMap.put(name, value);
                 }
             }
-            if (compoundShort != null) {
+            if(compoundShort != null) {
                 int size = compoundShort.getInteger("size");
-                for (int i = 0; i < size; i++) {
+                for(int i = 0; i < size; i++) {
                     String name = compoundShort.getString("short" + i + "Name");
                     short value = compoundShort.getShort("short" + i + "Value");
                     shortDataMap.put(name, value);
                 }
             }
-            if (compoundInteger != null) {
+            if(compoundInteger != null) {
                 int size = compoundInteger.getInteger("size");
-                for (int i = 0; i < size; i++) {
+                for(int i = 0; i < size; i++) {
                     String name = compoundInteger.getString("integer" + i + "Name");
                     int value = compoundInteger.getInteger("integer" + i + "Value");
                     integerDataMap.put(name, value);
                 }
             }
-            if (compoundFloat != null) {
+            if(compoundFloat != null) {
                 int size = compoundFloat.getInteger("size");
-                for (int i = 0; i < size; i++) {
+                for(int i = 0; i < size; i++) {
                     String name = compoundFloat.getString("float" + i + "Name");
                     float value = compoundFloat.getFloat("float" + i + "Value");
                     floatDataMap.put(name, value);
                 }
             }
-            if (compoundDouble != null) {
+            if(compoundDouble != null) {
                 int size = compoundDouble.getInteger("size");
-                for (int i = 0; i < size; i++) {
+                for(int i = 0; i < size; i++) {
                     String name = compoundDouble.getString("double" + i + "Name");
                     double value = compoundDouble.getDouble("double" + i + "Value");
                     doubleDataMap.put(name, value);
                 }
             }
-            if (compoundLong != null) {
+            if(compoundLong != null) {
                 int size = compoundLong.getInteger("size");
-                for (int i = 0; i < size; i++) {
+                for(int i = 0; i < size; i++) {
                     String name = compoundLong.getString("long" + i + "Name");
                     long value = compoundLong.getLong("long" + i + "Value");
                     longDataMap.put(name, value);
                 }
             }
-            if (compoundString != null) {
+            if(compoundString != null) {
                 int size = compoundString.getInteger("size");
-                for (int i = 0; i < size; i++) {
+                for(int i = 0; i < size; i++) {
                     String name = compoundString.getString("string" + i + "Name");
                     String value = compoundString.getString("string" + i + "Value");
                     stringDataMap.put(name, value);
                 }
             }
-            if (compoundNBT != null) {
+            if(compoundNBT != null) {
                 int size = compoundNBT.getInteger("size");
-                for (int i = 0; i < size; i++) {
+                for(int i = 0; i < size; i++) {
                     String name = compoundNBT.getString("nbt" + i + "Name");
                     NBTTagCompound value = compoundNBT.getCompoundTag("nbt" + i + "Name");
                     nbtDataMap.put(name, value);
                 }
             }
-            if (compoundData != null) {
+            if(compoundData != null) {
                 int size = compoundData.getInteger("size");
-                for (int i = 0; i < size; i++) {
+                for(int i = 0; i < size; i++) {
                     String name = compoundData.getString("data" + i + "Name");
                     NBTTagCompound value = compoundData.getCompoundTag("data" + i + "Value");
                     dataDataMap.put(name, new Data(value));

@@ -27,7 +27,7 @@ public class GuiLine extends GuiRectangle {
     public GuiLine(int x, int y, int w, int h, int u, int v) {
         super(x, y, w, h, u, v);
     }
-    
+
     public void render(GIGui gui) {
         GL11.glPushMatrix();
 

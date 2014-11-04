@@ -29,7 +29,7 @@ public class TileHeatIO extends TileMagnetHeater {
     public int getMaxHeat() {
         return 5000;
     }
-    
+
     @Override
     public int getHeatTransmissionSpeed() {
         return 20;

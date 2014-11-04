@@ -16,7 +16,7 @@ public class UtilBlock {
 
     public static Coordinate3D getBlockCoordsAtSide(int x, int y, int z, int side) {
         Coordinate3D coord = new Coordinate3D(x, y, z);
-        int[][] shiftMap = { {0, -1, 0}, {0, 1, 0}, {0, 0, -1}, {0, 0, 1}, {-1, 0, 0}, {1, 0, 0}};
+        int[][] shiftMap = {{0, -1, 0}, {0, 1, 0}, {0, 0, -1}, {0, 0, 1}, {-1, 0, 0}, {1, 0, 0}};
 
         int shiftx = shiftMap[side][0];
         int shifty = shiftMap[side][1];
@@ -71,14 +71,8 @@ public class UtilBlock {
 
     /**
      * Drop all items in the specified slot from the TileEntity.
-     * 
-     * @param world
-     * @param x
-     * @param y
-     * @param z
-     * @param slot
      */
-    public static void dropItemsFromTile(World world, int x, int y, int z, int slot) {        
+    public static void dropItemsFromTile(World world, int x, int y, int z, int slot) {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
         if(!(tileEntity instanceof IInventory) || CommonProxy.instance.isRenderWorld(tileEntity.getWorldObj())) {
             return;

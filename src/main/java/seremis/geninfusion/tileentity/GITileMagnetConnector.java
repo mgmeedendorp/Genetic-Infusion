@@ -24,7 +24,7 @@ public abstract class GITileMagnetConnector extends TileMagnetConnector {
     public boolean isUseableByPlayer(EntityPlayer player) {
         return true;
     }
-    
+
     public void setDirection(int direction) {
         this.teDirection = direction;
         worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), 0, direction);

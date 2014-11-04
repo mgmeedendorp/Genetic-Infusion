@@ -8,7 +8,7 @@ import seremis.geninfusion.soul.Allele;
 public class AlleleItemStack extends Allele {
 
     public ItemStack stack;
-    
+
     public AlleleItemStack(boolean isDominant, ItemStack stack) {
         super(isDominant, EnumAlleleType.ITEMSTACK);
         this.stack = stack;
@@ -23,15 +23,15 @@ public class AlleleItemStack extends Allele {
         super(compound);
         readFromNBT(compound);
     }
-    
+
     @Override
-	public void readFromNBT(NBTTagCompound compound) {
+    public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         stack = ItemStack.loadItemStackFromNBT(compound);
     }
 
     @Override
-	public void writeToNBT(NBTTagCompound compound) {
+    public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
         stack.writeToNBT(compound);
     }

@@ -45,49 +45,49 @@ public class MagnetLink {
 
         if(method == 0) {
             int changeHeat = Math.min(connector1.getHeatTransmissionSpeed(), connector2.getHeatTransmissionSpeed());
-            if(changeHeat > Math.sqrt(heat1*heat1-heat2*heat2)) {
-                changeHeat = (int) Math.sqrt(heat1*heat1-heat2*heat2);
+            if(changeHeat > Math.sqrt(heat1 * heat1 - heat2 * heat2)) {
+                changeHeat = (int) Math.sqrt(heat1 * heat1 - heat2 * heat2);
             }
             if(heat1 < heat2) {
                 int con1rem = connector1.warm(changeHeat);
                 int con2rem = connector2.cool(changeHeat);
                 connector1.warm(con2rem);
                 connector2.warm(con1rem);
-             //   PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketHeatMagnetLink(this)));
+                //   PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketHeatMagnetLink(this)));
             } else if(heat1 > heat2) {
                 int con1rem = connector1.cool(changeHeat);
                 int con2rem = connector2.warm(changeHeat);
                 connector1.warm(con2rem);
                 connector2.warm(con1rem);
-              //  PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketHeatMagnetLink(this)));
+                //  PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketHeatMagnetLink(this)));
             }
         }
         if(method == 1) {
             if(connector1 instanceof IMagnetConsumer) {
                 if(connector1.getHeat() != connector1.getMaxHeat() && connector2.getHeat() != 0) {
                     int changeHeat = Math.min(connector1.getHeatTransmissionSpeed(), connector2.getHeatTransmissionSpeed());
-                   
+
                     if(changeHeat > connector1.getMaxHeat() - connector1.getHeat()) {
                         changeHeat = connector1.getMaxHeat() - connector1.getHeat();
                     }
-                    
+
                     connector1.warm(changeHeat);
                     connector2.cool(changeHeat);
-                    
-                  //  PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketHeatMagnetLink(this)));
+
+                    //  PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketHeatMagnetLink(this)));
                 }
             } else if(connector2 instanceof IMagnetConsumer) {
                 if(connector2.getHeat() != connector2.getMaxHeat() && connector1.getHeat() != 0) {
                     int changeHeat = Math.min(connector1.getHeatTransmissionSpeed(), connector2.getHeatTransmissionSpeed());
-                   
+
                     if(changeHeat > connector2.getMaxHeat() - connector2.getHeat()) {
                         changeHeat = connector2.getMaxHeat() - connector2.getHeat();
                     }
-                    
+
                     connector1.cool(changeHeat);
                     connector2.warm(changeHeat);
-                    
-                  //  PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketHeatMagnetLink(this)));
+
+                    //  PacketDispatcher.sendPacketToAllPlayers(PacketTypeHandler.populatePacket(new PacketHeatMagnetLink(this)));
                 }
             }
         }

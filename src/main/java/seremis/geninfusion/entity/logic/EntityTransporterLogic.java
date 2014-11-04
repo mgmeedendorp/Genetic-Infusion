@@ -101,7 +101,7 @@ public class EntityTransporterLogic {
             ByteBuffer byteBuffer = ByteBuffer.allocate(turnPoints.size() * 8 * 8);
             DoubleBuffer doubleBuffer = byteBuffer.asDoubleBuffer();
             for(int i = 0; i < turnPoints.size() - 1; i++) {
-                double[] data = new double[] {turnPoints.get(i).x, turnPoints.get(i).y, turnPoints.get(i).z, turnPointRotations.get(i).x, turnPointRotations.get(i).y, turnPointMovements.get(i).x, turnPointMovements.get(i).y, turnPointMovements.get(i).z};
+                double[] data = new double[]{turnPoints.get(i).x, turnPoints.get(i).y, turnPoints.get(i).z, turnPointRotations.get(i).x, turnPointRotations.get(i).y, turnPointMovements.get(i).x, turnPointMovements.get(i).y, turnPointMovements.get(i).z};
 
                 doubleBuffer.put(data);
             }
@@ -116,7 +116,7 @@ public class EntityTransporterLogic {
     public void update() {
         if(entity != null && update) {
             hasChanged = false;
-            
+
             if(inBlock(turnPoints.get(turnPoints.size() - 1))) {
                 entity.arrive();
                 update = false;
@@ -132,40 +132,40 @@ public class EntityTransporterLogic {
                 double posZ = turnPoints.get(currentIndex).z;
                 entity.setPosition(posX, posY, posZ);
 
-                entity.sendEntityDataToClient(2, new byte[] {(byte)0});
-                
+                entity.sendEntityDataToClient(2, new byte[]{(byte) 0});
+
                 MinecraftForge.EVENT_BUS.post(new TransporterHitBlockEvent(entity, turnPoints.get(currentIndex)));
                 nextClientTurnPoint = false;
             }
-            
+
             if(currentLink == null || hasChanged) {
                 int posX = (int) Math.floor(turnPoints.get(currentIndex).x);
                 int posY = (int) Math.floor(turnPoints.get(currentIndex).y);
                 int posZ = (int) Math.floor(turnPoints.get(currentIndex).z);
-                
-                int posX1 = (int) Math.floor(turnPoints.get(currentIndex+1).x);
-                int posY1 = (int) Math.floor(turnPoints.get(currentIndex+1).y);
-                int posZ1 = (int) Math.floor(turnPoints.get(currentIndex+1).z);
-                
+
+                int posX1 = (int) Math.floor(turnPoints.get(currentIndex + 1).x);
+                int posY1 = (int) Math.floor(turnPoints.get(currentIndex + 1).y);
+                int posZ1 = (int) Math.floor(turnPoints.get(currentIndex + 1).z);
+
                 TileEntity tile = entity.worldObj.getTileEntity(posX, posY, posZ);
                 TileEntity tile1 = entity.worldObj.getTileEntity(posX1, posY1, posZ1);
-                
+
                 if(tile != null && tile instanceof IMagnetConnector && tile1 != null && tile1 instanceof IMagnetConnector) {
-                    for(MagnetLink link : MagnetLinkHelper.instance.getLinksConnectedTo((IMagnetConnector)tile)) {
-                        if(link.getOther((IMagnetConnector)tile) == tile1) {
+                    for(MagnetLink link : MagnetLinkHelper.instance.getLinksConnectedTo((IMagnetConnector) tile)) {
+                        if(link.getOther((IMagnetConnector) tile) == tile1) {
                             currentLink = link;
                         }
                     }
-                    
+
                 }
             }
-            
+
             if(currentLink != null) {
-                float heatCost = 2*entity.getSpeed();
+                float heatCost = 2 * entity.getSpeed();
 
                 int heat1 = currentLink.connector1.cool((int) heatCost);
                 int heat2 = currentLink.connector2.cool((int) heatCost);
-                
+
                 if(heat1 > 0 && heat2 == 0) {
                     int formerTemp = currentLink.connector2.getHeat();
                     if(currentLink.connector2.cool(heat1) == 0) {
@@ -175,7 +175,7 @@ public class EntityTransporterLogic {
                         currentLink.connector2.warm(formerTemp);
                     }
                 }
-                
+
                 if(heat1 == 0 && heat2 > 0) {
                     int formerTemp = currentLink.connector1.getHeat();
                     if(currentLink.connector1.cool(heat2) == 0) {
@@ -185,31 +185,31 @@ public class EntityTransporterLogic {
                         currentLink.connector1.warm(formerTemp);
                     }
                 }
-                
+
                 int totalHeat = 20 - heat1 - heat2;
-                
+
                 entity.setHeat(entity.getHeat() - 20);
                 entity.setHeat(entity.getHeat() + totalHeat);
-                
+
                 if(entity.getHeat() < 0) {
                     entity.setHeat(0);
                 }
-                
-                int heatModifier = entity.getHeat() + totalHeat <= 0 ? (heat1 + heat2)/400 : 1;
-    
-                
+
+                int heatModifier = entity.getHeat() + totalHeat <= 0 ? (heat1 + heat2) / 400 : 1;
+
+
                 entity.rotationPitch = (float) turnPointRotations.get(currentIndex).x;
                 entity.rotationYaw = (float) turnPointRotations.get(currentIndex).y;
-    
+
                 double motionX = turnPointMovements.get(currentIndex).x * 0.04 * entity.getSpeed() * heatModifier;
                 double motionY = turnPointMovements.get(currentIndex).y * 0.04 * entity.getSpeed() * heatModifier;
                 double motionZ = turnPointMovements.get(currentIndex).z * 0.04 * entity.getSpeed() * heatModifier;
-                
+
                 entity.moveEntity(motionX, motionY, motionZ);
             }
         }
     }
-    
+
     public void nextPoint() {
         nextClientTurnPoint = true;
     }
@@ -220,9 +220,9 @@ public class EntityTransporterLogic {
 
     @Override
     public String toString() {
-        return "EntityTransporterLogic[entity: " + entity + 
-                "\n turnPoints: " + turnPoints + 
-                "\n turnPointRotations: " + turnPointRotations + 
+        return "EntityTransporterLogic[entity: " + entity +
+                "\n turnPoints: " + turnPoints +
+                "\n turnPointRotations: " + turnPointRotations +
                 "\n turnPointMovements: " + turnPointMovements + "]";
     }
 
@@ -379,14 +379,14 @@ public class EntityTransporterLogic {
                 rotationList.add(rotation);
 
                 Coordinate3D movement = new Coordinate3D();
-                
+
                 double dx = line.head.x - line.tail.x;
                 double dy = line.head.y - line.tail.y;
                 double dz = line.head.z - line.tail.z;
-                
+
                 double pitch = Math.atan2(Math.sqrt(dz * dz + dx * dx), dy) + Math.PI;
                 double yaw = Math.atan2(dz, dx);
-                
+
                 movement.x = Math.sin(pitch) * Math.cos(yaw);
                 movement.y = Math.cos(pitch);
                 movement.z = Math.sin(pitch) * Math.sin(yaw);

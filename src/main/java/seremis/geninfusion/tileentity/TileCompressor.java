@@ -10,7 +10,7 @@ import seremis.geninfusion.lib.Tiles;
 import seremis.geninfusion.util.inventory.Inventory;
 
 public class TileCompressor extends GITile implements IInventory {
-    
+
     private int requiredPlayerRange = 16;
 
     private Inventory inventory = new Inventory(1, Tiles.INV_COMPRESSOR_UNLOCALIZED_NAME, 4096, this);
@@ -102,11 +102,11 @@ public class TileCompressor extends GITile implements IInventory {
         return this.worldObj.getClosestPlayer(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D, this.requiredPlayerRange) != null;
     }
 
-	@Override
-	public void openInventory() {}
+    @Override
+    public void openInventory() {}
 
-	@Override
-	public void closeInventory() {}
+    @Override
+    public void closeInventory() {}
 
     @Override
     public boolean hasCustomInventoryName() {

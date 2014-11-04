@@ -18,7 +18,7 @@ public class ServerTickHandler implements ITimerCaller {
     public static ServerTickHandler instance = new ServerTickHandler();
 
     private CopyOnWriteArrayList<Timer> timers = new CopyOnWriteArrayList<Timer>();
-    
+
     public void addTimerForLinkUpdateToPlayer(EntityPlayer player) {
         timers.add(new Timer(player.getEntityId(), 60, 1, this));
     }
@@ -26,7 +26,7 @@ public class ServerTickHandler implements ITimerCaller {
     @SubscribeEvent
     public void tickEnd(TickEvent event) {
         MagnetLinkHelper.instance.tick();
-        
+
         for(Timer timer : timers) {
             timer.tick();
         }
@@ -37,9 +37,9 @@ public class ServerTickHandler implements ITimerCaller {
         Entity entity = null;
 
         System.out.println("TimerEnds");
-        
+
         timers.remove(timer);
-        
+
         for(WorldServer world : MinecraftServer.getServer().worldServers) {
             entity = world.getEntityByID(timer.timerId);
             if(entity != null) {
@@ -48,7 +48,7 @@ public class ServerTickHandler implements ITimerCaller {
         }
 
         System.out.println("Timer ended. Entity: " + entity + " With id: " + timer.timerId);
-        
+
         if(entity != null && entity instanceof EntityPlayer && CommonProxy.instance.isServerWorld(entity.worldObj)) {
             MagnetLinkHelper.instance.updatePlayerWithNetworks((EntityPlayer) entity);
         }

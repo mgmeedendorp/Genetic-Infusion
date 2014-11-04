@@ -9,11 +9,11 @@ import seremis.geninfusion.api.soul.ISoul;
 public class Soul implements ISoul {
 
     protected IChromosome[] chromosomes;
-    
+
     public Soul(IChromosome[] chromosomes) {
         this.chromosomes = chromosomes;
     }
-    
+
     public Soul(NBTTagCompound compound) {
         readFromNBT(compound);
     }
@@ -26,9 +26,9 @@ public class Soul implements ISoul {
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         compound.setInteger("genomeLength", chromosomes.length);
-        
+
         NBTTagList tagList = new NBTTagList();
-        
+
         for(IChromosome chromosome : chromosomes) {
             if(chromosome != null) {
                 NBTTagCompound compound1 = new NBTTagCompound();
@@ -42,12 +42,12 @@ public class Soul implements ISoul {
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         chromosomes = new Chromosome[compound.getInteger("genomeLength")];
-        
+
         NBTTagList tagList = compound.getTagList("chromosomes", Constants.NBT.TAG_COMPOUND);
-        
+
         for(int i = 0; i < tagList.tagCount(); i++) {
             NBTTagCompound compound1 = tagList.getCompoundTagAt(i);
-            
+
             chromosomes[i] = new Chromosome(compound1);
         }
     }

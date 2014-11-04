@@ -37,7 +37,7 @@ public class TileCrystalStandRenderer extends TileEntitySpecialRenderer {
                 RenderCrystal.instance.renderCrystal((float) x + 0.1F, (float) y + 0.8F, (float) z + 0.06F, 0.7F, tco.getHeat());
             }
             GIRenderHelper.bindTexture(Localizations.LOC_MODEL_TEXTURES + Localizations.BLANK);
-            renderCrystalStand(tco, (float) x, (float) y, (float) z,  1F);
+            renderCrystalStand(tco, (float) x, (float) y, (float) z, 1F);
         }
 
     }

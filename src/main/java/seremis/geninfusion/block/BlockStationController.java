@@ -30,33 +30,33 @@ public class BlockStationController extends GIBlockContainerRotateable {
             }
         }
     }
-    
+
     public boolean isNeighbourBlockPowered(World world, int x, int y, int z) {
         if(world.getBlockPowerInput(x, y, z) > 0) {
             return true;
         }
-        if(world.getBlockPowerInput(x-1, y, z) > 0) {
+        if(world.getBlockPowerInput(x - 1, y, z) > 0) {
             return true;
         }
-        if(world.getBlockPowerInput(x+1, y, z) > 0) {
+        if(world.getBlockPowerInput(x + 1, y, z) > 0) {
             return true;
         }
-        if(world.getBlockPowerInput(x, y, z-1) > 0) {
+        if(world.getBlockPowerInput(x, y, z - 1) > 0) {
             return true;
         }
-        if(world.getBlockPowerInput(x, y, z+1) > 0) {
+        if(world.getBlockPowerInput(x, y, z + 1) > 0) {
             return true;
         }
-        if(world.getBlockPowerInput(x-1, y, z-1) > 0) {
+        if(world.getBlockPowerInput(x - 1, y, z - 1) > 0) {
             return true;
         }
-        if(world.getBlockPowerInput(x+1, y, z-1) > 0) {
+        if(world.getBlockPowerInput(x + 1, y, z - 1) > 0) {
             return true;
         }
-        if(world.getBlockPowerInput(x+1, y, z-1) > 0) {
+        if(world.getBlockPowerInput(x + 1, y, z - 1) > 0) {
             return true;
         }
-        if(world.getBlockPowerInput(x+1, y, z+1) > 0) {
+        if(world.getBlockPowerInput(x + 1, y, z + 1) > 0) {
             return true;
         }
         return false;
@@ -90,7 +90,7 @@ public class BlockStationController extends GIBlockContainerRotateable {
         }
         return false;
     }
-    
+
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int metadata) {
         super.breakBlock(world, x, y, z, block, metadata);

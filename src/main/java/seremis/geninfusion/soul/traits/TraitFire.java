@@ -27,7 +27,7 @@ public class TraitFire extends Trait {
         double posZ = entity.getDouble("posZ");
 
         float fallDistance = entity.getFloat("fallDistance");
-        
+
         if(burnsInDayLight && !isImmuneToFire) {
             if(CommonProxy.instance.isServerWorld(entity.getWorld()) && entity.getWorld().isDaytime()) {
                 float brightness = getBrightness(entity);
@@ -44,14 +44,14 @@ public class TraitFire extends Trait {
                             }
                         }
                     } else {
-                        entity.setInteger("fire", 8*20);
+                        entity.setInteger("fire", 8 * 20);
                     }
                 }
             }
         }
 
         int fireTicks = entity.getInteger("fire");
-        
+
         if(CommonProxy.instance.isRenderWorld(entity.getWorld())) {
             UtilSoulEntity.extinguish(entity);
         } else if(fireTicks > 0) {
@@ -65,18 +65,18 @@ public class TraitFire extends Trait {
                 entity.setFlag(0, fireTicks > 0);
             }
         } else if(fireTicks <= 0) {
-        	entity.setFlag(0, false);
+            entity.setFlag(0, false);
         }
-        
+
         if(UtilSoulEntity.handleLavaMovement(entity)) {
             if(!isImmuneToFire) {
                 entity.attackEntityFrom(DamageSource.lava, 4.0F);
-                entity.setInteger("fire", 15*20);
+                entity.setInteger("fire", 15 * 20);
             }
             entity.setFloat("fallDistance", fallDistance * 0.5F);
         }
     }
-    
+
     public float getBrightness(IEntitySoulCustom entity) {
         double posX = entity.getDouble("posX");
         double posY = entity.getDouble("posY");
@@ -85,7 +85,7 @@ public class TraitFire extends Trait {
         float yOffset = entity.getFloat("yOffset");
 
         AxisAlignedBB boundingBox = entity.getBoundingBox();
-        
+
         int i = MathHelper.floor_double(posX);
         int j = MathHelper.floor_double(posZ);
 
@@ -101,20 +101,20 @@ public class TraitFire extends Trait {
     public void breakHeadwear(IEntitySoulCustom entity, ItemStack stack) {
         float pitch = entity.getFloat("rotationPitch");
         float yaw = entity.getFloat("rotationYaw");
-        
+
         double posX = entity.getDouble("posX");
         double posY = entity.getDouble("posY");
         double posZ = entity.getDouble("posZ");
-        
+
         float eyeHeight = entity.getFloat("eyeHeight");
-        
+
         entity.playSound("random.break", 0.8F, 0.8F + entity.getRandom().nextFloat() * 0.4F);
 
         for(int i = 0; i < 5; ++i) {
-            Vec3 vec3 = Vec3.createVectorHelper(((double)entity.getRandom().nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
+            Vec3 vec3 = Vec3.createVectorHelper(((double) entity.getRandom().nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, 0.0D);
             vec3.rotateAroundX(-pitch * (float) Math.PI / 180.0F);
             vec3.rotateAroundY(-yaw * (float) Math.PI / 180.0F);
-            Vec3 vec31 = Vec3.createVectorHelper(((double)entity.getRandom().nextFloat() - 0.5D) * 0.3D, (double)(-entity.getRandom().nextFloat()) * 0.6D - 0.3D, 0.6D);
+            Vec3 vec31 = Vec3.createVectorHelper(((double) entity.getRandom().nextFloat() - 0.5D) * 0.3D, (double) (-entity.getRandom().nextFloat()) * 0.6D - 0.3D, 0.6D);
             vec31.rotateAroundX(-pitch * (float) Math.PI / 180.0F);
             vec31.rotateAroundY(-yaw * (float) Math.PI / 180.0F);
             vec31 = vec31.addVector(posX, posY + eyeHeight, posZ);
@@ -126,7 +126,7 @@ public class TraitFire extends Trait {
     public boolean attackEntityAsMob(IEntitySoulCustom entity, Entity entityToAttack) {
         int i = entity.getWorld().difficultySetting.getDifficultyId();
 
-        if (UtilSoulEntity.getEquipmentInSlot(entity, 0) == null && UtilSoulEntity.isBurning(entity) && entity.getRandom().nextFloat() < (float)i * 0.3F) {
+        if(UtilSoulEntity.getEquipmentInSlot(entity, 0) == null && UtilSoulEntity.isBurning(entity) && entity.getRandom().nextFloat() < (float) i * 0.3F) {
             entityToAttack.setFire(2 * i);
         }
         return true;

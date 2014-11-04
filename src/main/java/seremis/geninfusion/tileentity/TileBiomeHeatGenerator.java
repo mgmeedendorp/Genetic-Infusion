@@ -9,14 +9,14 @@ import java.util.List;
 import java.util.Random;
 
 public class TileBiomeHeatGenerator extends GITileMagnetConnector {
-    
+
     public int biomeTicks = 0;
-    public byte[] currentChunkBiomes = new byte[256];    
+    public byte[] currentChunkBiomes = new byte[256];
     private BiomeGenBase currentBiome;
     private boolean biomeChanged = false;
-    
+
     private int[][] biomeChanger;
-    
+
     @Override
     public void updateEntity() {
         if(CommonProxy.instance.isRenderWorld(worldObj)) {
@@ -31,46 +31,46 @@ public class TileBiomeHeatGenerator extends GITileMagnetConnector {
             System.out.println("Biometick");
             changeBiome();
         }
-        warm((int) (getCurrentBiome().temperature*2));
+        warm((int) (getCurrentBiome().temperature * 2));
     }
-    
+
     public BiomeGenBase getCurrentBiome() {
         if(currentBiome == null || biomeChanged) {
             Chunk currentChunk = worldObj.getChunkFromBlockCoords(xCoord, zCoord);
             currentChunkBiomes = currentChunk.getBiomeArray();
-            
-            int modX = (int) (Math.sqrt(xCoord*xCoord) % 16);
-            int modZ = (int) (Math.sqrt(zCoord*zCoord) % 16);
-            int arrayPosition = modX + (modZ *16);
+
+            int modX = (int) (Math.sqrt(xCoord * xCoord) % 16);
+            int modZ = (int) (Math.sqrt(zCoord * zCoord) % 16);
+            int arrayPosition = modX + (modZ * 16);
             int currentBiomeID = currentChunkBiomes[arrayPosition];
-            
+
             currentBiome = BiomeGenBase.getBiome(currentBiomeID);
         }
         return currentBiome;
     }
-    
+
     public void changeBiome() {
         Random rand = new Random();
         Chunk currentChunk = worldObj.getChunkFromBlockCoords(xCoord, zCoord);
-        
+
         int toChange = rand.nextInt(256);
-        
+
         int[] currentBiomeInChunk = getCurrentBiomeInChunk();
-        
+
         while(currentBiomeInChunk[toChange] == 0) {
             toChange = rand.nextInt(256);
         }
-        
+
         if(biomeChanger[currentChunkBiomes[toChange]] != null && biomeChanger[currentChunkBiomes[toChange]].length != 0)
             currentChunkBiomes[toChange] = (byte) biomeChanger[currentChunkBiomes[toChange]][0];
-        
+
         currentChunk.setBiomeArray(currentChunkBiomes);
         biomeChanged = true;
     }
-    
+
     public int[] getCurrentBiomeInChunk() {
         int[] numbers = new int[256];
-        
+
         for(int i = 0; i < currentChunkBiomes.length; i++) {
             if(BiomeGenBase.getBiome(currentChunkBiomes[i]).biomeID == currentBiome.biomeID) {
                 numbers[i] = 1;
@@ -80,7 +80,7 @@ public class TileBiomeHeatGenerator extends GITileMagnetConnector {
         }
         return numbers;
     }
-    
+
     public void fillBiomeChanger() {
         if(biomeChanger == null || biomeChanger.length == 0) {
             biomeChanger = new int[256][];
@@ -105,9 +105,9 @@ public class TileBiomeHeatGenerator extends GITileMagnetConnector {
             }
         }
     }
-    
+
     //IMagnetConnector//
-    
+
     @Override
     public double getRange() {
         return 5;

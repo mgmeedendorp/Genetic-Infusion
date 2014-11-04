@@ -6,7 +6,6 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -25,12 +24,12 @@ import seremis.geninfusion.tileentity.TileCrystal;
 import seremis.geninfusion.tileentity.TileCrystalStand;
 
 public class ClientProxy extends CommonProxy {
-	
+
     @Override
     @SideOnly(Side.CLIENT)
     public void registerRendering() {
-    	TileEntitySpecialRenderer crystalStand = new TileCrystalStandRenderer();
-    	
+        TileEntitySpecialRenderer crystalStand = new TileCrystalStandRenderer();
+
         RenderingRegistry.registerBlockHandler(RenderIds.MonsterEggRenderID, new BlockMonsterEggRenderer());
         RenderingRegistry.registerBlockHandler(RenderIds.CompressorRenderID, new BlockCompressorRenderer());
         RenderingRegistry.registerBlockHandler(RenderIds.CrystalRenderID, new BlockCrystalRenderer());

@@ -14,12 +14,12 @@ import seremis.geninfusion.tileentity.TileCrystalStand;
 @SideOnly(Side.CLIENT)
 public class BlockCrystalStandRenderer implements ISimpleBlockRenderingHandler {
 
-	public TileEntitySpecialRenderer render;
-	
-	public BlockCrystalStandRenderer(TileEntitySpecialRenderer render) {
-		this.render = render;
-	}
-	
+    public TileEntitySpecialRenderer render;
+
+    public BlockCrystalStandRenderer(TileEntitySpecialRenderer render) {
+        this.render = render;
+    }
+
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
         GL11.glPushMatrix();

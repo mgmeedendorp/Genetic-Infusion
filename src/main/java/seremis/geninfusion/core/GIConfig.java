@@ -6,7 +6,7 @@ public class GIConfig {
 
     public static void configure(Configuration config) {
         config.load();
-        
+
         //Empty for now...
 
         config.save();

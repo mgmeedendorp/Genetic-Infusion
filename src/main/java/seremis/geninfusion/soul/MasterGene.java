@@ -1,6 +1,5 @@
 package seremis.geninfusion.soul;
 
-import seremis.geninfusion.api.soul.IAllele;
 import seremis.geninfusion.api.soul.IGene;
 import seremis.geninfusion.api.soul.IMasterGene;
 

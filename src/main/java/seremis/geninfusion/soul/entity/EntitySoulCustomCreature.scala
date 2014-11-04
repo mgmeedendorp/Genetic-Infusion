@@ -119,6 +119,7 @@ class EntitySoulCustomCreature(world: World) extends GIEntityCreature(world) wit
   override def getFlag(id: Int): Boolean = super.getFlag(id)
 
   override def getRandom: Random = rand
+
   //TODO
   //override def isChild: Boolean = getBoolean("isChild")
 
@@ -204,7 +205,7 @@ class EntitySoulCustomCreature(world: World) extends GIEntityCreature(world) wit
 
   override def readFromNBT(compound: NBTTagCompound) {
     soul = new Soul(compound)
-    if(compound.hasKey("data")) {
+    if (compound.hasKey("data")) {
       syncLogic.readFromNBT(compound)
       initPersistent = false
       posX = syncLogic.getDouble("posX")
@@ -222,51 +223,91 @@ class EntitySoulCustomCreature(world: World) extends GIEntityCreature(world) wit
   override def makePersistent(name: String) = syncLogic.makePersistent(name)
 
   override def setBoolean(name: String, variable: Boolean) = syncLogic.setBoolean(name, variable)
+
   override def setByte(name: String, variable: Byte) = syncLogic.setByte(name, variable)
+
   override def setShort(name: String, variable: Short) = syncLogic.setShort(name, variable)
+
   override def setInteger(name: String, variable: Int) = syncLogic.setInteger(name, variable)
+
   override def setFloat(name: String, variable: Float) = syncLogic.setFloat(name, variable)
+
   override def setDouble(name: String, variable: Double) = syncLogic.setDouble(name, variable)
+
   override def setLong(name: String, variable: Long) = syncLogic.setDouble(name, variable)
+
   override def setString(name: String, variable: String) = syncLogic.setString(name, variable)
+
   override def setItemStack(name: String, variable: ItemStack) = syncLogic.setItemStack(name, variable)
+
   override def setNBT(name: String, variable: NBTTagCompound) = syncLogic.setNBT(name, variable)
+
   override def setData(name: String, variable: Data) = syncLogic.setData(name, variable)
 
   override def getBoolean(name: String): Boolean = syncLogic.getBoolean(name)
+
   override def getByte(name: String): Byte = syncLogic.getByte(name)
+
   override def getShort(name: String): Short = syncLogic.getShort(name)
+
   override def getInteger(name: String): Int = syncLogic.getInteger(name)
+
   override def getFloat(name: String): Float = syncLogic.getFloat(name)
+
   override def getDouble(name: String): Double = syncLogic.getDouble(name)
+
   override def getLong(name: String): Long = syncLogic.getLong(name)
+
   override def getString(name: String): String = syncLogic.getString(name)
+
   override def getItemStack(name: String): ItemStack = syncLogic.getItemStack(name)
+
   override def getNBT(name: String): NBTTagCompound = syncLogic.getNBT(name)
+
   override def getData(name: String): Data = syncLogic.getData(name)
 
   override def setBooleanArray(name: String, value: Array[Boolean]) = syncLogic.setBooleanArray(name, value)
+
   override def setByteArray(name: String, value: Array[Byte]) = syncLogic.setByteArray(name, value)
+
   override def setShortArray(name: String, value: Array[Short]) = syncLogic.setShortArray(name, value)
+
   override def setIntegerArray(name: String, value: Array[Int]) = syncLogic.setIntegerArray(name, value)
+
   override def setFloatArray(name: String, value: Array[Float]) = syncLogic.setFloatArray(name, value)
+
   override def setDoubleArray(name: String, value: Array[Double]) = syncLogic.setDoubleArray(name, value)
+
   override def setLongArray(name: String, value: Array[Long]) = syncLogic.setLongArray(name, value)
+
   override def setStringArray(name: String, value: Array[String]) = syncLogic.setStringArray(name, value)
+
   override def setItemStackArray(name: String, value: Array[ItemStack]) = syncLogic.setItemStackArray(name, value)
+
   override def setNBTArray(name: String, value: Array[NBTTagCompound]) = syncLogic.setNBTArray(name, value)
+
   override def setDataArray(name: String, value: Array[Data]) = syncLogic.setDataArray(name, value)
 
   override def getBooleanArray(name: String): Array[Boolean] = syncLogic.getBooleanArray(name)
+
   override def getByteArray(name: String): Array[Byte] = syncLogic.getByteArray(name)
+
   override def getShortArray(name: String): Array[Short] = syncLogic.getShortArray(name)
+
   override def getIntegerArray(name: String): Array[Int] = syncLogic.getIntegerArray(name)
+
   override def getFloatArray(name: String): Array[Float] = syncLogic.getFloatArray(name)
+
   override def getDoubleArray(name: String): Array[Double] = syncLogic.getDoubleArray(name)
+
   override def getLongArray(name: String): Array[Long] = syncLogic.getLongArray(name)
+
   override def getStringArray(name: String): Array[String] = syncLogic.getStringArray(name)
+
   override def getItemStackArray(name: String): Array[ItemStack] = syncLogic.getItemStackArray(name)
+
   override def getNBTArray(name: String): Array[NBTTagCompound] = syncLogic.getNBTArray(name)
+
   override def getDataArray(name: String): Array[Data] = syncLogic.getDataArray(name)
 
   override def forceVariableSync() {
@@ -306,7 +347,7 @@ class EntitySoulCustomCreature(world: World) extends GIEntityCreature(world) wit
     syncLogic.makePersistent("equipment")
     syncLogic.makePersistent("canPickUpLoot")
 
-    if(initPersistent) {
+    if (initPersistent) {
       syncLogic.setInteger("ticksExisted", ticksExisted)
       syncLogic.setDouble("posX", posX)
       syncLogic.setDouble("posY", posY)
@@ -331,7 +372,7 @@ class EntitySoulCustomCreature(world: World) extends GIEntityCreature(world) wit
     syncLogic.setDouble("prevPosX", prevPosX)
     syncLogic.setDouble("prevPosY", prevPosY)
     syncLogic.setDouble("prevPosZ", prevPosZ)
-    if(CommonProxy.instance.isRenderWorld(worldObj)) {
+    if (CommonProxy.instance.isRenderWorld(worldObj)) {
       syncLogic.setInteger("serverPosX", serverPosX)
       syncLogic.setInteger("serverPosY", serverPosY)
       syncLogic.setInteger("serverPosZ", serverPosZ)
@@ -589,7 +630,9 @@ class EntitySoulCustomCreature(world: World) extends GIEntityCreature(world) wit
       if (customCapturedDropsNBT == null) customCapturedDropsNBT = Array.fill(1)(null)
       val customCapturedDrops = new util.ArrayList(Array.tabulate(customCapturedDropsNBT.length)(index => {
         if (customCapturedDropsNBT(index) != null) {
-          val ent = new EntityItem(worldObj); ent.readFromNBT(customCapturedDropsNBT(index)); ent
+          val ent = new EntityItem(worldObj);
+          ent.readFromNBT(customCapturedDropsNBT(index));
+          ent
         } else null
       }).toList.asJava)
       if (!syncCapturedDrops.equals(capturedDrops)) {
@@ -616,7 +659,7 @@ class EntitySoulCustomCreature(world: World) extends GIEntityCreature(world) wit
       }
     }
 
-    if(variables.contains("canPickUpLoot") || all) {
+    if (variables.contains("canPickUpLoot") || all) {
       if (syncCanPickUpLoot != canPickUpLoot) {
         setBoolean("canPickUpLoot", canPickUpLoot)
         syncCanPickUpLoot = canPickUpLoot
@@ -680,17 +723,17 @@ class EntitySoulCustomCreature(world: World) extends GIEntityCreature(world) wit
     }
 
     if (variables.contains("entityToAttack") || all) {
-      if(syncEntityToAttack != entityToAttack) {
-        setInteger("entityToAttack", if(entityToAttack != null) entityToAttack.getEntityId else 0)
+      if (syncEntityToAttack != entityToAttack) {
+        setInteger("entityToAttack", if (entityToAttack != null) entityToAttack.getEntityId else 0)
         syncEntityToAttack = entityToAttack
-      } else if(syncEntityToAttack != (if (getInteger("entityToAttack") != 0) getWorld.getEntityByID(getInteger("entityToAttack")) else null)) {
+      } else if (syncEntityToAttack != (if (getInteger("entityToAttack") != 0) getWorld.getEntityByID(getInteger("entityToAttack")) else null)) {
         entityToAttack = if (getInteger("entityToAttack") != 0) getWorld.getEntityByID(getInteger("entityToAttack")) else null
         syncEntityToAttack = entityToAttack
       }
     }
 
     if (variables.contains("maximumHomeDistance") || all) {
-      if(syncMaximumHomeDistance != func_110174_bM) {
+      if (syncMaximumHomeDistance != func_110174_bM) {
         setFloat("maximumHomeDistance", func_110174_bM)
         syncMaximumHomeDistance = func_110174_bM
       } else if (syncMaximumHomeDistance != getFloat("maximumHomeDistance")) {
@@ -701,7 +744,7 @@ class EntitySoulCustomCreature(world: World) extends GIEntityCreature(world) wit
 
     if (variables.contains("homePosition") || all) {
       val customHomePosition = DataHelper.applyData(getData("homePosition"), new ChunkCoordinates()).asInstanceOf[ChunkCoordinates]
-      if(syncHomePosition != getHomePosition) {
+      if (syncHomePosition != getHomePosition) {
         setData("homePosition", DataHelper.writePrimitives(getHomePosition))
         syncHomePosition = getHomePosition
       } else if (syncHomePosition.compareTo(customHomePosition) != 0) {
@@ -710,14 +753,14 @@ class EntitySoulCustomCreature(world: World) extends GIEntityCreature(world) wit
       }
     }
 
-    if(variables.contains("pathToEntity") || all) {
+    if (variables.contains("pathToEntity") || all) {
       val pathToEntity = GIReflectionHelper.getField(this, "pathToEntity").asInstanceOf[PathEntity]
       val customPathToEntity = UtilSoulEntity.readPathEntity(this, "pathToEntity")
 
       if (syncPathToEntity != pathToEntity) {
         UtilSoulEntity.writePathEntity(this, pathToEntity, "pathToEntity")
         syncPathToEntity = pathToEntity
-      } else if(syncPathToEntity != customPathToEntity) {
+      } else if (syncPathToEntity != customPathToEntity) {
         GIReflectionHelper.setField(this, "pathToEntity", customPathToEntity)
         syncPathToEntity = customPathToEntity
       }

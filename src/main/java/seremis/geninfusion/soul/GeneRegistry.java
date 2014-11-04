@@ -93,6 +93,6 @@ public class GeneRegistry implements IGeneRegistry {
 
     @Override
     public List<IGene> getControlledGenes(String masterGeneName) {
-        return ((IMasterGene)getGene(masterGeneName)).getControlledGenes();
+        return ((IMasterGene) getGene(masterGeneName)).getControlledGenes();
     }
 }

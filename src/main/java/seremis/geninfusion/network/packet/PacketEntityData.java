@@ -16,12 +16,12 @@ public class PacketEntityData extends AbstractPacket {
     byte[] data;
     int length;
     int id;
-	
-	public PacketEntityData() {
-		
-	}
-	
-	public PacketEntityData(byte[] data, int id, int entityId) {
+
+    public PacketEntityData() {
+
+    }
+
+    public PacketEntityData(byte[] data, int id, int entityId) {
         this.entityId = entityId;
         this.data = data;
         this.id = id;
@@ -29,43 +29,43 @@ public class PacketEntityData extends AbstractPacket {
         length = data.length;
     }
 
-	@Override
-	public void encodeInto(ChannelHandlerContext ctx, ByteBuf buffer) {
+    @Override
+    public void encodeInto(ChannelHandlerContext ctx, ByteBuf buffer) {
         PacketBuffer pbuff = new PacketBuffer(buffer);
         pbuff.writeByte(id);
         pbuff.writeInt(length);
         pbuff.writeBytes(data);
-	}
+    }
 
-	@Override
-	public void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer) {
-		PacketBuffer pbuff = new PacketBuffer(buffer);
+    @Override
+    public void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer) {
+        PacketBuffer pbuff = new PacketBuffer(buffer);
         id = pbuff.readByte();
         length = pbuff.readInt();
         data = new byte[length];
-        pbuff.readBytes(data);		
-	}
+        pbuff.readBytes(data);
+    }
 
-	@Override
+    @Override
     @SideOnly(Side.CLIENT)
-	public void handleClientSide(EntityPlayer player) {
-		Entity ent = player.worldObj.getEntityByID(entityId);
-		
-		if(ent != null && ent instanceof GIEntity) {
-			((GIEntity) ent).receivePacketOnClient(id, data);
-		} else if(ent != null && ent instanceof GIEntityLiving) {
-			((GIEntityLiving) ent).receivePacketOnClient(id, data);
-		}
-	}
+    public void handleClientSide(EntityPlayer player) {
+        Entity ent = player.worldObj.getEntityByID(entityId);
 
-	@Override
-	public void handleServerSide(EntityPlayer player) {
-		Entity ent = player.worldObj.getEntityByID(entityId);
-		
-		if(ent != null && ent instanceof GIEntity) {
-			((GIEntity) ent).receivePacketOnServer(id, data);
-		} else if(ent != null && ent instanceof GIEntityLiving) {
-			((GIEntityLiving) ent).receivePacketOnServer(id, data);
-		}
-	}
+        if(ent != null && ent instanceof GIEntity) {
+            ((GIEntity) ent).receivePacketOnClient(id, data);
+        } else if(ent != null && ent instanceof GIEntityLiving) {
+            ((GIEntityLiving) ent).receivePacketOnClient(id, data);
+        }
+    }
+
+    @Override
+    public void handleServerSide(EntityPlayer player) {
+        Entity ent = player.worldObj.getEntityByID(entityId);
+
+        if(ent != null && ent instanceof GIEntity) {
+            ((GIEntity) ent).receivePacketOnServer(id, data);
+        } else if(ent != null && ent instanceof GIEntityLiving) {
+            ((GIEntityLiving) ent).receivePacketOnServer(id, data);
+        }
+    }
 }

@@ -7,7 +7,7 @@ import seremis.geninfusion.soul.Allele;
 public class AlleleBoolean extends Allele {
 
     public boolean value;
-    
+
     public AlleleBoolean(boolean isDominant, boolean value) {
         super(isDominant, EnumAlleleType.BOOLEAN);
         this.value = value;
@@ -17,7 +17,7 @@ public class AlleleBoolean extends Allele {
         super(args);
         value = (Boolean) args[1];
     }
-    
+
     public AlleleBoolean(NBTTagCompound compound) {
         super(compound);
         readFromNBT(compound);
@@ -28,7 +28,7 @@ public class AlleleBoolean extends Allele {
         super.writeToNBT(compound);
         compound.setBoolean("value", value);
     }
-    
+
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);

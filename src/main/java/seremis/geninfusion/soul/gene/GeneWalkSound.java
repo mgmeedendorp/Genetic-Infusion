@@ -6,8 +6,8 @@ import seremis.geninfusion.soul.allele.AlleleString;
 
 public class GeneWalkSound implements IGene {
 
-	@Override
-	public Class<? extends IAllele> possibleAlleles() {
-		return AlleleString.class;
-	}
+    @Override
+    public Class<? extends IAllele> possibleAlleles() {
+        return AlleleString.class;
+    }
 }

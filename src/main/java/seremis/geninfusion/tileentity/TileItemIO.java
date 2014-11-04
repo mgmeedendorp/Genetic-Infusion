@@ -7,11 +7,11 @@ import seremis.geninfusion.block.ModBlocks;
 
 
 public class TileItemIO extends GITile implements IInventory, ISidedInventory {
-    
+
     public boolean isStructureMagnetStation = false;
 
     public TileStationController stationController;
-    
+
     @Override
     public void updateEntity() {
         if(stationController != null) {
@@ -21,23 +21,21 @@ public class TileItemIO extends GITile implements IInventory, ISidedInventory {
             isStructureMagnetStation = false;
         }
     }
-    
+
     //IInventory//
-    
+
     @Override
     public int getSizeInventory() {
-        if(isStructureMagnetStation)
-            return stationController.inventory.getSizeInventory();
+        if(isStructureMagnetStation) return stationController.inventory.getSizeInventory();
         return 0;
     }
-    
+
     @Override
     public ItemStack getStackInSlot(int slot) {
-        if(isStructureMagnetStation)
-            return stationController.inventory.getStackInSlot(slot);
+        if(isStructureMagnetStation) return stationController.inventory.getStackInSlot(slot);
         return null;
     }
-    
+
     @Override
     public ItemStack decrStackSize(int slot, int amount) {
         if(isStructureMagnetStation) {
@@ -45,57 +43,52 @@ public class TileItemIO extends GITile implements IInventory, ISidedInventory {
         }
         return null;
     }
-    
+
     @Override
     public ItemStack getStackInSlotOnClosing(int slot) {
-        if(isStructureMagnetStation)
-            return stationController.inventory.getStackInSlotOnClosing(slot);
+        if(isStructureMagnetStation) return stationController.inventory.getStackInSlotOnClosing(slot);
         return null;
     }
-    
+
     @Override
     public void setInventorySlotContents(int slot, ItemStack stack) {
-        if(isStructureMagnetStation)
-            stationController.inventory.setInventorySlotContents(slot, stack);
+        if(isStructureMagnetStation) stationController.inventory.setInventorySlotContents(slot, stack);
     }
-    
+
     @Override
     public String getInventoryName() {
-        if(isStructureMagnetStation)
-            return stationController.inventory.getInventoryName();
+        if(isStructureMagnetStation) return stationController.inventory.getInventoryName();
         return "";
     }
-    
+
     @Override
     public boolean hasCustomInventoryName() {
         return isStructureMagnetStation && stationController.inventory.hasCustomInventoryName();
     }
-    
+
     @Override
     public int getInventoryStackLimit() {
-        if(isStructureMagnetStation)
-           return stationController.inventory.getInventoryStackLimit();
+        if(isStructureMagnetStation) return stationController.inventory.getInventoryStackLimit();
         return 0;
     }
-    
+
     @Override
     public void openInventory() {}
-    
+
     @Override
     public void closeInventory() {}
-    
+
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
         return isStructureMagnetStation && stationController.isItemValidForSlot(slot, stack);
     }
 
     //ISidedInventory//
-    
+
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
-        if(isStructureMagnetStation)
-            return stationController.getAccessibleSlotsFromSide(side);
-        return new int[] {};
+        if(isStructureMagnetStation) return stationController.getAccessibleSlotsFromSide(side);
+        return new int[]{};
     }
 
     @Override

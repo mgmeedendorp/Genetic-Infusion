@@ -54,11 +54,11 @@ public class Blocks {
     public static int itemIOID;
     public static final String ITEM_IO_UNLOCALIZED_NAME = "itemIO";
     public static final String ITEM_IO_LOCALIZED_NAME = "Item I/O";
-    
+
     public static int biomeHeatGeneratorID;
     public static final String BIOME_HEAT_GENERATOR_UNLOCALIZED_NAME = "biomeHeatGenerator";
     public static final String BIOME_HEAT_GENERATOR_LOCALIZED_NAME = "Biome Heat Extractor";
-    
+
     public static int monsterEggID;
     public static final String MONSTER_EGG_UNLOCALIZED_NAME = "monsterEgg";
     public static final String MONSTER_EGG_LOCALIZED_NAME = "Monster Egg";

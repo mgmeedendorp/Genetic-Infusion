@@ -6,8 +6,8 @@ import seremis.geninfusion.soul.allele.AlleleInteger;
 
 public class GeneMaxHurtResistantTime implements IGene {
 
-	@Override
-	public Class<? extends IAllele> possibleAlleles() {
-		return AlleleInteger.class;
-	}
+    @Override
+    public Class<? extends IAllele> possibleAlleles() {
+        return AlleleInteger.class;
+    }
 }

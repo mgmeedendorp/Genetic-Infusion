@@ -6,8 +6,8 @@ import seremis.geninfusion.soul.allele.AlleleBoolean;
 
 public class GeneDrownsInWater implements IGene {
 
-	@Override
-	public Class<? extends IAllele> possibleAlleles() {
-		return AlleleBoolean.class;
-	}
+    @Override
+    public Class<? extends IAllele> possibleAlleles() {
+        return AlleleBoolean.class;
+    }
 }

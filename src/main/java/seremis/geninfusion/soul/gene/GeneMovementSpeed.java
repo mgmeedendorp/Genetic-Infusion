@@ -6,8 +6,8 @@ import seremis.geninfusion.soul.allele.AlleleFloat;
 
 public class GeneMovementSpeed implements IGene {
 
-	@Override
-	public Class<? extends IAllele> possibleAlleles() {
-		return AlleleFloat.class;
-	}
+    @Override
+    public Class<? extends IAllele> possibleAlleles() {
+        return AlleleFloat.class;
+    }
 }

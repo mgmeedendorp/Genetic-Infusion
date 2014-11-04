@@ -6,12 +6,14 @@ import net.minecraft.entity.player.EntityPlayer;
 
 /**
  * AbstractPacket class. Should be the parent of all packets wishing to use the PacketPipeline.
+ *
  * @author sirgingalot
  */
 public abstract class AbstractPacket {
 
     /**
-     * Encode the packet data into the ByteBuf stream. Complex data sets may need specific data handlers (See @link{cpw.mods.fml.common.network.ByteBuffUtils})
+     * Encode the packet data into the ByteBuf stream. Complex data sets may need specific data handlers (See
+     * @link{cpw.mods.fml.common.network.ByteBuffUtils})
      *
      * @param ctx    channel context
      * @param buffer the buffer to encode into
@@ -19,7 +21,8 @@ public abstract class AbstractPacket {
     public abstract void encodeInto(ChannelHandlerContext ctx, ByteBuf buffer);
 
     /**
-     * Decode the packet data from the ByteBuf stream. Complex data sets may need specific data handlers (See @link{cpw.mods.fml.common.network.ByteBuffUtils})
+     * Decode the packet data from the ByteBuf stream. Complex data sets may need specific data handlers (See
+     * @link{cpw.mods.fml.common.network.ByteBuffUtils})
      *
      * @param ctx    channel context
      * @param buffer the buffer to decode from

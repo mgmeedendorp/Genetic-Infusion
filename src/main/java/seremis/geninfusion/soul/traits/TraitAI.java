@@ -2,28 +2,20 @@ package seremis.geninfusion.soul.traits;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.pathfinding.PathEntity;
-import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
-import seremis.geninfusion.api.soul.util.Data;
-import seremis.geninfusion.api.soul.util.DataHelper;
 import seremis.geninfusion.api.soul.util.UtilSoulEntity;
 import seremis.geninfusion.core.proxy.CommonProxy;
-import seremis.geninfusion.helper.GIReflectionHelper;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
 import seremis.geninfusion.soul.allele.AlleleInteger;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 
 /**
  * @author Seremis
@@ -38,11 +30,11 @@ public class TraitAI extends Trait {
     @Override
     public void onUpdate(IEntitySoulCustom entity) {
         boolean useNewAI = false;
-                //((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_USE_NEW_AI)).value;
+        //((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_USE_NEW_AI)).value;
         boolean useOldAI = true;
-                //((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_USE_OLD_AI)).value;
+        //((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_USE_OLD_AI)).value;
         boolean isCreature = true;
-                //((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_IS_CREATURE)).value;
+        //((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_IS_CREATURE)).value;
 
         entity.getWorld().theProfiler.startSection("ai");
 
@@ -95,12 +87,12 @@ public class TraitAI extends Trait {
             iattributeinstance.removeModifier(EntityCreature.field_110181_i);
         }
 
-        hasAttacked = ((AlleleBoolean)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_CEASE_AI_MOVEMENT)).value;
+        hasAttacked = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_CEASE_AI_MOVEMENT)).value;
         float f4 = 16.0F;
 
         if(entityToAttack == null) {
             entityToAttack = findPlayerToAttack(entity);
-            
+
             if(entityToAttack != null) {
                 pathToEntity = entity.getWorld().getPathEntityToEntity((Entity) entity, entityToAttack, f4, true, false, false, true);
             }
@@ -211,7 +203,7 @@ public class TraitAI extends Trait {
 
         UtilSoulEntity.writePathEntity(entity, pathToEntity, "pathToEntity");
 
-        entity.forceVariableSync(new String[] {"fleeingTick", "entityAge", "rotationYaw", "moveForward", "moveStrafing", "posX", "posY", "posZ", "entityToAttack", "pathToEntity", "isJumping"});
+        entity.forceVariableSync(new String[]{"fleeingTick", "entityAge", "rotationYaw", "moveForward", "moveStrafing", "posX", "posY", "posZ", "entityToAttack", "pathToEntity", "isJumping"});
 
         if(!flag3) {
             updateEntityActionState(entity);
@@ -231,13 +223,13 @@ public class TraitAI extends Trait {
         int k = -1;
         float f = -99999.0F;
 
-        for (int l = 0; l < 10; ++l) {
-            int i1 = MathHelper.floor_double(posX + (double)entity.getRandom().nextInt(13) - 6.0D);
-            int j1 = MathHelper.floor_double(posY + (double)entity.getRandom().nextInt(7) - 3.0D);
-            int k1 = MathHelper.floor_double(posZ + (double)entity.getRandom().nextInt(13) - 6.0D);
+        for(int l = 0; l < 10; ++l) {
+            int i1 = MathHelper.floor_double(posX + (double) entity.getRandom().nextInt(13) - 6.0D);
+            int j1 = MathHelper.floor_double(posY + (double) entity.getRandom().nextInt(7) - 3.0D);
+            int k1 = MathHelper.floor_double(posZ + (double) entity.getRandom().nextInt(13) - 6.0D);
             float f1 = this.getBlockPathWeight(entity, i1, j1, k1);
 
-            if (f1 > f) {
+            if(f1 > f) {
                 f = f1;
                 i = i1;
                 j = j1;
@@ -246,7 +238,7 @@ public class TraitAI extends Trait {
             }
         }
 
-        if (flag) {
+        if(flag) {
             UtilSoulEntity.writePathEntity(entity, entity.getWorld().getEntityPathToXYZ((Entity) entity, i, j, k, 10.0F, true, false, false, true), "pathToEntity");
         }
         entity.getWorld().theProfiler.endSection();
@@ -270,7 +262,7 @@ public class TraitAI extends Trait {
         float f = 8.0F;
 
         if(entity.getRandom().nextFloat() < 0.02F) {
-            entity.forceVariableSync(new String[] {"posX", "posY", "posZ"});
+            entity.forceVariableSync(new String[]{"posX", "posY", "posZ"});
             EntityPlayer entityplayer = entity.getWorld().getClosestPlayerToEntity((Entity) entity, (double) f);
 
             if(entityplayer != null) {

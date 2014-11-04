@@ -10,11 +10,11 @@ public class GICreativeTab extends CreativeTabs {
     public GICreativeTab(String name) {
         super(name);
     }
-    
-	@Override
+
+    @Override
     @SideOnly(Side.CLIENT)
-	public Item getTabIconItem() {
-		return ModItems.titaniumIngot;
-	}
+    public Item getTabIconItem() {
+        return ModItems.titaniumIngot;
+    }
 
 }

@@ -65,15 +65,15 @@ public class GIContainer extends Container {
                 } else {
                     ++index;
                 }
-                
+
                 if(!slot.isItemValid(stack)) {
                     continue;
                 }
-                
+
                 if(itemstack1 != null && itemstack1.isItemEqual(stack) && (!stack.getHasSubtypes() || stack.getItemDamage() == itemstack1.getItemDamage()) && ItemStack.areItemStackTagsEqual(stack, itemstack1)) {
                     int l = itemstack1.stackSize + stack.stackSize;
 
-                    int limit = Math.min(stack.getMaxStackSize(), slot.getSlotStackLimit()-itemstack1.stackSize);
+                    int limit = Math.min(stack.getMaxStackSize(), slot.getSlotStackLimit() - itemstack1.stackSize);
 
                     if(l < limit) {
                         stack.stackSize = 0;
@@ -91,7 +91,7 @@ public class GIContainer extends Container {
                     int l = stack.stackSize;
 
                     int limit = Math.min(stack.getMaxStackSize(), slot.getSlotStackLimit());
-                    
+
                     if(l < limit) {
                         slot.putStack(stack.copy());
                         stack.stackSize = 0;

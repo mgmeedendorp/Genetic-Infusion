@@ -14,15 +14,11 @@ public interface IStructureBlock {
 
     /**
      * The metadata value of the block used in the structure
-     * 
-     * @return
      */
     public int getMetadata();
 
     /**
      * The position relative to the structure
-     * 
-     * @return
      */
     Coordinate3D getPosition();
 
@@ -31,9 +27,10 @@ public interface IStructureBlock {
     IStructureBlock copy();
 
     boolean needsToExistForStructureToForm();
-    
+
     /**
      * The blocks this block is replaceable with
+     *
      * @return a list of replaceable blocks
      */
     List<IStructureBlock> getReplaceableBlocks();

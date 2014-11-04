@@ -22,42 +22,41 @@ import seremis.geninfusion.api.soul.util.UtilSoulEntity;
 import seremis.geninfusion.core.proxy.CommonProxy;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 public class TraitItemPickup extends Trait {
 
     @Override
-	public void onUpdate(IEntitySoulCustom entity) {
-		entity.getWorld().theProfiler.startSection("looting");
-		
-		boolean canPickUpItems = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_PICKS_UP_ITEMS)).value;
-		boolean isDead = entity.getBoolean("isDead");
+    public void onUpdate(IEntitySoulCustom entity) {
+        entity.getWorld().theProfiler.startSection("looting");
 
-        if (CommonProxy.instance.isServerWorld(entity.getWorld()) && canPickUpItems && !isDead && entity.getWorld().getGameRules().getGameRuleBooleanValue("mobGriefing")) {
+        boolean canPickUpItems = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_PICKS_UP_ITEMS)).value;
+        boolean isDead = entity.getBoolean("isDead");
+
+        if(CommonProxy.instance.isServerWorld(entity.getWorld()) && canPickUpItems && !isDead && entity.getWorld().getGameRules().getGameRuleBooleanValue("mobGriefing")) {
             List list = entity.getWorld().getEntitiesWithinAABB(EntityItem.class, entity.getBoundingBox().expand(1.0D, 0.0D, 1.0D));
 
-            for (Object aList : list) {
+            for(Object aList : list) {
                 EntityItem entityitem = (EntityItem) aList;
 
-                if (!entityitem.isDead && entityitem.getEntityItem() != null) {
+                if(!entityitem.isDead && entityitem.getEntityItem() != null) {
                     ItemStack itemstack = entityitem.getEntityItem();
                     int i = getArmorPosition(itemstack);
 
-                    if (i > -1) {
+                    if(i > -1) {
                         boolean flag = true;
                         ItemStack itemstack1 = UtilSoulEntity.getEquipmentInSlot(entity, i);
 
-                        if (itemstack1 != null) {
-                            if (i == 0) {
-                                if (itemstack.getItem() instanceof ItemSword && !(itemstack1.getItem() instanceof ItemSword)) {
+                        if(itemstack1 != null) {
+                            if(i == 0) {
+                                if(itemstack.getItem() instanceof ItemSword && !(itemstack1.getItem() instanceof ItemSword)) {
                                     flag = true;
-                                } else if (itemstack.getItem() instanceof ItemSword) {
+                                } else if(itemstack.getItem() instanceof ItemSword) {
                                     ItemSword itemsword = (ItemSword) itemstack.getItem();
                                     ItemSword itemsword1 = (ItemSword) itemstack1.getItem();
 
-                                    if (itemsword.func_150931_i() == itemsword1.func_150931_i()) {
+                                    if(itemsword.func_150931_i() == itemsword1.func_150931_i()) {
                                         flag = itemstack.getItemDamage() > itemstack1.getItemDamage() || itemstack.hasTagCompound() && !itemstack1.hasTagCompound();
                                     } else {
                                         flag = itemsword.func_150931_i() > itemsword1.func_150931_i();
@@ -65,13 +64,13 @@ public class TraitItemPickup extends Trait {
                                 } else {
                                     flag = false;
                                 }
-                            } else if (itemstack.getItem() instanceof ItemArmor && !(itemstack1.getItem() instanceof ItemArmor)) {
+                            } else if(itemstack.getItem() instanceof ItemArmor && !(itemstack1.getItem() instanceof ItemArmor)) {
                                 flag = true;
-                            } else if (itemstack.getItem() instanceof ItemArmor) {
+                            } else if(itemstack.getItem() instanceof ItemArmor) {
                                 ItemArmor itemarmor = (ItemArmor) itemstack.getItem();
                                 ItemArmor itemarmor1 = (ItemArmor) itemstack1.getItem();
 
-                                if (itemarmor.damageReduceAmount == itemarmor1.damageReduceAmount) {
+                                if(itemarmor.damageReduceAmount == itemarmor1.damageReduceAmount) {
                                     flag = itemstack.getItemDamage() > itemstack1.getItemDamage() || itemstack.hasTagCompound() && !itemstack1.hasTagCompound();
                                 } else {
                                     flag = itemarmor.damageReduceAmount > itemarmor1.damageReduceAmount;
@@ -81,17 +80,17 @@ public class TraitItemPickup extends Trait {
                             }
                         }
 
-                        if (flag) {
+                        if(flag) {
                             float equipmentDropChance = entity.getFloat("equipmentDropChances." + i);
 
-                            if (itemstack1 != null && new Random().nextFloat() - 0.1F < equipmentDropChance) {
+                            if(itemstack1 != null && new Random().nextFloat() - 0.1F < equipmentDropChance) {
                                 UtilSoulEntity.dropItem(entity, itemstack1, 0.0F);
                             }
 
-                            if (itemstack.getItem() == Items.diamond && entityitem.func_145800_j() != null) {
+                            if(itemstack.getItem() == Items.diamond && entityitem.func_145800_j() != null) {
                                 EntityPlayer entityplayer = entity.getWorld().getPlayerEntityByName(entityitem.func_145800_j());
 
-                                if (entityplayer != null) {
+                                if(entityplayer != null) {
                                     entityplayer.triggerAchievement(AchievementList.field_150966_x);
                                 }
                             }
@@ -108,12 +107,12 @@ public class TraitItemPickup extends Trait {
         }
 
         entity.getWorld().theProfiler.endSection();
-	}
-	
-	public static int getArmorPosition(ItemStack par0ItemStack) {
-        if (par0ItemStack.getItem() != Item.getItemFromBlock(Blocks.pumpkin) && par0ItemStack.getItem() != Items.skull) {
-            if (par0ItemStack.getItem() instanceof ItemArmor) {
-                switch (((ItemArmor)par0ItemStack.getItem()).armorType) {
+    }
+
+    public static int getArmorPosition(ItemStack par0ItemStack) {
+        if(par0ItemStack.getItem() != Item.getItemFromBlock(Blocks.pumpkin) && par0ItemStack.getItem() != Items.skull) {
+            if(par0ItemStack.getItem() instanceof ItemArmor) {
+                switch(((ItemArmor) par0ItemStack.getItem()).armorType) {
                     case 0:
                         return 4;
                     case 1:
@@ -130,20 +129,20 @@ public class TraitItemPickup extends Trait {
             return 4;
         }
     }
-	
-	public void onItemPickup(IEntitySoulCustom entity, Entity ent, int stackSize) {
-        if (!ent.isDead && CommonProxy.instance.isServerWorld(entity.getWorld())) {
-            EntityTracker entitytracker = ((WorldServer)entity.getWorld()).getEntityTracker();
 
-            if (ent instanceof EntityItem) {
+    public void onItemPickup(IEntitySoulCustom entity, Entity ent, int stackSize) {
+        if(!ent.isDead && CommonProxy.instance.isServerWorld(entity.getWorld())) {
+            EntityTracker entitytracker = ((WorldServer) entity.getWorld()).getEntityTracker();
+
+            if(ent instanceof EntityItem) {
                 entitytracker.func_151247_a(ent, new S0DPacketCollectItem(ent.getEntityId(), entity.getEntityId()));
             }
 
-            if (ent instanceof EntityArrow) {
+            if(ent instanceof EntityArrow) {
                 entitytracker.func_151247_a(ent, new S0DPacketCollectItem(ent.getEntityId(), entity.getEntityId()));
             }
 
-            if (ent instanceof EntityXPOrb) {
+            if(ent instanceof EntityXPOrb) {
                 entitytracker.func_151247_a(ent, new S0DPacketCollectItem(ent.getEntityId(), entity.getEntityId()));
             }
         }

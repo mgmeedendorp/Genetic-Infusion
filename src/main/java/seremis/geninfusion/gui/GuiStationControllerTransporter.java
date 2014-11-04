@@ -20,7 +20,7 @@ public class GuiStationControllerTransporter extends GIGui {
 
     private GuiTab activeTab;
     private List<GuiTab> tabs = new ArrayList<GuiTab>();
-    
+
     private List<GuiTab> tabsTop = new ArrayList<GuiTab>();
 
     public GuiStationControllerTransporter(EntityPlayer player, TileStationController tile) {
@@ -35,14 +35,14 @@ public class GuiStationControllerTransporter extends GIGui {
 
         tabsTop.add(new GuiTabTop(0, 2, -16, 16, 19, 190, 0, "Transporter"));
         tabsTop.add(new GuiTabTop(1, 18, -16, 16, 16, 206, 0, "Destination"));
-        
+
         activeTab = tabs.get(0);
     }
 
     @Override
     public void initGui() {
         super.initGui();
-        
+
         for(GuiTab tab : tabs) {
             tab.initGui(this);
         }
@@ -51,7 +51,7 @@ public class GuiStationControllerTransporter extends GIGui {
     @Override
     protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        
+
         GIRenderHelper.bindTexture(Localizations.LOC_GUI_TEXTURES + Localizations.GUI_MAGNET_STATION_TRANSPORTER_SCREEN);
         drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
 
@@ -61,7 +61,7 @@ public class GuiStationControllerTransporter extends GIGui {
                 tab.v += 12;
                 tab.drawBackground(this, x, y);
             }
-            
+
             tab.draw(this);
             tab.v = v;
         }
@@ -69,10 +69,10 @@ public class GuiStationControllerTransporter extends GIGui {
         for(GuiTab tab : tabsTop) {
             tab.draw(this);
         }
-        
+
         tabs.get(1).setVisible(false);
         tabs.get(2).setVisible(false);
-        
+
         for(int i = 0; i < 3; i++) {
             ItemStack stack = tile.getStackInSlot(i + 1);
             if(stack != null && stack.isItemEqual(new ItemStack(ModItems.transporterModules)) && stack.getItemDamage() == 0) {
@@ -89,8 +89,8 @@ public class GuiStationControllerTransporter extends GIGui {
         if(tile.activeTab > 0 && tile.activeTab < tabs.size()) {
             activeTab = tabs.get(tile.activeTab);
         }
-        
-        int barHeight = (int) (tile.barHeat/1000F*48F);
+
+        int barHeight = (int) (tile.barHeat / 1000F * 48F);
         if(barHeight != 0)
             drawTexturedModalRect(guiLeft + 127, guiTop + 15 + 48 - barHeight, 176, 138 - barHeight, 8, barHeight);
     }
@@ -108,14 +108,14 @@ public class GuiStationControllerTransporter extends GIGui {
         for(GuiTab tab : tabs) {
             tab.drawString(this, x, y, tab.getName());
         }
-        
+
         for(GuiTab tab : tabsTop) {
             tab.drawString(this, x, y, tab.getName());
         }
-        
+
         int mouseX = x - getLeft();
         int mouseY = y - getTop();
-        
+
         if(mouseX > 126 && mouseX < 135 && mouseY > 14 && mouseY < 63) {
             String str = "Heat: " + tile.barHeat;
             drawHoveringString(Arrays.asList(str.split("\n")), x - getLeft(), y - getTop());
@@ -135,15 +135,14 @@ public class GuiStationControllerTransporter extends GIGui {
                 if(tab.inRect(this, x, y)) {
                     activeTab = tab;
                     tile.activeTab = tab.getId();
-                    tile.sendTileDataToServer(0, new byte[] {(byte) tab.getId()});
+                    tile.sendTileDataToServer(0, new byte[]{(byte) tab.getId()});
                     break;
                 }
             }
         }
-        
+
         GuiTab tab = tabsTop.get(1);
-        if(tab.inRect(this, x, y))
-            tab.mouseClick(this, x, y, button);
+        if(tab.inRect(this, x, y)) tab.mouseClick(this, x, y, button);
     }
 
     @Override
@@ -179,6 +178,6 @@ public class GuiStationControllerTransporter extends GIGui {
         super.onGuiClosed();
         tile.sendTileDataToServer(2, tile.name.getBytes());
         tile.activeTab = 0;
-        tile.sendTileDataToServer(0, new byte[] {0});
+        tile.sendTileDataToServer(0, new byte[]{0});
     }
 }

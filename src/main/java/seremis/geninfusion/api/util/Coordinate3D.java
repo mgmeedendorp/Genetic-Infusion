@@ -120,10 +120,10 @@ public class Coordinate3D implements Cloneable {
             return equals((Coordinate3D) o);
         }
         if(o instanceof TileEntity) {
-            return equals(new Coordinate3D((TileEntity)o));
+            return equals(new Coordinate3D((TileEntity) o));
         }
         if(o instanceof Entity) {
-            return equals(new Coordinate3D((Entity)o));
+            return equals(new Coordinate3D((Entity) o));
         }
         return false;
     }
@@ -135,7 +135,7 @@ public class Coordinate3D implements Cloneable {
     public boolean equals(double x, double y, double z) {
         return equals(new Coordinate3D(x, y, z));
     }
-    
+
     public static boolean equals(TileEntity tile1, TileEntity tile2) {
         return new Coordinate3D(tile1).equals(new Coordinate3D(tile2));
     }

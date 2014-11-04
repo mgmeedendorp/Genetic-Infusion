@@ -108,13 +108,10 @@ public class Structure {
 
     /**
      * Checks if the given block exists in the in-world structure.
-     * 
-     * @param block
-     *            doesn't need to have a position value
-     * @param number
-     *            the number of blocks to exist for the method to return true
-     * @return true if the number of given blocks >= number. if number == -1 it
-     *         checks for all the blocks
+     *
+     * @param block  doesn't need to have a position value
+     * @param number the number of blocks to exist for the method to return true
+     * @return true if the number of given blocks >= number. if number == -1 it checks for all the blocks
      */
     public boolean doesBlockExistInStructure(IStructureBlock block, int number) {
         if(initiated) {

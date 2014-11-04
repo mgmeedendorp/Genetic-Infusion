@@ -53,7 +53,7 @@ public class ModSouls {
 
         geneRegistry.registerMasterGene(Genes.GENE_USE_NEW_AI, new GeneUseNewAI());
         geneRegistry.registerMasterGene(Genes.GENE_USE_OLD_AI, new GeneUseOldAI());
-        
+
         traitRegistry.registerTrait(Traits.TRAIT_FIRE, new TraitFire());
         traitRegistry.registerTrait(Traits.TRAIT_MOVEMENT, new TraitMovement());
         traitRegistry.registerTrait(Traits.TRAIT_ATTACKED, new TraitAttacked());

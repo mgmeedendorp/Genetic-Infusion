@@ -21,8 +21,8 @@ public class TraitFluids extends Trait {
             int air = entity.getInteger("air");
             boolean inWater = entity.getBoolean("inWater");
             boolean isDead = entity.getBoolean("isDead");
-            if (!isDead && inWater) {
-                entity.setInteger("air", air-1);
+            if(!isDead && inWater) {
+                entity.setInteger("air", air - 1);
                 --air;
 
                 if(air == -20) {
@@ -39,8 +39,8 @@ public class TraitFluids extends Trait {
             boolean inWater = entity.getBoolean("inWater");
             boolean isDead = entity.getBoolean("isDead");
             boolean handleLava = UtilSoulEntity.handleLavaMovement(entity);
-            if (!isDead && !inWater && !handleLava) {
-                entity.setInteger("air", air-1);
+            if(!isDead && !inWater && !handleLava) {
+                entity.setInteger("air", air - 1);
                 --air;
 
                 if(air == -20) {

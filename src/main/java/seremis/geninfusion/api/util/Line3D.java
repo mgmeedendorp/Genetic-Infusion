@@ -43,12 +43,12 @@ public class Line3D {
     public Line3D setLineFromTile(TileEntity tile1, TileEntity tile2) {
         this.head = new Coordinate3D(tile1);
         this.tail = new Coordinate3D(tile2);
-        
+
         return this;
     }
 
     private double length;
-    
+
     public double getLength() {
         if(length == 0) {
             double x = Math.abs(head.getXCoord() - tail.getXCoord());
@@ -176,37 +176,33 @@ public class Line3D {
     }
 
     private double yaw = -1;
-    
+
     /**
      * Get the line's yaw in degrees
-     * 
-     * @return
      */
     public double getYaw() {
         if(yaw == -1) {
             double xd = head.x - tail.x;
             double zd = head.z - tail.z;
-    
+
             yaw = Math.atan2(xd, zd) * 180.0D / Math.PI;
         }
         return yaw;
     }
 
     private double pitch = -1;
-    
+
     /**
      * Get this line's pitch in degrees
-     * 
-     * @return
      */
     public double getPitch() {
         if(pitch == -1) {
             double xd = head.x - tail.x;
             double yd = head.y - tail.y;
             double zd = head.z - tail.z;
-    
+
             double var7 = Math.sqrt(xd * xd + zd * zd);
-    
+
             pitch = Math.atan2(yd, var7) * 180.0D / Math.PI;
         }
         return pitch;

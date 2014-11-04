@@ -43,7 +43,7 @@ public class Line2D {
     }
 
     private double length = -1;
-    
+
     public double getLength() {
         if(length == -1) {
             double dx = Math.abs(head.getXCoord() - tail.getXCoord());
@@ -54,12 +54,12 @@ public class Line2D {
     }
 
     private double yaw = -1;
-    
+
     public double getYaw() {
         if(yaw == -1) {
             double xd = head.x - tail.x;
             double yd = head.y - tail.y;
-    
+
             yaw = Math.atan2(xd, yd) * 180.0D / Math.PI;
         }
         return yaw;

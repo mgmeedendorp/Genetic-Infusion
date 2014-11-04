@@ -7,7 +7,7 @@ import seremis.geninfusion.lib.Blocks;
 import seremis.geninfusion.tileentity.TileItemIO;
 
 public class BlockItemIO extends GIBlockContainer {
-    
+
     public BlockItemIO(Material material) {
         super(material);
         setBlockName(Blocks.ITEM_IO_UNLOCALIZED_NAME);

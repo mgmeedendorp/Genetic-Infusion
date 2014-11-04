@@ -120,9 +120,9 @@ public class BlockCompressor extends GIBlockContainer {
             world.markBlockForUpdate(x, y, z);
         }
         if(cont != null) {// TODO change this text in language supported
-        	player.addChatMessage(new ChatComponentText("This Compressor contains " + cont.stackSize + " " + cont.getDisplayName()));
+            player.addChatMessage(new ChatComponentText("This Compressor contains " + cont.stackSize + " " + cont.getDisplayName()));
         } else {
-        	player.addChatMessage(new ChatComponentText("This Compressor is empty."));
+            player.addChatMessage(new ChatComponentText("This Compressor is empty."));
         }
 
         return true;

@@ -19,7 +19,7 @@ public class InstanceHelper implements IInstanceHelper {
     public IEntitySoulCustom getSoulEntityInstance(World world, ISoul soul, double x, double y, double z) {
         IEntitySoulCustom entity = new EntitySoulCustom(world, soul, x, y, z);
 
-        if(((AlleleBoolean)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_IS_CREATURE)).value) {
+        if(((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_IS_CREATURE)).value) {
             entity = new EntitySoulCustomCreature(world, soul, x, y, z);
         }
         return entity;
@@ -39,7 +39,7 @@ public class InstanceHelper implements IInstanceHelper {
     public IAllele getIAlleleInstance(EnumAlleleType alleleType, Object... args) {
         try {
             Constructor<?> ctor = alleleType.clazz.getConstructor(NBTTagCompound.class);
-            Object object = ctor.newInstance(new Object[] { args });
+            Object object = ctor.newInstance(new Object[]{args});
 
             return (IAllele) object;
         } catch(Exception e) {

@@ -57,21 +57,21 @@ public class ModBlocks {
         registerBlock(biomeHeatGenerator, Blocks.BIOME_HEAT_GENERATOR_LOCALIZED_NAME);
         registerBlock(monsterEgg, Blocks.MONSTER_EGG_LOCALIZED_NAME);
 
-//        LanguageRegistry.addName(oreTitanium, Blocks.ORE_TITANIUM_LOCALIZED_NAME);
-//        LanguageRegistry.addName(new ItemStack(oreIsolatzium, 1, 0), Blocks.ORE_ISOLATZIUM_META_0_LOCALIZED_NAME);
-//        LanguageRegistry.addName(new ItemStack(oreIsolatzium, 1, 1), Blocks.ORE_ISOLATZIUM_META_1_LOCALIZED_NAME);
-//        LanguageRegistry.addName(new ItemStack(oreIsolatzium, 1, 2), Blocks.ORE_ISOLATZIUM_META_2_LOCALIZED_NAME);
-//        LanguageRegistry.addName(new ItemStack(oreIsolatzium, 1, 3), Blocks.ORE_ISOLATZIUM_META_3_LOCALIZED_NAME);
-//        LanguageRegistry.addName(compressor, Blocks.COMPRESSOR_LOCALIZED_NAME);
-//        LanguageRegistry.addName(crystal, Blocks.CRYSTAL_LOCALIZED_NAME);
-//        LanguageRegistry.addName(crystalStand, Blocks.CRYSTAL_STAND_LOCALIZED_NAME);
-//        LanguageRegistry.addName(heatIO, Blocks.HEAT_IO_LOCALIZED_NAME);
-//        LanguageRegistry.addName(connectedGlass, Blocks.CONNECTED_GLASS_LOCALIZED_NAME);
-//        LanguageRegistry.addName(titaniumBrick, Blocks.TITANIUM_BRICK_LOCALIZED_NAME);
-//        LanguageRegistry.addName(stationController, Blocks.STATION_CONTROLLER_LOCALIZED_NAME);
-//        LanguageRegistry.addName(itemIO, Blocks.ITEM_IO_LOCALIZED_NAME);
-//        LanguageRegistry.addName(biomeHeatGenerator, Blocks.BIOME_HEAT_GENERATOR_LOCALIZED_NAME);
-//        LanguageRegistry.addName(monsterEgg, Blocks.MONSTER_EGG_LOCALIZED_NAME);
+        //        LanguageRegistry.addName(oreTitanium, Blocks.ORE_TITANIUM_LOCALIZED_NAME);
+        //        LanguageRegistry.addName(new ItemStack(oreIsolatzium, 1, 0), Blocks.ORE_ISOLATZIUM_META_0_LOCALIZED_NAME);
+        //        LanguageRegistry.addName(new ItemStack(oreIsolatzium, 1, 1), Blocks.ORE_ISOLATZIUM_META_1_LOCALIZED_NAME);
+        //        LanguageRegistry.addName(new ItemStack(oreIsolatzium, 1, 2), Blocks.ORE_ISOLATZIUM_META_2_LOCALIZED_NAME);
+        //        LanguageRegistry.addName(new ItemStack(oreIsolatzium, 1, 3), Blocks.ORE_ISOLATZIUM_META_3_LOCALIZED_NAME);
+        //        LanguageRegistry.addName(compressor, Blocks.COMPRESSOR_LOCALIZED_NAME);
+        //        LanguageRegistry.addName(crystal, Blocks.CRYSTAL_LOCALIZED_NAME);
+        //        LanguageRegistry.addName(crystalStand, Blocks.CRYSTAL_STAND_LOCALIZED_NAME);
+        //        LanguageRegistry.addName(heatIO, Blocks.HEAT_IO_LOCALIZED_NAME);
+        //        LanguageRegistry.addName(connectedGlass, Blocks.CONNECTED_GLASS_LOCALIZED_NAME);
+        //        LanguageRegistry.addName(titaniumBrick, Blocks.TITANIUM_BRICK_LOCALIZED_NAME);
+        //        LanguageRegistry.addName(stationController, Blocks.STATION_CONTROLLER_LOCALIZED_NAME);
+        //        LanguageRegistry.addName(itemIO, Blocks.ITEM_IO_LOCALIZED_NAME);
+        //        LanguageRegistry.addName(biomeHeatGenerator, Blocks.BIOME_HEAT_GENERATOR_LOCALIZED_NAME);
+        //        LanguageRegistry.addName(monsterEgg, Blocks.MONSTER_EGG_LOCALIZED_NAME);
 
         worldGen = new GIWorldGenerator();
         GameRegistry.registerWorldGenerator(worldGen, 0);
@@ -96,12 +96,12 @@ public class ModBlocks {
         GameRegistry.registerTileEntity(TileItemIO.class, Tiles.ITEM_IO_UNLOCALIZED_NAME);
         GameRegistry.registerTileEntity(TileBiomeHeatGenerator.class, Tiles.BIOME_HEAT_GENERATOR_UNLOCALIZED_NAME);
     }
-    
+
     public static void registerBlock(Block block, String name) {
-    	GameRegistry.registerBlock(block, DefaultProps.nameLower + "_block_" + name);
+        GameRegistry.registerBlock(block, DefaultProps.nameLower + "_block_" + name);
     }
-    
+
     public static void registerBlock(Block block, Class<? extends ItemBlock> itemBlock, String name) {
-    	GameRegistry.registerBlock(block, itemBlock, DefaultProps.nameLower + "_block_" + name);
+        GameRegistry.registerBlock(block, itemBlock, DefaultProps.nameLower + "_block_" + name);
     }
 }

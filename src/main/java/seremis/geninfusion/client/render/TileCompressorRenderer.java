@@ -32,14 +32,14 @@ public class TileCompressorRenderer extends TileEntitySpecialRenderer {
             TileCompressor tileComp = (TileCompressor) tile;
             doRenderItem(tileComp, x, y, z);
         }
-    } 
+    }
 
     public void doRenderItem(TileCompressor tile, double x, double y, double z) {
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5F, (float) y + 0.2F, (float) z + 0.5F);
         GL11.glScalef(1.4F, 1.4F, 1.4F);
         ItemStack item = tile.getStackInSlot(0);
-        
+
         EntityItem entityItem = new EntityItem(tile.getWorldObj());
         if(item != null && item.stackSize > 0) {
             entityItem.setEntityItemStack(item);

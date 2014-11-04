@@ -120,7 +120,7 @@ public abstract class TileMagnetConnector extends TileEntity implements IMagnetC
         int remainingHeat = 0;
         this.heat -= heat;
         if(this.heat < 0) {
-            remainingHeat = this.heat*-1;
+            remainingHeat = this.heat * -1;
             this.heat = 0;
         }
         return remainingHeat;

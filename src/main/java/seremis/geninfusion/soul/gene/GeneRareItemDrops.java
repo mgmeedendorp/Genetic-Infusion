@@ -6,8 +6,8 @@ import seremis.geninfusion.soul.allele.AlleleInventory;
 
 public class GeneRareItemDrops implements IGene {
 
-	@Override
-	public Class<? extends IAllele> possibleAlleles() {
-		return AlleleInventory.class;
-	}
+    @Override
+    public Class<? extends IAllele> possibleAlleles() {
+        return AlleleInventory.class;
+    }
 }
