@@ -2,6 +2,7 @@ package seremis.geninfusion.soul.traits;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
@@ -106,9 +107,9 @@ public class TraitAI extends Trait {
             entityToAttack = null;
         }
 
-        if(entityToAttack instanceof EntityPlayerMP && ((EntityPlayerMP) entityToAttack).theItemInWorldManager.isCreative()) {
-            entityToAttack = null;
-        }
+//        if(entityToAttack instanceof EntityPlayerMP && ((EntityPlayerMP) entityToAttack).theItemInWorldManager.isCreative()) {
+//            entityToAttack = null;
+//        }
 
         entity.getWorld().theProfiler.endSection();
 
@@ -178,7 +179,15 @@ public class TraitAI extends Trait {
             }
 
             if(entityToAttack != null) {
+                entity.setFloat("rotationYaw", rotationYaw);
+                entity.setFloat("moveForward", moveForward);
+                entity.setFloat("moveStrafing", moveStrafing);
+
                 UtilSoulEntity.faceEntity(entity, entityToAttack, 30.0F, 30.0F);
+
+                rotationYaw = entity.getFloat("rotationYaw");
+                moveForward = entity.getFloat("moveForward");
+                moveStrafing = entity.getFloat("moveStrafing");
             }
 
             if(entity.getBoolean("isCollidedHorizontally") && pathToEntity == null) {
@@ -201,9 +210,10 @@ public class TraitAI extends Trait {
         entity.setDouble("posZ", posZ);
         entity.setInteger("entityToAttack", entityToAttack != null ? entityToAttack.getEntityId() : 0);
 
-        UtilSoulEntity.writePathEntity(entity, pathToEntity, "pathToEntity");
+        System.out.println("moveForward " + moveForward);
+        System.out.println("moveStrafing " + moveStrafing);
 
-        entity.forceVariableSync(new String[]{"fleeingTick", "entityAge", "rotationYaw", "moveForward", "moveStrafing", "posX", "posY", "posZ", "entityToAttack", "pathToEntity", "isJumping"});
+        UtilSoulEntity.writePathEntity(entity, pathToEntity, "pathToEntity");
 
         if(!flag3) {
             updateEntityActionState(entity);
@@ -251,7 +261,7 @@ public class TraitAI extends Trait {
 
     private Entity findPlayerToAttack(IEntitySoulCustom entity) {
         //todo this properly
-        return entity.getWorld().getClosestPlayerToEntity((Entity) entity, 20);
+        return entity.getWorld().getClosestPlayerToEntity((Entity) entity, 50);
     }
 
     private void updateEntityActionState(IEntitySoulCustom entity) {

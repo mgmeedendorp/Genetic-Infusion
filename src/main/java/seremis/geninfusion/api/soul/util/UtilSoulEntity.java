@@ -288,14 +288,17 @@ public class UtilSoulEntity {
         }
 
         double d3 = (double) MathHelper.sqrt_double(d0 * d0 + d2 * d2);
-        float f2 = (float) (Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
-        float f3 = (float) (-(Math.atan2(d1, d3) * 180.0D / Math.PI));
+        float newRotationYaw = (float) (Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
+        float newRotationPitch = (float) (-(Math.atan2(d1, d3) * 180.0D / Math.PI));
 
         float rotationYaw = entity.getFloat("rotationYaw");
         float rotationPitch = entity.getFloat("rotationPitch");
-        setRotation(entity, updateRotation(rotationYaw, f2, maxYawIncrement), updateRotation(rotationPitch, f3, maxPitchIncrement));
+
+        entity.setFloat("rotationYaw", updateRotation(rotationYaw, newRotationYaw, maxYawIncrement));
+        entity.setFloat("rotationPitch", updateRotation(rotationPitch, newRotationPitch, maxPitchIncrement));
     }
 
+    //TODO getEyeHeight
     public static float getEyeHeight(IEntitySoulCustom entity) {
         return entity.getFloat("height") * 0.85F;
     }
