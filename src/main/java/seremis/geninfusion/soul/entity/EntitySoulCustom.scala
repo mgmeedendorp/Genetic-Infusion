@@ -21,7 +21,7 @@ import net.minecraft.util.{AxisAlignedBB, CombatTracker, DamageSource}
 import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
 import seremis.geninfusion.api.soul.lib.Genes
-import seremis.geninfusion.api.soul.util.Data
+import seremis.geninfusion.api.soul.util.{Data, UtilSoulEntity}
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
 import seremis.geninfusion.core.proxy.CommonProxy
 import seremis.geninfusion.entity.GIEntityLiving

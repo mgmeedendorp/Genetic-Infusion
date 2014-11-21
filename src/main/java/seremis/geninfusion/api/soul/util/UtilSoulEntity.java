@@ -304,17 +304,17 @@ public class UtilSoulEntity {
     }
 
     public static float updateRotation(float current, float intended, float maxIncrement) {
-        float f3 = MathHelper.wrapAngleTo180_float(intended - current);
+        float change = MathHelper.wrapAngleTo180_float(intended - current);
 
-        if(f3 > maxIncrement) {
-            f3 = maxIncrement;
+        if(change > maxIncrement) {
+            change = maxIncrement;
         }
 
-        if(f3 < -maxIncrement) {
-            f3 = -maxIncrement;
+        if(change < -maxIncrement) {
+            change = -maxIncrement;
         }
 
-        return current + f3;
+        return current + change;
     }
 
     public static boolean canEntityBeSeen(IEntitySoulCustom entity, Entity ent) {

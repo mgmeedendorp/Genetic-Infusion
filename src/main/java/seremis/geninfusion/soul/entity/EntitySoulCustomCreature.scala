@@ -197,7 +197,9 @@ class EntitySoulCustomCreature(world: World) extends GIEntityCreature(world) wit
   override def interact(player: EntityPlayer): Boolean = {
     //TODO interactboolean
     TraitHandler.entityRightClicked(this, player)
-    println(UtilSoulEntity.readPathEntity(this, "pathToEntity"))
+    UtilSoulEntity.faceEntity(this, getWorld().getClosestPlayerToEntity(this, 50), 30.0F, 30.0F)
+    println(getWorld().getClosestPlayerToEntity(this, 50))
+    println(getFloat("rotationYaw"))
     true
   }
 

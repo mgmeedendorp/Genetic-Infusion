@@ -52,7 +52,7 @@ public class TraitAI extends Trait {
             } else if(useOldAI) {
                 entity.getWorld().theProfiler.startSection("oldAi");
                 if(isCreature) {
-                    updateEntityCreatureActionState(entity);
+                //    updateEntityCreatureActionState(entity);
                 } else {
                     updateEntityActionState(entity);
                 }
