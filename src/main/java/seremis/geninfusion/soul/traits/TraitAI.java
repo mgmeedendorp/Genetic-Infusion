@@ -4,6 +4,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAITasks;
+import net.minecraft.entity.ai.attributes.BaseAttribute;
+import net.minecraft.entity.ai.attributes.BaseAttributeMap;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -67,6 +70,8 @@ public class TraitAI extends Trait {
     private void updateEntityCreatureActionState(IEntitySoulCustom entity) {
         entity.getWorld().theProfiler.startSection("ai");
 
+        BaseAttributeMap attributeMap = ((EntityLiving)entity).getAttributeMap();
+
         boolean hasAttacked = entity.getBoolean("hasAttacked");
 
         int fleeingTick = entity.getInteger("fleeingTick");
@@ -84,7 +89,7 @@ public class TraitAI extends Trait {
 
         if(fleeingTick > 0 && --fleeingTick == 0) {
             fleeingTick--;
-            IAttributeInstance iattributeinstance = entity.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed);
+            IAttributeInstance iattributeinstance = attributeMap.getAttributeInstance(SharedMonsterAttributes.movementSpeed);
             iattributeinstance.removeModifier(EntityCreature.field_110181_i);
         }
 
@@ -151,7 +156,7 @@ public class TraitAI extends Trait {
 
                 float f1 = (float) (Math.atan2(d2, d1) * 180.0D / Math.PI) - 90.0F;
                 float f2 = MathHelper.wrapAngleTo180_float(f1 - rotationYaw);
-                moveForward = (float) entity.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.movementSpeed).getAttributeValue();
+                moveForward = (float) attributeMap.getAttributeInstance(SharedMonsterAttributes.movementSpeed).getAttributeValue();
 
                 if(f2 > 30.0F) {
                     f2 = 30.0F;
@@ -272,7 +277,6 @@ public class TraitAI extends Trait {
         float f = 8.0F;
 
         if(entity.getRandom().nextFloat() < 0.02F) {
-            entity.forceVariableSync(new String[]{"posX", "posY", "posZ"});
             EntityPlayer entityplayer = entity.getWorld().getClosestPlayerToEntity((Entity) entity, (double) f);
 
             if(entityplayer != null) {
@@ -317,27 +321,27 @@ public class TraitAI extends Trait {
         UtilSoulEntity.despawnEntity(entity);
         entity.getWorld().theProfiler.endSection();
         entity.getWorld().theProfiler.startSection("sensing");
-        entity.getEntitySenses().clearSensingCache();
+        ((EntityLiving)entity).getEntitySenses().clearSensingCache();
         entity.getWorld().theProfiler.endSection();
         entity.getWorld().theProfiler.startSection("targetSelector");
-        entity.getTargetTasks().onUpdateTasks();
+        ((EntityAITasks)entity.getObject("targetTasks")).onUpdateTasks();
         entity.getWorld().theProfiler.endSection();
         entity.getWorld().theProfiler.startSection("goalSelector");
-        entity.getTasks().onUpdateTasks();
+        ((EntityAITasks)entity.getObject("tasks")).onUpdateTasks();
         entity.getWorld().theProfiler.endSection();
         entity.getWorld().theProfiler.startSection("navigation");
-        entity.getNavigator().onUpdateNavigation();
+        ((EntityLiving)entity).getNavigator().onUpdateNavigation();
         entity.getWorld().theProfiler.endSection();
         entity.getWorld().theProfiler.startSection("mob tick");
         entity.updateAITick();
         entity.getWorld().theProfiler.endSection();
         entity.getWorld().theProfiler.startSection("controls");
         entity.getWorld().theProfiler.startSection("move");
-        entity.getMoveHelper().onUpdateMoveHelper();
+        ((EntityLiving)entity).getMoveHelper().onUpdateMoveHelper();
         entity.getWorld().theProfiler.endStartSection("look");
-        entity.getLookHelper().onUpdateLook();
+        ((EntityLiving)entity).getLookHelper().onUpdateLook();
         entity.getWorld().theProfiler.endStartSection("jump");
-        entity.getJumpHelper().doJump();
+        ((EntityLiving)entity).getJumpHelper().doJump();
         entity.getWorld().theProfiler.endSection();
         entity.getWorld().theProfiler.endSection();
     }

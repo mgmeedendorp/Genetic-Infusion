@@ -8,6 +8,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.CombatTracker;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.ForgeHooks;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
@@ -24,10 +25,12 @@ public class TraitItemDrops extends Trait {
 
     @Override
     public void onDeath(IEntitySoulCustom entity, DamageSource source) {
+        CombatTracker combatTracker = (CombatTracker) entity.getObject("_combatTracker");
+
         Entity ent = source.getEntity();
-        EntityPlayer attackingPlayer = entity.getInteger("attackingPlayerID") != 0 ? (EntityPlayer) entity.getWorld().getEntityByID(entity.getInteger("attackingPlayerID")) : null;
-        EntityLivingBase entityLivingToAttack = entity.getInteger("entityLivingToAttack") != 0 ? (EntityLivingBase) entity.getWorld().getEntityByID(entity.getInteger("entityLivingToAttack")) : null;
-        EntityLivingBase entitylivingbase = entity.getCombatTracker().func_94550_c() != null ? entity.getCombatTracker().func_94550_c() : (attackingPlayer != null ? attackingPlayer : (entityLivingToAttack != null ? entityLivingToAttack : null));
+        EntityPlayer attackingPlayer = (EntityPlayer) entity.getObject("attackingPlayer");
+        EntityLivingBase entityLivingToAttack = (EntityLivingBase) entity.getObject("entityLivingToAttack");
+        EntityLivingBase entitylivingbase = combatTracker.func_94550_c() != null ? combatTracker.func_94550_c() : (attackingPlayer != null ? attackingPlayer : (entityLivingToAttack != null ? entityLivingToAttack : null));
 
         int scoreValue = entity.getInteger("scoreValue");
 
@@ -48,9 +51,10 @@ public class TraitItemDrops extends Trait {
 
             entity.setBoolean("captureDrops", true);
 
-            NBTTagCompound[] capturedDropsNBT = entity.getNBTArray("capturedDrops");
+            ArrayList<EntityItem> capturedDrops = (ArrayList<EntityItem>)entity.getObject("capturedDrops");
 
-            entity.setNBTArray("capturedDrops", new NBTTagCompound[capturedDropsNBT != null ? capturedDropsNBT.length : 1]);
+            capturedDrops.clear();
+            entity.setObject("capturedDrops", capturedDrops);
 
             int j = 0;
 
@@ -71,22 +75,6 @@ public class TraitItemDrops extends Trait {
             }
 
             entity.setBoolean("captureDrops", false);
-
-            double posX = entity.getDouble("posX");
-            double posY = entity.getDouble("posY");
-            double posZ = entity.getDouble("posZ");
-
-            ArrayList<EntityItem> capturedDrops = new ArrayList<EntityItem>();
-
-            capturedDropsNBT = entity.getNBTArray("capturedDrops");
-
-            for(int k = 0; k < capturedDropsNBT.length; k++) {
-                if(entity.getNBTArray("capturedDrops")[k] != null) {
-                    EntityItem item = new EntityItem(entity.getWorld());
-                    item.readEntityFromNBT(entity.getNBTArray("capturedDrops")[k]);
-                    capturedDrops.add(new EntityItem(entity.getWorld(), posX, posY, posZ, item.getEntityItem()));
-                }
-            }
 
             if(!ForgeHooks.onLivingDrops((EntityLiving) entity, source, capturedDrops, i, recentlyHit > 0, j)) {
                 for(EntityItem item : capturedDrops) {

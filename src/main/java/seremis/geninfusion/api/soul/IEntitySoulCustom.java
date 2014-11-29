@@ -27,28 +27,6 @@ public interface IEntitySoulCustom {
 
     int getEntityId();
 
-    BaseAttributeMap getAttributeMap();
-
-    CombatTracker getCombatTracker();
-
-    HashMap<Integer, PotionEffect> getActivePotionsMap();
-
-    DataWatcher getDataWatcher();
-
-    EntityLookHelper getLookHelper();
-
-    EntityMoveHelper getMoveHelper();
-
-    EntityJumpHelper getJumpHelper();
-
-    PathNavigate getNavigator();
-
-    EntitySenses getEntitySenses();
-
-    EntityAITasks getTasks();
-
-    EntityAITasks getTargetTasks();
-
     Random getRandom();
 
     /*
@@ -57,7 +35,7 @@ public interface IEntitySoulCustom {
     void makePersistent(String name);
     
     /*
-     * Use these methods to get and set a non-persistent variable. This variable will not sustain over saves.
+     * Use these methods to get and set a variable in the entity class. This can be used to set position, motion etc but also custom variables, like bar, boo and foo.
      */
 
     void setBoolean(String name, boolean variable);
@@ -126,6 +104,13 @@ public interface IEntitySoulCustom {
 
     void setDataArray(String name, Data[] variable);
 
+    /**
+     * Use this to set a variable that already exists in an entity class, this can't be used to set custom variables.
+     * @param name
+     * @param object
+     */
+    void setObject(String name, Object object);
+
     boolean[] getBooleanArray(String name);
 
     byte[] getByteArray(String name);
@@ -148,16 +133,11 @@ public interface IEntitySoulCustom {
 
     Data[] getDataArray(String name);
 
-    /*
-     * Forces a synchronization between the standard entity variables and the custom ones
+    /**
+     * Use this to get a variable that already exists in an entity class, this can't be used to get custom variables.
+     * @param name
      */
-    void forceVariableSync();
-
-    /*
-     * Forces a synchronization between the standard entity variables and custom ones specified, make sure to use
-     * this method rather than the non-parameter method.
-     */
-    void forceVariableSync(String[] variables);
+    Object getObject(String name);
 
 
     NBTTagCompound getEntityData();

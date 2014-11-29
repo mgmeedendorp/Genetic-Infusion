@@ -1,119 +1,407 @@
 package seremis.geninfusion.soul.entity.logic
 
-import java.util.Map.Entry
-import java.{lang, util}
+import java.util
 
+import net.minecraft.entity.EntityLiving
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
-import seremis.geninfusion.api.soul.util.{Data, DataHelper}
+import seremis.geninfusion.api.soul.util.Data
 import seremis.geninfusion.helper.GIReflectionHelper
 import seremis.geninfusion.util.INBTTagable
 
 import scala.collection.mutable.ListBuffer
 
-class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
+class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
   protected var data = new Data()
   protected var persistent: ListBuffer[String] = ListBuffer()
+
+  protected var fields: ListBuffer[String] = {
+    var clazz: Any = entity.getClass
+    val list: ListBuffer[String] = ListBuffer()
+
+    while(clazz != null) {
+      for(field <- clazz.asInstanceOf[Class[_]].getDeclaredFields) {
+        list += field.getName
+      }
+      clazz = clazz.asInstanceOf[Class[_]].getSuperclass
+    }
+    list
+  }
 
   def makePersistent(name: String) {
     persistent += name
   }
 
-  def setBoolean(name: String, variable: Boolean) = data.setBoolean(name, variable)
+  def setBoolean(name: String, variable: Boolean)  {
+    if(fields.contains(name)) {
+      GIReflectionHelper.setField(entity, name, variable)
+    } else {
+      data.setBoolean(name, variable)
+    }
+  }
 
-  def setByte(name: String, variable: Byte) = data.setByte(name, variable)
+  def setByte(name: String, variable: Byte)  {
+    if(fields.contains(name)) {
+      GIReflectionHelper.setField(entity, name, variable)
+    } else {
+      data.setByte(name, variable)
+    }
+  }
 
-  def setShort(name: String, variable: Short) = data.setShort(name, variable)
+  def setShort(name: String, variable: Short)  {
+    if(fields.contains(name)) {
+      GIReflectionHelper.setField(entity, name, variable)
+    } else {
+      data.setShort(name, variable)
+    }
+  }
 
-  def setInteger(name: String, variable: Int) = data.setInteger(name, variable)
+  def setInteger(name: String, variable: Int)  {
+    if(fields.contains(name)) {
+      GIReflectionHelper.setField(entity, name, variable)
+    } else {
+      data.setInteger(name, variable)
+    }
+  }
 
-  def setFloat(name: String, variable: Float) = data.setFloat(name, variable)
+  def setFloat(name: String, variable: Float)  {
+    if(fields.contains(name)) {
+      GIReflectionHelper.setField(entity, name, variable)
+    } else {
+      data.setFloat(name, variable)
+    }
+  }
 
-  def setDouble(name: String, variable: Double) = data.setDouble(name, variable)
+  def setDouble(name: String, variable: Double)  {
+    if(fields.contains(name)) {
+      GIReflectionHelper.setField(entity, name, variable)
+    } else {
+      data.setDouble(name, variable)
+    }
+  }
 
-  def setLong(name: String, variable: Long) = data.setLong(name, variable)
+  def setLong(name: String, variable: Long)  {
+    if(fields.contains(name)) {
+      GIReflectionHelper.setField(entity, name, variable)
+    } else {
+      data.setLong(name, variable)
+    }
+  }
 
-  def setString(name: String, variable: String) = data.setString(name, variable)
+  def setString(name: String, variable: String)  {
+    if(fields.contains(name)) {
+      GIReflectionHelper.setField(entity, name, variable)
+    } else {
+      data.setString(name, variable)
+    }
+  }
 
-  def setItemStack(name: String, variable: ItemStack) = data.setNBT(name, variable.writeToNBT(new NBTTagCompound()))
+  def setItemStack(name: String, variable: ItemStack)  {
+    if(fields.contains(name)) {
+      GIReflectionHelper.setField(entity, name, variable)
+    } else {
+      data.setNBT(name, variable.writeToNBT(new NBTTagCompound()))
+    }
+  }
 
-  def setNBT(name: String, variable: NBTTagCompound) = data.setNBT(name, variable)
+  def setNBT(name: String, variable: NBTTagCompound)  {
+    if(fields.contains(name)) {
+      GIReflectionHelper.setField(entity, name, variable)
+    } else {
+      data.setNBT(name, variable)
+    }
+  }
 
-  def setData(name: String, variable: Data) = data.setData(name, variable)
+  def setData(name: String, variable: Data)  {
+    if(fields.contains(name)) {
+      GIReflectionHelper.setField(entity, name, variable)
+    } else {
+      data.setData(name, variable)
+    }
+  }
 
-  def getBoolean(name: String): Boolean = data.getBoolean(name)
+  def setObject(name: String, variable: Object) {
+    if(fields.contains(name)) {
+      GIReflectionHelper.setField(entity, name, variable)
+    }
+  }
 
-  def getByte(name: String): Byte = data.getByte(name)
+  def getBoolean(name: String): Boolean = {
+    if(fields.contains(name)) {
+      return GIReflectionHelper.getField(entity, name).asInstanceOf[Boolean]
+    } else {
+      data.getBoolean(name)
+    }
+  }
 
-  def getShort(name: String): Short = data.getShort(name)
+  def getByte(name: String): Byte = {
+    if(fields.contains(name)) {
+      return GIReflectionHelper.getField(entity, name).asInstanceOf[Byte]
+    } else {
+      data.getByte(name)
+    }
+  }
 
-  def getInteger(name: String): Int = data.getInteger(name)
+  def getShort(name: String): Short = {
+    if(fields.contains(name)) {
+      return GIReflectionHelper.getField(entity, name).asInstanceOf[Short]
+    } else {
+      data.getShort(name)
+    }
+  }
 
-  def getFloat(name: String): Float = data.getFloat(name)
+  def getInteger(name: String): Int = {
+    if(fields.contains(name)) {
+      return GIReflectionHelper.getField(entity, name).asInstanceOf[Integer]
+    } else {
+      data.getInteger(name)
+    }
+  }
 
-  def getDouble(name: String): Double = data.getDouble(name)
+  def getFloat(name: String): Float = {
+    if(fields.contains(name)) {
+      return GIReflectionHelper.getField(entity, name).asInstanceOf[Float]
+    } else {
+      data.getFloat(name)
+    }
+  }
 
-  def getLong(name: String): Long = data.getLong(name)
+  def getDouble(name: String): Double = {
+    if(fields.contains(name)) {
+      return GIReflectionHelper.getField(entity, name).asInstanceOf[Double]
+    } else {
+      data.getDouble(name)
+    }
+  }
 
-  def getString(name: String): String = data.getString(name)
+  def getLong(name: String): Long = {
+    if(fields.contains(name)) {
+      return GIReflectionHelper.getField(entity, name).asInstanceOf[Long]
+    } else {
+      data.getLong(name)
+    }
+  }
 
-  def getItemStack(name: String): ItemStack = if (data.getNBT(name) != null) ItemStack.loadItemStackFromNBT(data.getNBT(name)) else null
+  def getString(name: String): String = {
+    if(fields.contains(name)) {
+      return GIReflectionHelper.getField(entity, name).asInstanceOf[String]
+    } else {
+      data.getString(name)
+    }
+  }
 
-  def getNBT(name: String): NBTTagCompound = data.getNBT(name)
+  def getItemStack(name: String): ItemStack = {
+    if(fields.contains(name)) {
+      return GIReflectionHelper.getField(entity, name).asInstanceOf[ItemStack]
+    } else {
+      if (data.getNBT(name) != null) ItemStack.loadItemStackFromNBT(data.getNBT(name)) else null
+    }
+  }
 
-  def getData(name: String): Data = data.getData(name)
+  def getNBT(name: String): NBTTagCompound = {
+    if(fields.contains(name)) {
+      return GIReflectionHelper.getField(entity, name).asInstanceOf[NBTTagCompound]
+    } else {
+      data.getNBT(name)
+    }
+  }
 
-  def setBooleanArray(name: String, value: Array[Boolean]) = data.setBooleanArray(name, value)
+  def getData(name: String): Data = {
+    if(fields.contains(name)) {
+      return GIReflectionHelper.getField(entity, name).asInstanceOf[Data]
+    } else {
+      data.getData(name)
+    }
+  }
 
-  def setByteArray(name: String, value: Array[Byte]) = data.setByteArray(name, value)
+  def getObject(name: String): Object = {
+    if(fields.contains(name)) {
+      return GIReflectionHelper.getField(entity, name).asInstanceOf[Object]
+    }
+    null
+  }
 
-  def setShortArray(name: String, value: Array[Short]) = data.setShortArray(name, value)
+  def setBooleanArray(name: String, variable: Array[Boolean]) {
+    if(fields.contains(name)) {
+      GIReflectionHelper.setField(entity, name, variable)
+    } else {
+      data.setBooleanArray(name, variable)
+    }
+  }
 
-  def setIntegerArray(name: String, value: Array[Int]) = data.setIntegerArray(name, value)
+  def setByteArray(name: String, variable: Array[Byte]) {
+    if(fields.contains(name)) {
+      GIReflectionHelper.setField(entity, name, variable)
+    } else {
+      data.setByteArray(name, variable)
+    }
+  }
 
-  def setFloatArray(name: String, value: Array[Float]) = data.setFloatArray(name, value)
+  def setShortArray(name: String, variable: Array[Short]) {
+    if(fields.contains(name)) {
+      GIReflectionHelper.setField(entity, name, variable)
+    } else {
+      data.setShortArray(name, variable)
+    }
+  }
 
-  def setDoubleArray(name: String, value: Array[Double]) = data.setDoubleArray(name, value)
+  def setIntegerArray(name: String, variable: Array[Int]) {
+    if(fields.contains(name)) {
+      GIReflectionHelper.setField(entity, name, variable)
+    } else {
+      data.setIntegerArray(name, variable)
+    }
+  }
 
-  def setLongArray(name: String, value: Array[Long]) = data.setLongArray(name, value)
+  def setFloatArray(name: String, variable: Array[Float]) {
+    if(fields.contains(name)) {
+      GIReflectionHelper.setField(entity, name, variable)
+    } else {
+      data.setFloatArray(name, variable)
+    }
+  }
 
-  def setStringArray(name: String, value: Array[String]) = data.setStringArray(name, value)
+  def setDoubleArray(name: String, variable: Array[Double]) {
+    if(fields.contains(name)) {
+      GIReflectionHelper.setField(entity, name, variable)
+    } else {
+      data.setDoubleArray(name, variable)
+    }
+  }
 
-  def setItemStackArray(name: String, value: Array[ItemStack]) = data.setNBTArray(name, Array.tabulate(value.length)(index => if (value(index) != null) value(index).writeToNBT(new NBTTagCompound()) else null))
+  def setLongArray(name: String, variable: Array[Long]) {
+    if(fields.contains(name)) {
+      GIReflectionHelper.setField(entity, name, variable)
+    } else {
+      data.setLongArray(name, variable)
+    }
+  }
 
-  def setNBTArray(name: String, value: Array[NBTTagCompound]) = data.setNBTArray(name, value)
+  def setStringArray(name: String, variable: Array[String]) {
+    if(fields.contains(name)) {
+      GIReflectionHelper.setField(entity, name, variable)
+    } else {
+      data.setStringArray(name, variable)
+    }
+  }
 
-  def setDataArray(name: String, value: Array[Data]) = data.setDataArray(name, value)
+  def setItemStackArray(name: String, variable: Array[ItemStack]) {
+    if(fields.contains(name)) {
+      GIReflectionHelper.setField(entity, name, variable)
+    } else {
+      data.setNBTArray(name, Array.tabulate(variable.length)(index => if (variable(index) != null) variable(index).writeToNBT(new NBTTagCompound()) else null))
+    }
+  }
 
-  def getBooleanArray(name: String) = data.getBooleanArray(name)
+  def setNBTArray(name: String, variable: Array[NBTTagCompound]) {
+    if(fields.contains(name)) {
+      GIReflectionHelper.setField(entity, name, variable)
+    } else {
+      data.setNBTArray(name, variable)
+    }
+  }
 
-  def getByteArray(name: String) = data.getByteArray(name)
+  def setDataArray(name: String, variable: Array[Data]) {
+    if(fields.contains(name)) {
+      GIReflectionHelper.setField(entity, name, variable)
+    } else {
+      data.setDataArray(name, variable)
+    }
+  }
 
-  def getShortArray(name: String) = data.getShortArray(name)
+  def getBooleanArray(name: String): Array[Boolean] = {
+    if(fields.contains(name)) {
+      return GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Boolean]]
+    } else {
+      data.getBooleanArray(name)
+    }
+  }
 
-  def getIntegerArray(name: String) = data.getIntegerArray(name)
+  def getByteArray(name: String): Array[Byte] = {
+    if(fields.contains(name)) {
+      return GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Byte]]
+    } else {
+      data.getByteArray(name)
+    }
+  }
 
-  def getFloatArray(name: String) = data.getFloatArray(name)
+  def getShortArray(name: String): Array[Short] = {
+    if(fields.contains(name)) {
+      return GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Short]]
+    } else {
+      data.getShortArray(name)
+    }
+  }
 
-  def getDoubleArray(name: String) = data.getDoubleArray(name)
+  def getIntegerArray(name: String): Array[Int] = {
+    if(fields.contains(name)) {
+      return GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Int]]
+    } else {
+      data.getIntegerArray(name)
+    }
+  }
 
-  def getLongArray(name: String) = data.getLongArray(name)
+  def getFloatArray(name: String): Array[Float] = {
+    if(fields.contains(name)) {
+      return GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Float]]
+    } else {
+      data.getFloatArray(name)
+    }
+  }
 
-  def getStringArray(name: String) = data.getStringArray(name)
+  def getDoubleArray(name: String): Array[Double] = {
+    if(fields.contains(name)) {
+      return GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Double]]
+    } else {
+      data.getDoubleArray(name)
+    }
+  }
 
-  def getItemStackArray(name: String) = if (getNBTArray(name) != null) Array.tabulate(getNBTArray(name).length)(index => if (getNBTArray(name)(index) != null) ItemStack.loadItemStackFromNBT(getNBTArray(name)(index)) else null) else null
+  def getLongArray(name: String): Array[Long] = {
+    if(fields.contains(name)) {
+      return GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Long]]
+    } else {
+      data.getLongArray(name)
+    }
+  }
 
-  def getNBTArray(name: String) = data.getNBTArray(name)
+  def getStringArray(name: String): Array[String] = {
+    if(fields.contains(name)) {
+      return GIReflectionHelper.getField(entity, name).asInstanceOf[Array[String]]
+    } else {
+      data.getStringArray(name)
+    }
+  }
 
-  def getDataArray(name: String) = data.getDataArray(name)
+  def getItemStackArray(name: String): Array[ItemStack] = {
+    if(fields.contains(name)) {
+      return GIReflectionHelper.getField(entity, name).asInstanceOf[Array[ItemStack]]
+    } else {
+      if (getNBTArray(name) != null) Array.tabulate(getNBTArray(name).length)(index => if (getNBTArray(name)(index) != null) ItemStack.loadItemStackFromNBT(getNBTArray(name)(index)) else null) else null
+    }
+  }
+
+  def getNBTArray(name: String): Array[NBTTagCompound] = {
+    if(fields.contains(name)) {
+      return GIReflectionHelper.getField(entity, name).asInstanceOf[Array[NBTTagCompound]]
+    } else {
+      data.getNBTArray(name)
+    }
+  }
+
+  def getDataArray(name: String): Array[Data] = {
+    if(fields.contains(name)) {
+      return GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Data]]
+    } else {
+      data.getDataArray(name)
+    }
+  }
 
   protected val persistentData: Data = new Data()
 
   override def writeToNBT(compound: NBTTagCompound) {
     if (persistent.nonEmpty) {
-      syncVariables()
-
       val tagList = new NBTTagList()
       val stringList = new util.ArrayList[String]()
       if (!data.booleanDataMap.isEmpty) {
@@ -306,178 +594,6 @@ class VariableSyncLogic(entity: IVariableSyncEntity) extends INBTTagable {
 
   override def readFromNBT(compound: NBTTagCompound) {
     data.readFromNBT(compound)
-  }
-
-  def forceVariableSync() {
-    this.syncVariables()
-  }
-
-  //The variables as they were the last tick
-  protected var prevData: Data = DataHelper.writePrimitives(entity)
-
-  def syncVariables() {
-    syncVariables(Array("all"))
-  }
-
-  def syncVariables(variables: Array[String]) {
-    //The variables in the entity class
-    val entityData = DataHelper.writePrimitives(entity)
-    val clss = entity.getClass
-
-    val all = variables(0).equals("all")
-
-    val boolIterator: util.Iterator[Entry[String, lang.Boolean]] = prevData.booleanDataMap.entrySet().iterator()
-
-    while (boolIterator.hasNext) {
-      val entry: Entry[String, lang.Boolean] = boolIterator.next()
-      val key = entry.getKey
-      val value = entry.getValue
-
-      if (variables.contains(key) || all) {
-        if (entityData.booleanDataMap.containsKey(key) && entityData.getBoolean(key) != value) {
-          prevData.setBoolean(key, entityData.getBoolean(key))
-          data.setBoolean(key, entityData.getBoolean(key))
-        } else if (data.getBoolean(key) != value) {
-          prevData.setBoolean(key, data.getBoolean(key))
-          entityData.setBoolean(key, data.getBoolean(key))
-          setField(key, data.getBoolean(key))
-        }
-      }
-    }
-
-    val byteIterator: util.Iterator[Entry[String, lang.Byte]] = prevData.byteDataMap.entrySet().iterator()
-
-    while (byteIterator.hasNext) {
-      val entry: Entry[String, lang.Byte] = byteIterator.next()
-      val key = entry.getKey
-      val value = entry.getValue
-
-      if (variables.contains(key) || all) {
-        if (entityData.byteDataMap.containsKey(key) && entityData.getByte(key) != value) {
-          prevData.setByte(key, entityData.getByte(key))
-          data.setByte(key, entityData.getByte(key))
-        } else if (data.getByte(key) != value) {
-          prevData.setByte(key, data.getByte(key))
-          entityData.setByte(key, data.getByte(key))
-          setField(key, data.getByte(key))
-        }
-      }
-    }
-
-    val shortIterator: util.Iterator[Entry[String, lang.Short]] = prevData.shortDataMap.entrySet().iterator()
-
-    while (shortIterator.hasNext) {
-      val entry: Entry[String, lang.Short] = shortIterator.next()
-      val key = entry.getKey
-      val value = entry.getValue
-
-      if (variables.contains(key) || all) {
-        if (entityData.shortDataMap.containsKey(key) && entityData.getShort(key) != value) {
-          prevData.setShort(key, entityData.getShort(key))
-          data.setShort(key, entityData.getShort(key))
-        } else if (data.getShort(key) != value) {
-          prevData.setShort(key, data.getShort(key))
-          entityData.setShort(key, data.getShort(key))
-          setField(key, data.getShort(key))
-        }
-      }
-    }
-
-    val intIterator: util.Iterator[Entry[String, lang.Integer]] = prevData.integerDataMap.entrySet().iterator()
-
-    while (intIterator.hasNext) {
-      val entry: Entry[String, lang.Integer] = intIterator.next()
-      val key = entry.getKey
-      val value = entry.getValue
-
-      if (variables.contains(key) || all) {
-        if (entityData.integerDataMap.containsKey(key) && entityData.getInteger(key) != value) {
-          prevData.setInteger(key, entityData.getInteger(key))
-          data.setInteger(key, entityData.getInteger(key))
-        } else if (data.getInteger(key) != value) {
-          prevData.setInteger(key, data.getInteger(key))
-          entityData.setInteger(key, data.getInteger(key))
-          setField(key, data.getInteger(key))
-        }
-      }
-    }
-
-    val floatIterator: util.Iterator[Entry[String, lang.Float]] = prevData.floatDataMap.entrySet().iterator()
-
-    while (floatIterator.hasNext) {
-      val entry: Entry[String, lang.Float] = floatIterator.next()
-      val key = entry.getKey
-      val value = entry.getValue
-
-      if (variables.contains(key) || all) {
-        if (entityData.floatDataMap.containsKey(key) && entityData.getFloat(key) != value) {
-          prevData.setFloat(key, entityData.getFloat(key))
-          data.setFloat(key, entityData.getFloat(key))
-        } else if (data.getFloat(key) != value) {
-          prevData.setFloat(key, data.getFloat(key))
-          entityData.setFloat(key, data.getFloat(key))
-          setField(key, data.getFloat(key))
-        }
-      }
-    }
-
-    val doubleIterator: util.Iterator[Entry[String, lang.Double]] = prevData.doubleDataMap.entrySet().iterator()
-
-    while (doubleIterator.hasNext) {
-      val entry: Entry[String, lang.Double] = doubleIterator.next()
-      val key = entry.getKey
-      val value = entry.getValue
-
-      if (variables.contains(key) || all) {
-        if (entityData.doubleDataMap.containsKey(key) && entityData.getDouble(key) != value) {
-          prevData.setDouble(key, entityData.getDouble(key))
-          data.setDouble(key, entityData.getDouble(key))
-        } else if (data.getDouble(key) != value) {
-          prevData.setDouble(key, data.getDouble(key))
-          entityData.setDouble(key, data.getDouble(key))
-          setField(key, data.getDouble(key))
-        }
-      }
-    }
-
-    val longIterator: util.Iterator[Entry[String, lang.Long]] = prevData.longDataMap.entrySet().iterator()
-
-    while (longIterator.hasNext) {
-      val entry: Entry[String, lang.Long] = longIterator.next()
-      val key = entry.getKey
-      val value = entry.getValue
-
-      if (variables.contains(key) || all) {
-        if (entityData.longDataMap.containsKey(key) && entityData.getByte(key) != value) {
-          prevData.setByte(key, entityData.getByte(key))
-          data.setByte(key, entityData.getByte(key))
-        } else if (data.getLong(key) != value) {
-          prevData.setLong(key, data.getLong(key))
-          entityData.setLong(key, data.getLong(key))
-          setField(key, data.getLong(key))
-        }
-      }
-    }
-
-    val stringIterator: util.Iterator[Entry[String, lang.String]] = prevData.stringDataMap.entrySet().iterator()
-
-    while (stringIterator.hasNext) {
-      val entry: Entry[String, lang.String] = stringIterator.next()
-      val key = entry.getKey
-      val value = entry.getValue
-
-      if (variables.contains(key) || all) {
-        if (entityData.stringDataMap.containsKey(key) && entityData.getString(key) != value) {
-          prevData.setString(key, entityData.getString(key))
-          data.setString(key, entityData.getString(key))
-        } else if (data.getString(key) != value) {
-          prevData.setString(key, data.getString(key))
-          entityData.setString(key, data.getString(key))
-          setField(key, data.getString(key))
-        }
-      }
-    }
-    entity.syncNonPrimitives(variables)
   }
 
   private def setField(name: String, value: Any) {

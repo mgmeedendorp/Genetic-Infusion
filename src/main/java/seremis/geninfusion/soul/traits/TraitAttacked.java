@@ -6,6 +6,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.CombatTracker;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.ForgeHooks;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
@@ -13,6 +14,7 @@ import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.UtilSoulEntity;
 import seremis.geninfusion.core.proxy.CommonProxy;
+import seremis.geninfusion.helper.GIReflectionHelper;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
 import seremis.geninfusion.soul.allele.AlleleFloat;
 import seremis.geninfusion.soul.allele.AlleleInteger;
@@ -211,7 +213,10 @@ public class TraitAttacked extends Trait {
 
             if(damage != 0.0F) {
                 entity.setFloat("health", health - damage);
-                entity.getCombatTracker().func_94547_a(source, health, damage);
+
+                CombatTracker combatTracker = (CombatTracker) entity.getObject("_combatTracker");
+
+                combatTracker.func_94547_a(source, health, damage);
                 entity.setFloat("absorptionAmount", Math.max(absorptionAmount - damage, 0));
             }
 

@@ -19,6 +19,7 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -29,6 +30,7 @@ import seremis.geninfusion.core.proxy.CommonProxy;
 import seremis.geninfusion.helper.GIReflectionHelper;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class UtilSoulEntity {
@@ -90,9 +92,7 @@ public class UtilSoulEntity {
             }
 
             entity.getWorld().removeEntity((Entity) entity);
-            entity.forceVariableSync(new String[]{"isDead"});
             entity.setBoolean("isDead", false);
-            entity.forceVariableSync(new String[]{"isDead"});
 
             entity.getWorld().theProfiler.startSection("reposition");
             minecraftserver.getConfigurationManager().transferEntityToWorld((Entity) entity, currentDimension, worldserver, worldserver1);
@@ -112,7 +112,6 @@ public class UtilSoulEntity {
             }
 
             entity.setBoolean("isDead", true);
-            entity.forceVariableSync(new String[]{"isDead"});
             entity.getWorld().theProfiler.endSection();
             worldserver.resetUpdateEntityTick();
             worldserver1.resetUpdateEntityTick();
@@ -180,7 +179,6 @@ public class UtilSoulEntity {
     public static void setRotation(IEntitySoulCustom entity, float yaw, float pitch) {
         entity.setFloat("rotationYaw", yaw % 360.0F);
         entity.setFloat("rotationPitch", pitch % 360.0F);
-        entity.forceVariableSync(new String[]{"rotationYaw", "rotationPitch"});
     }
 
     public static void jump(IEntitySoulCustom entity) {
@@ -241,27 +239,20 @@ public class UtilSoulEntity {
     }
 
     public static EntityItem dropItem(IEntitySoulCustom entity, ItemStack droppedStack, float dropHeight) {
-        if(droppedStack.stackSize != 0 && droppedStack.getItem() != null) {
+        if (droppedStack.stackSize != 0 && droppedStack.getItem() != null) {
+            World world = entity.getWorld();
             double posX = entity.getDouble("posX");
             double posY = entity.getDouble("posY");
             double posZ = entity.getDouble("posZ");
 
-            EntityItem entityitem = new EntityItem(entity.getWorld(), posX, posY + (double) dropHeight, posZ, droppedStack);
+            EntityItem entityitem = new EntityItem(world, posX, posY + (double)dropHeight, posZ, droppedStack);
             entityitem.delayBeforeCanPickup = 10;
-
             if(entity.getBoolean("captureDrops")) {
-                NBTTagCompound[] capturedDrops = entity.getNBTArray("capturedDrops");
-                NBTTagCompound[] capturedDrops2 = new NBTTagCompound[capturedDrops.length + 1];
-                System.arraycopy(capturedDrops, 0, capturedDrops2, 0, capturedDrops.length);
-
-                NBTTagCompound nbt = new NBTTagCompound();
-                entityitem.writeEntityToNBT(nbt);
-                capturedDrops2[capturedDrops.length] = nbt;
-
-                entity.setNBTArray("capturedDrops", capturedDrops2);
-                entity.forceVariableSync(new String[]{"capturedDrops"});
+                ArrayList<EntityItem> capturedDrops = (ArrayList<EntityItem>)entity.getObject("capturedDrops");
+                capturedDrops.add(entityitem);
+                entity.setObject("capturedDrops", capturedDrops);
             } else {
-                entity.getWorld().spawnEntityInWorld(entityitem);
+                world.spawnEntityInWorld(entityitem);
             }
             return entityitem;
         } else {
@@ -275,7 +266,6 @@ public class UtilSoulEntity {
     }
 
     public static void faceEntity(IEntitySoulCustom entity, Entity lookEntity, float maxYawIncrement, float maxPitchIncrement) {
-        entity.forceVariableSync(new String[]{"posX", "posY", "posZ", "rotationYaw", "rotationPitch"});
         double d0 = lookEntity.posX - entity.getInteger("posX");
         double d2 = lookEntity.posZ - entity.getInteger("posZ");
         double d1;
