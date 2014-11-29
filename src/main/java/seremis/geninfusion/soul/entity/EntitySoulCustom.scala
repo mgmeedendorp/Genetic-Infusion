@@ -21,7 +21,7 @@ import net.minecraft.util.{AxisAlignedBB, CombatTracker, DamageSource}
 import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
 import seremis.geninfusion.api.soul.lib.Genes
-import seremis.geninfusion.api.soul.util.{Data, UtilSoulEntity}
+import seremis.geninfusion.api.soul.util.Data
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
 import seremis.geninfusion.core.proxy.CommonProxy
 import seremis.geninfusion.entity.GIEntityLiving
@@ -200,9 +200,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
   }
 
   override def applyEntityCollision(entity: Entity) {
-    forceVariableSync(Array("riddenByEntity", "ridingEntity", "posX", "posZ", "posY", "entityCollisionReduction", "motionX", "motionY", "motionZ", "isAirBorne"))
     super.applyEntityCollision(entity)
-    forceVariableSync(Array("riddenByEntity", "ridingEntity", "posX", "posZ", "posY", "entityCollisionReduction", "motionX", "motionY", "motionZ", "isAirBorne"))
   }
 
   override def attackEntityAsMob(entity: Entity): Boolean = TraitHandler.attackEntityAsMob(this, entity)

@@ -38,7 +38,7 @@ public class ItemThermometer extends GIItem {
                 player.addChatComponentMessage(new ChatComponentText("Heat: " + ((IMagnetConnector) tile).getHeat()));
             }
             if(stack.getItemDamage() == 1) {
-                EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.geneRegistry.getSoulFor(new EntityZombie(world)), x + 0.5F, y + 1F, z + 0.5F);
+                EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityZombie(world)), x, y, z);
                 world.spawnEntityInWorld(entity);
             }
         }
