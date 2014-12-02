@@ -12,7 +12,7 @@ import java.util.LinkedList;
 
 public class TraitHandler {
 
-    static LinkedList<ITrait> entityUpdate;
+    static LinkedList<ITrait> entityUpdate = new LinkedList<ITrait>();
 
     public static void entityUpdate(IEntitySoulCustom entity) {
         for(ITrait trait : entityUpdate) {
@@ -20,7 +20,7 @@ public class TraitHandler {
         }
     }
 
-    static LinkedList<ITrait> entityRightClicked;
+    static LinkedList<ITrait> entityRightClicked = new LinkedList<ITrait>();
 
     public static void entityRightClicked(IEntitySoulCustom entity, EntityPlayer player) {
         for(ITrait trait : entityRightClicked) {
@@ -28,7 +28,7 @@ public class TraitHandler {
         }
     }
 
-    static LinkedList<ITrait> entityDeath;
+    static LinkedList<ITrait> entityDeath = new LinkedList<ITrait>();
 
     public static void entityDeath(IEntitySoulCustom entity, DamageSource source) {
         for(ITrait trait : entityDeath) {
@@ -36,7 +36,7 @@ public class TraitHandler {
         }
     }
 
-    static LinkedList<ITrait> onKillEntity;
+    static LinkedList<ITrait> onKillEntity = new LinkedList<ITrait>();
 
     public static void onKillEntity(IEntitySoulCustom entity, EntityLivingBase killed) {
         for(ITrait trait : onKillEntity) {
@@ -44,7 +44,7 @@ public class TraitHandler {
         }
     }
 
-    static LinkedList<ITrait> attackEntityFrom;
+    static LinkedList<ITrait> attackEntityFrom = new LinkedList<ITrait>();
 
     public static boolean attackEntityFrom(IEntitySoulCustom entity, DamageSource source, float damage) {
         boolean flag = true;
@@ -56,7 +56,7 @@ public class TraitHandler {
         return flag;
     }
 
-    static LinkedList<ITrait> attackEntity;
+    static LinkedList<ITrait> attackEntity = new LinkedList<ITrait>();
 
     public static void attackEntity(IEntitySoulCustom entity, Entity entityToAttack, float distance) {
         for(ITrait trait : attackEntity) {
@@ -64,7 +64,7 @@ public class TraitHandler {
         }
     }
 
-    static LinkedList<ITrait> spawnEntityFromEgg;
+    static LinkedList<ITrait> spawnEntityFromEgg = new LinkedList<ITrait>();
 
     public static IEntityLivingData spawnEntityFromEgg(IEntitySoulCustom entity, IEntityLivingData data) {
         for(ITrait trait : spawnEntityFromEgg) {
@@ -73,7 +73,7 @@ public class TraitHandler {
         return data;
     }
 
-    static LinkedList<ITrait> playSoundAtEntity;
+    static LinkedList<ITrait> playSoundAtEntity = new LinkedList<ITrait>();
 
     public static void playSoundAtEntity(IEntitySoulCustom entity, String name, float volume, float pitch) {
         for(ITrait trait : playSoundAtEntity) {
@@ -81,7 +81,7 @@ public class TraitHandler {
         }
     }
 
-    static LinkedList<ITrait> damageEntity;
+    static LinkedList<ITrait> damageEntity = new LinkedList<ITrait>();
 
     public static void damageEntity(IEntitySoulCustom entity, DamageSource source, float damage) {
         for(ITrait trait : damageEntity) {
@@ -89,7 +89,7 @@ public class TraitHandler {
         }
     }
 
-    static LinkedList<ITrait> updateAITick;
+    static LinkedList<ITrait> updateAITick = new LinkedList<ITrait>();
 
     public static void updateAITick(IEntitySoulCustom entity) {
         for(ITrait trait : updateAITick) {
@@ -97,7 +97,7 @@ public class TraitHandler {
         }
     }
 
-    static LinkedList<ITrait> firstTick;
+    static LinkedList<ITrait> firstTick = new LinkedList<ITrait>();
 
     public static void firstTick(IEntitySoulCustom entity) {
         for(ITrait trait : firstTick) {
@@ -105,7 +105,7 @@ public class TraitHandler {
         }
     }
 
-    static LinkedList<ITrait> attackEntityAsMob;
+    static LinkedList<ITrait> attackEntityAsMob = new LinkedList<ITrait>();
 
     public static boolean attackEntityAsMob(IEntitySoulCustom entity, Entity entityToAttack) {
         for(ITrait trait : attackEntityAsMob) {
@@ -114,5 +114,14 @@ public class TraitHandler {
             }
         }
         return true;
+    }
+
+    static LinkedList<ITrait> findPlayerToAttack = new LinkedList<ITrait>();
+
+    public static Entity findPlayerToAttack(IEntitySoulCustom entity) {
+        for(ITrait trait : findPlayerToAttack) {
+            return trait.findPlayerToAttack(entity);
+        }
+        return null;
     }
 }

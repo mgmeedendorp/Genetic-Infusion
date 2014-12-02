@@ -2,6 +2,7 @@ package seremis.geninfusion.api.soul;
 
 import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.BaseAttributeMap;
 import net.minecraft.item.ItemStack;
@@ -157,4 +158,10 @@ public interface IEntitySoulCustom {
     void damageEntity(DamageSource source, float damage);
 
     void updateAITick();
+
+    boolean canDespawn();
+
+    boolean isMovementCeased();
+
+    Entity findPlayerToAttack();
 }

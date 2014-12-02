@@ -225,11 +225,11 @@ public class UtilSoulEntity {
                 double d2 = entityplayer.posZ - posZ;
                 double d3 = d0 * d0 + d1 * d1 + d2 * d2;
 
-                if(d3 > 16384.0D) {
+                if(entity.canDespawn() && d3 > 16384.0D) {
                     ((EntityLiving) entity).setDead();
                 }
 
-                if(entity.getInteger("entityAge") > 600 && new Random().nextInt(800) == 0 && d3 > 1024.0D) {
+                if(entity.getInteger("entityAge") > 600 && new Random().nextInt(800) == 0 && d3 > 1024.0D && entity.canDespawn()) {
                     ((EntityLiving) entity).setDead();
                 } else if(d3 < 1024.0D) {
                     entity.setInteger("entityAge", 0);
@@ -356,5 +356,9 @@ public class UtilSoulEntity {
             return path;
         }
         return null;
+    }
+
+    public static boolean isMovementBlocked(IEntitySoulCustom entity) {
+        return ((EntityLiving)entity).getDataWatcher().getWatchableObjectFloat(6) <= 0.0F;
     }
 }

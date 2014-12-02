@@ -130,7 +130,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
   }
 
   override def attackEntityFrom(source: DamageSource, damage: Float): Boolean = {
-    !ForgeHooks.onLivingAttack(this, source, damage) && TraitHandler.attackEntityFrom(this, source, damage)
+    TraitHandler.attackEntityFrom(this, source, damage)
   }
 
   override def attackEntity(entity: Entity, distance: Float) {
@@ -150,6 +150,7 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
   }
 
   override def updateAITick() {
+    super.updateAITick()
     TraitHandler.updateAITick(this)
   }
 
@@ -164,6 +165,10 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
   }
 
   override def attackEntityAsMob(entity: Entity): Boolean = TraitHandler.attackEntityAsMob(this, entity)
+
+  override def isMovementCeased: Boolean = false
+
+  override def findPlayerToAttack(): Entity = TraitHandler.findPlayerToAttack(this)
 
   override def readFromNBT(compound: NBTTagCompound) {
     super.readFromNBT(compound)

@@ -9,6 +9,10 @@ public interface ITraitRegistry {
 
     public void registerTrait(String name, ITrait trait);
 
+    public void registerTrait(String name, ITrait trait, String... methods);
+
+    public void registerTraitMethod(ITrait trait, String method);
+
     public ITrait getTrait(String name);
 
     public String getName(ITrait trait);

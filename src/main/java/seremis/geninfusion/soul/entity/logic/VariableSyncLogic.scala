@@ -124,6 +124,8 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
   def setObject(name: String, variable: Object) {
     if(fields.contains(name)) {
       GIReflectionHelper.setField(entity, name, variable)
+    } else {
+
     }
   }
 
