@@ -2,7 +2,6 @@ package seremis.geninfusion.soul;
 
 import net.minecraft.entity.monster.EntityZombie;
 import seremis.geninfusion.api.soul.lib.Genes;
-import static seremis.geninfusion.api.soul.lib.TraitMethods.*;
 import seremis.geninfusion.api.soul.lib.Traits;
 import seremis.geninfusion.soul.gene.*;
 import seremis.geninfusion.soul.gene.newAI.GeneUseNewAI;
@@ -55,16 +54,16 @@ public class ModSouls {
         geneRegistry.registerMasterGene(Genes.GENE_USE_NEW_AI, new GeneUseNewAI());
         geneRegistry.registerMasterGene(Genes.GENE_USE_OLD_AI, new GeneUseOldAI());
 
-        traitRegistry.registerTrait(Traits.TRAIT_FIRE, new TraitFire(), METHOD_ON_UPDATE, METHOD_ATTACK_ENTITY_AS_MOB);
-        traitRegistry.registerTrait(Traits.TRAIT_MOVEMENT, new TraitMovement(), METHOD_ON_UPDATE);
-        traitRegistry.registerTrait(Traits.TRAIT_ATTACKED, new TraitAttacked(), METHOD_ON_UPDATE, METHOD_ATTACK_ENTITY_FROM, METHOD_DAMAGE_ENTITY, METHOD_ON_DEATH);
-        traitRegistry.registerTrait(Traits.TRAIT_ITEM_PICKUP, new TraitItemPickup(), METHOD_ON_UPDATE);
-        traitRegistry.registerTrait(Traits.TRAIT_ITEM_DROPS, new TraitItemDrops(), METHOD_ON_DEATH);
-        traitRegistry.registerTrait(Traits.TRAIT_FLUIDS, new TraitFluids(), METHOD_ON_UPDATE);
-        traitRegistry.registerTrait(Traits.TRAIT_SOUNDS, new TraitSounds(), METHOD_ON_UPDATE, METHOD_PLAY_SOUND_AT_ENTITY, METHOD_FIRST_TICK);
-        traitRegistry.registerTrait(Traits.TRAIT_ATTRIBUTES, new TraitInitialValues(), METHOD_FIRST_TICK);
-        traitRegistry.registerTrait(Traits.TRAIT_ATTACK, new TraitAttack(), METHOD_ATTACK_ENTITY_AS_MOB);
-        traitRegistry.registerTrait(Traits.TRAIT_AI, new TraitAI(), METHOD_FIRST_TICK, METHOD_ON_UPDATE, METHOD_FIND_PLAYER_TO_ATTACK);
+        traitRegistry.registerTrait(Traits.TRAIT_FIRE, new TraitFire());
+        traitRegistry.registerTrait(Traits.TRAIT_MOVEMENT, new TraitMovement());
+        traitRegistry.registerTrait(Traits.TRAIT_ATTACKED, new TraitAttacked());
+        traitRegistry.registerTrait(Traits.TRAIT_ITEM_PICKUP, new TraitItemPickup());
+        traitRegistry.registerTrait(Traits.TRAIT_ITEM_DROPS, new TraitItemDrops());
+        traitRegistry.registerTrait(Traits.TRAIT_FLUIDS, new TraitFluids());
+        traitRegistry.registerTrait(Traits.TRAIT_SOUNDS, new TraitSounds());
+        traitRegistry.registerTrait(Traits.TRAIT_ATTRIBUTES, new TraitInitialValues());
+        traitRegistry.registerTrait(Traits.TRAIT_ATTACK, new TraitAttack());
+        traitRegistry.registerTrait(Traits.TRAIT_AI, new TraitAI());
 
         standardSoulRegistry.register(new StandardSoulZombie(), EntityZombie.class);
     }

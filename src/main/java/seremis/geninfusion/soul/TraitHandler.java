@@ -47,10 +47,10 @@ public class TraitHandler {
     static LinkedList<ITrait> attackEntityFrom = new LinkedList<ITrait>();
 
     public static boolean attackEntityFrom(IEntitySoulCustom entity, DamageSource source, float damage) {
-        boolean flag = true;
+        boolean flag = false;
         for(ITrait trait : attackEntityFrom) {
-            if(!trait.onEntityAttacked(entity, source, damage)) {
-                flag = false;
+            if(trait.onEntityAttacked(entity, source, damage)) {
+                flag = true;
             }
         }
         return flag;
@@ -108,20 +108,25 @@ public class TraitHandler {
     static LinkedList<ITrait> attackEntityAsMob = new LinkedList<ITrait>();
 
     public static boolean attackEntityAsMob(IEntitySoulCustom entity, Entity entityToAttack) {
+        boolean flag = false;
         for(ITrait trait : attackEntityAsMob) {
-            if(!trait.attackEntityAsMob(entity, entityToAttack)) {
-                return false;
+            if(trait.attackEntityAsMob(entity, entityToAttack)) {
+                flag = true;
             }
         }
-        return true;
+        return flag;
     }
 
     static LinkedList<ITrait> findPlayerToAttack = new LinkedList<ITrait>();
 
     public static Entity findPlayerToAttack(IEntitySoulCustom entity) {
+        Entity flag = null;
         for(ITrait trait : findPlayerToAttack) {
-            return trait.findPlayerToAttack(entity);
+            Entity tmp = trait.findPlayerToAttack(entity);
+            if(tmp != null) {
+                flag = tmp;
+            }
         }
-        return null;
+        return flag;
     }
 }
