@@ -1,24 +1,16 @@
 package seremis.geninfusion.soul.traits;
 
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.CombatTracker;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.ForgeHooks;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
-import seremis.geninfusion.api.soul.SoulHelper;
-import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.UtilSoulEntity;
-import seremis.geninfusion.core.proxy.CommonProxy;
-import seremis.geninfusion.helper.GIReflectionHelper;
-import seremis.geninfusion.soul.allele.AlleleBoolean;
-import seremis.geninfusion.soul.allele.AlleleFloat;
-import seremis.geninfusion.soul.allele.AlleleInteger;
-import seremis.geninfusion.soul.allele.AlleleString;
 
 import java.util.Random;
 
@@ -28,81 +20,94 @@ public class TraitAttacked extends Trait {
 
     @Override
     public void onUpdate(IEntitySoulCustom entity) {
-        float health = entity.getFloat("health");
         int attackTime = entity.getInteger("attackTime");
         int hurtTime = entity.getInteger("hurtTime");
         int hurtResistantTime = entity.getInteger("hurtResistantTime");
         int recentlyHit = entity.getInteger("recentlyHit");
         int ticksExisted = entity.getInteger("ticksExisted");
-        EntityLivingBase lastAttacker = entity.getInteger("lastAttackerID") != 0 ? (EntityLivingBase) entity.getWorld().getEntityByID(entity.getInteger("lastAttacker")) : null;
-        EntityLivingBase entityLivingToAttack = entity.getInteger("entityLivingToAttackID") != 0 ? (EntityLivingBase) entity.getWorld().getEntityByID(entity.getInteger("entityLivingToAttackID")) : null;
+
+        EntityLivingBase lastAttacker = (EntityLivingBase) entity.getObject("lastAttacker");
+        EntityLivingBase entityLivingToAttack = (EntityLivingBase) entity.getObject("entityLivingToAttack");
+
 
         if(attackTime > 0) {
-            entity.setInteger("attackTime", --attackTime);
+            --attackTime;
         }
 
         if(hurtTime > 0) {
-            entity.setInteger("hurtTime", --hurtTime);
+            --hurtTime;
         }
 
-        if(hurtResistantTime > 0) {
-            entity.setInteger("hurtResistantTime", --hurtResistantTime);
+        if(hurtResistantTime > 0 && !(entity instanceof EntityPlayerMP)) {
+            --hurtResistantTime;
         }
 
-        if(health <= 0.0F) {
+        if(UtilSoulEntity.getHealth(entity) <= 0.0F) {
             entity.onDeathUpdate();
         }
 
         if(recentlyHit > 0) {
-            entity.setInteger("recentlyHit", --recentlyHit);
+            --recentlyHit;
         } else {
-            entity.setInteger("attackingPlayerID", 0);
+            entity.setObject("attackingPlayer", null);
         }
 
         if(lastAttacker != null && !lastAttacker.isEntityAlive()) {
-            entity.setInteger("lastAttackerID", 0);
+            lastAttacker = null;
         }
 
         if(entityLivingToAttack != null) {
-            //TODO Look into this
             if(!entityLivingToAttack.isEntityAlive()) {
                 ((EntityLiving) entity).setRevengeTarget(null);
-            } else if(ticksExisted - ((EntityLiving) entity).func_142015_aE() > 100) {
+            } else if(ticksExisted - entity.getInteger("revengeTimer") > 100) {
                 ((EntityLiving) entity).setRevengeTarget(null);
             }
         }
+
+        entity.setInteger("attackTime", attackTime);
+        entity.setInteger("hurtTime", hurtTime);
+        entity.setInteger("hurtResistantTime", hurtResistantTime);
+        entity.setInteger("recentlyHit", recentlyHit);
+        entity.setInteger("ticksExisted", ticksExisted);
+        entity.setObject("lastAttacker", lastAttacker);
+        entity.setObject("entityLivingToAttack", entityLivingToAttack);
     }
 
     @Override
-    public boolean onEntityAttacked(IEntitySoulCustom entity, DamageSource source, float damage) {
+    public boolean attackEntityFrom(IEntitySoulCustom entity, DamageSource source, float damage) {
         if(ForgeHooks.onLivingAttack((EntityLivingBase) entity, source, damage)) return false;
-        if(((EntityLiving) entity).isEntityInvulnerable()) {
+
+        if(entity.getBoolean("invulnerable")) {
             return false;
-        } else if(CommonProxy.instance.isRenderWorld(entity.getWorld())) {
+        } else if(entity.getWorld().isRemote) {
             return false;
         } else {
             entity.setInteger("entityAge", 0);
 
-            float health = entity.getFloat("health");
-            int hurtResistantTime = entity.getInteger("hurtResistantTime");
-            int maxHurtResistantTime = ((AlleleInteger) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_MAX_HURT_RESISTANT_TIME)).value;
-            int hurtTime = entity.getInteger("hurtTime");
-            int maxHurtTime = entity.getInteger("maxHurtTime");
-            float lastDamage = entity.getFloat("lastDamage");
-
-
-            if(health <= 0.0F) {
+            if(UtilSoulEntity.getHealth(entity) <= 0.0F) {
                 return false;
             } else if(source.isFireDamage() && ((EntityLiving) entity).isPotionActive(Potion.fireResistance)) {
                 return false;
             } else {
-                if((source == DamageSource.anvil || source == DamageSource.fallingBlock) && UtilSoulEntity.getEquipmentInSlot(entity, 4) != null) {
-                    UtilSoulEntity.getEquipmentInSlot(entity, 4).damageItem((int) (damage * 4.0F + this.rand.nextFloat() * damage * 2.0F), (EntityLivingBase) entity);
+                if((source == DamageSource.anvil || source == DamageSource.fallingBlock) && ((EntityLiving) entity).getEquipmentInSlot(4) != null) {
+                    ((EntityLiving) entity).getEquipmentInSlot(4).damageItem((int) (damage * 4.0F + entity.getRandom().nextFloat() * damage * 2.0F), (EntityLivingBase) entity);
                     damage *= 0.75F;
                 }
 
                 entity.setFloat("limbSwingAmount", 1.5F);
                 boolean flag = true;
+
+                int hurtResistantTime = entity.getInteger("hurtResistantTime");
+                int maxHurtResistantTime = entity.getInteger("maxHurtResistantTime");
+                int recentlyHit = entity.getInteger("recentlyHit");
+                int hurtTime = entity.getInteger("hurtTime");
+                int maxHurtTime = entity.getInteger("maxHurtTime");
+
+                float attackedAtYaw;
+                float lastDamage = entity.getFloat("lastDamage");
+
+                EntityPlayer attackingPlayer = (EntityPlayer) entity.getObject("attackingPlayer");
+
 
                 if((float) hurtResistantTime > (float) maxHurtResistantTime / 2.0F) {
                     if(damage <= lastDamage) {
@@ -110,33 +115,34 @@ public class TraitAttacked extends Trait {
                     }
 
                     entity.damageEntity(source, damage - lastDamage);
-                    entity.setFloat("lastDamage", damage);
+                    lastDamage = damage;
                     flag = false;
                 } else {
-                    entity.setFloat("lastDamage", damage);
-                    entity.setFloat("prevHealth", health);
-                    entity.setInteger("hurtResistantTime", maxHurtResistantTime);
+                    lastDamage = damage;
+                    entity.setFloat("prevHealth", UtilSoulEntity.getHealth(entity));
+                    hurtResistantTime = maxHurtResistantTime;
                     entity.damageEntity(source, damage);
-                    entity.setInteger("hurtTime", maxHurtTime);
+
+                    hurtTime = maxHurtTime = 10;
                 }
 
-                entity.setFloat("attackedAtYaw", 0.0F);
-                Entity ent = source.getEntity();
+                attackedAtYaw = 0.0F;
+                Entity entity1 = source.getEntity();
 
-                if(ent != null) {
-                    if(ent instanceof EntityLivingBase) {
-                        ((EntityLiving) entity).setRevengeTarget((EntityLivingBase) ent);
+                if(entity1 != null) {
+                    if(entity1 instanceof EntityLivingBase) {
+                        ((EntityLiving) entity).setRevengeTarget((EntityLivingBase) entity1);
                     }
 
-                    if(ent instanceof EntityPlayer) {
-                        entity.setInteger("recentlyHit", 100);
-                        entity.setInteger("attackingPlayerID", ent.getEntityId());
-                    } else if(ent instanceof EntityWolf) {
-                        EntityWolf entitywolf = (EntityWolf) ent;
+                    if(entity1 instanceof EntityPlayer) {
+                        recentlyHit = 100;
+                        attackingPlayer = (EntityPlayer) entity1;
+                    } else if(entity1 instanceof net.minecraft.entity.passive.EntityTameable) {
+                        net.minecraft.entity.passive.EntityTameable entitywolf = (net.minecraft.entity.passive.EntityTameable) entity1;
 
                         if(entitywolf.isTamed()) {
-                            entity.setInteger("recentlyHit", 100);
-                            entity.setInteger("attackingPlayerID", 0);
+                            recentlyHit = 100;
+                            attackingPlayer = null;
                         }
                     }
                 }
@@ -145,48 +151,50 @@ public class TraitAttacked extends Trait {
                     entity.getWorld().setEntityState((Entity) entity, (byte) 2);
 
                     if(source != DamageSource.drown) {
-                        double knockbackResistance = ((AlleleFloat) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_KNOCKBACK_RESISTANCE)).value;
-                        entity.setBoolean("velocityChanged", this.rand.nextDouble() >= knockbackResistance);
+                        entity.setBeenAttacked();
                     }
 
-                    if(ent != null) {
-                        double posX = entity.getDouble("posX");
-                        double posZ = entity.getDouble("posZ");
-                        float rotationYaw = entity.getFloat("rotationYaw");
-
-                        double d1 = ent.posX - posX;
+                    if(entity1 != null) {
+                        double d1 = entity1.posX - entity.getDouble("posX");
                         double d0;
 
-                        for(d0 = ent.posZ - posZ; d1 * d1 + d0 * d0 < 1.0E-4D; d0 = (Math.random() - Math.random()) * 0.01D) {
+                        for(d0 = entity1.posZ - entity.getDouble("posZ"); d1 * d1 + d0 * d0 < 1.0E-4D; d0 = (Math.random() - Math.random()) * 0.01D) {
                             d1 = (Math.random() - Math.random()) * 0.01D;
                         }
 
-                        entity.setFloat("attackedAtYaw", (float) (Math.atan2(d0, d1) * 180.0D / Math.PI) - rotationYaw);
-                        ((EntityLiving) entity).knockBack(ent, damage, d1, d0);
+                        attackedAtYaw = (float) (Math.atan2(d0, d1) * 180.0D / Math.PI) - entity.getFloat("rotationYaw");
+                        ((EntityLiving) entity).knockBack(entity1, damage, d1, d0);
                     } else {
-                        entity.setFloat("attackedAtYaw", (float) ((int) (Math.random() * 2.0D) * 180));
+                        attackedAtYaw = (float) ((int) (Math.random() * 2.0D) * 180);
                     }
                 }
 
-                String sound;
-                float soundVolume = ((AlleleFloat) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_SOUND_VOLUME)).value;
-                float soundPitch = ((EntityLiving) entity).isChild() ? (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.5F : (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F;
+                entity.setInteger("hurtResistantTime", hurtResistantTime);
+                entity.setInteger("maxHurtResistantTime", maxHurtResistantTime);
+                entity.setInteger("recentlyHit", recentlyHit);
+                entity.setInteger("hurtTime", hurtTime);
+                entity.setInteger("maxHurtTime", maxHurtTime);
 
-                health = entity.getFloat("health");
+                entity.setFloat("attackedAtYaw", attackedAtYaw);
+                entity.setFloat("lastDamage", lastDamage);
 
-                if(health <= 0.0F) {
-                    sound = ((AlleleString) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_DEATH_SOUND)).value;
+                entity.setObject("attackingPlayer", attackingPlayer);
 
-                    if(flag && sound != null) {
-                        entity.playSound(sound, soundVolume, soundPitch);
+                String s;
+
+                if(UtilSoulEntity.getHealth(entity) <= 0.0F) {
+                    s = entity.getDeathSound();
+
+                    if(flag && s != null) {
+                        entity.playSound(s, entity.getSoundVolume(), entity.getSoundPitch());
                     }
 
                     ((EntityLiving) entity).onDeath(source);
                 } else {
-                    sound = ((AlleleString) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_HURT_SOUND)).value;
+                    s = entity.getHurtSound();
 
-                    if(flag && sound != null) {
-                        entity.playSound(sound, soundVolume, soundPitch);
+                    if(flag && s != null) {
+                        entity.playSound(s, entity.getSoundVolume(), entity.getSoundPitch());
                     }
                 }
 
@@ -197,48 +205,87 @@ public class TraitAttacked extends Trait {
 
     @Override
     public void damageEntity(IEntitySoulCustom entity, DamageSource source, float damage) {
-        boolean isInvulnerable = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_INVULNERABLE)).value;
-
-        if(!isInvulnerable) {
-            float health = entity.getFloat("health");
-            float absorptionAmount = entity.getFloat("absorptionAmount");
-
+        if(!entity.getBoolean("invulnerable")) {
             damage = ForgeHooks.onLivingHurt((EntityLivingBase) entity, source, damage);
             if(damage <= 0) return;
-            damage = UtilSoulEntity.applyArmorCalculations(entity, source, damage);
-            damage = UtilSoulEntity.applyPotionDamageCalculations(entity, source, damage);
+            damage = entity.applyArmorCalculations(source, damage);
+            damage = entity.applyPotionDamageCalculations(source, damage);
             float f1 = damage;
-            damage = Math.max(damage - absorptionAmount, 0.0F);
-            entity.setFloat("absorptionAmount", Math.max(absorptionAmount - (f1 - damage), 0.0F));
+            damage = Math.max(damage - ((EntityLiving) entity).getAbsorptionAmount(), 0.0F);
+            ((EntityLiving) entity).setAbsorptionAmount(((EntityLiving) entity).getAbsorptionAmount() - (f1 - damage));
 
             if(damage != 0.0F) {
-                entity.setFloat("health", health - damage);
+                float f2 = UtilSoulEntity.getHealth(entity);
+                ((EntityLiving) entity).setHealth(f2 - damage);
+                ((EntityLiving) entity).func_110142_aN().func_94547_a(source, f2, damage);
+                ((EntityLiving) entity).setAbsorptionAmount(((EntityLiving) entity).getAbsorptionAmount() - damage);
+            }
+        }
+    }
 
-                CombatTracker combatTracker = (CombatTracker) entity.getObject("_combatTracker");
+    @Override
+    public float applyArmorCalculations(IEntitySoulCustom entity, DamageSource source, float damage) {
+        if(!source.isUnblockable()) {
+            int i = 25 - ((EntityLiving) entity).getTotalArmorValue();
+            float f1 = damage * (float) i;
+            entity.damageArmor(damage);
+            damage = f1 / 25.0F;
+        }
+        return damage;
+    }
 
-                combatTracker.func_94547_a(source, health, damage);
-                entity.setFloat("absorptionAmount", Math.max(absorptionAmount - damage, 0));
+    @Override
+    public float applyPotionDamageCalculations(IEntitySoulCustom entity, DamageSource source, float damage) {
+        if(source.isDamageAbsolute()) {
+            return damage;
+        } else {
+            int i;
+            int j;
+            float f1;
+
+            if(((EntityLiving) entity).isPotionActive(Potion.resistance) && source != DamageSource.outOfWorld) {
+                i = (((EntityLiving) entity).getActivePotionEffect(Potion.resistance).getAmplifier() + 1) * 5;
+                j = 25 - i;
+                f1 = damage * (float) j;
+                damage = f1 / 25.0F;
             }
 
+            if(damage <= 0.0F) {
+                return 0.0F;
+            } else {
+                i = EnchantmentHelper.getEnchantmentModifierDamage(((EntityLiving) entity).getLastActiveItems(), source);
+
+                if(i > 20) {
+                    i = 20;
+                }
+
+                if(i > 0 && i <= 20) {
+                    j = 25 - i;
+                    f1 = damage * (float) j;
+                    damage = f1 / 25.0F;
+                }
+
+                return damage;
+            }
         }
     }
 
     @Override
     public void onDeath(IEntitySoulCustom entity, DamageSource source) {
-        if(ForgeHooks.onLivingDeath((EntityLiving) entity, source)) return;
-        Entity ent = source.getEntity();
+        if(ForgeHooks.onLivingDeath((EntityLivingBase) entity, source)) return;
+        Entity entity1 = source.getEntity();
         EntityLivingBase entitylivingbase = ((EntityLiving) entity).func_94060_bK();
 
-        int scoreValue = entity.getInteger("scoreValue");
-
-        if(scoreValue >= 0 && entitylivingbase != null) {
-            entitylivingbase.addToPlayerScore((Entity) entity, scoreValue);
+        if(entity.getInteger("scoreValue") >= 0 && entitylivingbase != null) {
+            entitylivingbase.addToPlayerScore((Entity) entity, entity.getInteger("scoreValue"));
         }
 
-        if(ent != null) {
-            ent.onKillEntity((EntityLiving) entity);
+        if(entity1 != null) {
+            entity1.onKillEntity((EntityLivingBase) entity);
         }
 
-        entity.setBoolean("isDead", true);
+        entity.setBoolean("dead", true);
+        ((EntityLiving) entity).func_110142_aN().func_94549_h();
+
     }
 }

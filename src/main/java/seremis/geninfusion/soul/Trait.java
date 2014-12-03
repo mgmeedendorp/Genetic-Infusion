@@ -14,7 +14,7 @@ public class Trait implements ITrait {
     public void onUpdate(IEntitySoulCustom entity) {}
 
     @Override
-    public void onInteract(IEntitySoulCustom entity, EntityPlayer player) {}
+    public void interact(IEntitySoulCustom entity, EntityPlayer player) {}
 
     @Override
     public void onDeath(IEntitySoulCustom entity, DamageSource source) {}
@@ -23,7 +23,7 @@ public class Trait implements ITrait {
     public void onKillEntity(IEntitySoulCustom entity, EntityLivingBase killed) {}
 
     @Override
-    public boolean onEntityAttacked(IEntitySoulCustom entity, DamageSource source, float damage) {return true;}
+    public boolean attackEntityFrom(IEntitySoulCustom entity, DamageSource source, float damage) {return true;}
 
     @Override
     public void onSpawnWithEgg(IEntitySoulCustom entity, IEntityLivingData data) {}

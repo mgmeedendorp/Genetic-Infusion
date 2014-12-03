@@ -10,13 +10,13 @@ public interface ITrait {
 
     public void onUpdate(IEntitySoulCustom entity);
 
-    public void onInteract(IEntitySoulCustom entity, EntityPlayer player);
+    public boolean interact(IEntitySoulCustom entity, EntityPlayer player);
 
     public void onDeath(IEntitySoulCustom entity, DamageSource source);
 
     public void onKillEntity(IEntitySoulCustom entity, EntityLivingBase killed);
 
-    public boolean onEntityAttacked(IEntitySoulCustom entity, DamageSource source, float damage);
+    public boolean attackEntityFrom(IEntitySoulCustom entity, DamageSource source, float damage);
 
     public void onSpawnWithEgg(IEntitySoulCustom entity, IEntityLivingData data);
 
@@ -33,4 +33,10 @@ public interface ITrait {
     public void attackEntity(IEntitySoulCustom entity, Entity entityToAttack, float distance);
 
     public Entity findPlayerToAttack(IEntitySoulCustom entity);
+
+    public float applyArmorCalculations(IEntitySoulCustom entity, DamageSource source, float damage);
+
+    public float applyPotionDamageCalculations(IEntitySoulCustom entity, DamageSource source, float damage);
+
+    public void damageArmor(IEntitySoulCustom entity, float damage);
 }

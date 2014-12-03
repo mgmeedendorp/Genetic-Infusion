@@ -118,10 +118,6 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
   }
 
   override def onDeath(source: DamageSource) {
-    if (ForgeHooks.onLivingDeath(this, source)) return
-    if (source.getEntity != null) {
-      source.getEntity.onKillEntity(this)
-    }
     TraitHandler.entityDeath(this, source)
   }
 
@@ -150,14 +146,11 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
   }
 
   override def updateAITick() {
-    super.updateAITick()
     TraitHandler.updateAITick(this)
   }
 
   override def interact(player: EntityPlayer): Boolean = {
-    //TODO interactboolean
-    TraitHandler.entityRightClicked(this, player)
-    true
+    TraitHandler.interact(this, player)
   }
 
   override def applyEntityCollision(entity: Entity) {
@@ -170,12 +163,18 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
 
   override def findPlayerToAttack(): Entity = TraitHandler.findPlayerToAttack(this)
 
+  override def applyArmorCalculations(source: DamageSource, damage: Float): Float = TraitHandler.applyArmorCalculations(this, source, damage)
+
+  override def applyPotionDamageCalculations(source: DamageSource, damage: Float): Float = TraitHandler.applyPotionDamageCalculations(this, source, damage)
+
+  override def damageArmor(damage: Float) = TraitHandler.damageArmor(this, damage)
+
   override def readFromNBT(compound: NBTTagCompound) {
     super.readFromNBT(compound)
     soul = new Soul(compound)
     if (compound.hasKey("data")) {
       syncLogic.readFromNBT(compound)
-      //TODO check if this works
+      //TODO check if this is needed
 //      setPosition(posX, posY, posZ)
     }
   }

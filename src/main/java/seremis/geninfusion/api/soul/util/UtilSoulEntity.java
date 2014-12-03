@@ -361,4 +361,8 @@ public class UtilSoulEntity {
     public static boolean isMovementBlocked(IEntitySoulCustom entity) {
         return ((EntityLiving)entity).getDataWatcher().getWatchableObjectFloat(6) <= 0.0F;
     }
+
+    public static float getHealth(IEntitySoulCustom entity) {
+        return ((EntityLiving)entity).getDataWatcher().getWatchableObjectFloat(6);
+    }
 }

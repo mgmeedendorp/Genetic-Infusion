@@ -4,9 +4,6 @@ import seremis.geninfusion.api.soul.ITrait;
 import seremis.geninfusion.api.soul.ITraitRegistry;
 import seremis.geninfusion.api.soul.SoulHelper;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -55,12 +52,14 @@ public class TraitRegistry implements ITraitRegistry {
 
     public static void orderTraits() {
         for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
+            TraitHandler.applyArmorCalculations.add(trait);
+            TraitHandler.applyPotionDamageCalculations.add(trait);
             TraitHandler.attackEntity.add(trait);
             TraitHandler.attackEntityAsMob.add(trait);
             TraitHandler.attackEntityFrom.add(trait);
             TraitHandler.damageEntity.add(trait);
             TraitHandler.entityDeath.add(trait);
-            TraitHandler.entityRightClicked.add(trait);
+            TraitHandler.interact.add(trait);
             TraitHandler.entityUpdate.add(trait);
             TraitHandler.findPlayerToAttack.add(trait);
             TraitHandler.firstTick.add(trait);
@@ -68,6 +67,7 @@ public class TraitRegistry implements ITraitRegistry {
             TraitHandler.playSoundAtEntity.add(trait);
             TraitHandler.spawnEntityFromEgg.add(trait);
             TraitHandler.updateAITick.add(trait);
+            TraitHandler.damageArmor.add(trait);
         }
     }
 }

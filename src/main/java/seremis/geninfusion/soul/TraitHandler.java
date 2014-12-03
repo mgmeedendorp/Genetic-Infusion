@@ -20,12 +20,16 @@ public class TraitHandler {
         }
     }
 
-    static LinkedList<ITrait> entityRightClicked = new LinkedList<ITrait>();
+    static LinkedList<ITrait> interact = new LinkedList<ITrait>();
 
-    public static void entityRightClicked(IEntitySoulCustom entity, EntityPlayer player) {
-        for(ITrait trait : entityRightClicked) {
-            trait.onInteract(entity, player);
+    public static boolean interact(IEntitySoulCustom entity, EntityPlayer player) {
+        boolean flag = false;
+        for(ITrait trait : interact) {
+            if(trait.interact(entity, player)) {
+                flag = true;
+            }
         }
+        return flag;
     }
 
     static LinkedList<ITrait> entityDeath = new LinkedList<ITrait>();
@@ -49,7 +53,7 @@ public class TraitHandler {
     public static boolean attackEntityFrom(IEntitySoulCustom entity, DamageSource source, float damage) {
         boolean flag = false;
         for(ITrait trait : attackEntityFrom) {
-            if(trait.onEntityAttacked(entity, source, damage)) {
+            if(trait.attackEntityFrom(entity, source, damage)) {
                 flag = true;
             }
         }
@@ -128,5 +132,39 @@ public class TraitHandler {
             }
         }
         return flag;
+    }
+
+    static LinkedList<ITrait> applyArmorCalculations = new LinkedList<ITrait>();
+
+    public static float applyArmorCalculations(IEntitySoulCustom entity, DamageSource source, float damage) {
+        float flag = 0.0F;
+        for(ITrait trait : applyArmorCalculations) {
+            float tmp = trait.applyArmorCalculations(entity, source, damage);
+            if(tmp != 0.0F) {
+                flag = tmp;
+            }
+        }
+        return flag;
+    }
+
+    static LinkedList<ITrait> applyPotionDamageCalculations = new LinkedList<ITrait>();
+
+    public static float applyPotionDamageCalculations(IEntitySoulCustom entity, DamageSource source, float damage) {
+        float flag = 0.0F;
+        for(ITrait trait : applyPotionDamageCalculations) {
+            float tmp = trait.applyPotionDamageCalculations(entity, source, damage);
+            if(tmp != 0.0F) {
+                flag = tmp;
+            }
+        }
+        return flag;
+    }
+
+    static LinkedList<ITrait> damageArmor = new LinkedList<ITrait>();
+
+    public static void damageArmor(IEntitySoulCustom entity, float damage) {
+        for(ITrait trait : damageArmor) {
+            trait.damageArmor(entity, damage);
+        }
     }
 }

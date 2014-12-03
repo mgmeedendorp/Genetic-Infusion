@@ -155,7 +155,7 @@ class EntitySoulCustomCreature(world: World) extends GIEntityCreature(world) wit
 
   override def interact(player: EntityPlayer): Boolean = {
     //TODO interactboolean
-    TraitHandler.entityRightClicked(this, player)
+    TraitHandler.interact(this, player)
     true
   }
 

@@ -164,4 +164,17 @@ public interface IEntitySoulCustom {
     boolean isMovementCeased();
 
     Entity findPlayerToAttack();
+
+    void setBeenAttacked();
+
+    String getDeathSound();
+    String getHurtSound();
+
+    float getSoundVolume();
+    float getSoundPitch();
+
+    float applyArmorCalculations(DamageSource source, float damage);
+    float applyPotionDamageCalculations(DamageSource source, float damage);
+
+    void damageArmor(float damage);
 }
