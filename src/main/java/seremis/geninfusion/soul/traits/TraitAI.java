@@ -52,7 +52,7 @@ public class TraitAI extends Trait {
                 if(isCreature) {
                     updateEntityCreatureActionState(entity);
                 } else {
-                    updateEntityActionState(entity);
+                    entity.updateEntityActionState();
                 }
                 entity.getWorld().theProfiler.endSection();
                 entity.setFloat("rotationYawHead", entity.getFloat("rotationYaw"));
@@ -107,7 +107,7 @@ public class TraitAI extends Trait {
         if (!entity.getBoolean("hasAttacked") && entityToAttack != null && (entity.getObject("pathToEntity") == null || entity.getRandom().nextInt(20) == 0)) {
             entity.setObject("pathToEntity", entity.getWorld().getPathEntityToEntity((Entity) entity, entityToAttack, f4, true, false, false, true));
         } else if (!entity.getBoolean("hasAttacked") && (entity.getObject("pathToEntity") == null && entity.getRandom().nextInt(180) == 0 || entity.getRandom().nextInt(120) == 0 || entity.getInteger("fleeingTick") > 0) && entity.getInteger("entityAge") < 100) {
-            this.updateWanderPath(entity);
+            entity.updateWanderPath();
         }
 
         int i = MathHelper.floor_double(entity.getBoundingBox().minY + 0.5D);
@@ -192,14 +192,15 @@ public class TraitAI extends Trait {
 
             entity.getWorld().theProfiler.endSection();
         } else {
-            updateEntityActionState(entity);
+            entity.updateEntityActionState();
             pathToEntity = null;
         }
 
         entity.setObject("pathToEntity", pathToEntity);
     }
 
-    private void updateWanderPath(IEntitySoulCustom entity) {
+    @Override
+    public void updateWanderPath(IEntitySoulCustom entity) {
         double posX = entity.getDouble("posX");
         double posY = entity.getDouble("posY");
         double posZ = entity.getDouble("posZ");
@@ -211,13 +212,15 @@ public class TraitAI extends Trait {
         int k = -1;
         float f = -99999.0F;
 
-        for(int l = 0; l < 10; ++l) {
-            int i1 = MathHelper.floor_double(posX + (double) entity.getRandom().nextInt(13) - 6.0D);
-            int j1 = MathHelper.floor_double(posY + (double) entity.getRandom().nextInt(7) - 3.0D);
-            int k1 = MathHelper.floor_double(posZ + (double) entity.getRandom().nextInt(13) - 6.0D);
-            float f1 = this.getBlockPathWeight(entity, i1, j1, k1);
+        for (int l = 0; l < 10; ++l)
+        {
+            int i1 = MathHelper.floor_double(posX + (double)entity.getRandom().nextInt(13) - 6.0D);
+            int j1 = MathHelper.floor_double(posY + (double)entity.getRandom().nextInt(7) - 3.0D);
+            int k1 = MathHelper.floor_double(posZ + (double)entity.getRandom().nextInt(13) - 6.0D);
+            float f1 = entity.getBlockPathWeight(i1, j1, k1);
 
-            if(f1 > f) {
+            if (f1 > f)
+            {
                 f = f1;
                 i = i1;
                 j = j1;
@@ -226,22 +229,27 @@ public class TraitAI extends Trait {
             }
         }
 
-        if(flag) {
-            UtilSoulEntity.writePathEntity(entity, entity.getWorld().getEntityPathToXYZ((Entity) entity, i, j, k, 10.0F, true, false, false, true), "pathToEntity");
+        if (flag)
+        {
+            entity.setObject("pathToEntity", entity.getWorld().getEntityPathToXYZ((Entity) entity, i, j, k, 10.0F, true, false, false, true));
         }
+
         entity.getWorld().theProfiler.endSection();
     }
 
+    @Override
     public float getBlockPathWeight(IEntitySoulCustom entity, int x, int y, int z) {
-        //todo this properly
+        //TODO this properly
         return 0.5F - entity.getWorld().getLightBrightness(x, y, z);
     }
 
+    @Override
     public Entity findPlayerToAttack(IEntitySoulCustom entity) {
         return entity.getWorld().getClosestPlayerToEntity((Entity) entity, 50);
     }
 
-    private void updateEntityActionState(IEntitySoulCustom entity) {
+    @Override
+    public void updateEntityActionState(IEntitySoulCustom entity) {
         entity.setInteger("entityAge", entity.getInteger("entityAge") + 1);
         entity.setFloat("moveForward", 0.0F);
         entity.setFloat("moveStrafing", 0.0F);

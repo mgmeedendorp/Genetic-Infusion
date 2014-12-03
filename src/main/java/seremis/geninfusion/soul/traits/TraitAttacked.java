@@ -10,13 +10,19 @@ import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.ForgeHooks;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
+import seremis.geninfusion.api.soul.SoulHelper;
+import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.UtilSoulEntity;
+import seremis.geninfusion.soul.allele.AlleleBoolean;
 
 import java.util.Random;
 
 public class TraitAttacked extends Trait {
 
-    private Random rand = new Random();
+    @Override
+    public void firstTick(IEntitySoulCustom entity) {
+        entity.setBoolean("invulnerable", ((AlleleBoolean)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_INVULNERABLE)).value);
+    }
 
     @Override
     public void onUpdate(IEntitySoulCustom entity) {

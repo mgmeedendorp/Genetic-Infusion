@@ -50,6 +50,7 @@ public class ModSouls {
         geneRegistry.registerGene(Genes.GENE_IS_CREATURE, new GeneIsCreature());
         geneRegistry.registerGene(Genes.GENE_AI_CAN_SWIM, new GeneAICanSwim());
         geneRegistry.registerGene(Genes.GENE_CEASE_AI_MOVEMENT, new GeneCeaseAIMovement());
+        geneRegistry.registerGene(Genes.GENE_CHILDREN_BURN_IN_DAYLIGHT, new GeneChildrenBurnInDaylight());
 
         geneRegistry.registerMasterGene(Genes.GENE_USE_NEW_AI, new GeneUseNewAI());
         geneRegistry.registerMasterGene(Genes.GENE_USE_OLD_AI, new GeneUseOldAI());

@@ -27,6 +27,9 @@ public class StandardSoul implements IStandardSoul {
         if(gene.equals(Genes.GENE_CEASE_AI_MOVEMENT)) {
             return new Chromosome(new AlleleBoolean(true, false));
         }
+        if(gene.equals(Genes.GENE_CHILDREN_BURN_IN_DAYLIGHT)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        }
         if(gene.equals(Genes.GENE_CREATURE_ATTRIBUTE)) {
             return new Chromosome(new AlleleInteger(true, EnumCreatureAttribute.UNDEFINED.ordinal()));
         }

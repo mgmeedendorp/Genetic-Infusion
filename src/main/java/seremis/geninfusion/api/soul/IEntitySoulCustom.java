@@ -177,4 +177,10 @@ public interface IEntitySoulCustom {
     float applyPotionDamageCalculations(DamageSource source, float damage);
 
     void damageArmor(float damage);
+
+    void setOnFireFromLava();
+
+    float getBlockPathWeight(int x, int y, int z);
+    void updateWanderPath();
+    void updateEntityActionState();
 }

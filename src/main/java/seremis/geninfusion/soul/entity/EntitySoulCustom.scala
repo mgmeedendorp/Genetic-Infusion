@@ -169,6 +169,14 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
 
   override def damageArmor(damage: Float) = TraitHandler.damageArmor(this, damage)
 
+  override def setOnFireFromLava() = TraitHandler.setOnFireFromLava(this)
+
+  override def getBlockPathWeight(x: Int, y: Int, z: Int): Float = TraitHandler.getBlockPathWeight(this, x, y, z)
+
+  override def updateEntityActionState() = TraitHandler.updateEntityActionState(this)
+
+  override def updateWanderPath() = TraitHandler.updateWanderPath(this)
+
   override def readFromNBT(compound: NBTTagCompound) {
     super.readFromNBT(compound)
     soul = new Soul(compound)

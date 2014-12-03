@@ -39,4 +39,12 @@ public interface ITrait {
     public float applyPotionDamageCalculations(IEntitySoulCustom entity, DamageSource source, float damage);
 
     public void damageArmor(IEntitySoulCustom entity, float damage);
+
+    public void setOnFireFromLava(IEntitySoulCustom entity);
+
+    public float getBlockPathWeight(IEntitySoulCustom entity, int x, int y, int z);
+
+    public void updateEntityActionState(IEntitySoulCustom entity);
+
+    public void updateWanderPath(IEntitySoulCustom entity);
 }

@@ -136,4 +136,33 @@ public class TraitHandler {
             trait.damageArmor(entity, damage);
         }
     }
+
+    public static void setOnFireFromLava(IEntitySoulCustom entity) {
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
+            trait.setOnFireFromLava(entity);
+        }
+    }
+
+    public static float getBlockPathWeight(IEntitySoulCustom entity, int x, int y, int z) {
+        float flag = 0.0F;
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
+            float tmp = trait.getBlockPathWeight(entity, x, y, z);
+            if(tmp != 0.0F) {
+                flag = tmp;
+            }
+        }
+        return flag;
+    }
+
+    public static void updateEntityActionState(IEntitySoulCustom entity) {
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
+            trait.updateEntityActionState(entity);
+        }
+    }
+
+    public static void updateWanderPath(IEntitySoulCustom entity) {
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
+            trait.updateWanderPath(entity);
+        }
+    }
 }
