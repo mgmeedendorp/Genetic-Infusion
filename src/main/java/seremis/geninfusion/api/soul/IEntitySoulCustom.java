@@ -136,7 +136,7 @@ public interface IEntitySoulCustom {
 
     /**
      * Use this to get a variable that already exists in an entity class, this can't be used to get custom variables.
-     * @param name
+     * @param name The name of the variable
      */
     Object getObject(String name);
 

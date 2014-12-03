@@ -14,7 +14,7 @@ public class Trait implements ITrait {
     public void onUpdate(IEntitySoulCustom entity) {}
 
     @Override
-    public void interact(IEntitySoulCustom entity, EntityPlayer player) {}
+    public boolean interact(IEntitySoulCustom entity, EntityPlayer player) {return false;}
 
     @Override
     public void onDeath(IEntitySoulCustom entity, DamageSource source) {}
@@ -45,4 +45,16 @@ public class Trait implements ITrait {
 
     @Override
     public void attackEntity(IEntitySoulCustom entity, Entity entityToAttack, float distance) {}
+
+    @Override
+    public Entity findPlayerToAttack(IEntitySoulCustom entity) {return null;}
+
+    @Override
+    public float applyArmorCalculations(IEntitySoulCustom entity, DamageSource source, float damage) {return 0;}
+
+    @Override
+    public float applyPotionDamageCalculations(IEntitySoulCustom entity, DamageSource source, float damage) {return 0;}
+
+    @Override
+    public void damageArmor(IEntitySoulCustom entity, float damage) {}
 }

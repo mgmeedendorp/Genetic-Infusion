@@ -118,10 +118,6 @@ class EntitySoulCustomCreature(world: World) extends GIEntityCreature(world) wit
   }
 
   override def onDeath(source: DamageSource) {
-    if (ForgeHooks.onLivingDeath(this, source)) return
-    if (source.getEntity != null) {
-      source.getEntity.onKillEntity(this)
-    }
     TraitHandler.entityDeath(this, source)
   }
 
@@ -154,9 +150,7 @@ class EntitySoulCustomCreature(world: World) extends GIEntityCreature(world) wit
   }
 
   override def interact(player: EntityPlayer): Boolean = {
-    //TODO interactboolean
     TraitHandler.interact(this, player)
-    true
   }
 
   override def applyEntityCollision(entity: Entity) {
@@ -164,6 +158,16 @@ class EntitySoulCustomCreature(world: World) extends GIEntityCreature(world) wit
   }
 
   override def attackEntityAsMob(entity: Entity): Boolean = TraitHandler.attackEntityAsMob(this, entity)
+
+  override def isMovementCeased: Boolean = false
+
+  override def findPlayerToAttack(): Entity = TraitHandler.findPlayerToAttack(this)
+
+  override def applyArmorCalculations(source: DamageSource, damage: Float): Float = TraitHandler.applyArmorCalculations(this, source, damage)
+
+  override def applyPotionDamageCalculations(source: DamageSource, damage: Float): Float = TraitHandler.applyPotionDamageCalculations(this, source, damage)
+
+  override def damageArmor(damage: Float) = TraitHandler.damageArmor(this, damage)
 
   override def readFromNBT(compound: NBTTagCompound) {
     super.readFromNBT(compound)

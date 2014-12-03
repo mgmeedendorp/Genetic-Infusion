@@ -49,25 +49,4 @@ public class TraitRegistry implements ITraitRegistry {
     public LinkedList<ITrait> getTraits() {
         return new LinkedList<ITrait>(traits.values());
     }
-
-    public static void orderTraits() {
-        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
-            TraitHandler.applyArmorCalculations.add(trait);
-            TraitHandler.applyPotionDamageCalculations.add(trait);
-            TraitHandler.attackEntity.add(trait);
-            TraitHandler.attackEntityAsMob.add(trait);
-            TraitHandler.attackEntityFrom.add(trait);
-            TraitHandler.damageEntity.add(trait);
-            TraitHandler.entityDeath.add(trait);
-            TraitHandler.interact.add(trait);
-            TraitHandler.entityUpdate.add(trait);
-            TraitHandler.findPlayerToAttack.add(trait);
-            TraitHandler.firstTick.add(trait);
-            TraitHandler.onKillEntity.add(trait);
-            TraitHandler.playSoundAtEntity.add(trait);
-            TraitHandler.spawnEntityFromEgg.add(trait);
-            TraitHandler.updateAITick.add(trait);
-            TraitHandler.damageArmor.add(trait);
-        }
-    }
 }

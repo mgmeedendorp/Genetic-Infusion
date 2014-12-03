@@ -307,57 +307,6 @@ public class UtilSoulEntity {
         return current + change;
     }
 
-    public static boolean canEntityBeSeen(IEntitySoulCustom entity, Entity ent) {
-        double posX = entity.getDouble("posX");
-        double posY = entity.getDouble("posY");
-        double posZ = entity.getDouble("posZ");
-        return entity.getWorld().rayTraceBlocks(Vec3.createVectorHelper(posX, posY + (double) getEyeHeight(entity), posZ), Vec3.createVectorHelper(ent.posX, ent.posY + (double) ent.getEyeHeight(), ent.posZ)) == null;
-    }
-
-    public static void writePathEntity(IEntitySoulCustom entity, PathEntity path, String variableName) {
-        if(path != null) {
-            Data data = DataHelper.writeAllPrimitives(path);
-            PathPoint[] points = (PathPoint[]) GIReflectionHelper.getField(path, "points");
-            Data[] pointsData = new Data[points.length];
-            for(int n = 0; n < points.length; n++) {
-                pointsData[n] = DataHelper.writeAllPrimitives(points[n]);
-                PathPoint previous = (PathPoint) GIReflectionHelper.getField(points[n], "previous");
-                if(previous != null) {
-                    for(int m = 0; m < points.length; m++) {
-                        if(points[m].equals(previous)) {
-                            pointsData[n].setInteger("previous", m);
-                            break;
-                        }
-                    }
-                }
-            }
-            data.setDataArray("points", pointsData);
-            entity.setData(variableName, data);
-        } else {
-            entity.setData(variableName, null);
-        }
-    }
-
-    public static PathEntity readPathEntity(IEntitySoulCustom entity, String variableName) {
-        if(entity.getData(variableName) != null) {
-            Data data = entity.getData(variableName);
-            Data[] pointsData = data.getDataArray("points");
-            PathPoint[] points = new PathPoint[pointsData.length];
-            for(int i = 0; i < pointsData.length; i++) {
-                points[i] = new PathPoint(0, 0, 0);
-                DataHelper.applyAllData(pointsData[i], points[i]);
-                GIReflectionHelper.setField(points[i], "hash", PathPoint.makeHash(points[i].xCoord, points[i].yCoord, points[i].zCoord));
-            }
-            for(int i = 0; i < points.length; i++) {
-                GIReflectionHelper.setField(points[i], "previous", points[pointsData[i].getInteger("previous")]);
-            }
-            PathEntity path = new PathEntity(points);
-            DataHelper.applyAllData(data, path);
-            return path;
-        }
-        return null;
-    }
-
     public static boolean isMovementBlocked(IEntitySoulCustom entity) {
         return ((EntityLiving)entity).getDataWatcher().getWatchableObjectFloat(6) <= 0.0F;
     }

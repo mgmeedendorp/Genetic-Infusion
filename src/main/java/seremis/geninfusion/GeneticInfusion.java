@@ -79,7 +79,6 @@ public class GeneticInfusion {
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         packetPipeline.postInitialise();
-        TraitRegistry.orderTraits();
         logger.log(Level.INFO, DefaultProps.name + " is loaded successfully.");
     }
 }

@@ -7,24 +7,21 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.ITrait;
+import seremis.geninfusion.api.soul.SoulHelper;
 
 import java.util.LinkedList;
 
 public class TraitHandler {
 
-    static LinkedList<ITrait> entityUpdate = new LinkedList<ITrait>();
-
     public static void entityUpdate(IEntitySoulCustom entity) {
-        for(ITrait trait : entityUpdate) {
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.onUpdate(entity);
         }
     }
 
-    static LinkedList<ITrait> interact = new LinkedList<ITrait>();
-
     public static boolean interact(IEntitySoulCustom entity, EntityPlayer player) {
         boolean flag = false;
-        for(ITrait trait : interact) {
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             if(trait.interact(entity, player)) {
                 flag = true;
             }
@@ -32,27 +29,21 @@ public class TraitHandler {
         return flag;
     }
 
-    static LinkedList<ITrait> entityDeath = new LinkedList<ITrait>();
-
     public static void entityDeath(IEntitySoulCustom entity, DamageSource source) {
-        for(ITrait trait : entityDeath) {
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.onDeath(entity, source);
         }
     }
 
-    static LinkedList<ITrait> onKillEntity = new LinkedList<ITrait>();
-
     public static void onKillEntity(IEntitySoulCustom entity, EntityLivingBase killed) {
-        for(ITrait trait : onKillEntity) {
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.onKillEntity(entity, killed);
         }
     }
 
-    static LinkedList<ITrait> attackEntityFrom = new LinkedList<ITrait>();
-
     public static boolean attackEntityFrom(IEntitySoulCustom entity, DamageSource source, float damage) {
         boolean flag = false;
-        for(ITrait trait : attackEntityFrom) {
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             if(trait.attackEntityFrom(entity, source, damage)) {
                 flag = true;
             }
@@ -60,60 +51,46 @@ public class TraitHandler {
         return flag;
     }
 
-    static LinkedList<ITrait> attackEntity = new LinkedList<ITrait>();
-
     public static void attackEntity(IEntitySoulCustom entity, Entity entityToAttack, float distance) {
-        for(ITrait trait : attackEntity) {
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.attackEntity(entity, entityToAttack, distance);
         }
     }
 
-    static LinkedList<ITrait> spawnEntityFromEgg = new LinkedList<ITrait>();
-
     public static IEntityLivingData spawnEntityFromEgg(IEntitySoulCustom entity, IEntityLivingData data) {
-        for(ITrait trait : spawnEntityFromEgg) {
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.onSpawnWithEgg(entity, data);
         }
         return data;
     }
 
-    static LinkedList<ITrait> playSoundAtEntity = new LinkedList<ITrait>();
-
     public static void playSoundAtEntity(IEntitySoulCustom entity, String name, float volume, float pitch) {
-        for(ITrait trait : playSoundAtEntity) {
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.playSound(entity, name, volume, pitch);
         }
     }
 
-    static LinkedList<ITrait> damageEntity = new LinkedList<ITrait>();
-
     public static void damageEntity(IEntitySoulCustom entity, DamageSource source, float damage) {
-        for(ITrait trait : damageEntity) {
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.damageEntity(entity, source, damage);
         }
     }
 
-    static LinkedList<ITrait> updateAITick = new LinkedList<ITrait>();
-
     public static void updateAITick(IEntitySoulCustom entity) {
-        for(ITrait trait : updateAITick) {
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.updateAITick(entity);
         }
     }
 
-    static LinkedList<ITrait> firstTick = new LinkedList<ITrait>();
-
     public static void firstTick(IEntitySoulCustom entity) {
-        for(ITrait trait : firstTick) {
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.firstTick(entity);
         }
     }
 
-    static LinkedList<ITrait> attackEntityAsMob = new LinkedList<ITrait>();
-
     public static boolean attackEntityAsMob(IEntitySoulCustom entity, Entity entityToAttack) {
         boolean flag = false;
-        for(ITrait trait : attackEntityAsMob) {
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             if(trait.attackEntityAsMob(entity, entityToAttack)) {
                 flag = true;
             }
@@ -121,11 +98,9 @@ public class TraitHandler {
         return flag;
     }
 
-    static LinkedList<ITrait> findPlayerToAttack = new LinkedList<ITrait>();
-
     public static Entity findPlayerToAttack(IEntitySoulCustom entity) {
         Entity flag = null;
-        for(ITrait trait : findPlayerToAttack) {
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             Entity tmp = trait.findPlayerToAttack(entity);
             if(tmp != null) {
                 flag = tmp;
@@ -134,11 +109,9 @@ public class TraitHandler {
         return flag;
     }
 
-    static LinkedList<ITrait> applyArmorCalculations = new LinkedList<ITrait>();
-
     public static float applyArmorCalculations(IEntitySoulCustom entity, DamageSource source, float damage) {
         float flag = 0.0F;
-        for(ITrait trait : applyArmorCalculations) {
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             float tmp = trait.applyArmorCalculations(entity, source, damage);
             if(tmp != 0.0F) {
                 flag = tmp;
@@ -147,11 +120,9 @@ public class TraitHandler {
         return flag;
     }
 
-    static LinkedList<ITrait> applyPotionDamageCalculations = new LinkedList<ITrait>();
-
     public static float applyPotionDamageCalculations(IEntitySoulCustom entity, DamageSource source, float damage) {
         float flag = 0.0F;
-        for(ITrait trait : applyPotionDamageCalculations) {
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             float tmp = trait.applyPotionDamageCalculations(entity, source, damage);
             if(tmp != 0.0F) {
                 flag = tmp;
@@ -160,10 +131,8 @@ public class TraitHandler {
         return flag;
     }
 
-    static LinkedList<ITrait> damageArmor = new LinkedList<ITrait>();
-
     public static void damageArmor(IEntitySoulCustom entity, float damage) {
-        for(ITrait trait : damageArmor) {
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.damageArmor(entity, damage);
         }
     }
