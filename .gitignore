@@ -1,10 +1,10 @@
 *.project
 .gradle
-build/
-eclipse/
-gradle/
-out/
+build
+eclipse
+gradle
+out
 Genetic-Infusion.*
 gradlew.*
-gradlew/
+gradlew
 *.db
