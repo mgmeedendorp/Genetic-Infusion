@@ -57,4 +57,16 @@ public class Trait implements ITrait {
 
     @Override
     public void damageArmor(IEntitySoulCustom entity, float damage) {}
+
+    @Override
+    public void setOnFireFromLava(IEntitySoulCustom entity) {}
+
+    @Override
+    public float getBlockPathWeight(IEntitySoulCustom entity, int x, int y, int z) {return 0;}
+
+    @Override
+    public void updateEntityActionState(IEntitySoulCustom entity) {}
+
+    @Override
+    public void updateWanderPath(IEntitySoulCustom entity) {}
 }
