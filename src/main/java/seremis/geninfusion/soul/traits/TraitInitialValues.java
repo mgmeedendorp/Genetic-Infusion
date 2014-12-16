@@ -16,7 +16,7 @@ public class TraitInitialValues extends Trait {
 
     @Override
     public void firstTick(IEntitySoulCustom entity) {
-        BaseAttributeMap attributeMap = ((EntityLiving)entity).getAttributeMap();
+        BaseAttributeMap attributeMap = ((EntityLiving) entity).getAttributeMap();
 
         float maxHealth = ((AlleleFloat) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_MAX_HEALTH)).value;
         attributeMap.getAttributeInstance(SharedMonsterAttributes.maxHealth).setBaseValue(maxHealth);

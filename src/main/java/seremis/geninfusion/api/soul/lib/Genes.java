@@ -1,11 +1,9 @@
 package seremis.geninfusion.api.soul.lib;
 
-import seremis.geninfusion.lib.DefaultProps;
-
 public class Genes {
 
     public static final String ID = "geninfusion";
-    
+
     public static final String GENE_MAX_HEALTH = ID + ".gene.maxHealth";
     public static final String GENE_INVULNERABLE = ID + ".gene.invulnerable";
     public static final String GENE_ATTACK_DAMAGE = ID + ".gene.attackDamage";

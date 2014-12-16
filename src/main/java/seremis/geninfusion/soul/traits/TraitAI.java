@@ -5,8 +5,6 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAITasks;
-import net.minecraft.entity.ai.attributes.BaseAttribute;
-import net.minecraft.entity.ai.attributes.BaseAttributeMap;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -14,12 +12,7 @@ import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
-import seremis.geninfusion.api.soul.SoulHelper;
-import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.UtilSoulEntity;
-import seremis.geninfusion.core.proxy.CommonProxy;
-import seremis.geninfusion.soul.allele.AlleleBoolean;
-import seremis.geninfusion.soul.allele.AlleleInteger;
 
 /**
  * @author Seremis
@@ -42,8 +35,8 @@ public class TraitAI extends Trait {
             entity.setFloat("moveStrafing", 0.0F);
             entity.setFloat("moveForward", 0.0F);
             entity.setFloat("randomYawVelocity", 0.0F);
-        } else if (!entity.getWorld().isRemote) {
-            if (useNewAI) {
+        } else if(!entity.getWorld().isRemote) {
+            if(useNewAI) {
                 entity.getWorld().theProfiler.startSection("newAi");
                 updateAITasks(entity);
                 entity.getWorld().theProfiler.endSection();
@@ -68,7 +61,7 @@ public class TraitAI extends Trait {
         int fleeingTick = entity.getInteger("fleeingTick");
 
         if(fleeingTick > 0 && --fleeingTick == 0) {
-            IAttributeInstance iattributeinstance = ((EntityLiving)entity).getEntityAttribute(SharedMonsterAttributes.movementSpeed);
+            IAttributeInstance iattributeinstance = ((EntityLiving) entity).getEntityAttribute(SharedMonsterAttributes.movementSpeed);
             iattributeinstance.removeModifier(EntityCreature.field_110181_i);
         }
 
@@ -85,18 +78,17 @@ public class TraitAI extends Trait {
             if(entityToAttack != null) {
                 entity.setObject("pathToEntity", entity.getWorld().getPathEntityToEntity((Entity) entity, entityToAttack, f4, true, false, false, true));
             }
-        } else if (entityToAttack.isEntityAlive()) {
+        } else if(entityToAttack.isEntityAlive()) {
             float f = entityToAttack.getDistanceToEntity((Entity) entity);
 
-            if (((EntityLiving)entity).canEntityBeSeen(entityToAttack)) {
+            if(((EntityLiving) entity).canEntityBeSeen(entityToAttack)) {
                 entity.attackEntity(entityToAttack, f);
             }
         } else {
             entityToAttack = null;
         }
 
-        if (entityToAttack instanceof EntityPlayerMP && ((EntityPlayerMP)entityToAttack).theItemInWorldManager.isCreative())
-        {
+        if(entityToAttack instanceof EntityPlayerMP && ((EntityPlayerMP) entityToAttack).theItemInWorldManager.isCreative()) {
             entityToAttack = null;
         }
 
@@ -104,9 +96,9 @@ public class TraitAI extends Trait {
 
         entity.getWorld().theProfiler.endSection();
 
-        if (!entity.getBoolean("hasAttacked") && entityToAttack != null && (entity.getObject("pathToEntity") == null || entity.getRandom().nextInt(20) == 0)) {
+        if(!entity.getBoolean("hasAttacked") && entityToAttack != null && (entity.getObject("pathToEntity") == null || entity.getRandom().nextInt(20) == 0)) {
             entity.setObject("pathToEntity", entity.getWorld().getPathEntityToEntity((Entity) entity, entityToAttack, f4, true, false, false, true));
-        } else if (!entity.getBoolean("hasAttacked") && (entity.getObject("pathToEntity") == null && entity.getRandom().nextInt(180) == 0 || entity.getRandom().nextInt(120) == 0 || entity.getInteger("fleeingTick") > 0) && entity.getInteger("entityAge") < 100) {
+        } else if(!entity.getBoolean("hasAttacked") && (entity.getObject("pathToEntity") == null && entity.getRandom().nextInt(180) == 0 || entity.getRandom().nextInt(120) == 0 || entity.getInteger("fleeingTick") > 0) && entity.getInteger("entityAge") < 100) {
             entity.updateWanderPath();
         }
 
@@ -117,10 +109,10 @@ public class TraitAI extends Trait {
 
         PathEntity pathToEntity = (PathEntity) entity.getObject("pathToEntity");
 
-        if (pathToEntity != null && entity.getRandom().nextInt(100) != 0) {
+        if(pathToEntity != null && entity.getRandom().nextInt(100) != 0) {
             entity.getWorld().theProfiler.startSection("followpath");
             Vec3 vec3 = pathToEntity.getPosition((Entity) entity);
-            double d0 = (double)(entity.getFloat("width") * 2.0F);
+            double d0 = (double) (entity.getFloat("width") * 2.0F);
 
             double posX = entity.getDouble("posX");
             double posZ = entity.getDouble("posZ");
@@ -128,10 +120,10 @@ public class TraitAI extends Trait {
             float moveForward = entity.getFloat("moveForward");
             float moveStrafing = entity.getFloat("moveStrafing");
 
-            while (vec3 != null && vec3.squareDistanceTo(posX, vec3.yCoord, posZ) < d0 * d0) {
+            while(vec3 != null && vec3.squareDistanceTo(posX, vec3.yCoord, posZ) < d0 * d0) {
                 pathToEntity.incrementPathIndex();
 
-                if (pathToEntity.isFinished()) {
+                if(pathToEntity.isFinished()) {
                     vec3 = null;
                     pathToEntity = null;
                 } else {
@@ -141,48 +133,48 @@ public class TraitAI extends Trait {
 
             entity.setBoolean("isJumping", false);
 
-            if (vec3 != null) {
+            if(vec3 != null) {
                 double d1 = vec3.xCoord - posX;
                 double d2 = vec3.zCoord - posZ;
-                double d3 = vec3.yCoord - (double)i;
-                float f1 = (float)(Math.atan2(d2, d1) * 180.0D / Math.PI) - 90.0F;
+                double d3 = vec3.yCoord - (double) i;
+                float f1 = (float) (Math.atan2(d2, d1) * 180.0D / Math.PI) - 90.0F;
                 float f2 = MathHelper.wrapAngleTo180_float(f1 - rotationYaw);
-                moveForward = (float) ((EntityLiving)entity).getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue();
+                moveForward = (float) ((EntityLiving) entity).getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue();
 
-                if (f2 > 30.0F) {
+                if(f2 > 30.0F) {
                     f2 = 30.0F;
                 }
 
-                if (f2 < -30.0F) {
+                if(f2 < -30.0F) {
                     f2 = -30.0F;
                 }
 
                 rotationYaw += f2;
 
-                if (entity.getBoolean("hasAttacked") && entityToAttack != null) {
+                if(entity.getBoolean("hasAttacked") && entityToAttack != null) {
                     double d4 = entityToAttack.posX - posX;
                     double d5 = entityToAttack.posZ - posZ;
                     float f3 = rotationYaw;
-                    rotationYaw = (float)(Math.atan2(d5, d4) * 180.0D / Math.PI) - 90.0F;
-                    f2 = (f3 - rotationYaw + 90.0F) * (float)Math.PI / 180.0F;
+                    rotationYaw = (float) (Math.atan2(d5, d4) * 180.0D / Math.PI) - 90.0F;
+                    f2 = (f3 - rotationYaw + 90.0F) * (float) Math.PI / 180.0F;
                     moveStrafing = -MathHelper.sin(f2) * moveForward * 1.0F;
                     moveForward = MathHelper.cos(f2) * moveForward * 1.0F;
                 }
 
-                if (d3 > 0.0D) {
+                if(d3 > 0.0D) {
                     entity.setBoolean("isJumping", true);
                 }
             }
 
-            if (entityToAttack != null) {
+            if(entityToAttack != null) {
                 UtilSoulEntity.faceEntity(entity, entityToAttack, 30.0F, 30.0F);
             }
 
-            if (entity.getBoolean("isCollidedHorizontally") && pathToEntity == null) {
+            if(entity.getBoolean("isCollidedHorizontally") && pathToEntity == null) {
                 entity.setBoolean("isJumping", true);
             }
 
-            if (entity.getRandom().nextFloat() < 0.8F && (flag || flag1)) {
+            if(entity.getRandom().nextFloat() < 0.8F && (flag || flag1)) {
                 entity.setBoolean("isJumping", true);
             }
 
@@ -212,15 +204,13 @@ public class TraitAI extends Trait {
         int k = -1;
         float f = -99999.0F;
 
-        for (int l = 0; l < 10; ++l)
-        {
-            int i1 = MathHelper.floor_double(posX + (double)entity.getRandom().nextInt(13) - 6.0D);
-            int j1 = MathHelper.floor_double(posY + (double)entity.getRandom().nextInt(7) - 3.0D);
-            int k1 = MathHelper.floor_double(posZ + (double)entity.getRandom().nextInt(13) - 6.0D);
+        for(int l = 0; l < 10; ++l) {
+            int i1 = MathHelper.floor_double(posX + (double) entity.getRandom().nextInt(13) - 6.0D);
+            int j1 = MathHelper.floor_double(posY + (double) entity.getRandom().nextInt(7) - 3.0D);
+            int k1 = MathHelper.floor_double(posZ + (double) entity.getRandom().nextInt(13) - 6.0D);
             float f1 = entity.getBlockPathWeight(i1, j1, k1);
 
-            if (f1 > f)
-            {
+            if(f1 > f) {
                 f = f1;
                 i = i1;
                 j = j1;
@@ -229,8 +219,7 @@ public class TraitAI extends Trait {
             }
         }
 
-        if (flag)
-        {
+        if(flag) {
             entity.setObject("pathToEntity", entity.getWorld().getEntityPathToXYZ((Entity) entity, i, j, k, 10.0F, true, false, false, true));
         }
 
@@ -256,10 +245,10 @@ public class TraitAI extends Trait {
         UtilSoulEntity.despawnEntity(entity);
         float f = 8.0F;
 
-        if (entity.getRandom().nextFloat() < 0.02F) {
+        if(entity.getRandom().nextFloat() < 0.02F) {
             EntityPlayer entityplayer = entity.getWorld().getClosestPlayerToEntity((Entity) entity, (double) f);
 
-            if (entityplayer != null) {
+            if(entityplayer != null) {
                 entity.setObject("currentTarget", entityplayer);
                 entity.setInteger("numTicksToChaseTarget", 10 + entity.getRandom().nextInt(20));
             } else {
@@ -270,14 +259,14 @@ public class TraitAI extends Trait {
         EntityLiving currentTarget = (EntityLiving) entity.getObject("currentTarget");
         int numTicksToChaseTarget = entity.getInteger("numTicksToChaseTarget");
 
-        if (currentTarget != null) {
+        if(currentTarget != null) {
             UtilSoulEntity.faceEntity(entity, currentTarget, 10.0F, (float) 40);
 
-            if (numTicksToChaseTarget-- <= 0 || currentTarget.isDead || currentTarget.getDistanceSqToEntity((Entity) entity) > (double)(f * f)) {
+            if(numTicksToChaseTarget-- <= 0 || currentTarget.isDead || currentTarget.getDistanceSqToEntity((Entity) entity) > (double) (f * f)) {
                 entity.setObject("currentTarget", null);
             }
         } else {
-            if (entity.getRandom().nextFloat() < 0.05F) {
+            if(entity.getRandom().nextFloat() < 0.05F) {
                 entity.setFloat("randomYawVelocity", (entity.getRandom().nextFloat() - 0.5F) * 20.0F);
             }
 
@@ -291,7 +280,7 @@ public class TraitAI extends Trait {
         boolean flag1 = entity.getBoolean("inWater");
         boolean flag = UtilSoulEntity.handleLavaMovement(entity);
 
-        if (flag1 || flag) {
+        if(flag1 || flag) {
             entity.setBoolean("isJumping", entity.getRandom().nextFloat() < 0.8F);
         }
     }
@@ -302,27 +291,27 @@ public class TraitAI extends Trait {
         UtilSoulEntity.despawnEntity(entity);
         entity.getWorld().theProfiler.endSection();
         entity.getWorld().theProfiler.startSection("sensing");
-        ((EntityLiving)entity).getEntitySenses().clearSensingCache();
+        ((EntityLiving) entity).getEntitySenses().clearSensingCache();
         entity.getWorld().theProfiler.endSection();
         entity.getWorld().theProfiler.startSection("targetSelector");
-        ((EntityAITasks)entity.getObject("targetTasks")).onUpdateTasks();
+        ((EntityAITasks) entity.getObject("targetTasks")).onUpdateTasks();
         entity.getWorld().theProfiler.endSection();
         entity.getWorld().theProfiler.startSection("goalSelector");
-        ((EntityAITasks)entity.getObject("tasks")).onUpdateTasks();
+        ((EntityAITasks) entity.getObject("tasks")).onUpdateTasks();
         entity.getWorld().theProfiler.endSection();
         entity.getWorld().theProfiler.startSection("navigation");
-        ((EntityLiving)entity).getNavigator().onUpdateNavigation();
+        ((EntityLiving) entity).getNavigator().onUpdateNavigation();
         entity.getWorld().theProfiler.endSection();
         entity.getWorld().theProfiler.startSection("mob tick");
         entity.updateAITick();
         entity.getWorld().theProfiler.endSection();
         entity.getWorld().theProfiler.startSection("controls");
         entity.getWorld().theProfiler.startSection("move");
-        ((EntityLiving)entity).getMoveHelper().onUpdateMoveHelper();
+        ((EntityLiving) entity).getMoveHelper().onUpdateMoveHelper();
         entity.getWorld().theProfiler.endStartSection("look");
-        ((EntityLiving)entity).getLookHelper().onUpdateLook();
+        ((EntityLiving) entity).getLookHelper().onUpdateLook();
         entity.getWorld().theProfiler.endStartSection("jump");
-        ((EntityLiving)entity).getJumpHelper().doJump();
+        ((EntityLiving) entity).getJumpHelper().doJump();
         entity.getWorld().theProfiler.endSection();
         entity.getWorld().theProfiler.endSection();
     }

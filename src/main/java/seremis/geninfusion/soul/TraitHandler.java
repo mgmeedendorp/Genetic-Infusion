@@ -9,8 +9,6 @@ import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.ITrait;
 import seremis.geninfusion.api.soul.SoulHelper;
 
-import java.util.LinkedList;
-
 public class TraitHandler {
 
     public static void entityUpdate(IEntitySoulCustom entity) {

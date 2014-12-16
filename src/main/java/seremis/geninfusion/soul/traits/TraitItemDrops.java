@@ -7,7 +7,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.CombatTracker;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.ForgeHooks;
@@ -51,7 +50,7 @@ public class TraitItemDrops extends Trait {
 
             entity.setBoolean("captureDrops", true);
 
-            ArrayList<EntityItem> capturedDrops = (ArrayList<EntityItem>)entity.getObject("capturedDrops");
+            ArrayList<EntityItem> capturedDrops = (ArrayList<EntityItem>) entity.getObject("capturedDrops");
 
             capturedDrops.clear();
             entity.setObject("capturedDrops", capturedDrops);

@@ -1,21 +1,13 @@
 package seremis.geninfusion.api.soul;
 
-import net.minecraft.entity.DataWatcher;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.ai.attributes.BaseAttributeMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.CombatTracker;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import seremis.geninfusion.api.soul.util.Data;
 
-import java.util.HashMap;
 import java.util.Random;
 
 public interface IEntitySoulCustom {
@@ -107,8 +99,6 @@ public interface IEntitySoulCustom {
 
     /**
      * Use this to set a variable that already exists in an entity class, this can't be used to set custom variables.
-     * @param name
-     * @param object
      */
     void setObject(String name, Object object);
 
@@ -136,6 +126,7 @@ public interface IEntitySoulCustom {
 
     /**
      * Use this to get a variable that already exists in an entity class, this can't be used to get custom variables.
+     *
      * @param name The name of the variable
      */
     Object getObject(String name);
@@ -168,12 +159,15 @@ public interface IEntitySoulCustom {
     void setBeenAttacked();
 
     String getDeathSound();
+
     String getHurtSound();
 
     float getSoundVolume();
+
     float getSoundPitch();
 
     float applyArmorCalculations(DamageSource source, float damage);
+
     float applyPotionDamageCalculations(DamageSource source, float damage);
 
     void damageArmor(float damage);
@@ -181,6 +175,8 @@ public interface IEntitySoulCustom {
     void setOnFireFromLava();
 
     float getBlockPathWeight(int x, int y, int z);
+
     void updateWanderPath();
+
     void updateEntityActionState();
 }

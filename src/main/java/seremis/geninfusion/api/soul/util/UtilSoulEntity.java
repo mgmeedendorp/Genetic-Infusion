@@ -10,15 +10,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.pathfinding.PathEntity;
-import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.potion.Potion;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeHooks;
@@ -27,7 +23,6 @@ import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.core.proxy.CommonProxy;
-import seremis.geninfusion.helper.GIReflectionHelper;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
 
 import java.util.ArrayList;
@@ -239,16 +234,16 @@ public class UtilSoulEntity {
     }
 
     public static EntityItem dropItem(IEntitySoulCustom entity, ItemStack droppedStack, float dropHeight) {
-        if (droppedStack.stackSize != 0 && droppedStack.getItem() != null) {
+        if(droppedStack.stackSize != 0 && droppedStack.getItem() != null) {
             World world = entity.getWorld();
             double posX = entity.getDouble("posX");
             double posY = entity.getDouble("posY");
             double posZ = entity.getDouble("posZ");
 
-            EntityItem entityitem = new EntityItem(world, posX, posY + (double)dropHeight, posZ, droppedStack);
+            EntityItem entityitem = new EntityItem(world, posX, posY + (double) dropHeight, posZ, droppedStack);
             entityitem.delayBeforeCanPickup = 10;
             if(entity.getBoolean("captureDrops")) {
-                ArrayList<EntityItem> capturedDrops = (ArrayList<EntityItem>)entity.getObject("capturedDrops");
+                ArrayList<EntityItem> capturedDrops = (ArrayList<EntityItem>) entity.getObject("capturedDrops");
                 capturedDrops.add(entityitem);
                 entity.setObject("capturedDrops", capturedDrops);
             } else {
@@ -308,10 +303,10 @@ public class UtilSoulEntity {
     }
 
     public static boolean isMovementBlocked(IEntitySoulCustom entity) {
-        return ((EntityLiving)entity).getDataWatcher().getWatchableObjectFloat(6) <= 0.0F;
+        return ((EntityLiving) entity).getDataWatcher().getWatchableObjectFloat(6) <= 0.0F;
     }
 
     public static float getHealth(IEntitySoulCustom entity) {
-        return ((EntityLiving)entity).getDataWatcher().getWatchableObjectFloat(6);
+        return ((EntityLiving) entity).getDataWatcher().getWatchableObjectFloat(6);
     }
 }

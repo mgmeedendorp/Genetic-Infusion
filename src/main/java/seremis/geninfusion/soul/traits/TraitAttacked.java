@@ -15,13 +15,11 @@ import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.UtilSoulEntity;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
 
-import java.util.Random;
-
 public class TraitAttacked extends Trait {
 
     @Override
     public void firstTick(IEntitySoulCustom entity) {
-        entity.setBoolean("invulnerable", ((AlleleBoolean)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_INVULNERABLE)).value);
+        entity.setBoolean("invulnerable", ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_INVULNERABLE)).value);
     }
 
     @Override

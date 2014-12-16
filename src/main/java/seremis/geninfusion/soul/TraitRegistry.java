@@ -2,8 +2,8 @@ package seremis.geninfusion.soul;
 
 import seremis.geninfusion.api.soul.ITrait;
 import seremis.geninfusion.api.soul.ITraitRegistry;
-import seremis.geninfusion.api.soul.SoulHelper;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,5 +48,126 @@ public class TraitRegistry implements ITraitRegistry {
     @Override
     public LinkedList<ITrait> getTraits() {
         return new LinkedList<ITrait>(traits.values());
+    }
+
+    public LinkedHashMap<ITrait, ArrayList<ITrait>> overrideSupers = new LinkedHashMap<ITrait, ArrayList<ITrait>>();
+    public LinkedHashMap<ITrait, ArrayList<ITrait>> overrideSubs = new LinkedHashMap<ITrait, ArrayList<ITrait>>();
+
+    public LinkedHashMap<ITrait, ArrayList<ITrait>> overwriteSupers = new LinkedHashMap<ITrait, ArrayList<ITrait>>();
+    public LinkedHashMap<ITrait, ArrayList<ITrait>> overwriteSubs = new LinkedHashMap<ITrait, ArrayList<ITrait>>();
+
+    @Override
+    public void makeTraitOverride(ITrait superTrait, ITrait subTrait) {
+        if(overrideSupers.isEmpty() || overrideSupers.containsKey(superTrait)) {
+            ArrayList<ITrait> superList = new ArrayList<ITrait>();
+            superList.add(superTrait);
+            overrideSupers.put(subTrait, superList);
+        } else {
+            ArrayList<ITrait> superList = overrideSupers.get(superTrait);
+            superList.add(superTrait);
+            overrideSupers.put(subTrait, superList);
+        }
+        if(overrideSubs.isEmpty() || overrideSubs.containsKey(superTrait)) {
+            ArrayList<ITrait> subList = new ArrayList<ITrait>();
+            subList.add(subTrait);
+            overrideSubs.put(superTrait, subList);
+        } else {
+            ArrayList<ITrait> subList = overrideSubs.get(superTrait);
+            subList.add(subTrait);
+            overrideSubs.put(superTrait, subList);
+        }
+    }
+
+    @Override
+    public void makeTraitOverride(String superName, String subName) {
+        makeTraitOverride(getTrait(superName), getTrait(subName));
+    }
+
+    @Override
+    public ArrayList<ITrait> getOverridden(ITrait trait) {
+        return overrideSubs.get(trait);
+    }
+
+    @Override
+    public ArrayList<ITrait> getOverriding(ITrait trait) {
+        return overrideSupers.get(trait);
+    }
+
+    @Override
+    public ArrayList<ITrait> getOverridden(String name) {
+        return getOverridden(getTrait(name));
+    }
+
+    @Override
+    public ArrayList<ITrait> getOverriding(String name) {
+        return getOverriding(getTrait(name));
+    }
+
+    @Override
+    public boolean isOverridden(ITrait trait) {
+        return overrideSupers.containsKey(trait);
+    }
+
+    @Override
+    public boolean isOverriding(ITrait trait) {
+        return overrideSubs.containsKey(trait);
+    }
+
+
+    @Override
+    public void makeTraitOverwrite(ITrait superTrait, ITrait subTrait) {
+        if(overwriteSupers.isEmpty() || overwriteSupers.containsKey(superTrait)) {
+            ArrayList<ITrait> superList = new ArrayList<ITrait>();
+            superList.add(superTrait);
+            overwriteSupers.put(subTrait, superList);
+        } else {
+            ArrayList<ITrait> superList = overwriteSupers.get(superTrait);
+            superList.add(superTrait);
+            overwriteSupers.put(subTrait, superList);
+        }
+        if(overwriteSubs.isEmpty() || overwriteSubs.containsKey(superTrait)) {
+            ArrayList<ITrait> subList = new ArrayList<ITrait>();
+            subList.add(subTrait);
+            overwriteSubs.put(superTrait, subList);
+        } else {
+            ArrayList<ITrait> subList = overwriteSubs.get(superTrait);
+            subList.add(subTrait);
+            overwriteSubs.put(superTrait, subList);
+        }
+    }
+
+    @Override
+    public void makeTraitOverwrite(String superName, String subName) {
+        makeTraitOverwrite(getTrait(superName), getTrait(subName));
+    }
+
+    @Override
+    public ArrayList<ITrait> getOverwritten(ITrait trait) {
+        return overwriteSubs.get(trait);
+    }
+
+    @Override
+    public ArrayList<ITrait> getOverwriting(ITrait trait) {
+        return overwriteSupers.get(trait);
+    }
+
+    @Override
+    public ArrayList<ITrait> getOverwritten(String name) {
+        return getOverwritten(getTrait(name));
+    }
+
+    @Override
+    public ArrayList<ITrait> getOverwriting(String name) {
+        return getOverwriting(getTrait(name));
+    }
+
+    @Override
+    public boolean isOverwritten(ITrait trait) {
+        return overwriteSupers.containsKey(trait);
+    }
+
+    @Override
+    public boolean isOverwriting(ITrait trait) {
+        return overwriteSubs.containsKey(trait);
     }
 }
