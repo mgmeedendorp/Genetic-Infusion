@@ -14,6 +14,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
+import seremis.geninfusion.api.soul.IEntitySoulCustom;
+import seremis.geninfusion.api.soul.ITraitHandler;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.block.ModBlocks;
 import seremis.geninfusion.core.GIConfig;
@@ -54,6 +56,7 @@ public class GeneticInfusion {
         SoulHelper.traitRegistry = new TraitRegistry();
         SoulHelper.standardSoulRegistry = new StandardSoulRegistry();
         SoulHelper.instanceHelper = new InstanceHelper();
+        SoulHelper.traitHandler = new TraitHandler();
 
         ModBlocks.init();
         ModItems.init();

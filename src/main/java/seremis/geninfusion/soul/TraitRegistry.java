@@ -2,11 +2,9 @@ package seremis.geninfusion.soul;
 
 import seremis.geninfusion.api.soul.ITrait;
 import seremis.geninfusion.api.soul.ITraitRegistry;
+import seremis.geninfusion.api.soul.SoulHelper;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class TraitRegistry implements ITraitRegistry {
 
@@ -50,11 +48,8 @@ public class TraitRegistry implements ITraitRegistry {
         return new LinkedList<ITrait>(traits.values());
     }
 
-    public LinkedHashMap<ITrait, ArrayList<ITrait>> overrideSupers = new LinkedHashMap<ITrait, ArrayList<ITrait>>();
-    public LinkedHashMap<ITrait, ArrayList<ITrait>> overrideSubs = new LinkedHashMap<ITrait, ArrayList<ITrait>>();
-
-    public LinkedHashMap<ITrait, ArrayList<ITrait>> overwriteSupers = new LinkedHashMap<ITrait, ArrayList<ITrait>>();
-    public LinkedHashMap<ITrait, ArrayList<ITrait>> overwriteSubs = new LinkedHashMap<ITrait, ArrayList<ITrait>>();
+    public HashMap<ITrait, ArrayList<ITrait>> overrideSupers = new HashMap<ITrait, ArrayList<ITrait>>();
+    public HashMap<ITrait, ArrayList<ITrait>> overrideSubs = new HashMap<ITrait, ArrayList<ITrait>>();
 
     @Override
     public void makeTraitOverride(ITrait superTrait, ITrait subTrait) {
@@ -113,61 +108,17 @@ public class TraitRegistry implements ITraitRegistry {
         return overrideSubs.containsKey(trait);
     }
 
+    public LinkedList<ITrait> orderedTraits = new LinkedList<ITrait>();
 
     @Override
-    public void makeTraitOverwrite(ITrait superTrait, ITrait subTrait) {
-        if(overwriteSupers.isEmpty() || overwriteSupers.containsKey(superTrait)) {
-            ArrayList<ITrait> superList = new ArrayList<ITrait>();
-            superList.add(superTrait);
-            overwriteSupers.put(subTrait, superList);
-        } else {
-            ArrayList<ITrait> superList = overwriteSupers.get(superTrait);
-            superList.add(superTrait);
-            overwriteSupers.put(subTrait, superList);
+    public LinkedList<ITrait> getOrderedTraits() {
+        if(orderedTraits.isEmpty()) {
+            for(ITrait trait : getTraits()) {
+                if(!isOverridden(trait)) {
+                    orderedTraits.add(trait);
+                }
+            }
         }
-        if(overwriteSubs.isEmpty() || overwriteSubs.containsKey(superTrait)) {
-            ArrayList<ITrait> subList = new ArrayList<ITrait>();
-            subList.add(subTrait);
-            overwriteSubs.put(superTrait, subList);
-        } else {
-            ArrayList<ITrait> subList = overwriteSubs.get(superTrait);
-            subList.add(subTrait);
-            overwriteSubs.put(superTrait, subList);
-        }
-    }
-
-    @Override
-    public void makeTraitOverwrite(String superName, String subName) {
-        makeTraitOverwrite(getTrait(superName), getTrait(subName));
-    }
-
-    @Override
-    public ArrayList<ITrait> getOverwritten(ITrait trait) {
-        return overwriteSubs.get(trait);
-    }
-
-    @Override
-    public ArrayList<ITrait> getOverwriting(ITrait trait) {
-        return overwriteSupers.get(trait);
-    }
-
-    @Override
-    public ArrayList<ITrait> getOverwritten(String name) {
-        return getOverwritten(getTrait(name));
-    }
-
-    @Override
-    public ArrayList<ITrait> getOverwriting(String name) {
-        return getOverwriting(getTrait(name));
-    }
-
-    @Override
-    public boolean isOverwritten(ITrait trait) {
-        return overwriteSupers.containsKey(trait);
-    }
-
-    @Override
-    public boolean isOverwriting(ITrait trait) {
-        return overwriteSubs.containsKey(trait);
+        return orderedTraits;
     }
 }
