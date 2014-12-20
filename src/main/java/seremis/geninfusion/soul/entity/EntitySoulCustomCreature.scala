@@ -97,6 +97,8 @@ class EntitySoulCustomCreature(world: World) extends GIEntityCreature(world) wit
 
     override def getSoundVolume: Float = SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_SOUND_VOLUME).asInstanceOf[AlleleFloat].value
 
+    override def getSoundPitch: Float = super.getSoundPitch()
+
     override def applyEntityAttributes() {
         this.getAttributeMap.registerAttribute(SharedMonsterAttributes.maxHealth)
         this.getAttributeMap.registerAttribute(SharedMonsterAttributes.knockbackResistance)
@@ -168,6 +170,18 @@ class EntitySoulCustomCreature(world: World) extends GIEntityCreature(world) wit
     override def applyPotionDamageCalculations(source: DamageSource, damage: Float): Float = TraitHandler.applyPotionDamageCalculations(this, source, damage)
 
     override def damageArmor(damage: Float) = TraitHandler.damageArmor(this, damage)
+
+    override def setOnFireFromLava() = TraitHandler.setOnFireFromLava(this)
+
+    override def getBlockPathWeight(x: Int, y: Int, z: Int): Float = TraitHandler.getBlockPathWeight(this, x, y, z)
+
+    override def updateEntityActionState() = TraitHandler.updateEntityActionState(this)
+
+    override def updateWanderPath() = TraitHandler.updateWanderPath(this)
+
+    override def canDespawn() = super.canDespawn()
+
+    override def setBeenAttacked() = super.setBeenAttacked()
 
     override def readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)

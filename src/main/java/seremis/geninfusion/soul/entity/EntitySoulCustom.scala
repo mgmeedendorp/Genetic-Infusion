@@ -97,6 +97,8 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
 
     override def getSoundVolume: Float = SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_SOUND_VOLUME).asInstanceOf[AlleleFloat].value
 
+    override def getSoundPitch: Float = super.getSoundPitch()
+
     override def applyEntityAttributes() {
         this.getAttributeMap.registerAttribute(SharedMonsterAttributes.maxHealth)
         this.getAttributeMap.registerAttribute(SharedMonsterAttributes.knockbackResistance)
@@ -176,6 +178,8 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
     override def updateEntityActionState() = TraitHandler.updateEntityActionState(this)
 
     override def updateWanderPath() = TraitHandler.updateWanderPath(this)
+
+    override def canDespawn() = super.canDespawn()
 
     override def readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)

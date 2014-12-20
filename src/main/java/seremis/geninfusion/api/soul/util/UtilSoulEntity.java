@@ -261,15 +261,15 @@ public class UtilSoulEntity {
     }
 
     public static void faceEntity(IEntitySoulCustom entity, Entity lookEntity, float maxYawIncrement, float maxPitchIncrement) {
-        double d0 = lookEntity.posX - entity.getInteger("posX");
-        double d2 = lookEntity.posZ - entity.getInteger("posZ");
+        double d0 = lookEntity.posX - entity.getDouble("posX");
+        double d2 = lookEntity.posZ - entity.getDouble("posZ");
         double d1;
 
         if(lookEntity instanceof EntityLivingBase) {
             EntityLivingBase entitylivingbase = (EntityLivingBase) lookEntity;
-            d1 = entitylivingbase.posY + (double) entitylivingbase.getEyeHeight() - (entity.getInteger("posY") + (double) getEyeHeight(entity));
+            d1 = entitylivingbase.posY + (double) entitylivingbase.getEyeHeight() - (entity.getDouble("posY") + (double) getEyeHeight(entity));
         } else {
-            d1 = (lookEntity.boundingBox.minY + lookEntity.boundingBox.maxY) / 2.0D - (entity.getInteger("posY") + (double) getEyeHeight(entity));
+            d1 = (lookEntity.boundingBox.minY + lookEntity.boundingBox.maxY) / 2.0D - (entity.getDouble("posY") + (double) getEyeHeight(entity));
         }
 
         double d3 = (double) MathHelper.sqrt_double(d0 * d0 + d2 * d2);

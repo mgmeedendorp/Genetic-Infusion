@@ -25,7 +25,6 @@ public class TraitAI extends Trait {
         //((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_USE_NEW_AI)).value;
         boolean useOldAI = true;
         //((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_USE_OLD_AI)).value;
-
         entity.getWorld().theProfiler.startSection("ai");
 
         if(UtilSoulEntity.isMovementBlocked(entity)) {
@@ -97,6 +96,8 @@ public class TraitAI extends Trait {
 
     @Override
     public void updateEntityActionState(IEntitySoulCustom entity) {
+        System.out.println("TEST");
+
         entity.setInteger("entityAge", entity.getInteger("entityAge") + 1);
         entity.setFloat("moveForward", 0.0F);
         entity.setFloat("moveStrafing", 0.0F);
@@ -114,7 +115,7 @@ public class TraitAI extends Trait {
             }
         }
 
-        EntityLiving currentTarget = (EntityLiving) entity.getObject("currentTarget");
+        Entity currentTarget = (Entity) entity.getObject("currentTarget");
         int numTicksToChaseTarget = entity.getInteger("numTicksToChaseTarget");
 
         if(currentTarget != null) {

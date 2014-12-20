@@ -60,6 +60,9 @@ public class StandardSoul implements IStandardSoul {
         if(gene.equals(Genes.GENE_INVULNERABLE)) {
             return new Chromosome(new AlleleBoolean(true, false));
         }
+        if(gene.equals(Genes.GENE_IS_CREATURE)) {
+            return new Chromosome(new AlleleBoolean(false, false));
+        }
         if(gene.equals(Genes.GENE_ITEM_DROPS)) {
             return new Chromosome(new AlleleInventory(true, new ItemStack[]{}));
         }

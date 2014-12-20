@@ -11,17 +11,13 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
-import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.UtilSoulEntity;
-import seremis.geninfusion.soul.allele.AlleleBoolean;
 
 public class TraitAICreature extends Trait {
 
     @Override
     public void updateEntityActionState(IEntitySoulCustom entity) {
-        boolean isCreature = ((AlleleBoolean)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_IS_CREATURE)).value;
-
-        if(isCreature) {
+        if(entity instanceof EntityCreature) {
             entity.getWorld().theProfiler.startSection("ai");
 
             int fleeingTick = entity.getInteger("fleeingTick");
@@ -150,12 +146,12 @@ public class TraitAICreature extends Trait {
 
                 entity.getWorld().theProfiler.endSection();
             } else {
-                SoulHelper.traitHandler.callSuperTrait(entity);
+                super.updateEntityActionState(entity);
                 pathToEntity = null;
             }
             entity.setObject("pathToEntity", pathToEntity);
         } else {
-            SoulHelper.traitHandler.callSuperTrait(entity);
+            super.updateEntityActionState(entity);
         }
     }
 }

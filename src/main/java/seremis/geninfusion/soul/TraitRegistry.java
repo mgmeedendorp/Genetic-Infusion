@@ -3,6 +3,7 @@ package seremis.geninfusion.soul;
 import seremis.geninfusion.api.soul.ITrait;
 import seremis.geninfusion.api.soul.ITraitRegistry;
 import seremis.geninfusion.api.soul.SoulHelper;
+import seremis.geninfusion.api.soul.lib.Traits;
 
 import java.util.*;
 
@@ -53,7 +54,7 @@ public class TraitRegistry implements ITraitRegistry {
 
     @Override
     public void makeTraitOverride(ITrait superTrait, ITrait subTrait) {
-        if(overrideSupers.isEmpty() || overrideSupers.containsKey(superTrait)) {
+        if(overrideSupers.isEmpty() || !overrideSupers.containsKey(superTrait)) {
             ArrayList<ITrait> superList = new ArrayList<ITrait>();
             superList.add(superTrait);
             overrideSupers.put(subTrait, superList);
@@ -62,7 +63,7 @@ public class TraitRegistry implements ITraitRegistry {
             superList.add(superTrait);
             overrideSupers.put(subTrait, superList);
         }
-        if(overrideSubs.isEmpty() || overrideSubs.containsKey(superTrait)) {
+        if(overrideSubs.isEmpty() || !overrideSubs.containsKey(superTrait)) {
             ArrayList<ITrait> subList = new ArrayList<ITrait>();
             subList.add(subTrait);
             overrideSubs.put(superTrait, subList);
@@ -80,12 +81,12 @@ public class TraitRegistry implements ITraitRegistry {
 
     @Override
     public ArrayList<ITrait> getOverridden(ITrait trait) {
-        return overrideSubs.get(trait);
+        return overrideSupers.get(trait);
     }
 
     @Override
     public ArrayList<ITrait> getOverriding(ITrait trait) {
-        return overrideSupers.get(trait);
+        return overrideSubs.get(trait);
     }
 
     @Override
@@ -100,12 +101,12 @@ public class TraitRegistry implements ITraitRegistry {
 
     @Override
     public boolean isOverridden(ITrait trait) {
-        return overrideSupers.containsKey(trait);
+        return overrideSubs.containsKey(trait);
     }
 
     @Override
     public boolean isOverriding(ITrait trait) {
-        return overrideSubs.containsKey(trait);
+        return overrideSupers.containsKey(trait);
     }
 
     public LinkedList<ITrait> orderedTraits = new LinkedList<ITrait>();

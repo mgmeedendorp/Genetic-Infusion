@@ -9,41 +9,63 @@ import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.ITrait;
 import seremis.geninfusion.api.soul.ITraitHandler;
 import seremis.geninfusion.api.soul.SoulHelper;
-import seremis.geninfusion.soul.entity.EntitySoulCustom;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.WeakHashMap;
 
 public class TraitHandler implements ITraitHandler {
 
-    public static HashMap<IEntitySoulCustom, String> map = new HashMap<IEntitySoulCustom, String>();
+    public static WeakHashMap<IEntitySoulCustom, String> map = new WeakHashMap<IEntitySoulCustom, String>();
 
     @Override
     public Object callSuperTrait(IEntitySoulCustom entity, Object... args) {
         Object result = null;
-        if(entity != null && map.containsKey(entity)) {
-            String[] keys = map.get(entity).split("///");
-            ITrait trait = SoulHelper.traitRegistry.getTrait(keys[0]);
-            String method = keys[1];
+        if(entity != null && !map.isEmpty() && map.containsKey(entity)) {
+            try {
+                String[] keys = map.get(entity).split("///");
+                ITrait trait = SoulHelper.traitRegistry.getTrait(keys[0]);
+                String method = keys[1];
 
-            if(SoulHelper.traitRegistry.isOverridden(trait)) {
-                ArrayList<ITrait> supers = SoulHelper.traitRegistry.getOverriding(trait);
+                if(SoulHelper.traitRegistry.isOverriding(trait)) {
+                    ArrayList<ITrait> supers = SoulHelper.traitRegistry.getOverridden(trait);
 
-                for(ITrait sup : supers) {
-                    try {
-                        Method field = sup.getClass().getMethod(method);
+                    for(ITrait sup : supers) {
+                        Class[] classes = new Class[args.length+1];
+                        Object[] arguments = new Object[args.length+1];
+
+                        classes[0] = IEntitySoulCustom.class;
+                        arguments[0] = entity;
+
+                        for(int i = 0; i < args.length; i++) {
+                            classes[i + 1] = args[i].getClass();
+                            if(classes[i + 1] == Boolean.class) classes[i + 1] = boolean.class;
+                            if(classes[i + 1] == Byte.class) classes[i + 1] = byte.class;
+                            if(classes[i + 1] == Short.class) classes[i + 1] = short.class;
+                            if(classes[i + 1] == Integer.class) classes[i + 1] = int.class;
+                            if(classes[i + 1] == Float.class) classes[i + 1] = float.class;
+                            if(classes[i + 1] == Double.class) classes[i + 1] = double.class;
+                            if(classes[i + 1] == Long.class) classes[i + 1] = long.class;
+                            arguments[i + 1] = args[i];
+                        }
+
+                        Method field = sup.getClass().getMethod(method, classes);
 
                         map.put(entity, SoulHelper.traitRegistry.getName(sup) + "///" + method);
-                        result = field.invoke(sup, args);
+                        result = field.invoke(sup, arguments);
                         map.put(entity, trait + "///" + method);
 
-                    } catch(Exception e) {
-                        System.out.println("It looks like something went wrong while doing a super call on a trait. The call didn't work.");
-                        e.printStackTrace();
                     }
                 }
+            } catch(Exception e) {
+                System.out.println("It looks like something went wrong while doing a super call on a trait. The call didn't work.");
+                System.out.println("Entity: " + entity);
+                if(map.containsKey(entity)) {
+                    System.out.println("Trait: " + map.get(entity).split("///")[0]);
+                    System.out.println("Method: " + map.get(entity).split("///")[1]);
+                }
+                e.printStackTrace();
             }
         }
         return result;
