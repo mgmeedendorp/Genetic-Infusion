@@ -109,10 +109,10 @@ public class TraitItemPickup extends Trait {
         entity.getWorld().theProfiler.endSection();
     }
 
-    public static int getArmorPosition(ItemStack par0ItemStack) {
-        if(par0ItemStack.getItem() != Item.getItemFromBlock(Blocks.pumpkin) && par0ItemStack.getItem() != Items.skull) {
-            if(par0ItemStack.getItem() instanceof ItemArmor) {
-                switch(((ItemArmor) par0ItemStack.getItem()).armorType) {
+    public static int getArmorPosition(ItemStack stack) {
+        if(stack.getItem() != Item.getItemFromBlock(Blocks.pumpkin) && stack.getItem() != Items.skull) {
+            if(stack.getItem() instanceof ItemArmor) {
+                switch(((ItemArmor) stack.getItem()).armorType) {
                     case 0:
                         return 4;
                     case 1:

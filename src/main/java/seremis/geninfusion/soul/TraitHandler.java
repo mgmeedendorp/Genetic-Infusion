@@ -58,13 +58,13 @@ public class TraitHandler implements ITraitHandler {
                     }
                 }
             } catch(Exception e) {
-                System.out.println("It looks like something went wrong while doing a super call on a trait. The call didn't work.");
-                System.out.println("Entity: " + entity);
-                if(map.containsKey(entity)) {
-                    System.out.println("Trait: " + map.get(entity).split("///")[0]);
-                    System.out.println("Method: " + map.get(entity).split("///")[1]);
-                }
-                e.printStackTrace();
+//                System.out.println("It looks like something went wrong while doing a super call on a trait. The call didn't work.");
+//                System.out.println("Entity: " + entity);
+//                if(map.containsKey(entity)) {
+//                    System.out.println("Trait: " + map.get(entity).split("///")[0]);
+//                    System.out.println("Method: " + map.get(entity).split("///")[1]);
+//                }
+//                e.printStackTrace();
             }
         }
         return result;

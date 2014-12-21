@@ -2,249 +2,185 @@ package seremis.geninfusion.soul.traits;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldServer;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
-import seremis.geninfusion.api.soul.SoulHelper;
-import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.UtilSoulEntity;
-import seremis.geninfusion.core.proxy.CommonProxy;
-import seremis.geninfusion.soul.allele.AlleleBoolean;
-import seremis.geninfusion.soul.allele.AlleleInteger;
-
-import java.util.List;
-import java.util.Random;
 
 public class TraitMovement extends Trait {
 
     @Override
     public void onUpdate(IEntitySoulCustom entity) {
-        boolean isImmuneToFire = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_IMMUNE_TO_FIRE)).value;
-        int timeInPortalUntilTeleport = ((AlleleInteger) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_TELEPORT_TIME_IN_PORTAL)).value;
-        int portalCooldown = ((AlleleInteger) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_PORTAL_COOLDOWN)).value;
-
-        double posX = entity.getDouble("posX");
-        double posY = entity.getDouble("posY");
-        double posZ = entity.getDouble("posZ");
-
-        double motionX = entity.getDouble("motionX");
-        double motionY = entity.getDouble("motionY");
-        double motionZ = entity.getDouble("motionZ");
-
-        float rotationPitch = entity.getFloat("rotationPitch");
-        float rotationYaw = entity.getFloat("rotationYaw");
-
-        Entity ridingEntity = entity.getWorld().getEntityByID(entity.getInteger("ridingEntityID"));
-
-        boolean inPortal = entity.getBoolean("inPortal");
-        int portalCounter = entity.getInteger("portalCounter");
-        int timeUntilPortal = entity.getInteger("timeUntilPortal");
-
-        boolean isSprinting = entity.getBoolean("isSprinting");
-        boolean inWater = entity.getBoolean("inWater");
-        float yOffset = entity.getFloat("yOffset");
-        float width = entity.getFloat("width");
-        float height = entity.getFloat("height");
-        float fallDistance = entity.getFloat("fallDistance");
-
+        EntityLiving living = (EntityLiving) entity;
 
         entity.getWorld().theProfiler.startSection("entityBaseTick");
 
-        if(ridingEntity != null && ridingEntity.isDead) {
-            entity.setInteger("ridingEntity", 0);
+        if(living.ridingEntity != null && living.ridingEntity.isDead) {
+            living.ridingEntity = null;
         }
 
-        entity.setFloat("prevDistanceWalkedModified", entity.getFloat("distanceWalkedOnStepModified"));
-        entity.setDouble("prevPosX", posX);
-        entity.setDouble("prevPosY", posY);
-        entity.setDouble("prevPosZ", posZ);
-        entity.setFloat("prevRotationPitch", rotationPitch);
-        entity.setFloat("prevRotationYaw", rotationYaw);
-        entity.setFloat("prevRenderYawOffset", entity.getFloat("renderYawOffset"));
-        entity.setFloat("prevRotationYawHead", entity.getFloat("rotationYawHead"));
-        entity.setFloat("prevCameraPitch", entity.getFloat("cameraPitch"));
+        living.prevDistanceWalkedModified = living.distanceWalkedModified;
+        living.prevPosX = living.posX;
+        living.prevPosY = living.posY;
+        living.prevPosZ = living.posZ;
+        living.prevRotationPitch = living.rotationPitch;
+        living.prevRotationYaw = living.rotationYaw;
+        int i;
 
-        if(CommonProxy.instance.isServerWorld(entity.getWorld()) && entity.getWorld() instanceof WorldServer) {
-            entity.getWorld().theProfiler.startSection("portal");
-            MinecraftServer minecraftserver = ((WorldServer) entity.getWorld()).func_73046_m();
+        if(!living.worldObj.isRemote && living.worldObj instanceof WorldServer) {
+            living.worldObj.theProfiler.startSection("portal");
+            MinecraftServer minecraftserver = ((WorldServer) living.worldObj).func_73046_m();
+            i = living.getMaxInPortalTime();
 
-            if(inPortal) {
+            int portalCounter = entity.getInteger("portalCounter");
+
+            if(entity.getBoolean("inPortal")) {
                 if(minecraftserver.getAllowNether()) {
-                    if(ridingEntity == null) {
-                        entity.setInteger("portalCounter", portalCounter + 1);
+                    if(living.ridingEntity == null && portalCounter++ >= i) {
+                        portalCounter = i;
+                        living.timeUntilPortal = living.getPortalCooldown();
+                        byte b0;
 
-                        if(portalCounter + 1 >= timeInPortalUntilTeleport) {
-                            entity.setInteger("portalCounter", timeInPortalUntilTeleport);
-
-                            entity.setInteger("timeUntilPortal", portalCooldown);
-
-                            byte travelDimensionId;
-
-                            if(entity.getWorld().provider.dimensionId == -1) {
-                                travelDimensionId = 0;
-                            } else {
-                                travelDimensionId = -1;
-                            }
-
-                            UtilSoulEntity.travelToDimension(entity, travelDimensionId);
+                        if(living.worldObj.provider.dimensionId == -1) {
+                            b0 = 0;
+                        } else {
+                            b0 = -1;
                         }
+
+                        living.travelToDimension(b0);
                     }
 
                     entity.setBoolean("inPortal", false);
                 }
             } else {
                 if(portalCounter > 0) {
-                    entity.setInteger("portalCounter", portalCounter - 4);
+                    portalCounter -= 4;
                 }
 
                 if(portalCounter < 0) {
-                    entity.setInteger("portalCounter", 0);
+                    portalCounter = 0;
                 }
             }
 
-            if(timeUntilPortal > 0) {
-                entity.setInteger("timeUntilPortal", timeUntilPortal - 1);
+            entity.setInteger("portalCounter", portalCounter);
+
+            if(living.timeUntilPortal > 0) {
+                --living.timeUntilPortal;
             }
 
-            entity.getWorld().theProfiler.endSection();
+            living.worldObj.theProfiler.endSection();
         }
 
-        if(isSprinting && !inWater) {
-            int j = MathHelper.floor_double(posX);
-            int i = MathHelper.floor_double(posY - 0.20000000298023224D - yOffset);
-            int k = MathHelper.floor_double(posZ);
-            Block block = entity.getWorld().getBlock(j, i, k);
+        if(living.isSprinting() && !living.isInWater()) {
+            int j = MathHelper.floor_double(living.posX);
+            i = MathHelper.floor_double(living.posY - 0.20000000298023224D - (double) living.yOffset);
+            int k = MathHelper.floor_double(living.posZ);
+            Block block = living.worldObj.getBlock(j, i, k);
 
             if(block.getMaterial() != Material.air) {
-                Random rand = new Random();
-                entity.getWorld().spawnParticle("blockcrack_" + Block.getIdFromBlock(block) + "_" + entity.getWorld().getBlockMetadata(j, i, k), posX + ((double) rand.nextFloat() - 0.5D) * (double) width, entity.getBoundingBox().minY + 0.1D, posZ + ((double) rand.nextFloat() - 0.5D) * (double) width, -motionX * 4.0D, 1.5D, -motionZ * 4.0D);
+                living.worldObj.spawnParticle("blockcrack_" + Block.getIdFromBlock(block) + "_" + living.worldObj.getBlockMetadata(j, i, k), living.posX + ((double) entity.getRandom().nextFloat() - 0.5D) * (double) living.width, living.boundingBox.minY + 0.1D, living.posZ + ((double) entity.getRandom().nextFloat() - 0.5D) * (double) living.width, -living.motionX * 4.0D, 1.5D, -living.motionZ * 4.0D);
             }
         }
 
-        if(posY < -64.0D) {
-            entity.setBoolean("isDead", true);
+        living.handleWaterMovement();
+
+
+        if(living.posY < -64.0D) {
+            living.setDead();
         }
         entity.getWorld().theProfiler.endSection();
 
-        entity.getWorld().theProfiler.startSection("livingEntityBaseTick");
+        living.prevSwingProgress = living.swingProgress;
 
-        if(!entity.getBoolean("isDead") && entity.getFloat("health") > 0.0F && UtilSoulEntity.isEntityInsideOpaqueBlock(entity)) {
+        living.worldObj.theProfiler.startSection("livingEntityBaseTick");
+
+        if(living.isEntityAlive() && living.isEntityInsideOpaqueBlock()) {
             entity.attackEntityFrom(DamageSource.inWall, 1.0F);
         }
 
-        if(isImmuneToFire || CommonProxy.instance.isRenderWorld(entity.getWorld())) {
-            UtilSoulEntity.extinguish(entity);
+        if(living.isImmuneToFire() || living.worldObj.isRemote) {
+            living.extinguish();
         }
-        //TODO entity.updatePotionEffects();
 
-        entity.getWorld().theProfiler.endSection();
+        entity.updatePotionEffects();
 
-        int jumpTicks = entity.getInteger("jumpTicks");
+        entity.setFloat("field_70763_ax", entity.getFloat("field_70764_aw"));
+        living.prevRenderYawOffset = living.renderYawOffset;
+        living.prevRotationYawHead = living.rotationYawHead;
+        living.prevRotationYaw = living.rotationYaw;
+        living.prevRotationPitch = living.rotationPitch;
+        living.worldObj.theProfiler.endSection();
+
+        if(entity.getInteger("jumpTicks") > 0) {
+            entity.setInteger("jumpTicks", entity.getInteger("jumpTicks") - 1);
+        }
+
         int newPosRotationIncrements = entity.getInteger("newPosRotationIncrements");
-
         double newPosX = entity.getDouble("newPosX");
         double newPosY = entity.getDouble("newPosY");
         double newPosZ = entity.getDouble("newPosZ");
 
-        double newRotationYaw = entity.getDouble("newRotationYaw");
-        double newRotationPitch = entity.getDouble("newRotationPitch");
-
-        if(jumpTicks > 0) {
-            entity.setInteger("jumpTicks", --jumpTicks);
-        }
-
         if(newPosRotationIncrements > 0) {
-            double d0 = posX + (newPosX - posX) / (double) newPosRotationIncrements;
-            double d1 = posY + (newPosY - posY) / (double) newPosRotationIncrements;
-            double d2 = posZ + (newPosZ - posZ) / (double) newPosRotationIncrements;
-            double d3 = MathHelper.wrapAngleTo180_double(newRotationYaw - (double) rotationYaw);
-            entity.setFloat("rotationYaw", (float) ((double) rotationYaw + d3 / (double) newPosRotationIncrements));
-            entity.setFloat("rotationPitch", (float) ((double) rotationPitch + (newRotationPitch - (double) rotationPitch) / (double) newPosRotationIncrements));
-            entity.setInteger("newPosRotationIncrements", newPosRotationIncrements - 1);
-            UtilSoulEntity.setPosition(entity, d0, d1, d2);
-            UtilSoulEntity.setRotation(entity, rotationYaw, rotationPitch);
-        } else if(CommonProxy.instance.isServerWorld(entity.getWorld())) {
-            entity.setDouble("motionX", entity.getDouble("motionX") * 0.98D);
-            entity.setDouble("motionY", entity.getDouble("motionY") * 0.98D);
-            entity.setDouble("motionZ", entity.getDouble("motionZ") * 0.98D);
+            double d0 = living.posX + (newPosX - living.posX) / (double) newPosRotationIncrements;
+            double d1 = living.posY + (newPosY - living.posY) / (double) newPosRotationIncrements;
+            double d2 = living.posZ + (newPosZ - living.posZ) / (double) newPosRotationIncrements;
+            double d3 = MathHelper.wrapAngleTo180_double(entity.getDouble("newRotationYaw") - (double) living.rotationYaw);
+            living.rotationYaw = (float) ((double) living.rotationYaw + d3 / (double) newPosRotationIncrements);
+            living.rotationPitch = (float) ((double) living.rotationPitch + (entity.getDouble("newRotationPitch") - (double) living.rotationPitch) / (double) newPosRotationIncrements);
+            --newPosRotationIncrements;
+            living.setPosition(d0, d1, d2);
+            UtilSoulEntity.setRotation(entity, living.rotationYaw, living.rotationPitch);
+        } else if(!living.isClientWorld()) {
+            living.motionX *= 0.98D;
+            living.motionY *= 0.98D;
+            living.motionZ *= 0.98D;
         }
 
-        motionX = entity.getDouble("motionX");
-        motionY = entity.getDouble("motionY");
-        motionZ = entity.getDouble("motionZ");
+        entity.setInteger("newPosRotationIncrements", newPosRotationIncrements);
 
-        posX = entity.getDouble("posX");
-        posY = entity.getDouble("posY");
-        posZ = entity.getDouble("posZ");
-
-        rotationPitch = entity.getFloat("rotationPitch");
-        rotationYaw = entity.getFloat("rotationYaw");
-
-        if(Math.abs(motionX) < 0.005D) {
-            entity.setDouble("motionX", 0.0D);
+        if(Math.abs(living.motionX) < 0.005D) {
+            living.motionX = 0.0D;
         }
 
-        if(Math.abs(motionY) < 0.005D) {
-            entity.setDouble("motionY", 0.0D);
+        if(Math.abs(living.motionY) < 0.005D) {
+            living.motionY = 0.0D;
         }
 
-        if(Math.abs(motionZ) < 0.005D) {
-            entity.setDouble("motionZ", 0.0D);
+        if(Math.abs(living.motionZ) < 0.005D) {
+            living.motionZ = 0.0D;
         }
 
-        entity.getWorld().theProfiler.startSection("ai");
+        living.worldObj.theProfiler.startSection("jump");
 
-        float health = entity.getFloat("health");
-
-        entity.getWorld().theProfiler.startSection("jump");
-
-        boolean isJumping = entity.getBoolean("isJumping");
-        boolean isInWater = entity.getBoolean("inWater");
-        boolean onGround = entity.getBoolean("onGround");
-
-        if(isJumping) {
-            if(!isInWater && !UtilSoulEntity.handleLavaMovement(entity)) {
-                if(onGround && jumpTicks == 0) {
-                    UtilSoulEntity.jump(entity);
+        if(entity.getBoolean("isJumping")) {
+            if(!living.isInWater() && !living.handleLavaMovement()) {
+                if(living.onGround && entity.getInteger("jumpTicks") == 0) {
+                    entity.jump();
                     entity.setInteger("jumpTicks", 10);
                 }
             } else {
-                entity.setDouble("motionY", entity.getDouble("motionY") + 0.03999999910593033D);
+                living.motionY += 0.03999999910593033D;
             }
         } else {
             entity.setInteger("jumpTicks", 0);
         }
 
-        entity.getWorld().theProfiler.endSection();
-        entity.getWorld().theProfiler.startSection("travel");
-        entity.setFloat("moveStrafing", entity.getFloat("moveStrafing") * 0.98F);
-        entity.setFloat("moveForward", entity.getFloat("moveForward") * 0.98F);
+        living.worldObj.theProfiler.endSection();
+        living.worldObj.theProfiler.startSection("travel");
+        living.moveStrafing *= 0.98F;
+        living.moveForward *= 0.98F;
         entity.setFloat("randomYawVelocity", entity.getFloat("randomYawVelocity") * 0.9F);
-        ((EntityLiving) entity).moveEntityWithHeading(entity.getFloat("moveStrafing"), entity.getFloat("moveForward"));
-        entity.getWorld().theProfiler.endSection();
-        entity.getWorld().theProfiler.startSection("push");
+        living.moveEntityWithHeading(living.moveStrafing, living.moveForward);
+        living.worldObj.theProfiler.endSection();
+        living.worldObj.theProfiler.startSection("push");
 
-        if(CommonProxy.instance.isServerWorld(entity.getWorld())) {
-            this.collideWithNearbyEntities(entity);
+        if(!living.worldObj.isRemote) {
+            entity.collideWithNearbyEntities();
         }
-        entity.getWorld().theProfiler.endSection();
-    }
 
-    public void collideWithNearbyEntities(IEntitySoulCustom entity) {
-        List list = entity.getWorld().getEntitiesWithinAABBExcludingEntity((Entity) entity, entity.getBoundingBox().expand(0.20000000298023224D, 0.0D, 0.20000000298023224D));
-
-        if(list != null && !list.isEmpty()) {
-            for(Object aList : list) {
-                Entity ent = (Entity) aList;
-
-                if(ent.canBePushed()) {
-                    ent.applyEntityCollision((Entity) entity);
-                }
-            }
-        }
+        living.worldObj.theProfiler.endSection();
     }
 }

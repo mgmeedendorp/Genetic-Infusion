@@ -183,6 +183,12 @@ class EntitySoulCustomCreature(world: World) extends GIEntityCreature(world) wit
 
     override def setBeenAttacked() = super.setBeenAttacked()
 
+    override def updatePotionEffects() = super.updatePotionEffects()
+
+    override def jump() = super.jump()
+
+    override def collideWithNearbyEntities = super.collideWithNearbyEntities()
+
     override def readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)
         soul = new Soul(compound)

@@ -181,4 +181,10 @@ public interface IEntitySoulCustom {
     void updateEntityActionState();
 
     int decreaseAirSupply(int air);
+
+    void updatePotionEffects();
+
+    void jump();
+
+    void collideWithNearbyEntities();
 }
