@@ -12,7 +12,6 @@ import seremis.geninfusion.api.soul.SoulHelper;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.WeakHashMap;
 
 public class TraitHandler implements ITraitHandler {
@@ -75,7 +74,6 @@ public class TraitHandler implements ITraitHandler {
         for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
             map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///onUpdate");
             trait.onUpdate(entity);
-            map.remove(entity);
         }
     }
 
@@ -86,7 +84,6 @@ public class TraitHandler implements ITraitHandler {
             if(trait.interact(entity, player)) {
                 flag = true;
             }
-            map.remove(entity);
         }
         return flag;
     }
@@ -95,7 +92,6 @@ public class TraitHandler implements ITraitHandler {
         for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
             map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///onDeath");
             trait.onDeath(entity, source);
-            map.remove(entity);
         }
     }
 
@@ -103,7 +99,6 @@ public class TraitHandler implements ITraitHandler {
         for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
             map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///onKillEntity");
             trait.onKillEntity(entity, killed);
-            map.remove(entity);
         }
     }
 
@@ -114,7 +109,6 @@ public class TraitHandler implements ITraitHandler {
             if(trait.attackEntityFrom(entity, source, damage)) {
                 flag = true;
             }
-            map.remove(entity);
         }
         return flag;
     }
@@ -123,7 +117,6 @@ public class TraitHandler implements ITraitHandler {
         for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
             map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///attackEntity");
             trait.attackEntity(entity, entityToAttack, distance);
-            map.remove(entity);
         }
     }
 
@@ -131,7 +124,6 @@ public class TraitHandler implements ITraitHandler {
         for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
             map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///onSpawnWithEgg");
             trait.onSpawnWithEgg(entity, data);
-            map.remove(entity);
         }
         return data;
     }
@@ -140,7 +132,6 @@ public class TraitHandler implements ITraitHandler {
         for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
             map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///playSound");
             trait.playSound(entity, name, volume, pitch);
-            map.remove(entity);
         }
     }
 
@@ -148,7 +139,6 @@ public class TraitHandler implements ITraitHandler {
         for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
             map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///damageEntity");
             trait.damageEntity(entity, source, damage);
-            map.remove(entity);
         }
     }
 
@@ -156,7 +146,6 @@ public class TraitHandler implements ITraitHandler {
         for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
             map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///updateAITick");
             trait.updateAITick(entity);
-            map.remove(entity);
         }
     }
 
@@ -164,7 +153,6 @@ public class TraitHandler implements ITraitHandler {
         for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
             map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///firstTick");
             trait.firstTick(entity);
-            map.remove(entity);
         }
     }
 
@@ -175,7 +163,6 @@ public class TraitHandler implements ITraitHandler {
             if(trait.attackEntityAsMob(entity, entityToAttack)) {
                 flag = true;
             }
-            map.remove(entity);
         }
         return flag;
     }
@@ -188,7 +175,6 @@ public class TraitHandler implements ITraitHandler {
             if(tmp != null) {
                 flag = tmp;
             }
-            map.remove(entity);
         }
         return flag;
     }
@@ -201,7 +187,6 @@ public class TraitHandler implements ITraitHandler {
             if(tmp != 0.0F) {
                 flag = tmp;
             }
-            map.remove(entity);
         }
         return flag;
     }
@@ -214,7 +199,6 @@ public class TraitHandler implements ITraitHandler {
             if(tmp != 0.0F) {
                 flag = tmp;
             }
-            map.remove(entity);
         }
         return flag;
     }
@@ -223,7 +207,6 @@ public class TraitHandler implements ITraitHandler {
         for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
             map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///damageArmor");
             trait.damageArmor(entity, damage);
-            map.remove(entity);
         }
     }
 
@@ -231,7 +214,6 @@ public class TraitHandler implements ITraitHandler {
         for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
             map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///setOnFireFromLava");
             trait.setOnFireFromLava(entity);
-            map.remove(entity);
         }
     }
 
@@ -243,7 +225,6 @@ public class TraitHandler implements ITraitHandler {
             if(tmp != 0.0F) {
                 flag = tmp;
             }
-            map.remove(entity);
         }
         return flag;
     }
@@ -252,7 +233,6 @@ public class TraitHandler implements ITraitHandler {
         for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
             map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///updateEntityActionState");
             trait.updateEntityActionState(entity);
-            map.remove(entity);
         }
     }
 
@@ -260,7 +240,6 @@ public class TraitHandler implements ITraitHandler {
         for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
             map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///updateWanderPath");
             trait.updateWanderPath(entity);
-            map.remove(entity);
         }
     }
 }
