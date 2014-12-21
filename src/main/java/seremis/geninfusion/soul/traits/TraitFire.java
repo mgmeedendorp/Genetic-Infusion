@@ -29,8 +29,6 @@ public class TraitFire extends Trait {
 
         boolean isImmuneToFire = entity.getBoolean("isImmuneToFire");
 
-        float fallDistance = entity.getFloat("fallDistance");
-
         if(burnsInDayLight && !isImmuneToFire) {
             if(entity.getWorld().isDaytime() && !entity.getWorld().isRemote && (!((EntityLiving) entity).isChild() || childrenBurnInDaylight)) {
                 float f = ((EntityLiving) entity).getBrightness(1.0F);

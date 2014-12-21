@@ -12,7 +12,10 @@ import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
+import seremis.geninfusion.api.soul.SoulHelper;
+import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.UtilSoulEntity;
+import seremis.geninfusion.soul.allele.AlleleBoolean;
 
 /**
  * @author Seremis
@@ -21,10 +24,8 @@ public class TraitAI extends Trait {
 
     @Override
     public void onUpdate(IEntitySoulCustom entity) {
-        boolean useNewAI = false;
-        //((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_USE_NEW_AI)).value;
-        boolean useOldAI = true;
-        //((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_USE_OLD_AI)).value;
+        boolean useNewAI = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_USE_NEW_AI)).value;
+        boolean useOldAI = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_USE_OLD_AI)).value;
         entity.getWorld().theProfiler.startSection("ai");
 
         if(UtilSoulEntity.isMovementBlocked(entity)) {

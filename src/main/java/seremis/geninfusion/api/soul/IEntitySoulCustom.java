@@ -179,4 +179,6 @@ public interface IEntitySoulCustom {
     void updateWanderPath();
 
     void updateEntityActionState();
+
+    int decreaseAirSupply(int air);
 }
