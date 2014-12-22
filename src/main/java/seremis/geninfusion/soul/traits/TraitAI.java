@@ -4,6 +4,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIArrowAttack;
+import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,12 +17,33 @@ import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.UtilSoulEntity;
+import seremis.geninfusion.soul.Soul;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
+import seremis.geninfusion.soul.allele.AlleleDouble;
+import seremis.geninfusion.soul.allele.AlleleFloat;
+import seremis.geninfusion.soul.allele.AlleleInteger;
 
-/**
- * @author Seremis
- */
+import java.util.ArrayList;
+
 public class TraitAI extends Trait {
+
+    @Override
+    public void firstTick(IEntitySoulCustom entity) {
+        EntityLiving living = (EntityLiving) entity;
+
+//        float aiModifierAttack = ((AlleleFloat) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_AI_MODIFIER_ATTACK)).value;
+//
+//        boolean aiArrowAttack = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_AI_ARROW_ATTACK)).value;
+//
+//        if(aiArrowAttack) {
+//            double moveSpeed = ((AlleleDouble)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_AI_ARROW_ATTACK_MOVE_SPEED)).value;
+//            int maxRangedAttackTime = ((AlleleInteger)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_AI_ARROW_ATTACK_MAX_RANGED_ATTACK_TIME)).value;
+//            int minRangedAttackTime = ((AlleleInteger)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_AI_ARROW_ATTACK_MIN_RANGED_ATTACK_TIME)).value;
+//            float rangedAttackTimeModifier = ((AlleleFloat)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_AI_ARROW_ATTACK_RANGED_ATTACK_TIME_MODIFIER)).value;
+//
+//            living.tasks.addTask(0, new EntityAIArrowAttack(entity, moveSpeed, minRangedAttackTime, maxRangedAttackTime, rangedAttackTimeModifier));
+//        }
+    }
 
     @Override
     public void onUpdate(IEntitySoulCustom entity) {

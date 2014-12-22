@@ -1,14 +1,10 @@
-package seremis.geninfusion.soul.gene.newAI.canSwim;
+package seremis.geninfusion.soul.gene.newAI.villagerMate;
 
 import seremis.geninfusion.api.soul.IAllele;
 import seremis.geninfusion.api.soul.IGene;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
 
-/**
- * @author Seremis
- */
-public class GeneAICanSwim implements IGene {
-
+public class GeneAIVillagerMate implements IGene {
     @Override
     public Class<? extends IAllele> possibleAlleles() {
         return AlleleBoolean.class;

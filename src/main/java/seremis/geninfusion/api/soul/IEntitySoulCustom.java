@@ -1,6 +1,7 @@
 package seremis.geninfusion.api.soul;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;

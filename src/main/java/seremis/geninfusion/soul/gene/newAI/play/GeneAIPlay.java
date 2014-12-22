@@ -1,4 +1,4 @@
-package seremis.geninfusion.soul.gene.newAI;
+package seremis.geninfusion.soul.gene.newAI.play;
 
 import seremis.geninfusion.api.soul.IAllele;
 import seremis.geninfusion.api.soul.SoulHelper;
@@ -6,13 +6,10 @@ import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.soul.MasterGene;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
 
-/**
- * @author Seremis
- */
-public class GeneUseNewAI extends MasterGene {
+public class GeneAIPlay extends MasterGene {
 
-    public GeneUseNewAI() {
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_CAN_SWIM));
+    public GeneAIPlay() {
+        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_PLAY_MOVE_SPEED));
     }
 
     @Override

@@ -7,10 +7,12 @@ public enum EnumAlleleType {
     BOOLEAN(AlleleBoolean.class),
     INTEGER(AlleleInteger.class),
     FLOAT(AlleleFloat.class),
+    DOUBLE(AlleleDouble.class),
     STRING(AlleleString.class),
     BOOLEAN_ARRAY(AlleleBoolean.class),
     INT_ARRAY(AlleleIntArray.class),
     FLOAT_ARRAY(AlleleFloatArray.class),
+    DOUBLE_ARRAY(AlleleDoubleArray.class),
     STRING_ARRAY(AlleleStringArray.class),
     ITEMSTACK(AlleleItemStack.class),
     INVENTORY(AlleleInventory.class);

@@ -1,0 +1,20 @@
+package seremis.geninfusion.soul.gene.newAI.leapAtTarget;
+
+import scala.tools.nsc.backend.icode.analysis.TypeFlowAnalysis;
+import seremis.geninfusion.api.soul.IAllele;
+import seremis.geninfusion.api.soul.SoulHelper;
+import seremis.geninfusion.api.soul.lib.Genes;
+import seremis.geninfusion.soul.MasterGene;
+import seremis.geninfusion.soul.allele.AlleleBoolean;
+
+public class GeneAILeapAtTarget extends MasterGene {
+
+    public GeneAILeapAtTarget() {
+        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_LEAP_AT_TARGET_MOTION_Y));
+    }
+
+    @Override
+    public Class<? extends IAllele> possibleAlleles() {
+        return AlleleBoolean.class;
+    }
+}
