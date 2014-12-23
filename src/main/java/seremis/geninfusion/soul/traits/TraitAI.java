@@ -31,24 +31,16 @@ public class TraitAI extends Trait {
     public void firstTick(IEntitySoulCustom entity) {
         EntityLiving living = (EntityLiving) entity;
 
-//        float aiModifierAttack = ((AlleleFloat) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_AI_MODIFIER_ATTACK)).value;
-//
-//        boolean aiArrowAttack = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_AI_ARROW_ATTACK)).value;
-//
-//        if(aiArrowAttack) {
-//            double moveSpeed = ((AlleleDouble)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_AI_ARROW_ATTACK_MOVE_SPEED)).value;
-//            int maxRangedAttackTime = ((AlleleInteger)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_AI_ARROW_ATTACK_MAX_RANGED_ATTACK_TIME)).value;
-//            int minRangedAttackTime = ((AlleleInteger)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_AI_ARROW_ATTACK_MIN_RANGED_ATTACK_TIME)).value;
-//            float rangedAttackTimeModifier = ((AlleleFloat)SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_AI_ARROW_ATTACK_RANGED_ATTACK_TIME_MODIFIER)).value;
-//
-//            living.tasks.addTask(0, new EntityAIArrowAttack(entity, moveSpeed, minRangedAttackTime, maxRangedAttackTime, rangedAttackTimeModifier));
-//        }
+        float aiModifierAttack = SoulHelper.geneRegistry.getValueFloat(entity, Genes.GENE_AI_MODIFIER_ATTACK);
+
+
+
     }
 
     @Override
     public void onUpdate(IEntitySoulCustom entity) {
-        boolean useNewAI = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_USE_NEW_AI)).value;
-        boolean useOldAI = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_USE_OLD_AI)).value;
+        boolean useNewAI = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_USE_NEW_AI);
+        boolean useOldAI = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_USE_OLD_AI);
         entity.getWorld().theProfiler.startSection("ai");
 
         if(UtilSoulEntity.isMovementBlocked(entity)) {

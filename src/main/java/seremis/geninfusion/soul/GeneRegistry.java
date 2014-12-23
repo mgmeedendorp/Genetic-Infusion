@@ -1,7 +1,9 @@
 package seremis.geninfusion.soul;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.item.ItemStack;
 import seremis.geninfusion.api.soul.*;
+import seremis.geninfusion.soul.allele.*;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -89,6 +91,68 @@ public class GeneRegistry implements IGeneRegistry {
     @Override
     public IAllele getActiveFor(IEntitySoulCustom entity, String name) {
         return getChromosomeFor(entity, name) != null ? getChromosomeFor(entity, name).getActive() : null;
+    }
+
+    @Override
+    public boolean getValueBoolean(IEntitySoulCustom entity, String name) {
+        return ((AlleleBoolean)getActiveFor(entity, name)).value;
+    }
+
+    @Override
+    public int getValueInteger(IEntitySoulCustom entity, String name) {
+        return ((AlleleInteger)getActiveFor(entity, name)).value;
+    }
+
+    @Override
+    public float getValueFloat(IEntitySoulCustom entity, String name) {
+        return ((AlleleFloat)getActiveFor(entity, name)).value;
+    }
+
+    @Override
+    public double getValueDouble(IEntitySoulCustom entity, String name) {
+        return ((AlleleDouble)getActiveFor(entity, name)).value;
+    }
+
+
+    @Override
+    public String getValueString(IEntitySoulCustom entity, String name) {
+        return ((AlleleString)getActiveFor(entity, name)).value;
+    }
+
+    @Override
+    public ItemStack getValueItemStack(IEntitySoulCustom entity, String name) {
+        return ((AlleleItemStack)getActiveFor(entity, name)).stack;
+    }
+
+    @Override
+    public boolean[] getValueBooleanArray(IEntitySoulCustom entity, String name) {
+        return ((AlleleBooleanArray)getActiveFor(entity, name)).value;
+    }
+
+    @Override
+    public int[] getValueIntegerArray(IEntitySoulCustom entity, String name) {
+        return ((AlleleIntArray)getActiveFor(entity, name)).value;
+    }
+
+    @Override
+    public float[] getValueFloatArray(IEntitySoulCustom entity, String name) {
+        return ((AlleleFloatArray)getActiveFor(entity, name)).value;
+    }
+
+    @Override
+    public double[] getValueDoubleArray(IEntitySoulCustom entity, String name) {
+        return ((AlleleDoubleArray)getActiveFor(entity, name)).value;
+    }
+
+
+    @Override
+    public String[] getValueStringArray(IEntitySoulCustom entity, String name) {
+        return ((AlleleStringArray)getActiveFor(entity, name)).value;
+    }
+
+    @Override
+    public ItemStack[] getValueItemStackArray(IEntitySoulCustom entity, String name) {
+        return ((AlleleInventory)getActiveFor(entity, name)).inventory.getItemStacks();
     }
 
     @Override

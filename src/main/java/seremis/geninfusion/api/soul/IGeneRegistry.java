@@ -1,6 +1,7 @@
 package seremis.geninfusion.api.soul;
 
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.item.ItemStack;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -35,6 +36,20 @@ public interface IGeneRegistry {
     public IAllele getActiveFor(EntityLiving entity, String name);
 
     public IAllele getActiveFor(IEntitySoulCustom entity, String name);
+
+    public boolean getValueBoolean(IEntitySoulCustom entity, String name);
+    public int getValueInteger(IEntitySoulCustom entity, String name);
+    public float getValueFloat(IEntitySoulCustom entity, String name);
+    public double getValueDouble(IEntitySoulCustom entity, String name);
+    public String getValueString(IEntitySoulCustom entity, String name);
+    public ItemStack getValueItemStack(IEntitySoulCustom entity, String name);
+
+    public boolean[] getValueBooleanArray(IEntitySoulCustom entity, String name);
+    public int[] getValueIntegerArray(IEntitySoulCustom entity, String name);
+    public float[] getValueFloatArray(IEntitySoulCustom entity, String name);
+    public double[] getValueDoubleArray(IEntitySoulCustom entity, String name);
+    public String[] getValueStringArray(IEntitySoulCustom entity, String name);
+    public ItemStack[] getValueItemStackArray(IEntitySoulCustom entity, String name);
 
     public List<IGene> getControlledGenes(String masterGeneName);
 }
