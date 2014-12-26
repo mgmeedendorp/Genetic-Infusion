@@ -47,4 +47,6 @@ public interface ITrait {
     public void updateEntityActionState(IEntitySoulCustom entity);
 
     public void updateWanderPath(IEntitySoulCustom entity);
+
+    public void attackEntityWithRangedAttack(IEntitySoulCustom entity, EntityLivingBase target, float distanceModified);
 }

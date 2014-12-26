@@ -242,4 +242,11 @@ public class TraitHandler implements ITraitHandler {
             trait.updateWanderPath(entity);
         }
     }
+
+    public static void attackEntityWithRangedAttack(IEntitySoulCustom entity, EntityLivingBase target, float distanceModified) {
+        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
+            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///attackEntityWithRangedAttack");
+            trait.attackEntityWithRangedAttack(entity, target, distanceModified);
+        }
+    }
 }

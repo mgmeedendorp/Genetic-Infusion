@@ -176,4 +176,10 @@ public class Genes {
     public static final String GENE_AI_WATCH_CLOSEST_2_CHANCE = ID + ".gene.aiWatchClosestChance";
 
     public static final String GENE_AI_MODIFIER_ATTACK = ID + ".gene.aiModifierAttack";
+    public static final String GENE_AI_MODIFIER_RUN = ID + ".gene.aiModifierRun";
+    public static final String GENE_AI_MODIFIER_SURVIVE = ID + ".gene.aiModifierSurvive";
+    public static final String GENE_AI_MODIFIER_TRADE = ID + ".gene.aiModifierTrade";
+    public static final String GENE_AI_MODIFIER_HELP_OWNER = ID + ".gene.aiModifierHelpOwner";
+    public static final String GENE_AI_MODIFIER_MATE = ID + ".gene.aiModifierMate";
+    public static final String GENE_AI_MODIFIER_DO_USELESS_THINGS = ID + ".gene.aiModifierDoUselessThings";
 }

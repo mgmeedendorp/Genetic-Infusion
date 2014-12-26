@@ -8,10 +8,11 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import seremis.geninfusion.api.soul.util.Data;
+import seremis.geninfusion.util.INBTTagable;
 
 import java.util.Random;
 
-public interface IEntitySoulCustom {
+public interface IEntitySoulCustom extends IRangedAttackMob {
 
     ISoul getSoul();
 

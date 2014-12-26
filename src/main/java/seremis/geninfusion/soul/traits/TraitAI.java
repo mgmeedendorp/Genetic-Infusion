@@ -1,10 +1,8 @@
 package seremis.geninfusion.soul.traits;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIArrowAttack;
+import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
@@ -14,6 +12,7 @@ import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
+import seremis.geninfusion.api.soul.IGeneRegistry;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.UtilSoulEntity;
@@ -24,6 +23,7 @@ import seremis.geninfusion.soul.allele.AlleleFloat;
 import seremis.geninfusion.soul.allele.AlleleInteger;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class TraitAI extends Trait {
 
@@ -31,10 +31,56 @@ public class TraitAI extends Trait {
     public void firstTick(IEntitySoulCustom entity) {
         EntityLiving living = (EntityLiving) entity;
 
-        float aiModifierAttack = SoulHelper.geneRegistry.getValueFloat(entity, Genes.GENE_AI_MODIFIER_ATTACK);
+        IGeneRegistry gReg = SoulHelper.geneRegistry;
+        EntityAITasks tasks = living.tasks;
 
+        float aiModifierAttack = gReg.getValueFloat(entity, Genes.GENE_AI_MODIFIER_ATTACK);
+        float aiModifierRun = gReg.getValueFloat(entity, Genes.GENE_AI_MODIFIER_RUN);
+        float aiModifierSurvive = gReg.getValueFloat(entity, Genes.GENE_AI_MODIFIER_SURVIVE);
+        float aiModifierTrade = gReg.getValueFloat(entity, Genes.GENE_AI_MODIFIER_TRADE);
+        float aiModifierHelpOwner = gReg.getValueFloat(entity, Genes.GENE_AI_MODIFIER_HELP_OWNER);
+        float aiModifierMate = gReg.getValueFloat(entity, Genes.GENE_AI_MODIFIER_MATE);
+        float aiModifierDoUselessThings = gReg.getValueFloat(entity, Genes.GENE_AI_MODIFIER_DO_USELESS_THINGS);
 
+        ArrayList<Float> array = new ArrayList<Float>();
+        array.add(aiModifierAttack);
+        array.add(aiModifierRun);
+        array.add(aiModifierSurvive);
+        array.add(aiModifierTrade);
+        array.add(aiModifierHelpOwner);
+        array.add(aiModifierMate);
+        array.add(aiModifierDoUselessThings);
 
+        Collections.sort(array);
+
+        int attackIndex = array.indexOf(aiModifierAttack);
+        int runIndex = array.indexOf(aiModifierRun);
+        int surviveIndex = array.indexOf(aiModifierSurvive);
+        int tradeIndex = array.indexOf(aiModifierTrade);
+        int helpOwnerIndex = array.indexOf(aiModifierHelpOwner);
+        int mateIndex = array.indexOf(aiModifierMate);
+        int doUselessThingsIndex = array.indexOf(aiModifierDoUselessThings);
+
+        if(gReg.getValueBoolean(entity, Genes.GENE_AI_ARROW_ATTACK)) {
+            int maxRangedAttackTime = gReg.getValueInteger(entity, Genes.GENE_AI_ARROW_ATTACK_MAX_RANGED_ATTACK_TIME);
+            int minRangedAttackTime = gReg.getValueInteger(entity, Genes.GENE_AI_ARROW_ATTACK_MIN_RANGED_ATTACK_TIME);
+            double moveSpeed = gReg.getValueDouble(entity, Genes.GENE_AI_ARROW_ATTACK_MOVE_SPEED);
+            float rangedAttackTimeModifier = gReg.getValueFloat(entity, Genes.GENE_AI_ARROW_ATTACK_RANGED_ATTACK_TIME_MODIFIER);
+
+            tasks.addTask(attackIndex, new EntityAIArrowAttack(entity, moveSpeed, minRangedAttackTime, maxRangedAttackTime, rangedAttackTimeModifier));
+        }
+
+        if(gReg.getValueBoolean(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE) && entity instanceof EntityCreature) {
+            try {
+                boolean longMemory = gReg.getValueBoolean(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_LONG_MEMORY);
+                double moveSpeed = gReg.getValueDouble(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_MOVE_SPEED);
+                Class target = Class.forName(gReg.getValueString(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_TARGET));
+
+                tasks.addTask(attackIndex, new EntityAIAttackOnCollide((EntityCreature) entity, target, moveSpeed, longMemory));
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

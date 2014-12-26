@@ -116,4 +116,10 @@ public class Trait implements ITrait {
     public void updateWanderPath(IEntitySoulCustom entity) {
         SoulHelper.traitHandler.callSuperTrait(entity);
     }
+
+    //TODO implement this in TraitAttack
+    @Override
+    public void attackEntityWithRangedAttack(IEntitySoulCustom entity, EntityLivingBase target, float distanceModified) {
+        SoulHelper.traitHandler.callSuperTrait(entity, target, distanceModified);
+    }
 }

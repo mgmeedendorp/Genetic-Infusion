@@ -189,13 +189,13 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
 
     override def collideWithNearbyEntities() = super.collideWithNearbyEntities()
 
+    override def attackEntityWithRangedAttack(entity: EntityLivingBase, distanceModified: Float) = TraitHandler.attackEntityWithRangedAttack(this, entity, distanceModified);
+
     override def readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)
         soul = new Soul(compound)
         if(compound.hasKey("data")) {
             syncLogic.readFromNBT(compound)
-            //TODO check if this is needed
-            //      setPosition(posX, posY, posZ)
         }
     }
 

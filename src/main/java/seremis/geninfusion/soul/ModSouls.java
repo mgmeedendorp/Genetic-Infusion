@@ -5,7 +5,7 @@ import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.lib.Traits;
 import seremis.geninfusion.soul.gene.*;
 import seremis.geninfusion.soul.gene.GeneUseNewAI;
-import seremis.geninfusion.soul.gene.newAI.GeneAIModifierAttack;
+import seremis.geninfusion.soul.gene.newAI.*;
 import seremis.geninfusion.soul.gene.newAI.arrowAttack.*;
 import seremis.geninfusion.soul.gene.newAI.attackOnCollide.GeneAIAttackOnCollide;
 import seremis.geninfusion.soul.gene.newAI.attackOnCollide.GeneAIAttackOnCollideLongMemory;
@@ -265,6 +265,12 @@ public class ModSouls {
 
 
         geneRegistry.registerGene(Genes.GENE_AI_MODIFIER_ATTACK, new GeneAIModifierAttack());
+        geneRegistry.registerGene(Genes.GENE_AI_MODIFIER_DO_USELESS_THINGS, new GeneAIModifierDoUselessThings());
+        geneRegistry.registerGene(Genes.GENE_AI_MODIFIER_HELP_OWNER, new GeneAIModifierHelpOwner());
+        geneRegistry.registerGene(Genes.GENE_AI_MODIFIER_MATE, new GeneAIModifierMate());
+        geneRegistry.registerGene(Genes.GENE_AI_MODIFIER_RUN, new GeneAIModifierRun());
+        geneRegistry.registerGene(Genes.GENE_AI_MODIFIER_SURVIVE, new GeneAIModifierSurvive());
+        geneRegistry.registerGene(Genes.GENE_AI_MODIFIER_TRADE, new GeneAIModifierTrade());
 
         geneRegistry.registerMasterGene(Genes.GENE_USE_NEW_AI, new GeneUseNewAI());
         geneRegistry.registerMasterGene(Genes.GENE_USE_OLD_AI, new GeneUseOldAI());
