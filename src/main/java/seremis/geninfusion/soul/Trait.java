@@ -69,4 +69,7 @@ public class Trait implements ITrait {
 
     @Override
     public void updateWanderPath(IEntitySoulCustom entity) {}
+
+    @Override
+    public void attackEntityWithRangedAttack(IEntitySoulCustom entity, EntityLivingBase target, float distanceModified) {}
 }

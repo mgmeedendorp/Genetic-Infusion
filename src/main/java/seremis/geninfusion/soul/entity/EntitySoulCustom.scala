@@ -64,6 +64,19 @@ class EntitySoulCustom(world: World) extends GIEntityLiving(world) with IEntityS
         readFromNBT(compound)
     }
 
+    override def getEntityAsInstanceOf(clzz: Class[_ <: EntityLiving]): IEntitySoulCustom = {
+        if(clzz == classOf[EntityLiving]) {
+            this
+        }
+        if(clzz == classOf[EntityCreature]) {
+            val entity = new EntitySoulCustomCreature(world, soul, posX, posY, posZ)
+            syncLogic.overwriteEntityTo(entity)
+            entity.syncLogic = this.syncLogic
+            entity
+        }
+        null
+    }
+
     override def getWorld: World = {
         worldObj
     }

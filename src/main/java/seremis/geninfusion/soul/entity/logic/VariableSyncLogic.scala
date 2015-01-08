@@ -5,6 +5,7 @@ import java.util
 import net.minecraft.entity.EntityLiving
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
+import seremis.geninfusion.api.soul.IEntitySoulCustom
 import seremis.geninfusion.api.soul.util.Data
 import seremis.geninfusion.helper.GIReflectionHelper
 import seremis.geninfusion.util.INBTTagable
@@ -601,5 +602,11 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     private def setField(name: String, value: Any) {
         GIReflectionHelper.setField(this, name, value)
+    }
+
+    def overwriteEntityTo(target: IEntitySoulCustom) {
+        for(i <- 0 until fields.size) {
+            GIReflectionHelper.setField(target, fields(i), GIReflectionHelper.getField(entity, fields(i)))
+        }
     }
 }

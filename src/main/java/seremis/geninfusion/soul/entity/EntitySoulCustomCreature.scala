@@ -64,6 +64,16 @@ class EntitySoulCustomCreature(world: World) extends GIEntityCreature(world) wit
         readFromNBT(compound)
     }
 
+    override def getEntityAsInstanceOf(clzz: Class[_ <: EntityLiving]): IEntitySoulCustom = {
+        if(clzz == classOf[EntityLiving]) {
+            this
+        }
+        if(clzz == classOf[EntityCreature]) {
+            this
+        }
+        null
+    }
+
     override def getWorld: World = {
         worldObj
     }

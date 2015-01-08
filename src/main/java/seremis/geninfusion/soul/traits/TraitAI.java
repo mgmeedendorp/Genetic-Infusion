@@ -70,13 +70,13 @@ public class TraitAI extends Trait {
             tasks.addTask(attackIndex, new EntityAIArrowAttack(entity, moveSpeed, minRangedAttackTime, maxRangedAttackTime, rangedAttackTimeModifier));
         }
 
-        if(gReg.getValueBoolean(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE) && entity instanceof EntityCreature) {
+        if(gReg.getValueBoolean(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE)) {
             try {
                 boolean longMemory = gReg.getValueBoolean(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_LONG_MEMORY);
                 double moveSpeed = gReg.getValueDouble(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_MOVE_SPEED);
                 Class target = Class.forName(gReg.getValueString(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_TARGET));
 
-                tasks.addTask(attackIndex, new EntityAIAttackOnCollide((EntityCreature) entity, target, moveSpeed, longMemory));
+                tasks.addTask(attackIndex, new EntityAIAttackOnCollide((EntityCreature) entity.getEntityAsInstanceOf(EntityCreature.class), target, moveSpeed, longMemory));
             } catch(Exception e) {
                 e.printStackTrace();
             }
