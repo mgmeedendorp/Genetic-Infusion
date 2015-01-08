@@ -26,6 +26,7 @@ public interface IEntitySoulCustom extends IRangedAttackMob {
 
     /*
      * Use this method to set a variable as persistent. This variable will save and load with NBT.
+     * This will NOT work with objects.
      */
     void makePersistent(String name);
     
@@ -100,7 +101,7 @@ public interface IEntitySoulCustom extends IRangedAttackMob {
     void setDataArray(String name, Data[] variable);
 
     /**
-     * Use this to set a variable that already exists in an entity class, this can't be used to set custom variables.
+     * Use this to set an Object. The Object will not persist over saves, write an Object to a Data object if you want it to persist.
      */
     void setObject(String name, Object object);
 
@@ -127,7 +128,7 @@ public interface IEntitySoulCustom extends IRangedAttackMob {
     Data[] getDataArray(String name);
 
     /**
-     * Use this to get a variable that already exists in an entity class, this can't be used to get custom variables.
+     * Use this to get an Object. The Object will not persist over saves, write an Object to a Data object if you want it to persist.
      *
      * @param name The name of the variable
      */

@@ -20,6 +20,8 @@ public class Data implements INBTTagable {
     public HashMap<String, Data> dataDataMap = new HashMap<String, Data>();
     public HashMap<String, NBTTagCompound> nbtDataMap = new HashMap<String, NBTTagCompound>();
 
+    public HashMap<String, Object> objectDataMap = new HashMap<String, Object>();
+
     public Data() {}
 
     public Data(NBTTagCompound compound) {
@@ -67,6 +69,15 @@ public class Data implements INBTTagable {
         dataDataMap.put(key, value);
     }
 
+    /**
+     * This sets an object. Objects will NOT be stored in NBT when the writeToNBT() method is called, so it will not persist over saves.
+     * @param key The name of the object
+     * @param value The object to be stored
+     */
+    public void setObject(String key, Object value) {
+        objectDataMap.put(key, value);
+    }
+
     public boolean getBoolean(String key) {
         return booleanDataMap.get(key) == null ? false : booleanDataMap.get(key);
     }
@@ -105,6 +116,14 @@ public class Data implements INBTTagable {
 
     public Data getData(String key) {
         return dataDataMap.get(key);
+    }
+
+    /**
+     * This gets an object. Objects will NOT be stored in NBT when the writeToNBT() method is called, so it will not persist over saves.
+     * @param key The name of the object
+     */
+    public Object getObject(String key) {
+        return objectDataMap.get(key);
     }
 
     public void setBooleanArray(String key, boolean[] value) {
@@ -318,11 +337,11 @@ public class Data implements INBTTagable {
     }
 
     public String toString() {
-        return "Data[booleans: " + booleanDataMap + ", bytes: " + byteDataMap + ", shorts: " + shortDataMap + ", integers: " + integerDataMap + ", floats: " + floatDataMap + ", doubles: " + doubleDataMap + ", longs: " + longDataMap + ", strings: " + stringDataMap + ", data: " + dataDataMap + ", nbt: " + nbtDataMap + "]";
+        return "Data[booleans: " + booleanDataMap + ", bytes: " + byteDataMap + ", shorts: " + shortDataMap + ", integers: " + integerDataMap + ", floats: " + floatDataMap + ", doubles: " + doubleDataMap + ", longs: " + longDataMap + ", strings: " + stringDataMap + ", data: " + dataDataMap + ", nbt: " + nbtDataMap + ", object: " + objectDataMap + "]";
     }
 
     public boolean isEmpty() {
-        return booleanDataMap.isEmpty() && byteDataMap.isEmpty() && shortDataMap.isEmpty() && integerDataMap.isEmpty() && floatDataMap.isEmpty() && doubleDataMap.isEmpty() && longDataMap.isEmpty() && stringDataMap.isEmpty() && nbtDataMap.isEmpty() && dataDataMap.isEmpty();
+        return booleanDataMap.isEmpty() && byteDataMap.isEmpty() && shortDataMap.isEmpty() && integerDataMap.isEmpty() && floatDataMap.isEmpty() && doubleDataMap.isEmpty() && longDataMap.isEmpty() && stringDataMap.isEmpty() && nbtDataMap.isEmpty() && dataDataMap.isEmpty() && objectDataMap.isEmpty();
     }
 
     @Override

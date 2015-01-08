@@ -14,7 +14,7 @@ import scala.collection.mutable.ListBuffer
 class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     protected var data = new Data()
-    protected var persistent: ListBuffer[String] = ListBuffer()
+    protected var persistent: ListBuffer[String] = ListBuffer();
 
     protected var fields: ListBuffer[String] = {
         var clazz: Any = entity.getClass
@@ -125,7 +125,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
         if(fields.contains(name)) {
             GIReflectionHelper.setField(entity, name, variable)
         } else {
-
+            data.setObject(name, variable)
         }
     }
 
@@ -219,9 +219,10 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getObject(name: String): Object = {
         if(fields.contains(name)) {
-            return GIReflectionHelper.getField(entity, name).asInstanceOf[Object]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[Object]
+        } else {
+            data.getObject(name)
         }
-        null
     }
 
     def setBooleanArray(name: String, variable: Array[Boolean]) {
@@ -314,7 +315,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getBooleanArray(name: String): Array[Boolean] = {
         if(fields.contains(name)) {
-            return GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Boolean]]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Boolean]]
         } else {
             data.getBooleanArray(name)
         }
@@ -322,7 +323,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getByteArray(name: String): Array[Byte] = {
         if(fields.contains(name)) {
-            return GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Byte]]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Byte]]
         } else {
             data.getByteArray(name)
         }
@@ -330,7 +331,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getShortArray(name: String): Array[Short] = {
         if(fields.contains(name)) {
-            return GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Short]]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Short]]
         } else {
             data.getShortArray(name)
         }
@@ -338,7 +339,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getIntegerArray(name: String): Array[Int] = {
         if(fields.contains(name)) {
-            return GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Int]]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Int]]
         } else {
             data.getIntegerArray(name)
         }
@@ -346,7 +347,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getFloatArray(name: String): Array[Float] = {
         if(fields.contains(name)) {
-            return GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Float]]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Float]]
         } else {
             data.getFloatArray(name)
         }
@@ -354,7 +355,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getDoubleArray(name: String): Array[Double] = {
         if(fields.contains(name)) {
-            return GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Double]]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Double]]
         } else {
             data.getDoubleArray(name)
         }
@@ -362,7 +363,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getLongArray(name: String): Array[Long] = {
         if(fields.contains(name)) {
-            return GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Long]]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Long]]
         } else {
             data.getLongArray(name)
         }
@@ -370,7 +371,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getStringArray(name: String): Array[String] = {
         if(fields.contains(name)) {
-            return GIReflectionHelper.getField(entity, name).asInstanceOf[Array[String]]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[Array[String]]
         } else {
             data.getStringArray(name)
         }
@@ -378,7 +379,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getItemStackArray(name: String): Array[ItemStack] = {
         if(fields.contains(name)) {
-            return GIReflectionHelper.getField(entity, name).asInstanceOf[Array[ItemStack]]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[Array[ItemStack]]
         } else {
             if(getNBTArray(name) != null) Array.tabulate(getNBTArray(name).length)(index => if(getNBTArray(name)(index) != null) ItemStack.loadItemStackFromNBT(getNBTArray(name)(index)) else null) else null
         }
@@ -386,7 +387,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getNBTArray(name: String): Array[NBTTagCompound] = {
         if(fields.contains(name)) {
-            return GIReflectionHelper.getField(entity, name).asInstanceOf[Array[NBTTagCompound]]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[Array[NBTTagCompound]]
         } else {
             data.getNBTArray(name)
         }
@@ -394,7 +395,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getDataArray(name: String): Array[Data] = {
         if(fields.contains(name)) {
-            return GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Data]]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Data]]
         } else {
             data.getDataArray(name)
         }
