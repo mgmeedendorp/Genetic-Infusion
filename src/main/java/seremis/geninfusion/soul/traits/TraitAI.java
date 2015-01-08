@@ -1,11 +1,15 @@
 package seremis.geninfusion.soul.traits;
 
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.EntityAIArrowAttack;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityAITasks;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntityGolem;
+import net.minecraft.entity.monster.EntityIronGolem;
+import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityTameable;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.pathfinding.PathEntity;
@@ -33,6 +37,7 @@ public class TraitAI extends Trait {
 
         IGeneRegistry gReg = SoulHelper.geneRegistry;
         EntityAITasks tasks = living.tasks;
+        EntityAITasks targetTasks = living.targetTasks;
 
         float aiModifierAttack = gReg.getValueFloat(entity, Genes.GENE_AI_MODIFIER_ATTACK);
         float aiModifierRun = gReg.getValueFloat(entity, Genes.GENE_AI_MODIFIER_RUN);
@@ -80,6 +85,83 @@ public class TraitAI extends Trait {
             } catch(Exception e) {
                 e.printStackTrace();
             }
+        }
+
+        if(gReg.getValueBoolean(entity, Genes.GENE_AI_AVOID_ENTITY)) {
+            try {
+                double farSpeed = gReg.getValueDouble(entity, Genes.GENE_AI_AVOID_ENTITY_FAR_SPEED);
+                double nearSpeed = gReg.getValueDouble(entity, Genes.GENE_AI_AVOID_ENTITY_NEAR_SPEED);
+                float range = gReg.getValueFloat(entity, Genes.GENE_AI_AVOID_ENTITY_RANGE);
+                Class target = Class.forName(gReg.getValueString(entity, Genes.GENE_AI_AVOID_ENTITY_TARGET));
+
+                tasks.addTask(runIndex, new EntityAIAvoidEntity((EntityCreature) entity.getEntityAsInstanceOf(EntityCreature.class), target, range, farSpeed, nearSpeed));
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(gReg.getValueBoolean(entity, Genes.GENE_AI_BEG)) {
+            float range = gReg.getValueFloat(entity, Genes.GENE_AI_BEG_RANGE);
+
+            tasks.addTask(doUselessThingsIndex, new EntityAIBeg((EntityWolf) entity.getEntityAsInstanceOf(EntityWolf.class), range));
+        }
+
+        if(gReg.getValueBoolean(entity, Genes.GENE_AI_BREAK_DOOR)) {
+            tasks.addTask(attackIndex, new EntityAIBreakDoor((EntityLiving) entity));
+        }
+
+        if(gReg.getValueBoolean(entity, Genes.GENE_AI_CONTROLLED_BY_PLAYER)) {
+            float maxSpeed = gReg.getValueFloat(entity, Genes.GENE_AI_CONTROLLED_BY_PLAYER_MAX_SPEED);
+
+            tasks.addTask(helpOwnerIndex, new EntityAIControlledByPlayer((EntityLiving) entity, maxSpeed));
+        }
+
+        if(gReg.getValueBoolean(entity, Genes.GENE_AI_CREEPER_SWELL)) {
+            tasks.addTask(attackIndex, new EntityAICreeperSwell((EntityCreeper) entity.getEntityAsInstanceOf(EntityCreeper.class)));
+        }
+
+        if(gReg.getValueBoolean(entity, Genes.GENE_AI_DEFEND_VILLAGE)) {
+            tasks.addTask(surviveIndex, new EntityAIDefendVillage((EntityIronGolem) entity.getEntityAsInstanceOf(EntityGolem.class)));
+        }
+
+        if(gReg.getValueBoolean(entity, Genes.GENE_AI_EAT_GRASS)) {
+            tasks.addTask(doUselessThingsIndex, new EntityAIEatGrass((EntityLiving) entity.getEntityAsInstanceOf(EntityLiving.class)));
+        }
+
+        if(gReg.getValueBoolean(entity, Genes.GENE_AI_FLEE_SUN)) {
+            double moveSpeed = gReg.getValueDouble(entity, Genes.GENE_AI_FLEE_SUN_MOVE_SPEED);
+
+            tasks.addTask(surviveIndex, new EntityAIFleeSun((EntityCreature) entity.getEntityAsInstanceOf(EntityCreature.class), moveSpeed));
+        }
+
+        if(gReg.getValueBoolean(entity, Genes.GENE_AI_FOLLOW_GOLEM)) {
+            tasks.addTask(helpOwnerIndex, new EntityAIFollowGolem((EntityVillager) entity.getEntityAsInstanceOf(EntityVillager.class)));
+        }
+
+        if(gReg.getValueBoolean(entity, Genes.GENE_AI_FOLLOW_OWNER) || gReg.getValueBoolean(entity, Genes.GENE_IS_TAMEABLE)) {
+            double moveSpeed = gReg.getValueDouble(entity, Genes.GENE_AI_FOLLOW_OWNER_MOVE_SPEED);
+            float maxDistance = gReg.getValueFloat(entity, Genes.GENE_AI_FOLLOW_OWNER_MAX_DISTANCE);
+            float minDistance = gReg.getValueFloat(entity, Genes.GENE_AI_FOLLOW_OWNER_MIN_DISTANCE);
+
+            tasks.addTask(helpOwnerIndex, new EntityAIFollowOwner((EntityTameable) entity.getEntityAsInstanceOf(EntityTameable.class), moveSpeed, minDistance, maxDistance));
+        }
+
+        if(gReg.getValueBoolean(entity, Genes.GENE_AI_FOLLOW_PARENT)) {
+            double moveSpeed = gReg.getValueDouble(entity, Genes.GENE_AI_FOLLOW_PARENT_MOVE_SPEED);
+
+            tasks.addTask(mateIndex, new EntityAIFollowParent((EntityAnimal) entity.getEntityAsInstanceOf(EntityAnimal.class), moveSpeed));
+        }
+
+        if(gReg.getValueBoolean(entity, Genes.GENE_AI_HURT_BY_TARGET)) {
+            boolean callHelp = gReg.getValueBoolean(entity, Genes.GENE_AI_HURT_BY_TARGET_CALL_HELP);
+
+            targetTasks.addTask(surviveIndex, new EntityAIHurtByTarget((EntityCreature) entity.getEntityAsInstanceOf(EntityCreature.class), callHelp));
+        }
+
+        if(gReg.getValueBoolean(entity, Genes.GENE_AI_LEAP_AT_TARGET)) {
+            float motionY = gReg.getValueFloat(entity, Genes.GENE_AI_LEAP_AT_TARGET_MOTION_Y);
+
+            tasks.addTask(attackIndex, new EntityAILeapAtTarget((EntityLiving) entity.getEntityAsInstanceOf(EntityLiving.class), motionY));
         }
     }
 

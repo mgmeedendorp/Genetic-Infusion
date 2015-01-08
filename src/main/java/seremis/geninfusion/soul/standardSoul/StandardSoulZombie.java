@@ -20,7 +20,7 @@ public class StandardSoulZombie extends StandardSoul {
         if(gene.equals(Genes.GENE_CREATURE_ATTRIBUTE)) return new Chromosome(new AlleleInteger(false, EnumCreatureAttribute.UNDEAD.ordinal()));
         if(gene.equals(Genes.GENE_DEATH_SOUND)) return new Chromosome(new AlleleString(true, "mob.zombie.death"));
         if(gene.equals(Genes.GENE_HURT_SOUND)) return new Chromosome(new AlleleString(false, "mob.zombie.hurt"));
-        //if(gene.equals(Genes.GENE_IS_CREATURE)) return new Chromosome(new AlleleBoolean(true, true));
+        if(gene.equals(Genes.GENE_IS_CREATURE)) return new Chromosome(new AlleleBoolean(true, true));
         if(gene.equals(Genes.GENE_ITEM_DROPS)) return new Chromosome(new AlleleInventory(false, new ItemStack[]{new ItemStack(Items.rotten_flesh)}));
         if(gene.equals(Genes.GENE_LIVING_SOUND)) return new Chromosome(new AlleleString(false, "mob.zombie.say"));
         if(gene.equals(Genes.GENE_MOVEMENT_SPEED)) return new Chromosome(new AlleleFloat(true, 0.23000000417232513F));

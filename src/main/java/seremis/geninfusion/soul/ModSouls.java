@@ -128,6 +128,7 @@ public class ModSouls {
         geneRegistry.registerGene(Genes.GENE_IS_CREATURE, new GeneIsCreature());
         geneRegistry.registerGene(Genes.GENE_CEASE_AI_MOVEMENT, new GeneCeaseAIMovement());
         geneRegistry.registerGene(Genes.GENE_CHILDREN_BURN_IN_DAYLIGHT, new GeneChildrenBurnInDaylight());
+        geneRegistry.registerGene(Genes.GENE_IS_TAMEABLE, new GeneIsTameable());
 
         geneRegistry.registerGene(Genes.GENE_AI_ARROW_ATTACK_MAX_RANGED_ATTACK_TIME, new GeneAIArrowAttackMaxRangedAttackTime());
         geneRegistry.registerGene(Genes.GENE_AI_ARROW_ATTACK_MIN_RANGED_ATTACK_TIME, new GeneAIArrowAttackMinRangedAttackTime());
