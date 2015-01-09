@@ -125,7 +125,7 @@ public class TraitAI extends Trait {
         }
 
         if(gReg.getValueBoolean(entity, Genes.GENE_AI_EAT_GRASS)) {
-            tasks.addTask(doUselessThingsIndex, new EntityAIEatGrass((EntityLiving) entity.getEntityAsInstanceOf(EntityLiving.class)));
+            tasks.addTask(doUselessThingsIndex, new EntityAIEatGrass((EntityLiving) entity));
         }
 
         if(gReg.getValueBoolean(entity, Genes.GENE_AI_FLEE_SUN)) {
@@ -161,7 +161,23 @@ public class TraitAI extends Trait {
         if(gReg.getValueBoolean(entity, Genes.GENE_AI_LEAP_AT_TARGET)) {
             float motionY = gReg.getValueFloat(entity, Genes.GENE_AI_LEAP_AT_TARGET_MOTION_Y);
 
-            tasks.addTask(attackIndex, new EntityAILeapAtTarget((EntityLiving) entity.getEntityAsInstanceOf(EntityLiving.class), motionY));
+            tasks.addTask(attackIndex, new EntityAILeapAtTarget((EntityLiving) entity, motionY));
+        }
+
+        if(gReg.getValueBoolean(entity, Genes.GENE_AI_LOOK_AT_TRADE_PLAYER)) {
+            tasks.addTask(doUselessThingsIndex, new EntityAILookAtTradePlayer((EntityVillager) entity.getEntityAsInstanceOf(EntityVillager.class)));
+        }
+
+        if(gReg.getValueBoolean(entity, Genes.GENE_AI_LOOK_AT_VILLAGER)) {
+            tasks.addTask(doUselessThingsIndex, new EntityAILookAtVillager((EntityIronGolem) entity.getEntityAsInstanceOf(EntityIronGolem.class)));
+        }
+
+        if(gReg.getValueBoolean(entity, Genes.GENE_AI_LOOK_IDLE)) {
+            tasks.addTask(doUselessThingsIndex, new EntityAILookIdle((EntityLiving) entity));
+        }
+
+        if(gReg.getValueBoolean(entity, Genes.GENE_AI_MATE)) {
+            double moveSpeed = gReg.getValueDouble(entity, Genes.GENE_AI_MATE_MOVE_SPEED);
         }
     }
 
