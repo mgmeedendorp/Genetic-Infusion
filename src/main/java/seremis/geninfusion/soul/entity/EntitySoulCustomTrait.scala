@@ -24,7 +24,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     var syncLogic = new VariableSyncLogic(this)
     var soul: ISoul
-    val world = getWorld
+    val world: World
 
     override def writeSpawnData(data: ByteBuf) {
         val compound: NBTTagCompound = new NBTTagCompound
@@ -88,7 +88,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     override def getFlag(id: Int): Boolean = super.getFlag(id)
 
-    override def getRandom: Random = rand
+    override def getRandom: Random = new Random()
 
     //TODO
     //override def isChild: Boolean = getBoolean("isChild")

@@ -4,7 +4,7 @@ import net.minecraft.entity._
 import net.minecraft.world.World
 import seremis.geninfusion.api.soul.ISoul
 
-class EntitySoulCustom(world: World) extends EntityLiving(world) with EntitySoulCustomTrait {
+class EntitySoulCustom(val world: World) extends EntityLiving(world) with EntitySoulCustomTrait {
 
     override var soul: ISoul = null
 
