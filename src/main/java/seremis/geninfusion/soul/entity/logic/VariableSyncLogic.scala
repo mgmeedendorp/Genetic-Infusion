@@ -15,7 +15,7 @@ import scala.collection.mutable.ListBuffer
 class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     protected var data = new Data()
-    protected var persistent: ListBuffer[String] = ListBuffer();
+    protected var persistent: ListBuffer[String] = ListBuffer()
 
     protected var fields: ListBuffer[String] = {
         var clazz: Any = entity.getClass
@@ -132,7 +132,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getBoolean(name: String): Boolean = {
         if(fields.contains(name)) {
-            return GIReflectionHelper.getField(entity, name).asInstanceOf[Boolean]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[Boolean]
         } else {
             data.getBoolean(name)
         }
@@ -140,7 +140,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getByte(name: String): Byte = {
         if(fields.contains(name)) {
-            return GIReflectionHelper.getField(entity, name).asInstanceOf[Byte]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[Byte]
         } else {
             data.getByte(name)
         }
@@ -148,7 +148,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getShort(name: String): Short = {
         if(fields.contains(name)) {
-            return GIReflectionHelper.getField(entity, name).asInstanceOf[Short]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[Short]
         } else {
             data.getShort(name)
         }
@@ -156,7 +156,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getInteger(name: String): Int = {
         if(fields.contains(name)) {
-            return GIReflectionHelper.getField(entity, name).asInstanceOf[Integer]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[Int]
         } else {
             data.getInteger(name)
         }
@@ -164,7 +164,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getFloat(name: String): Float = {
         if(fields.contains(name)) {
-            return GIReflectionHelper.getField(entity, name).asInstanceOf[Float]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[Float]
         } else {
             data.getFloat(name)
         }
@@ -172,7 +172,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getDouble(name: String): Double = {
         if(fields.contains(name)) {
-            return GIReflectionHelper.getField(entity, name).asInstanceOf[Double]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[Double]
         } else {
             data.getDouble(name)
         }
@@ -180,7 +180,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getLong(name: String): Long = {
         if(fields.contains(name)) {
-            return GIReflectionHelper.getField(entity, name).asInstanceOf[Long]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[Long]
         } else {
             data.getLong(name)
         }
@@ -188,7 +188,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getString(name: String): String = {
         if(fields.contains(name)) {
-            return GIReflectionHelper.getField(entity, name).asInstanceOf[String]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[String]
         } else {
             data.getString(name)
         }
@@ -196,7 +196,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getItemStack(name: String): ItemStack = {
         if(fields.contains(name)) {
-            return GIReflectionHelper.getField(entity, name).asInstanceOf[ItemStack]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[ItemStack]
         } else {
             if(data.getNBT(name) != null) ItemStack.loadItemStackFromNBT(data.getNBT(name)) else null
         }
@@ -204,7 +204,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getNBT(name: String): NBTTagCompound = {
         if(fields.contains(name)) {
-            return GIReflectionHelper.getField(entity, name).asInstanceOf[NBTTagCompound]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[NBTTagCompound]
         } else {
             data.getNBT(name)
         }
@@ -212,7 +212,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getData(name: String): Data = {
         if(fields.contains(name)) {
-            return GIReflectionHelper.getField(entity, name).asInstanceOf[Data]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[Data]
         } else {
             data.getData(name)
         }
@@ -401,8 +401,6 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
             data.getDataArray(name)
         }
     }
-
-    protected val persistentData: Data = new Data()
 
     override def writeToNBT(compound: NBTTagCompound) {
         if(persistent.nonEmpty) {

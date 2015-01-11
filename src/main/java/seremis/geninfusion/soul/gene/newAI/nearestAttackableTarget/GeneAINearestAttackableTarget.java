@@ -13,6 +13,7 @@ public class GeneAINearestAttackableTarget extends MasterGene {
         addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_TARGET_CHANCE));
         addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_VISIBLE));
         addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_NEARBY_ONLY));
+        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_ENTITY_SELECTOR));
     }
 
     @Override

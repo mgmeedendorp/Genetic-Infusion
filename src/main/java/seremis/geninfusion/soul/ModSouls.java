@@ -206,6 +206,7 @@ public class ModSouls {
         geneRegistry.registerGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_TARGET_CHANCE, new GeneAINearestAttackableTargetTargetChance());
         geneRegistry.registerGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_VISIBLE, new GeneAINearestAttackableTargetVisible());
         geneRegistry.registerGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_NEARBY_ONLY, new GeneAINearestAttackableTargetNearbyOnly());
+        geneRegistry.registerGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_ENTITY_SELECTOR, new GeneAINearestAttackableTargetEntitySelector());
         geneRegistry.registerMasterGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET, new GeneAINearestAttackableTarget());
 
         geneRegistry.registerGene(Genes.GENE_AI_OCELOT_ATTACK, new GeneAIOcelotAttack());
@@ -272,6 +273,7 @@ public class ModSouls {
         geneRegistry.registerGene(Genes.GENE_AI_MODIFIER_RUN, new GeneAIModifierRun());
         geneRegistry.registerGene(Genes.GENE_AI_MODIFIER_SURVIVE, new GeneAIModifierSurvive());
         geneRegistry.registerGene(Genes.GENE_AI_MODIFIER_TRADE, new GeneAIModifierTrade());
+        geneRegistry.registerGene(Genes.GENE_AI_MODIFIER_WANDER, new GeneAIModifierWander());
 
         geneRegistry.registerMasterGene(Genes.GENE_USE_NEW_AI, new GeneUseNewAI());
         geneRegistry.registerMasterGene(Genes.GENE_USE_OLD_AI, new GeneUseOldAI());

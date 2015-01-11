@@ -119,6 +119,7 @@ public class Genes {
     public static final String GENE_AI_NEAREST_ATTACKABLE_TARGET_TARGET_CHANCE = ID + ".gene.aiNearestAttackableTargetTargetChance";
     public static final String GENE_AI_NEAREST_ATTACKABLE_TARGET_VISIBLE = ID + ".gene.aiNearestAttackableTargetVisible";
     public static final String GENE_AI_NEAREST_ATTACKABLE_TARGET_NEARBY_ONLY = ID + ".gene.aiNearestAttackableTargetNearbyOnly";
+    public static final String GENE_AI_NEAREST_ATTACKABLE_TARGET_ENTITY_SELECTOR = ID + ".gene.aiNearestAttackableTargetEntitySelector";
 
     public static final String GENE_AI_OCELOT_ATTACK = ID + ".gene.aiOcelotAttack";
 
@@ -183,4 +184,5 @@ public class Genes {
     public static final String GENE_AI_MODIFIER_HELP_OWNER = ID + ".gene.aiModifierHelpOwner";
     public static final String GENE_AI_MODIFIER_MATE = ID + ".gene.aiModifierMate";
     public static final String GENE_AI_MODIFIER_DO_USELESS_THINGS = ID + ".gene.aiModifierDoUselessThings";
+    public static final String GENE_AI_MODIFIER_WANDER = ID + ".gene.aiModifierWander";
 }

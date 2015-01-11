@@ -11,10 +11,9 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{CompressedStreamTools, NBTSizeTracker, NBTTagCompound}
 import net.minecraft.util.{AxisAlignedBB, DamageSource}
 import net.minecraft.world.World
-import net.minecraftforge.common.ForgeHooks
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.util.Data
-import seremis.geninfusion.api.soul.{ISoul, IEntitySoulCustom, SoulHelper}
+import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
 import seremis.geninfusion.soul.allele.{AlleleFloat, AlleleInteger, AlleleString}
 import seremis.geninfusion.soul.entity.logic.VariableSyncLogic
 import seremis.geninfusion.soul.{Soul, TraitHandler}
@@ -56,22 +55,24 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     }
 
     override def getEntityAsInstanceOf(clzz: Class[_ <: EntityLiving]): IEntitySoulCustom = {
-        if(clzz == getClass) {
-            this
-        }
+        if(clzz == getClass) this
+
+        var entity: EntitySoulCustomTrait = null
+
         if(clzz == classOf[EntityLiving]) {
-            val entity = new EntitySoulCustom(world, soul, posX, posY, posZ)
-            syncLogic.overwriteEntityTo(entity)
-            entity.syncLogic = this.syncLogic
-            entity
+            entity = new EntitySoulCustom(world, soul, posX, posY, posZ)
         }
         if(clzz == classOf[EntityCreature]) {
-            val entity = new EntitySoulCustomCreature(world, soul, posX, posY, posZ)
-            syncLogic.overwriteEntityTo(entity)
-            entity.syncLogic = this.syncLogic
-            entity
+            entity = new EntitySoulCustomCreature(world, soul, posX, posY, posZ)
         }
-        null
+
+        if(entity != null) {
+            syncLogic.overwriteEntityTo(entity)
+            entity.syncLogic = syncLogic
+            entity.soul = soul
+            //TODO think about this a little mores
+        }
+        entity
     }
 
     override def getWorld: World = {
@@ -121,7 +122,6 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     private var firstUpdate: Boolean = true
 
     override def onUpdate() {
-        if(ForgeHooks.onLivingUpdate(this)) return
         if(firstUpdate) {
             firstUpdate = false
             TraitHandler.firstTick(this)
@@ -199,7 +199,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     override def collideWithNearbyEntities() = super.collideWithNearbyEntities()
 
-    override def attackEntityWithRangedAttack(entity: EntityLivingBase, distanceModified: Float) = TraitHandler.attackEntityWithRangedAttack(this, entity, distanceModified);
+    override def attackEntityWithRangedAttack(entity: EntityLivingBase, distanceModified: Float) = TraitHandler.attackEntityWithRangedAttack(this, entity, distanceModified)
 
     override def readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)
