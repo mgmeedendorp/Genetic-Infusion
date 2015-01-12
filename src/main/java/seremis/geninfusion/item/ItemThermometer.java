@@ -5,9 +5,7 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
-import seremis.geninfusion.api.magnet.tile.IMagnetConnector;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.core.proxy.CommonProxy;
 import seremis.geninfusion.lib.Items;
@@ -33,10 +31,6 @@ public class ItemThermometer extends GIItem {
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
         if(CommonProxy.instance.isServerWorld(world)) {
             TileEntity tile = world.getTileEntity(x, y, z);
-            if(tile != null && tile instanceof IMagnetConnector) {
-                player.addChatComponentMessage(new ChatComponentText("Reading..."));
-                player.addChatComponentMessage(new ChatComponentText("Heat: " + ((IMagnetConnector) tile).getHeat()));
-            }
             if(stack.getItemDamage() == 1) {
                 EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityZombie(world)), x, y + 1, z);
                 world.spawnEntityInWorld(entity);

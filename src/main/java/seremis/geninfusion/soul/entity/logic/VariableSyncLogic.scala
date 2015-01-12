@@ -17,6 +17,8 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
     protected var data = new Data()
     protected var persistent: ListBuffer[String] = ListBuffer()
 
+    var children: ListBuffer[IEntitySoulCustom] = ListBuffer()
+
     protected var fields: ListBuffer[String] = {
         var clazz: Any = entity.getClass
         val list: ListBuffer[String] = ListBuffer()
@@ -28,6 +30,12 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
             clazz = clazz.asInstanceOf[Class[_]].getSuperclass
         }
         list
+    }
+
+    def addChild(child: IEntitySoulCustom) {
+        //TODO this doesn't work at all.
+        children += child
+        overwriteEntityTo(child)
     }
 
     def makePersistent(name: String) {

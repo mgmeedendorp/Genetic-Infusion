@@ -4,7 +4,6 @@ import net.minecraft.entity.monster.EntityZombie;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.lib.Traits;
 import seremis.geninfusion.soul.gene.*;
-import seremis.geninfusion.soul.gene.GeneUseNewAI;
 import seremis.geninfusion.soul.gene.newAI.*;
 import seremis.geninfusion.soul.gene.newAI.arrowAttack.*;
 import seremis.geninfusion.soul.gene.newAI.attackOnCollide.GeneAIAttackOnCollide;
@@ -85,7 +84,6 @@ import seremis.geninfusion.soul.gene.newAI.watchClosest2.GeneAIWatchClosest2Chan
 import seremis.geninfusion.soul.gene.newAI.watchClosest2.GeneAIWatchClosest2Range;
 import seremis.geninfusion.soul.gene.newAI.watchClosest2.GeneAIWatchClosest2Target;
 import seremis.geninfusion.soul.gene.oldAI.GeneCeaseAIMovement;
-import seremis.geninfusion.soul.gene.GeneUseOldAI;
 import seremis.geninfusion.soul.standardSoul.StandardSoulZombie;
 import seremis.geninfusion.soul.traits.*;
 

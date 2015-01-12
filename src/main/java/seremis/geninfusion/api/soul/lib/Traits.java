@@ -1,7 +1,5 @@
 package seremis.geninfusion.api.soul.lib;
 
-import seremis.geninfusion.lib.DefaultProps;
-
 public class Traits {
 
     public static final String ID = "geninfusion";

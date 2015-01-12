@@ -13,8 +13,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import seremis.geninfusion.core.proxy.CommonProxy;
 import seremis.geninfusion.tileentity.GITile;
-import seremis.geninfusion.tileentity.GITileMagnetConnector;
-import seremis.geninfusion.tileentity.GITileMagnetConsumer;
 
 public class GIBlockContainerRotateable extends GIBlockContainer {
 
@@ -51,10 +49,6 @@ public class GIBlockContainerRotateable extends GIBlockContainer {
             TileEntity tile = world.getTileEntity(x, y, z);
             if(tile != null && tile instanceof GITile) {
                 ((GITile) tile).setDirection(direction);
-            } else if(tile != null && tile instanceof GITileMagnetConnector) {
-                ((GITileMagnetConnector) tile).setDirection(direction);
-            } else if(tile != null && tile instanceof GITileMagnetConsumer) {
-                ((GITileMagnetConsumer) tile).setDirection(direction);
             }
         }
     }
@@ -72,12 +66,6 @@ public class GIBlockContainerRotateable extends GIBlockContainer {
             TileEntity tile = blockAccess.getTileEntity(x, y, z);
             if(tile != null && tile instanceof GITile) {
                 int direction = ((GITile) tile).getDirection();
-                return getSidedIcons()[getTextureIndex(direction, side)];
-            } else if(tile != null && tile instanceof GITileMagnetConnector) {
-                int direction = ((GITileMagnetConnector) tile).getDirection();
-                return getSidedIcons()[getTextureIndex(direction, side)];
-            } else if(tile != null && tile instanceof GITileMagnetConsumer) {
-                int direction = ((GITileMagnetConsumer) tile).getDirection();
                 return getSidedIcons()[getTextureIndex(direction, side)];
             }
         } else {

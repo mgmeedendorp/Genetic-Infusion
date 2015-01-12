@@ -1,31 +1,23 @@
 package seremis.geninfusion.soul.traits;
 
 import net.minecraft.command.IEntitySelector;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityGolem;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.IGeneRegistry;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.UtilSoulEntity;
-import seremis.geninfusion.soul.Soul;
-import seremis.geninfusion.soul.allele.AlleleBoolean;
-import seremis.geninfusion.soul.allele.AlleleDouble;
-import seremis.geninfusion.soul.allele.AlleleFloat;
-import seremis.geninfusion.soul.allele.AlleleInteger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -223,7 +215,7 @@ public class TraitAI extends Trait {
                 }
 
                 targetTasks.addTask(attackIndex, new EntityAINearestAttackableTarget((EntityCreature) entity.getEntityAsInstanceOf(EntityCreature.class), target, targetChance, nearbyOnly, visible, selector));
-            } catch (Exception e) {
+            } catch(Exception e) {
                 e.printStackTrace();
             }
         }

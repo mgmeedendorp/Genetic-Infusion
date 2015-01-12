@@ -13,7 +13,6 @@ public class ModEntity {
     }
 
     public static void register() {
-        EntityRegistry.registerModEntity(EntityTransporter.class, Entities.transporterName, Entities.transporterID, GeneticInfusion.instance, 80, 1, false);
         EntityRegistry.registerModEntity(EntitySoulCustom.class, Entities.soulEntityName, Entities.soulEntityID, GeneticInfusion.instance, 80, 1, true);
         EntityRegistry.registerModEntity(EntitySoulCustomCreature.class, Entities.soulEntityCreatureName, Entities.soulEntityCreatureID, GeneticInfusion.instance, 80, 1, true);
     }

@@ -1,6 +1,5 @@
 package seremis.geninfusion.soul.gene.newAI.leapAtTarget;
 
-import scala.tools.nsc.backend.icode.analysis.TypeFlowAnalysis;
 import seremis.geninfusion.api.soul.IAllele;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;

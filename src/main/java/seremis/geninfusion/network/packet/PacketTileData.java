@@ -5,8 +5,6 @@ import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import seremis.geninfusion.tileentity.GITile;
-import seremis.geninfusion.tileentity.GITileMagnetConnector;
-import seremis.geninfusion.tileentity.GITileMagnetConsumer;
 
 public class PacketTileData extends AbstractPacket {
 
@@ -59,24 +57,12 @@ public class PacketTileData extends AbstractPacket {
         if(player.worldObj.getTileEntity(x, y, z) instanceof GITile) {
             ((GITile) player.worldObj.getTileEntity(x, y, z)).sendTileDataToClient(id, data);
         }
-        if(player.worldObj.getTileEntity(x, y, z) instanceof GITileMagnetConnector) {
-            ((GITileMagnetConnector) player.worldObj.getTileEntity(x, y, z)).sendTileDataToClient(id, data);
-        }
-        if(player.worldObj.getTileEntity(x, y, z) instanceof GITileMagnetConsumer) {
-            ((GITileMagnetConsumer) player.worldObj.getTileEntity(x, y, z)).sendTileDataToClient(id, data);
-        }
     }
 
     @Override
     public void handleServerSide(EntityPlayer player) {
         if(player.worldObj.getTileEntity(x, y, z) instanceof GITile) {
             ((GITile) player.worldObj.getTileEntity(x, y, z)).sendTileDataToServer(id, data);
-        }
-        if(player.worldObj.getTileEntity(x, y, z) instanceof GITileMagnetConnector) {
-            ((GITileMagnetConnector) player.worldObj.getTileEntity(x, y, z)).sendTileDataToServer(id, data);
-        }
-        if(player.worldObj.getTileEntity(x, y, z) instanceof GITileMagnetConsumer) {
-            ((GITileMagnetConsumer) player.worldObj.getTileEntity(x, y, z)).sendTileDataToServer(id, data);
         }
     }
 }

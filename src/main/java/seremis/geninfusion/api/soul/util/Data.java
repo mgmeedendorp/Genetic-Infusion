@@ -70,8 +70,10 @@ public class Data implements INBTTagable {
     }
 
     /**
-     * This sets an object. Objects will NOT be stored in NBT when the writeToNBT() method is called, so it will not persist over saves.
-     * @param key The name of the object
+     * This sets an object. Objects will NOT be stored in NBT when the writeToNBT() method is called, so it will not
+     * persist over saves.
+     *
+     * @param key   The name of the object
      * @param value The object to be stored
      */
     public void setObject(String key, Object value) {
@@ -119,7 +121,9 @@ public class Data implements INBTTagable {
     }
 
     /**
-     * This gets an object. Objects will NOT be stored in NBT when the writeToNBT() method is called, so it will not persist over saves.
+     * This gets an object. Objects will NOT be stored in NBT when the writeToNBT() method is called, so it will not
+     * persist over saves.
+     *
      * @param key The name of the object
      */
     public Object getObject(String key) {

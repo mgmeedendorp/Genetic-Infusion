@@ -2,7 +2,6 @@ package seremis.geninfusion.client.render;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
-import seremis.geninfusion.api.util.HeatColorHelper;
 import seremis.geninfusion.client.model.ModelCrystal;
 import seremis.geninfusion.helper.GIRenderHelper;
 import seremis.geninfusion.lib.Localizations;
@@ -28,7 +27,8 @@ public class RenderCrystal {
 
         GL11.glTranslatef((float) x + 0.35F, (float) y - 0.85F, (float) z + 0.35F);
 
-        Color color = HeatColorHelper.instance.convertHeatToColor(heat);
+        //Color color = HeatColorHelper.instance.convertHeatToColor(heat);
+        Color color = new Color(1, 1, 1);
 
         GL11.glColor4f(color.getRed(), color.getGreen(), color.getBlue(), 0.8F);
 

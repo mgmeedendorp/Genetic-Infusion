@@ -1,7 +1,6 @@
 package seremis.geninfusion.world;
 
 import cpw.mods.fml.common.IWorldGenerator;
-import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
@@ -30,30 +29,6 @@ public class GIWorldGenerator implements IWorldGenerator {
             int Ycoord = random.nextInt(60);
             int Zcoord = blockZ + random.nextInt(1);
             new WorldGenMinable(ModBlocks.oreTitanium, 10).generate(world, random, Xcoord, Ycoord, Zcoord);
-        }
-        for(int i = 0; i < 7; i++) {
-            int Xcoord = blockX + random.nextInt(2);
-            int Ycoord = random.nextInt(256);
-            int Zcoord = blockZ + random.nextInt(2);
-            new WorldGenMinable(ModBlocks.oreIsolatzium, 0, 10, Blocks.stone).generate(world, random, Xcoord, Ycoord, Zcoord);
-        }
-        for(int i = 0; i < 7; i++) {
-            int Xcoord = blockX + random.nextInt(2);
-            int Ycoord = random.nextInt(256);
-            int Zcoord = blockZ + random.nextInt(2);
-            new WorldGenMinable(ModBlocks.oreIsolatzium, 1, 10, Blocks.stone).generate(world, random, Xcoord, Ycoord, Zcoord);
-        }
-        for(int i = 0; i < 7; i++) {
-            int Xcoord = blockX + random.nextInt(2);
-            int Ycoord = random.nextInt(256);
-            int Zcoord = blockZ + random.nextInt(2);
-            new WorldGenMinable(ModBlocks.oreIsolatzium, 2, 10, Blocks.stone).generate(world, random, Xcoord, Ycoord, Zcoord);
-        }
-        for(int i = 0; i < 7; i++) {
-            int Xcoord = blockX + random.nextInt(2);
-            int Ycoord = random.nextInt(256);
-            int Zcoord = blockZ + random.nextInt(2);
-            new WorldGenMinable(ModBlocks.oreIsolatzium, 3, 10, Blocks.stone).generate(world, random, Xcoord, Ycoord, Zcoord);
         }
     }
 

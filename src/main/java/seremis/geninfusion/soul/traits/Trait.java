@@ -82,13 +82,13 @@ public class Trait implements ITrait {
     @Override
     public float applyArmorCalculations(IEntitySoulCustom entity, DamageSource source, float damage) {
         Object obj = SoulHelper.traitHandler.callSuperTrait(entity, source, damage);
-        return obj != null ? (Float)obj : 0.0F;
+        return obj != null ? (Float) obj : 0.0F;
     }
 
     @Override
     public float applyPotionDamageCalculations(IEntitySoulCustom entity, DamageSource source, float damage) {
         Object obj = SoulHelper.traitHandler.callSuperTrait(entity, source, damage);
-        return obj != null ? (Float)obj : 0.0F;
+        return obj != null ? (Float) obj : 0.0F;
     }
 
     @Override
@@ -104,7 +104,7 @@ public class Trait implements ITrait {
     @Override
     public float getBlockPathWeight(IEntitySoulCustom entity, int x, int y, int z) {
         Object obj = SoulHelper.traitHandler.callSuperTrait(entity, x, y, z);
-        return obj != null ? (Float)obj : 0.0F;
+        return obj != null ? (Float) obj : 0.0F;
     }
 
     @Override

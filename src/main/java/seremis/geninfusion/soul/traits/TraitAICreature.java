@@ -10,7 +10,6 @@ import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
-import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.util.UtilSoulEntity;
 
 public class TraitAICreature extends Trait {

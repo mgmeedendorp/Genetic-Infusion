@@ -31,8 +31,8 @@ public class TraitHandler implements ITraitHandler {
                     ArrayList<ITrait> supers = SoulHelper.traitRegistry.getOverridden(trait);
 
                     for(ITrait sup : supers) {
-                        Class[] classes = new Class[args.length+1];
-                        Object[] arguments = new Object[args.length+1];
+                        Class[] classes = new Class[args.length + 1];
+                        Object[] arguments = new Object[args.length + 1];
 
                         classes[0] = IEntitySoulCustom.class;
                         arguments[0] = entity;
@@ -58,13 +58,13 @@ public class TraitHandler implements ITraitHandler {
                     }
                 }
             } catch(Exception e) {
-//                System.out.println("It looks like something went wrong while doing a super call on a trait. The call didn't work.");
-//                System.out.println("Entity: " + entity);
-//                if(map.containsKey(entity)) {
-//                    System.out.println("Trait: " + map.get(entity).split("///")[0]);
-//                    System.out.println("Method: " + map.get(entity).split("///")[1]);
-//                }
-//                e.printStackTrace();
+                //                System.out.println("It looks like something went wrong while doing a super call on a trait. The call didn't work.");
+                //                System.out.println("Entity: " + entity);
+                //                if(map.containsKey(entity)) {
+                //                    System.out.println("Trait: " + map.get(entity).split("///")[0]);
+                //                    System.out.println("Method: " + map.get(entity).split("///")[1]);
+                //                }
+                //                e.printStackTrace();
             }
         }
         return result;

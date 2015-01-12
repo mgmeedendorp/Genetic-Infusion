@@ -2,8 +2,6 @@ package seremis.geninfusion.soul;
 
 import seremis.geninfusion.api.soul.ITrait;
 import seremis.geninfusion.api.soul.ITraitRegistry;
-import seremis.geninfusion.api.soul.SoulHelper;
-import seremis.geninfusion.api.soul.lib.Traits;
 
 import java.util.*;
 

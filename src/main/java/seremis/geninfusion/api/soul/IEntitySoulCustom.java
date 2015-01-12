@@ -9,7 +9,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import seremis.geninfusion.api.soul.util.Data;
-import seremis.geninfusion.util.INBTTagable;
 
 import java.util.Random;
 
@@ -26,8 +25,9 @@ public interface IEntitySoulCustom extends IRangedAttackMob {
     Random getRandom();
 
     /**
-     * This method returns the entity as an instance of the class in the parameters. This only works for standard Minecraft classes, like EntityCreature, EntityMob, etc.
-     * The variables of the entity will remain the same.
+     * This method returns the entity as an instance of the class in the parameters. This only works for standard
+     * Minecraft classes, like EntityCreature, EntityMob, etc. The variables of the entity will remain the same.
+     *
      * @param clzz The class this method should return an instance of.
      * @return A EntitySoulCustom as instance of the class provided.
      */
@@ -110,7 +110,8 @@ public interface IEntitySoulCustom extends IRangedAttackMob {
     void setDataArray(String name, Data[] variable);
 
     /**
-     * Use this to set an Object. The Object will not persist over saves, write an Object to a Data object if you want it to persist.
+     * Use this to set an Object. The Object will not persist over saves, write an Object to a Data object if you want
+     * it to persist.
      */
     void setObject(String name, Object object);
 
@@ -137,7 +138,8 @@ public interface IEntitySoulCustom extends IRangedAttackMob {
     Data[] getDataArray(String name);
 
     /**
-     * Use this to get an Object. The Object will not persist over saves, write an Object to a Data object if you want it to persist.
+     * Use this to get an Object. The Object will not persist over saves, write an Object to a Data object if you want
+     * it to persist.
      *
      * @param name The name of the variable
      */

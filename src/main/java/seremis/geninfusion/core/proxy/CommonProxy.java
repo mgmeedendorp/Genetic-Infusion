@@ -1,10 +1,8 @@
 package seremis.geninfusion.core.proxy;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.SidedProxy;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
-import seremis.geninfusion.handler.ServerTickHandler;
 import seremis.geninfusion.lib.Localizations;
 
 public class CommonProxy {
@@ -31,6 +29,6 @@ public class CommonProxy {
     }
 
     public void registerHandlers() {
-        FMLCommonHandler.instance().bus().register(new ServerTickHandler());
+
     }
 }
