@@ -5,14 +5,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import seremis.geninfusion.lib.Blocks;
 import seremis.geninfusion.lib.RenderIds;
-import seremis.geninfusion.tileentity.TileCrystal;
+import seremis.geninfusion.tileentity.TileSoulCage;
 
-public class BlockCrystal extends GIBlockContainer {
+public class BlockSoulCage extends GIBlockContainer {
 
-    public BlockCrystal(Material material) {
+    public BlockSoulCage(Material material) {
         super(material);
-        setBlockName(Blocks.CRYSTAL_UNLOCALIZED_NAME);
-        setBlockBounds(0.3F, 0.0F, 0.3F, 0.6F, 0.83F, 0.6F);
+        setBlockName(Blocks.SOUL_CAGE_UNLOCALIZED_NAME);
         setNeedsIcon(false);
     }
 
@@ -28,11 +27,11 @@ public class BlockCrystal extends GIBlockContainer {
 
     @Override
     public int getRenderType() {
-        return RenderIds.crystalRenderID;
+        return RenderIds.soulCageRenderID;
     }
 
     @Override
     public TileEntity createNewTileEntity(World world, int metadata) {
-        return new TileCrystal();
+        return new TileSoulCage();
     }
 }

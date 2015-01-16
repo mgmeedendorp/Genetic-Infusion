@@ -4,5 +4,6 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class RenderIds {
 
-    public static final int CrystalRenderID = RenderingRegistry.getNextAvailableRenderId();
+    public static final int crystalRenderID = RenderingRegistry.getNextAvailableRenderId();
+    public static final int soulCageRenderID = RenderingRegistry.getNextAvailableRenderId();
 }
