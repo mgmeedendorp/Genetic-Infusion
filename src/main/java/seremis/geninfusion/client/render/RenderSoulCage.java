@@ -20,29 +20,17 @@ import seremis.geninfusion.lib.RenderIds;
 @SideOnly(Side.CLIENT)
 public class RenderSoulCage extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler {
 
-    ModelSoulCage model = new ModelSoulCage();
+    public static ModelSoulCage model = new ModelSoulCage();
 
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f) {
-        GL11.glPushMatrix();
-
-        GIRenderHelper.bindTexture(Localizations.LOC_MODEL_TEXTURES + Localizations.BLANK);
-
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glDisable(GL11.GL_CULL_FACE);
-
-        GL11.glTranslatef((float) x + 0.5F, (float) y - 0.5F, (float) z + 0.5F);
-        model.render(0.0625F);
-
-        GL11.glEnable(GL11.GL_CULL_FACE);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+        renderSoulCage(x, y, z, 1.0F);
     }
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
         GL11.glPushMatrix();
-
+        renderSoulCage(0.0F, 0.0F, 0.0F, 1.0F);
         GL11.glPopMatrix();
     }
 
@@ -60,5 +48,22 @@ public class RenderSoulCage extends TileEntitySpecialRenderer implements ISimple
     @SideOnly(Side.CLIENT)
     public int getRenderId() {
         return RenderIds.soulCageRenderID;
+    }
+
+    public static void renderSoulCage(double x, double y, double z, float scale) {
+        GL11.glPushMatrix();
+
+        GIRenderHelper.bindTexture(Localizations.LOC_MODEL_TEXTURES + Localizations.BLANK);
+
+        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        GL11.glDisable(GL11.GL_CULL_FACE);
+
+        GL11.glTranslatef((float) x + 0.5F, (float) y - 0.5F, (float) z + 0.5F);
+        GL11.glScalef(scale, scale, scale);
+        model.render(0.0625F);
+
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glPopMatrix();
     }
 }
