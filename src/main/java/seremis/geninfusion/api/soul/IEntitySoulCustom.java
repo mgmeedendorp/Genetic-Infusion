@@ -24,15 +24,6 @@ public interface IEntitySoulCustom extends IRangedAttackMob {
 
     Random getRandom();
 
-    /**
-     * This method returns the entity as an instance of the class in the parameters. This only works for standard
-     * Minecraft classes, like EntityCreature, EntityMob, etc. The variables of the entity will remain the same.
-     *
-     * @param clzz The class this method should return an instance of.
-     * @return A EntitySoulCustom as instance of the class provided.
-     */
-    IEntitySoulCustom getEntityAsInstanceOf(Class<? extends EntityLiving> clzz);
-
     /*
      * Use this method to set a variable as persistent. This variable will save and load with NBT.
      * This will NOT work with objects.

@@ -56,27 +56,6 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
         readFromNBT(compound)
     }
 
-    override def getEntityAsInstanceOf(clzz: Class[_ <: EntityLiving]): IEntitySoulCustom = {
-        if(clzz == getClass) this
-
-        var entity: EntitySoulCustomTrait = null
-
-        if(clzz == classOf[EntityLiving]) {
-            entity = new EntitySoulCustom(world, soul, posX, posY, posZ)
-        }
-        if(clzz == classOf[EntityCreature]) {
-            entity = new EntitySoulCustomCreature(world, soul, posX, posY, posZ)
-        }
-
-        if(entity != null) {
-            syncLogic.overwriteEntityTo(entity)
-            entity.syncLogic = syncLogic
-            entity.soul = soul
-            //TODO think about this a little mores
-        }
-        entity
-    }
-
     override def getWorld: World = {
         worldObj
     }

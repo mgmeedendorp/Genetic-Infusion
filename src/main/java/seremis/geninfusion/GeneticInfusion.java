@@ -48,6 +48,7 @@ public class GeneticInfusion {
         SoulHelper.standardSoulRegistry = new StandardSoulRegistry();
         SoulHelper.instanceHelper = new InstanceHelper();
         SoulHelper.traitHandler = new TraitHandler();
+        SoulHelper.entityAIHelper = new EntityAIHelper();
 
         ModBlocks.init();
         ModItems.init();

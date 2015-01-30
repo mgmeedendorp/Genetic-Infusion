@@ -16,4 +16,6 @@ public class SoulHelper {
     public static IInstanceHelper instanceHelper;
 
     public static ITraitHandler traitHandler;
+
+    public static IEntityAIHelper entityAIHelper;
 }
