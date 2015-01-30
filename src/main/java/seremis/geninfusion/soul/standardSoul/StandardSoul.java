@@ -119,6 +119,44 @@ public class StandardSoul implements IStandardSoul {
             return new Chromosome(new AlleleFloat(false, 6.0F));
         } else if(gene.equals(Genes.GENE_AI_AVOID_ENTITY_TARGET)) {
             return new Chromosome(new AlleleString(false, EntityCreeper.class));
+        } else if(gene.equals(Genes.GENE_AI_BEG)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_BEG_RANGE)) {
+            return new Chromosome(new AlleleFloat(false, 0.0F));
+        } else if(gene.equals(Genes.GENE_AI_BREAK_DOOR)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_CONTROLLED_BY_PLAYER)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_CONTROLLED_BY_PLAYER_MAX_SPEED)) {
+            return new Chromosome(new AlleleDouble(false, 1.0D));
+        } else if(gene.equals(Genes.GENE_AI_CREEPER_SWELL)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_DEFEND_VILLAGE)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_EAT_GRASS)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_FLEE_SUN)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_FLEE_SUN_MOVE_SPEED)) {
+            return new Chromosome(new AlleleDouble(false, 1.0D));
+        } else if(gene.equals(Genes.GENE_AI_FOLLOW_GOLEM)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_FOLLOW_OWNER)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_FOLLOW_OWNER_MOVE_SPEED)) {
+            return new Chromosome(new AlleleDouble(false, 1.0D));
+        } else if(gene.equals(Genes.GENE_AI_FOLLOW_OWNER_MIN_DISTANCE)) {
+            return new Chromosome(new AlleleFloat(false, 1.0D));
+        } else if(gene.equals(Genes.GENE_AI_FOLLOW_OWNER_MAX_DISTANCE)) {
+            return new Chromosome(new AlleleFloat(false, 2.0D));
+        } else if(gene.equals(Genes.GENE_AI_FOLLOW_PARENT)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_FOLLOW_PARENT_MOVE_SPEED)) {
+            return new Chromosome(new AlleleDouble(false, 1.0D));
+        } else if(gene.equals(Genes.GENE_AI_HURT_BY_TARGET)) {
+            return new Chromosome(new AlleleBoolean(true, true));
+        } else if(gene.equals(Genes.GENE_AI_HURT_BY_TARGET_CALL_HELP)) {
+            return new Chromosome(new AlleleBoolean(true, false));
         }
         return null;
     }
