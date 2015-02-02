@@ -1,5 +1,6 @@
 package seremis.geninfusion.soul;
 
+import seremis.geninfusion.api.soul.IChromosome;
 import seremis.geninfusion.api.soul.IGene;
 import seremis.geninfusion.api.soul.IMasterGene;
 import seremis.geninfusion.api.soul.SoulHelper;
@@ -7,7 +8,7 @@ import seremis.geninfusion.api.soul.SoulHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class MasterGene implements IMasterGene {
+public abstract class MasterGene extends Gene implements IMasterGene {
 
     public List<IGene> controlledGenes = new ArrayList<IGene>();
 

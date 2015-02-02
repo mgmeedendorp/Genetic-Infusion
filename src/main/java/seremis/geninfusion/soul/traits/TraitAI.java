@@ -76,7 +76,7 @@ public class TraitAI extends Trait {
                 double moveSpeed = gReg.getValueDouble(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_MOVE_SPEED);
                 Class target = Class.forName(gReg.getValueString(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_TARGET));
 
-                tasks.addTask(attackIndex, new EntityAIAttackOnCollide((EntityCreature) entity.getEntityAsInstanceOf(EntityCreature.class), target, moveSpeed, longMemory));
+                tasks.addTask(attackIndex, new EntityAIAttackOnCollide((EntityCreature) entity, target, moveSpeed, longMemory));
             } catch(Exception e) {
                 e.printStackTrace();
             }

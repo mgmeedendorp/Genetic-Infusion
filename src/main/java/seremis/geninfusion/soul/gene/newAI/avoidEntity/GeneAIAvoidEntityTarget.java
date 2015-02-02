@@ -1,10 +1,11 @@
 package seremis.geninfusion.soul.gene.newAI.avoidEntity;
 
+import seremis.geninfusion.soul.Gene;
 import seremis.geninfusion.api.soul.IAllele;
-import seremis.geninfusion.api.soul.IGene;
 import seremis.geninfusion.soul.allele.AlleleString;
+import seremis.geninfusion.soul.gene.newAI.GeneTarget;
 
-public class GeneAIAvoidEntityTarget implements IGene {
+public class GeneAIAvoidEntityTarget extends GeneTarget {
 
     @Override
     public Class<? extends IAllele> possibleAlleles() {

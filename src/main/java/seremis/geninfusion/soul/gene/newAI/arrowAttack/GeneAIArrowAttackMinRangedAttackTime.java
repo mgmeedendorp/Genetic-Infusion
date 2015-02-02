@@ -1,10 +1,10 @@
 package seremis.geninfusion.soul.gene.newAI.arrowAttack;
 
+import seremis.geninfusion.soul.Gene;
 import seremis.geninfusion.api.soul.IAllele;
-import seremis.geninfusion.api.soul.IGene;
 import seremis.geninfusion.soul.allele.AlleleInteger;
 
-public class GeneAIArrowAttackMinRangedAttackTime implements IGene {
+public class GeneAIArrowAttackMinRangedAttackTime extends Gene {
 
     @Override
     public Class<? extends IAllele> possibleAlleles() {

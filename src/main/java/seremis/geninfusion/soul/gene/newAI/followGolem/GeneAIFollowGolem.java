@@ -1,10 +1,10 @@
 package seremis.geninfusion.soul.gene.newAI.followGolem;
 
+import seremis.geninfusion.soul.Gene;
 import seremis.geninfusion.api.soul.IAllele;
-import seremis.geninfusion.api.soul.IGene;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
 
-public class GeneAIFollowGolem implements IGene {
+public class GeneAIFollowGolem extends Gene {
     @Override
     public Class<? extends IAllele> possibleAlleles() {
         return AlleleBoolean.class;

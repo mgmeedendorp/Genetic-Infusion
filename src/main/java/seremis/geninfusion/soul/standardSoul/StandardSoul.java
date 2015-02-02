@@ -58,7 +58,7 @@ public class StandardSoul implements IStandardSoul {
         } else if(gene.equals(Genes.GENE_MAX_HURT_RESISTANT_TIME)) {
             return new Chromosome(new AlleleInteger(true, 20));
         } else if(gene.equals(Genes.GENE_MOVEMENT_SPEED)) {
-            return new Chromosome(new AlleleFloat(true, 0.2F));
+            return new Chromosome(new AlleleDouble(true, 0.10000000149011612D));
         } else if(gene.equals(Genes.GENE_PICKS_UP_ITEMS)) {
             return new Chromosome(new AlleleBoolean(true, false));
         } else if(gene.equals(Genes.GENE_PORTAL_COOLDOWN)) {
