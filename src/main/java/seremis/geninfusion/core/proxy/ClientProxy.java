@@ -11,7 +11,7 @@ import seremis.geninfusion.client.render.RenderSoulCage;
 import seremis.geninfusion.lib.RenderIds;
 import seremis.geninfusion.soul.entity.EntitySoulCustom;
 import seremis.geninfusion.soul.entity.EntitySoulCustomCreature;
-import seremis.geninfusion.soul.entity.RenderEntitySoulCustom;
+import seremis.geninfusion.soul.entity.render.RenderEntitySoulCustom;
 import seremis.geninfusion.tileentity.TileCrystal;
 import seremis.geninfusion.tileentity.TileSoulCage;
 

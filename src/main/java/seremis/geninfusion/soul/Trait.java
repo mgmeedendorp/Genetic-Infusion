@@ -8,7 +8,7 @@ import net.minecraft.util.DamageSource;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.ITrait;
 
-public class Trait implements ITrait {
+public abstract class Trait implements ITrait {
 
     @Override
     public void onUpdate(IEntitySoulCustom entity) {}
@@ -72,4 +72,7 @@ public class Trait implements ITrait {
 
     @Override
     public void attackEntityWithRangedAttack(IEntitySoulCustom entity, EntityLivingBase target, float distanceModified) {}
+
+    @Override
+    public void render(IEntitySoulCustom entity) {};
 }

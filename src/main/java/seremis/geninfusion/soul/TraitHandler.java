@@ -5,10 +5,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
-import seremis.geninfusion.api.soul.IEntitySoulCustom;
-import seremis.geninfusion.api.soul.ITrait;
-import seremis.geninfusion.api.soul.ITraitHandler;
-import seremis.geninfusion.api.soul.SoulHelper;
+import seremis.geninfusion.api.soul.*;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -247,6 +244,13 @@ public class TraitHandler implements ITraitHandler {
         for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
             map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///attackEntityWithRangedAttack");
             trait.attackEntityWithRangedAttack(entity, target, distanceModified);
+        }
+    }
+
+    public static void render(IEntitySoulCustom entity) {
+        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
+            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///render");
+            trait.render(entity);
         }
     }
 }

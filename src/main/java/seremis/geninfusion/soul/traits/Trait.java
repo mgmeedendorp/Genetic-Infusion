@@ -122,4 +122,9 @@ public class Trait implements ITrait {
     public void attackEntityWithRangedAttack(IEntitySoulCustom entity, EntityLivingBase target, float distanceModified) {
         SoulHelper.traitHandler.callSuperTrait(entity, target, distanceModified);
     }
+
+    @Override
+    public void render(IEntitySoulCustom entity) {
+        SoulHelper.traitHandler.callSuperTrait(entity);
+    }
 }

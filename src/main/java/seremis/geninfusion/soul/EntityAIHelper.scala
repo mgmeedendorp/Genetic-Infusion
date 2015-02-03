@@ -14,6 +14,8 @@ class EntityAIHelper extends IEntityAIHelper {
             val aiInstance = aiConstructor.newInstance(args).asInstanceOf[EntityAIBase]
 
             return aiInstance
+        } catch {
+            case e: Exception => e.printStackTrace();
         }
         null
     }
