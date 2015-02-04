@@ -19,8 +19,6 @@ public class RenderEntitySoulCustom extends RenderEntity {
 
     @Override
     public void doRender(Entity entity, double x, double y, double z, float f1, float f2) {
-        super.doRender(entity, x, y, z, f1, f2);
-
         GL11.glPushMatrix();
 
         GL11.glScalef(1.0F, 1.0F, 1.0F);

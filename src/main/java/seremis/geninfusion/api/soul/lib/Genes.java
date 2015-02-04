@@ -185,4 +185,8 @@ public class Genes {
     public static final String GENE_AI_MODIFIER_MATE = ID + ".gene.aiModifierMate";
     public static final String GENE_AI_MODIFIER_DO_USELESS_THINGS = ID + ".gene.aiModifierDoUselessThings";
     public static final String GENE_AI_MODIFIER_WANDER = ID + ".gene.aiModifierWander";
+
+    //Rendering related Genes
+    public static final String GENE_MODEL_BODY = ID + ".gene.modelBody";
+    public static final String GENE_MODEL_HEAD = ID + ".gene.modelHead";
 }

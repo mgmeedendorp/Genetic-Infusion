@@ -8,9 +8,6 @@ import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.soul.Chromosome;
 import seremis.geninfusion.soul.allele.*;
 
-/**
- * @author Seremis
- */
 public class StandardSoulZombie extends StandardSoul {
 
     @Override

@@ -6,6 +6,7 @@ import net.minecraft.entity.ai.attributes.BaseAttributeMap;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
+import seremis.geninfusion.soul.allele.AlleleDouble;
 import seremis.geninfusion.soul.allele.AlleleFloat;
 import seremis.geninfusion.soul.allele.AlleleInteger;
 
@@ -26,7 +27,7 @@ public class TraitInitialValues extends Trait {
         float attackDamage = ((AlleleFloat) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_ATTACK_DAMAGE)).value;
         attributeMap.getAttributeInstance(SharedMonsterAttributes.attackDamage).setBaseValue(attackDamage);
 
-        float movementSpeed = ((AlleleFloat) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_MOVEMENT_SPEED)).value;
+        double movementSpeed = ((AlleleDouble) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_MOVEMENT_SPEED)).value;
         attributeMap.getAttributeInstance(SharedMonsterAttributes.movementSpeed).setBaseValue(movementSpeed);
 
         float knockbackResistance = ((AlleleFloat) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_KNOCKBACK_RESISTANCE)).value;

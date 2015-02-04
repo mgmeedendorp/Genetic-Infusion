@@ -45,6 +45,6 @@ object GIReflectionHelper {
         val field = fields.get(clzz).get(name)
 
         field.setAccessible(true)
-        field.get(obj, name)
+        field.get(obj)
     }
 }

@@ -25,8 +25,6 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     var soul: ISoul
     val world: World
 
-    isDead = true;
-
     override def writeSpawnData(data: ByteBuf) {
         val compound: NBTTagCompound = new NBTTagCompound
         writeToNBT(compound)

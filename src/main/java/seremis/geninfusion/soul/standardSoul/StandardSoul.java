@@ -1,12 +1,16 @@
 package seremis.geninfusion.soul.standardSoul;
 
+import net.minecraft.client.model.ModelZombie;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import seremis.geninfusion.api.soul.IChromosome;
 import seremis.geninfusion.api.soul.IStandardSoul;
 import seremis.geninfusion.api.soul.lib.Genes;
+import seremis.geninfusion.api.soul.util.ModelPart;
 import seremis.geninfusion.soul.Chromosome;
 import seremis.geninfusion.soul.allele.*;
 
@@ -91,6 +95,8 @@ public class StandardSoul implements IStandardSoul {
             return new Chromosome(new AlleleInteger(true, 40));
         } else if(gene.equals(Genes.GENE_IS_CREATURE)) {
             return new Chromosome(new AlleleBoolean(true, true));
+        } else if(gene.equals(Genes.GENE_IS_TAMEABLE)) {
+            return new Chromosome(new AlleleBoolean(true, false));
         } else if(gene.equals(Genes.GENE_AI_ARROW_ATTACK)) {
             return new Chromosome(new AlleleBoolean(true, false));
         } else if(gene.equals(Genes.GENE_AI_ARROW_ATTACK_MAX_RANGED_ATTACK_TIME)) {
@@ -108,17 +114,17 @@ public class StandardSoul implements IStandardSoul {
         } else if(gene.equals(Genes.GENE_AI_ATTACK_ON_COLLIDE_MOVE_SPEED)) {
             return new Chromosome(new AlleleDouble(false, 1.0D));
         } else if(gene.equals(Genes.GENE_AI_ATTACK_ON_COLLIDE_TARGET)) {
-            return new Chromosome(new AlleleString(false, EntityPlayer.class));
+            return new Chromosome(new AlleleString(false, EntityPlayer.class.toString()));
         } else if(gene.equals(Genes.GENE_AI_AVOID_ENTITY)) {
             return new Chromosome(new AlleleBoolean(true, false));
         } else if(gene.equals(Genes.GENE_AI_AVOID_ENTITY_FAR_SPEED)) {
-            return new Chromosome(new AlleleBoolean(false, 1.0D));
+            return new Chromosome(new AlleleDouble(false, 1.0D));
         } else if(gene.equals(Genes.GENE_AI_AVOID_ENTITY_NEAR_SPEED)) {
-            return new Chromosome(new AlleleBoolean(false, 1.2D));
+            return new Chromosome(new AlleleDouble(false, 1.2D));
         } else if(gene.equals(Genes.GENE_AI_AVOID_ENTITY_RANGE)) {
             return new Chromosome(new AlleleFloat(false, 6.0F));
         } else if(gene.equals(Genes.GENE_AI_AVOID_ENTITY_TARGET)) {
-            return new Chromosome(new AlleleString(false, EntityCreeper.class));
+            return new Chromosome(new AlleleString(false, EntityCreeper.class.toString()));
         } else if(gene.equals(Genes.GENE_AI_BEG)) {
             return new Chromosome(new AlleleBoolean(true, false));
         } else if(gene.equals(Genes.GENE_AI_BEG_RANGE)) {
@@ -146,9 +152,9 @@ public class StandardSoul implements IStandardSoul {
         } else if(gene.equals(Genes.GENE_AI_FOLLOW_OWNER_MOVE_SPEED)) {
             return new Chromosome(new AlleleDouble(false, 1.0D));
         } else if(gene.equals(Genes.GENE_AI_FOLLOW_OWNER_MIN_DISTANCE)) {
-            return new Chromosome(new AlleleFloat(false, 1.0D));
+            return new Chromosome(new AlleleFloat(false, 5.0F));
         } else if(gene.equals(Genes.GENE_AI_FOLLOW_OWNER_MAX_DISTANCE)) {
-            return new Chromosome(new AlleleFloat(false, 2.0D));
+            return new Chromosome(new AlleleFloat(true, 10.0F));
         } else if(gene.equals(Genes.GENE_AI_FOLLOW_PARENT)) {
             return new Chromosome(new AlleleBoolean(true, false));
         } else if(gene.equals(Genes.GENE_AI_FOLLOW_PARENT_MOVE_SPEED)) {
@@ -157,6 +163,144 @@ public class StandardSoul implements IStandardSoul {
             return new Chromosome(new AlleleBoolean(true, true));
         } else if(gene.equals(Genes.GENE_AI_HURT_BY_TARGET_CALL_HELP)) {
             return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_LEAP_AT_TARGET)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_LEAP_AT_TARGET_MOTION_Y)) {
+            return new Chromosome(new AlleleFloat(false, 0.4F));
+        } else if(gene.equals(Genes.GENE_AI_LOOK_AT_TRADE_PLAYER)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_LOOK_AT_VILLAGER)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_LOOK_IDLE)) {
+            return new Chromosome(new AlleleBoolean(true, true));
+        } else if(gene.equals(Genes.GENE_AI_MATE)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_MATE_MOVE_SPEED)) {
+            return new Chromosome(new AlleleDouble(false, 1.0D));
+        } else if(gene.equals(Genes.GENE_AI_MOVE_INDOORS)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_MOVE_THROUGH_VILLAGE)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_MOVE_THROUGH_VILLAGE_IS_NOCTURNAL)) {
+            return new Chromosome(new AlleleBoolean(false, true));
+        } else if(gene.equals(Genes.GENE_AI_MOVE_THROUGH_VILLAGE_MOVE_SPEED)) {
+            return new Chromosome(new AlleleDouble(false, 1.0D));
+        } else if(gene.equals(Genes.GENE_AI_MOVE_TOWARDS_RESTRICTION)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_MOVE_TOWARDS_RESTRICTION_MOVE_SPEED)) {
+            return new Chromosome(new AlleleDouble(false, 1.0D));
+        } else if(gene.equals(Genes.GENE_AI_MOVE_TOWARDS_TARGET)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_MOVE_TOWARDS_TARGET_MAX_DISTANCE)) {
+            return new Chromosome(new AlleleFloat(true, 32.0F));
+        } else if(gene.equals(Genes.GENE_AI_MOVE_TOWARDS_TARGET_MOVE_SPEED)) {
+            return new Chromosome(new AlleleDouble(true, 0.9D));
+        } else if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET)) {
+            return new Chromosome(new AlleleBoolean(true, true));
+        } else if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_ENTITY_SELECTOR)) {
+            return new Chromosome(new AlleleString(true, ""));
+        } else if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_NEARBY_ONLY)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_TARGET)) {
+            return new Chromosome(new AlleleString(false, EntityPlayer.class.toString()));
+        } else if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_TARGET_CHANCE)) {
+            return new Chromosome(new AlleleInteger(true, 0));
+        } else if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_VISIBLE)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_OCELOT_ATTACK)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_OCELOT_SIT)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_OCELOT_SIT_MOVE_SPEED)) {
+            return new Chromosome(new AlleleDouble(false, 1.0D));
+        } else if(gene.equals(Genes.GENE_AI_OPEN_DOOR)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_OPEN_DOOR_CLOSE_DOOR)) {
+            return new Chromosome(new AlleleBoolean(false, true));
+        } else if(gene.equals(Genes.GENE_AI_OWNER_HURT_BY_TARGET)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_OWNER_HURT_TARGET)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_PANIC)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_PANIC_MOVE_SPEED)) {
+            return new Chromosome(new AlleleDouble(true, 1.25D));
+        } else if(gene.equals(Genes.GENE_AI_PLAY)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_PLAY_MOVE_SPEED)) {
+            return new Chromosome(new AlleleDouble(false, 1.0D));
+        } else if(gene.equals(Genes.GENE_AI_RESTRICT_OPEN_DOOR)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_RESTRICT_SUN)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_RUN_AROUND_LIKE_CRAZY)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_RUN_AROUND_LIKE_CRAZY_MOVE_SPEED)) {
+            return new Chromosome(new AlleleDouble(false, 1.0D));
+        } else if(gene.equals(Genes.GENE_AI_SIT)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_SWIMMING)) {
+            return new Chromosome(new AlleleBoolean(true, true));
+        } else if(gene.equals(Genes.GENE_AI_TARGET_NON_TAMED)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_TARGET_NON_TAMED_TARGET)) {
+            return new Chromosome(new AlleleString(true, EntityChicken.class.toString()));
+        } else if(gene.equals(Genes.GENE_AI_TARGET_NON_TAMED_TARGET_CHANCE)) {
+            return new Chromosome(new AlleleInteger(true, 750));
+        } else if(gene.equals(Genes.GENE_AI_TARGET_NON_TAMED_VISIBLE)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_TEMPT)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_TEMPT_ITEM)) {
+            return new Chromosome(new AlleleItemStack(true, new ItemStack(Items.wheat)));
+        } else if(gene.equals(Genes.GENE_AI_TEMPT_MOVE_SPEED)) {
+            return new Chromosome(new AlleleDouble(true, 1.2D));
+        } else if(gene.equals(Genes.GENE_AI_TEMPT_SCARED_BY_PLAYER)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_TRADE_PLAYER)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_VILLAGER_MATE)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_WANDER)) {
+            return new Chromosome(new AlleleBoolean(true, true));
+        } else if(gene.equals(Genes.GENE_AI_WANDER_MOVE_SPEED)) {
+            return new Chromosome(new AlleleDouble(true, 1.0D));
+        } else if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST)) {
+            return new Chromosome(new AlleleBoolean(true, true));
+        } else if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST_CHANCE)) {
+            return new Chromosome(new AlleleFloat(true, 0.02F));
+        } else if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST_RANGE)) {
+            return new Chromosome(new AlleleFloat(true, 8.0F));
+        } else if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST_TARGET)) {
+            return new Chromosome(new AlleleString(true, EntityPlayer.class.toString()));
+        } else if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST_2)) {
+            return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST_2_CHANCE)) {
+            return new Chromosome(new AlleleFloat(true, 1.0F));
+        } else if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST_2_RANGE)) {
+            return new Chromosome(new AlleleFloat(true, 3.0F));
+        } else if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST_2_TARGET)) {
+            return new Chromosome(new AlleleString(true, EntityPlayer.class.toString()));
+        } else if(gene.equals(Genes.GENE_AI_MODIFIER_ATTACK)) {
+            return new Chromosome(new AlleleFloat(true, 7.0F));
+        } else if(gene.equals(Genes.GENE_AI_MODIFIER_DO_USELESS_THINGS)) {
+            return new Chromosome(new AlleleFloat(true, 1.0F));
+        } else if(gene.equals(Genes.GENE_AI_MODIFIER_HELP_OWNER)) {
+            return new Chromosome(new AlleleFloat(true, 7.0F));
+        } else if(gene.equals(Genes.GENE_AI_MODIFIER_MATE)) {
+            return new Chromosome(new AlleleFloat(true, 6.0F));
+        } else if(gene.equals(Genes.GENE_AI_MODIFIER_RUN)) {
+            return new Chromosome(new AlleleFloat(true, 7.0F));
+        } else if(gene.equals(Genes.GENE_AI_MODIFIER_SURVIVE)) {
+            return new Chromosome(new AlleleFloat(true, 8.0F));
+        } else if(gene.equals(Genes.GENE_AI_MODIFIER_TRADE)) {
+            return new Chromosome(new AlleleFloat(true, 5.0F));
+        } else if(gene.equals(Genes.GENE_AI_MODIFIER_WANDER)) {
+            return new Chromosome(new AlleleFloat(true, 2.0F));
+        } else if(gene.equals(Genes.GENE_MODEL_HEAD)) {
+            return new Chromosome(new AlleleModelPartArray(true, ModelPart.getHeadFromModel(new ModelZombie())));
+        } else if(gene.equals(Genes.GENE_MODEL_BODY)) {
+            return new Chromosome(new AlleleModelPartArray(true, ModelPart.getBodyFromModel(new ModelZombie())));
         }
         return null;
     }

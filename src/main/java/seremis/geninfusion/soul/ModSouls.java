@@ -4,6 +4,8 @@ import net.minecraft.entity.monster.EntityZombie;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.lib.Traits;
 import seremis.geninfusion.soul.gene.*;
+import seremis.geninfusion.soul.gene.model.GeneModelBody;
+import seremis.geninfusion.soul.gene.model.GeneModelHead;
 import seremis.geninfusion.soul.gene.newAI.*;
 import seremis.geninfusion.soul.gene.newAI.arrowAttack.*;
 import seremis.geninfusion.soul.gene.newAI.attackOnCollide.GeneAIAttackOnCollide;
@@ -275,6 +277,9 @@ public class ModSouls {
 
         geneRegistry.registerMasterGene(Genes.GENE_USE_NEW_AI, new GeneUseNewAI());
         geneRegistry.registerMasterGene(Genes.GENE_USE_OLD_AI, new GeneUseOldAI());
+
+        geneRegistry.registerGene(Genes.GENE_MODEL_BODY, new GeneModelBody());
+        geneRegistry.registerGene(Genes.GENE_MODEL_HEAD, new GeneModelHead());
 
         traitRegistry.registerTrait(Traits.TRAIT_FIRE, new TraitFire());
         traitRegistry.registerTrait(Traits.TRAIT_MOVEMENT, new TraitMovement());
