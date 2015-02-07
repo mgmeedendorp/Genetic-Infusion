@@ -4,13 +4,13 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.helper.GIReflectionHelper;
+import seremis.geninfusion.soul.entity.render.RenderEntitySoulCustom;
 import seremis.geninfusion.util.INBTTagable;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public class ModelPart extends ModelRenderer implements INBTTagable {
@@ -55,8 +55,8 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         NBTTagList childList = new NBTTagList();
 
         if(childModels != null) {
-            for(int i = 0; i < childModels.size(); i++) {
-                ModelPart modelPart = (ModelPart) childModels.get(i);
+            for(Object childModel : childModels) {
+                ModelPart modelPart = (ModelPart) childModel;
                 NBTTagCompound compound1 = new NBTTagCompound();
 
                 modelPart.writeToNBT(compound1);
@@ -142,121 +142,61 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
     }
 
     public static ModelPart[] getHeadFromModel(ModelBiped model) {
-        ArrayList<ModelPart> parts = new ArrayList<ModelPart>();
+        ModelPart[] parts = new ModelPart[3];
 
-        ModelRenderer head = model.bipedHead;
-        ModelRenderer ears = model.bipedEars;
-        ModelRenderer headWear = model.bipedHeadwear;
+        parts[0] = modelRendererToModelPart(model.bipedHead);
+        parts[1] = modelRendererToModelPart(model.bipedEars);
+        parts[2] = modelRendererToModelPart(model.bipedHeadwear);
 
-        ModelPart headPart = new ModelPart(model, head.boxName);
-        headPart.childModels = head.childModels;
-        headPart.cubeList = head.cubeList;
-        headPart.isHidden = head.isHidden;
-        headPart.showModel = head.showModel;
-        headPart.mirror = head.mirror;
-        headPart.rotationPointX = head.rotationPointX;
-        headPart.rotationPointY = head.rotationPointY;
-        headPart.rotationPointZ = head.rotationPointZ;
-        headPart.rotateAngleX = head.rotateAngleX;
-        headPart.rotateAngleY = head.rotateAngleY;
-        headPart.rotateAngleZ = head.rotateAngleZ;
-        headPart.textureWidth = head.textureWidth;
-        headPart.textureHeight = head.textureHeight;
-        headPart.offsetX = head.offsetX;
-        headPart.offsetY = head.offsetY;
-        headPart.offsetZ = head.offsetZ;
-        headPart.setTextureOffset((Integer) GIReflectionHelper.getField(head, "textureOffsetX"), (Integer) GIReflectionHelper.getField(head, "textureOffsetY"));
-        parts.add(headPart);
-
-        ModelPart earsPart = new ModelPart(model, ears.boxName);
-        earsPart.childModels = ears.childModels;
-        earsPart.cubeList = ears.cubeList;
-        earsPart.isHidden = ears.isHidden;
-        earsPart.showModel = ears.showModel;
-        earsPart.mirror = ears.mirror;
-        earsPart.rotationPointX = ears.rotationPointX;
-        earsPart.rotationPointY = ears.rotationPointY;
-        earsPart.rotationPointZ = ears.rotationPointZ;
-        earsPart.rotateAngleX = ears.rotateAngleX;
-        earsPart.rotateAngleY = ears.rotateAngleY;
-        earsPart.rotateAngleZ = ears.rotateAngleZ;
-        earsPart.textureWidth = ears.textureWidth;
-        earsPart.textureHeight = ears.textureHeight;
-        earsPart.offsetX = ears.offsetX;
-        earsPart.offsetY = ears.offsetY;
-        earsPart.offsetZ = ears.offsetZ;
-        earsPart.setTextureOffset((Integer) GIReflectionHelper.getField(ears, "textureOffsetX"), (Integer) GIReflectionHelper.getField(ears, "textureOffsetY"));
-        parts.add(earsPart);
-        
-        ModelPart headWearPart = new ModelPart(model, headWear.boxName);
-        headWearPart.childModels = headWear.childModels;
-        headWearPart.cubeList = headWear.cubeList;
-        headWearPart.isHidden = headWear.isHidden;
-        headWearPart.showModel = headWear.showModel;
-        headWearPart.mirror = headWear.mirror;
-        headWearPart.rotationPointX = headWear.rotationPointX;
-        headWearPart.rotationPointY = headWear.rotationPointY;
-        headWearPart.rotationPointZ = headWear.rotationPointZ;
-        headWearPart.rotateAngleX = headWear.rotateAngleX;
-        headWearPart.rotateAngleY = headWear.rotateAngleY;
-        headWearPart.rotateAngleZ = headWear.rotateAngleZ;
-        headWearPart.textureWidth = headWear.textureWidth;
-        headWearPart.textureHeight = headWear.textureHeight;
-        headWearPart.offsetX = headWear.offsetX;
-        headWearPart.offsetY = headWear.offsetY;
-        headWearPart.offsetZ = headWear.offsetZ;
-        headWearPart.setTextureOffset((Integer) GIReflectionHelper.getField(headWear, "textureOffsetX"), (Integer) GIReflectionHelper.getField(headWear, "textureOffsetY"));
-        parts.add(headWearPart);
-
-        return parts.toArray(new ModelPart[parts.size()]);
+        return parts;
     }
 
     public static ModelPart[] getBodyFromModel(ModelBiped model) {
-        ArrayList<ModelPart> parts = new ArrayList<ModelPart>();
+        ModelPart[] parts = new ModelPart[2];
 
-        ModelRenderer body = model.bipedBody;
-        ModelRenderer cloak = model.bipedCloak;
+        parts[0] = modelRendererToModelPart(model.bipedBody);
+        parts[1] = modelRendererToModelPart(model.bipedCloak);
 
-        ModelPart bodyPart = new ModelPart(model, body.boxName);
-        bodyPart.childModels = body.childModels;
-        bodyPart.cubeList = body.cubeList;
-        bodyPart.isHidden = body.isHidden;
-        bodyPart.showModel = body.showModel;
-        bodyPart.mirror = body.mirror;
-        bodyPart.rotationPointX = body.rotationPointX;
-        bodyPart.rotationPointY = body.rotationPointY;
-        bodyPart.rotationPointZ = body.rotationPointZ;
-        bodyPart.rotateAngleX = body.rotateAngleX;
-        bodyPart.rotateAngleY = body.rotateAngleY;
-        bodyPart.rotateAngleZ = body.rotateAngleZ;
-        bodyPart.textureWidth = body.textureWidth;
-        bodyPart.textureHeight = body.textureHeight;
-        bodyPart.offsetX = body.offsetX;
-        bodyPart.offsetY = body.offsetY;
-        bodyPart.offsetZ = body.offsetZ;
-        bodyPart.setTextureOffset((Integer) GIReflectionHelper.getField(body, "textureOffsetX"), (Integer) GIReflectionHelper.getField(body, "textureOffsetY"));
-        parts.add(bodyPart);
+        return parts;
+    }
 
-        ModelPart cloakPart = new ModelPart(model, cloak.boxName);
-        cloakPart.childModels = cloak.childModels;
-        cloakPart.cubeList = cloak.cubeList;
-        cloakPart.isHidden = cloak.isHidden;
-        cloakPart.showModel = cloak.showModel;
-        cloakPart.mirror = cloak.mirror;
-        cloakPart.rotationPointX = cloak.rotationPointX;
-        cloakPart.rotationPointY = cloak.rotationPointY;
-        cloakPart.rotationPointZ = cloak.rotationPointZ;
-        cloakPart.rotateAngleX = cloak.rotateAngleX;
-        cloakPart.rotateAngleY = cloak.rotateAngleY;
-        cloakPart.rotateAngleZ = cloak.rotateAngleZ;
-        cloakPart.textureWidth = cloak.textureWidth;
-        cloakPart.textureHeight = cloak.textureHeight;
-        cloakPart.offsetX = cloak.offsetX;
-        cloakPart.offsetY = cloak.offsetY;
-        cloakPart.offsetZ = cloak.offsetZ;
-        cloakPart.setTextureOffset((Integer) GIReflectionHelper.getField(cloak, "textureOffsetX"), (Integer) GIReflectionHelper.getField(cloak, "textureOffsetY"));
-        parts.add(cloakPart);
+    public static ModelPart[] getArmsFromModel(ModelBiped model) {
+        ModelPart[] parts = new ModelPart[2];
 
-        return parts.toArray(new ModelPart[parts.size()]);
+        parts[0] = modelRendererToModelPart(model.bipedLeftArm);
+        parts[1] = modelRendererToModelPart(model.bipedRightArm);
+
+        return parts;
+    }
+
+    public static ModelPart[] getLegsFromModel(ModelBiped model) {
+        ModelPart[] parts = new ModelPart[2];
+
+        parts[0] = modelRendererToModelPart(model.bipedLeftLeg);
+        parts[1] = modelRendererToModelPart(model.bipedRightLeg);
+
+        return parts;
+    }
+
+    public static ModelPart modelRendererToModelPart(ModelRenderer model) {
+        ModelPart modelPart = new ModelPart(SoulHelper.entityModel, model.boxName);
+        modelPart.childModels = model.childModels;
+        modelPart.cubeList = model.cubeList;
+        modelPart.isHidden = model.isHidden;
+        modelPart.showModel = model.showModel;
+        modelPart.mirror = model.mirror;
+        modelPart.rotationPointX = model.rotationPointX;
+        modelPart.rotationPointY = model.rotationPointY;
+        modelPart.rotationPointZ = model.rotationPointZ;
+        modelPart.rotateAngleX = model.rotateAngleX;
+        modelPart.rotateAngleY = model.rotateAngleY;
+        modelPart.rotateAngleZ = model.rotateAngleZ;
+        modelPart.textureWidth = model.textureWidth;
+        modelPart.textureHeight = model.textureHeight;
+        modelPart.offsetX = model.offsetX;
+        modelPart.offsetY = model.offsetY;
+        modelPart.offsetZ = model.offsetZ;
+        modelPart.setTextureOffset((Integer) GIReflectionHelper.getField(model, "textureOffsetX"), (Integer) GIReflectionHelper.getField(model, "textureOffsetY"));
+        return modelPart;
     }
 }

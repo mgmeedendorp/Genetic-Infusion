@@ -87,7 +87,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     override def getSoundVolume: Float = SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_SOUND_VOLUME).asInstanceOf[AlleleFloat].value
 
-    override def getSoundPitch: Float = super.getSoundPitch()
+    override def getSoundPitch: Float = super.getSoundPitch
 
     override def applyEntityAttributes() {
         this.getAttributeMap.registerAttribute(SharedMonsterAttributes.maxHealth)
@@ -168,7 +168,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     override def updateWanderPath() = TraitHandler.updateWanderPath(this)
 
-    override def canDespawn() = super.canDespawn()
+    override def canDespawn = super.canDespawn
 
     override def setBeenAttacked() = super.setBeenAttacked()
 

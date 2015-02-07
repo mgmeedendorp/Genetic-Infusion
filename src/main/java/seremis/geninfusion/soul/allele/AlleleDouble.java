@@ -34,4 +34,5 @@ public class AlleleDouble extends Allele {
         super.readFromNBT(compound);
         value = compound.getDouble("value");
     }
+
 }

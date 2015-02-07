@@ -43,4 +43,5 @@ public class AlleleFloatArray extends Allele {
             value[i] = compound.getFloat("value" + i);
         }
     }
+
 }

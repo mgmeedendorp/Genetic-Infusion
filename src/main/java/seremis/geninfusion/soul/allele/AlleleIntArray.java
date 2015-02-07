@@ -37,4 +37,5 @@ public class AlleleIntArray extends Allele {
         super.writeToNBT(compound);
         compound.setIntArray("value", value);
     }
+
 }

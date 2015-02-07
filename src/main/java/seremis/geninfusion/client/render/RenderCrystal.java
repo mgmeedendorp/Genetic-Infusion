@@ -11,7 +11,6 @@ import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Color;
 import seremis.geninfusion.client.model.ModelCrystal;
-import seremis.geninfusion.client.model.ModelSoulCage;
 import seremis.geninfusion.helper.GIRenderHelper;
 import seremis.geninfusion.lib.Localizations;
 import seremis.geninfusion.lib.RenderIds;

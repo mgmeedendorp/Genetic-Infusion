@@ -1,6 +1,5 @@
 package seremis.geninfusion.soul.standardSoul;
 
-import net.minecraft.client.model.ModelEnderman;
 import net.minecraft.client.model.ModelZombie;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -302,6 +301,14 @@ public class StandardSoul implements IStandardSoul {
             return new Chromosome(new AlleleModelPartArray(true, ModelPart.getHeadFromModel(new ModelZombie())));
         } else if(gene.equals(Genes.GENE_MODEL_BODY)) {
             return new Chromosome(new AlleleModelPartArray(true, ModelPart.getBodyFromModel(new ModelZombie())));
+        } else if(gene.equals(Genes.GENE_MODEL_ARM_LEFT)) {
+            return new Chromosome(new AlleleModelPartArray(true, new ModelPart[] {ModelPart.getArmsFromModel(new ModelZombie())[0]}));
+        } else if(gene.equals(Genes.GENE_MODEL_ARM_RIGHT)) {
+            return new Chromosome(new AlleleModelPartArray(true, new ModelPart[] {ModelPart.getArmsFromModel(new ModelZombie())[1]}));
+        } else if(gene.equals(Genes.GENE_MODEL_LEG_LEFT)) {
+            return new Chromosome(new AlleleModelPartArray(true, new ModelPart[] {ModelPart.getLegsFromModel(new ModelZombie())[0]}));
+        } else if(gene.equals(Genes.GENE_MODEL_LEG_RIGHT)) {
+            return new Chromosome(new AlleleModelPartArray(true, new ModelPart[] {ModelPart.getLegsFromModel(new ModelZombie())[1]}));
         }
         return null;
     }

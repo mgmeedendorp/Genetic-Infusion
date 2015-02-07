@@ -1,7 +1,7 @@
 package seremis.geninfusion.soul.gene.newAI;
 
-import seremis.geninfusion.soul.Gene;
 import seremis.geninfusion.api.soul.IAllele;
+import seremis.geninfusion.soul.Gene;
 import seremis.geninfusion.soul.allele.AlleleFloat;
 
 public class GeneAIModifierHelpOwner extends Gene {

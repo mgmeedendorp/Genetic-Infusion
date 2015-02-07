@@ -1,8 +1,5 @@
 package seremis.geninfusion.soul.traits;
 
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.nbt.NBTTagCompound;
-import org.lwjgl.opengl.GL11;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
@@ -15,26 +12,31 @@ public class TraitRender extends Trait {
     public void render(IEntitySoulCustom entity) {
         ModelPart[] head = ((AlleleModelPartArray) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_MODEL_HEAD)).value;
         ModelPart[] body = ((AlleleModelPartArray) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_MODEL_BODY)).value;
+        ModelPart[] armLeft = ((AlleleModelPartArray) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_MODEL_ARM_LEFT)).value;
+        ModelPart[] armRight = ((AlleleModelPartArray) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_MODEL_ARM_RIGHT)).value;
+        ModelPart[] legLeft = ((AlleleModelPartArray) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_MODEL_LEG_LEFT)).value;
+        ModelPart[] legRight = ((AlleleModelPartArray) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_MODEL_LEG_RIGHT)).value;
 
-//        System.out.println(head.length);
-//        System.out.println(body.length);
-
-//        for(ModelPart model : head) {
-//            model.render(0.0625F);
-//            NBTTagCompound compound = new NBTTagCompound();
-//            model.writeToNBT(compound);
-//            System.out.println(compound);
-//        }
-
-        head[0].render(0.0625F);
-
-        head[0].rotateAngleY = ((EntityLiving)entity).rotationYawHead / (180F / (float)Math.PI);
-        head[0].rotateAngleX = ((EntityLiving)entity).rotationPitch / (180F / (float)Math.PI);
+        for(ModelPart model : head) {
+            model.render(0.0625F);
+        }
 
         body[0].render(0.0625F);
 
-//        for(ModelPart model : body) {
-//            model.render(0.0625F);
-//        }
+        for(ModelPart model : armLeft) {
+            model.render(0.0625F);
+        }
+
+        for(ModelPart model : armRight) {
+            model.render(0.0625F);
+        }
+
+        for(ModelPart model : legLeft) {
+            model.render(0.0625F);
+        }
+
+        for(ModelPart model : legRight) {
+            model.render(0.0625F);
+        }
     }
 }

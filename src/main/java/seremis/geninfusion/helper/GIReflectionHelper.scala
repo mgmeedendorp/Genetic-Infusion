@@ -7,16 +7,16 @@ import scala.util.control.Breaks
 
 object GIReflectionHelper {
 
-    val fields = new util.HashMap[Class[_], util.HashMap[String, Field]]();
+    val fields = new util.HashMap[Class[_], util.HashMap[String, Field]]()
 
     def indexFields(clzz: Class[_]) {
         var superClass: Any = clzz
         val outer = new Breaks
-        val fields = new util.HashMap[String, Field]();
+        val fields = new util.HashMap[String, Field]()
 
         while(superClass != null) {
-            for(field <- superClass.asInstanceOf[Class[_]].getDeclaredFields()) {
-                fields.put(field.getName(), field)
+            for(field <- superClass.asInstanceOf[Class[_]].getDeclaredFields) {
+                fields.put(field.getName, field)
             }
             superClass = superClass.asInstanceOf[Class[_]].getSuperclass
         }

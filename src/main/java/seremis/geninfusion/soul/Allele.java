@@ -6,7 +6,7 @@ import seremis.geninfusion.api.soul.IAllele;
 
 import java.lang.reflect.Constructor;
 
-public class Allele implements IAllele {
+public abstract class Allele implements IAllele {
 
     public boolean isDominant;
     public EnumAlleleType type;

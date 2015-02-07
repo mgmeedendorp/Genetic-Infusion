@@ -2,27 +2,17 @@ package seremis.geninfusion.soul.entity.render;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelZombie;
-import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import seremis.geninfusion.api.soul.IEntitySoulCustom;
-import seremis.geninfusion.helper.GIRenderHelper;
+import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.lib.Localizations;
-import seremis.geninfusion.soul.TraitHandler;
-import seremis.geninfusion.soul.entity.EntitySoulCustom;
 
 @SideOnly(Side.CLIENT)
 public class RenderEntitySoulCustom extends RenderLiving {
 
     public RenderEntitySoulCustom() {
-        super(new ModelEntitySoulCustom(), 1.0F);
+        super(SoulHelper.entityModel, 1.0F);
     }
 
     @Override

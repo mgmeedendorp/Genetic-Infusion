@@ -35,4 +35,5 @@ public class AlleleItemStack extends Allele {
         super.writeToNBT(compound);
         stack.writeToNBT(compound);
     }
+
 }

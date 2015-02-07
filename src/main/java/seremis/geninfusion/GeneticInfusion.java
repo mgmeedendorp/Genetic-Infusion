@@ -7,6 +7,7 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -24,6 +25,7 @@ import seremis.geninfusion.item.ModItems;
 import seremis.geninfusion.lib.DefaultProps;
 import seremis.geninfusion.network.PacketPipeline;
 import seremis.geninfusion.soul.*;
+import seremis.geninfusion.soul.entity.render.ModelEntitySoulCustom;
 
 @Mod(modid = DefaultProps.ID, name = DefaultProps.name, version = DefaultProps.version, acceptedMinecraftVersions = DefaultProps.acceptedMinecraftVersions)
 public class GeneticInfusion {
@@ -49,6 +51,7 @@ public class GeneticInfusion {
         SoulHelper.instanceHelper = new InstanceHelper();
         SoulHelper.traitHandler = new TraitHandler();
         SoulHelper.entityAIHelper = new EntityAIHelper();
+        SoulHelper.entityModel = new ModelEntitySoulCustom();
 
         ModBlocks.init();
         ModItems.init();

@@ -1,6 +1,5 @@
 package seremis.geninfusion.soul.allele;
 
-import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.nbt.NBTTagCompound;
 import seremis.geninfusion.api.soul.EnumAlleleType;
 import seremis.geninfusion.api.soul.util.ModelPart;
@@ -8,7 +7,7 @@ import seremis.geninfusion.soul.Allele;
 
 public class AlleleModelPart extends Allele {
 
-    public ModelPart value;
+    private ModelPart value;
 
     public AlleleModelPart(boolean isDominant, ModelPart value) {
         super(isDominant, EnumAlleleType.MODEL_PART);
@@ -36,4 +35,5 @@ public class AlleleModelPart extends Allele {
         super.writeToNBT(compound);
         value.writeToNBT(compound);
     }
+
 }

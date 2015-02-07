@@ -7,7 +7,7 @@ import seremis.geninfusion.soul.Allele;
 import seremis.geninfusion.util.inventory.Inventory;
 
 /*
- * Just a multiple itemstack allele
+ * A multiple itemstack allele
  */
 public class AlleleInventory extends Allele {
 
@@ -43,4 +43,5 @@ public class AlleleInventory extends Allele {
         super.readFromNBT(compound);
         inventory = new Inventory(compound, null);
     }
+
 }

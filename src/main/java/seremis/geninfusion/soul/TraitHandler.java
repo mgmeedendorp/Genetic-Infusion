@@ -5,7 +5,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
-import seremis.geninfusion.api.soul.*;
+import seremis.geninfusion.api.soul.IEntitySoulCustom;
+import seremis.geninfusion.api.soul.ITrait;
+import seremis.geninfusion.api.soul.ITraitHandler;
+import seremis.geninfusion.api.soul.SoulHelper;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

@@ -4,6 +4,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
@@ -141,8 +142,8 @@ public class TraitAttacked extends Trait {
                     if(entity1 instanceof EntityPlayer) {
                         recentlyHit = 100;
                         attackingPlayer = (EntityPlayer) entity1;
-                    } else if(entity1 instanceof net.minecraft.entity.passive.EntityTameable) {
-                        net.minecraft.entity.passive.EntityTameable entitywolf = (net.minecraft.entity.passive.EntityTameable) entity1;
+                    } else if(entity1 instanceof EntityTameable) {
+                        EntityTameable entitywolf = (EntityTameable) entity1;
 
                         if(entitywolf.isTamed()) {
                             recentlyHit = 100;

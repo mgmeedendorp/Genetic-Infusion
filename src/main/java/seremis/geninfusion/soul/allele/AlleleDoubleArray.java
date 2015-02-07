@@ -43,4 +43,5 @@ public class AlleleDoubleArray extends Allele {
             value[i] = compound.getDouble("value" + i);
         }
     }
+
 }
