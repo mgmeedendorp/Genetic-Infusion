@@ -15,4 +15,5 @@ public class Traits {
     public static final String TRAIT_ATTACK = ID + ".trait.attack";
     public static final String TRAIT_AI = ID + ".trait.ai";
     public static final String TRAIT_AI_CREATURE = ID + ".trait.aiCreature";
+    public static final String TRAIT_RENDER = ID + ".trait.render";
 }

@@ -1,5 +1,6 @@
 package seremis.geninfusion.soul.standardSoul;
 
+import net.minecraft.client.model.ModelEnderman;
 import net.minecraft.client.model.ModelZombie;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntityCreeper;

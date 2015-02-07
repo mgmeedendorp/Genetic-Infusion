@@ -113,7 +113,8 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
 
         NBTTagList boxList = (NBTTagList) compound.getTag("cubeList");
         for(int i = 0; i < boxList.tagCount(); i++) {
-            ModelBox box = new ModelBox(this, (Integer) GIReflectionHelper.getField(this, "textureOffsetX"), (Integer) GIReflectionHelper.getField(this, "textureOffsetY"), compound.getFloat("originX"), compound.getFloat("originY"), compound.getFloat("originZ"), compound.getInteger("sizeX"), compound.getInteger("sizeY"), compound.getInteger("sizeZ"), 0.0F);
+            NBTTagCompound boxCompound = boxList.getCompoundTagAt(i);
+            ModelBox box = new ModelBox(this, (Integer) GIReflectionHelper.getField(this, "textureOffsetX"), (Integer) GIReflectionHelper.getField(this, "textureOffsetY"), boxCompound.getFloat("originX"), boxCompound.getFloat("originY"), boxCompound.getFloat("originZ"), boxCompound.getInteger("sizeX"), boxCompound.getInteger("sizeY"), boxCompound.getInteger("sizeZ"), 0.0F);
             cubeList.add(box);
         }
     }
