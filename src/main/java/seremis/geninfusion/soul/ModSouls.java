@@ -4,6 +4,7 @@ import net.minecraft.entity.monster.EntityZombie;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.lib.Traits;
 import seremis.geninfusion.soul.gene.*;
+import seremis.geninfusion.soul.gene.animation.walk.*;
 import seremis.geninfusion.soul.gene.model.*;
 import seremis.geninfusion.soul.gene.newAI.*;
 import seremis.geninfusion.soul.gene.newAI.arrowAttack.*;
@@ -283,6 +284,17 @@ public class ModSouls {
         geneRegistry.registerGene(Genes.GENE_MODEL_ARM_RIGHT, new GeneModelArmRight());
         geneRegistry.registerGene(Genes.GENE_MODEL_LEG_LEFT, new GeneModelLegLeft());
         geneRegistry.registerGene(Genes.GENE_MODEL_LEG_RIGHT, new GeneModelLegRight());
+        geneRegistry.registerGene(Genes.GENE_MODEL_EARS, new GeneModelEars());
+        geneRegistry.registerGene(Genes.GENE_MODEL_CLOAK, new GeneModelCloak());
+
+        geneRegistry.registerGene(Genes.GENE_ANIM_WALK_ARM_LEFT, new GeneAnimWalkArmLeft());
+        geneRegistry.registerGene(Genes.GENE_ANIM_WALK_ARM_RIGHT, new GeneAnimWalkArmRight());
+        geneRegistry.registerGene(Genes.GENE_ANIM_WALK_BODY, new GeneAnimWalkBody());
+        geneRegistry.registerGene(Genes.GENE_ANIM_WALK_CLOAK, new GeneAnimWalkCloak());
+        geneRegistry.registerGene(Genes.GENE_ANIM_WALK_EARS, new GeneAnimWalkEars());
+        geneRegistry.registerGene(Genes.GENE_ANIM_WALK_HEAD, new GeneAnimWalkHead());
+        geneRegistry.registerGene(Genes.GENE_ANIM_WALK_LEG_LEFT, new GeneAnimWalkLegLeft());
+        geneRegistry.registerGene(Genes.GENE_ANIM_WALK_LEG_RIGHT, new GeneAnimWalkLegRight());
 
         traitRegistry.registerTrait(Traits.TRAIT_FIRE, new TraitFire());
         traitRegistry.registerTrait(Traits.TRAIT_MOVEMENT, new TraitMovement());

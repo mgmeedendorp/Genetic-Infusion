@@ -3,6 +3,8 @@ package seremis.geninfusion.soul;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
 import seremis.geninfusion.api.soul.*;
+import seremis.geninfusion.api.soul.util.animation.AnimationPart;
+import seremis.geninfusion.api.soul.util.ModelPart;
 import seremis.geninfusion.soul.allele.*;
 
 import java.util.LinkedHashMap;
@@ -125,6 +127,16 @@ public class GeneRegistry implements IGeneRegistry {
     }
 
     @Override
+    public ModelPart getValueModelPart(IEntitySoulCustom entity, String name) {
+        return ((AlleleModelPart) getActiveFor(entity, name)).value;
+    }
+
+    @Override
+    public AnimationPart getValueAnimationPart(IEntitySoulCustom entity, String name) {
+        return ((AlleleAnimationPart) getActiveFor(entity, name)).value;
+    }
+
+    @Override
     public boolean[] getValueBooleanArray(IEntitySoulCustom entity, String name) {
         return ((AlleleBooleanArray) getActiveFor(entity, name)).value;
     }
@@ -153,6 +165,16 @@ public class GeneRegistry implements IGeneRegistry {
     @Override
     public ItemStack[] getValueItemStackArray(IEntitySoulCustom entity, String name) {
         return ((AlleleInventory) getActiveFor(entity, name)).inventory.getItemStacks();
+    }
+
+    @Override
+    public ModelPart[] getValueModelPartArray(IEntitySoulCustom entity, String name) {
+        return ((AlleleModelPartArray) getActiveFor(entity, name)).value;
+    }
+
+    @Override
+    public AnimationPart[] getValueAnimationPartArray(IEntitySoulCustom entity, String name) {
+        return ((AlleleAnimationPartArray) getActiveFor(entity, name)).value;
     }
 
     @Override

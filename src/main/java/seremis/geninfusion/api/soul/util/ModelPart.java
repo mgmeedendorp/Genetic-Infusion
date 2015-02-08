@@ -1,6 +1,5 @@
 package seremis.geninfusion.api.soul.util;
 
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
@@ -8,27 +7,26 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.helper.GIReflectionHelper;
-import seremis.geninfusion.soul.entity.render.RenderEntitySoulCustom;
 import seremis.geninfusion.util.INBTTagable;
 
 import java.util.Random;
 
 public class ModelPart extends ModelRenderer implements INBTTagable {
 
-    public ModelPart(ModelBase modelBase, String boxName) {
-        super(modelBase, boxName);
+    public ModelPart(String boxName) {
+        super(SoulHelper.entityModel, boxName);
     }
 
-    public ModelPart(ModelBase modelBase) {
-        super(modelBase);
+    public ModelPart() {
+        super(SoulHelper.entityModel);
     }
 
-    public ModelPart(ModelBase modelBase, int textureOffsetX, int textureOffsetY) {
-        super(modelBase, textureOffsetX, textureOffsetY);
+    public ModelPart(int textureOffsetX, int textureOffsetY) {
+        super(SoulHelper.entityModel, textureOffsetX, textureOffsetY);
     }
 
     public ModelPart(NBTTagCompound compound) {
-        this(new ModelBiped(), compound.getString("boxName"));
+        this(compound.getString("boxName"));
         readFromNBT(compound);
     }
 
@@ -142,20 +140,19 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
     }
 
     public static ModelPart[] getHeadFromModel(ModelBiped model) {
-        ModelPart[] parts = new ModelPart[3];
+        ModelPart[] parts = new ModelPart[1];
 
         parts[0] = modelRendererToModelPart(model.bipedHead);
-        parts[1] = modelRendererToModelPart(model.bipedEars);
-        parts[2] = modelRendererToModelPart(model.bipedHeadwear);
+        //TODO something with headwear
+        //parts[1] = modelRendererToModelPart(model.bipedHeadwear);
 
         return parts;
     }
 
     public static ModelPart[] getBodyFromModel(ModelBiped model) {
-        ModelPart[] parts = new ModelPart[2];
+        ModelPart[] parts = new ModelPart[1];
 
         parts[0] = modelRendererToModelPart(model.bipedBody);
-        parts[1] = modelRendererToModelPart(model.bipedCloak);
 
         return parts;
     }
@@ -178,8 +175,24 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         return parts;
     }
 
+    public static ModelPart[] getEarsFromModel(ModelBiped model) {
+        ModelPart[] parts = new ModelPart[1];
+
+        parts[0] = modelRendererToModelPart(model.bipedEars);
+
+        return parts;
+    }
+
+    public static ModelPart[] getCloakFromModel(ModelBiped model) {
+        ModelPart[] parts = new ModelPart[1];
+
+        parts[0] = modelRendererToModelPart(model.bipedCloak);
+
+        return parts;
+    }
+
     public static ModelPart modelRendererToModelPart(ModelRenderer model) {
-        ModelPart modelPart = new ModelPart(SoulHelper.entityModel, model.boxName);
+        ModelPart modelPart = new ModelPart(model.boxName);
         modelPart.childModels = model.childModels;
         modelPart.cubeList = model.cubeList;
         modelPart.isHidden = model.isHidden;

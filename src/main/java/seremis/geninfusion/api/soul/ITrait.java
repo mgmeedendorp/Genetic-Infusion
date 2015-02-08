@@ -1,5 +1,7 @@
 package seremis.geninfusion.api.soul;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
@@ -50,5 +52,6 @@ public interface ITrait {
 
     public void attackEntityWithRangedAttack(IEntitySoulCustom entity, EntityLivingBase target, float distanceModified);
 
+    @SideOnly(Side.CLIENT)
     public void render(IEntitySoulCustom entity);
 }

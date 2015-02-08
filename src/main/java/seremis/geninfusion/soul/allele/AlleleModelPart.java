@@ -7,7 +7,7 @@ import seremis.geninfusion.soul.Allele;
 
 public class AlleleModelPart extends Allele {
 
-    private ModelPart value;
+    public ModelPart value;
 
     public AlleleModelPart(boolean isDominant, ModelPart value) {
         super(isDominant, EnumAlleleType.MODEL_PART);

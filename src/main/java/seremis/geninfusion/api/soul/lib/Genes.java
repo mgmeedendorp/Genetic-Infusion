@@ -193,4 +193,15 @@ public class Genes {
     public static final String GENE_MODEL_ARM_RIGHT = ID + ".gene.modelArmRight";
     public static final String GENE_MODEL_LEG_LEFT = ID + ".gene.modelLegLeft";
     public static final String GENE_MODEL_LEG_RIGHT = ID + ".gene.modelLegRight";
+    public static final String GENE_MODEL_EARS = ID + ".gene.modelEars";
+    public static final String GENE_MODEL_CLOAK = ID + ".gene.modelCloak";
+
+    public static final String GENE_ANIM_WALK_ARM_LEFT = ID + ".gene.animWalkArmLeft";
+    public static final String GENE_ANIM_WALK_ARM_RIGHT = ID + ".gene.animWalkArmRight";
+    public static final String GENE_ANIM_WALK_BODY = ID + ".gene.animWalkBody";
+    public static final String GENE_ANIM_WALK_CLOAK = ID + ".gene.animWalkCloak";
+    public static final String GENE_ANIM_WALK_EARS = ID + ".gene.animWalkEars";
+    public static final String GENE_ANIM_WALK_HEAD = ID + ".gene.animWalkHead";
+    public static final String GENE_ANIM_WALK_LEG_LEFT = ID + ".gene.animWalkLegLeft";
+    public static final String GENE_ANIM_WALK_LEG_RIGHT = ID + ".gene.animWalkLegRight";
 }

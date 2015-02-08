@@ -17,7 +17,9 @@ public enum EnumAlleleType {
     ITEMSTACK(AlleleItemStack.class),
     INVENTORY(AlleleInventory.class),
     MODEL_PART(AlleleModelPart.class),
-    MODEL_PART_ARRAY(AlleleModelPartArray.class);
+    MODEL_PART_ARRAY(AlleleModelPartArray.class),
+    ANIMATION_PART(AlleleAnimationPart.class),
+    ANIMATION_PART_ARRAY(AlleleAnimationPartArray.class);
 
     public Class<? extends IAllele> clazz;
 

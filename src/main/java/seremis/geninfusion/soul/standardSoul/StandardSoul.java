@@ -1,5 +1,6 @@
 package seremis.geninfusion.soul.standardSoul;
 
+import net.minecraft.client.model.ModelEnderman;
 import net.minecraft.client.model.ModelZombie;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -11,6 +12,7 @@ import seremis.geninfusion.api.soul.IChromosome;
 import seremis.geninfusion.api.soul.IStandardSoul;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.ModelPart;
+import seremis.geninfusion.api.soul.util.animation.AnimationPart;
 import seremis.geninfusion.soul.Chromosome;
 import seremis.geninfusion.soul.allele.*;
 
@@ -309,6 +311,26 @@ public class StandardSoul implements IStandardSoul {
             return new Chromosome(new AlleleModelPartArray(true, new ModelPart[] {ModelPart.getLegsFromModel(new ModelZombie())[0]}));
         } else if(gene.equals(Genes.GENE_MODEL_LEG_RIGHT)) {
             return new Chromosome(new AlleleModelPartArray(true, new ModelPart[] {ModelPart.getLegsFromModel(new ModelZombie())[1]}));
+        } else if(gene.equals(Genes.GENE_MODEL_EARS)) {
+            return new Chromosome(new AlleleModelPartArray(true, ModelPart.getEarsFromModel(new ModelZombie())));
+        } else if(gene.equals(Genes.GENE_MODEL_CLOAK)) {
+            return new Chromosome(new AlleleModelPartArray(true, ModelPart.getCloakFromModel(new ModelZombie())));
+        } else if(gene.equals(Genes.GENE_ANIM_WALK_HEAD)) {
+            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedHeadWalkAnimationParts()));
+        } else if(gene.equals(Genes.GENE_ANIM_WALK_BODY)) {
+            return new Chromosome(new AlleleAnimationPartArray(true, new AnimationPart[] {}));
+        } else if(gene.equals(Genes.GENE_ANIM_WALK_ARM_LEFT)) {
+            return new Chromosome(new AlleleAnimationPartArray(true, new AnimationPart[] {}));
+        } else if(gene.equals(Genes.GENE_ANIM_WALK_ARM_RIGHT)) {
+            return new Chromosome(new AlleleAnimationPartArray(true, new AnimationPart[] {}));
+        } else if(gene.equals(Genes.GENE_ANIM_WALK_LEG_LEFT)) {
+            return new Chromosome(new AlleleAnimationPartArray(true, new AnimationPart[] {}));
+        } else if(gene.equals(Genes.GENE_ANIM_WALK_LEG_RIGHT)) {
+            return new Chromosome(new AlleleAnimationPartArray(true, new AnimationPart[] {}));
+        } else if(gene.equals(Genes.GENE_ANIM_WALK_CLOAK)) {
+            return new Chromosome(new AlleleAnimationPartArray(true, new AnimationPart[] {}));
+        } else if(gene.equals(Genes.GENE_ANIM_WALK_EARS)) {
+            return new Chromosome(new AlleleAnimationPartArray(true, new AnimationPart[] {}));
         }
         return null;
     }

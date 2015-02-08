@@ -1,5 +1,7 @@
 package seremis.geninfusion.soul.traits;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
@@ -124,6 +126,7 @@ public class Trait implements ITrait {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void render(IEntitySoulCustom entity) {
         SoulHelper.traitHandler.callSuperTrait(entity);
     }
