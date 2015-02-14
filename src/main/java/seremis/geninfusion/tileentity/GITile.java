@@ -10,7 +10,6 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import seremis.geninfusion.GeneticInfusion;
-import seremis.geninfusion.core.proxy.CommonProxy;
 import seremis.geninfusion.network.packet.PacketTileData;
 
 public class GITile extends TileEntity {
@@ -67,8 +66,8 @@ public class GITile extends TileEntity {
     }
 
     public void sendTileDataToServer(int id, byte[] data) {
-        if(CommonProxy.instance.isRenderWorld(worldObj)) {
-            GeneticInfusion.packetPipeline.sendToServer(new PacketTileData(data, id, this.xCoord, this.yCoord, this.zCoord));
+        if(GeneticInfusion.serverProxy().isRenderWorld(worldObj)) {
+            GeneticInfusion.packetPipeline().sendToServer(new PacketTileData(data, id, this.xCoord, this.yCoord, this.zCoord));
         } else {
             setTileDataFromClient(id, data);
         }
@@ -79,8 +78,8 @@ public class GITile extends TileEntity {
     }
 
     public void sendTileDataToClient(int id, byte[] data) {
-        if(CommonProxy.instance.isServerWorld(worldObj)) {
-            GeneticInfusion.packetPipeline.sendToAllAround(new PacketTileData(data, id, xCoord, yCoord, zCoord), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 128));
+        if(GeneticInfusion.serverProxy().isServerWorld(worldObj)) {
+            GeneticInfusion.packetPipeline().sendToAllAround(new PacketTileData(data, id, xCoord, yCoord, zCoord), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 128));
         } else {
             setTileDataFromServer(id, data);
         }

@@ -6,7 +6,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import seremis.geninfusion.GeneticInfusion;
-import seremis.geninfusion.core.proxy.CommonProxy;
 import seremis.geninfusion.network.packet.PacketEntityData;
 
 public abstract class GIEntity extends Entity {
@@ -16,16 +15,16 @@ public abstract class GIEntity extends Entity {
     }
 
     public void sendEntityDataToClient(int id, byte[] value) {
-        if(CommonProxy.instance.isServerWorld(worldObj)) {
-            GeneticInfusion.packetPipeline.sendToAllAround(new PacketEntityData(value, id, getEntityId()), new TargetPoint(worldObj.provider.dimensionId, posX, posY, posZ, 128));
+        if(GeneticInfusion.serverProxy().isServerWorld(worldObj)) {
+            GeneticInfusion.packetPipeline().sendToAllAround(new PacketEntityData(value, id, getEntityId()), new TargetPoint(worldObj.provider.dimensionId, posX, posY, posZ, 128));
         } else {
             receivePacketOnServer(id, value);
         }
     }
 
     public void sendEntityDataToServer(int id, byte[] value) {
-        if(CommonProxy.instance.isRenderWorld(worldObj)) {
-            GeneticInfusion.packetPipeline.sendToServer(new PacketEntityData(value, id, getEntityId()));
+        if(GeneticInfusion.serverProxy().isRenderWorld(worldObj)) {
+            GeneticInfusion.packetPipeline().sendToServer(new PacketEntityData(value, id, getEntityId()));
         } else {
             receivePacketOnServer(id, value);
         }

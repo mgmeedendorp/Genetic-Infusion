@@ -38,13 +38,20 @@ public class AnimationState implements INBTTagable {
     }
 
     public void setToModelPart(ModelPart part) {
-        part.rotationPointX = rotationPointX;
-        part.rotationPointY = rotationPointY;
-        part.rotationPointZ = rotationPointZ;
+        setRotatePointToModelPart(part);
+        setRotationToModelPart(part);
+    }
 
+    public void setRotationToModelPart(ModelPart part) {
         part.rotateAngleX = rotateAngleX;
         part.rotateAngleY = rotateAngleY;
         part.rotateAngleZ = rotateAngleZ;
+    }
+
+    public void setRotatePointToModelPart(ModelPart part) {
+        part.rotationPointX = rotationPointX;
+        part.rotationPointY = rotationPointY;
+        part.rotationPointZ = rotationPointZ;
     }
 
     @Override

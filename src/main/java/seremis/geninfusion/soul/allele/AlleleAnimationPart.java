@@ -3,6 +3,7 @@ package seremis.geninfusion.soul.allele;
 import net.minecraft.nbt.NBTTagCompound;
 import seremis.geninfusion.api.soul.EnumAlleleType;
 import seremis.geninfusion.api.soul.util.animation.AnimationPart;
+import seremis.geninfusion.api.soul.util.animation.AnimationPartWave;
 import seremis.geninfusion.soul.Allele;
 
 public class AlleleAnimationPart extends Allele {
@@ -33,7 +34,8 @@ public class AlleleAnimationPart extends Allele {
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        value = new AnimationPart(compound);
+        //TODO new animation instance
+        value = new AnimationPartWave(compound);
     }
 
 }

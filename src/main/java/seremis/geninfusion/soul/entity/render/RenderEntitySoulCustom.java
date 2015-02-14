@@ -35,7 +35,7 @@ public class RenderEntitySoulCustom extends RenderLiving {
 
     @Override
     protected ResourceLocation getEntityTexture(Entity entity) {
-        return new ResourceLocation(Localizations.LOC_MODEL_TEXTURES + Localizations.BLANK);
+        return new ResourceLocation("textures/entity/zombie/zombie.png");
 //        return new ResourceLocation(((IEntitySoulCustom) entity).getString("textureLocation"));
     }
 }

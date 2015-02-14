@@ -10,11 +10,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.CombatTracker;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.ForgeHooks;
+import seremis.geninfusion.GeneticInfusion;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.UtilSoulEntity;
-import seremis.geninfusion.core.proxy.CommonProxy;
 import seremis.geninfusion.soul.allele.AlleleFloatArray;
 import seremis.geninfusion.soul.allele.AlleleInventory;
 
@@ -41,7 +41,7 @@ public class TraitItemDrops extends Trait {
             ent.onKillEntity((EntityLivingBase) entity);
         }
 
-        if(CommonProxy.instance.isServerWorld(entity.getWorld())) {
+        if(GeneticInfusion.serverProxy().isServerWorld(entity.getWorld())) {
             int i = 0;
 
             if(entity instanceof EntityPlayer) {

@@ -26,7 +26,7 @@ public class GIBlock extends Block {
     public GIBlock(Material material) {
         super(material);
         setBlockName("");
-        setCreativeTab(GeneticInfusion.CreativeTab);
+        setCreativeTab(GeneticInfusion.creativeTab());
     }
 
     @Override

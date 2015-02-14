@@ -2,13 +2,15 @@ package seremis.geninfusion.soul.traits;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.util.MathHelper;
+import net.minecraft.entity.EntityLiving;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.ModelPart;
 import seremis.geninfusion.api.soul.util.animation.AnimationPart;
-import seremis.geninfusion.soul.allele.AlleleModelPartArray;
+import seremis.geninfusion.api.soul.util.animation.AnimationPartWave;
+
+import java.util.Arrays;
 
 public class TraitRender extends Trait {
 
@@ -29,63 +31,69 @@ public class TraitRender extends Trait {
         AnimationPart[] animationWalkArmLeft = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_WALK_ARM_LEFT);
         AnimationPart[] animationWalkArmRight = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_WALK_ARM_RIGHT);
         AnimationPart[] animationWalkLegLeft = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_WALK_LEG_LEFT);
-        AnimationPart[] animationWalkLegRight = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_WALK_ARM_LEFT);
+        AnimationPart[] animationWalkLegRight = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_WALK_LEG_RIGHT);
         AnimationPart[] animationWalkEars = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_WALK_EARS);
         AnimationPart[] animationWalkCloak = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_WALK_CLOAK);
 
+        entity.setFloat("legLeftWalkPeriodFactor",  ((EntityLiving)entity).limbSwing - ((EntityLiving)entity).limbSwingAmount * (1.0F - 0.90080345F));
+        entity.setFloat("legLeftWalkAmplitudeFactor", (((EntityLiving)entity).prevLimbSwingAmount + (((EntityLiving)entity).limbSwingAmount - ((EntityLiving)entity).prevLimbSwingAmount) * 0.90080345F) * 100);
+        entity.setFloat("legRightWalkPeriodFactor",  ((EntityLiving)entity).limbSwing - ((EntityLiving)entity).limbSwingAmount * (1.0F - 0.90080345F));
+        entity.setFloat("legRightWalkAmplitudeFactor", (((EntityLiving)entity).prevLimbSwingAmount + (((EntityLiving)entity).limbSwingAmount - ((EntityLiving)entity).prevLimbSwingAmount) * 0.90080345F) * 100);
+
+        System.out.println(entity.getFloat("legLeftWalkAmplitudeFactor"));
 
         for(int i = 0; i < head.length; i++) {
             if(i < animationWalkHead.length) {
-                animationWalkHead[i].setModelPartToAnimate(head[i]).animate(entity);
+                animationWalkHead[i].setAnimationModel(head[i]).animate(entity);
             }
             head[i].render(0.0625F);
         }
 
         for(int i = 0; i < body.length; i++) {
             if(i < animationWalkBody.length) {
-                animationWalkBody[i].setModelPartToAnimate(body[i]).animate(entity);
+                animationWalkBody[i].setAnimationModel(body[i]).animate(entity);
             }
             body[i].render(0.0625F);
         }
 
         for(int i = 0; i < armLeft.length; i++) {
             if(i < animationWalkArmLeft.length) {
-                animationWalkArmLeft[i].setModelPartToAnimate(armLeft[i]).animate(entity);
+                animationWalkArmLeft[i].setAnimationModel(armLeft[i]).animate(entity);
             }
             armLeft[i].render(0.0625F);
         }
 
         for(int i = 0; i < armRight.length; i++) {
             if(i < animationWalkArmRight.length) {
-                animationWalkArmRight[i].setModelPartToAnimate(armRight[i]).animate(entity);
+                animationWalkArmRight[i].setAnimationModel(armRight[i]).animate(entity);
             }
             armRight[i].render(0.0625F);
         }
 
         for(int i = 0; i < legLeft.length; i++) {
             if(i < animationWalkLegLeft.length) {
-                animationWalkLegLeft[i].setModelPartToAnimate(legLeft[i]).animate(entity);
+                animationWalkLegLeft[i].setAnimationModel(legLeft[i]).animate(entity);
             }
             legLeft[i].render(0.0625F);
         }
 
         for(int i = 0; i < legRight.length; i++) {
             if(i < animationWalkLegRight.length) {
-                animationWalkLegRight[i].setModelPartToAnimate(legRight[i]).animate(entity);
+                animationWalkLegRight[i].setAnimationModel(legRight[i]).animate(entity);
             }
             legRight[i].render(0.0625F);
         }
 
-        for(int i = 0; i < cloak.length; i++) {
-            if(i < animationWalkCloak.length) {
-                animationWalkCloak[i].setModelPartToAnimate(cloak[i]).animate(entity);
-            }
-            cloak[i].render(0.0625F);
-        }
+//        for(int i = 0; i < cloak.length; i++) {
+//            if(i < animationWalkCloak.length) {
+//                animationWalkCloak[i].setAnimationModel(cloak[i]).animate(entity);
+//            }
+//            cloak[i].render(0.0625F);
+//        }
 
         for(int i = 0; i < ears.length; i++) {
             if(i < animationWalkEars.length) {
-                animationWalkEars[i].setModelPartToAnimate(ears[i]).animate(entity);
+                animationWalkEars[i].setAnimationModel(ears[i]).animate(entity);
             }
             ears[i].render(0.0625F);
         }

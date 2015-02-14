@@ -20,7 +20,7 @@ public class GIItem extends Item {
     public GIItem() {
         super();
         setMaxStackSize(64);
-        setCreativeTab(GeneticInfusion.CreativeTab);
+        setCreativeTab(GeneticInfusion.creativeTab());
     }
 
     @Override

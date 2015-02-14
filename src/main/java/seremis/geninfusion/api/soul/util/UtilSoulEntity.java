@@ -19,10 +19,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.ForgeEventFactory;
+import seremis.geninfusion.GeneticInfusion;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
-import seremis.geninfusion.core.proxy.CommonProxy;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
 
 import java.util.ArrayList;
@@ -73,7 +73,7 @@ public class UtilSoulEntity {
     public static void travelToDimension(IEntitySoulCustom entity, int dimensionId) {
         boolean isDead = entity.getBoolean("isDead");
 
-        if(CommonProxy.instance.isServerWorld(entity.getWorld()) && !isDead) {
+        if(GeneticInfusion.serverProxy().isServerWorld(entity.getWorld()) && !isDead) {
             entity.getWorld().theProfiler.startSection("changeDimension");
             MinecraftServer minecraftserver = MinecraftServer.getServer();
             int currentDimension = entity.getInteger("dimension");

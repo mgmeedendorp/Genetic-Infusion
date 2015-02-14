@@ -15,11 +15,11 @@ import net.minecraft.item.ItemSword;
 import net.minecraft.network.play.server.S0DPacketCollectItem;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.world.WorldServer;
+import seremis.geninfusion.GeneticInfusion;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.UtilSoulEntity;
-import seremis.geninfusion.core.proxy.CommonProxy;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
 
 import java.util.List;
@@ -34,7 +34,7 @@ public class TraitItemPickup extends Trait {
         boolean canPickUpItems = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_PICKS_UP_ITEMS)).value;
         boolean isDead = entity.getBoolean("isDead");
 
-        if(CommonProxy.instance.isServerWorld(entity.getWorld()) && canPickUpItems && !isDead && entity.getWorld().getGameRules().getGameRuleBooleanValue("mobGriefing")) {
+        if(GeneticInfusion.serverProxy().isServerWorld(entity.getWorld()) && canPickUpItems && !isDead && entity.getWorld().getGameRules().getGameRuleBooleanValue("mobGriefing")) {
             List list = entity.getWorld().getEntitiesWithinAABB(EntityItem.class, entity.getBoundingBox().expand(1.0D, 0.0D, 1.0D));
 
             for(Object aList : list) {
@@ -131,7 +131,7 @@ public class TraitItemPickup extends Trait {
     }
 
     public void onItemPickup(IEntitySoulCustom entity, Entity ent, int stackSize) {
-        if(!ent.isDead && CommonProxy.instance.isServerWorld(entity.getWorld())) {
+        if(!ent.isDead && GeneticInfusion.serverProxy().isServerWorld(entity.getWorld())) {
             EntityTracker entitytracker = ((WorldServer) entity.getWorld()).getEntityTracker();
 
             if(ent instanceof EntityItem) {

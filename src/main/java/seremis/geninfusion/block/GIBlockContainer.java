@@ -28,7 +28,7 @@ public class GIBlockContainer extends BlockContainer {
     public GIBlockContainer(Material material) {
         super(material);
         setBlockName("");
-        setCreativeTab(GeneticInfusion.CreativeTab);
+        setCreativeTab(GeneticInfusion.creativeTab());
     }
 
     @Override

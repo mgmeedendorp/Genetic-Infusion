@@ -44,17 +44,17 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Abstra
      */
     public boolean registerPacket(Class<? extends AbstractPacket> clazz) {
         if(this.packets.size() > 256) {
-            GeneticInfusion.logger.error(DefaultProps.name + "registered too many packets! 256 is a lot isn't it? packet: " + clazz.getName());
+            GeneticInfusion.logger().error(DefaultProps.name + "registered too many packets! 256 is a lot isn't it? packet: " + clazz.getName());
             return false;
         }
 
         if(this.packets.contains(clazz)) {
-            GeneticInfusion.logger.error("Packet is already registered! packet: " + clazz.getName());
+            GeneticInfusion.logger().error("Packet is already registered! packet: " + clazz.getName());
             return false;
         }
 
         if(this.isPostInitialised) {
-            GeneticInfusion.logger.error("Packet failed to get to the finish line in time! Register packets in init() or preInit()! packet: " + clazz.getName());
+            GeneticInfusion.logger().error("Packet failed to get to the finish line in time! Register packets in init() or preInit()! packet: " + clazz.getName());
             return false;
         }
 

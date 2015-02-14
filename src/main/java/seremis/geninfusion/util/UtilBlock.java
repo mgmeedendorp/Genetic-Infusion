@@ -7,8 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import seremis.geninfusion.GeneticInfusion;
 import seremis.geninfusion.api.util.Coordinate3D;
-import seremis.geninfusion.core.proxy.CommonProxy;
 
 import java.util.Random;
 
@@ -60,7 +60,7 @@ public class UtilBlock {
     public static void dropItemsFromTile(World world, int x, int y, int z) {
 
         TileEntity tileEntity = world.getTileEntity(x, y, z);
-        if(!(tileEntity instanceof IInventory) || CommonProxy.instance.isRenderWorld(tileEntity.getWorldObj())) {
+        if(!(tileEntity instanceof IInventory) || GeneticInfusion.serverProxy().isRenderWorld(tileEntity.getWorldObj())) {
             return;
         }
         IInventory inventory = (IInventory) tileEntity;
@@ -74,7 +74,7 @@ public class UtilBlock {
      */
     public static void dropItemsFromTile(World world, int x, int y, int z, int slot) {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
-        if(!(tileEntity instanceof IInventory) || CommonProxy.instance.isRenderWorld(tileEntity.getWorldObj())) {
+        if(!(tileEntity instanceof IInventory) || GeneticInfusion.serverProxy().isRenderWorld(tileEntity.getWorldObj())) {
             return;
         }
         IInventory inventory = (IInventory) tileEntity;

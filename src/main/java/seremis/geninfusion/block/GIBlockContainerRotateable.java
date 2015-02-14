@@ -11,7 +11,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import seremis.geninfusion.core.proxy.CommonProxy;
+import seremis.geninfusion.GeneticInfusion;
 import seremis.geninfusion.tileentity.GITile;
 
 public class GIBlockContainerRotateable extends GIBlockContainer {
@@ -45,7 +45,7 @@ public class GIBlockContainerRotateable extends GIBlockContainer {
         if(!useTile) {
             world.setBlockMetadataWithNotify(x, y, z, direction - 2, 3);
         }
-        if(useTile && CommonProxy.instance.isServerWorld(world)) {
+        if(useTile && GeneticInfusion.serverProxy().isServerWorld(world)) {
             TileEntity tile = world.getTileEntity(x, y, z);
             if(tile != null && tile instanceof GITile) {
                 ((GITile) tile).setDirection(direction);
