@@ -45,13 +45,13 @@ public class RenderSoulCage extends TileEntitySpecialRenderer implements ISimple
     @Override
     @SideOnly(Side.CLIENT)
     public int getRenderId() {
-        return RenderIds.soulCageRenderID;
+        return RenderIds.soulCageRenderID();
     }
 
     public static void renderSoulCage(double x, double y, double z, float scale) {
         GL11.glPushMatrix();
 
-        GIRenderHelper.bindTexture(Localizations.LOC_MODEL_TEXTURES + Localizations.BLANK);
+        GIRenderHelper.bindTexture(Localizations.LOC_MODEL_TEXTURES() + Localizations.BLANK());
 
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glDisable(GL11.GL_CULL_FACE);

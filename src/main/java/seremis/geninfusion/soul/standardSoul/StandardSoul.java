@@ -23,7 +23,7 @@ public class StandardSoul implements IStandardSoul {
     @Override
     public IChromosome getChromosomeFromGene(String gene) {
         if(gene.equals(Genes.GENE_ATTACK_DAMAGE)) {
-            return new Chromosome(new AlleleFloat(true, 0F));
+            return new Chromosome(new AlleleFloat(false, 0F));
         } else if(gene.equals(Genes.GENE_BURNS_IN_DAYLIGHT)) {
             return new Chromosome(new AlleleBoolean(true, false));
         } else if(gene.equals(Genes.GENE_CEASE_AI_MOVEMENT)) {

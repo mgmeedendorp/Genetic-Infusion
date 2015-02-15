@@ -6,6 +6,8 @@ import net.minecraftforge.common.util.Constants;
 import seremis.geninfusion.api.soul.IChromosome;
 import seremis.geninfusion.api.soul.ISoul;
 
+import java.util.Arrays;
+
 public class Soul implements ISoul {
 
     protected IChromosome[] chromosomes;
@@ -50,5 +52,10 @@ public class Soul implements ISoul {
 
             chromosomes[i] = new Chromosome(compound1);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Soul:[chromosomes:" + Arrays.toString(chromosomes) + "]";
     }
 }

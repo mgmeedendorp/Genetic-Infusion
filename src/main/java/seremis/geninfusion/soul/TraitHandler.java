@@ -250,10 +250,10 @@ public class TraitHandler implements ITraitHandler {
         }
     }
 
-    public static void render(IEntitySoulCustom entity) {
+    public static void render(IEntitySoulCustom entity, float timeModifier, float walkSpeed, float specialRotation, float rotationYawHead, float rotationPitch, float scale) {
         for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
             map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///render");
-            trait.render(entity);
+            trait.render(entity, timeModifier, walkSpeed, specialRotation, rotationYawHead, rotationPitch, scale);
         }
     }
 }

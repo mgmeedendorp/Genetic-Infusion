@@ -7,19 +7,20 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import seremis.geninfusion.GeneticInfusion;
+import seremis.geninfusion.api.soul.ISoul;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.lib.Items;
 
 public class ItemThermometer extends GIItem {
 
-    private String[] subNames = {Items.THERMOMETER_META_0_UNLOCALIZED_NAME, Items.THERMOMETER_META_1_UNLOCALIZED_NAME};
+    private String[] subNames = {Items.THERMOMETER_META_0_UNLOCALIZED_NAME(), Items.THERMOMETER_META_1_UNLOCALIZED_NAME()};
 
     public ItemThermometer() {
         super();
         setHasSubtypes(true);
         setMaxDamage(0);
         setNumbersofMetadata(2);
-        setUnlocalizedName(Items.THERMOMETER_UNLOCALIZED_NAME);
+        setUnlocalizedName(Items.THERMOMETER_UNLOCALIZED_NAME());
     }
 
     @Override
@@ -30,7 +31,6 @@ public class ItemThermometer extends GIItem {
     @Override
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ) {
         if(GeneticInfusion.serverProxy().isServerWorld(world)) {
-            TileEntity tile = world.getTileEntity(x, y, z);
             if(stack.getItemDamage() == 1) {
                 EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityZombie(world)), x, y + 1, z);
                 world.spawnEntityInWorld(entity);

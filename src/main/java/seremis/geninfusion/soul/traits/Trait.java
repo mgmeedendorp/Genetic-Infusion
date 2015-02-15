@@ -127,7 +127,7 @@ public class Trait implements ITrait {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void render(IEntitySoulCustom entity) {
+    public void render(IEntitySoulCustom entity, float timeModifier, float walkSpeed, float specialRotation, float rotationYawHead, float rotationPitch, float scale) {
         SoulHelper.traitHandler.callSuperTrait(entity);
     }
 }

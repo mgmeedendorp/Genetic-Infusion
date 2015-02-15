@@ -40,15 +40,15 @@ public class GIBlockContainer extends BlockContainer {
         if(this.needsSidedTexture) {
             sidedIconBuffer = new IIcon[sidedTextureNames.length];
             for(int i = 0; i < sidedTextureNames.length; i++) {
-                sidedIconBuffer[i] = iconRegister.registerIcon(DefaultProps.ID + ":" + getUnlocalizedName().substring(5) + "_" + sidedTextureNames[i]);
+                sidedIconBuffer[i] = iconRegister.registerIcon(DefaultProps.ID() + ":" + getUnlocalizedName().substring(5) + "_" + sidedTextureNames[i]);
             }
         }
         if(this.metadata == 0 && !needsSidedTexture) {
-            blockIcon = iconRegister.registerIcon(DefaultProps.ID + ":" + getUnlocalizedName().substring(5));
+            blockIcon = iconRegister.registerIcon(DefaultProps.ID() + ":" + getUnlocalizedName().substring(5));
         } else {
             iconBuffer = new IIcon[metadata];
             for(int x = 0; x < iconBuffer.length; x++) {
-                iconBuffer[x] = iconRegister.registerIcon(DefaultProps.ID + ":" + getUnlocalizedName().substring(5) + (x + 1));
+                iconBuffer[x] = iconRegister.registerIcon(DefaultProps.ID() + ":" + getUnlocalizedName().substring(5) + (x + 1));
             }
         }
     }

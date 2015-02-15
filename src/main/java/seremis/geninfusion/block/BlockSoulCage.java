@@ -11,7 +11,7 @@ public class BlockSoulCage extends GIBlockContainer {
 
     public BlockSoulCage(Material material) {
         super(material);
-        setBlockName(Blocks.SOUL_CAGE_UNLOCALIZED_NAME);
+        setBlockName(Blocks.SOUL_CAGE_UNLOCALIZED_NAME());
         setNeedsIcon(false);
     }
 
@@ -27,7 +27,7 @@ public class BlockSoulCage extends GIBlockContainer {
 
     @Override
     public int getRenderType() {
-        return RenderIds.soulCageRenderID;
+        return RenderIds.soulCageRenderID();
     }
 
     @Override

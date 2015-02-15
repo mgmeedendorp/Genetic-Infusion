@@ -8,12 +8,6 @@ import seremis.geninfusion.util.INBTTagable;
 import java.util.Random;
 
 public abstract class AnimationPart implements INBTTagable {
-    public int maxTime;
-
-    public boolean loop;
-
-    public int animTick;
-
     public ModelPart modelPart;
 
     public AnimationPart() {}
@@ -53,14 +47,14 @@ public abstract class AnimationPart implements INBTTagable {
     /**
      * Execute the animation for the passed entity.
      */
-    public abstract void animate(IEntitySoulCustom entity);
+    public void animate(IEntitySoulCustom entity) {
+        if(modelPart == null) {
+            throw new NullPointerException("modelPart should not be null at the start of animation! Animation: " + this + ", Entity: " + entity);
+        }
+    }
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
-        compound.setInteger("maxTime", maxTime);
-        compound.setBoolean("loop", loop);
-        compound.setInteger("animTick", animTick);
-
         if(modelPart != null) {
             NBTTagCompound partCompound = new NBTTagCompound();
             modelPart.writeToNBT(partCompound);
@@ -70,10 +64,6 @@ public abstract class AnimationPart implements INBTTagable {
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
-        maxTime = compound.getInteger("maxTime");
-        loop = compound.getBoolean("loop");
-        animTick = compound.getInteger("animTick");
-
         if(compound.hasKey("modelPart")) {
             modelPart = new ModelPart(compound.getCompoundTag("modelPart"));
         }
@@ -81,21 +71,10 @@ public abstract class AnimationPart implements INBTTagable {
 
     protected Random rand = new Random();
 
+    /**
+     * Mutates this AnimationPart.
+     */
     public abstract AnimationPart mutate();
-
-    /**
-     * Gets if this animation loops continuously or executes once.
-     */
-    public boolean doesLoop() {
-        return loop;
-    }
-
-    /**
-     * The duration of this animation in ticks.
-     */
-    public int getDuration() {
-        return maxTime;
-    }
 
     /**
      * Returns the model this IAnimationPart animates.
@@ -105,10 +84,10 @@ public abstract class AnimationPart implements INBTTagable {
     }
 
     public static AnimationPart[] bipedLegLeftWalkAnimationParts() {
-        return new AnimationPart[] {new AnimationPartWave(true, 0.9F, 100, 0.0F, 0.0F, 0, "legLeftWalkPeriodFactor", "legLeftWalkAmplitudeFactor", null, null)};
+        return new AnimationPart[] {new AnimationPartWave(0, "legLeftWalkPeriodFactor", "legLeftWalkAmplitudeFactor", null, "legLeftWalkOffsetHorFactor")};
     }
 
     public static AnimationPart[] bipedLegRightWalkAnimationParts() {
-        return new AnimationPart[] {new AnimationPartWave(true, 0.9F, 100, 0.0F, (float) Math.PI, 0, "legRightWalkPeriodFactor", "legRightWalkAmplitudeFactor", null, null)};
+        return new AnimationPart[] {new AnimationPartWave(0, "legRightWalkPeriodFactor", "legRightWalkAmplitudeFactor", null, "legRightWalkOffsetHorFactor")};
     }
 }

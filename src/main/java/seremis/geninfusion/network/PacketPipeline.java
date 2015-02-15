@@ -44,7 +44,7 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Abstra
      */
     public boolean registerPacket(Class<? extends AbstractPacket> clazz) {
         if(this.packets.size() > 256) {
-            GeneticInfusion.logger().error(DefaultProps.name + "registered too many packets! 256 is a lot isn't it? packet: " + clazz.getName());
+            GeneticInfusion.logger().error(DefaultProps.name() + "registered too many packets! 256 is a lot isn't it? packet: " + clazz.getName());
             return false;
         }
 
@@ -112,7 +112,7 @@ public class PacketPipeline extends MessageToMessageCodec<FMLProxyPacket, Abstra
 
     // Method to call from FMLInitializationEvent
     public void initialise() {
-        this.channels = NetworkRegistry.INSTANCE.newChannel(DefaultProps.name, this);
+        this.channels = NetworkRegistry.INSTANCE.newChannel(DefaultProps.name(), this);
     }
 
     // Method to call from FMLPostInitializationEvent

@@ -12,11 +12,11 @@ public class ModItems {
     public static ItemThermometer thermometer;
 
     public static void init() {
-        titaniumIngot = new GIItem().setUnlocalizedName(Items.TITANIUM_INGOT_UNLOCALIZED_NAME);
+        titaniumIngot = new GIItem().setUnlocalizedName(Items.TITANIUM_INGOT_UNLOCALIZED_NAME());
         thermometer = new ItemThermometer();
 
-        registerItem(titaniumIngot, Items.TITANIUM_INGOT_UNLOCALIZED_NAME);
-        registerItem(thermometer, Items.THERMOMETER_UNLOCALIZED_NAME);
+        registerItem(titaniumIngot, Items.TITANIUM_INGOT_UNLOCALIZED_NAME());
+        registerItem(thermometer, Items.THERMOMETER_UNLOCALIZED_NAME());
 
         oreDictionary();
     }
@@ -26,6 +26,6 @@ public class ModItems {
     }
 
     public static void registerItem(Item item, String name) {
-        GameRegistry.registerItem(item, DefaultProps.nameLower + "_item_" + name);
+        GameRegistry.registerItem(item, DefaultProps.nameLower() + ".item." + name);
     }
 }

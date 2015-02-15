@@ -47,7 +47,7 @@ public class RenderCrystal extends TileEntitySpecialRenderer implements ISimpleB
     @Override
     @SideOnly(Side.CLIENT)
     public int getRenderId() {
-        return RenderIds.soulCageRenderID;
+        return RenderIds.soulCageRenderID();
     }
 
     private static ModelCrystal model = new ModelCrystal();
@@ -58,7 +58,7 @@ public class RenderCrystal extends TileEntitySpecialRenderer implements ISimpleB
 
         GL11.glPushMatrix();
 
-        GIRenderHelper.bindTexture(Localizations.LOC_MODEL_TEXTURES + Localizations.CRYSTAL);
+        GIRenderHelper.bindTexture(Localizations.LOC_MODEL_TEXTURES() + Localizations.CRYSTAL());
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);

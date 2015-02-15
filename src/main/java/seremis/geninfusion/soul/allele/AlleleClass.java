@@ -26,7 +26,7 @@ public class AlleleClass extends Allele {
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        compound.setString("value", String.valueOf(value));
+        compound.setString("value", value.getName());
     }
 
     @Override

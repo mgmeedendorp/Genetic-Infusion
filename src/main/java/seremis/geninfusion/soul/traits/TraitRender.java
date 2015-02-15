@@ -8,15 +8,12 @@ import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.ModelPart;
 import seremis.geninfusion.api.soul.util.animation.AnimationPart;
-import seremis.geninfusion.api.soul.util.animation.AnimationPartWave;
-
-import java.util.Arrays;
 
 public class TraitRender extends Trait {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void render(IEntitySoulCustom entity) {
+    public void render(IEntitySoulCustom entity, float timeModifier, float walkSpeed, float specialRotation, float rotationYawHead, float rotationPitch, float scale) {
         ModelPart[] head = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL_HEAD);
         ModelPart[] body = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL_BODY);
         ModelPart[] armLeft = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL_ARM_LEFT);
@@ -35,12 +32,13 @@ public class TraitRender extends Trait {
         AnimationPart[] animationWalkEars = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_WALK_EARS);
         AnimationPart[] animationWalkCloak = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_WALK_CLOAK);
 
-        entity.setFloat("legLeftWalkPeriodFactor",  ((EntityLiving)entity).limbSwing - ((EntityLiving)entity).limbSwingAmount * (1.0F - 0.90080345F));
-        entity.setFloat("legLeftWalkAmplitudeFactor", (((EntityLiving)entity).prevLimbSwingAmount + (((EntityLiving)entity).limbSwingAmount - ((EntityLiving)entity).prevLimbSwingAmount) * 0.90080345F) * 100);
-        entity.setFloat("legRightWalkPeriodFactor",  ((EntityLiving)entity).limbSwing - ((EntityLiving)entity).limbSwingAmount * (1.0F - 0.90080345F));
-        entity.setFloat("legRightWalkAmplitudeFactor", (((EntityLiving)entity).prevLimbSwingAmount + (((EntityLiving)entity).limbSwingAmount - ((EntityLiving)entity).prevLimbSwingAmount) * 0.90080345F) * 100);
+        entity.setFloat("legLeftWalkPeriodFactor",  timeModifier * 0.6662F);
+        entity.setFloat("legLeftWalkAmplitudeFactor", walkSpeed * 1.4F);
+        entity.setFloat("legLeftWalkOffsetHorFactor", 0.0F);
 
-        System.out.println(entity.getFloat("legLeftWalkAmplitudeFactor"));
+        entity.setFloat("legRightWalkPeriodFactor",  timeModifier * 0.6662F);
+        entity.setFloat("legRightWalkAmplitudeFactor", walkSpeed * 1.4F);
+        entity.setFloat("legRightWalkOffsetHorFactor", (float) -Math.PI);
 
         for(int i = 0; i < head.length; i++) {
             if(i < animationWalkHead.length) {

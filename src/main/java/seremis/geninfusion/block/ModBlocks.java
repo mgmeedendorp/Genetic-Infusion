@@ -22,15 +22,15 @@ public class ModBlocks {
 
     public static void init() {
 
-        oreTitanium = new GIBlock(Material.rock).setHardness(20F).setBlockName(Blocks.ORE_TITANIUM_UNLOCALIZED_NAME);
+        oreTitanium = new GIBlock(Material.rock).setHardness(20F).setBlockName(Blocks.ORE_TITANIUM_UNLOCALIZED_NAME());
         crystal = new BlockCrystal(Material.coral);
         connectedGlass = new BlockConnectedGlass(Material.glass);
         soulCage = new BlockSoulCage(Material.rock);
 
-        registerBlock(oreTitanium, Blocks.ORE_TITANIUM_UNLOCALIZED_NAME);
-        registerBlock(crystal, Blocks.CRYSTAL_UNLOCALIZED_NAME);
-        registerBlock(connectedGlass, Blocks.CONNECTED_GLASS_UNLOCALIZED_NAME);
-        registerBlock(soulCage, Blocks.SOUL_CAGE_UNLOCALIZED_NAME);
+        registerBlock(oreTitanium, Blocks.ORE_TITANIUM_UNLOCALIZED_NAME());
+        registerBlock(crystal, Blocks.CRYSTAL_UNLOCALIZED_NAME());
+        registerBlock(connectedGlass, Blocks.CONNECTED_GLASS_UNLOCALIZED_NAME());
+        registerBlock(soulCage, Blocks.SOUL_CAGE_UNLOCALIZED_NAME());
 
         worldGen = new GIWorldGenerator();
         GameRegistry.registerWorldGenerator(worldGen, 0);
@@ -43,15 +43,15 @@ public class ModBlocks {
     }
 
     public static void tileEntity() {
-        GameRegistry.registerTileEntity(TileCrystal.class, Blocks.CRYSTAL_UNLOCALIZED_NAME);
-        GameRegistry.registerTileEntity(TileSoulCage.class, Blocks.SOUL_CAGE_UNLOCALIZED_NAME);
+        GameRegistry.registerTileEntity(TileCrystal.class, Blocks.CRYSTAL_UNLOCALIZED_NAME());
+        GameRegistry.registerTileEntity(TileSoulCage.class, Blocks.SOUL_CAGE_UNLOCALIZED_NAME());
     }
 
     public static void registerBlock(Block block, String name) {
-        GameRegistry.registerBlock(block, DefaultProps.nameLower + ".block." + name);
+        GameRegistry.registerBlock(block, DefaultProps.nameLower() + ".block." + name);
     }
 
     public static void registerBlock(Block block, Class<? extends ItemBlock> itemBlock, String name) {
-        GameRegistry.registerBlock(block, itemBlock, DefaultProps.nameLower + ".block." + name);
+        GameRegistry.registerBlock(block, itemBlock, DefaultProps.nameLower() + ".block." + name);
     }
 }

@@ -9,50 +9,38 @@ import seremis.geninfusion.api.soul.IEntitySoulCustom;
  */
 public class AnimationPartWave extends AnimationPart {
 
-    public float amplitude;
-    public float offsetVert;
-    public float offsetHor;
+    public String period;
+    public String amplitude;
+    public String offsetVert;
+    public String offsetHor;
 
-    public String periodFactor;
-    public String amplitudeFactor;
-    public String offsetVertFactor;
-    public String offsetHorFactor;
-
-    private float lastPeriodFactor = 1.0f;
+    /**
+     * These variables should be modified when a method mutates.
+     */
+    public float periodModifier = 1.0F;
+    public float amplitudeModifier = 1.0F;
+    public float offsetVertModifier = 1.0F;
+    public float offsetHorModifier = 1.0F;
 
     /**
      * The rotation axis this AnimationPart animates, 0 for x, 1 for y, 2 for z, 3 for x & y, 4 for x & z, 5 for y & z, 6 for every axis.
      */
     public short axis;
 
-    public AnimationPartWave(boolean loop, float amplitude, int period, float offsetVert, float offsetHor, int axis) {
-        this.loop = loop;
-        this.amplitude = amplitude;
-        this.offsetVert = offsetVert;
-        this.offsetHor = (float) ((offsetHor/(2*Math.PI))*period);
-        this.axis = (short) axis;
-        this.maxTime = period;
-    }
-
     /**
      * A helper class for animations.
-     * @param loop True if this animation loops.
-     * @param amplitude The amplitude (rotation angle in radians) of the wave function.
-     * @param period The period of the wave function in ticks.
-     * @param offsetVert The vertical offset of the wave function.
-     * @param offsetHor the horizontal offset of the wave function.
+     *
      * @param axis The rotation axis this AnimationPart animates, 0 for x, 1 for y, 2 for z, 3 for x & y, 4 for x & z, 5 for y & z, 6 for every axis
-     * @param periodFactor The period will get multiplied by the value of the variable with this String as it's name. If null it defaults to 1.0F.
-     * @param amplitudeFactor The amplitude will get multiplied by the value of the variable with this String as it's name. If null it defaults to 1.0F.
-     * @param offsetVertFactor The offsetVert will get multiplied by the value of the variable with this String as it's name. If null it defaults to 1.0F.
-     * @param offsetHorFactor The offsetHor will get multiplied by the value of the variable with this String as it's name. If null it defaults to 1.0F.
+     * @param period The name of the variable (float) that corresponds with the period of the sine wave. If null it defaults to 1.0F.
+     * @param amplitude The name of the variable (float) that corresponds with the amplitude of the sine wave. If null it defaults to 1.0F.
+     * @param offsetVert The name of the variable (float) that corresponds with the vertical offset of the sine wave. If null it defaults to 1.0F.
+     * @param offsetHor The name of the variable (float) that corresponds with the horizontal offset of the sine wave. If null it defaults to 1.0F.
      */
-    public AnimationPartWave(boolean loop, float amplitude, int period, float offsetVert, float offsetHor, int axis, String periodFactor, String amplitudeFactor, String offsetVertFactor, String offsetHorFactor) {
-        this(loop, amplitude, period, offsetVert, offsetHor, axis);
-        this.periodFactor = periodFactor;
-        this.amplitudeFactor = amplitudeFactor;
-        this.offsetVertFactor = offsetVertFactor;
-        this.offsetHorFactor = offsetHorFactor;
+    public AnimationPartWave(int axis, String period, String amplitude, String offsetVert, String offsetHor) {
+        this.period = period;
+        this.amplitude = amplitude;
+        this.offsetVert = offsetVert;
+        this.offsetHor = offsetHor;
     }
 
     public AnimationPartWave(NBTTagCompound compound) {
@@ -61,96 +49,84 @@ public class AnimationPartWave extends AnimationPart {
 
     @Override
     public void animate(IEntitySoulCustom entity) {
-        if(animTick < maxTime*(periodFactor != null ? entity.getFloat(periodFactor) : 1.0F)) {
-            if(modelPart == null) {
-                throw new NullPointerException("modelPart should not be null at the start of animation! Animation: " + this + ", Entity: " + entity);
-            } else {
-                getStateAtTime(entity, animTick++).setRotationToModelPart(modelPart);
-            }
-        } else if(loop) animTick = 0;
-    }
+        super.animate(entity);
 
-    public AnimationState getStateAtTime(IEntitySoulCustom entity, int time) {
-        AnimationState state = new AnimationState();
-
-        time = 1;
-
-        float offsetHorFactor = this.offsetHorFactor != null ? entity.getFloat(this.offsetHorFactor) : 1.0F;
-        float offsetVertFactor = this.offsetVertFactor != null ? entity.getFloat(this.offsetVertFactor) : 1.0F;
-        float amplitudeFactor = this.amplitudeFactor != null ? entity.getFloat(this.amplitudeFactor) : 1.0F;
-        float periodFactor = this.periodFactor != null ? entity.getFloat(this.periodFactor) : 1.0F;
+        float period = entity.getFloat(this.period);
+        float amplitude = entity.getFloat(this.amplitude);
+        float offsetVert = entity.getFloat(this.offsetVert);
+        float offsetHor = entity.getFloat(this.offsetHor);
 
         switch(axis) {
             case 0:
-                state.rotateAngleX = MathHelper.sin((float) ((time - offsetHor * periodFactor * offsetHorFactor) * (2*Math.PI/(maxTime*periodFactor)))) * (amplitude*amplitudeFactor) + (offsetVert *offsetVertFactor);
+                modelPart.rotateAngleX = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
                 break;
             case 1:
-                state.rotateAngleY = MathHelper.sin((float) ((time - offsetHor * periodFactor * offsetHorFactor) * (2*Math.PI/(maxTime*periodFactor)))) * (amplitude*amplitudeFactor) + (offsetVert *offsetVertFactor);
+                modelPart.rotateAngleY = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
                 break;
             case 2:
-                state.rotateAngleZ = MathHelper.sin((float) ((time - offsetHor * periodFactor * offsetHorFactor) * (2*Math.PI/(maxTime*periodFactor)))) * (amplitude*amplitudeFactor) + (offsetVert *offsetVertFactor);
+                modelPart.rotateAngleZ = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
                 break;
             case 3:
-                state.rotateAngleX = MathHelper.sin((float) ((time - offsetHor * periodFactor * offsetHorFactor) * (2*Math.PI/(maxTime*periodFactor)))) * (amplitude*amplitudeFactor) + (offsetVert *offsetVertFactor);
-                state.rotateAngleY = MathHelper.sin((float) ((time - offsetHor * periodFactor * offsetHorFactor) * (2*Math.PI/(maxTime*periodFactor)))) * (amplitude*amplitudeFactor) + (offsetVert *offsetVertFactor);
+                modelPart.rotateAngleX = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
+                modelPart.rotateAngleY = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
                 break;
             case 4:
-                state.rotateAngleX = MathHelper.sin((float) ((time - offsetHor * periodFactor * offsetHorFactor) * (2*Math.PI/(maxTime*periodFactor)))) * (amplitude*amplitudeFactor) + (offsetVert *offsetVertFactor);
-                state.rotateAngleZ = MathHelper.sin((float) ((time - offsetHor * periodFactor * offsetHorFactor) * (2*Math.PI/(maxTime*periodFactor)))) * (amplitude*amplitudeFactor) + (offsetVert *offsetVertFactor);
+                modelPart.rotateAngleX = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
+                modelPart.rotateAngleZ = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
                 break;
             case 5:
-                state.rotateAngleY = MathHelper.sin((float) ((time - offsetHor * periodFactor * offsetHorFactor) * (2*Math.PI/(maxTime*periodFactor)))) * (amplitude*amplitudeFactor) + (offsetVert *offsetVertFactor);
-                state.rotateAngleZ = MathHelper.sin((float) ((time - offsetHor * periodFactor * offsetHorFactor) * (2*Math.PI/(maxTime*periodFactor)))) * (amplitude*amplitudeFactor) + (offsetVert *offsetVertFactor);
+                modelPart.rotateAngleY = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
+                modelPart.rotateAngleZ = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
                 break;
             case 6:
-                state.rotateAngleX = MathHelper.sin((float) ((time - offsetHor * periodFactor * offsetHorFactor) * (2*Math.PI/(maxTime*periodFactor)))) * (amplitude*amplitudeFactor) + (offsetVert *offsetVertFactor);
-                state.rotateAngleY = MathHelper.sin((float) ((time - offsetHor * periodFactor * offsetHorFactor) * (2*Math.PI/(maxTime*periodFactor)))) * (amplitude*amplitudeFactor) + (offsetVert *offsetVertFactor);
-                state.rotateAngleZ = MathHelper.sin((float) ((time - offsetHor * periodFactor * offsetHorFactor) * (2*Math.PI/(maxTime*periodFactor)))) * (amplitude*amplitudeFactor) + (offsetVert *offsetVertFactor);
+                modelPart.rotateAngleX = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
+                modelPart.rotateAngleY = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
+                modelPart.rotateAngleZ = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
                 break;
         }
-
-        lastPeriodFactor = periodFactor;
-
-        return state;
     }
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
 
-        compound.setFloat("amplitude", amplitude);
-        compound.setFloat("offsetVert", offsetVert);
-        compound.setFloat("offsetHor", offsetHor);
         compound.setShort("axis", axis);
 
-        if(amplitudeFactor != null) compound.setString("amplitudeFactor", amplitudeFactor);
-        if(periodFactor != null) compound.setString("periodFactor", periodFactor);
-        if(offsetVertFactor != null) compound.setString("offsetVertFactor", offsetVertFactor);
-        if(offsetHorFactor != null) compound.setString("offsetHorFactor", offsetHorFactor);
+        if(amplitudeModifier != 1.0F) compound.setFloat("amplitudeModifier", amplitudeModifier);
+        if(periodModifier != 1.0F) compound.setFloat("periodModifier", periodModifier);
+        if(offsetVertModifier != 1.0F) compound.setFloat("offsetVertModifier", offsetVertModifier);
+        if(offsetHorModifier != 1.0F) compound.setFloat("offsetHorModifier", offsetHorModifier);
+
+        if(amplitude != null) compound.setString("amplitude", amplitude);
+        if(period != null) compound.setString("period", period);
+        if(offsetVert != null) compound.setString("offsetVert", offsetVert);
+        if(offsetHor != null) compound.setString("offsetHor", offsetHor);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
 
-        amplitude = compound.getFloat("amplitude");
-        offsetVert = compound.getFloat("offsetVert");
-        offsetHor = compound.getFloat("offsetHor");
         axis = compound.getShort("axis");
 
-        if(compound.hasKey("amplitudeFactor")) amplitudeFactor = compound.getString("amplitudeFactor");
-        if(compound.hasKey("periodFactor")) periodFactor = compound.getString("periodFactor");
-        if(compound.hasKey("offsetVertFactor")) offsetVertFactor = compound.getString("offsetVertFactor");
-        if(compound.hasKey("offsetHorFactor")) offsetHorFactor = compound.getString("offsetHorFactor");
-    }
+        if(compound.hasKey("amplitudeModifier")) amplitudeModifier = compound.getFloat("amplitudeModifier");
+        if(compound.hasKey("periodModifier")) periodModifier = compound.getFloat("periodModifier");
+        if(compound.hasKey("offsetVertModifier")) offsetVertModifier = compound.getFloat("offsetVertModifier");
+        if(compound.hasKey("offsetHorModifier")) offsetHorModifier = compound.getFloat("offsetHorModifier");
 
-    @Override
-    public int getDuration() {
-        return (int) (maxTime*lastPeriodFactor);
+        if(compound.hasKey("amplitude")) amplitude = compound.getString("amplitude");
+        if(compound.hasKey("period")) period = compound.getString("period");
+        if(compound.hasKey("offsetVert")) offsetVert = compound.getString("offsetVert");
+        if(compound.hasKey("offsetHor")) offsetHor = compound.getString("offsetHor");
     }
 
     @Override
     public AnimationPart mutate() {
+        amplitudeModifier = (float) (amplitudeModifier*((rand.nextFloat()*2*0.5)+0.5));
+        periodModifier = (float) (periodModifier*((rand.nextFloat()*2*0.5)+0.5));
+        offsetHorModifier = (float) (offsetHorModifier*((rand.nextFloat()*2*0.5)+0.5));
+        offsetVertModifier = (float) (offsetVertModifier*((rand.nextFloat()*2*0.5)+0.5));
+
         return this;
     }
 }

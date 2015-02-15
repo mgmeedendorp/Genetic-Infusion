@@ -32,11 +32,11 @@ public class GIItem extends Item {
     @SideOnly(Side.CLIENT)
     public void registerIcons(IIconRegister iconRegister) {
         if(this.metadata == 0) {
-            itemIcon = iconRegister.registerIcon(DefaultProps.ID + ":" + this.getUnlocalizedName().substring(5));
+            itemIcon = iconRegister.registerIcon(DefaultProps.ID() + ":" + this.getUnlocalizedName().substring(5));
         } else {
             iconBuffer = new IIcon[metadata];
             for(int x = 0; x < iconBuffer.length; x++) {
-                iconBuffer[x] = iconRegister.registerIcon(DefaultProps.ID + ":" + this.getUnlocalizedName().substring(5) + (x + 1));
+                iconBuffer[x] = iconRegister.registerIcon(DefaultProps.ID() + ":" + this.getUnlocalizedName().substring(5) + (x + 1));
             }
         }
     }

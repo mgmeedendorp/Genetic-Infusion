@@ -19,7 +19,7 @@ import seremis.geninfusion.network.PacketPipeline
 import seremis.geninfusion.soul._
 import seremis.geninfusion.soul.entity.render.ModelEntitySoulCustom
 
-@Mod(modid = DefaultProps.ID, name = DefaultProps.name, version = DefaultProps.version, acceptedMinecraftVersions = DefaultProps.acceptedMinecraftVersions, modLanguage = "scala")
+@Mod(modid = DefaultProps.ID, name = DefaultProps.name, version = DefaultProps.version, acceptedMinecraftVersions = DefaultProps.acceptedMinecraftVersions, modLanguage = DefaultProps.modLanguage)
 object GeneticInfusion {
 
     val packetPipeline = new PacketPipeline

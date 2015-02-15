@@ -11,11 +11,11 @@ import seremis.geninfusion.lib.Blocks;
 
 public class BlockConnectedGlass extends GIBlock {
 
-    private ConnectedTextureHelper textureHelper = new ConnectedTextureHelper(this, Blocks.CONNECTED_GLASS_UNLOCALIZED_NAME);
+    private ConnectedTextureHelper textureHelper = new ConnectedTextureHelper(this, Blocks.CONNECTED_GLASS_UNLOCALIZED_NAME());
 
     public BlockConnectedGlass(Material material) {
         super(material);
-        setBlockName(Blocks.CONNECTED_GLASS_UNLOCALIZED_NAME);
+        setBlockName(Blocks.CONNECTED_GLASS_UNLOCALIZED_NAME());
         setHardness(2F);
         setResistance(3F);
     }
