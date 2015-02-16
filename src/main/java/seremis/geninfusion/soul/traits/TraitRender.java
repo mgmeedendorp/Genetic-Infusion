@@ -32,13 +32,21 @@ public class TraitRender extends Trait {
         AnimationPart[] animationWalkEars = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_WALK_EARS);
         AnimationPart[] animationWalkCloak = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_WALK_CLOAK);
 
-        entity.setFloat("legLeftWalkPeriodFactor",  timeModifier * 0.6662F);
-        entity.setFloat("legLeftWalkAmplitudeFactor", walkSpeed * 1.4F);
-        entity.setFloat("legLeftWalkOffsetHorFactor", 0.0F);
+        entity.setFloat("legLeftWalkPeriod",  timeModifier * 0.6662F);
+        entity.setFloat("legLeftWalkAmplitude", walkSpeed * 1.4F);
+        entity.setFloat("legLeftWalkOffsetHor", (float) Math.PI);
 
-        entity.setFloat("legRightWalkPeriodFactor",  timeModifier * 0.6662F);
-        entity.setFloat("legRightWalkAmplitudeFactor", walkSpeed * 1.4F);
-        entity.setFloat("legRightWalkOffsetHorFactor", (float) -Math.PI);
+        entity.setFloat("legRightWalkPeriod",  timeModifier * 0.6662F);
+        entity.setFloat("legRightWalkAmplitude", walkSpeed * 1.4F);
+        entity.setFloat("legRightWalkOffsetHor", 0.0F);
+
+        entity.setFloat("armLeftWalkPeriod", timeModifier * 0.6662F);
+        entity.setFloat("armLeftWalkAmplitude", walkSpeed);
+        entity.setFloat("armLeftWalkOffsetHor", 0.0F);
+
+        entity.setFloat("armRightWalkPeriod", timeModifier * 0.6662F);
+        entity.setFloat("armRightWalkAmplitude", walkSpeed);
+        entity.setFloat("armRightWalkOffsetHor", (float) Math.PI);
 
         for(int i = 0; i < head.length; i++) {
             if(i < animationWalkHead.length) {

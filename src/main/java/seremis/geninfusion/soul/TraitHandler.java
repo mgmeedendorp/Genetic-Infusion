@@ -39,13 +39,13 @@ public class TraitHandler implements ITraitHandler {
 
                         for(int i = 0; i < args.length; i++) {
                             classes[i + 1] = args[i].getClass();
-                            if(classes[i + 1] == Boolean.class) classes[i + 1] = boolean.class;
-                            if(classes[i + 1] == Byte.class) classes[i + 1] = byte.class;
-                            if(classes[i + 1] == Short.class) classes[i + 1] = short.class;
-                            if(classes[i + 1] == Integer.class) classes[i + 1] = int.class;
-                            if(classes[i + 1] == Float.class) classes[i + 1] = float.class;
-                            if(classes[i + 1] == Double.class) classes[i + 1] = double.class;
-                            if(classes[i + 1] == Long.class) classes[i + 1] = long.class;
+                            if(args[i] == Boolean.class) classes[i + 1] = boolean.class;
+                            if(args[i] == Byte.class) classes[i + 1] = byte.class;
+                            if(args[i] == Short.class) classes[i + 1] = short.class;
+                            if(args[i] == Integer.class) classes[i + 1] = int.class;
+                            if(args[i] == Float.class) classes[i + 1] = float.class;
+                            if(args[i] == Double.class) classes[i + 1] = double.class;
+                            if(args[i] == Long.class) classes[i + 1] = long.class;
                             arguments[i + 1] = args[i];
                         }
 

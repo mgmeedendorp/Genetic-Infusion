@@ -84,10 +84,18 @@ public abstract class AnimationPart implements INBTTagable {
     }
 
     public static AnimationPart[] bipedLegLeftWalkAnimationParts() {
-        return new AnimationPart[] {new AnimationPartWave(0, "legLeftWalkPeriodFactor", "legLeftWalkAmplitudeFactor", null, "legLeftWalkOffsetHorFactor")};
+        return new AnimationPart[] {new AnimationPartWave(0, "legLeftWalkPeriod", "legLeftWalkAmplitude", null, "legLeftWalkOffsetHor")};
     }
 
     public static AnimationPart[] bipedLegRightWalkAnimationParts() {
-        return new AnimationPart[] {new AnimationPartWave(0, "legRightWalkPeriodFactor", "legRightWalkAmplitudeFactor", null, "legRightWalkOffsetHorFactor")};
+        return new AnimationPart[] {new AnimationPartWave(0, "legRightWalkPeriod", "legRightWalkAmplitude", null, "legRightWalkOffsetHor")};
+    }
+
+    public static AnimationPart[] bipedArmLeftWalkAnimationParts() {
+        return new AnimationPart[] {new AnimationPartWave(0, "armLeftWalkPeriod", "armLeftWalkAmplitude", null, "armLeftWalkOffsetHor")};
+    }
+
+    public static AnimationPart[] bipedArmRightWalkAnimationParts() {
+        return new AnimationPart[] {new AnimationPartWave(0, "armRightWalkPeriod", "armRightWalkAmplitude", null, "armRightWalkOffsetHor")};
     }
 }

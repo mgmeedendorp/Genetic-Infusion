@@ -58,32 +58,36 @@ public class AnimationPartWave extends AnimationPart {
 
         switch(axis) {
             case 0:
-                modelPart.rotateAngleX = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
+                modelPart.rotateAngleX = getRotation(entity, period, amplitude, offsetVert, offsetHor);
                 break;
             case 1:
-                modelPart.rotateAngleY = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
+                modelPart.rotateAngleY = getRotation(entity, period, amplitude, offsetVert, offsetHor);
                 break;
             case 2:
-                modelPart.rotateAngleZ = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
+                modelPart.rotateAngleZ = getRotation(entity, period, amplitude, offsetVert, offsetHor);
                 break;
             case 3:
-                modelPart.rotateAngleX = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
-                modelPart.rotateAngleY = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
+                modelPart.rotateAngleX = getRotation(entity, period, amplitude, offsetVert, offsetHor);
+                modelPart.rotateAngleY = getRotation(entity, period, amplitude, offsetVert, offsetHor);
                 break;
             case 4:
-                modelPart.rotateAngleX = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
-                modelPart.rotateAngleZ = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
+                modelPart.rotateAngleX = getRotation(entity, period, amplitude, offsetVert, offsetHor);
+                modelPart.rotateAngleZ = getRotation(entity, period, amplitude, offsetVert, offsetHor);
                 break;
             case 5:
-                modelPart.rotateAngleY = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
-                modelPart.rotateAngleZ = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
+                modelPart.rotateAngleY = getRotation(entity, period, amplitude, offsetVert, offsetHor);
+                modelPart.rotateAngleZ = getRotation(entity, period, amplitude, offsetVert, offsetHor);
                 break;
             case 6:
-                modelPart.rotateAngleX = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
-                modelPart.rotateAngleY = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
-                modelPart.rotateAngleZ = MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
+                modelPart.rotateAngleX = getRotation(entity, period, amplitude, offsetVert, offsetHor);
+                modelPart.rotateAngleY = getRotation(entity, period, amplitude, offsetVert, offsetHor);
+                modelPart.rotateAngleZ = getRotation(entity, period, amplitude, offsetVert, offsetHor);
                 break;
         }
+    }
+
+    protected float getRotation(IEntitySoulCustom entity, float period, float amplitude, float offsetVert, float offsetHor) {
+        return MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
     }
 
     @Override
