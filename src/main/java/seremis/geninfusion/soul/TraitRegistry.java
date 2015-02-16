@@ -34,7 +34,7 @@ public class TraitRegistry implements ITraitRegistry {
 
     @Override
     public int getId(String name) {
-        return getTrait(name) != null && ids.containsKey(getTrait(name)) ? ids.get(getTrait(name)) : null;
+        return ids.get(getTrait(name));
     }
 
     @Override

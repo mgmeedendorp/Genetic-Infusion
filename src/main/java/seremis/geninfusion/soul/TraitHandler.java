@@ -12,16 +12,19 @@ import seremis.geninfusion.api.soul.SoulHelper;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.WeakHashMap;
 
 public class TraitHandler implements ITraitHandler {
 
     public static WeakHashMap<IEntitySoulCustom, String> map = new WeakHashMap<IEntitySoulCustom, String>();
 
+    public static HashMap<String, Method> methodNames = new HashMap<String, Method>();
+
     @Override
     public Object callSuperTrait(IEntitySoulCustom entity, Object... args) {
         Object result = null;
-        if(entity != null && !map.isEmpty() && map.containsKey(entity)) {
+        if(entity != null && !entity.getBoolean("isDead") && !map.isEmpty() && map.containsKey(entity)) {
             try {
                 String[] keys = map.get(entity).split("///");
                 ITrait trait = SoulHelper.traitRegistry.getTrait(keys[0]);
@@ -30,44 +33,41 @@ public class TraitHandler implements ITraitHandler {
                 if(SoulHelper.traitRegistry.isOverriding(trait)) {
                     ArrayList<ITrait> supers = SoulHelper.traitRegistry.getOverridden(trait);
 
+                    Object[] arguments = new Object[args.length + 1];
+
+                    if(args.length > 0) System.arraycopy(args, 0, arguments, 1, args.length);
+
+                    arguments[0] = entity;
+
                     for(ITrait sup : supers) {
-                        Class[] classes = new Class[args.length + 1];
-                        Object[] arguments = new Object[args.length + 1];
+                        String key = SoulHelper.traitRegistry.getName(sup) + "///" + method;
 
-                        classes[0] = IEntitySoulCustom.class;
-                        arguments[0] = entity;
+                        System.out.println("key: " + key);
 
-                        for(int i = 0; i < args.length; i++) {
-                            classes[i + 1] = args[i].getClass();
-                            if(args[i] == Boolean.class) classes[i + 1] = boolean.class;
-                            if(args[i] == Byte.class) classes[i + 1] = byte.class;
-                            if(args[i] == Short.class) classes[i + 1] = short.class;
-                            if(args[i] == Integer.class) classes[i + 1] = int.class;
-                            if(args[i] == Float.class) classes[i + 1] = float.class;
-                            if(args[i] == Double.class) classes[i + 1] = double.class;
-                            if(args[i] == Long.class) classes[i + 1] = long.class;
-                            arguments[i + 1] = args[i];
-                        }
+                        if(!methodNames.containsKey(key)) indexMethodsForTrait(sup);
 
-                        Method field = sup.getClass().getMethod(method, classes);
-
-                        map.put(entity, SoulHelper.traitRegistry.getName(sup) + "///" + method);
-                        result = field.invoke(sup, arguments);
-                        map.put(entity, trait + "///" + method);
-
+                        methodNames.get(key).invoke(sup, arguments);
                     }
                 }
             } catch(Exception e) {
-                //                System.out.println("It looks like something went wrong while doing a super call on a trait. The call didn't work.");
-                //                System.out.println("Entity: " + entity);
-                //                if(map.containsKey(entity)) {
-                //                    System.out.println("Trait: " + map.get(entity).split("///")[0]);
-                //                    System.out.println("Method: " + map.get(entity).split("///")[1]);
-                //                }
-                //                e.printStackTrace();
+                System.out.println("It looks like something went wrong while doing a super call on a trait. The call didn't work.");
+                System.out.println("Entity: " + entity);
+                System.out.println("Server: " + !entity.getWorld().isRemote);
+                if(map.containsKey(entity)) {
+                    System.out.println("Trait: " + map.get(entity).split("///")[0]);
+                    System.out.println("Method: " + map.get(entity).split("///")[1]);
+                }
+                e.printStackTrace();
             }
         }
         return result;
+    }
+
+    private static void indexMethodsForTrait(ITrait trait) {
+        for(Method method : trait.getClass().getMethods()) {
+            methodNames.put(SoulHelper.traitRegistry.getName(trait) + "///" + method.getName(), method);
+            System.out.println("2nd key: " + SoulHelper.traitRegistry.getName(trait) + "///" + method.getName());
+        }
     }
 
     public static void entityUpdate(IEntitySoulCustom entity) {
@@ -252,7 +252,7 @@ public class TraitHandler implements ITraitHandler {
 
     public static void render(IEntitySoulCustom entity, float timeModifier, float walkSpeed, float specialRotation, float rotationYawHead, float rotationPitch, float scale) {
         for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
-            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///render");
+            //map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///render");
             trait.render(entity, timeModifier, walkSpeed, specialRotation, rotationYawHead, rotationPitch, scale);
         }
     }

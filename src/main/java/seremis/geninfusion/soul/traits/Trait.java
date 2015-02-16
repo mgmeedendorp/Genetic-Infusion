@@ -57,7 +57,7 @@ public class Trait implements ITrait {
 
     @Override
     public void updateAITick(IEntitySoulCustom entity) {
-        SoulHelper.traitHandler.callSuperTrait(entity);
+        //SoulHelper.traitHandler.callSuperTrait(entity);
     }
 
     @Override
@@ -128,6 +128,6 @@ public class Trait implements ITrait {
     @Override
     @SideOnly(Side.CLIENT)
     public void render(IEntitySoulCustom entity, float timeModifier, float walkSpeed, float specialRotation, float rotationYawHead, float rotationPitch, float scale) {
-        SoulHelper.traitHandler.callSuperTrait(entity);
+//        SoulHelper.traitHandler.callSuperTrait(entity, timeModifier, walkSpeed, specialRotation, rotationYawHead, rotationPitch, scale);
     }
 }
