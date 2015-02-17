@@ -5,34 +5,24 @@ import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.util.ModelPart;
 import seremis.geninfusion.util.INBTTagable;
 
+import java.lang.reflect.Constructor;
 import java.util.Random;
 
 public abstract class AnimationPart implements INBTTagable {
+
+    public EnumAnimationPartType type;
     public ModelPart modelPart;
 
-    public AnimationPart() {}
+    public boolean immutable;
+
+    protected Random rand = new Random();
+
+    public AnimationPart(EnumAnimationPartType type) {
+        this.type = type;
+    }
 
     public AnimationPart(NBTTagCompound compound) {
         readFromNBT(compound);
-    }
-
-    /**
-     * Interpolates animation between the start and end AnimationState, at time position with a max of maxPosition.
-     *
-     * @return The interpolated AnimationState.
-     */
-    public AnimationState interpolate(AnimationState start, AnimationState end, float position, int maxPosition) {
-        AnimationState state = new AnimationState();
-
-        state.rotateAngleX = ((start.rotateAngleX - end.rotateAngleX)/maxPosition)*position;
-        state.rotateAngleY = ((start.rotateAngleY - end.rotateAngleY)/maxPosition)*position;
-        state.rotateAngleZ = ((start.rotateAngleZ - end.rotateAngleZ)/maxPosition)*position;
-
-        state.rotationPointX = ((start.rotationPointX - end.rotationPointX)/maxPosition)*position;
-        state.rotationPointY = ((start.rotationPointY - end.rotationPointY)/maxPosition)*position;
-        state.rotationPointZ = ((start.rotationPointZ - end.rotationPointZ)/maxPosition)*position;
-
-        return state;
     }
 
     /**
@@ -55,6 +45,8 @@ public abstract class AnimationPart implements INBTTagable {
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
+        compound.setInteger("type", type.ordinal());
+
         if(modelPart != null) {
             NBTTagCompound partCompound = new NBTTagCompound();
             modelPart.writeToNBT(partCompound);
@@ -64,15 +56,15 @@ public abstract class AnimationPart implements INBTTagable {
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
+        type = EnumAnimationPartType.values()[compound.getInteger("type")];
+
         if(compound.hasKey("modelPart")) {
             modelPart = new ModelPart(compound.getCompoundTag("modelPart"));
         }
     }
 
-    protected Random rand = new Random();
-
     /**
-     * Mutates this AnimationPart.
+     * Mutates this AnimationPart. This should take immutability into account.
      */
     public abstract AnimationPart mutate();
 
@@ -81,6 +73,31 @@ public abstract class AnimationPart implements INBTTagable {
      */
     public ModelPart getAnimationModel() {
         return modelPart;
+    }
+
+    /**
+     * Make this model unaffected by mutations.
+     */
+    public AnimationPart setImmutable() {
+        immutable = true;
+        return this;
+    }
+
+
+
+    public static AnimationPart createFromNBT(NBTTagCompound compound) {
+        EnumAnimationPartType type = EnumAnimationPartType.values()[compound.getInteger("type")];
+
+        try {
+            Constructor<?> ctor = type.clazz.getConstructor(NBTTagCompound.class);
+            Object object = ctor.newInstance(compound);
+
+            return (AnimationPart) object;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public static AnimationPart[] bipedLegLeftWalkAnimationParts() {
@@ -97,5 +114,13 @@ public abstract class AnimationPart implements INBTTagable {
 
     public static AnimationPart[] bipedArmRightWalkAnimationParts() {
         return new AnimationPart[] {new AnimationPartWave(0, "armRightWalkPeriod", "armRightWalkAmplitude", null, "armRightWalkOffsetHor")};
+    }
+
+    public static AnimationPart[] bipedHeadWalkAnimationParts() {
+        return new AnimationPart[] {new AnimationPartLinear("headWalkRotateAngleX", "headWalkRotateAngleY", "headWalkRotateAngleZ", "headWalkRotationPointX", "headWalkRotationPointY", "headWalkRotationPointZ").setImmutable()};
+    }
+
+    public static AnimationPart[] bipedBodyWalkAnimationParts() {
+        return new AnimationPart[] {new AnimationPartLinear("bodyWalkRotateAngleX", "bodyWalkRotateAngleY", "bodyWalkRotateAngleZ", "bodyWalkRotationPointX", "bodyWalkRotationPointY", "bodyWalkRotationPointZ").setImmutable()};
     }
 }

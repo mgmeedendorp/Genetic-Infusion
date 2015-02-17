@@ -306,10 +306,7 @@ public class ModSouls {
         traitRegistry.registerTrait(Traits.TRAIT_ATTRIBUTES, new TraitInitialValues());
         traitRegistry.registerTrait(Traits.TRAIT_ATTACK, new TraitAttack());
         traitRegistry.registerTrait(Traits.TRAIT_AI, new TraitAI());
-        traitRegistry.registerTrait(Traits.TRAIT_AI_CREATURE, new TraitAICreature());
         traitRegistry.registerTrait(Traits.TRAIT_RENDER, new TraitRender());
-
-        traitRegistry.makeTraitOverride(Traits.TRAIT_AI, Traits.TRAIT_AI_CREATURE);
 
         standardSoulRegistry.register(new StandardSoulZombie(), EntityZombie.class);
     }

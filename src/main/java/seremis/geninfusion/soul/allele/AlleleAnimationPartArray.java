@@ -33,7 +33,9 @@ public class AlleleAnimationPartArray extends Allele {
         super.writeToNBT(compound);
         compound.setInteger("length", value.length);
         for(int i = 0; i < value.length; i++) {
-            value[i].writeToNBT(compound);
+            NBTTagCompound compound1 = new NBTTagCompound();
+            value[i].writeToNBT(compound1);
+            compound.setTag("value" + i, compound1);
         }
     }
 
@@ -42,8 +44,8 @@ public class AlleleAnimationPartArray extends Allele {
         super.readFromNBT(compound);
         value = new AnimationPart[compound.getInteger("length")];
         for(int i = 0; i < value.length; i++) {
-            //TODO new instance creation
-            value[i] = new AnimationPartWave(compound);
+            NBTTagCompound compound1 = compound.getCompoundTag("value"+i);
+            value[i] = AnimationPart.createFromNBT(compound1);
         }
     }
 }

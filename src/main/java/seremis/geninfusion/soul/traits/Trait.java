@@ -9,125 +9,88 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.ITrait;
-import seremis.geninfusion.api.soul.SoulHelper;
 
 public class Trait implements ITrait {
 
     @Override
-    public void onUpdate(IEntitySoulCustom entity) {
-        SoulHelper.traitHandler.callSuperTrait(entity);
-    }
+    public void onUpdate(IEntitySoulCustom entity) {}
 
     @Override
     public boolean interact(IEntitySoulCustom entity, EntityPlayer player) {
-        Object obj = SoulHelper.traitHandler.callSuperTrait(entity, player);
-        return obj != null && (Boolean) obj;
+        return true;
     }
 
     @Override
-    public void onDeath(IEntitySoulCustom entity, DamageSource source) {
-        SoulHelper.traitHandler.callSuperTrait(entity, source);
-    }
+    public void onDeath(IEntitySoulCustom entity, DamageSource source) {}
 
     @Override
-    public void onKillEntity(IEntitySoulCustom entity, EntityLivingBase killed) {
-        SoulHelper.traitHandler.callSuperTrait(entity, killed);
-    }
+    public void onKillEntity(IEntitySoulCustom entity, EntityLivingBase killed) {}
 
     @Override
     public boolean attackEntityFrom(IEntitySoulCustom entity, DamageSource source, float damage) {
-        Object obj = SoulHelper.traitHandler.callSuperTrait(entity, source, damage);
-        return obj != null && (Boolean) obj;
+        return true;
     }
 
     @Override
-    public void onSpawnWithEgg(IEntitySoulCustom entity, IEntityLivingData data) {
-        SoulHelper.traitHandler.callSuperTrait(entity, data);
-    }
+    public void onSpawnWithEgg(IEntitySoulCustom entity, IEntityLivingData data) {}
 
     @Override
-    public void playSound(IEntitySoulCustom entity, String name, float volume, float pitch) {
-        SoulHelper.traitHandler.callSuperTrait(entity, name, volume, pitch);
-    }
+    public void playSound(IEntitySoulCustom entity, String name, float volume, float pitch) {}
 
     @Override
-    public void damageEntity(IEntitySoulCustom entity, DamageSource source, float damage) {
-        SoulHelper.traitHandler.callSuperTrait(entity, source, damage);
-    }
+    public void damageEntity(IEntitySoulCustom entity, DamageSource source, float damage) {}
 
     @Override
-    public void updateAITick(IEntitySoulCustom entity) {
-        //SoulHelper.traitHandler.callSuperTrait(entity);
-    }
+    public void updateAITick(IEntitySoulCustom entity) {}
 
     @Override
-    public void firstTick(IEntitySoulCustom entity) {
-        SoulHelper.traitHandler.callSuperTrait(entity);
-    }
+    public void firstTick(IEntitySoulCustom entity) {}
 
     @Override
     public boolean attackEntityAsMob(IEntitySoulCustom entity, Entity entityToAttack) {
-        Object obj = SoulHelper.traitHandler.callSuperTrait(entity, entityToAttack);
-        return obj != null && (Boolean) obj;
+        return true;
     }
 
     @Override
-    public void attackEntity(IEntitySoulCustom entity, Entity entityToAttack, float distance) {
-        SoulHelper.traitHandler.callSuperTrait(entity, entityToAttack, distance);
-    }
+    public void attackEntity(IEntitySoulCustom entity, Entity entityToAttack, float distance) {}
 
     @Override
     public Entity findPlayerToAttack(IEntitySoulCustom entity) {
-        return (Entity) SoulHelper.traitHandler.callSuperTrait(entity);
+        return null;
     }
 
     @Override
     public float applyArmorCalculations(IEntitySoulCustom entity, DamageSource source, float damage) {
-        Object obj = SoulHelper.traitHandler.callSuperTrait(entity, source, damage);
-        return obj != null ? (Float) obj : 0.0F;
+        return 0.0F;
     }
 
     @Override
     public float applyPotionDamageCalculations(IEntitySoulCustom entity, DamageSource source, float damage) {
-        Object obj = SoulHelper.traitHandler.callSuperTrait(entity, source, damage);
-        return obj != null ? (Float) obj : 0.0F;
+        return 0.0F;
     }
 
     @Override
-    public void damageArmor(IEntitySoulCustom entity, float damage) {
-        SoulHelper.traitHandler.callSuperTrait(entity, damage);
-    }
+    public void damageArmor(IEntitySoulCustom entity, float damage) {}
 
     @Override
-    public void setOnFireFromLava(IEntitySoulCustom entity) {
-        SoulHelper.traitHandler.callSuperTrait(entity);
-    }
+    public void setOnFireFromLava(IEntitySoulCustom entity) {}
 
     @Override
     public float getBlockPathWeight(IEntitySoulCustom entity, int x, int y, int z) {
-        Object obj = SoulHelper.traitHandler.callSuperTrait(entity, x, y, z);
-        return obj != null ? (Float) obj : 0.0F;
+        return 0.0F;
     }
 
     @Override
-    public void updateEntityActionState(IEntitySoulCustom entity) {
-        SoulHelper.traitHandler.callSuperTrait(entity);
-    }
+    public void updateEntityActionState(IEntitySoulCustom entity) {}
 
     @Override
-    public void updateWanderPath(IEntitySoulCustom entity) {
-        SoulHelper.traitHandler.callSuperTrait(entity);
-    }
+    public void updateWanderPath(IEntitySoulCustom entity) {}
 
     //TODO implement this in TraitAttack
     @Override
-    public void attackEntityWithRangedAttack(IEntitySoulCustom entity, EntityLivingBase target, float distanceModified) {
-        SoulHelper.traitHandler.callSuperTrait(entity, target, distanceModified);
-    }
+    public void attackEntityWithRangedAttack(IEntitySoulCustom entity, EntityLivingBase target, float distanceModified) {}
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void render(IEntitySoulCustom entity, float timeModifier, float walkSpeed, float specialRotation, float rotationYawHead, float rotationPitch, float scale) {
-//        SoulHelper.traitHandler.callSuperTrait(entity, timeModifier, walkSpeed, specialRotation, rotationYawHead, rotationPitch, scale);
-    }
+    public void render(IEntitySoulCustom entity, float timeModifier, float walkSpeed, float specialRotation, float rotationYawHead, float rotationPitch, float scale) {}
 }

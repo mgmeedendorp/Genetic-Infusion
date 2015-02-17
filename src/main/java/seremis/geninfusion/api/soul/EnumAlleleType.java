@@ -28,4 +28,13 @@ public enum EnumAlleleType {
     private EnumAlleleType(Class<? extends IAllele> clazz) {
         this.clazz = clazz;
     }
+
+    public static EnumAlleleType getForClass(Class<? extends IAllele> clazz) {
+        for(EnumAlleleType type : EnumAlleleType.values()) {
+            if(type.clazz.isAssignableFrom(clazz)) {
+                return type;
+            }
+        }
+        return null;
+    }
 }

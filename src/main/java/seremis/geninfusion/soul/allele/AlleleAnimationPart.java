@@ -34,8 +34,7 @@ public class AlleleAnimationPart extends Allele {
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        //TODO new animation instance
-        value = new AnimationPartWave(compound);
+        value = AnimationPart.createFromNBT(compound);
     }
 
 }

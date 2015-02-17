@@ -7,80 +7,19 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.ITrait;
-import seremis.geninfusion.api.soul.ITraitHandler;
 import seremis.geninfusion.api.soul.SoulHelper;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.WeakHashMap;
-
-public class TraitHandler implements ITraitHandler {
-
-    public static WeakHashMap<IEntitySoulCustom, String> map = new WeakHashMap<IEntitySoulCustom, String>();
-
-    public static HashMap<String, Method> methodNames = new HashMap<String, Method>();
-
-    @Override
-    public Object callSuperTrait(IEntitySoulCustom entity, Object... args) {
-        Object result = null;
-        if(entity != null && !entity.getBoolean("isDead") && !map.isEmpty() && map.containsKey(entity)) {
-            try {
-                String[] keys = map.get(entity).split("///");
-                ITrait trait = SoulHelper.traitRegistry.getTrait(keys[0]);
-                String method = keys[1];
-
-                if(SoulHelper.traitRegistry.isOverriding(trait)) {
-                    ArrayList<ITrait> supers = SoulHelper.traitRegistry.getOverridden(trait);
-
-                    Object[] arguments = new Object[args.length + 1];
-
-                    if(args.length > 0) System.arraycopy(args, 0, arguments, 1, args.length);
-
-                    arguments[0] = entity;
-
-                    for(ITrait sup : supers) {
-                        String key = SoulHelper.traitRegistry.getName(sup) + "///" + method;
-
-                        System.out.println("key: " + key);
-
-                        if(!methodNames.containsKey(key)) indexMethodsForTrait(sup);
-
-                        methodNames.get(key).invoke(sup, arguments);
-                    }
-                }
-            } catch(Exception e) {
-                System.out.println("It looks like something went wrong while doing a super call on a trait. The call didn't work.");
-                System.out.println("Entity: " + entity);
-                System.out.println("Server: " + !entity.getWorld().isRemote);
-                if(map.containsKey(entity)) {
-                    System.out.println("Trait: " + map.get(entity).split("///")[0]);
-                    System.out.println("Method: " + map.get(entity).split("///")[1]);
-                }
-                e.printStackTrace();
-            }
-        }
-        return result;
-    }
-
-    private static void indexMethodsForTrait(ITrait trait) {
-        for(Method method : trait.getClass().getMethods()) {
-            methodNames.put(SoulHelper.traitRegistry.getName(trait) + "///" + method.getName(), method);
-            System.out.println("2nd key: " + SoulHelper.traitRegistry.getName(trait) + "///" + method.getName());
-        }
-    }
+public class TraitHandler {
 
     public static void entityUpdate(IEntitySoulCustom entity) {
-        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
-            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///onUpdate");
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.onUpdate(entity);
         }
     }
 
     public static boolean interact(IEntitySoulCustom entity, EntityPlayer player) {
         boolean flag = false;
-        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
-            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///interact");
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             if(trait.interact(entity, player)) {
                 flag = true;
             }
@@ -89,23 +28,20 @@ public class TraitHandler implements ITraitHandler {
     }
 
     public static void entityDeath(IEntitySoulCustom entity, DamageSource source) {
-        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
-            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///onDeath");
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.onDeath(entity, source);
         }
     }
 
     public static void onKillEntity(IEntitySoulCustom entity, EntityLivingBase killed) {
-        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
-            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///onKillEntity");
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.onKillEntity(entity, killed);
         }
     }
 
     public static boolean attackEntityFrom(IEntitySoulCustom entity, DamageSource source, float damage) {
         boolean flag = false;
-        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
-            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///attackEntityFrom");
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             if(trait.attackEntityFrom(entity, source, damage)) {
                 flag = true;
             }
@@ -114,52 +50,45 @@ public class TraitHandler implements ITraitHandler {
     }
 
     public static void attackEntity(IEntitySoulCustom entity, Entity entityToAttack, float distance) {
-        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
-            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///attackEntity");
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.attackEntity(entity, entityToAttack, distance);
         }
     }
 
     public static IEntityLivingData spawnEntityFromEgg(IEntitySoulCustom entity, IEntityLivingData data) {
-        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
-            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///onSpawnWithEgg");
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.onSpawnWithEgg(entity, data);
         }
         return data;
     }
 
     public static void playSoundAtEntity(IEntitySoulCustom entity, String name, float volume, float pitch) {
-        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
-            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///playSound");
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.playSound(entity, name, volume, pitch);
         }
     }
 
     public static void damageEntity(IEntitySoulCustom entity, DamageSource source, float damage) {
-        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
-            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///damageEntity");
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.damageEntity(entity, source, damage);
         }
     }
 
     public static void updateAITick(IEntitySoulCustom entity) {
-        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
-            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///updateAITick");
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.updateAITick(entity);
         }
     }
 
     public static void firstTick(IEntitySoulCustom entity) {
-        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
-            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///firstTick");
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.firstTick(entity);
         }
     }
 
     public static boolean attackEntityAsMob(IEntitySoulCustom entity, Entity entityToAttack) {
         boolean flag = false;
-        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
-            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///attackEntityAsMob");
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             if(trait.attackEntityAsMob(entity, entityToAttack)) {
                 flag = true;
             }
@@ -169,8 +98,7 @@ public class TraitHandler implements ITraitHandler {
 
     public static Entity findPlayerToAttack(IEntitySoulCustom entity) {
         Entity flag = null;
-        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
-            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///findPlayerToAttack");
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             Entity tmp = trait.findPlayerToAttack(entity);
             if(tmp != null) {
                 flag = tmp;
@@ -181,8 +109,7 @@ public class TraitHandler implements ITraitHandler {
 
     public static float applyArmorCalculations(IEntitySoulCustom entity, DamageSource source, float damage) {
         float flag = 0.0F;
-        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
-            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///applyArmorCalculations");
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             float tmp = trait.applyArmorCalculations(entity, source, damage);
             if(tmp != 0.0F) {
                 flag = tmp;
@@ -193,8 +120,7 @@ public class TraitHandler implements ITraitHandler {
 
     public static float applyPotionDamageCalculations(IEntitySoulCustom entity, DamageSource source, float damage) {
         float flag = 0.0F;
-        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
-            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///applyPotionDamageCalculations");
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             float tmp = trait.applyPotionDamageCalculations(entity, source, damage);
             if(tmp != 0.0F) {
                 flag = tmp;
@@ -204,23 +130,20 @@ public class TraitHandler implements ITraitHandler {
     }
 
     public static void damageArmor(IEntitySoulCustom entity, float damage) {
-        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
-            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///damageArmor");
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.damageArmor(entity, damage);
         }
     }
 
     public static void setOnFireFromLava(IEntitySoulCustom entity) {
-        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
-            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///setOnFireFromLava");
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.setOnFireFromLava(entity);
         }
     }
 
     public static float getBlockPathWeight(IEntitySoulCustom entity, int x, int y, int z) {
         float flag = 0.0F;
-        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
-            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///getBlockPathWeight");
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             float tmp = trait.getBlockPathWeight(entity, x, y, z);
             if(tmp != 0.0F) {
                 flag = tmp;
@@ -230,29 +153,25 @@ public class TraitHandler implements ITraitHandler {
     }
 
     public static void updateEntityActionState(IEntitySoulCustom entity) {
-        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
-            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///updateEntityActionState");
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.updateEntityActionState(entity);
         }
     }
 
     public static void updateWanderPath(IEntitySoulCustom entity) {
-        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
-            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///updateWanderPath");
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.updateWanderPath(entity);
         }
     }
 
     public static void attackEntityWithRangedAttack(IEntitySoulCustom entity, EntityLivingBase target, float distanceModified) {
-        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
-            map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///attackEntityWithRangedAttack");
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.attackEntityWithRangedAttack(entity, target, distanceModified);
         }
     }
 
     public static void render(IEntitySoulCustom entity, float timeModifier, float walkSpeed, float specialRotation, float rotationYawHead, float rotationPitch, float scale) {
-        for(ITrait trait : SoulHelper.traitRegistry.getOrderedTraits()) {
-            //map.put(entity, SoulHelper.traitRegistry.getName(trait) + "///render");
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.render(entity, timeModifier, walkSpeed, specialRotation, rotationYawHead, rotationPitch, scale);
         }
     }

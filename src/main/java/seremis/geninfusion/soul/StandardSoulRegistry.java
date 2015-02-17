@@ -29,10 +29,15 @@ public class StandardSoulRegistry implements IStandardSoulRegistry {
     public ISoul getSoulForEntity(EntityLiving entity) {
         IChromosome[] chromosomes = new IChromosome[SoulHelper.geneRegistry.getGenes().size()];
         for(int i = 0; i < chromosomes.length; i++) {
-            String name = SoulHelper.geneRegistry.getGeneName(SoulHelper.geneRegistry.getGene(i));
+            IGene gene = SoulHelper.geneRegistry.getGene(i);
+            String name = SoulHelper.geneRegistry.getGeneName(gene);
             chromosomes[i] = getStandardSoulForEntity(entity).getChromosomeFromGene(name);
             if(chromosomes[i] == null) {
                 throw new NullPointerException("There seems to be a Gene (" + name + ") without an associated Chromosome for Entity: " + entity + ".");
+            } else if(!EnumAlleleType.getForClass(gene.possibleAlleles()).equals(EnumAlleleType.getForClass(chromosomes[i].getPrimary().getClass()))) {
+                throw new ClassCastException("Someone associated a gene (" + name + ") with an Allele (" + chromosomes[i].getPrimary() + ") that isn't allowed for this gene. It should be: " + gene.possibleAlleles());
+            } else if(!EnumAlleleType.getForClass(gene.possibleAlleles()).equals(EnumAlleleType.getForClass(chromosomes[i].getPrimary().getClass()))) {
+                throw new ClassCastException("Someone associated a gene (" + name + ") with an Allele (" + chromosomes[i].getSecondary() + ") that isn't allowed for this gene. It should be: " + gene.possibleAlleles());
             }
         }
         return new Soul(chromosomes);

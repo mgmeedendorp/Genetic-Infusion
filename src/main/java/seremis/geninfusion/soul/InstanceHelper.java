@@ -38,7 +38,7 @@ public class InstanceHelper implements IInstanceHelper {
     @Override
     public IAllele getIAlleleInstance(EnumAlleleType alleleType, Object... args) {
         try {
-            Constructor<?> ctor = alleleType.clazz.getConstructor(NBTTagCompound.class);
+            Constructor<?> ctor = alleleType.clazz.getConstructor(Object[].class);
             Object object = ctor.newInstance(new Object[]{args});
 
             return (IAllele) object;

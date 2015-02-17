@@ -3,6 +3,7 @@ package seremis.geninfusion.soul.traits;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.util.MathHelper;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
@@ -47,6 +48,33 @@ public class TraitRender extends Trait {
         entity.setFloat("armRightWalkPeriod", timeModifier * 0.6662F);
         entity.setFloat("armRightWalkAmplitude", walkSpeed);
         entity.setFloat("armRightWalkOffsetHor", (float) Math.PI);
+
+        entity.setFloat("headWalkRotateAngleX", rotationPitch / (180F / (float) Math.PI));
+        entity.setFloat("headWalkRotateAngleY", rotationYawHead / (180F / (float) Math.PI));
+
+        float swingProgress = ((EntityLiving)entity).getSwingProgress(entity.getFloat("partialTickTime"));
+
+        if(swingProgress < -9990.0F) {
+            float f6 = swingProgress;
+            entity.setFloat("bodyWalkRotateAngleY", MathHelper.sin(MathHelper.sqrt_float(f6) * (float) Math.PI * 2.0F) * 0.2F);
+            entity.setFloat("armRightWalkRotationPointZ", MathHelper.sin(entity.getFloat("bodyWalkRotateAngleY")) * 5.0F);
+//            this.bipedRightArm.rotationPointX = -MathHelper.cos(this.bipedBody.rotateAngleY) * 5.0F;
+//            this.bipedLeftArm.rotationPointZ = -MathHelper.sin(this.bipedBody.rotateAngleY) * 5.0F;
+//            this.bipedLeftArm.rotationPointX = MathHelper.cos(this.bipedBody.rotateAngleY) * 5.0F;
+//            this.bipedRightArm.rotateAngleY += this.bipedBody.rotateAngleY;
+//            this.bipedLeftArm.rotateAngleY += this.bipedBody.rotateAngleY;
+//            this.bipedLeftArm.rotateAngleX += this.bipedBody.rotateAngleY;
+//            f6 = 1.0F - swingProgress;
+//            f6 *= f6;
+//            f6 *= f6;
+//            f6 = 1.0F - f6;
+//            f7 = MathHelper.sin(f6 * (float)Math.PI);
+//            float f8 = MathHelper.sin(this.onGround * (float)Math.PI) * -(this.bipedHead.rotateAngleX - 0.7F) * 0.75F;
+//            this.bipedRightArm.rotateAngleX = (float)((double)this.bipedRightArm.rotateAngleX - ((double)f7 * 1.2D + (double)f8));
+//            this.bipedRightArm.rotateAngleY += this.bipedBody.rotateAngleY * 2.0F;
+//            this.bipedRightArm.rotateAngleZ = MathHelper.sin(this.onGround * (float)Math.PI) * -0.4F;
+        }
+
 
         for(int i = 0; i < head.length; i++) {
             if(i < animationWalkHead.length) {

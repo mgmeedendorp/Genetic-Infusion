@@ -5,7 +5,7 @@ import net.minecraft.util.MathHelper;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 
 /**
- * Animation with a sine or cosine curve for rotation. Mostly used for arm and leg animation.
+ * Animation with a cosine curve for rotation. Mostly used for arm and leg animation.
  */
 public class AnimationPartWave extends AnimationPart {
 
@@ -37,6 +37,7 @@ public class AnimationPartWave extends AnimationPart {
      * @param offsetHor The name of the variable (float) that corresponds with the horizontal offset of the sine wave. If null it defaults to 1.0F.
      */
     public AnimationPartWave(int axis, String period, String amplitude, String offsetVert, String offsetHor) {
+        super(EnumAnimationPartType.ANIMATION_PART_WAVE);
         this.period = period;
         this.amplitude = amplitude;
         this.offsetVert = offsetVert;
@@ -44,6 +45,7 @@ public class AnimationPartWave extends AnimationPart {
     }
 
     public AnimationPartWave(NBTTagCompound compound) {
+        super(EnumAnimationPartType.ANIMATION_PART_WAVE);
         readFromNBT(compound);
     }
 
@@ -126,10 +128,12 @@ public class AnimationPartWave extends AnimationPart {
 
     @Override
     public AnimationPart mutate() {
-        amplitudeModifier = (float) (amplitudeModifier*((rand.nextFloat()*2*0.5)+0.5));
-        periodModifier = (float) (periodModifier*((rand.nextFloat()*2*0.5)+0.5));
-        offsetHorModifier = (float) (offsetHorModifier*((rand.nextFloat()*2*0.5)+0.5));
-        offsetVertModifier = (float) (offsetVertModifier*((rand.nextFloat()*2*0.5)+0.5));
+        if(!immutable) {
+            amplitudeModifier = (float) (amplitudeModifier * ((rand.nextFloat() * 2 * 0.5) + 0.5));
+            periodModifier = (float) (periodModifier * ((rand.nextFloat() * 2 * 0.5) + 0.5));
+            offsetHorModifier = (float) (offsetHorModifier * ((rand.nextFloat() * 2 * 0.5) + 0.5));
+            offsetVertModifier = (float) (offsetVertModifier * ((rand.nextFloat() * 2 * 0.5) + 0.5));
+        }
 
         return this;
     }

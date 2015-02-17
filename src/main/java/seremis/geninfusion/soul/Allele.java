@@ -18,6 +18,7 @@ public abstract class Allele implements IAllele {
 
     public Allele(Object... args) {
         isDominant = (Boolean) args[0];
+        System.out.println("Weird constructor");
     }
 
     public Allele(NBTTagCompound compound) {
