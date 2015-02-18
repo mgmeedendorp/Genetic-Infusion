@@ -54,30 +54,40 @@ public class TraitRender extends Trait {
 
         float swingProgress = ((EntityLiving)entity).getSwingProgress(entity.getFloat("partialTickTime"));
 
-        if(swingProgress < -9990.0F) {
+        if(swingProgress > -9990.0F) {
             float f6 = swingProgress;
             entity.setFloat("bodyWalkRotateAngleY", MathHelper.sin(MathHelper.sqrt_float(f6) * (float) Math.PI * 2.0F) * 0.2F);
             entity.setFloat("armRightWalkRotationPointZ", MathHelper.sin(entity.getFloat("bodyWalkRotateAngleY")) * 5.0F);
-//            this.bipedRightArm.rotationPointX = -MathHelper.cos(this.bipedBody.rotateAngleY) * 5.0F;
-//            this.bipedLeftArm.rotationPointZ = -MathHelper.sin(this.bipedBody.rotateAngleY) * 5.0F;
-//            this.bipedLeftArm.rotationPointX = MathHelper.cos(this.bipedBody.rotateAngleY) * 5.0F;
-//            this.bipedRightArm.rotateAngleY += this.bipedBody.rotateAngleY;
-//            this.bipedLeftArm.rotateAngleY += this.bipedBody.rotateAngleY;
-//            this.bipedLeftArm.rotateAngleX += this.bipedBody.rotateAngleY;
-//            f6 = 1.0F - swingProgress;
-//            f6 *= f6;
-//            f6 *= f6;
-//            f6 = 1.0F - f6;
-//            f7 = MathHelper.sin(f6 * (float)Math.PI);
-//            float f8 = MathHelper.sin(this.onGround * (float)Math.PI) * -(this.bipedHead.rotateAngleX - 0.7F) * 0.75F;
-//            this.bipedRightArm.rotateAngleX = (float)((double)this.bipedRightArm.rotateAngleX - ((double)f7 * 1.2D + (double)f8));
-//            this.bipedRightArm.rotateAngleY += this.bipedBody.rotateAngleY * 2.0F;
-//            this.bipedRightArm.rotateAngleZ = MathHelper.sin(this.onGround * (float)Math.PI) * -0.4F;
+            entity.setFloat("armRightWalkRotationPointX", -MathHelper.cos(entity.getFloat("bodyWalkRotateAngleY")) * 5.0F);
+            entity.setFloat("armLeftWalkRotationPointZ", -MathHelper.sin(entity.getFloat("bodyWalkRotateAngleY")) * 5.0F);
+            entity.setFloat("armLeftWalkRotationPointX", MathHelper.sin(entity.getFloat("bodyWalkRotateAngleY")) * 5.0F);
+
+            entity.setFloat("armRightWalkRotateAngleX", entity.getFloat("bodyWalkRotateAngleY"));
+            entity.setFloat("armLeftWalkRotateAngleX", entity.getFloat("bodyWalkRotateAngleY"));
+
+            entity.setFloat("armLeftWalkOffsetVert", entity.getFloat("bodyWalkRotateAngleY"));
+
+            f6 = 1.0F - swingProgress;
+            f6 *= f6;
+            f6 *= f6;
+            f6 = 1.0F - f6;
+            float f7 = MathHelper.sin(f6 * (float)Math.PI);
+            float f8 = MathHelper.sin(swingProgress * (float)Math.PI) * -(entity.getFloat("headWalkRotateAngleX") - 0.7F) * 0.75F;
+
+            entity.setFloat("armRightWalkRotateAngleX", -(float) ((double)f7 * 1.2D * (double)f8));
+            entity.setFloat("armRightWalkRotateAngleY", entity.getFloat("bodyWalkRotateAngleY") * 2.0F);
+            entity.setFloat("armRightWalkRotateAngleZ", MathHelper.sin(swingProgress * (float)Math.PI) * -0.4F);
         }
+
+        entity.setFloat("armRightWalkRotateAngleZ", entity.getFloat("armRightWalkRotateAngleZ") + MathHelper.cos(specialRotation * 0.09F) * 0.05F + 0.05F);
+        entity.setFloat("armLeftWalkRotateAngleZ", entity.getFloat("armLeftWalkRotateAngleZ") - MathHelper.cos(specialRotation * 0.09F) * 0.05F + 0.05F);
+        entity.setFloat("armRightWalkRotateAngleX", entity.getFloat("armRightWalkRotateAngleX") + MathHelper.sin(specialRotation * 0.067F) * 0.05F);
+        entity.setFloat("armLeftWalkRotateAngleX", entity.getFloat("armLeftWalkRotateAngleX") - MathHelper.cos(specialRotation * 0.067F) * 0.05F);
 
 
         for(int i = 0; i < head.length; i++) {
             if(i < animationWalkHead.length) {
+                head[i].resetRotations();
                 animationWalkHead[i].setAnimationModel(head[i]).animate(entity);
             }
             head[i].render(0.0625F);
@@ -85,6 +95,7 @@ public class TraitRender extends Trait {
 
         for(int i = 0; i < body.length; i++) {
             if(i < animationWalkBody.length) {
+                body[i].resetRotations();
                 animationWalkBody[i].setAnimationModel(body[i]).animate(entity);
             }
             body[i].render(0.0625F);
@@ -92,6 +103,7 @@ public class TraitRender extends Trait {
 
         for(int i = 0; i < armLeft.length; i++) {
             if(i < animationWalkArmLeft.length) {
+                armLeft[i].resetRotations();
                 animationWalkArmLeft[i].setAnimationModel(armLeft[i]).animate(entity);
             }
             armLeft[i].render(0.0625F);
@@ -99,6 +111,7 @@ public class TraitRender extends Trait {
 
         for(int i = 0; i < armRight.length; i++) {
             if(i < animationWalkArmRight.length) {
+                armRight[i].resetRotations();
                 animationWalkArmRight[i].setAnimationModel(armRight[i]).animate(entity);
             }
             armRight[i].render(0.0625F);
@@ -106,6 +119,7 @@ public class TraitRender extends Trait {
 
         for(int i = 0; i < legLeft.length; i++) {
             if(i < animationWalkLegLeft.length) {
+                legLeft[i].resetRotations();
                 animationWalkLegLeft[i].setAnimationModel(legLeft[i]).animate(entity);
             }
             legLeft[i].render(0.0625F);
@@ -113,6 +127,7 @@ public class TraitRender extends Trait {
 
         for(int i = 0; i < legRight.length; i++) {
             if(i < animationWalkLegRight.length) {
+                legRight[i].resetRotations();
                 animationWalkLegRight[i].setAnimationModel(legRight[i]).animate(entity);
             }
             legRight[i].render(0.0625F);
@@ -127,6 +142,7 @@ public class TraitRender extends Trait {
 
         for(int i = 0; i < ears.length; i++) {
             if(i < animationWalkEars.length) {
+                ears[i].resetRotations();
                 animationWalkEars[i].setAnimationModel(ears[i]).animate(entity);
             }
             ears[i].render(0.0625F);

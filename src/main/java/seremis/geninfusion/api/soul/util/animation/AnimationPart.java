@@ -109,15 +109,15 @@ public abstract class AnimationPart implements INBTTagable {
     }
 
     public static AnimationPart[] bipedArmLeftWalkAnimationParts() {
-        return new AnimationPart[] {new AnimationPartWave(0, "armLeftWalkPeriod", "armLeftWalkAmplitude", null, "armLeftWalkOffsetHor")};
+        return new AnimationPart[] {new AnimationPartWave(0, "armLeftWalkPeriod", "armLeftWalkAmplitude", null, "armLeftWalkOffsetHor"), new AnimationPartLinear("armLeftWalkRotateAngleX", "armLeftWalkRotateAngleY", "armLeftWalkRotateAngleZ", "armLeftWalkRotationPointX", "armLeftWalkRotationPointY", "armLeftWalkRotationPointZ")};
     }
 
     public static AnimationPart[] bipedArmRightWalkAnimationParts() {
-        return new AnimationPart[] {new AnimationPartWave(0, "armRightWalkPeriod", "armRightWalkAmplitude", null, "armRightWalkOffsetHor")};
+        return new AnimationPart[] {new AnimationPartWave(0, "armRightWalkPeriod", "armRightWalkAmplitude", null, "armRightWalkOffsetHor"), new AnimationPartLinear("armRightWalkRotateAngleX", "armRightWalkRotateAngleY", "armRightWalkRotateAngleZ", "armRightWalkRotationPointX", "armRightWalkRotationPointY", "armRightWalkRotationPointZ")};
     }
 
     public static AnimationPart[] bipedHeadWalkAnimationParts() {
-        return new AnimationPart[] {new AnimationPartLinear("headWalkRotateAngleX", "headWalkRotateAngleY", "headWalkRotateAngleZ", "headWalkRotationPointX", "headWalkRotationPointY", "headWalkRotationPointZ").setImmutable()};
+        return new AnimationPart[] {new AnimationPartLinear("headWalkRotateAngleX", "headWalkRotateAngleY", "headWalkRotateAngleZ", "headWalkRotationPointX", "headWalkRotationPointY", "headWalkRotationPointZ").setImmutable(), new AnimationPartLinear("headWalkRotateAngleX", "headWalkRotateAngleY", "headWalkRotateAngleZ", "headWalkRotationPointX", "headWalkRotationPointY", "headWalkRotationPointZ").setImmutable()};
     }
 
     public static AnimationPart[] bipedBodyWalkAnimationParts() {

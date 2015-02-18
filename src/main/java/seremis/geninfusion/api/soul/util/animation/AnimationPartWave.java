@@ -60,30 +60,30 @@ public class AnimationPartWave extends AnimationPart {
 
         switch(axis) {
             case 0:
-                modelPart.rotateAngleX = getRotation(entity, period, amplitude, offsetVert, offsetHor);
+                modelPart.rotateAngleX += getRotation(entity, period, amplitude, offsetVert, offsetHor);
                 break;
             case 1:
-                modelPart.rotateAngleY = getRotation(entity, period, amplitude, offsetVert, offsetHor);
+                modelPart.rotateAngleY += getRotation(entity, period, amplitude, offsetVert, offsetHor);
                 break;
             case 2:
-                modelPart.rotateAngleZ = getRotation(entity, period, amplitude, offsetVert, offsetHor);
+                modelPart.rotateAngleZ += getRotation(entity, period, amplitude, offsetVert, offsetHor);
                 break;
             case 3:
-                modelPart.rotateAngleX = getRotation(entity, period, amplitude, offsetVert, offsetHor);
-                modelPart.rotateAngleY = getRotation(entity, period, amplitude, offsetVert, offsetHor);
+                modelPart.rotateAngleX += getRotation(entity, period, amplitude, offsetVert, offsetHor);
+                modelPart.rotateAngleY += getRotation(entity, period, amplitude, offsetVert, offsetHor);
                 break;
             case 4:
-                modelPart.rotateAngleX = getRotation(entity, period, amplitude, offsetVert, offsetHor);
-                modelPart.rotateAngleZ = getRotation(entity, period, amplitude, offsetVert, offsetHor);
+                modelPart.rotateAngleX += getRotation(entity, period, amplitude, offsetVert, offsetHor);
+                modelPart.rotateAngleZ += getRotation(entity, period, amplitude, offsetVert, offsetHor);
                 break;
             case 5:
-                modelPart.rotateAngleY = getRotation(entity, period, amplitude, offsetVert, offsetHor);
-                modelPart.rotateAngleZ = getRotation(entity, period, amplitude, offsetVert, offsetHor);
+                modelPart.rotateAngleY += getRotation(entity, period, amplitude, offsetVert, offsetHor);
+                modelPart.rotateAngleZ += getRotation(entity, period, amplitude, offsetVert, offsetHor);
                 break;
             case 6:
-                modelPart.rotateAngleX = getRotation(entity, period, amplitude, offsetVert, offsetHor);
-                modelPart.rotateAngleY = getRotation(entity, period, amplitude, offsetVert, offsetHor);
-                modelPart.rotateAngleZ = getRotation(entity, period, amplitude, offsetVert, offsetHor);
+                modelPart.rotateAngleX += getRotation(entity, period, amplitude, offsetVert, offsetHor);
+                modelPart.rotateAngleY += getRotation(entity, period, amplitude, offsetVert, offsetHor);
+                modelPart.rotateAngleZ += getRotation(entity, period, amplitude, offsetVert, offsetHor);
                 break;
         }
     }

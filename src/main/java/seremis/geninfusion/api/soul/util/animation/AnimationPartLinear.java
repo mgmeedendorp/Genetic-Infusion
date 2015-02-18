@@ -44,12 +44,12 @@ public class AnimationPartLinear extends AnimationPart {
     public void animate(IEntitySoulCustom entity) {
         super.animate(entity);
 
-        modelPart.rotateAngleX = entity.getFloat(rotateAngleX);
-        modelPart.rotateAngleY = entity.getFloat(rotateAngleY);
-        modelPart.rotateAngleZ = entity.getFloat(rotateAngleZ);
-        modelPart.rotationPointX = entity.getFloat(rotationPointX);
-        modelPart.rotationPointY = entity.getFloat(rotationPointY);
-        modelPart.rotationPointZ = entity.getFloat(rotationPointZ);
+        modelPart.rotateAngleX += entity.getFloat(rotateAngleX);
+        modelPart.rotateAngleY += entity.getFloat(rotateAngleY);
+        modelPart.rotateAngleZ += entity.getFloat(rotateAngleZ);
+        modelPart.rotationPointX += entity.getFloat(rotationPointX);
+        modelPart.rotationPointY += entity.getFloat(rotationPointY);
+        modelPart.rotationPointZ += entity.getFloat(rotationPointZ);
     }
 
     @Override

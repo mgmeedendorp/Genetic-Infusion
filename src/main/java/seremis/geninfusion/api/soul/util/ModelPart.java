@@ -139,12 +139,17 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         return this;
     }
 
+    public void resetRotations() {
+        this.rotateAngleX = 0.0F;
+        this.rotateAngleY = 0.0F;
+        this.rotateAngleZ = 0.0F;
+    }
+
     public static ModelPart[] getHeadFromModel(ModelBiped model) {
-        ModelPart[] parts = new ModelPart[1];
+        ModelPart[] parts = new ModelPart[2];
 
         parts[0] = modelRendererToModelPart(model.bipedHead);
-        //TODO something with headwear
-        //parts[1] = modelRendererToModelPart(model.bipedHeadwear);
+        parts[1] = modelRendererToModelPart(model.bipedHeadwear);
 
         return parts;
     }
