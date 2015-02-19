@@ -196,12 +196,14 @@ public class Genes {
     public static final String GENE_MODEL_EARS = ID + ".gene.modelEars";
     public static final String GENE_MODEL_CLOAK = ID + ".gene.modelCloak";
 
-    public static final String GENE_ANIM_WALK_ARM_LEFT = ID + ".gene.animWalkArmLeft";
-    public static final String GENE_ANIM_WALK_ARM_RIGHT = ID + ".gene.animWalkArmRight";
-    public static final String GENE_ANIM_WALK_BODY = ID + ".gene.animWalkBody";
-    public static final String GENE_ANIM_WALK_CLOAK = ID + ".gene.animWalkCloak";
-    public static final String GENE_ANIM_WALK_EARS = ID + ".gene.animWalkEars";
-    public static final String GENE_ANIM_WALK_HEAD = ID + ".gene.animWalkHead";
-    public static final String GENE_ANIM_WALK_LEG_LEFT = ID + ".gene.animWalkLegLeft";
-    public static final String GENE_ANIM_WALK_LEG_RIGHT = ID + ".gene.animWalkLegRight";
+    public static final String GENE_ANIM_LINEAR_HEAD = ID + ".gene.animLinearHead";
+    public static final String GENE_ANIM_LINEAR_BODY = ID + ".gene.animLinearBody";
+    public static final String GENE_ANIM_LINEAR_CLOAK = ID + ".gene.animLinearCloak";
+    public static final String GENE_ANIM_LINEAR_EARS = ID + ".gene.animLinearEars";
+    public static final String GENE_ANIM_LINEAR_ARM_LEFT = ID + ".gene.animLinearArmLeft";
+    public static final String GENE_ANIM_LINEAR_ARM_RIGHT = ID + ".gene.animLinearArmRight";
+    public static final String GENE_ANIM_WAVE_ARM_LEFT = ID + ".gene.animWaveArmLeft";
+    public static final String GENE_ANIM_WAVE_ARM_RIGHT = ID + ".gene.animWaveArmRight";
+    public static final String GENE_ANIM_WAVE_LEG_LEFT = ID + ".gene.animWaveLegLeft";
+    public static final String GENE_ANIM_WAVE_LEG_RIGHT = ID + ".gene.animWaveLegRight";
 }

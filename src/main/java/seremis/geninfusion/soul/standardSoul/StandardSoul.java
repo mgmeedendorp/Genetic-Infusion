@@ -314,22 +314,26 @@ public class StandardSoul implements IStandardSoul {
             return new Chromosome(new AlleleModelPartArray(true, ModelPart.getEarsFromModel(new ModelZombie())));
         } else if(gene.equals(Genes.GENE_MODEL_CLOAK)) {
             return new Chromosome(new AlleleModelPartArray(true, ModelPart.getCloakFromModel(new ModelZombie())));
-        } else if(gene.equals(Genes.GENE_ANIM_WALK_HEAD)) {
-            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedHeadWalkAnimationParts()));
-        } else if(gene.equals(Genes.GENE_ANIM_WALK_BODY)) {
-            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedBodyWalkAnimationParts()));
-        } else if(gene.equals(Genes.GENE_ANIM_WALK_ARM_LEFT)) {
-            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedArmLeftWalkAnimationParts()));
-        } else if(gene.equals(Genes.GENE_ANIM_WALK_ARM_RIGHT)) {
-            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedArmRightWalkAnimationParts()));
-        } else if(gene.equals(Genes.GENE_ANIM_WALK_LEG_LEFT)) {
-            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedLegLeftWalkAnimationParts()));
-        } else if(gene.equals(Genes.GENE_ANIM_WALK_LEG_RIGHT)) {
-            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedLegRightWalkAnimationParts()));
-        } else if(gene.equals(Genes.GENE_ANIM_WALK_CLOAK)) {
+        } else if(gene.equals(Genes.GENE_ANIM_LINEAR_HEAD)) {
+            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedHeadLinearAnimationParts()));
+        } else if(gene.equals(Genes.GENE_ANIM_LINEAR_BODY)) {
+            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedBodyLinearAnimationParts()));
+        } else if(gene.equals(Genes.GENE_ANIM_WAVE_ARM_LEFT)) {
+            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedArmLeftWaveAnimationParts()));
+        } else if(gene.equals(Genes.GENE_ANIM_WAVE_ARM_RIGHT)) {
+            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedArmRightWaveAnimationParts()));
+        } else if(gene.equals(Genes.GENE_ANIM_WAVE_LEG_LEFT)) {
+            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedLegLeftWaveAnimationParts()));
+        } else if(gene.equals(Genes.GENE_ANIM_WAVE_LEG_RIGHT)) {
+            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedLegRightWaveAnimationParts()));
+        } else if(gene.equals(Genes.GENE_ANIM_LINEAR_CLOAK)) {
             return new Chromosome(new AlleleAnimationPartArray(true, new AnimationPart[] {}));
-        } else if(gene.equals(Genes.GENE_ANIM_WALK_EARS)) {
+        } else if(gene.equals(Genes.GENE_ANIM_LINEAR_EARS)) {
             return new Chromosome(new AlleleAnimationPartArray(true, new AnimationPart[] {}));
+        } else if(gene.equals(Genes.GENE_ANIM_LINEAR_ARM_LEFT)) {
+            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedArmLeftLinearAnimationParts()));
+        } else if(gene.equals(Genes.GENE_ANIM_LINEAR_ARM_RIGHT)) {
+            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedArmRightLinearAnimationParts()));
         }
         return null;
     }

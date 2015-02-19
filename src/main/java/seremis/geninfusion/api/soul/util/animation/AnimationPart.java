@@ -100,27 +100,35 @@ public abstract class AnimationPart implements INBTTagable {
         return null;
     }
 
-    public static AnimationPart[] bipedLegLeftWalkAnimationParts() {
-        return new AnimationPart[] {new AnimationPartWave(0, "legLeftWalkPeriod", "legLeftWalkAmplitude", null, "legLeftWalkOffsetHor")};
+    public static AnimationPart[] bipedLegLeftWaveAnimationParts() {
+        return new AnimationPart[] {new AnimationPartWave(0, "legLeftWavePeriod", "legLeftWaveAmplitude", null, "legLeftWaveOffsetHor", "legLeftWaveRotateAngleX", "legLeftWaveRotateAngleY", "legLeftWaveRotateAngleZ")};
     }
 
-    public static AnimationPart[] bipedLegRightWalkAnimationParts() {
-        return new AnimationPart[] {new AnimationPartWave(0, "legRightWalkPeriod", "legRightWalkAmplitude", null, "legRightWalkOffsetHor")};
+    public static AnimationPart[] bipedLegRightWaveAnimationParts() {
+        return new AnimationPart[] {new AnimationPartWave(0, "legRightWavePeriod", "legRightWaveAmplitude", null, "legRightWaveOffsetHor", "legRightWaveRotateAngleX", "legRightWaveRotateAngleY", "legRightWaveRotateAngleZ")};
     }
 
-    public static AnimationPart[] bipedArmLeftWalkAnimationParts() {
-        return new AnimationPart[] {new AnimationPartWave(0, "armLeftWalkPeriod", "armLeftWalkAmplitude", null, "armLeftWalkOffsetHor"), new AnimationPartLinear("armLeftWalkRotateAngleX", "armLeftWalkRotateAngleY", "armLeftWalkRotateAngleZ", "armLeftWalkRotationPointX", "armLeftWalkRotationPointY", "armLeftWalkRotationPointZ")};
+    public static AnimationPart[] bipedArmLeftWaveAnimationParts() {
+        return new AnimationPart[] {new AnimationPartWave(0, "armLeftWalkPeriod", "armLeftWalkAmplitude", null, "armLeftWalkOffsetHor")};
     }
 
-    public static AnimationPart[] bipedArmRightWalkAnimationParts() {
-        return new AnimationPart[] {new AnimationPartWave(0, "armRightWalkPeriod", "armRightWalkAmplitude", null, "armRightWalkOffsetHor"), new AnimationPartLinear("armRightWalkRotateAngleX", "armRightWalkRotateAngleY", "armRightWalkRotateAngleZ", "armRightWalkRotationPointX", "armRightWalkRotationPointY", "armRightWalkRotationPointZ")};
+    public static AnimationPart[] bipedArmRightWaveAnimationParts() {
+        return new AnimationPart[] {new AnimationPartWave(0, "armRightWalkPeriod", "armRightWalkAmplitude", null, "armRightWalkOffsetHor")};
     }
 
-    public static AnimationPart[] bipedHeadWalkAnimationParts() {
-        return new AnimationPart[] {new AnimationPartLinear("headWalkRotateAngleX", "headWalkRotateAngleY", "headWalkRotateAngleZ", "headWalkRotationPointX", "headWalkRotationPointY", "headWalkRotationPointZ").setImmutable(), new AnimationPartLinear("headWalkRotateAngleX", "headWalkRotateAngleY", "headWalkRotateAngleZ", "headWalkRotationPointX", "headWalkRotationPointY", "headWalkRotationPointZ").setImmutable()};
+    public static AnimationPart[] bipedArmLeftLinearAnimationParts() {
+        return new AnimationPart[] {new AnimationPartLinear("armLeftLinearRotateAngleX", "armLeftLinearRotateAngleY", "armLeftLinearRotateAngleZ", "armLeftLinearRotationPointX", "armLeftLinearRotationPointY", "armLeftLinearRotationPointZ")};
     }
 
-    public static AnimationPart[] bipedBodyWalkAnimationParts() {
-        return new AnimationPart[] {new AnimationPartLinear("bodyWalkRotateAngleX", "bodyWalkRotateAngleY", "bodyWalkRotateAngleZ", "bodyWalkRotationPointX", "bodyWalkRotationPointY", "bodyWalkRotationPointZ").setImmutable()};
+    public static AnimationPart[] bipedArmRightLinearAnimationParts() {
+        return new AnimationPart[] {new AnimationPartLinear("armRightLinearRotateAngleX", "armRightLinearRotateAngleY", "armRightLinearRotateAngleZ", "armRightLinearRotationPointX", "armRightLinearRotationPointY", "armRightLinearRotationPointZ")};
+    }
+
+    public static AnimationPart[] bipedHeadLinearAnimationParts() {
+        return new AnimationPart[] {new AnimationPartLinear("headLinearRotateAngleX", "headLinearRotateAngleY", "headLinearRotateAngleZ", "headLinearRotationPointX", "headLinearRotationPointY", "headLinearRotationPointZ").setImmutable(), new AnimationPartLinear("headLinearRotateAngleX", "headLinearRotateAngleY", "headLinearRotateAngleZ", "headLinearRotationPointX", "headLinearRotationPointY", "headLinearRotationPointZ").setImmutable()};
+    }
+
+    public static AnimationPart[] bipedBodyLinearAnimationParts() {
+        return new AnimationPart[] {new AnimationPartLinear("bodyLinearRotateAngleX", "bodyLinearRotateAngleY", "bodyLinearRotateAngleZ", "bodyLinearRotationPointX", "bodyLinearRotationPointY", "bodyLinearRotationPointZ").setImmutable()};
     }
 }

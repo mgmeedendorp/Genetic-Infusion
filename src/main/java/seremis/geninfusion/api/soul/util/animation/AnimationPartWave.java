@@ -14,6 +14,10 @@ public class AnimationPartWave extends AnimationPart {
     public String offsetVert;
     public String offsetHor;
 
+    public String rotationPointX;
+    public String rotationPointY;
+    public String rotationPointZ;
+
     /**
      * These variables should be modified when a method mutates.
      */
@@ -21,6 +25,10 @@ public class AnimationPartWave extends AnimationPart {
     public float amplitudeModifier = 1.0F;
     public float offsetVertModifier = 1.0F;
     public float offsetHorModifier = 1.0F;
+
+    public float rotationPointXModifier = 1.0F;
+    public float rotationPointYModifier = 1.0F;
+    public float rotationPointZModifier = 1.0F;
 
     /**
      * The rotation axis this AnimationPart animates, 0 for x, 1 for y, 2 for z, 3 for x & y, 4 for x & z, 5 for y & z, 6 for every axis.
@@ -42,6 +50,25 @@ public class AnimationPartWave extends AnimationPart {
         this.amplitude = amplitude;
         this.offsetVert = offsetVert;
         this.offsetHor = offsetHor;
+    }
+
+    /**
+     * A helper class for animations.
+     *
+     * @param axis The rotation axis this AnimationPart animates, 0 for x, 1 for y, 2 for z, 3 for x & y, 4 for x & z, 5 for y & z, 6 for every axis
+     * @param period The name of the variable (float) that corresponds with the period of the sine wave. If null it defaults to 1.0F.
+     * @param amplitude The name of the variable (float) that corresponds with the amplitude of the sine wave. If null it defaults to 1.0F.
+     * @param offsetVert The name of the variable (float) that corresponds with the vertical offset of the sine wave. If null it defaults to 1.0F.
+     * @param offsetHor The name of the variable (float) that corresponds with the horizontal offset of the sine wave. If null it defaults to 1.0F.
+     * @param rotationPointX The name of the variable (float) that corresponds with X coordinate of the rotationPoint. If null it defaults to 0.0F.
+     * @param rotationPointY The name of the variable (float) that corresponds with Y coordinate of the rotationPoint. If null it defaults to 0.0F.
+     * @param rotationPointZ The name of the variable (float) that corresponds with Z coordinate of the rotationPoint. If null it defaults to 0.0F.
+     */
+    public AnimationPartWave(int axis, String period, String amplitude, String offsetVert, String offsetHor, String rotationPointX, String rotationPointY, String rotationPointZ) {
+        this(axis, period, amplitude, offsetVert, offsetHor);
+        this.rotationPointX = rotationPointX;
+        this.rotationPointY = rotationPointY;
+        this.rotationPointZ = rotationPointZ;
     }
 
     public AnimationPartWave(NBTTagCompound compound) {
@@ -86,6 +113,10 @@ public class AnimationPartWave extends AnimationPart {
                 modelPart.rotateAngleZ += getRotation(entity, period, amplitude, offsetVert, offsetHor);
                 break;
         }
+
+        modelPart.rotationPointX += entity.getFloat(rotationPointX) * rotationPointXModifier;
+        modelPart.rotationPointY += entity.getFloat(rotationPointY) * rotationPointYModifier;
+        modelPart.rotationPointZ += entity.getFloat(rotationPointZ) * rotationPointZModifier;
     }
 
     protected float getRotation(IEntitySoulCustom entity, float period, float amplitude, float offsetVert, float offsetHor) {
@@ -107,6 +138,14 @@ public class AnimationPartWave extends AnimationPart {
         if(period != null) compound.setString("period", period);
         if(offsetVert != null) compound.setString("offsetVert", offsetVert);
         if(offsetHor != null) compound.setString("offsetHor", offsetHor);
+
+        if(rotationPointX != null) compound.setString("rotationPointX", rotationPointX);
+        if(rotationPointY != null) compound.setString("rotationPointY", rotationPointY);
+        if(rotationPointZ != null) compound.setString("rotationPointZ", rotationPointZ);
+
+        if(rotationPointXModifier != 1.0F) compound.setFloat("rotationPointXModifier", rotationPointXModifier);
+        if(rotationPointYModifier != 1.0F) compound.setFloat("rotationPointYModifier", rotationPointYModifier);
+        if(rotationPointZModifier != 1.0F) compound.setFloat("rotationPointZModifier", rotationPointZModifier);
     }
 
     @Override
@@ -124,6 +163,14 @@ public class AnimationPartWave extends AnimationPart {
         if(compound.hasKey("period")) period = compound.getString("period");
         if(compound.hasKey("offsetVert")) offsetVert = compound.getString("offsetVert");
         if(compound.hasKey("offsetHor")) offsetHor = compound.getString("offsetHor");
+
+        if(compound.hasKey("rotationPointX")) rotationPointX = compound.getString("rotationPointX");
+        if(compound.hasKey("rotationPointY")) rotationPointY = compound.getString("rotationPointY");
+        if(compound.hasKey("rotationPointZ")) rotationPointZ = compound.getString("rotationPointZ");
+
+        if(compound.hasKey("rotationPointXModifier")) rotationPointXModifier = compound.getFloat("rotationPointXModifier");
+        if(compound.hasKey("rotationPointYModifier")) rotationPointYModifier = compound.getFloat("rotationPointYModifier");
+        if(compound.hasKey("rotationPointZModifier")) rotationPointZModifier = compound.getFloat("rotationPointZModifier");
     }
 
     @Override
@@ -133,6 +180,10 @@ public class AnimationPartWave extends AnimationPart {
             periodModifier = (float) (periodModifier * ((rand.nextFloat() * 2 * 0.5) + 0.5));
             offsetHorModifier = (float) (offsetHorModifier * ((rand.nextFloat() * 2 * 0.5) + 0.5));
             offsetVertModifier = (float) (offsetVertModifier * ((rand.nextFloat() * 2 * 0.5) + 0.5));
+
+            rotationPointXModifier = (float) (rotationPointXModifier * ((rand.nextFloat() * 2 * 0.5) + 0.5));
+            rotationPointYModifier = (float) (rotationPointYModifier * ((rand.nextFloat() * 2 * 0.5) + 0.5));
+            rotationPointZModifier = (float) (rotationPointZModifier * ((rand.nextFloat() * 2 * 0.5) + 0.5));
         }
 
         return this;
