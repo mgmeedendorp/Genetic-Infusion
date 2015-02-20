@@ -6,7 +6,7 @@ import seremis.geninfusion.api.soul.util.ModelPart;
 import seremis.geninfusion.soul.Gene;
 import seremis.geninfusion.soul.allele.AlleleModelPartArray;
 
-public abstract class GeneModel extends Gene {
+public class GeneModel extends Gene {
 
     @Override
     public Class<? extends IAllele> possibleAlleles() {

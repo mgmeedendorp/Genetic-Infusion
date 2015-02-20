@@ -48,6 +48,10 @@ public class TraitFluids extends Trait {
             }
         }
 
+        if(((EntityLiving) entity).isInsideOfMaterial(Material.water)) {
+            ((EntityLiving) entity).extinguish();
+        }
+
         boolean drownsInAir = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_DROWNS_IN_AIR)).value;
 
         if(drownsInAir) {
