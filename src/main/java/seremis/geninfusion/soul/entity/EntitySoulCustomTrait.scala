@@ -148,6 +148,10 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
         super.applyEntityCollision(entity)
     }
 
+    override def decreaseAirSupply(amount: Int): Int = super.decreaseAirSupply(amount)
+
+    override def func_110146_f(p_110146_1_ : Float, p_110146_2_ : Float): Float = super.func_110146_f(p_110146_1_, p_110146_2_)
+
     override def attackEntityAsMob(entity: Entity): Boolean = TraitHandler.attackEntityAsMob(this, entity)
 
     override def isMovementCeased: Boolean = false

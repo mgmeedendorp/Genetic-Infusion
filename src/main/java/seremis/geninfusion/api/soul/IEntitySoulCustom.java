@@ -192,4 +192,6 @@ public interface IEntitySoulCustom extends IRangedAttackMob {
     void jump();
 
     void collideWithNearbyEntities();
+
+    float func_110146_f(float p_110146_1_, float p_110146_2_);
 }

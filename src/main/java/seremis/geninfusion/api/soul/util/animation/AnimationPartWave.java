@@ -39,10 +39,10 @@ public class AnimationPartWave extends AnimationPart {
      * A helper class for animations.
      *
      * @param axis The rotation axis this AnimationPart animates, 0 for x, 1 for y, 2 for z, 3 for x & y, 4 for x & z, 5 for y & z, 6 for every axis
-     * @param period The name of the variable (float) that corresponds with the period of the sine wave. If null it defaults to 1.0F.
-     * @param amplitude The name of the variable (float) that corresponds with the amplitude of the sine wave. If null it defaults to 1.0F.
-     * @param offsetVert The name of the variable (float) that corresponds with the vertical offset of the sine wave. If null it defaults to 1.0F.
-     * @param offsetHor The name of the variable (float) that corresponds with the horizontal offset of the sine wave. If null it defaults to 1.0F.
+     * @param period The name of the variable (float) that corresponds with the period of the sine wave. If null it defaults to 0.0F.
+     * @param amplitude The name of the variable (float) that corresponds with the amplitude of the sine wave. If null it defaults to 0.0F.
+     * @param offsetVert The name of the variable (float) that corresponds with the vertical offset of the sine wave. If null it defaults to 0.0F.
+     * @param offsetHor The name of the variable (float) that corresponds with the horizontal offset of the sine wave. If null it defaults to 0.0F.
      */
     public AnimationPartWave(int axis, String period, String amplitude, String offsetVert, String offsetHor) {
         super(EnumAnimationPartType.ANIMATION_PART_WAVE);
@@ -56,10 +56,10 @@ public class AnimationPartWave extends AnimationPart {
      * A helper class for animations.
      *
      * @param axis The rotation axis this AnimationPart animates, 0 for x, 1 for y, 2 for z, 3 for x & y, 4 for x & z, 5 for y & z, 6 for every axis
-     * @param period The name of the variable (float) that corresponds with the period of the sine wave. If null it defaults to 1.0F.
-     * @param amplitude The name of the variable (float) that corresponds with the amplitude of the sine wave. If null it defaults to 1.0F.
-     * @param offsetVert The name of the variable (float) that corresponds with the vertical offset of the sine wave. If null it defaults to 1.0F.
-     * @param offsetHor The name of the variable (float) that corresponds with the horizontal offset of the sine wave. If null it defaults to 1.0F.
+     * @param period The name of the variable (float) that corresponds with the period of the sine wave. If null it defaults to 0.0F.
+     * @param amplitude The name of the variable (float) that corresponds with the amplitude of the sine wave. If null it defaults to 0.0F.
+     * @param offsetVert The name of the variable (float) that corresponds with the vertical offset of the sine wave. If null it defaults to 0.0F.
+     * @param offsetHor The name of the variable (float) that corresponds with the horizontal offset of the sine wave. If null it defaults to 0.0F.
      * @param rotationPointX The name of the variable (float) that corresponds with X coordinate of the rotationPoint. If null it defaults to 0.0F.
      * @param rotationPointY The name of the variable (float) that corresponds with Y coordinate of the rotationPoint. If null it defaults to 0.0F.
      * @param rotationPointZ The name of the variable (float) that corresponds with Z coordinate of the rotationPoint. If null it defaults to 0.0F.
@@ -76,9 +76,21 @@ public class AnimationPartWave extends AnimationPart {
         readFromNBT(compound);
     }
 
+    private boolean firstTick = true;
+
     @Override
     public void animate(IEntitySoulCustom entity) {
         super.animate(entity);
+
+        if(firstTick) {
+            if(rotationPointX != null)
+                entity.setFloat(rotationPointX, modelPart.rotationPointX);
+            if(rotationPointY != null)
+                entity.setFloat(rotationPointY, modelPart.rotationPointY);
+            if(rotationPointZ != null)
+                entity.setFloat(rotationPointZ, modelPart.rotationPointZ);
+            firstTick = false;
+        }
 
         float period = entity.getFloat(this.period);
         float amplitude = entity.getFloat(this.amplitude);
@@ -114,9 +126,9 @@ public class AnimationPartWave extends AnimationPart {
                 break;
         }
 
-        modelPart.rotationPointX += entity.getFloat(rotationPointX) * rotationPointXModifier;
-        modelPart.rotationPointY += entity.getFloat(rotationPointY) * rotationPointYModifier;
-        modelPart.rotationPointZ += entity.getFloat(rotationPointZ) * rotationPointZModifier;
+        modelPart.rotationPointX = entity.getFloat(rotationPointX) * rotationPointXModifier;
+        modelPart.rotationPointY = entity.getFloat(rotationPointY) * rotationPointYModifier;
+        modelPart.rotationPointZ = entity.getFloat(rotationPointZ) * rotationPointZModifier;
     }
 
     protected float getRotation(IEntitySoulCustom entity, float period, float amplitude, float offsetVert, float offsetHor) {

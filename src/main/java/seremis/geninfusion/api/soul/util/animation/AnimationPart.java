@@ -101,11 +101,19 @@ public abstract class AnimationPart implements INBTTagable {
     }
 
     public static AnimationPart[] bipedLegLeftWaveAnimationParts() {
-        return new AnimationPart[] {new AnimationPartWave(0, "legLeftWavePeriod", "legLeftWaveAmplitude", null, "legLeftWaveOffsetHor", "legLeftWaveRotateAngleX", "legLeftWaveRotateAngleY", "legLeftWaveRotateAngleZ")};
+        return new AnimationPart[] {new AnimationPartWave(0, "legLeftWavePeriod", "legLeftWaveAmplitude", "legLeftWaveOffsetVert", "legLeftWaveOffsetHor")};
     }
 
     public static AnimationPart[] bipedLegRightWaveAnimationParts() {
-        return new AnimationPart[] {new AnimationPartWave(0, "legRightWavePeriod", "legRightWaveAmplitude", null, "legRightWaveOffsetHor", "legRightWaveRotateAngleX", "legRightWaveRotateAngleY", "legRightWaveRotateAngleZ")};
+        return new AnimationPart[] {new AnimationPartWave(0, "legRightWavePeriod", "legRightWaveAmplitude", "legRightWaveOffsetVert", "legRightWaveOffsetHor")};
+    }
+
+    public static AnimationPart[] bipedLegLeftLinearAnimationParts() {
+        return new AnimationPart[] {new AnimationPartLinear("legLeftLinearRotateAngleX", "legLeftLinearRotateAngleY", "legLeftLinearRotateAngleZ", "legLeftLinearRotationPointX", "legLeftLinearRotationPointY", "legLeftLinearRotationPointZ")};
+    }
+
+    public static AnimationPart[] bipedLegRightLinearAnimationParts() {
+        return new AnimationPart[] {new AnimationPartLinear("legRightLinearRotateAngleX", "legRightLinearRotateAngleY", "legRightLinearRotateAngleZ", "legRightLinearRotationPointX", "legRightLinearRotationPointY", "legRightLinearRotationPointZ")};
     }
 
     public static AnimationPart[] bipedArmLeftWaveAnimationParts() {

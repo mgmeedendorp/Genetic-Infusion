@@ -40,16 +40,28 @@ public class AnimationPartLinear extends AnimationPart {
         readFromNBT(compound);
     }
 
+    private boolean firstTick = true;
+
     @Override
     public void animate(IEntitySoulCustom entity) {
         super.animate(entity);
 
+        if(firstTick) {
+            if(rotationPointX != null)
+                entity.setFloat(rotationPointX, modelPart.rotationPointX);
+            if(rotationPointY != null)
+                entity.setFloat(rotationPointY, modelPart.rotationPointY);
+            if(rotationPointZ != null)
+                entity.setFloat(rotationPointZ, modelPart.rotationPointZ);
+            firstTick = false;
+        }
+
         modelPart.rotateAngleX += entity.getFloat(rotateAngleX) * rotateAngleXModifier;
         modelPart.rotateAngleY += entity.getFloat(rotateAngleY) * rotateAngleYModifier;
         modelPart.rotateAngleZ += entity.getFloat(rotateAngleZ) * rotateAngleZModifier;
-        modelPart.rotationPointX += entity.getFloat(rotationPointX) * rotationPointXModifier;
-        modelPart.rotationPointY += entity.getFloat(rotationPointY) * rotationPointYModifier;
-        modelPart.rotationPointZ += entity.getFloat(rotationPointZ) * rotationPointZModifier;
+        modelPart.rotationPointX = entity.getFloat(rotationPointX) * rotationPointXModifier;
+        modelPart.rotationPointY = entity.getFloat(rotationPointY) * rotationPointYModifier;
+        modelPart.rotationPointZ = entity.getFloat(rotationPointZ) * rotationPointZModifier;
     }
 
     @Override

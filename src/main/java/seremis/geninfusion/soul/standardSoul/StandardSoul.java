@@ -334,6 +334,10 @@ public class StandardSoul implements IStandardSoul {
             return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedArmLeftLinearAnimationParts()));
         } else if(gene.equals(Genes.GENE_ANIM_LINEAR_ARM_RIGHT)) {
             return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedArmRightLinearAnimationParts()));
+        } else if(gene.equals(Genes.GENE_ANIM_LINEAR_LEG_LEFT)) {
+            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedLegLeftLinearAnimationParts()));
+        } else if(gene.equals(Genes.GENE_ANIM_LINEAR_LEG_RIGHT)) {
+            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedLegRightLinearAnimationParts()));
         }
         return null;
     }

@@ -4,7 +4,12 @@ import net.minecraft.entity.monster.EntityZombie;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.lib.Traits;
 import seremis.geninfusion.soul.gene.*;
+import seremis.geninfusion.soul.gene.animation.GeneAnim;
 import seremis.geninfusion.soul.gene.animation.linear.*;
+import seremis.geninfusion.soul.gene.animation.wave.GeneAnimWaveArmLeft;
+import seremis.geninfusion.soul.gene.animation.wave.GeneAnimWaveArmRight;
+import seremis.geninfusion.soul.gene.animation.wave.GeneAnimWaveLegLeft;
+import seremis.geninfusion.soul.gene.animation.wave.GeneAnimWaveLegRight;
 import seremis.geninfusion.soul.gene.model.*;
 import seremis.geninfusion.soul.gene.newAI.*;
 import seremis.geninfusion.soul.gene.newAI.arrowAttack.*;
@@ -287,14 +292,18 @@ public class ModSouls {
         geneRegistry.registerGene(Genes.GENE_MODEL_EARS, new GeneModelEars());
         geneRegistry.registerGene(Genes.GENE_MODEL_CLOAK, new GeneModelCloak());
 
-        geneRegistry.registerGene(Genes.GENE_ANIM_WAVE_ARM_LEFT, new GeneAnimLinearArmLeft());
-        geneRegistry.registerGene(Genes.GENE_ANIM_WAVE_ARM_RIGHT, new GeneAnimLinearArmRight());
+        geneRegistry.registerGene(Genes.GENE_ANIM_LINEAR_ARM_LEFT, new GeneAnimLinearArmLeft());
+        geneRegistry.registerGene(Genes.GENE_ANIM_LINEAR_ARM_RIGHT, new GeneAnimLinearArmRight());
         geneRegistry.registerGene(Genes.GENE_ANIM_LINEAR_BODY, new GeneAnimLinearBody());
         geneRegistry.registerGene(Genes.GENE_ANIM_LINEAR_CLOAK, new GeneAnimLinearCloak());
         geneRegistry.registerGene(Genes.GENE_ANIM_LINEAR_EARS, new GeneAnimLinearEars());
         geneRegistry.registerGene(Genes.GENE_ANIM_LINEAR_HEAD, new GeneAnimLinearHead());
-        geneRegistry.registerGene(Genes.GENE_ANIM_WAVE_LEG_LEFT, new GeneAnimLinearLegLeft());
-        geneRegistry.registerGene(Genes.GENE_ANIM_WAVE_LEG_RIGHT, new GeneAnimLinearLegRight());
+        geneRegistry.registerGene(Genes.GENE_ANIM_WAVE_LEG_LEFT, new GeneAnimWaveLegLeft());
+        geneRegistry.registerGene(Genes.GENE_ANIM_WAVE_LEG_RIGHT, new GeneAnimWaveLegRight());
+        geneRegistry.registerGene(Genes.GENE_ANIM_WAVE_ARM_LEFT, new GeneAnimWaveArmLeft());
+        geneRegistry.registerGene(Genes.GENE_ANIM_WAVE_ARM_RIGHT, new GeneAnimWaveArmRight());
+        geneRegistry.registerGene(Genes.GENE_ANIM_LINEAR_LEG_LEFT, new GeneAnim());
+        geneRegistry.registerGene(Genes.GENE_ANIM_LINEAR_LEG_RIGHT, new GeneAnim());
 
         traitRegistry.registerTrait(Traits.TRAIT_FIRE, new TraitFire());
         traitRegistry.registerTrait(Traits.TRAIT_MOVEMENT, new TraitMovement());

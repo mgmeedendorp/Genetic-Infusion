@@ -16,6 +16,8 @@ public class TraitMovement extends Trait {
     public void onUpdate(IEntitySoulCustom entity) {
         EntityLiving living = (EntityLiving) entity;
 
+        living.prevSwingProgress = living.swingProgress;
+
         entity.getWorld().theProfiler.startSection("entityBaseTick");
 
         if(living.ridingEntity != null && living.ridingEntity.isDead) {
