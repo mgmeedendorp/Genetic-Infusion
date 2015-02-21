@@ -4,9 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAITasks;
-import net.minecraft.entity.ai.EntityAIWander;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -18,6 +16,7 @@ import seremis.geninfusion.api.soul.IGeneRegistry;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.UtilSoulEntity;
+import seremis.geninfusion.soul.EntityAIHelper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -64,7 +63,28 @@ public class TraitAI extends Trait {
             int doUselessThingsIndex = array.indexOf(aiModifierDoUselessThings);
             int wanderIndex = array.indexOf(aiModifierWander);
 
-            tasks.addTask(1, new EntityAIWatchClosest((EntityCreature) entity, EntityPlayer.class, 20F));
+            if(gReg.getValueBoolean(entity, Genes.GENE_AI_SWIMMING)) {
+                tasks.addTask(surviveIndex, SoulHelper.entityAIHelper.getEntityAIForEntitySoulCustom(EntityAISwimming.class, living));
+            }
+
+            if(gReg.getValueBoolean(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE)) {
+                try {
+                    boolean longMemory = gReg.getValueBoolean(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_LONG_MEMORY);
+                    double moveSpeed = gReg.getValueDouble(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_MOVE_SPEED);
+                    Class target = Class.forName(gReg.getValueString(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_TARGET));
+
+                    tasks.addTask(attackIndex, SoulHelper.entityAIHelper.getEntityAIForEntitySoulCustom(EntityAIAttackOnCollide.class, entity, target, moveSpeed, longMemory));
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if(gReg.getValueBoolean(entity, Genes.GENE_AI_MOVE_TOWARDS_RESTRICTION)) {
+                double moveSpeed = gReg.getValueDouble(entity, Genes.GENE_AI_MOVE_TOWARDS_RESTRICTION_MOVE_SPEED);
+
+                tasks.addTask(wanderIndex, SoulHelper.entityAIHelper.getEntityAIForEntitySoulCustom(EntityAIMoveTowardsTarget.class, entity, moveSpeed));
+            }
+
 
             //        if(gReg.getValueBoolean(entity, Genes.GENE_AI_ARROW_ATTACK)) {
             //            int maxRangedAttackTime = gReg.getValueInteger(entity, Genes.GENE_AI_ARROW_ATTACK_MAX_RANGED_ATTACK_TIME);

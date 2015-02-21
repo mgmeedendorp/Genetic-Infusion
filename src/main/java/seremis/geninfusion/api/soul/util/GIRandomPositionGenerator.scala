@@ -1,0 +1,61 @@
+package seremis.geninfusion.api.soul.util
+
+import net.minecraft.entity.EntityLiving
+import net.minecraft.entity.ai.RandomPositionGenerator
+import net.minecraft.util.{MathHelper, Vec3}
+import seremis.geninfusion.api.soul.IEntitySoulCustom
+
+object GIRandomPositionGenerator extends RandomPositionGenerator {
+    val staticVector = Vec3.createVectorHelper(0.0D, 0.0D, 0.0D)
+
+    def findRandomTargetBlockTowards(entity: IEntitySoulCustom, areaWidth: Int, areaY: Int, targetDirection: Vec3): Vec3 = {
+        staticVector.xCoord = targetDirection.xCoord - entity.asInstanceOf[EntityLiving].posX
+        staticVector.yCoord = targetDirection.yCoord - entity.asInstanceOf[EntityLiving].posY
+        staticVector.zCoord = targetDirection.zCoord - entity.asInstanceOf[EntityLiving].posZ
+        findRandomTargetBlock(entity, areaWidth, areaY, staticVector)
+    }
+
+    def findRandomTargetBlock(entity: IEntitySoulCustom, areaWidth: Int, areaHeight: Int, targetDirection: Vec3): Vec3 = {
+        val living = entity.asInstanceOf[EntityLiving]
+
+        val random = living.getRNG
+        var flag = false
+        var k = 0
+        var l = 0
+        var i1 = 0
+        var f = -99999.0F
+        var flag1: Boolean = false
+        if(entity.hasHome) {
+            val d0 = (entity.getHomePosition.getDistanceSquared(MathHelper.floor_double(living.posX), MathHelper.floor_double(living.posY), MathHelper.floor_double(living.posZ)) + 4.0F).toDouble
+            val d1 = (entity.getMaximumHomeDistance + areaWidth.toFloat).toDouble
+            flag1 = d0 < d1 * d1
+        } else {
+            flag1 = false
+        }
+        for(l1 <- 0 until 10) {
+            var j1 = random.nextInt(2 * areaWidth) - areaWidth
+            var i2 = random.nextInt(2 * areaHeight) - areaHeight
+            var k1 = random.nextInt(2 * areaWidth) - areaWidth
+            if(targetDirection == null || j1.toDouble * targetDirection.xCoord + k1.toDouble * targetDirection.zCoord >= 0.0D) {
+                j1 += MathHelper.floor_double(living.posX)
+                i2 += MathHelper.floor_double(living.posY)
+                k1 += MathHelper.floor_double(living.posZ)
+                if(!flag1 || entity.isWithinHomeDistance(j1, i2, k1)) {
+                    val f1 = entity.getBlockPathWeight(j1, i2, k1)
+                    if(f1 > f) {
+                        f = f1
+                        k = j1
+                        l = i2
+                        i1 = k1
+                        flag = true
+                    }
+                }
+            }
+        }
+        if(flag) {
+            Vec3.createVectorHelper(k.toDouble, l.toDouble, i1.toDouble)
+        } else {
+            null
+        }
+    }
+}

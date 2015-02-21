@@ -10,5 +10,5 @@ public interface IEntityAIHelper {
      * @param args The arguments for the EntityAIBase you want to be returned. Use an IEntitySoulCustom instead of the EntityLiving, EntityCreature, EntityMob, etc.. as the first argument.
      * @return The EntityAIBase requested.
      */
-    public EntityAIBase getEntityAIForEntitySoulCustom(Class<EntityAIBase> aiClass, Object... args);
+    public EntityAIBase getEntityAIForEntitySoulCustom(Class<? extends EntityAIBase> aiClass, Object... args);
 }

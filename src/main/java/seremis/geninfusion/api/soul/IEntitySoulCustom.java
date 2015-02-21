@@ -6,6 +6,7 @@ import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import seremis.geninfusion.api.soul.util.Data;
@@ -194,4 +195,14 @@ public interface IEntitySoulCustom extends IRangedAttackMob {
     void collideWithNearbyEntities();
 
     float func_110146_f(float p_110146_1_, float p_110146_2_);
+
+    boolean isWithinHomeDistance(int x, int y, int z);
+
+    boolean isWithinHomeDistanceCurrentPosition();
+
+    ChunkCoordinates getHomePosition();
+
+    boolean hasHome();
+
+    float getMaximumHomeDistance();
 }

@@ -6,31 +6,29 @@ import seremis.geninfusion.api.soul.IEntityAIHelper
 
 class EntityAIHelper extends IEntityAIHelper {
 
-    override def getEntityAIForEntitySoulCustom(aiClass: Class[EntityAIBase], args: AnyRef*): EntityAIBase = {
+    override def getEntityAIForEntitySoulCustom(aiClass: Class[_ <: EntityAIBase], args: AnyRef*): EntityAIBase = {
         var ai = tryStandardAI(aiClass, args)
         if(ai != null)
             return ai
         ai = tryCustomAI(aiClass, args)
         if(ai != null)
             return ai
-
-        if(ai != null)
-            return ai
+        //TODO an AI registry?
         null
     }
 
-    def tryStandardAI(ai: Class[_], args: AnyRef*): EntityAIBase = {
+    def tryStandardAI(ai: Class[_ <: EntityAIBase], args: AnyRef*): EntityAIBase = {
         val constructors = ai.getConstructors
 
         for(constructor <- constructors) {
             if(constructor.getParameterTypes()(0).isAssignableFrom(classOf[EntityLiving])) {
-                constructor.newInstance(args)
+                return constructor.newInstance(args).asInstanceOf[EntityAIBase]
             }
         }
         null
     }
 
-    def tryCustomAI(ai: Class[_], args: AnyRef*): EntityAIBase = {
+    def tryCustomAI(ai: Class[_ <: EntityAIBase], args: AnyRef*): EntityAIBase = {
         val nameArray = ai.getName.split(".")
         val name = "seremis.geninfusion.soul.entity.ai." + nameArray(nameArray.length-1) + "Custom"
 
