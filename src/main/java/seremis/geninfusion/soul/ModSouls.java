@@ -311,6 +311,7 @@ public class ModSouls {
         traitRegistry.registerTrait(Traits.TRAIT_ATTACK, new TraitAttack());
         traitRegistry.registerTrait(Traits.TRAIT_AI, new TraitAI());
         traitRegistry.registerTrait(Traits.TRAIT_RENDER, new TraitRender());
+        traitRegistry.registerTrait(Traits.TRAIT_HOME_AREA, new TraitHomeArea());
 
         standardSoulRegistry.register(new StandardSoulZombie(), EntityZombie.class);
     }

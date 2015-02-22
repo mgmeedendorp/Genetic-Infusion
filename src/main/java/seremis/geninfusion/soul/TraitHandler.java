@@ -1,9 +1,13 @@
 package seremis.geninfusion.soul;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.ITrait;
@@ -170,9 +174,86 @@ public class TraitHandler {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     public static void render(IEntitySoulCustom entity, float timeModifier, float walkSpeed, float specialRotation, float rotationYawHead, float rotationPitch, float scale) {
         for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.render(entity, timeModifier, walkSpeed, specialRotation, rotationYawHead, rotationPitch, scale);
+        }
+    }
+
+    public static boolean isWithinHomeDistanceCurrentPosition(IEntitySoulCustom entity) {
+        boolean flag = false;
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
+            if(trait.isWithinHomeDistanceCurrentPosition(entity)) {
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
+    public static boolean isWithinHomeDistance(IEntitySoulCustom entity, int x, int y, int z) {
+        boolean flag = false;
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
+            if(trait.isWithinHomeDistance(entity, x, y, z)) {
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
+    public static ChunkCoordinates getHomePosition(IEntitySoulCustom entity) {
+        ChunkCoordinates flag = null;
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
+            ChunkCoordinates coords = trait.getHomePosition(entity);
+            if(coords != null) {
+                flag = coords;
+            }
+        }
+        return flag;
+    }
+
+    public static void setHomeArea(IEntitySoulCustom entity, int x, int y, int z, int maxDistance) {
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
+            trait.setHomeArea(entity, x, y, z, maxDistance);
+        }
+    }
+
+    public static float getMaxHomeDistance(IEntitySoulCustom entity) {
+        float flag = 0.0F;
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
+            float dist = trait.getMaxHomeDistance(entity);
+            if(dist != 0.0F) {
+                flag = dist;
+            }
+        }
+        return flag;
+    }
+
+    public static void detachHome(IEntitySoulCustom entity) {
+        for(ITrait trait: SoulHelper.traitRegistry.getTraits()) {
+            trait.detachHome(entity);
+        }
+    }
+
+    public static boolean hasHome(IEntitySoulCustom entity) {
+        boolean flag = false;
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
+            if(trait.hasHome(entity)) {
+                flag = true;
+            }
+        }
+        return flag;
+    }
+
+    public static void writeToNBT(IEntitySoulCustom entity, NBTTagCompound compound) {
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
+            trait.writeToNBT(entity, compound);
+        }
+    }
+
+    public static void readFromNBT(IEntitySoulCustom entity, NBTTagCompound compound) {
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
+            trait.readFromNBT(entity, compound);
         }
     }
 }

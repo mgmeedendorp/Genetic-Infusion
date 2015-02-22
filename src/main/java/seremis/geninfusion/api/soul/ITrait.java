@@ -6,6 +6,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 
 public interface ITrait {
@@ -54,4 +56,22 @@ public interface ITrait {
 
     @SideOnly(Side.CLIENT)
     public void render(IEntitySoulCustom entity, float timeModifier, float walkSpeed, float specialRotation, float rotationYawHead, float rotationPitch, float scale);
+
+    public boolean isWithinHomeDistanceCurrentPosition(IEntitySoulCustom entity);
+
+    public boolean isWithinHomeDistance(IEntitySoulCustom entity, int x, int y, int z);
+
+    public ChunkCoordinates getHomePosition(IEntitySoulCustom entity);
+
+    public void setHomeArea(IEntitySoulCustom entity, int x, int y, int z, int maxDistance);
+
+    public float getMaxHomeDistance(IEntitySoulCustom entity);
+
+    public void detachHome(IEntitySoulCustom entity);
+
+    public boolean hasHome(IEntitySoulCustom entity);
+
+    public void writeToNBT(IEntitySoulCustom entity, NBTTagCompound compound);
+
+    public void readFromNBT(IEntitySoulCustom entity, NBTTagCompound compound);
 }

@@ -6,6 +6,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.DamageSource;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.ITrait;
@@ -93,4 +95,41 @@ public class Trait implements ITrait {
     @Override
     @SideOnly(Side.CLIENT)
     public void render(IEntitySoulCustom entity, float timeModifier, float walkSpeed, float specialRotation, float rotationYawHead, float rotationPitch, float scale) {}
+
+    @Override
+    public boolean isWithinHomeDistanceCurrentPosition(IEntitySoulCustom entity) {
+        return false;
+    }
+
+    @Override
+    public boolean isWithinHomeDistance(IEntitySoulCustom entity, int x, int y, int z) {
+        return false;
+    }
+
+    @Override
+    public ChunkCoordinates getHomePosition(IEntitySoulCustom entity) {
+        return null;
+    }
+
+    @Override
+    public void setHomeArea(IEntitySoulCustom entity, int x, int y, int z, int maxDistance) {}
+
+    @Override
+    public float getMaxHomeDistance(IEntitySoulCustom entity) {
+        return 0.0F;
+    }
+
+    @Override
+    public void detachHome(IEntitySoulCustom entity) {}
+
+    @Override
+    public boolean hasHome(IEntitySoulCustom entity) {
+        return false;
+    }
+
+    @Override
+    public void writeToNBT(IEntitySoulCustom entity, NBTTagCompound compound) {}
+
+    @Override
+    public void readFromNBT(IEntitySoulCustom entity, NBTTagCompound compound) {}
 }

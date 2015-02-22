@@ -55,6 +55,8 @@ public interface IGeneRegistry {
 
     public AnimationPart getValueAnimationPart(IEntitySoulCustom entity, String name);
 
+    public Class getValueClass(IEntitySoulCustom entity, String name);
+
     public boolean[] getValueBooleanArray(IEntitySoulCustom entity, String name);
 
     public int[] getValueIntegerArray(IEntitySoulCustom entity, String name);
@@ -70,6 +72,8 @@ public interface IGeneRegistry {
     public ModelPart[] getValueModelPartArray(IEntitySoulCustom entity, String name);
 
     public AnimationPart[] getValueAnimationPartArray(IEntitySoulCustom entity, String name);
+
+    public Class[] getValueClassArray(IEntitySoulCustom entity, String name);
 
     public List<IGene> getControlledGenes(String masterGeneName);
 }

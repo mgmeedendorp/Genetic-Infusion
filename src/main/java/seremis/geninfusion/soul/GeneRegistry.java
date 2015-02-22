@@ -137,6 +137,11 @@ public class GeneRegistry implements IGeneRegistry {
     }
 
     @Override
+    public Class getValueClass(IEntitySoulCustom entity, String name) {
+        return ((AlleleClass) getActiveFor(entity, name)).value;
+    }
+
+    @Override
     public boolean[] getValueBooleanArray(IEntitySoulCustom entity, String name) {
         return ((AlleleBooleanArray) getActiveFor(entity, name)).value;
     }
@@ -175,6 +180,11 @@ public class GeneRegistry implements IGeneRegistry {
     @Override
     public AnimationPart[] getValueAnimationPartArray(IEntitySoulCustom entity, String name) {
         return ((AlleleAnimationPartArray) getActiveFor(entity, name)).value;
+    }
+
+    @Override
+    public Class[] getValueClassArray(IEntitySoulCustom entity, String name) {
+        return ((AlleleClassArray) getActiveFor(entity, name)).value;
     }
 
     @Override

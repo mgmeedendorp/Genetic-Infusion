@@ -9,7 +9,7 @@ import net.minecraft.entity._
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{CompressedStreamTools, NBTSizeTracker, NBTTagCompound}
-import net.minecraft.util.{AxisAlignedBB, DamageSource}
+import net.minecraft.util.{ChunkCoordinates, AxisAlignedBB, DamageSource}
 import net.minecraft.world.World
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.util.Data
@@ -24,6 +24,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     var syncLogic = new VariableSyncLogic(this)
     var soul: ISoul
     val world: World
+    var nbtLoaded = false;
 
     override def writeSpawnData(data: ByteBuf) {
         val compound: NBTTagCompound = new NBTTagCompound
@@ -69,6 +70,8 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     override def getFlag(id: Int): Boolean = super.getFlag(id)
 
     override def getRandom: Random = new Random()
+
+    override def loadedFromNBT(): Boolean = nbtLoaded
 
     //TODO
     //override def isChild: Boolean = getBoolean("isChild")
@@ -181,6 +184,20 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     override def jump() = super.jump()
 
     override def collideWithNearbyEntities() = super.collideWithNearbyEntities()
+    
+    override def isWithinHomeDistance(x: Int, y: Int, z: Int): Boolean = TraitHandler.isWithinHomeDistance(this, x, y, z)
+
+    override def isWithinHomeDistanceCurrentPosition: Boolean = TraitHandler.isWithinHomeDistanceCurrentPosition(this)
+
+    override def getHomePosition: ChunkCoordinates = TraitHandler.getHomePosition(this)
+
+    override def hasHome: Boolean = TraitHandler.hasHome(this)
+
+    override def getMaxHomeDistance: Float = TraitHandler.getMaxHomeDistance(this)
+
+    override def detachHome() = TraitHandler.detachHome(this)
+
+    override def setHomeArea(x: Int, y: Int, z: Int, maxDistance: Int) = TraitHandler.setHomeArea(this, x, y, z, maxDistance)
 
     override def attackEntityWithRangedAttack(entity: EntityLivingBase, distanceModified: Float) = TraitHandler.attackEntityWithRangedAttack(this, entity, distanceModified)
 
@@ -189,13 +206,16 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
         soul = new Soul(compound)
         if(compound.hasKey("data")) {
             syncLogic.readFromNBT(compound)
+            nbtLoaded = true;
         }
+        TraitHandler.readFromNBT(this, compound)
     }
 
     override def writeToNBT(compound: NBTTagCompound) {
         super.writeToNBT(compound)
         soul.writeToNBT(compound)
         syncLogic.writeToNBT(compound)
+        TraitHandler.writeToNBT(this, compound)
     }
 
     override def makePersistent(name: String) = syncLogic.makePersistent(name)

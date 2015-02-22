@@ -43,7 +43,6 @@ object GeneticInfusion {
         SoulHelper.traitRegistry = new TraitRegistry
         SoulHelper.standardSoulRegistry = new StandardSoulRegistry
         SoulHelper.instanceHelper = new InstanceHelper
-        SoulHelper.entityAIHelper = new EntityAIHelper
         SoulHelper.entityModel = new ModelEntitySoulCustom
 
         ModBlocks.init

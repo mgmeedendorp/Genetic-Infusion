@@ -8,6 +8,10 @@ import seremis.geninfusion.api.soul.IEntitySoulCustom
 object GIRandomPositionGenerator extends RandomPositionGenerator {
     val staticVector = Vec3.createVectorHelper(0.0D, 0.0D, 0.0D)
 
+    def findRandomTarget(entity: IEntitySoulCustom, areaWidth: Int, areaHeight: Int): Vec3 = {
+        findRandomTargetBlock(entity, areaWidth, areaHeight, null)
+    }
+
     def findRandomTargetBlockTowards(entity: IEntitySoulCustom, areaWidth: Int, areaY: Int, targetDirection: Vec3): Vec3 = {
         staticVector.xCoord = targetDirection.xCoord - entity.asInstanceOf[EntityLiving].posX
         staticVector.yCoord = targetDirection.yCoord - entity.asInstanceOf[EntityLiving].posY
@@ -27,7 +31,7 @@ object GIRandomPositionGenerator extends RandomPositionGenerator {
         var flag1: Boolean = false
         if(entity.hasHome) {
             val d0 = (entity.getHomePosition.getDistanceSquared(MathHelper.floor_double(living.posX), MathHelper.floor_double(living.posY), MathHelper.floor_double(living.posZ)) + 4.0F).toDouble
-            val d1 = (entity.getMaximumHomeDistance + areaWidth.toFloat).toDouble
+            val d1 = (entity.getMaxHomeDistance + areaWidth.toFloat).toDouble
             flag1 = d0 < d1 * d1
         } else {
             flag1 = false

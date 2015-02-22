@@ -1,11 +1,13 @@
 package seremis.geninfusion.soul.traits;
 
+import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.pathfinding.PathEntity;
@@ -16,7 +18,7 @@ import seremis.geninfusion.api.soul.IGeneRegistry;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.UtilSoulEntity;
-import seremis.geninfusion.soul.EntityAIHelper;
+import seremis.geninfusion.soul.entity.ai.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -64,25 +66,67 @@ public class TraitAI extends Trait {
             int wanderIndex = array.indexOf(aiModifierWander);
 
             if(gReg.getValueBoolean(entity, Genes.GENE_AI_SWIMMING)) {
-                tasks.addTask(surviveIndex, SoulHelper.entityAIHelper.getEntityAIForEntitySoulCustom(EntityAISwimming.class, living));
+                tasks.addTask(surviveIndex, new EntityAISwimming(living));
             }
 
             if(gReg.getValueBoolean(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE)) {
-                try {
-                    boolean longMemory = gReg.getValueBoolean(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_LONG_MEMORY);
-                    double moveSpeed = gReg.getValueDouble(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_MOVE_SPEED);
-                    Class target = Class.forName(gReg.getValueString(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_TARGET));
+                boolean longMemory = gReg.getValueBoolean(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_LONG_MEMORY);
+                double moveSpeed = gReg.getValueDouble(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_MOVE_SPEED);
+                Class target = gReg.getValueClass(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_TARGET);
 
-                    tasks.addTask(attackIndex, SoulHelper.entityAIHelper.getEntityAIForEntitySoulCustom(EntityAIAttackOnCollide.class, entity, target, moveSpeed, longMemory));
-                } catch(Exception e) {
-                    e.printStackTrace();
-                }
+                tasks.addTask(attackIndex, new EntityAIAttackOnCollideCustom(entity, target, moveSpeed, longMemory));
             }
 
             if(gReg.getValueBoolean(entity, Genes.GENE_AI_MOVE_TOWARDS_RESTRICTION)) {
                 double moveSpeed = gReg.getValueDouble(entity, Genes.GENE_AI_MOVE_TOWARDS_RESTRICTION_MOVE_SPEED);
 
-                tasks.addTask(wanderIndex, SoulHelper.entityAIHelper.getEntityAIForEntitySoulCustom(EntityAIMoveTowardsTarget.class, entity, moveSpeed));
+                tasks.addTask(wanderIndex, new EntityAIMoveTowardsRestrictionCustom(entity, moveSpeed));
+            }
+
+            if(gReg.getValueBoolean(entity, Genes.GENE_AI_MOVE_THROUGH_VILLAGE)) {
+                boolean isNocturnal = gReg.getValueBoolean(entity, Genes.GENE_AI_MOVE_THROUGH_VILLAGE_IS_NOCTURNAL);
+                double moveSpeed = gReg.getValueDouble(entity, Genes.GENE_AI_MOVE_THROUGH_VILLAGE_MOVE_SPEED);
+
+                tasks.addTask(wanderIndex, new EntityAIMoveThroughVillageCustom(entity, moveSpeed, isNocturnal));
+            }
+
+            if(gReg.getValueBoolean(entity, Genes.GENE_AI_WANDER)) {
+                double moveSpeed = gReg.getValueDouble(entity, Genes.GENE_AI_WANDER_MOVE_SPEED);
+
+                tasks.addTask(wanderIndex, new EntityAIWanderCustom(entity, moveSpeed));
+            }
+
+            if(gReg.getValueBoolean(entity, Genes.GENE_AI_WATCH_CLOSEST)) {
+                Class target = gReg.getValueClass(entity, Genes.GENE_AI_WATCH_CLOSEST_TARGET);
+                float range = gReg.getValueFloat(entity, Genes.GENE_AI_WATCH_CLOSEST_RANGE);
+                float chance = gReg.getValueFloat(entity, Genes.GENE_AI_WATCH_CLOSEST_CHANCE);
+
+                tasks.addTask(doUselessThingsIndex, new EntityAIWatchClosest(living, target, range, chance));
+            }
+
+            if(gReg.getValueBoolean(entity, Genes.GENE_AI_LOOK_IDLE)) {
+                tasks.addTask(doUselessThingsIndex, new EntityAILookIdle(living));
+            }
+
+            if(gReg.getValueBoolean(entity, Genes.GENE_AI_HURT_BY_TARGET)) {
+                boolean callHelp = gReg.getValueBoolean(entity, Genes.GENE_AI_HURT_BY_TARGET_CALL_HELP);
+
+                targetTasks.addTask(surviveIndex, new EntityAIHurtByTargetCustom(entity, callHelp));
+            }
+
+            if(gReg.getValueBoolean(entity, Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET)) {
+                boolean nearbyOnly = gReg.getValueBoolean(entity, Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_NEARBY_ONLY);
+                Class target = gReg.getValueClass(entity, Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_TARGET);
+                int targetChance = gReg.getValueInteger(entity, Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_TARGET_CHANCE);
+                boolean visible = gReg.getValueBoolean(entity, Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_VISIBLE);
+                String entitySelector = gReg.getValueString(entity, Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_ENTITY_SELECTOR);
+                IEntitySelector selector = null;
+
+                if(entitySelector.equals("mobSelector")) {
+                    selector = IMob.mobSelector;
+                }
+
+                targetTasks.addTask(attackIndex, new EntityAINearestAttackableTargetCustom(entity, target, targetChance, nearbyOnly, visible, selector));
             }
 
 
