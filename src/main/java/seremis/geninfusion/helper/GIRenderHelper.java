@@ -57,12 +57,4 @@ public class GIRenderHelper {
         ResourceLocation resource = new ResourceLocation(tex);
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(resource);
     }
-
-    public static void avoidFlickering() {
-        GL11.glDisable(GL11.GL_CULL_FACE);
-    }
-
-    public static void stopFlickerAvoiding() {
-        GL11.glEnable(GL11.GL_CULL_FACE);
-    }
 }

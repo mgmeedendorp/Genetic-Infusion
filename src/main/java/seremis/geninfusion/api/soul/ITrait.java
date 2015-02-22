@@ -74,4 +74,6 @@ public interface ITrait {
     public void writeToNBT(IEntitySoulCustom entity, NBTTagCompound compound);
 
     public void readFromNBT(IEntitySoulCustom entity, NBTTagCompound compound);
+
+    public String getEntityTexture(IEntitySoulCustom entity);
 }

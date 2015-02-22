@@ -208,4 +208,6 @@ public class Genes {
     public static final String GENE_ANIM_WAVE_ARM_RIGHT = ID + ".gene.animWaveArmRight";
     public static final String GENE_ANIM_WAVE_LEG_LEFT = ID + ".gene.animWaveLegLeft";
     public static final String GENE_ANIM_WAVE_LEG_RIGHT = ID + ".gene.animWaveLegRight";
+
+    public static final String GENE_TEXTURE = ID + ".gene.texture";
 }

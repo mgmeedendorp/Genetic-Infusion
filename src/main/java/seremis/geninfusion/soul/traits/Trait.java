@@ -132,4 +132,9 @@ public class Trait implements ITrait {
 
     @Override
     public void readFromNBT(IEntitySoulCustom entity, NBTTagCompound compound) {}
+
+    @Override
+    public String getEntityTexture(IEntitySoulCustom entity) {
+        return null;
+    }
 }

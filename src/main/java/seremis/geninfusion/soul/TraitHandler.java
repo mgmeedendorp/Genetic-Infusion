@@ -256,4 +256,15 @@ public class TraitHandler {
             trait.readFromNBT(entity, compound);
         }
     }
+
+    public static String getEntityTexture(IEntitySoulCustom entity) {
+        String flag = null;
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
+            String tex = trait.getEntityTexture(entity);
+            if(tex != null && !tex.equals("")) {
+                flag = tex;
+            }
+        }
+        return flag;
+    }
 }

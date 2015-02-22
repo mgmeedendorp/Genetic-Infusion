@@ -25,6 +25,8 @@ import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.ModelPart;
+import seremis.geninfusion.lib.DefaultProps;
+import seremis.geninfusion.soul.TraitHandler;
 
 import java.util.UUID;
 
@@ -42,8 +44,7 @@ public class RenderEntitySoulCustom extends RenderLiving {
 
     @Override
     protected ResourceLocation getEntityTexture(Entity entity) {
-        return new ResourceLocation("textures/entity/zombie/zombie.png");
-        //        return new ResourceLocation(((IEntitySoulCustom) entity).getString("textureLocation"));
+        return new ResourceLocation(TraitHandler.getEntityTexture((IEntitySoulCustom) entity));
     }
 
     @Override

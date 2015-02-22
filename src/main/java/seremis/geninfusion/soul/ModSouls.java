@@ -300,6 +300,8 @@ public class ModSouls {
         geneRegistry.registerGene(Genes.GENE_ANIM_LINEAR_LEG_LEFT, new GeneAnim());
         geneRegistry.registerGene(Genes.GENE_ANIM_LINEAR_LEG_RIGHT, new GeneAnim());
 
+        geneRegistry.registerGene(Genes.GENE_TEXTURE, new GeneTexture());
+
         traitRegistry.registerTrait(Traits.TRAIT_FIRE, new TraitFire());
         traitRegistry.registerTrait(Traits.TRAIT_MOVEMENT, new TraitMovement());
         traitRegistry.registerTrait(Traits.TRAIT_ATTACKED, new TraitAttacked());
@@ -312,6 +314,7 @@ public class ModSouls {
         traitRegistry.registerTrait(Traits.TRAIT_AI, new TraitAI());
         traitRegistry.registerTrait(Traits.TRAIT_RENDER, new TraitRender());
         traitRegistry.registerTrait(Traits.TRAIT_HOME_AREA, new TraitHomeArea());
+        traitRegistry.registerTrait(Traits.TRAIT_TEXTURE, new TraitTexture());
 
         standardSoulRegistry.register(new StandardSoulZombie(), EntityZombie.class);
     }
