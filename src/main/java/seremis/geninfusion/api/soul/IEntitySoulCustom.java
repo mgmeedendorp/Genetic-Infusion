@@ -137,12 +137,6 @@ public interface IEntitySoulCustom extends IRangedAttackMob {
      */
     Object getObject(String name);
 
-    /**
-     * If this entity's variables were loaded from NBT (if this entity is newly created (on the server) and not loaded from a save file).
-     * @return if the variables of this entity were loaded from NBT.
-     */
-    boolean loadedFromNBT();
-
 
 
     NBTTagCompound getEntityData();

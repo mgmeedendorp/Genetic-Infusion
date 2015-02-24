@@ -24,7 +24,6 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     var syncLogic = new VariableSyncLogic(this)
     var soul: ISoul
     val world: World
-    var nbtLoaded = false;
 
     override def writeSpawnData(data: ByteBuf) {
         val compound: NBTTagCompound = new NBTTagCompound
@@ -70,8 +69,6 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     override def getFlag(id: Int): Boolean = super.getFlag(id)
 
     override def getRandom: Random = new Random()
-
-    override def loadedFromNBT(): Boolean = nbtLoaded
 
     //TODO
     //override def isChild: Boolean = getBoolean("isChild")
@@ -206,7 +203,6 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
         soul = new Soul(compound)
         if(compound.hasKey("data")) {
             syncLogic.readFromNBT(compound)
-            nbtLoaded = true;
         }
         TraitHandler.readFromNBT(this, compound)
     }

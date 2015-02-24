@@ -12,8 +12,7 @@ public class TraitHomeArea extends Trait {
     public void firstTick(IEntitySoulCustom entity) {
         entity.makePersistent("maximumHomeDistance");
 
-        if(!entity.loadedFromNBT())
-            entity.setFloat("maximumHomeDistance", -1.0F);
+        entity.setFloat("maximumHomeDistance", -1.0F);
     }
 
     @Override
