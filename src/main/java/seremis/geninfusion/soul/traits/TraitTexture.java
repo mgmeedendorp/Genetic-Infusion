@@ -3,15 +3,20 @@ package seremis.geninfusion.soul.traits;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
+import seremis.geninfusion.api.soul.SoulHelper;
+import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.helper.GITextureHelper;
 import seremis.geninfusion.lib.Localizations;
+import seremis.geninfusion.soul.allele.AlleleString;
 
 public class TraitTexture extends Trait {
 
     @Override
     public void firstTick(IEntitySoulCustom entity) {
         if(entity.getWorld().isRemote && !GITextureHelper.getFile(toResource(getEntityTexture(entity))).exists()) {
-            GITextureHelper.mergeTextures(toResource("textures/entity/zombie/zombie.png"), toResource("textures/entity/skeleton/skeleton.png"), entity.getEntityId() + ".png");
+            ResourceLocation parent1 = toResource(((AlleleString) SoulHelper.geneRegistry.getChromosomeFor(entity, Genes.GENE_TEXTURE).getPrimary()).value);
+            ResourceLocation parent2 = toResource(((AlleleString) SoulHelper.geneRegistry.getChromosomeFor(entity, Genes.GENE_TEXTURE).getSecondary()).value);
+            GITextureHelper.mergeTextures(parent1, parent2, entity.getEntityId() + ".png");
         }
     }
 
