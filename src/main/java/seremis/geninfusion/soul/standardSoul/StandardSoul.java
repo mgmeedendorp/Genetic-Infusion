@@ -4,6 +4,7 @@ import net.minecraft.client.model.ModelZombie;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -100,6 +101,8 @@ public class StandardSoul implements IStandardSoul {
             return new Chromosome(new AlleleBoolean(true, false));
         } else if(gene.equals(Genes.GENE_AI_ARROW_ATTACK)) {
             return new Chromosome(new AlleleBoolean(true, false));
+        } else if(gene.equals(Genes.GENE_AI_ARROW_ATTACK_INDEX)) {
+            return new Chromosome(new AlleleInteger(true, 1));
         } else if(gene.equals(Genes.GENE_AI_ARROW_ATTACK_MAX_RANGED_ATTACK_TIME)) {
             return new Chromosome(new AlleleInteger(false, 0));
         } else if(gene.equals(Genes.GENE_AI_ARROW_ATTACK_MIN_RANGED_ATTACK_TIME)) {
@@ -111,11 +114,11 @@ public class StandardSoul implements IStandardSoul {
         } else if(gene.equals(Genes.GENE_AI_ATTACK_ON_COLLIDE)) {
             return new Chromosome(new AlleleBoolean(true, true));
         } else if(gene.equals(Genes.GENE_AI_ATTACK_ON_COLLIDE_LONG_MEMORY)) {
-            return new Chromosome(new AlleleBoolean(false, false));
+            return new Chromosome(new AlleleBooleanArray(false, new boolean[] {false, true}));
         } else if(gene.equals(Genes.GENE_AI_ATTACK_ON_COLLIDE_MOVE_SPEED)) {
-            return new Chromosome(new AlleleDouble(false, 1.0D));
+            return new Chromosome(new AlleleDoubleArray(false, new double[] {1.0D, 1.0D}));
         } else if(gene.equals(Genes.GENE_AI_ATTACK_ON_COLLIDE_TARGET)) {
-            return new Chromosome(new AlleleClass(false, EntityPlayer.class));
+            return new Chromosome(new AlleleClassArray(false, new Class[] {EntityPlayer.class, EntityVillager.class}));
         } else if(gene.equals(Genes.GENE_AI_AVOID_ENTITY)) {
             return new Chromosome(new AlleleBoolean(true, false));
         } else if(gene.equals(Genes.GENE_AI_AVOID_ENTITY_FAR_SPEED)) {
@@ -199,15 +202,15 @@ public class StandardSoul implements IStandardSoul {
         } else if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET)) {
             return new Chromosome(new AlleleBoolean(true, true));
         } else if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_ENTITY_SELECTOR)) {
-            return new Chromosome(new AlleleString(true, ""));
+            return new Chromosome(new AlleleStringArray(true, new String[] {""}));
         } else if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_NEARBY_ONLY)) {
-            return new Chromosome(new AlleleBoolean(true, false));
+            return new Chromosome(new AlleleBooleanArray(true, new boolean[] {false}));
         } else if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_TARGET)) {
-            return new Chromosome(new AlleleClass(false, EntityPlayer.class));
+            return new Chromosome(new AlleleClassArray(false, new Class[] {EntityPlayer.class}));
         } else if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_TARGET_CHANCE)) {
-            return new Chromosome(new AlleleInteger(true, 0));
+            return new Chromosome(new AlleleIntArray(true, new int[] {0}));
         } else if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_VISIBLE)) {
-            return new Chromosome(new AlleleBoolean(true, false));
+            return new Chromosome(new AlleleBooleanArray(true, new boolean[] {false}));
         } else if(gene.equals(Genes.GENE_AI_OCELOT_ATTACK)) {
             return new Chromosome(new AlleleBoolean(true, false));
         } else if(gene.equals(Genes.GENE_AI_OCELOT_SIT)) {
@@ -269,11 +272,11 @@ public class StandardSoul implements IStandardSoul {
         } else if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST)) {
             return new Chromosome(new AlleleBoolean(true, true));
         } else if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST_CHANCE)) {
-            return new Chromosome(new AlleleFloat(true, 0.02F));
+            return new Chromosome(new AlleleFloatArray(true, new float[] {0.02F}));
         } else if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST_RANGE)) {
-            return new Chromosome(new AlleleFloat(true, 8.0F));
+            return new Chromosome(new AlleleFloatArray(true, new float[] {8.0F}));
         } else if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST_TARGET)) {
-            return new Chromosome(new AlleleClass(true, EntityPlayer.class));
+            return new Chromosome(new AlleleClassArray(true, new Class[] {EntityPlayer.class}));
         } else if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST_2)) {
             return new Chromosome(new AlleleBoolean(true, false));
         } else if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST_2_CHANCE)) {
@@ -282,22 +285,6 @@ public class StandardSoul implements IStandardSoul {
             return new Chromosome(new AlleleFloat(true, 3.0F));
         } else if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST_2_TARGET)) {
             return new Chromosome(new AlleleClass(true, EntityPlayer.class));
-        } else if(gene.equals(Genes.GENE_AI_MODIFIER_ATTACK)) {
-            return new Chromosome(new AlleleFloat(true, 7.0F));
-        } else if(gene.equals(Genes.GENE_AI_MODIFIER_DO_USELESS_THINGS)) {
-            return new Chromosome(new AlleleFloat(true, 1.0F));
-        } else if(gene.equals(Genes.GENE_AI_MODIFIER_HELP_OWNER)) {
-            return new Chromosome(new AlleleFloat(true, 7.0F));
-        } else if(gene.equals(Genes.GENE_AI_MODIFIER_MATE)) {
-            return new Chromosome(new AlleleFloat(true, 6.0F));
-        } else if(gene.equals(Genes.GENE_AI_MODIFIER_RUN)) {
-            return new Chromosome(new AlleleFloat(true, 7.0F));
-        } else if(gene.equals(Genes.GENE_AI_MODIFIER_SURVIVE)) {
-            return new Chromosome(new AlleleFloat(true, 8.0F));
-        } else if(gene.equals(Genes.GENE_AI_MODIFIER_TRADE)) {
-            return new Chromosome(new AlleleFloat(true, 5.0F));
-        } else if(gene.equals(Genes.GENE_AI_MODIFIER_WANDER)) {
-            return new Chromosome(new AlleleFloat(true, 2.0F));
         } else if(gene.equals(Genes.GENE_MODEL_HEAD)) {
             return new Chromosome(new AlleleModelPartArray(true, ModelPart.getHeadFromModel(new ModelZombie())));
         } else if(gene.equals(Genes.GENE_MODEL_BODY)) {
@@ -339,7 +326,7 @@ public class StandardSoul implements IStandardSoul {
         } else if(gene.equals(Genes.GENE_ANIM_LINEAR_LEG_RIGHT)) {
             return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedLegRightLinearAnimationParts()));
         } else if(gene.equals(Genes.GENE_TEXTURE)) {
-            return new Chromosome(new AlleleString(false, "textures/entity/zombie/zombie.png"), new AlleleString(false, "textures/entity/skeleton/skeleton.png"));
+            return new Chromosome(new AlleleString(true, "textures/entity/zombie/zombie.png"), new AlleleString(false, "textures/entity/skeleton/skeleton.png"));
         }
         return null;
     }

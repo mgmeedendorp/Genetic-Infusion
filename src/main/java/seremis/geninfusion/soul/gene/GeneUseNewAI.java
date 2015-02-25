@@ -5,9 +5,6 @@ import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.soul.MasterGene;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
 
-/**
- * @author Seremis
- */
 public class GeneUseNewAI extends MasterGene {
 
     public GeneUseNewAI() {
@@ -54,14 +51,6 @@ public class GeneUseNewAI extends MasterGene {
         addControlledGene(Genes.GENE_AI_WANDER);
         addControlledGene(Genes.GENE_AI_WATCH_CLOSEST);
         addControlledGene(Genes.GENE_AI_WATCH_CLOSEST_2);
-
-        addControlledGene(Genes.GENE_AI_MODIFIER_ATTACK);
-        addControlledGene(Genes.GENE_AI_MODIFIER_DO_USELESS_THINGS);
-        addControlledGene(Genes.GENE_AI_MODIFIER_HELP_OWNER);
-        addControlledGene(Genes.GENE_AI_MODIFIER_MATE);
-        addControlledGene(Genes.GENE_AI_MODIFIER_RUN);
-        addControlledGene(Genes.GENE_AI_MODIFIER_SURVIVE);
-        addControlledGene(Genes.GENE_AI_MODIFIER_TRADE);
     }
 
     @Override

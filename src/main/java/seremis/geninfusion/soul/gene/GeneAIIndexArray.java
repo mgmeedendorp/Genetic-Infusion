@@ -1,11 +1,10 @@
-package seremis.geninfusion.soul.gene.newAI.nearestAttackableTarget;
+package seremis.geninfusion.soul.gene;
 
 import seremis.geninfusion.api.soul.IAllele;
 import seremis.geninfusion.soul.Gene;
 import seremis.geninfusion.soul.allele.AlleleIntArray;
-import seremis.geninfusion.soul.allele.AlleleInteger;
 
-public class GeneAINearestAttackableTargetTargetChance extends Gene {
+public class GeneAIIndexArray extends Gene {
     @Override
     public Class<? extends IAllele> possibleAlleles() {
         return AlleleIntArray.class;

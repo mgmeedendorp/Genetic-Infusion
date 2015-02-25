@@ -1,5 +1,6 @@
 package seremis.geninfusion.soul.allele;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import seremis.geninfusion.api.soul.EnumAlleleType;
 import seremis.geninfusion.soul.Allele;
@@ -44,6 +45,7 @@ public class AlleleClassArray extends Allele {
                 value[i] = Class.forName(compound.getString("value" + i));
             }
         } catch(ClassNotFoundException e) {
+            System.out.println("For some reason a class cannot be found on the " + (Minecraft.getMinecraft().theWorld.isRemote ? "client." : "server."));
             e.printStackTrace();
         }
     }

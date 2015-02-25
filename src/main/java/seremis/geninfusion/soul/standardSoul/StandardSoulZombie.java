@@ -1,6 +1,7 @@
 package seremis.geninfusion.soul.standardSoul;
 
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -34,9 +35,9 @@ public class StandardSoulZombie extends StandardSoul {
         if(gene.equals(Genes.GENE_AI_SWIMMING)) return new Chromosome(new AlleleBoolean(true, true));
 
         if(gene.equals(Genes.GENE_AI_ATTACK_ON_COLLIDE)) return new Chromosome(new AlleleBoolean(true, true));
-        if(gene.equals(Genes.GENE_AI_ATTACK_ON_COLLIDE_LONG_MEMORY)) return new Chromosome(new AlleleBoolean(true, false));
-        if(gene.equals(Genes.GENE_AI_ATTACK_ON_COLLIDE_MOVE_SPEED)) return new Chromosome(new AlleleDouble(true, 1.0D));
-        if(gene.equals(Genes.GENE_AI_ATTACK_ON_COLLIDE_TARGET)) return new Chromosome(new AlleleClass(true, EntityPlayer.class));
+        if(gene.equals(Genes.GENE_AI_ATTACK_ON_COLLIDE_LONG_MEMORY)) return new Chromosome(new AlleleBooleanArray(true, new boolean[] {false, true}));
+        if(gene.equals(Genes.GENE_AI_ATTACK_ON_COLLIDE_MOVE_SPEED)) return new Chromosome(new AlleleDoubleArray(true, new double[] {1.0D, 1.0D}));
+        if(gene.equals(Genes.GENE_AI_ATTACK_ON_COLLIDE_TARGET)) return new Chromosome(new AlleleClassArray(true, new Class[] {EntityPlayer.class, EntityVillager.class}));
 
         if(gene.equals(Genes.GENE_AI_MOVE_TOWARDS_RESTRICTION)) return new Chromosome(new AlleleBoolean(true, true));
         if(gene.equals(Genes.GENE_AI_MOVE_TOWARDS_RESTRICTION_MOVE_SPEED)) return new Chromosome(new AlleleDouble(false, 1.0D));
@@ -49,9 +50,9 @@ public class StandardSoulZombie extends StandardSoul {
         if(gene.equals(Genes.GENE_AI_WANDER_MOVE_SPEED)) return new Chromosome(new AlleleDouble(true, 1.0D));
 
         if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST)) return new Chromosome(new AlleleBoolean(true, true));
-        if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST_CHANCE)) return new Chromosome(new AlleleFloat(true, 0.02F));
-        if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST_RANGE)) return new Chromosome(new AlleleFloat(true, 8.0F));
-        if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST_TARGET)) return new Chromosome(new AlleleClass(true, EntityPlayer.class));
+        if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST_CHANCE)) return new Chromosome(new AlleleFloatArray(true, new float[] {0.02F}));
+        if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST_RANGE)) return new Chromosome(new AlleleFloatArray(true, new float[] {8.0F}));
+        if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST_TARGET)) return new Chromosome(new AlleleClassArray(true, new Class[] {EntityPlayer.class}));
 
         if(gene.equals(Genes.GENE_AI_LOOK_IDLE)) return new Chromosome(new AlleleBoolean(true, true));
 
@@ -59,11 +60,11 @@ public class StandardSoulZombie extends StandardSoul {
         if(gene.equals(Genes.GENE_AI_HURT_BY_TARGET_CALL_HELP)) return new Chromosome(new AlleleBoolean(true, true));
 
         if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET)) return new Chromosome(new AlleleBoolean(true, true));
-        if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_ENTITY_SELECTOR)) return new Chromosome(new AlleleString(true, ""));
-        if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_NEARBY_ONLY)) return new Chromosome(new AlleleBoolean(true, false));
-        if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_TARGET)) return new Chromosome(new AlleleClass(false, EntityPlayer.class));
-        if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_TARGET_CHANCE)) return new Chromosome(new AlleleInteger(true, 0));
-        if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_VISIBLE)) return new Chromosome(new AlleleBoolean(true, true));
+        if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_ENTITY_SELECTOR)) return new Chromosome(new AlleleStringArray(true, new String[] {"", ""}));
+        if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_NEARBY_ONLY)) return new Chromosome(new AlleleBooleanArray(true, new boolean[] {false, false}));
+        if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_TARGET)) return new Chromosome(new AlleleClassArray(false, new Class[] {EntityPlayer.class, EntityVillager.class}));
+        if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_TARGET_CHANCE)) return new Chromosome(new AlleleIntArray(true, new int[] {0, 0}));
+        if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_VISIBLE)) return new Chromosome(new AlleleBooleanArray(true, new boolean[] {true, false}));
 
 
 

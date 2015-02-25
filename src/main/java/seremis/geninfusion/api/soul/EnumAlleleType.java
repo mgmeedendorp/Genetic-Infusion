@@ -9,7 +9,7 @@ public enum EnumAlleleType {
     FLOAT(AlleleFloat.class),
     DOUBLE(AlleleDouble.class),
     STRING(AlleleString.class),
-    BOOLEAN_ARRAY(AlleleBoolean.class),
+    BOOLEAN_ARRAY(AlleleBooleanArray.class),
     INT_ARRAY(AlleleIntArray.class),
     FLOAT_ARRAY(AlleleFloatArray.class),
     DOUBLE_ARRAY(AlleleDoubleArray.class),
