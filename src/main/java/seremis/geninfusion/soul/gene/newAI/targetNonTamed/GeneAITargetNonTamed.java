@@ -9,9 +9,10 @@ import seremis.geninfusion.soul.allele.AlleleBoolean;
 public class GeneAITargetNonTamed extends MasterGene {
 
     public GeneAITargetNonTamed() {
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_TARGET_NON_TAMED_TARGET));
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_TARGET_NON_TAMED_TARGET_CHANCE));
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_TARGET_NON_TAMED_VISIBLE));
+        addControlledGene(Genes.GENE_AI_TARGET_NON_TAMED_INDEX);
+        addControlledGene(Genes.GENE_AI_TARGET_NON_TAMED_TARGET);
+        addControlledGene(Genes.GENE_AI_TARGET_NON_TAMED_TARGET_CHANCE);
+        addControlledGene(Genes.GENE_AI_TARGET_NON_TAMED_VISIBLE);
     }
 
     @Override

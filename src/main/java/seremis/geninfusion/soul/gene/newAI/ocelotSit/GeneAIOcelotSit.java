@@ -9,7 +9,8 @@ import seremis.geninfusion.soul.allele.AlleleBoolean;
 public class GeneAIOcelotSit extends MasterGene {
 
     public GeneAIOcelotSit() {
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_OCELOT_SIT_MOVE_SPEED));
+        addControlledGene(Genes.GENE_AI_OCELOT_SIT_INDEX);
+        addControlledGene(Genes.GENE_AI_OCELOT_SIT_MOVE_SPEED);
     }
 
     @Override

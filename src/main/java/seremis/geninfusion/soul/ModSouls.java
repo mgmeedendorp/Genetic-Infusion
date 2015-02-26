@@ -43,6 +43,7 @@ import seremis.geninfusion.soul.gene.newAI.moveIndoors.GeneAIMoveIndoors;
 import seremis.geninfusion.soul.gene.newAI.moveThroughVillage.GeneAIMoveThroughVillage;
 import seremis.geninfusion.soul.gene.newAI.moveThroughVillage.GeneAIMoveThroughVillageIsNocturnal;
 import seremis.geninfusion.soul.gene.newAI.moveThroughVillage.GeneAIMoveThroughVillageMoveSpeed;
+import seremis.geninfusion.soul.gene.newAI.moveTowardsRestriction.GeneAIMoveTowardsRestriction;
 import seremis.geninfusion.soul.gene.newAI.moveTowardsRestriction.GeneAIMoveTowardsRestrictionMoveSpeed;
 import seremis.geninfusion.soul.gene.newAI.moveTowardsTarget.GeneAIMoveTowardsTarget;
 import seremis.geninfusion.soul.gene.newAI.moveTowardsTarget.GeneAIMoveTowardsTargetMaxDistance;
@@ -129,6 +130,7 @@ public class ModSouls {
         geneRegistry.registerGene(Genes.GENE_CEASE_AI_MOVEMENT, new GeneCeaseAIMovement());
         geneRegistry.registerGene(Genes.GENE_CHILDREN_BURN_IN_DAYLIGHT, new GeneChildrenBurnInDaylight());
         geneRegistry.registerGene(Genes.GENE_IS_TAMEABLE, new GeneIsTameable());
+        geneRegistry.registerGene(Genes.GENE_TOUCH_ATTACK, new GeneTouchToAttack());
 
         geneRegistry.registerGene(Genes.GENE_AI_ARROW_ATTACK_MAX_RANGED_ATTACK_TIME, new GeneAIArrowAttackMaxRangedAttackTime());
         geneRegistry.registerGene(Genes.GENE_AI_ARROW_ATTACK_MIN_RANGED_ATTACK_TIME, new GeneAIArrowAttackMinRangedAttackTime());
@@ -155,27 +157,27 @@ public class ModSouls {
         geneRegistry.registerMasterGene(Genes.GENE_AI_BEG, new GeneAIBeg());
 
         geneRegistry.registerGene(Genes.GENE_AI_BREAK_DOOR_INDEX, new GeneAIIndex());
-        geneRegistry.registerGene(Genes.GENE_AI_BREAK_DOOR, new GeneAIBreakDoor());
+        geneRegistry.registerMasterGene(Genes.GENE_AI_BREAK_DOOR, new GeneAIBreakDoor());
 
         geneRegistry.registerGene(Genes.GENE_AI_CONTROLLED_BY_PLAYER_MAX_SPEED, new GeneAIControlledByPlayerMaxSpeed());
         geneRegistry.registerGene(Genes.GENE_AI_CONTROLLED_BY_PLAYER_INDEX, new GeneAIIndex());
         geneRegistry.registerMasterGene(Genes.GENE_AI_CONTROLLED_BY_PLAYER, new GeneAIControlledByPlayer());
 
         geneRegistry.registerGene(Genes.GENE_AI_CREEPER_SWELL_INDEX, new GeneAIIndex());
-        geneRegistry.registerGene(Genes.GENE_AI_CREEPER_SWELL, new GeneAICreeperSwell());
+        geneRegistry.registerMasterGene(Genes.GENE_AI_CREEPER_SWELL, new GeneAICreeperSwell());
 
         geneRegistry.registerGene(Genes.GENE_AI_DEFEND_VILLAGE_INDEX, new GeneAIIndex());
-        geneRegistry.registerGene(Genes.GENE_AI_DEFEND_VILLAGE, new GeneAIDefendVillage());
+        geneRegistry.registerMasterGene(Genes.GENE_AI_DEFEND_VILLAGE, new GeneAIDefendVillage());
 
         geneRegistry.registerGene(Genes.GENE_AI_EAT_GRASS_INDEX, new GeneAIIndex());
-        geneRegistry.registerGene(Genes.GENE_AI_EAT_GRASS, new GeneAIEatGrass());
+        geneRegistry.registerMasterGene(Genes.GENE_AI_EAT_GRASS, new GeneAIEatGrass());
 
         geneRegistry.registerGene(Genes.GENE_AI_FLEE_SUN_MOVE_SPEED, new GeneAIFleeSunMoveSpeed());
         geneRegistry.registerGene(Genes.GENE_AI_FLEE_SUN_INDEX, new GeneAIIndex());
         geneRegistry.registerMasterGene(Genes.GENE_AI_FLEE_SUN, new GeneAIFleeSun());
 
         geneRegistry.registerGene(Genes.GENE_AI_FOLLOW_GOLEM_INDEX, new GeneAIIndex());
-        geneRegistry.registerGene(Genes.GENE_AI_FOLLOW_GOLEM, new GeneAIFollowGolem());
+        geneRegistry.registerMasterGene(Genes.GENE_AI_FOLLOW_GOLEM, new GeneAIFollowGolem());
 
         geneRegistry.registerGene(Genes.GENE_AI_FOLLOW_OWNER_MOVE_SPEED, new GeneAIFollowOwnerMoveSpeed());
         geneRegistry.registerGene(Genes.GENE_AI_FOLLOW_OWNER_MIN_DISTANCE, new GeneAIFollowOwnerMinDistance());
@@ -196,20 +198,20 @@ public class ModSouls {
         geneRegistry.registerMasterGene(Genes.GENE_AI_LEAP_AT_TARGET, new GeneAILeapAtTarget());
 
         geneRegistry.registerGene(Genes.GENE_AI_LOOK_AT_TRADE_PLAYER_INDEX, new GeneAIIndex());
-        geneRegistry.registerGene(Genes.GENE_AI_LOOK_AT_TRADE_PLAYER, new GeneAILookAtTradePlayer());
+        geneRegistry.registerMasterGene(Genes.GENE_AI_LOOK_AT_TRADE_PLAYER, new GeneAILookAtTradePlayer());
 
         geneRegistry.registerGene(Genes.GENE_AI_LOOK_AT_VILLAGER_INDEX, new GeneAIIndex());
-        geneRegistry.registerGene(Genes.GENE_AI_LOOK_AT_VILLAGER, new GeneAILookAtVillager());
+        geneRegistry.registerMasterGene(Genes.GENE_AI_LOOK_AT_VILLAGER, new GeneAILookAtVillager());
 
         geneRegistry.registerGene(Genes.GENE_AI_LOOK_IDLE_INDEX, new GeneAIIndex());
-        geneRegistry.registerGene(Genes.GENE_AI_LOOK_IDLE, new GeneAILookIdle());
+        geneRegistry.registerMasterGene(Genes.GENE_AI_LOOK_IDLE, new GeneAILookIdle());
 
         geneRegistry.registerGene(Genes.GENE_AI_MATE_MOVE_SPEED, new GeneAIMateMoveSpeed());
         geneRegistry.registerGene(Genes.GENE_AI_MATE_INDEX, new GeneAIIndex());
         geneRegistry.registerMasterGene(Genes.GENE_AI_MATE, new GeneAIMate());
 
         geneRegistry.registerGene(Genes.GENE_AI_MOVE_INDOORS_INDEX, new GeneAIIndex());
-        geneRegistry.registerGene(Genes.GENE_AI_MOVE_INDOORS, new GeneAIMoveIndoors());
+        geneRegistry.registerMasterGene(Genes.GENE_AI_MOVE_INDOORS, new GeneAIMoveIndoors());
 
         geneRegistry.registerGene(Genes.GENE_AI_MOVE_THROUGH_VILLAGE_MOVE_SPEED, new GeneAIMoveThroughVillageMoveSpeed());
         geneRegistry.registerGene(Genes.GENE_AI_MOVE_THROUGH_VILLAGE_IS_NOCTURNAL, new GeneAIMoveThroughVillageIsNocturnal());
@@ -218,7 +220,7 @@ public class ModSouls {
 
         geneRegistry.registerGene(Genes.GENE_AI_MOVE_TOWARDS_RESTRICTION_MOVE_SPEED, new GeneAIMoveTowardsRestrictionMoveSpeed());
         geneRegistry.registerGene(Genes.GENE_AI_MOVE_TOWARDS_RESTRICTION_INDEX, new GeneAIIndex());
-        geneRegistry.registerMasterGene(Genes.GENE_AI_MOVE_TOWARDS_RESTRICTION, new GeneAIMoveThroughVillage());
+        geneRegistry.registerMasterGene(Genes.GENE_AI_MOVE_TOWARDS_RESTRICTION, new GeneAIMoveTowardsRestriction());
 
         geneRegistry.registerGene(Genes.GENE_AI_MOVE_TOWARDS_TARGET_MOVE_SPEED, new GeneAIMoveTowardsTargetMoveSpeed());
         geneRegistry.registerGene(Genes.GENE_AI_MOVE_TOWARDS_TARGET_MAX_DISTANCE, new GeneAIMoveTowardsTargetMaxDistance());
@@ -234,7 +236,7 @@ public class ModSouls {
         geneRegistry.registerMasterGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET, new GeneAINearestAttackableTarget());
 
         geneRegistry.registerGene(Genes.GENE_AI_OCELOT_ATTACK_INDEX, new GeneAIIndex());
-        geneRegistry.registerGene(Genes.GENE_AI_OCELOT_ATTACK, new GeneAIOcelotAttack());
+        geneRegistry.registerMasterGene(Genes.GENE_AI_OCELOT_ATTACK, new GeneAIOcelotAttack());
 
         geneRegistry.registerGene(Genes.GENE_AI_OCELOT_SIT_MOVE_SPEED, new GeneAIOcelotSitMoveSpeed());
         geneRegistry.registerGene(Genes.GENE_AI_OCELOT_SIT_INDEX, new GeneAIIndex());
@@ -245,10 +247,10 @@ public class ModSouls {
         geneRegistry.registerMasterGene(Genes.GENE_AI_OPEN_DOOR, new GeneAIOpenDoor());
 
         geneRegistry.registerGene(Genes.GENE_AI_OWNER_HURT_BY_TARGET_INDEX, new GeneAIIndex());
-        geneRegistry.registerGene(Genes.GENE_AI_OWNER_HURT_BY_TARGET, new GeneAIOwnerHurtByTarget());
+        geneRegistry.registerMasterGene(Genes.GENE_AI_OWNER_HURT_BY_TARGET, new GeneAIOwnerHurtByTarget());
 
         geneRegistry.registerGene(Genes.GENE_AI_OWNER_HURT_TARGET_INDEX, new GeneAIIndex());
-        geneRegistry.registerGene(Genes.GENE_AI_OWNER_HURT_TARGET, new GeneAIOwnerHurtTarget());
+        geneRegistry.registerMasterGene(Genes.GENE_AI_OWNER_HURT_TARGET, new GeneAIOwnerHurtTarget());
 
         geneRegistry.registerGene(Genes.GENE_AI_PANIC_MOVE_SPEED, new GeneAIPanicMoveSpeed());
         geneRegistry.registerGene(Genes.GENE_AI_PANIC_INDEX, new GeneAIIndex());
@@ -259,20 +261,20 @@ public class ModSouls {
         geneRegistry.registerMasterGene(Genes.GENE_AI_PLAY, new GeneAIPlay());
 
         geneRegistry.registerGene(Genes.GENE_AI_RESTRICT_OPEN_DOOR_INDEX, new GeneAIIndex());
-        geneRegistry.registerGene(Genes.GENE_AI_RESTRICT_OPEN_DOOR, new GeneAIRestrictOpenDoor());
+        geneRegistry.registerMasterGene(Genes.GENE_AI_RESTRICT_OPEN_DOOR, new GeneAIRestrictOpenDoor());
 
         geneRegistry.registerGene(Genes.GENE_AI_RESTRICT_SUN_INDEX, new GeneAIIndex());
-        geneRegistry.registerGene(Genes.GENE_AI_RESTRICT_SUN, new GeneAIRestrictSun());
+        geneRegistry.registerMasterGene(Genes.GENE_AI_RESTRICT_SUN, new GeneAIRestrictSun());
 
         geneRegistry.registerGene(Genes.GENE_AI_RUN_AROUND_LIKE_CRAZY_MOVE_SPEED, new GeneAIRunAroundLikeCrazyMoveSpeed());
         geneRegistry.registerGene(Genes.GENE_AI_RUN_AROUND_LIKE_CRAZY_INDEX, new GeneAIIndex());
         geneRegistry.registerMasterGene(Genes.GENE_AI_RUN_AROUND_LIKE_CRAZY, new GeneAIRunAroundLikeCrazy());
 
         geneRegistry.registerGene(Genes.GENE_AI_SIT_INDEX, new GeneAIIndex());
-        geneRegistry.registerGene(Genes.GENE_AI_SIT, new GeneAISit());
+        geneRegistry.registerMasterGene(Genes.GENE_AI_SIT, new GeneAISit());
 
         geneRegistry.registerGene(Genes.GENE_AI_SWIMMING_INDEX, new GeneAIIndex());
-        geneRegistry.registerGene(Genes.GENE_AI_SWIMMING, new GeneAISwimming());
+        geneRegistry.registerMasterGene(Genes.GENE_AI_SWIMMING, new GeneAISwimming());
 
         geneRegistry.registerGene(Genes.GENE_AI_TARGET_NON_TAMED_VISIBLE, new GeneAITargetNonTamedVisible());
         geneRegistry.registerGene(Genes.GENE_AI_TARGET_NON_TAMED_TARGET_CHANCE, new GeneAITargetNonTamedTargetChance());
@@ -287,10 +289,10 @@ public class ModSouls {
         geneRegistry.registerMasterGene(Genes.GENE_AI_TEMPT, new GeneAITempt());
 
         geneRegistry.registerGene(Genes.GENE_AI_TRADE_PLAYER_INDEX, new GeneAIIndex());
-        geneRegistry.registerGene(Genes.GENE_AI_TRADE_PLAYER, new GeneAITradePlayer());
+        geneRegistry.registerMasterGene(Genes.GENE_AI_TRADE_PLAYER, new GeneAITradePlayer());
 
         geneRegistry.registerGene(Genes.GENE_AI_VILLAGER_MATE_INDEX, new GeneAIIndex());
-        geneRegistry.registerGene(Genes.GENE_AI_VILLAGER_MATE, new GeneAIVillagerMate());
+        geneRegistry.registerMasterGene(Genes.GENE_AI_VILLAGER_MATE, new GeneAIVillagerMate());
 
         geneRegistry.registerGene(Genes.GENE_AI_WANDER_MOVE_SPEED, new GeneAIWanderMoveSpeed());
         geneRegistry.registerGene(Genes.GENE_AI_WANDER_INDEX, new GeneAIIndex());
@@ -350,6 +352,7 @@ public class ModSouls {
         traitRegistry.registerTrait(Traits.TRAIT_RENDER, new TraitRender());
         traitRegistry.registerTrait(Traits.TRAIT_HOME_AREA, new TraitHomeArea());
         traitRegistry.registerTrait(Traits.TRAIT_TEXTURE, new TraitTexture());
+        traitRegistry.registerTrait(Traits.TRAIT_NAVIGATE, new TraitNavigate());
 
         standardSoulRegistry.register(new StandardSoulZombie(), EntityZombie.class);
     }

@@ -188,7 +188,7 @@ public class GeneRegistry implements IGeneRegistry {
     }
 
     @Override
-    public List<IGene> getControlledGenes(String masterGeneName) {
+    public List<String> getControlledGenes(String masterGeneName) {
         return ((IMasterGene) getGene(masterGeneName)).getControlledGenes();
     }
 }

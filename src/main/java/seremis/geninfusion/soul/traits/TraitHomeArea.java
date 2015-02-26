@@ -25,7 +25,7 @@ public class TraitHomeArea extends Trait {
     public boolean isWithinHomeDistance(IEntitySoulCustom entity, int x, int y, int z) {
         float maximumHomeDistance = entity.getFloat("maximumHomeDistance");
         ChunkCoordinates homePosition = (ChunkCoordinates) entity.getObject("homePosition");
-        return maximumHomeDistance == -1.0F || homePosition.getDistanceSquared(x, y, z) < maximumHomeDistance * maximumHomeDistance;
+        return maximumHomeDistance == -1.0F || homePosition != null || homePosition.getDistanceSquared(x, y, z) < maximumHomeDistance * maximumHomeDistance;
     }
 
     @Override

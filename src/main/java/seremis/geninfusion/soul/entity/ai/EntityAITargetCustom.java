@@ -73,7 +73,7 @@ public abstract class EntityAITargetCustom extends EntityAIBase {
 
     protected boolean isSuitableTarget(EntityLivingBase target, boolean targetInvincible) {
         if(target != null && target != living && target.isEntityAlive() && living.canAttackClass(target.getClass()) && !isTargetOwnerOrPet(target)) {
-            if(!(target instanceof EntityPlayer && !targetInvincible && ((EntityPlayer) target).capabilities.disableDamage)) {
+            if(!(target instanceof EntityPlayer && targetInvincible && ((EntityPlayer) target).capabilities.disableDamage)) {
                 if(entity.isWithinHomeDistance(MathHelper.floor_double(target.posX), MathHelper.floor_double(target.posY), MathHelper.floor_double(target.posZ))) {
                     if(shouldCheckSight && !living.getEntitySenses().canSee(target)) {
                         return false;

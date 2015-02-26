@@ -17,4 +17,5 @@ public class Traits {
     public static final String TRAIT_HOME_AREA = ID + ".trait.homeArea";
     public static final String TRAIT_RENDER = ID + ".trait.render";
     public static final String TRAIT_TEXTURE = ID + ".trait.texture";
+    public static final String TRAIT_NAVIGATE = ID + ".trait.navigate";
 }

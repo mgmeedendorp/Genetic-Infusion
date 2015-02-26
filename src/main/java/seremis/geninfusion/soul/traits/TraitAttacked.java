@@ -132,18 +132,18 @@ public class TraitAttacked extends Trait {
                 }
 
                 attackedAtYaw = 0.0F;
-                Entity entity1 = source.getEntity();
+                Entity attacker = source.getEntity();
 
-                if(entity1 != null) {
-                    if(entity1 instanceof EntityLivingBase) {
-                        ((EntityLiving) entity).setRevengeTarget((EntityLivingBase) entity1);
+                if(attacker != null) {
+                    if(attacker instanceof EntityLivingBase) {
+                        ((EntityLiving) entity).setRevengeTarget((EntityLivingBase) attacker);
                     }
 
-                    if(entity1 instanceof EntityPlayer) {
+                    if(attacker instanceof EntityPlayer) {
                         recentlyHit = 100;
-                        attackingPlayer = (EntityPlayer) entity1;
-                    } else if(entity1 instanceof EntityTameable) {
-                        EntityTameable entitywolf = (EntityTameable) entity1;
+                        attackingPlayer = (EntityPlayer) attacker;
+                    } else if(attacker instanceof EntityTameable) {
+                        EntityTameable entitywolf = (EntityTameable) attacker;
 
                         if(entitywolf.isTamed()) {
                             recentlyHit = 100;
@@ -159,16 +159,16 @@ public class TraitAttacked extends Trait {
                         entity.setBeenAttacked();
                     }
 
-                    if(entity1 != null) {
-                        double d1 = entity1.posX - entity.getDouble("posX");
+                    if(attacker != null) {
+                        double d1 = attacker.posX - entity.getDouble("posX");
                         double d0;
 
-                        for(d0 = entity1.posZ - entity.getDouble("posZ"); d1 * d1 + d0 * d0 < 1.0E-4D; d0 = (Math.random() - Math.random()) * 0.01D) {
+                        for(d0 = attacker.posZ - entity.getDouble("posZ"); d1 * d1 + d0 * d0 < 1.0E-4D; d0 = (Math.random() - Math.random()) * 0.01D) {
                             d1 = (Math.random() - Math.random()) * 0.01D;
                         }
 
                         attackedAtYaw = (float) (Math.atan2(d0, d1) * 180.0D / Math.PI) - entity.getFloat("rotationYaw");
-                        ((EntityLiving) entity).knockBack(entity1, damage, d1, d0);
+                        ((EntityLiving) entity).knockBack(attacker, damage, d1, d0);
                     } else {
                         attackedAtYaw = (float) ((int) (Math.random() * 2.0D) * 180);
                     }
@@ -203,7 +203,14 @@ public class TraitAttacked extends Trait {
                     }
                 }
 
-                return true;
+                if (((EntityLiving)entity).riddenByEntity != entity && ((EntityLiving)entity).ridingEntity != entity) {
+                    if (attacker != entity) {
+                        entity.setObject("entityToAttack", attacker);
+                    }
+                    return true;
+                } else {
+                    return true;
+                }
             }
         }
     }

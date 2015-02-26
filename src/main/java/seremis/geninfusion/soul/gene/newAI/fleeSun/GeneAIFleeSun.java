@@ -9,7 +9,8 @@ import seremis.geninfusion.soul.allele.AlleleBoolean;
 public class GeneAIFleeSun extends MasterGene {
 
     public GeneAIFleeSun() {
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_FLEE_SUN_MOVE_SPEED));
+        addControlledGene(Genes.GENE_AI_FLEE_SUN_INDEX);
+        addControlledGene(Genes.GENE_AI_FLEE_SUN_MOVE_SPEED);
     }
 
     @Override

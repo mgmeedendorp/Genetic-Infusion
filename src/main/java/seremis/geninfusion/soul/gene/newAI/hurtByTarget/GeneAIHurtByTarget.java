@@ -9,7 +9,8 @@ import seremis.geninfusion.soul.allele.AlleleBoolean;
 public class GeneAIHurtByTarget extends MasterGene {
 
     public GeneAIHurtByTarget() {
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_HURT_BY_TARGET_CALL_HELP));
+        addControlledGene(Genes.GENE_AI_HURT_BY_TARGET_INDEX);
+        addControlledGene(Genes.GENE_AI_HURT_BY_TARGET_CALL_HELP);
     }
 
     @Override

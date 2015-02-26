@@ -1,13 +1,12 @@
-package seremis.geninfusion.soul.gene.newAI.targetNonTamed;
+package seremis.geninfusion.soul.gene;
 
 import seremis.geninfusion.api.soul.IAllele;
 import seremis.geninfusion.soul.Gene;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
-import seremis.geninfusion.soul.allele.AlleleBooleanArray;
 
-public class GeneAITargetNonTamedVisible extends Gene {
+public class GeneTouchToAttack extends Gene {
     @Override
     public Class<? extends IAllele> possibleAlleles() {
-        return AlleleBooleanArray.class;
+        return AlleleBoolean.class;
     }
 }

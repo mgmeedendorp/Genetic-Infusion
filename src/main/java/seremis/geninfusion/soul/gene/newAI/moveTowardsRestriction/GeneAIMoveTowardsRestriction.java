@@ -9,7 +9,8 @@ import seremis.geninfusion.soul.allele.AlleleBoolean;
 public class GeneAIMoveTowardsRestriction extends MasterGene {
 
     public GeneAIMoveTowardsRestriction() {
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_MOVE_TOWARDS_RESTRICTION_MOVE_SPEED));
+        addControlledGene(Genes.GENE_AI_MOVE_TOWARDS_RESTRICTION_INDEX);
+        addControlledGene(Genes.GENE_AI_MOVE_TOWARDS_RESTRICTION_MOVE_SPEED);
     }
 
     @Override

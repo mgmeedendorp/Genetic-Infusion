@@ -9,9 +9,10 @@ import seremis.geninfusion.soul.allele.AlleleBoolean;
 public class GeneAIWatchClosest2 extends MasterGene {
 
     public GeneAIWatchClosest2() {
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_WATCH_CLOSEST_2_TARGET));
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_WATCH_CLOSEST_2_RANGE));
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_WATCH_CLOSEST_2_CHANCE));
+        addControlledGene(Genes.GENE_AI_WATCH_CLOSEST_2_INDEX);
+        addControlledGene(Genes.GENE_AI_WATCH_CLOSEST_2_TARGET);
+        addControlledGene(Genes.GENE_AI_WATCH_CLOSEST_2_RANGE);
+        addControlledGene(Genes.GENE_AI_WATCH_CLOSEST_2_CHANCE);
     }
 
     @Override

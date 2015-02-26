@@ -9,7 +9,8 @@ import seremis.geninfusion.soul.allele.AlleleBoolean;
 public class GeneAIFollowParent extends MasterGene {
 
     public GeneAIFollowParent() {
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_FOLLOW_PARENT_MOVE_SPEED));
+        addControlledGene(Genes.GENE_AI_FOLLOW_PARENT_INDEX);
+        addControlledGene(Genes.GENE_AI_FOLLOW_PARENT_MOVE_SPEED);
     }
 
     @Override

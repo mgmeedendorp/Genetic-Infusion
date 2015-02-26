@@ -147,6 +147,8 @@ public interface IEntitySoulCustom extends IRangedAttackMob {
 
     void attackEntity(Entity entity, float distance);
 
+    boolean attackEntityAsMob(Entity entity);
+
     void setFlag(int id, boolean value);
 
     boolean getFlag(int id);

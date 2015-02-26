@@ -9,9 +9,10 @@ import seremis.geninfusion.soul.allele.AlleleBoolean;
 public class GeneAITempt extends MasterGene {
 
     public GeneAITempt() {
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_TEMPT_MOVE_SPEED));
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_TEMPT_ITEM));
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_TEMPT_SCARED_BY_PLAYER));
+        addControlledGene(Genes.GENE_AI_TEMPT_INDEX);
+        addControlledGene(Genes.GENE_AI_TEMPT_MOVE_SPEED);
+        addControlledGene(Genes.GENE_AI_TEMPT_ITEM);
+        addControlledGene(Genes.GENE_AI_TEMPT_SCARED_BY_PLAYER);
     }
 
     @Override

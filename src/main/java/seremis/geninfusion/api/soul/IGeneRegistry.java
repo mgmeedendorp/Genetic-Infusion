@@ -75,5 +75,5 @@ public interface IGeneRegistry {
 
     public Class[] getValueClassArray(IEntitySoulCustom entity, String name);
 
-    public List<IGene> getControlledGenes(String masterGeneName);
+    public List<String> getControlledGenes(String masterGeneName);
 }

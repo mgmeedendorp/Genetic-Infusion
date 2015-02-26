@@ -9,10 +9,11 @@ import seremis.geninfusion.soul.allele.AlleleBoolean;
 public class GeneAIAvoidEntity extends MasterGene {
 
     public GeneAIAvoidEntity() {
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_AVOID_ENTITY_TARGET));
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_AVOID_ENTITY_RANGE));
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_AVOID_ENTITY_FAR_SPEED));
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_AVOID_ENTITY_NEAR_SPEED));
+        addControlledGene(Genes.GENE_AI_AVOID_ENTITY_INDEX);
+        addControlledGene(Genes.GENE_AI_AVOID_ENTITY_TARGET);
+        addControlledGene(Genes.GENE_AI_AVOID_ENTITY_RANGE);
+        addControlledGene(Genes.GENE_AI_AVOID_ENTITY_FAR_SPEED);
+        addControlledGene(Genes.GENE_AI_AVOID_ENTITY_NEAR_SPEED);
     }
 
     @Override

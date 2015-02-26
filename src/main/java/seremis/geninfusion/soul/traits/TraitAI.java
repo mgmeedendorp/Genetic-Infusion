@@ -108,8 +108,7 @@ public class TraitAI extends Trait {
                     if(entitySelector[i].equals("mobSelector")) {
                         selector = IMob.mobSelector;
                     }
-
-                    targetTasks.addTask(index[i], new EntityAINearestAttackableTargetCustom(entity, target[i], targetChance[i], nearbyOnly[i], visible[i], selector));
+                    targetTasks.addTask(index[i], new EntityAINearestAttackableTargetCustom(entity, target[i], targetChance[i], visible[i], nearbyOnly[i], selector));
                 }
             }
 
@@ -420,52 +419,6 @@ public class TraitAI extends Trait {
     }
 
     @Override
-    public void updateWanderPath(IEntitySoulCustom entity) {
-        double posX = entity.getDouble("posX");
-        double posY = entity.getDouble("posY");
-        double posZ = entity.getDouble("posZ");
-
-        entity.getWorld().theProfiler.startSection("stroll");
-        boolean flag = false;
-        int i = -1;
-        int j = -1;
-        int k = -1;
-        float f = -99999.0F;
-
-        for(int l = 0; l < 10; ++l) {
-            int i1 = MathHelper.floor_double(posX + (double) entity.getRandom().nextInt(13) - 6.0D);
-            int j1 = MathHelper.floor_double(posY + (double) entity.getRandom().nextInt(7) - 3.0D);
-            int k1 = MathHelper.floor_double(posZ + (double) entity.getRandom().nextInt(13) - 6.0D);
-            float f1 = entity.getBlockPathWeight(i1, j1, k1);
-
-            if(f1 > f) {
-                f = f1;
-                i = i1;
-                j = j1;
-                k = k1;
-                flag = true;
-            }
-        }
-
-        if(flag) {
-            entity.setObject("pathToEntity", entity.getWorld().getEntityPathToXYZ((Entity) entity, i, j, k, 10.0F, true, false, false, true));
-        }
-
-        entity.getWorld().theProfiler.endSection();
-    }
-
-    @Override
-    public float getBlockPathWeight(IEntitySoulCustom entity, int x, int y, int z) {
-        //TODO this properly
-        return 0.5F - entity.getWorld().getLightBrightness(x, y, z);
-    }
-
-    @Override
-    public Entity findPlayerToAttack(IEntitySoulCustom entity) {
-        return entity.getWorld().getClosestPlayerToEntity((Entity) entity, 50);
-    }
-
-    @Override
     public void updateEntityActionState(IEntitySoulCustom entity) {
         if(entity instanceof EntityCreature) {
             entity.getWorld().theProfiler.startSection("ai");
@@ -661,10 +614,10 @@ public class TraitAI extends Trait {
         ((EntityLiving) entity).getEntitySenses().clearSensingCache();
         entity.getWorld().theProfiler.endSection();
         entity.getWorld().theProfiler.startSection("targetSelector");
-        ((EntityAITasks) entity.getObject("targetTasks")).onUpdateTasks();
+        ((EntityLiving) entity).targetTasks.onUpdateTasks();
         entity.getWorld().theProfiler.endSection();
         entity.getWorld().theProfiler.startSection("goalSelector");
-        ((EntityAITasks) entity.getObject("tasks")).onUpdateTasks();
+        ((EntityLiving) entity).tasks.onUpdateTasks();
         entity.getWorld().theProfiler.endSection();
         entity.getWorld().theProfiler.startSection("navigation");
         ((EntityLiving) entity).getNavigator().onUpdateNavigation();

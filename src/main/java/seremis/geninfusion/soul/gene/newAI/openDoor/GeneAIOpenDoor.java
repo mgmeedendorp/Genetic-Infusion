@@ -9,7 +9,8 @@ import seremis.geninfusion.soul.allele.AlleleBoolean;
 public class GeneAIOpenDoor extends MasterGene {
 
     public GeneAIOpenDoor() {
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_OPEN_DOOR_CLOSE_DOOR));
+        addControlledGene(Genes.GENE_AI_OPEN_DOOR_INDEX);
+        addControlledGene(Genes.GENE_AI_OPEN_DOOR_CLOSE_DOOR);
     }
 
     @Override

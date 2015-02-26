@@ -1,6 +1,7 @@
 package seremis.geninfusion.soul.allele;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import seremis.geninfusion.api.soul.EnumAlleleType;
 import seremis.geninfusion.soul.Allele;
@@ -32,7 +33,7 @@ public class AlleleClassArray extends Allele {
         super.writeToNBT(compound);
         compound.setInteger("length", value.length);
         for(int i = 0; i < value.length; i++) {
-            compound.setString("value" + i, value[i].toString());
+            compound.setString("value" + i, value[i].getName());
         }
     }
 

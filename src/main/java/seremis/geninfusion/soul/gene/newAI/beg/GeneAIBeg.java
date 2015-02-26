@@ -9,7 +9,8 @@ import seremis.geninfusion.soul.allele.AlleleBoolean;
 public class GeneAIBeg extends MasterGene {
 
     public GeneAIBeg() {
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_BEG_RANGE));
+        addControlledGene(Genes.GENE_AI_BEG_INDEX);
+        addControlledGene(Genes.GENE_AI_BEG_RANGE);
     }
 
     @Override

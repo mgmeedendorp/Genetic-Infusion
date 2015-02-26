@@ -9,7 +9,8 @@ import seremis.geninfusion.soul.allele.AlleleBoolean;
 public class GeneAIWander extends MasterGene {
 
     public GeneAIWander() {
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_WANDER_MOVE_SPEED));
+        addControlledGene(Genes.GENE_AI_WANDER_INDEX);
+        addControlledGene(Genes.GENE_AI_WANDER_MOVE_SPEED);
     }
 
     @Override

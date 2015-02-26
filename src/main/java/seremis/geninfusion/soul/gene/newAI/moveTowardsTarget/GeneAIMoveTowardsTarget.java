@@ -9,8 +9,9 @@ import seremis.geninfusion.soul.allele.AlleleBoolean;
 public class GeneAIMoveTowardsTarget extends MasterGene {
 
     public GeneAIMoveTowardsTarget() {
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_MOVE_TOWARDS_TARGET_MAX_DISTANCE));
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_MOVE_TOWARDS_TARGET_MOVE_SPEED));
+        addControlledGene(Genes.GENE_AI_MOVE_TOWARDS_TARGET_INDEX);
+        addControlledGene(Genes.GENE_AI_MOVE_TOWARDS_TARGET_MAX_DISTANCE);
+        addControlledGene(Genes.GENE_AI_MOVE_TOWARDS_TARGET_MOVE_SPEED);
     }
 
     @Override

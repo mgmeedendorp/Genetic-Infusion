@@ -9,7 +9,8 @@ import seremis.geninfusion.soul.allele.AlleleBoolean;
 public class GeneAIPanic extends MasterGene {
 
     public GeneAIPanic() {
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_PANIC_MOVE_SPEED));
+        addControlledGene(Genes.GENE_AI_PANIC_INDEX);
+        addControlledGene(Genes.GENE_AI_PANIC_MOVE_SPEED);
     }
 
     @Override

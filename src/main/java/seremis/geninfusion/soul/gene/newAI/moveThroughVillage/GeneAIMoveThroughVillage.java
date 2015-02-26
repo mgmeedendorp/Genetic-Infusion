@@ -9,8 +9,9 @@ import seremis.geninfusion.soul.allele.AlleleBoolean;
 public class GeneAIMoveThroughVillage extends MasterGene {
 
     public GeneAIMoveThroughVillage() {
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_MOVE_THROUGH_VILLAGE_MOVE_SPEED));
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_MOVE_THROUGH_VILLAGE_IS_NOCTURNAL));
+        addControlledGene(Genes.GENE_AI_MOVE_THROUGH_VILLAGE_INDEX);
+        addControlledGene(Genes.GENE_AI_MOVE_THROUGH_VILLAGE_MOVE_SPEED);
+        addControlledGene(Genes.GENE_AI_MOVE_THROUGH_VILLAGE_IS_NOCTURNAL);
     }
 
     @Override

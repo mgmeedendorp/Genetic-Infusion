@@ -33,7 +33,7 @@ public class EntityAINearestAttackableTargetCustom extends EntityAITargetCustom 
         this.setMutexBits(1);
         this.targetEntitySelector = new IEntitySelector() {
             public boolean isEntityApplicable(Entity entity) {
-                return entity instanceof EntityLivingBase && !(entitySelector != null && !entitySelector.isEntityApplicable(entity)) && EntityAINearestAttackableTargetCustom.this.isSuitableTarget((EntityLivingBase) entity, false);
+                return entity instanceof EntityLivingBase && (!(entitySelector != null && !entitySelector.isEntityApplicable(entity)) && EntityAINearestAttackableTargetCustom.this.isSuitableTarget((EntityLivingBase) entity, false));
             }
         };
     }
@@ -42,7 +42,7 @@ public class EntityAINearestAttackableTargetCustom extends EntityAITargetCustom 
         if(targetChance <= 0 || living.getRNG().nextInt(targetChance) == 0) {
             double followRange = getFollowRange();
 
-            List list = living.worldObj.selectEntitiesWithinAABB(this.targetClass, this.living.boundingBox.expand(followRange, 4.0D, followRange), this.targetEntitySelector);
+            List list = living.worldObj.selectEntitiesWithinAABB(this.targetClass, this.living.boundingBox.expand(followRange, 4.0D, followRange), targetEntitySelector);
             Collections.sort(list, sorter);
 
             if(!list.isEmpty()) {

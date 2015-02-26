@@ -9,11 +9,12 @@ import seremis.geninfusion.soul.allele.AlleleBoolean;
 public class GeneAINearestAttackableTarget extends MasterGene {
 
     public GeneAINearestAttackableTarget() {
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_TARGET));
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_TARGET_CHANCE));
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_VISIBLE));
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_NEARBY_ONLY));
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_ENTITY_SELECTOR));
+        addControlledGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_INDEX);
+        addControlledGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_TARGET);
+        addControlledGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_TARGET_CHANCE);
+        addControlledGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_VISIBLE);
+        addControlledGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_NEARBY_ONLY);
+        addControlledGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_ENTITY_SELECTOR);
     }
 
     @Override

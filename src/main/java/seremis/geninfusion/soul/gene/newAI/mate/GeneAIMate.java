@@ -9,7 +9,8 @@ import seremis.geninfusion.soul.allele.AlleleBoolean;
 public class GeneAIMate extends MasterGene {
 
     public GeneAIMate() {
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_MATE_MOVE_SPEED));
+        addControlledGene(Genes.GENE_AI_MATE_INDEX);
+        addControlledGene(Genes.GENE_AI_MATE_MOVE_SPEED);
     }
 
     @Override

@@ -9,7 +9,8 @@ import seremis.geninfusion.soul.allele.AlleleBoolean;
 public class GeneAIRunAroundLikeCrazy extends MasterGene {
 
     public GeneAIRunAroundLikeCrazy() {
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_RUN_AROUND_LIKE_CRAZY_MOVE_SPEED));
+        addControlledGene(Genes.GENE_AI_RUN_AROUND_LIKE_CRAZY_INDEX);
+        addControlledGene(Genes.GENE_AI_RUN_AROUND_LIKE_CRAZY_MOVE_SPEED);
     }
 
     @Override

@@ -9,7 +9,8 @@ import seremis.geninfusion.soul.allele.AlleleBoolean;
 public class GeneAIControlledByPlayer extends MasterGene {
 
     public GeneAIControlledByPlayer() {
-        addControlledGene(SoulHelper.geneRegistry.getGene(Genes.GENE_AI_CONTROLLED_BY_PLAYER_MAX_SPEED));
+        addControlledGene(Genes.GENE_AI_CONTROLLED_BY_PLAYER_INDEX);
+        addControlledGene(Genes.GENE_AI_CONTROLLED_BY_PLAYER_MAX_SPEED);
     }
 
     @Override
