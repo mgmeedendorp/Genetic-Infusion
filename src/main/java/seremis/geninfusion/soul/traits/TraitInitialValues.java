@@ -16,21 +16,21 @@ public class TraitInitialValues extends Trait {
     public void firstTick(IEntitySoulCustom entity) {
         BaseAttributeMap attributeMap = ((EntityLiving) entity).getAttributeMap();
 
-        float maxHealth = SoulHelper.geneRegistry.getValueFloat(entity, Genes.GENE_MAX_HEALTH);
+        double maxHealth = SoulHelper.geneRegistry.getValueDouble(entity, Genes.GENE_MAX_HEALTH);
         attributeMap.getAttributeInstance(SharedMonsterAttributes.maxHealth).setBaseValue(maxHealth);
 
-        entity.setFloat("health", maxHealth);
+        entity.setFloat("health", (float) maxHealth);
 
-        float attackDamage = SoulHelper.geneRegistry.getValueFloat(entity, Genes.GENE_ATTACK_DAMAGE);
+        double attackDamage = SoulHelper.geneRegistry.getValueDouble(entity, Genes.GENE_ATTACK_DAMAGE);
         attributeMap.getAttributeInstance(SharedMonsterAttributes.attackDamage).setBaseValue(attackDamage);
 
         double movementSpeed = SoulHelper.geneRegistry.getValueDouble(entity, Genes.GENE_MOVEMENT_SPEED);
         attributeMap.getAttributeInstance(SharedMonsterAttributes.movementSpeed).setBaseValue(movementSpeed);
 
-        float knockbackResistance = SoulHelper.geneRegistry.getValueFloat(entity, Genes.GENE_KNOCKBACK_RESISTANCE);
+        double knockbackResistance = SoulHelper.geneRegistry.getValueDouble(entity, Genes.GENE_KNOCKBACK_RESISTANCE);
         attributeMap.getAttributeInstance(SharedMonsterAttributes.knockbackResistance).setBaseValue(knockbackResistance);
 
-        float followRange = SoulHelper.geneRegistry.getValueFloat(entity, Genes.GENE_FOLLOW_RANGE);
+        double followRange = SoulHelper.geneRegistry.getValueDouble(entity, Genes.GENE_FOLLOW_RANGE);
         attributeMap.getAttributeInstance(SharedMonsterAttributes.followRange).setBaseValue(followRange);
 
         entity.setInteger("creatureAttribute", SoulHelper.geneRegistry.getValueInteger(entity, Genes.GENE_CREATURE_ATTRIBUTE));
@@ -39,9 +39,5 @@ public class TraitInitialValues extends Trait {
         entity.setFloatArray("equipmentDropChances", SoulHelper.geneRegistry.getValueFloatArray(entity, Genes.GENE_EQUIPMENT_DROP_CHANCES));
 
         entity.setBoolean("aiEnabled", SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_USE_NEW_AI));
-
-        if(!entity.getBoolean("aiEnabled")) {
-            attributeMap.getAttributeInstance(SharedMonsterAttributes.movementSpeed).setBaseValue(0.10000000149011612D);
-        }
     }
 }

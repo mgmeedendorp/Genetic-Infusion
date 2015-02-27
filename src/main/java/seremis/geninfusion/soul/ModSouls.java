@@ -1,5 +1,6 @@
 package seremis.geninfusion.soul;
 
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.lib.Traits;
@@ -87,6 +88,7 @@ import seremis.geninfusion.soul.gene.newAI.watchClosest2.GeneAIWatchClosest2Chan
 import seremis.geninfusion.soul.gene.newAI.watchClosest2.GeneAIWatchClosest2Range;
 import seremis.geninfusion.soul.gene.newAI.watchClosest2.GeneAIWatchClosest2Target;
 import seremis.geninfusion.soul.gene.oldAI.GeneCeaseAIMovement;
+import seremis.geninfusion.soul.standardSoul.StandardSoulSkeleton;
 import seremis.geninfusion.soul.standardSoul.StandardSoulZombie;
 import seremis.geninfusion.soul.traits.*;
 
@@ -355,5 +357,6 @@ public class ModSouls {
         traitRegistry.registerTrait(Traits.TRAIT_NAVIGATE, new TraitNavigate());
 
         standardSoulRegistry.register(new StandardSoulZombie(), EntityZombie.class);
+        standardSoulRegistry.register(new StandardSoulSkeleton(), EntitySkeleton.class);
     }
 }

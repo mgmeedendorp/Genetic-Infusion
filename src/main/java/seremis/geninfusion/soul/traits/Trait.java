@@ -88,7 +88,6 @@ public class Trait implements ITrait {
     @Override
     public void updateWanderPath(IEntitySoulCustom entity) {}
 
-    //TODO implement this in TraitAttack
     @Override
     public void attackEntityWithRangedAttack(IEntitySoulCustom entity, EntityLivingBase target, float distanceModified) {}
 

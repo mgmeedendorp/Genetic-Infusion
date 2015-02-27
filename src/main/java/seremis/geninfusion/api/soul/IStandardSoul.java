@@ -1,14 +1,13 @@
 package seremis.geninfusion.api.soul;
 
-/**
- * @author Seremis
- */
+import net.minecraft.entity.EntityLiving;
+
 public interface IStandardSoul {
 
     /**
      * This method returns a standard Soul for one entity passed in the StandardSoulRegistry.register() method.
      *
-     * @return The soul of the entity.
+     * @return The IChromosome for the gene.
      */
-    public IChromosome getChromosomeFromGene(String gene);
+    public IChromosome getChromosomeFromGene(EntityLiving entity, String gene);
 }

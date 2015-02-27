@@ -1,9 +1,13 @@
 package seremis.geninfusion.soul.standardSoul;
 
 import net.minecraft.client.model.ModelZombie;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -16,15 +20,13 @@ import seremis.geninfusion.api.soul.util.animation.AnimationPart;
 import seremis.geninfusion.soul.Chromosome;
 import seremis.geninfusion.soul.allele.*;
 
-/**
- * @author Seremis
- */
+
 public class StandardSoul implements IStandardSoul {
 
     @Override
-    public IChromosome getChromosomeFromGene(String gene) {
+    public IChromosome getChromosomeFromGene(EntityLiving entity, String gene) {
         if(gene.equals(Genes.GENE_ATTACK_DAMAGE)) {
-            return new Chromosome(new AlleleFloat(false, 0F));
+            return new Chromosome(new AlleleDouble(true, entity.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.attackDamage).getBaseValue()));
         } else if(gene.equals(Genes.GENE_BURNS_IN_DAYLIGHT)) {
             return new Chromosome(new AlleleBoolean(true, false));
         } else if(gene.equals(Genes.GENE_CEASE_AI_MOVEMENT)) {
@@ -32,7 +34,7 @@ public class StandardSoul implements IStandardSoul {
         } else if(gene.equals(Genes.GENE_CHILDREN_BURN_IN_DAYLIGHT)) {
             return new Chromosome(new AlleleBoolean(true, false));
         } else if(gene.equals(Genes.GENE_CREATURE_ATTRIBUTE)) {
-            return new Chromosome(new AlleleInteger(true, EnumCreatureAttribute.UNDEFINED.ordinal()));
+            return new Chromosome(new AlleleInteger(true, entity.getCreatureAttribute().ordinal()));
         } else if(gene.equals(Genes.GENE_DEATH_SOUND)) {
             return new Chromosome(new AlleleString(false, "game.hostile.die"));
         } else if(gene.equals(Genes.GENE_DROWNS_IN_AIR)) {
@@ -44,31 +46,31 @@ public class StandardSoul implements IStandardSoul {
         } else if(gene.equals(Genes.GENE_EXPERIENCE_VALUE)) {
             return new Chromosome(new AlleleInteger(true, 5));
         } else if(gene.equals(Genes.GENE_FOLLOW_RANGE)) {
-            return new Chromosome(new AlleleFloat(true, 16));
+            return new Chromosome(new AlleleDouble(true, entity.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.followRange).getBaseValue()));
         } else if(gene.equals(Genes.GENE_HURT_SOUND)) {
             return new Chromosome(new AlleleString(true, "mob.hostile.hurt"));
         } else if(gene.equals(Genes.GENE_IMMUNE_TO_FIRE)) {
-            return new Chromosome(new AlleleBoolean(true, false));
+            return new Chromosome(new AlleleBoolean(true, entity.isImmuneToFire()));
         } else if(gene.equals(Genes.GENE_INVULNERABLE)) {
-            return new Chromosome(new AlleleBoolean(true, false));
+            return new Chromosome(new AlleleBoolean(true, entity.isEntityInvulnerable()));
         } else if(gene.equals(Genes.GENE_IS_CREATURE)) {
-            return new Chromosome(new AlleleBoolean(false, false));
+            return new Chromosome(new AlleleBoolean(false, entity instanceof EntityCreature));
         } else if(gene.equals(Genes.GENE_ITEM_DROPS)) {
             return new Chromosome(new AlleleInventory(true, new ItemStack[]{}));
         } else if(gene.equals(Genes.GENE_KNOCKBACK_RESISTANCE)) {
-            return new Chromosome(new AlleleFloat(true, 0));
+            return new Chromosome(new AlleleDouble(true, entity.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.knockbackResistance).getBaseValue()));
         } else if(gene.equals(Genes.GENE_LIVING_SOUND)) {
             return new Chromosome(new AlleleString(false, null));
         } else if(gene.equals(Genes.GENE_MAX_HEALTH)) {
-            return new Chromosome(new AlleleFloat(true, 20));
+            return new Chromosome(new AlleleDouble(true, entity.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.maxHealth).getBaseValue()));
         } else if(gene.equals(Genes.GENE_MAX_HURT_RESISTANT_TIME)) {
-            return new Chromosome(new AlleleInteger(true, 20));
+            return new Chromosome(new AlleleInteger(true, entity.maxHurtResistantTime));
         } else if(gene.equals(Genes.GENE_MOVEMENT_SPEED)) {
-            return new Chromosome(new AlleleDouble(true, 0.10000000149011612D));
+            return new Chromosome(new AlleleDouble(true, entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getBaseValue()));
         } else if(gene.equals(Genes.GENE_PICKS_UP_ITEMS)) {
             return new Chromosome(new AlleleBoolean(true, false));
         } else if(gene.equals(Genes.GENE_PORTAL_COOLDOWN)) {
-            return new Chromosome(new AlleleInteger(true, 900));
+            return new Chromosome(new AlleleInteger(true, entity.getPortalCooldown()));
         } else if(gene.equals(Genes.GENE_RARE_ITEM_DROP_CHANCES)) {
             return new Chromosome(new AlleleFloatArray(true, new float[]{0.33F, 0.33F, 0.33F}));
         } else if(gene.equals(Genes.GENE_RARE_ITEM_DROPS)) {
@@ -84,9 +86,9 @@ public class StandardSoul implements IStandardSoul {
         } else if(gene.equals(Genes.GENE_SWIM_SOUND)) {
             return new Chromosome(new AlleleString(true, "game.neutral.swim"));
         } else if(gene.equals(Genes.GENE_TALK_INTERVAL)) {
-            return new Chromosome(new AlleleInteger(true, 80));
+            return new Chromosome(new AlleleInteger(true, entity.getTalkInterval()));
         } else if(gene.equals(Genes.GENE_TELEPORT_TIME_IN_PORTAL)) {
-            return new Chromosome(new AlleleInteger(true, 0));
+            return new Chromosome(new AlleleInteger(true, entity.getMaxInPortalTime()));
         } else if(gene.equals(Genes.GENE_WALK_SOUND)) {
             return new Chromosome(new AlleleString(true, "mob.neutral.step"));
         } else if(gene.equals(Genes.GENE_USE_NEW_AI)) {
@@ -94,11 +96,9 @@ public class StandardSoul implements IStandardSoul {
         } else if(gene.equals(Genes.GENE_USE_OLD_AI)) {
             return new Chromosome(new AlleleBoolean(true, true));
         } else if(gene.equals(Genes.GENE_VERTICAL_FACE_SPEED)) {
-            return new Chromosome(new AlleleInteger(true, 40));
-        } else if(gene.equals(Genes.GENE_IS_CREATURE)) {
-            return new Chromosome(new AlleleBoolean(true, true));
+            return new Chromosome(new AlleleInteger(true, entity.getVerticalFaceSpeed()));
         } else if(gene.equals(Genes.GENE_IS_TAMEABLE)) {
-            return new Chromosome(new AlleleBoolean(true, false));
+            return new Chromosome(new AlleleBoolean(true, entity instanceof EntityTameable));
         } else if(gene.equals(Genes.GENE_TOUCH_ATTACK)) {
             return new Chromosome(new AlleleBoolean(true, true));
         } else if(gene.equals(Genes.GENE_AI_ARROW_ATTACK)) {

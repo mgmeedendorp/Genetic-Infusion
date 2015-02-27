@@ -112,6 +112,19 @@ public class TraitAI extends Trait {
                 }
             }
 
+            if(gReg.getValueBoolean(entity, Genes.GENE_AI_RESTRICT_SUN)) {
+                int index = gReg.getValueInteger(entity, Genes.GENE_AI_RESTRICT_SUN_INDEX);
+
+                tasks.addTask(index, new EntityAIRestrictSunCustom(entity));
+            }
+
+            if(gReg.getValueBoolean(entity, Genes.GENE_AI_FLEE_SUN)) {
+                int index = gReg.getValueInteger(entity, Genes.GENE_AI_FLEE_SUN_INDEX);
+                double moveSpeed = gReg.getValueDouble(entity, Genes.GENE_AI_FLEE_SUN_MOVE_SPEED);
+
+                tasks.addTask(index, new EntityAIFleeSunCustom(entity, moveSpeed));
+            }
+
 
             //        if(gReg.getValueBoolean(entity, Genes.GENE_AI_ARROW_ATTACK)) {
             //            int maxRangedAttackTime = gReg.getValueInteger(entity, Genes.GENE_AI_ARROW_ATTACK_MAX_RANGED_ATTACK_TIME);

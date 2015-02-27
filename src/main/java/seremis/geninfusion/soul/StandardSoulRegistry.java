@@ -31,7 +31,7 @@ public class StandardSoulRegistry implements IStandardSoulRegistry {
         for(int i = 0; i < chromosomes.length; i++) {
             IGene gene = SoulHelper.geneRegistry.getGene(i);
             String name = SoulHelper.geneRegistry.getGeneName(gene);
-            chromosomes[i] = getStandardSoulForEntity(entity).getChromosomeFromGene(name);
+            chromosomes[i] = getStandardSoulForEntity(entity).getChromosomeFromGene(entity, name);
             if(chromosomes[i] == null) {
                 throw new NullPointerException("There seems to be a Gene: (" + name + ") without an associated Chromosome for Entity: " + entity + ".");
             } else if(!EnumAlleleType.getForClass(gene.possibleAlleles()).equals(EnumAlleleType.getForClass(chromosomes[i].getPrimary().getClass()))) {

@@ -1,10 +1,12 @@
 package seremis.geninfusion.soul.traits;
 
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
@@ -66,5 +68,31 @@ public class TraitAttack extends Trait {
 
         living.setLastAttacker(entityToAttack);
         return false;
+    }
+
+    @Override
+    public void attackEntityWithRangedAttack(IEntitySoulCustom entity, EntityLivingBase target, float distanceModified) {
+        EntityLiving living = (EntityLiving) entity;
+
+        EntityArrow entityarrow = new EntityArrow(living.worldObj, living, target, 1.6F, (float)(14 - living.worldObj.difficultySetting.getDifficultyId() * 4));
+        int powerLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, living.getHeldItem());
+        int punchLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, living.getHeldItem());
+        entityarrow.setDamage((double)(distanceModified * 2.0F) + entity.getRandom().nextGaussian() * 0.25D + (double)((float)entity.getWorld().difficultySetting.getDifficultyId() * 0.11F));
+
+        if (powerLevel > 0) {
+            entityarrow.setDamage(entityarrow.getDamage() + (double)powerLevel * 0.5D + 0.5D);
+        }
+
+        if (punchLevel > 0) {
+            entityarrow.setKnockbackStrength(punchLevel);
+        }
+
+        //TODO skeleton type
+        if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, living.getHeldItem()) > 0) {
+            entityarrow.setFire(100);
+        }
+
+        entity.playSound("random.bow", 1.0F, 1.0F / (entity.getRandom().nextFloat() * 0.4F + 0.8F));
+        entity.getWorld().spawnEntityInWorld(entityarrow);
     }
 }

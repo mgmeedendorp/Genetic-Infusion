@@ -3,6 +3,7 @@ package seremis.geninfusion.item;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -45,7 +46,7 @@ public class ItemThermometer extends GIItem {
                 }
             }
             if(stack.getItemDamage() == 1) {
-                EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityZombie(world)), x, y + 1, z);
+                EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.standardSoulRegistry.getSoulForEntity(new EntitySkeleton(world)), x, y + 1, z);
                 world.spawnEntityInWorld(entity);
             }
         }

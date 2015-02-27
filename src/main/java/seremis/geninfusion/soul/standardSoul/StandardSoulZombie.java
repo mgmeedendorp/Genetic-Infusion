@@ -1,5 +1,6 @@
 package seremis.geninfusion.soul.standardSoul;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,16 +14,12 @@ import seremis.geninfusion.soul.allele.*;
 public class StandardSoulZombie extends StandardSoul {
 
     @Override
-    public IChromosome getChromosomeFromGene(String gene) {
-        if(gene.equals(Genes.GENE_ATTACK_DAMAGE)) return new Chromosome(new AlleleFloat(true, 3.0F));
+    public IChromosome getChromosomeFromGene(EntityLiving entity, String gene) {
         if(gene.equals(Genes.GENE_BURNS_IN_DAYLIGHT)) return new Chromosome(new AlleleBoolean(false, true));
-        if(gene.equals(Genes.GENE_CREATURE_ATTRIBUTE)) return new Chromosome(new AlleleInteger(false, EnumCreatureAttribute.UNDEAD.ordinal()));
         if(gene.equals(Genes.GENE_DEATH_SOUND)) return new Chromosome(new AlleleString(true, "mob.zombie.death"));
         if(gene.equals(Genes.GENE_HURT_SOUND)) return new Chromosome(new AlleleString(false, "mob.zombie.hurt"));
-        if(gene.equals(Genes.GENE_IS_CREATURE)) return new Chromosome(new AlleleBoolean(true, true));
         if(gene.equals(Genes.GENE_ITEM_DROPS)) return new Chromosome(new AlleleInventory(false, new ItemStack[]{new ItemStack(Items.rotten_flesh)}));
         if(gene.equals(Genes.GENE_LIVING_SOUND)) return new Chromosome(new AlleleString(false, "mob.zombie.say"));
-        if(gene.equals(Genes.GENE_MOVEMENT_SPEED)) return new Chromosome(new AlleleDouble(true, 0.23000000417232513D));
         if(gene.equals(Genes.GENE_PICKS_UP_ITEMS)) return new Chromosome(new AlleleBoolean(false, true));
         if(gene.equals(Genes.GENE_RARE_ITEM_DROPS)) return new Chromosome(new AlleleInventory(false, new ItemStack[]{new ItemStack(Items.iron_ingot), new ItemStack(Items.carrot), new ItemStack(Items.potato)}));
         if(gene.equals(Genes.GENE_SET_ON_FIRE_FROM_ATTACK)) return new Chromosome(new AlleleBoolean(false, true));
@@ -77,6 +74,6 @@ public class StandardSoulZombie extends StandardSoul {
 
 
 
-        return super.getChromosomeFromGene(gene);
+        return super.getChromosomeFromGene(entity, gene);
     }
 }
