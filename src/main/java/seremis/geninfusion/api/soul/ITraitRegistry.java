@@ -1,6 +1,5 @@
 package seremis.geninfusion.api.soul;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**

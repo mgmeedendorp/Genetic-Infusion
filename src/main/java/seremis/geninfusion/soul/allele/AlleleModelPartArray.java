@@ -29,7 +29,7 @@ public class AlleleModelPartArray extends Allele {
         super.readFromNBT(compound);
         value = new ModelPart[compound.getInteger("length")];
         for(int i = 0; i < value.length; i++) {
-            value[i] = new ModelPart(compound.getCompoundTag("value"+i));
+            value[i] = new ModelPart(compound.getCompoundTag("value" + i));
         }
     }
 

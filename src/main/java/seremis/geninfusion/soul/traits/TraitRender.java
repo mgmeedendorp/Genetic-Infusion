@@ -3,7 +3,6 @@ package seremis.geninfusion.soul.traits;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.util.MathHelper;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
@@ -40,11 +39,11 @@ public class TraitRender extends Trait {
         AnimationPart[] animationWaveLegLeft = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_WAVE_LEG_LEFT);
         AnimationPart[] animationWaveLegRight = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_WAVE_LEG_RIGHT);
 
-        entity.setFloat("legLeftWavePeriod",  timeModifier * 0.6662F);
+        entity.setFloat("legLeftWavePeriod", timeModifier * 0.6662F);
         entity.setFloat("legLeftWaveAmplitude", walkSpeed * 1.4F);
         entity.setFloat("legLeftWaveOffsetHor", (float) Math.PI);
 
-        entity.setFloat("legRightWavePeriod",  timeModifier * 0.6662F);
+        entity.setFloat("legRightWavePeriod", timeModifier * 0.6662F);
         entity.setFloat("legRightWaveAmplitude", walkSpeed * 1.4F);
         entity.setFloat("legRightWaveOffsetHor", 0.0F);
 
@@ -84,7 +83,7 @@ public class TraitRender extends Trait {
         float legRightAngleX = 0.0F;
         float legLeftAngleY = 0.0F;
         float legRightAngleY = 0.0F;
-        
+
         float legRightPointY;
         float legRightPointZ;
         float legLeftPointY;
@@ -92,24 +91,24 @@ public class TraitRender extends Trait {
 
         float headPointY;
 
-        if (((EntityLiving)entity).isRiding()) {
-            armRightAngleX += -((float)Math.PI / 5F);
-            armLeftAngleX += -((float)Math.PI / 5F);
-            legRightAngleX = -((float)Math.PI * 2F / 5F);
-            legLeftAngleX = -((float)Math.PI * 2F / 5F);
-            legRightAngleY = ((float)Math.PI / 10F);
-            legLeftAngleY = -((float)Math.PI / 10F);
+        if(((EntityLiving) entity).isRiding()) {
+            armRightAngleX += -((float) Math.PI / 5F);
+            armLeftAngleX += -((float) Math.PI / 5F);
+            legRightAngleX = -((float) Math.PI * 2F / 5F);
+            legLeftAngleX = -((float) Math.PI * 2F / 5F);
+            legRightAngleY = ((float) Math.PI / 10F);
+            legLeftAngleY = -((float) Math.PI / 10F);
         }
 
-        if (((EntityLiving)entity).getHeldItem() != null) {
-            armRightAngleX = armRightAngleX * 0.5F - ((float)Math.PI / 10F);
+        if(((EntityLiving) entity).getHeldItem() != null) {
+            armRightAngleX = armRightAngleX * 0.5F - ((float) Math.PI / 10F);
         }
 
-        float swingProgress = ((EntityLiving)entity).getSwingProgress(entity.getFloat("partialTickTime"));
+        float swingProgress = ((EntityLiving) entity).getSwingProgress(entity.getFloat("partialTickTime"));
 
         if(swingProgress > -9990.0F) {
             float f6 = swingProgress;
-            bodyAngleY = MathHelper.sin(MathHelper.sqrt_float(f6) * (float)Math.PI * 2.0F) * 0.2F;
+            bodyAngleY = MathHelper.sin(MathHelper.sqrt_float(f6) * (float) Math.PI * 2.0F) * 0.2F;
             armRightPointZ = MathHelper.sin(bodyAngleY) * 5.0F;
             armRightPointX = -MathHelper.cos(bodyAngleY) * 5.0F;
             armLeftPointZ = -MathHelper.sin(bodyAngleY) * 5.0F;
@@ -123,15 +122,15 @@ public class TraitRender extends Trait {
             f6 *= f6;
             f6 *= f6;
             f6 = 1.0F - f6;
-            float f7 = MathHelper.sin(f6 * (float)Math.PI);
-            float f8 = MathHelper.sin(swingProgress * (float)Math.PI) * -(entity.getFloat("headLinearRotateAngleX") - 0.7F) * 0.75F;
+            float f7 = MathHelper.sin(f6 * (float) Math.PI);
+            float f8 = MathHelper.sin(swingProgress * (float) Math.PI) * -(entity.getFloat("headLinearRotateAngleX") - 0.7F) * 0.75F;
 
-            armRightAngleX -= (float) ((double)f7 * 1.2D * (double)f8);
+            armRightAngleX -= (float) ((double) f7 * 1.2D * (double) f8);
             armRightAngleY += bodyAngleY * 2.0F;
-            armRightAngleZ = MathHelper.sin(swingProgress * (float)Math.PI) * -0.4F;
+            armRightAngleZ = MathHelper.sin(swingProgress * (float) Math.PI) * -0.4F;
         }
 
-        if (((EntityLiving)entity).isSneaking()) {
+        if(((EntityLiving) entity).isSneaking()) {
             bodyAngleX = 0.5F;
             armRightAngleX += 0.5F;
             armLeftAngleX += 0.5F;
@@ -154,13 +153,13 @@ public class TraitRender extends Trait {
         armRightAngleX += MathHelper.cos(specialRotation * 0.067F) * 0.05F;
         armLeftAngleX -= MathHelper.cos(specialRotation * 0.067F) * 0.05F;
 
-        if ((((EntityLiving)entity).getHeldItem() != null && ((EntityLiving)entity).getHeldItem().getItemUseAction() == EnumAction.bow)) {
+        if((((EntityLiving) entity).getHeldItem() != null && ((EntityLiving) entity).getHeldItem().getItemUseAction() == EnumAction.bow)) {
             armRightAngleZ = 0.0F;
             armLeftAngleZ = 0.0F;
             armRightAngleY = -0.1F + entity.getFloat("headLinearRotateAngleY");
             armLeftAngleY = 0.1F + entity.getFloat("headLinearRotateAngleY") + 0.4F;
-            armRightAngleX = -((float)Math.PI / 2F) + entity.getFloat("headLinearRotateAngleX");
-            armLeftAngleX = -((float)Math.PI / 2F) + entity.getFloat("headLinearRotateAngleX");
+            armRightAngleX = -((float) Math.PI / 2F) + entity.getFloat("headLinearRotateAngleX");
+            armLeftAngleX = -((float) Math.PI / 2F) + entity.getFloat("headLinearRotateAngleX");
             armRightAngleZ += MathHelper.cos(specialRotation * 0.09F) * 0.05F + 0.05F;
             armLeftAngleZ -= MathHelper.cos(specialRotation * 0.09F) * 0.05F + 0.05F;
             armRightAngleX += MathHelper.sin(specialRotation * 0.067F) * 0.05F;
@@ -250,12 +249,12 @@ public class TraitRender extends Trait {
             legRight[i].render(0.0625F);
         }
 
-//        for(int i = 0; i < cloak.length; i++) {
-//            if(i < animationLinearCloak.length) {
-//                animationLinearCloak[i].setAnimationModel(cloak[i]).animate(entity);
-//            }
-//            cloak[i].render(0.0625F);
-//        }
+        //        for(int i = 0; i < cloak.length; i++) {
+        //            if(i < animationLinearCloak.length) {
+        //                animationLinearCloak[i].setAnimationModel(cloak[i]).animate(entity);
+        //            }
+        //            cloak[i].render(0.0625F);
+        //        }
 
         for(int i = 0; i < ears.length; i++) {
             if(i < animationLinearEars.length) {
@@ -272,23 +271,23 @@ public class TraitRender extends Trait {
 
         double d0 = living.posX - living.prevPosX;
         double d1 = living.posZ - living.prevPosZ;
-        float f = (float)(d0 * d0 + d1 * d1);
+        float f = (float) (d0 * d0 + d1 * d1);
         float f1 = living.renderYawOffset;
         float f2 = 0.0F;
         entity.setFloat("field_70768_au", entity.getFloat("field_110154_aX"));
         float f3 = 0.0F;
 
-        if (f > 0.0025000002F) {
+        if(f > 0.0025000002F) {
             f3 = 1.0F;
-            f2 = (float)Math.sqrt((double)f) * 3.0F;
-            f1 = (float)Math.atan2(d1, d0) * 180.0F / (float)Math.PI - 90.0F;
+            f2 = (float) Math.sqrt((double) f) * 3.0F;
+            f1 = (float) Math.atan2(d1, d0) * 180.0F / (float) Math.PI - 90.0F;
         }
 
-        if (living.swingProgress > 0.0F) {
+        if(living.swingProgress > 0.0F) {
             f1 = living.rotationYaw;
         }
 
-        if (!living.onGround) {
+        if(!living.onGround) {
             f3 = 0.0F;
         }
 
@@ -298,35 +297,35 @@ public class TraitRender extends Trait {
         living.worldObj.theProfiler.endSection();
         living.worldObj.theProfiler.startSection("rangeChecks");
 
-        while (living.rotationYaw - living.prevRotationYaw < -180.0F) {
+        while(living.rotationYaw - living.prevRotationYaw < -180.0F) {
             living.prevRotationYaw -= 360.0F;
         }
 
-        while (living.rotationYaw - living.prevRotationYaw >= 180.0F) {
+        while(living.rotationYaw - living.prevRotationYaw >= 180.0F) {
             living.prevRotationYaw += 360.0F;
         }
 
-        while (living.renderYawOffset - living.prevRenderYawOffset < -180.0F) {
+        while(living.renderYawOffset - living.prevRenderYawOffset < -180.0F) {
             living.prevRenderYawOffset -= 360.0F;
         }
 
-        while (living.renderYawOffset - living.prevRenderYawOffset >= 180.0F) {
+        while(living.renderYawOffset - living.prevRenderYawOffset >= 180.0F) {
             living.prevRenderYawOffset += 360.0F;
         }
 
-        while (living.rotationPitch - living.prevRotationPitch < -180.0F) {
+        while(living.rotationPitch - living.prevRotationPitch < -180.0F) {
             living.prevRotationPitch -= 360.0F;
         }
 
-        while (living.rotationPitch - living.prevRotationPitch >= 180.0F) {
+        while(living.rotationPitch - living.prevRotationPitch >= 180.0F) {
             living.prevRotationPitch += 360.0F;
         }
 
-        while (living.rotationYawHead - living.prevRotationYawHead < -180.0F) {
+        while(living.rotationYawHead - living.prevRotationYawHead < -180.0F) {
             living.prevRotationYawHead -= 360.0F;
         }
 
-        while (living.rotationYawHead - living.prevRotationYawHead >= 180.0F) {
+        while(living.rotationYawHead - living.prevRotationYawHead >= 180.0F) {
             living.prevRotationYawHead += 360.0F;
         }
 

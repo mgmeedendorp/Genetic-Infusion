@@ -1,7 +1,6 @@
 package seremis.geninfusion.soul.allele;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import seremis.geninfusion.api.soul.EnumAlleleType;
 import seremis.geninfusion.soul.Allele;

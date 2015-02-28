@@ -4,7 +4,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 
 /**
- * An AnimationPart that doesn't do any calculations with the numbers plugged in, it directly applies them to the ModelPart.
+ * An AnimationPart that doesn't do any calculations with the numbers plugged in, it directly applies them to the
+ * ModelPart.
  */
 public class AnimationPartLinear extends AnimationPart {
 
@@ -68,42 +69,66 @@ public class AnimationPartLinear extends AnimationPart {
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
 
-        if(rotateAngleX != null) compound.setString("rotateAngleX", rotateAngleX);
-        if(rotateAngleY != null) compound.setString("rotateAngleY", rotateAngleY);
-        if(rotateAngleZ != null) compound.setString("rotateAngleZ", rotateAngleZ);
+        if(rotateAngleX != null)
+            compound.setString("rotateAngleX", rotateAngleX);
+        if(rotateAngleY != null)
+            compound.setString("rotateAngleY", rotateAngleY);
+        if(rotateAngleZ != null)
+            compound.setString("rotateAngleZ", rotateAngleZ);
 
-        if(rotationPointX != null) compound.setString("rotationPointX", rotationPointX);
-        if(rotationPointY != null) compound.setString("rotationPointY", rotationPointY);
-        if(rotationPointZ != null) compound.setString("rotationPointZ", rotationPointZ);
+        if(rotationPointX != null)
+            compound.setString("rotationPointX", rotationPointX);
+        if(rotationPointY != null)
+            compound.setString("rotationPointY", rotationPointY);
+        if(rotationPointZ != null)
+            compound.setString("rotationPointZ", rotationPointZ);
 
-        if(rotateAngleXModifier != 1.0F) compound.setFloat("rotateAngleXModifier", rotateAngleXModifier);
-        if(rotateAngleYModifier != 1.0F) compound.setFloat("rotateAngleYModifier", rotateAngleYModifier);
-        if(rotateAngleZModifier != 1.0F) compound.setFloat("rotateAngleZModifier", rotateAngleZModifier);
+        if(rotateAngleXModifier != 1.0F)
+            compound.setFloat("rotateAngleXModifier", rotateAngleXModifier);
+        if(rotateAngleYModifier != 1.0F)
+            compound.setFloat("rotateAngleYModifier", rotateAngleYModifier);
+        if(rotateAngleZModifier != 1.0F)
+            compound.setFloat("rotateAngleZModifier", rotateAngleZModifier);
 
-        if(rotationPointXModifier != 1.0F) compound.setFloat("rotationPointXModifier", rotationPointXModifier);
-        if(rotationPointYModifier != 1.0F) compound.setFloat("rotationPointYModifier", rotationPointYModifier);
-        if(rotationPointZModifier != 1.0F) compound.setFloat("rotationPointZModifier", rotationPointZModifier);
+        if(rotationPointXModifier != 1.0F)
+            compound.setFloat("rotationPointXModifier", rotationPointXModifier);
+        if(rotationPointYModifier != 1.0F)
+            compound.setFloat("rotationPointYModifier", rotationPointYModifier);
+        if(rotationPointZModifier != 1.0F)
+            compound.setFloat("rotationPointZModifier", rotationPointZModifier);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
 
-        if(compound.hasKey("rotateAngleX")) rotateAngleX = compound.getString("rotateAngleX");
-        if(compound.hasKey("rotateAngleY")) rotateAngleY = compound.getString("rotateAngleY");
-        if(compound.hasKey("rotateAngleZ")) rotateAngleZ = compound.getString("rotateAngleZ");
+        if(compound.hasKey("rotateAngleX"))
+            rotateAngleX = compound.getString("rotateAngleX");
+        if(compound.hasKey("rotateAngleY"))
+            rotateAngleY = compound.getString("rotateAngleY");
+        if(compound.hasKey("rotateAngleZ"))
+            rotateAngleZ = compound.getString("rotateAngleZ");
 
-        if(compound.hasKey("rotationPointX")) rotationPointX = compound.getString("rotationPointX");
-        if(compound.hasKey("rotationPointY")) rotationPointY = compound.getString("rotationPointY");
-        if(compound.hasKey("rotationPointZ")) rotationPointZ = compound.getString("rotationPointZ");
+        if(compound.hasKey("rotationPointX"))
+            rotationPointX = compound.getString("rotationPointX");
+        if(compound.hasKey("rotationPointY"))
+            rotationPointY = compound.getString("rotationPointY");
+        if(compound.hasKey("rotationPointZ"))
+            rotationPointZ = compound.getString("rotationPointZ");
 
-        if(compound.hasKey("rotateAngleXModifier")) rotateAngleXModifier = compound.getFloat("rotateAngleXModifier");
-        if(compound.hasKey("rotateAngleYModifier")) rotateAngleYModifier = compound.getFloat("rotateAngleYModifier");
-        if(compound.hasKey("rotateAngleZModifier")) rotateAngleZModifier = compound.getFloat("rotateAngleZModifier");
+        if(compound.hasKey("rotateAngleXModifier"))
+            rotateAngleXModifier = compound.getFloat("rotateAngleXModifier");
+        if(compound.hasKey("rotateAngleYModifier"))
+            rotateAngleYModifier = compound.getFloat("rotateAngleYModifier");
+        if(compound.hasKey("rotateAngleZModifier"))
+            rotateAngleZModifier = compound.getFloat("rotateAngleZModifier");
 
-        if(compound.hasKey("rotationPointXModifier")) rotationPointXModifier = compound.getFloat("rotationPointXModifier");
-        if(compound.hasKey("rotationPointYModifier")) rotationPointYModifier = compound.getFloat("rotationPointYModifier");
-        if(compound.hasKey("rotationPointZModifier")) rotationPointZModifier = compound.getFloat("rotationPointZModifier");
+        if(compound.hasKey("rotationPointXModifier"))
+            rotationPointXModifier = compound.getFloat("rotationPointXModifier");
+        if(compound.hasKey("rotationPointYModifier"))
+            rotationPointYModifier = compound.getFloat("rotationPointYModifier");
+        if(compound.hasKey("rotationPointZModifier"))
+            rotationPointZModifier = compound.getFloat("rotationPointZModifier");
     }
 
     @Override

@@ -1,7 +1,7 @@
 package seremis.geninfusion.helper
 
 import net.minecraft.entity.EntityLiving
-import net.minecraft.entity.ai.{EntityAITasks, EntityAIBase}
+import net.minecraft.entity.ai.{EntityAIBase, EntityAITasks}
 
 object EntityAIHelper {
 

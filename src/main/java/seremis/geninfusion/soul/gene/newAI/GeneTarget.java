@@ -32,14 +32,16 @@ public abstract class GeneTarget extends Gene {
     }
 
     /**
-     * Returns a String[] with the names of all sensible target entities. Sensible being every EntityLiving except bosses.
+     * Returns a String[] with the names of all sensible target entities. Sensible being every EntityLiving except
+     * bosses.
+     *
      * @return A String[] with the names of all sensible target entities.
      */
     public String[] sensibleTargets() {
         ArrayList<String> list = new ArrayList<String>();
 
         for(Object obj : EntityList.classToStringMapping.keySet()) {
-            Class<Entity> entity = (Class<Entity>)obj;
+            Class<Entity> entity = (Class<Entity>) obj;
 
             if(EntityLiving.class.isAssignableFrom(entity) && !(EntityDragon.class.isAssignableFrom(entity) || EntityDragonPart.class.isAssignableFrom(entity) || EntityWither.class.isAssignableFrom(entity))) {
                 list.add(entity.getName());

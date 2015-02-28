@@ -9,7 +9,7 @@ import net.minecraft.entity._
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{CompressedStreamTools, NBTSizeTracker, NBTTagCompound}
-import net.minecraft.util.{ChunkCoordinates, AxisAlignedBB, DamageSource}
+import net.minecraft.util.{AxisAlignedBB, ChunkCoordinates, DamageSource}
 import net.minecraft.world.World
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.util.Data
@@ -181,7 +181,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     override def jump() = super.jump()
 
     override def collideWithNearbyEntities() = super.collideWithNearbyEntities()
-    
+
     override def isWithinHomeDistance(x: Int, y: Int, z: Int): Boolean = TraitHandler.isWithinHomeDistance(this, x, y, z)
 
     override def isWithinHomeDistanceCurrentPosition: Boolean = TraitHandler.isWithinHomeDistanceCurrentPosition(this)

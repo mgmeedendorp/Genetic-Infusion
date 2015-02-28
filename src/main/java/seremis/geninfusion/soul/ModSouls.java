@@ -6,8 +6,8 @@ import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.lib.Traits;
 import seremis.geninfusion.soul.gene.*;
 import seremis.geninfusion.soul.gene.animation.GeneAnim;
-import seremis.geninfusion.soul.gene.model.*;
-import seremis.geninfusion.soul.gene.newAI.*;
+import seremis.geninfusion.soul.gene.model.GeneModel;
+import seremis.geninfusion.soul.gene.newAI.GeneAIIndex;
 import seremis.geninfusion.soul.gene.newAI.arrowAttack.*;
 import seremis.geninfusion.soul.gene.newAI.attackOnCollide.GeneAIAttackOnCollide;
 import seremis.geninfusion.soul.gene.newAI.attackOnCollide.GeneAIAttackOnCollideLongMemory;
@@ -311,7 +311,6 @@ public class ModSouls {
         geneRegistry.registerGene(Genes.GENE_AI_WATCH_CLOSEST_2_CHANCE, new GeneAIWatchClosest2Chance());
         geneRegistry.registerGene(Genes.GENE_AI_WATCH_CLOSEST_2_INDEX, new GeneAIIndexArray());
         geneRegistry.registerMasterGene(Genes.GENE_AI_WATCH_CLOSEST_2, new GeneAIWatchClosest2());
-
 
 
         geneRegistry.registerMasterGene(Genes.GENE_USE_NEW_AI, new GeneUseNewAI());

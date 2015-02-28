@@ -88,7 +88,8 @@ public class Inventory implements IInventory {
 
     @Override
     public void markDirty() {
-        if(tile != null) tile.markDirty();
+        if(tile != null)
+            tile.markDirty();
     }
 
     @Override
@@ -118,7 +119,8 @@ public class Inventory implements IInventory {
     public void writeToNBT(NBTTagCompound compound) {
         NBTTagCompound inventory = new NBTTagCompound();
 
-        if(getInventoryName() != null) inventory.setString("name", getInventoryName());
+        if(getInventoryName() != null)
+            inventory.setString("name", getInventoryName());
 
         inventory.setInteger("stackLimit", getInventoryStackLimit());
         inventory.setInteger("length", getSizeInventory());
@@ -132,7 +134,8 @@ public class Inventory implements IInventory {
         if(compound.hasKey("inventory")) {
             NBTTagCompound inventory = compound.getCompoundTag("inventory");
 
-            if(inventory.hasKey("name")) name = inventory.getString("name");
+            if(inventory.hasKey("name"))
+                name = inventory.getString("name");
 
             inventoryStackLimit = inventory.getInteger("stackLimit");
             inventorySize = inventory.getInteger("length");

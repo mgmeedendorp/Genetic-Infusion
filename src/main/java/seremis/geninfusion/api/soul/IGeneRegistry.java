@@ -2,8 +2,8 @@ package seremis.geninfusion.api.soul;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
-import seremis.geninfusion.api.soul.util.animation.AnimationPart;
 import seremis.geninfusion.api.soul.util.ModelPart;
+import seremis.geninfusion.api.soul.util.animation.AnimationPart;
 
 import java.util.LinkedList;
 import java.util.List;

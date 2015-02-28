@@ -11,7 +11,7 @@ class CommonProxy {
 
     def isRenderWorld(world: World): Boolean = world.isRemote
 
-    def  isServerWorld(world: World): Boolean = !world.isRemote
+    def isServerWorld(world: World): Boolean = !world.isRemote
 
     def playerName(): String = ""
 

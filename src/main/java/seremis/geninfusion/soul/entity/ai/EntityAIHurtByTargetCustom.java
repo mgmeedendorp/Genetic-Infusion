@@ -1,12 +1,9 @@
 package seremis.geninfusion.soul.entity.ai;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.AxisAlignedBB;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class EntityAIHurtByTargetCustom extends EntityAITargetCustom {

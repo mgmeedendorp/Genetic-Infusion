@@ -26,13 +26,15 @@ public class AlleleString extends Allele {
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        if(value != null) compound.setString("value", value);
+        if(value != null)
+            compound.setString("value", value);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         value = null;
-        if(compound.hasKey("value")) value = compound.getString("value");
+        if(compound.hasKey("value"))
+            value = compound.getString("value");
     }
 }

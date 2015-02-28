@@ -25,7 +25,6 @@ import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.ModelPart;
-import seremis.geninfusion.lib.DefaultProps;
 import seremis.geninfusion.soul.TraitHandler;
 
 import java.util.UUID;
@@ -54,7 +53,9 @@ public class RenderEntitySoulCustom extends RenderLiving {
 
         GL11.glColor3f(1.0F, 1.0F, 1.0F);
         ItemStack itemstack = living.getHeldItem();
-        ItemStack itemstack1 = living.func_130225_q(3); Item item; float f1;
+        ItemStack itemstack1 = living.func_130225_q(3);
+        Item item;
+        float f1;
 
         if(itemstack1 != null) {
             GL11.glPushMatrix();
@@ -67,13 +68,17 @@ public class RenderEntitySoulCustom extends RenderLiving {
 
             if(item instanceof ItemBlock) {
                 if(is3D || RenderBlocks.renderItemIn3d(Block.getBlockFromItem(item).getRenderType())) {
-                    f1 = 0.625F; GL11.glTranslatef(0.0F, -0.25F, 0.0F); GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
+                    f1 = 0.625F;
+                    GL11.glTranslatef(0.0F, -0.25F, 0.0F);
+                    GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
                     GL11.glScalef(f1, -f1, -f1);
                 }
 
                 this.renderManager.itemRenderer.renderItem(living, itemstack1, 0);
             } else if(item == Items.skull) {
-                f1 = 1.0625F; GL11.glScalef(f1, -f1, -f1); GameProfile gameprofile = null;
+                f1 = 1.0625F;
+                GL11.glScalef(f1, -f1, -f1);
+                GameProfile gameprofile = null;
 
                 if(itemstack1.hasTagCompound()) {
                     NBTTagCompound nbttagcompound = itemstack1.getTagCompound();
@@ -92,10 +97,13 @@ public class RenderEntitySoulCustom extends RenderLiving {
         }
 
         if(itemstack != null && itemstack.getItem() != null) {
-            item = itemstack.getItem(); GL11.glPushMatrix();
+            item = itemstack.getItem();
+            GL11.glPushMatrix();
 
             if(this.mainModel.isChild) {
-                f1 = 0.5F; GL11.glTranslatef(0.0F, 0.625F, 0.0F); GL11.glRotatef(-20.0F, -1.0F, 0.0F, 0.0F);
+                f1 = 0.5F;
+                GL11.glTranslatef(0.0F, 0.625F, 0.0F);
+                GL11.glRotatef(-20.0F, -1.0F, 0.0F, 0.0F);
                 GL11.glScalef(f1, f1, f1);
             }
 
@@ -108,41 +116,59 @@ public class RenderEntitySoulCustom extends RenderLiving {
             boolean is3D = (customRenderer != null && customRenderer.shouldUseRenderHelper(IItemRenderer.ItemRenderType.EQUIPPED, itemstack, IItemRenderer.ItemRendererHelper.BLOCK_3D));
 
             if(item instanceof ItemBlock && (is3D || RenderBlocks.renderItemIn3d(Block.getBlockFromItem(item).getRenderType()))) {
-                f1 = 0.5F; GL11.glTranslatef(0.0F, 0.1875F, -0.3125F); f1 *= 0.75F;
-                GL11.glRotatef(20.0F, 1.0F, 0.0F, 0.0F); GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+                f1 = 0.5F;
+                GL11.glTranslatef(0.0F, 0.1875F, -0.3125F);
+                f1 *= 0.75F;
+                GL11.glRotatef(20.0F, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
                 GL11.glScalef(-f1, -f1, f1);
             } else if(item == Items.bow) {
-                f1 = 0.625F; GL11.glTranslatef(0.0F, 0.125F, 0.3125F); GL11.glRotatef(-20.0F, 0.0F, 1.0F, 0.0F);
-                GL11.glScalef(f1, -f1, f1); GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
+                f1 = 0.625F;
+                GL11.glTranslatef(0.0F, 0.125F, 0.3125F);
+                GL11.glRotatef(-20.0F, 0.0F, 1.0F, 0.0F);
+                GL11.glScalef(f1, -f1, f1);
+                GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
                 GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
             } else if(item.isFull3D()) {
                 f1 = 0.625F;
 
                 if(item.shouldRotateAroundWhenRendering()) {
-                    GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F); GL11.glTranslatef(0.0F, -0.125F, 0.0F);
+                    GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
+                    GL11.glTranslatef(0.0F, -0.125F, 0.0F);
                 }
 
-                GL11.glTranslatef(0.0F, 0.1875F, 0.0F); GL11.glScalef(f1, -f1, f1);
-                GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F); GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
+                GL11.glTranslatef(0.0F, 0.1875F, 0.0F);
+                GL11.glScalef(f1, -f1, f1);
+                GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
+                GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
             } else {
-                f1 = 0.375F; GL11.glTranslatef(0.25F, 0.1875F, -0.1875F); GL11.glScalef(f1, f1, f1);
-                GL11.glRotatef(60.0F, 0.0F, 0.0F, 1.0F); GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
+                f1 = 0.375F;
+                GL11.glTranslatef(0.25F, 0.1875F, -0.1875F);
+                GL11.glScalef(f1, f1, f1);
+                GL11.glRotatef(60.0F, 0.0F, 0.0F, 1.0F);
+                GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
                 GL11.glRotatef(20.0F, 0.0F, 0.0F, 1.0F);
             }
 
-            float f2; int i; float f5;
+            float f2;
+            int i;
+            float f5;
 
             if(itemstack.getItem().requiresMultipleRenderPasses()) {
                 for(i = 0; i < itemstack.getItem().getRenderPasses(itemstack.getItemDamage()); ++i) {
                     int j = itemstack.getItem().getColorFromItemStack(itemstack, i);
-                    f5 = (float) (j >> 16 & 255) / 255.0F; f2 = (float) (j >> 8 & 255) / 255.0F;
-                    float f3 = (float) (j & 255) / 255.0F; GL11.glColor4f(f5, f2, f3, 1.0F);
+                    f5 = (float) (j >> 16 & 255) / 255.0F;
+                    f2 = (float) (j >> 8 & 255) / 255.0F;
+                    float f3 = (float) (j & 255) / 255.0F;
+                    GL11.glColor4f(f5, f2, f3, 1.0F);
                     this.renderManager.itemRenderer.renderItem(living, itemstack, i);
                 }
             } else {
                 i = itemstack.getItem().getColorFromItemStack(itemstack, 0);
-                float f4 = (float) (i >> 16 & 255) / 255.0F; f5 = (float) (i >> 8 & 255) / 255.0F;
-                f2 = (float) (i & 255) / 255.0F; GL11.glColor4f(f4, f5, f2, 1.0F);
+                float f4 = (float) (i >> 16 & 255) / 255.0F;
+                f5 = (float) (i >> 8 & 255) / 255.0F;
+                f2 = (float) (i & 255) / 255.0F;
+                GL11.glColor4f(f4, f5, f2, 1.0F);
                 this.renderManager.itemRenderer.renderItem(living, itemstack, 0);
             }
 

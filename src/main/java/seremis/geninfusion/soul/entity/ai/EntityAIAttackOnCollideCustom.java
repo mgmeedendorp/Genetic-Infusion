@@ -28,7 +28,8 @@ public class EntityAIAttackOnCollideCustom extends EntityAIBase {
     private int failedPathFindingPenalty;
 
     public EntityAIAttackOnCollideCustom(IEntitySoulCustom entity, Class targetClass, double moveSpeed, boolean longMemory) {
-        this(entity, moveSpeed, longMemory); this.classTarget = targetClass;
+        this(entity, moveSpeed, longMemory);
+        this.classTarget = targetClass;
     }
 
     public EntityAIAttackOnCollideCustom(IEntitySoulCustom entity, double moveSpeed, boolean longMemory) {

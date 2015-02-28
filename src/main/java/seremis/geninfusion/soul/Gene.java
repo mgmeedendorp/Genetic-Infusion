@@ -28,27 +28,27 @@ public abstract class Gene implements IGene {
             AlleleInteger allele2 = (AlleleInteger) chromosome.getSecondary();
 
             if(rand.nextBoolean()) {
-                allele1.value = (int) (allele1.value*(rand.nextFloat()*2));
+                allele1.value = (int) (allele1.value * (rand.nextFloat() * 2));
             } else {
-                allele2.value = (int) (allele2.value*(rand.nextFloat()*2));
+                allele2.value = (int) (allele2.value * (rand.nextFloat() * 2));
             }
         } else if(possibleAlleles() == AlleleFloat.class) {
             AlleleFloat allele1 = (AlleleFloat) chromosome.getPrimary();
             AlleleFloat allele2 = (AlleleFloat) chromosome.getSecondary();
 
             if(rand.nextBoolean()) {
-                allele1.value = allele1.value*(rand.nextFloat()*2);
+                allele1.value = allele1.value * (rand.nextFloat() * 2);
             } else {
-                allele2.value = allele2.value*(rand.nextFloat()*2);
+                allele2.value = allele2.value * (rand.nextFloat() * 2);
             }
         } else if(possibleAlleles() == AlleleDouble.class) {
             AlleleDouble allele1 = (AlleleDouble) chromosome.getPrimary();
             AlleleDouble allele2 = (AlleleDouble) chromosome.getSecondary();
 
             if(rand.nextBoolean()) {
-                allele1.value = allele1.value*(rand.nextFloat()*2);
+                allele1.value = allele1.value * (rand.nextFloat() * 2);
             } else {
-                allele2.value = allele2.value*(rand.nextFloat()*2);
+                allele2.value = allele2.value * (rand.nextFloat() * 2);
             }
         } else if(possibleAlleles() == AlleleBooleanArray.class) {
             AlleleBooleanArray allele1 = (AlleleBooleanArray) chromosome.getPrimary();
@@ -67,10 +67,10 @@ public abstract class Gene implements IGene {
 
             if(rand.nextBoolean()) {
                 int index = rand.nextInt(allele1.value.length);
-                allele1.value[index] = (int) (allele1.value[index]*(rand.nextFloat()*2));
+                allele1.value[index] = (int) (allele1.value[index] * (rand.nextFloat() * 2));
             } else {
                 int index = rand.nextInt(allele2.value.length);
-                allele1.value[index] = (int) (allele2.value[index]*(rand.nextFloat()*2));
+                allele1.value[index] = (int) (allele2.value[index] * (rand.nextFloat() * 2));
             }
         } else if(possibleAlleles() == AlleleFloatArray.class) {
             AlleleFloatArray allele1 = (AlleleFloatArray) chromosome.getPrimary();
@@ -78,10 +78,10 @@ public abstract class Gene implements IGene {
 
             if(rand.nextBoolean()) {
                 int index = rand.nextInt(allele1.value.length);
-                allele1.value[index] = allele1.value[index]*(rand.nextFloat()*2);
+                allele1.value[index] = allele1.value[index] * (rand.nextFloat() * 2);
             } else {
                 int index = rand.nextInt(allele2.value.length);
-                allele1.value[index] = allele2.value[index]*(rand.nextFloat()*2);
+                allele1.value[index] = allele2.value[index] * (rand.nextFloat() * 2);
             }
         } else if(possibleAlleles() == AlleleDoubleArray.class) {
             AlleleDoubleArray allele1 = (AlleleDoubleArray) chromosome.getPrimary();
@@ -89,10 +89,10 @@ public abstract class Gene implements IGene {
 
             if(rand.nextBoolean()) {
                 int index = rand.nextInt(allele1.value.length);
-                allele1.value[index] = allele1.value[index]*(rand.nextFloat()*2);
+                allele1.value[index] = allele1.value[index] * (rand.nextFloat() * 2);
             } else {
                 int index = rand.nextInt(allele2.value.length);
-                allele1.value[index] = allele2.value[index]*(rand.nextFloat()*2);
+                allele1.value[index] = allele2.value[index] * (rand.nextFloat() * 2);
             }
         }
 

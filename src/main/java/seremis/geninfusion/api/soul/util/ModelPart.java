@@ -3,6 +3,7 @@ package seremis.geninfusion.api.soul.util;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import seremis.geninfusion.api.soul.SoulHelper;
@@ -32,7 +33,8 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
 
     @Override
     public void writeToNBT(NBTTagCompound compound) {
-        if(boxName != null && !boxName.equals("")) compound.setString("boxName", boxName);
+        if(boxName != null && !boxName.equals(""))
+            compound.setString("boxName", boxName);
         compound.setFloat("textureWidth", textureWidth);
         compound.setFloat("textureHeight", textureHeight);
         compound.setInteger("textureOffsetX", (Integer) GIReflectionHelper.getField(this, "textureOffsetX"));
@@ -71,7 +73,8 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
                 ModelBox box = (ModelBox) cube;
                 NBTTagCompound compound1 = new NBTTagCompound();
 
-                if(box.field_78247_g != null && !box.field_78247_g.equals("")) compound.setString("boxName", box.field_78247_g);
+                if(box.field_78247_g != null && !box.field_78247_g.equals(""))
+                    compound.setString("boxName", box.field_78247_g);
                 compound1.setFloat("originX", box.posX1);
                 compound1.setFloat("originY", box.posY1);
                 compound1.setFloat("originZ", box.posZ1);
@@ -122,14 +125,14 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
     public ModelPart mutate() {
         switch(rand.nextInt(3)) {
             case 0:
-                rotationPointX = (float) (rotationPointX*((rand.nextFloat()*2*0.1)+0.9));
-                rotationPointY = (float) (rotationPointY*((rand.nextFloat()*2*0.1)+0.9));
-                rotationPointZ = (float) (rotationPointZ*((rand.nextFloat()*2*0.1)+0.9));
+                rotationPointX = (float) (rotationPointX * ((rand.nextFloat() * 2 * 0.1) + 0.9));
+                rotationPointY = (float) (rotationPointY * ((rand.nextFloat() * 2 * 0.1) + 0.9));
+                rotationPointZ = (float) (rotationPointZ * ((rand.nextFloat() * 2 * 0.1) + 0.9));
                 break;
             case 1:
-                rotateAngleX = (float) (rotateAngleX*((rand.nextFloat()*2*0.1)+0.9));
-                rotateAngleY = (float) (rotateAngleY*((rand.nextFloat()*2*0.1)+0.9));
-                rotateAngleZ = (float) (rotateAngleZ*((rand.nextFloat()*2*0.1)+0.9));
+                rotateAngleX = (float) (rotateAngleX * ((rand.nextFloat() * 2 * 0.1) + 0.9));
+                rotateAngleY = (float) (rotateAngleY * ((rand.nextFloat() * 2 * 0.1) + 0.9));
+                rotateAngleZ = (float) (rotateAngleZ * ((rand.nextFloat() * 2 * 0.1) + 0.9));
                 break;
             case 2:
                 cubeList.remove(rand.nextInt(cubeList.size()));
@@ -145,7 +148,7 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         this.rotateAngleZ = 0.0F;
     }
 
-    public static ModelPart[] getHeadFromModel(ModelBiped model) {
+    public static ModelPart[] getHeadFromModel(ModelBiped model, EntityLiving entity) {
         ModelPart[] parts = new ModelPart[2];
 
         parts[0] = modelRendererToModelPart(model.bipedHead);
@@ -154,7 +157,7 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         return parts;
     }
 
-    public static ModelPart[] getBodyFromModel(ModelBiped model) {
+    public static ModelPart[] getBodyFromModel(ModelBiped model, EntityLiving entity) {
         ModelPart[] parts = new ModelPart[1];
 
         parts[0] = modelRendererToModelPart(model.bipedBody);
@@ -162,7 +165,7 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         return parts;
     }
 
-    public static ModelPart[] getArmsFromModel(ModelBiped model) {
+    public static ModelPart[] getArmsFromModel(ModelBiped model, EntityLiving entity) {
         ModelPart[] parts = new ModelPart[2];
 
         parts[0] = modelRendererToModelPart(model.bipedLeftArm);
@@ -171,7 +174,7 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         return parts;
     }
 
-    public static ModelPart[] getLegsFromModel(ModelBiped model) {
+    public static ModelPart[] getLegsFromModel(ModelBiped model, EntityLiving entity) {
         ModelPart[] parts = new ModelPart[2];
 
         parts[0] = modelRendererToModelPart(model.bipedLeftLeg);
@@ -180,7 +183,7 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         return parts;
     }
 
-    public static ModelPart[] getEarsFromModel(ModelBiped model) {
+    public static ModelPart[] getEarsFromModel(ModelBiped model, EntityLiving entity) {
         ModelPart[] parts = new ModelPart[1];
 
         parts[0] = modelRendererToModelPart(model.bipedEars);
@@ -188,7 +191,7 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         return parts;
     }
 
-    public static ModelPart[] getCloakFromModel(ModelBiped model) {
+    public static ModelPart[] getCloakFromModel(ModelBiped model, EntityLiving entity) {
         ModelPart[] parts = new ModelPart[1];
 
         parts[0] = modelRendererToModelPart(model.bipedCloak);

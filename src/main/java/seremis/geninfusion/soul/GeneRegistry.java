@@ -3,8 +3,8 @@ package seremis.geninfusion.soul;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
 import seremis.geninfusion.api.soul.*;
-import seremis.geninfusion.api.soul.util.animation.AnimationPart;
 import seremis.geninfusion.api.soul.util.ModelPart;
+import seremis.geninfusion.api.soul.util.animation.AnimationPart;
 import seremis.geninfusion.soul.allele.*;
 
 import java.util.LinkedHashMap;

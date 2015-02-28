@@ -1,8 +1,8 @@
 package seremis.geninfusion
 
-import cpw.mods.fml.common.Mod.{Instance, EventHandler}
+import cpw.mods.fml.common.Mod.{EventHandler, Instance}
 import cpw.mods.fml.common.event.{FMLInitializationEvent, FMLPostInitializationEvent, FMLPreInitializationEvent}
-import cpw.mods.fml.common.{SidedProxy, FMLCommonHandler, Mod}
+import cpw.mods.fml.common.{FMLCommonHandler, Mod, SidedProxy}
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.common.config.Configuration
 import org.apache.logging.log4j.{Level, Logger}
@@ -14,7 +14,7 @@ import seremis.geninfusion.entity.ModEntity
 import seremis.geninfusion.handler.GIEventHandler
 import seremis.geninfusion.helper.RecipeHelper
 import seremis.geninfusion.item.ModItems
-import seremis.geninfusion.lib.{Localizations, DefaultProps}
+import seremis.geninfusion.lib.{DefaultProps, Localizations}
 import seremis.geninfusion.network.PacketPipeline
 import seremis.geninfusion.soul._
 import seremis.geninfusion.soul.entity.render.ModelEntitySoulCustom

@@ -3,16 +3,13 @@ package seremis.geninfusion.item;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import seremis.geninfusion.GeneticInfusion;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
-import seremis.geninfusion.api.soul.ISoul;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.lib.Items;
 
@@ -38,15 +35,15 @@ public class ItemThermometer extends GIItem {
         if(GeneticInfusion.serverProxy().isServerWorld(world)) {
             if(stack.getItemDamage() == 0) {
                 for(Object obj : world.getLoadedEntityList()) {
-                    Entity ent = (Entity)obj;
+                    Entity ent = (Entity) obj;
                     if(ent instanceof IEntitySoulCustom) {
                         ent.setDead();
-                        ((EntityLiving)ent).onDeath(DamageSource.causePlayerDamage(player));
+                        ((EntityLiving) ent).onDeath(DamageSource.causePlayerDamage(player));
                     }
                 }
             }
             if(stack.getItemDamage() == 1) {
-                EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.standardSoulRegistry.getSoulForEntity(new EntitySkeleton(world)), x, y + 1, z);
+                EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityZombie(world)), x, y + 1, z);
                 world.spawnEntityInWorld(entity);
             }
         }

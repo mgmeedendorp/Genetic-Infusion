@@ -31,18 +31,24 @@ public class AnimationPartWave extends AnimationPart {
     public float rotationPointZModifier = 1.0F;
 
     /**
-     * The rotation axis this AnimationPart animates, 0 for x, 1 for y, 2 for z, 3 for x & y, 4 for x & z, 5 for y & z, 6 for every axis.
+     * The rotation axis this AnimationPart animates, 0 for x, 1 for y, 2 for z, 3 for x & y, 4 for x & z, 5 for y & z,
+     * 6 for every axis.
      */
     public short axis;
 
     /**
      * A helper class for animations.
      *
-     * @param axis The rotation axis this AnimationPart animates, 0 for x, 1 for y, 2 for z, 3 for x & y, 4 for x & z, 5 for y & z, 6 for every axis
-     * @param period The name of the variable (float) that corresponds with the period of the sine wave. If null it defaults to 0.0F.
-     * @param amplitude The name of the variable (float) that corresponds with the amplitude of the sine wave. If null it defaults to 0.0F.
-     * @param offsetVert The name of the variable (float) that corresponds with the vertical offset of the sine wave. If null it defaults to 0.0F.
-     * @param offsetHor The name of the variable (float) that corresponds with the horizontal offset of the sine wave. If null it defaults to 0.0F.
+     * @param axis       The rotation axis this AnimationPart animates, 0 for x, 1 for y, 2 for z, 3 for x & y, 4 for x
+     *                   & z, 5 for y & z, 6 for every axis
+     * @param period     The name of the variable (float) that corresponds with the period of the sine wave. If null it
+     *                   defaults to 0.0F.
+     * @param amplitude  The name of the variable (float) that corresponds with the amplitude of the sine wave. If null
+     *                   it defaults to 0.0F.
+     * @param offsetVert The name of the variable (float) that corresponds with the vertical offset of the sine wave. If
+     *                   null it defaults to 0.0F.
+     * @param offsetHor  The name of the variable (float) that corresponds with the horizontal offset of the sine wave.
+     *                   If null it defaults to 0.0F.
      */
     public AnimationPartWave(int axis, String period, String amplitude, String offsetVert, String offsetHor) {
         super(EnumAnimationPartType.ANIMATION_PART_WAVE);
@@ -55,14 +61,22 @@ public class AnimationPartWave extends AnimationPart {
     /**
      * A helper class for animations.
      *
-     * @param axis The rotation axis this AnimationPart animates, 0 for x, 1 for y, 2 for z, 3 for x & y, 4 for x & z, 5 for y & z, 6 for every axis
-     * @param period The name of the variable (float) that corresponds with the period of the sine wave. If null it defaults to 0.0F.
-     * @param amplitude The name of the variable (float) that corresponds with the amplitude of the sine wave. If null it defaults to 0.0F.
-     * @param offsetVert The name of the variable (float) that corresponds with the vertical offset of the sine wave. If null it defaults to 0.0F.
-     * @param offsetHor The name of the variable (float) that corresponds with the horizontal offset of the sine wave. If null it defaults to 0.0F.
-     * @param rotationPointX The name of the variable (float) that corresponds with X coordinate of the rotationPoint. If null it defaults to 0.0F.
-     * @param rotationPointY The name of the variable (float) that corresponds with Y coordinate of the rotationPoint. If null it defaults to 0.0F.
-     * @param rotationPointZ The name of the variable (float) that corresponds with Z coordinate of the rotationPoint. If null it defaults to 0.0F.
+     * @param axis           The rotation axis this AnimationPart animates, 0 for x, 1 for y, 2 for z, 3 for x & y, 4
+     *                       for x & z, 5 for y & z, 6 for every axis
+     * @param period         The name of the variable (float) that corresponds with the period of the sine wave. If null
+     *                       it defaults to 0.0F.
+     * @param amplitude      The name of the variable (float) that corresponds with the amplitude of the sine wave. If
+     *                       null it defaults to 0.0F.
+     * @param offsetVert     The name of the variable (float) that corresponds with the vertical offset of the sine
+     *                       wave. If null it defaults to 0.0F.
+     * @param offsetHor      The name of the variable (float) that corresponds with the horizontal offset of the sine
+     *                       wave. If null it defaults to 0.0F.
+     * @param rotationPointX The name of the variable (float) that corresponds with X coordinate of the rotationPoint.
+     *                       If null it defaults to 0.0F.
+     * @param rotationPointY The name of the variable (float) that corresponds with Y coordinate of the rotationPoint.
+     *                       If null it defaults to 0.0F.
+     * @param rotationPointZ The name of the variable (float) that corresponds with Z coordinate of the rotationPoint.
+     *                       If null it defaults to 0.0F.
      */
     public AnimationPartWave(int axis, String period, String amplitude, String offsetVert, String offsetHor, String rotationPointX, String rotationPointY, String rotationPointZ) {
         this(axis, period, amplitude, offsetVert, offsetHor);
@@ -132,7 +146,7 @@ public class AnimationPartWave extends AnimationPart {
     }
 
     protected float getRotation(IEntitySoulCustom entity, float period, float amplitude, float offsetVert, float offsetHor) {
-        return MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier))*amplitude*amplitudeModifier+offsetVert*offsetVertModifier;
+        return MathHelper.cos((2 * (float) Math.PI / (period * periodModifier)) + (offsetHor * offsetHorModifier)) * amplitude * amplitudeModifier + offsetVert * offsetVertModifier;
     }
 
     @Override
@@ -141,23 +155,37 @@ public class AnimationPartWave extends AnimationPart {
 
         compound.setShort("axis", axis);
 
-        if(amplitudeModifier != 1.0F) compound.setFloat("amplitudeModifier", amplitudeModifier);
-        if(periodModifier != 1.0F) compound.setFloat("periodModifier", periodModifier);
-        if(offsetVertModifier != 1.0F) compound.setFloat("offsetVertModifier", offsetVertModifier);
-        if(offsetHorModifier != 1.0F) compound.setFloat("offsetHorModifier", offsetHorModifier);
+        if(amplitudeModifier != 1.0F)
+            compound.setFloat("amplitudeModifier", amplitudeModifier);
+        if(periodModifier != 1.0F)
+            compound.setFloat("periodModifier", periodModifier);
+        if(offsetVertModifier != 1.0F)
+            compound.setFloat("offsetVertModifier", offsetVertModifier);
+        if(offsetHorModifier != 1.0F)
+            compound.setFloat("offsetHorModifier", offsetHorModifier);
 
-        if(amplitude != null) compound.setString("amplitude", amplitude);
-        if(period != null) compound.setString("period", period);
-        if(offsetVert != null) compound.setString("offsetVert", offsetVert);
-        if(offsetHor != null) compound.setString("offsetHor", offsetHor);
+        if(amplitude != null)
+            compound.setString("amplitude", amplitude);
+        if(period != null)
+            compound.setString("period", period);
+        if(offsetVert != null)
+            compound.setString("offsetVert", offsetVert);
+        if(offsetHor != null)
+            compound.setString("offsetHor", offsetHor);
 
-        if(rotationPointX != null) compound.setString("rotationPointX", rotationPointX);
-        if(rotationPointY != null) compound.setString("rotationPointY", rotationPointY);
-        if(rotationPointZ != null) compound.setString("rotationPointZ", rotationPointZ);
+        if(rotationPointX != null)
+            compound.setString("rotationPointX", rotationPointX);
+        if(rotationPointY != null)
+            compound.setString("rotationPointY", rotationPointY);
+        if(rotationPointZ != null)
+            compound.setString("rotationPointZ", rotationPointZ);
 
-        if(rotationPointXModifier != 1.0F) compound.setFloat("rotationPointXModifier", rotationPointXModifier);
-        if(rotationPointYModifier != 1.0F) compound.setFloat("rotationPointYModifier", rotationPointYModifier);
-        if(rotationPointZModifier != 1.0F) compound.setFloat("rotationPointZModifier", rotationPointZModifier);
+        if(rotationPointXModifier != 1.0F)
+            compound.setFloat("rotationPointXModifier", rotationPointXModifier);
+        if(rotationPointYModifier != 1.0F)
+            compound.setFloat("rotationPointYModifier", rotationPointYModifier);
+        if(rotationPointZModifier != 1.0F)
+            compound.setFloat("rotationPointZModifier", rotationPointZModifier);
     }
 
     @Override
@@ -166,23 +194,37 @@ public class AnimationPartWave extends AnimationPart {
 
         axis = compound.getShort("axis");
 
-        if(compound.hasKey("amplitudeModifier")) amplitudeModifier = compound.getFloat("amplitudeModifier");
-        if(compound.hasKey("periodModifier")) periodModifier = compound.getFloat("periodModifier");
-        if(compound.hasKey("offsetVertModifier")) offsetVertModifier = compound.getFloat("offsetVertModifier");
-        if(compound.hasKey("offsetHorModifier")) offsetHorModifier = compound.getFloat("offsetHorModifier");
+        if(compound.hasKey("amplitudeModifier"))
+            amplitudeModifier = compound.getFloat("amplitudeModifier");
+        if(compound.hasKey("periodModifier"))
+            periodModifier = compound.getFloat("periodModifier");
+        if(compound.hasKey("offsetVertModifier"))
+            offsetVertModifier = compound.getFloat("offsetVertModifier");
+        if(compound.hasKey("offsetHorModifier"))
+            offsetHorModifier = compound.getFloat("offsetHorModifier");
 
-        if(compound.hasKey("amplitude")) amplitude = compound.getString("amplitude");
-        if(compound.hasKey("period")) period = compound.getString("period");
-        if(compound.hasKey("offsetVert")) offsetVert = compound.getString("offsetVert");
-        if(compound.hasKey("offsetHor")) offsetHor = compound.getString("offsetHor");
+        if(compound.hasKey("amplitude"))
+            amplitude = compound.getString("amplitude");
+        if(compound.hasKey("period"))
+            period = compound.getString("period");
+        if(compound.hasKey("offsetVert"))
+            offsetVert = compound.getString("offsetVert");
+        if(compound.hasKey("offsetHor"))
+            offsetHor = compound.getString("offsetHor");
 
-        if(compound.hasKey("rotationPointX")) rotationPointX = compound.getString("rotationPointX");
-        if(compound.hasKey("rotationPointY")) rotationPointY = compound.getString("rotationPointY");
-        if(compound.hasKey("rotationPointZ")) rotationPointZ = compound.getString("rotationPointZ");
+        if(compound.hasKey("rotationPointX"))
+            rotationPointX = compound.getString("rotationPointX");
+        if(compound.hasKey("rotationPointY"))
+            rotationPointY = compound.getString("rotationPointY");
+        if(compound.hasKey("rotationPointZ"))
+            rotationPointZ = compound.getString("rotationPointZ");
 
-        if(compound.hasKey("rotationPointXModifier")) rotationPointXModifier = compound.getFloat("rotationPointXModifier");
-        if(compound.hasKey("rotationPointYModifier")) rotationPointYModifier = compound.getFloat("rotationPointYModifier");
-        if(compound.hasKey("rotationPointZModifier")) rotationPointZModifier = compound.getFloat("rotationPointZModifier");
+        if(compound.hasKey("rotationPointXModifier"))
+            rotationPointXModifier = compound.getFloat("rotationPointXModifier");
+        if(compound.hasKey("rotationPointYModifier"))
+            rotationPointYModifier = compound.getFloat("rotationPointYModifier");
+        if(compound.hasKey("rotationPointZModifier"))
+            rotationPointZModifier = compound.getFloat("rotationPointZModifier");
     }
 
     @Override

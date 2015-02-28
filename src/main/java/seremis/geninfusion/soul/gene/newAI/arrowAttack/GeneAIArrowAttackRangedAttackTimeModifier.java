@@ -23,9 +23,9 @@ public class GeneAIArrowAttackRangedAttackTimeModifier extends Gene {
         AlleleFloat allele2 = (AlleleFloat) chromosome.getSecondary();
 
         if(rand.nextBoolean()) {
-            allele1.value = (float) (allele1.value*((rand.nextFloat()*2*0.1)+0.9));
+            allele1.value = (float) (allele1.value * ((rand.nextFloat() * 2 * 0.1) + 0.9));
         } else {
-            allele2.value = (float) (allele2.value*((rand.nextFloat()*2*0.1)+0.9));
+            allele2.value = (float) (allele2.value * ((rand.nextFloat() * 2 * 0.1) + 0.9));
         }
         return chromosome;
     }

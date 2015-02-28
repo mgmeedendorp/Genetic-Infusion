@@ -1,8 +1,6 @@
 package seremis.geninfusion.api.soul;
 
 import com.sun.istack.internal.NotNull;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBase;
 
 import java.util.Random;
@@ -23,12 +21,14 @@ public class SoulHelper {
     public static IInstanceHelper instanceHelper;
 
     /**
-     * The model used for all EntitySoulCustoms, this only contains a bridge method that redirects all render() calls to Traits, but is useful for declaring new ModelRenderers or ModelParts.
+     * The model used for all EntitySoulCustoms, this only contains a bridge method that redirects all render() calls to
+     * Traits, but is useful for declaring new ModelRenderers or ModelParts.
      */
     public static ModelBase entityModel;
 
     /**
      * Creates offspring from two parent souls
+     *
      * @param parent1 A parent soul
      * @param parent2 A parent soul
      * @return The offspring

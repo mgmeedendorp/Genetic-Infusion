@@ -230,7 +230,7 @@ public class TraitHandler {
     }
 
     public static void detachHome(IEntitySoulCustom entity) {
-        for(ITrait trait: SoulHelper.traitRegistry.getTraits()) {
+        for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
             trait.detachHome(entity);
         }
     }

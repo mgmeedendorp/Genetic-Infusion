@@ -27,7 +27,7 @@ public class EntityAIMoveTowardsTargetCustom extends EntityAIBase {
     public boolean shouldExecute() {
         targetEntity = this.living.getAttackTarget();
 
-        if(targetEntity != null && targetEntity.getDistanceSqToEntity(living) <= (double)(maxDistance*maxDistance)) {
+        if(targetEntity != null && targetEntity.getDistanceSqToEntity(living) <= (double) (maxDistance * maxDistance)) {
             target = GIRandomPositionGenerator.findRandomTargetBlockTowards(this.entity, 16, 7, Vec3.createVectorHelper(this.targetEntity.posX, this.targetEntity.posY, this.targetEntity.posZ));
 
             if(target != null) {
@@ -38,7 +38,7 @@ public class EntityAIMoveTowardsTargetCustom extends EntityAIBase {
     }
 
     public boolean continueExecuting() {
-        return !this.living.getNavigator().noPath() && this.targetEntity.isEntityAlive() && this.targetEntity.getDistanceSqToEntity(this.living) < (double)(this.maxDistance * this.maxDistance);
+        return !this.living.getNavigator().noPath() && this.targetEntity.isEntityAlive() && this.targetEntity.getDistanceSqToEntity(this.living) < (double) (this.maxDistance * this.maxDistance);
     }
 
     public void resetTask() {

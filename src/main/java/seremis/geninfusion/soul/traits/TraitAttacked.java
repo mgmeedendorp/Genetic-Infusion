@@ -80,7 +80,8 @@ public class TraitAttacked extends Trait {
 
     @Override
     public boolean attackEntityFrom(IEntitySoulCustom entity, DamageSource source, float damage) {
-        if(ForgeHooks.onLivingAttack((EntityLivingBase) entity, source, damage)) return false;
+        if(ForgeHooks.onLivingAttack((EntityLivingBase) entity, source, damage))
+            return false;
 
         if(entity.getBoolean("invulnerable")) {
             return false;
@@ -203,8 +204,8 @@ public class TraitAttacked extends Trait {
                     }
                 }
 
-                if (((EntityLiving)entity).riddenByEntity != entity && ((EntityLiving)entity).ridingEntity != entity) {
-                    if (attacker != entity) {
+                if(((EntityLiving) entity).riddenByEntity != entity && ((EntityLiving) entity).ridingEntity != entity) {
+                    if(attacker != entity) {
                         entity.setObject("entityToAttack", attacker);
                     }
                     return true;
@@ -219,7 +220,8 @@ public class TraitAttacked extends Trait {
     public void damageEntity(IEntitySoulCustom entity, DamageSource source, float damage) {
         if(!entity.getBoolean("invulnerable")) {
             damage = ForgeHooks.onLivingHurt((EntityLivingBase) entity, source, damage);
-            if(damage <= 0) return;
+            if(damage <= 0)
+                return;
             damage = entity.applyArmorCalculations(source, damage);
             damage = entity.applyPotionDamageCalculations(source, damage);
             float f1 = damage;
@@ -284,7 +286,8 @@ public class TraitAttacked extends Trait {
 
     @Override
     public void onDeath(IEntitySoulCustom entity, DamageSource source) {
-        if(ForgeHooks.onLivingDeath((EntityLivingBase) entity, source)) return;
+        if(ForgeHooks.onLivingDeath((EntityLivingBase) entity, source))
+            return;
         Entity entity1 = source.getEntity();
         EntityLivingBase entitylivingbase = ((EntityLiving) entity).func_94060_bK();
 

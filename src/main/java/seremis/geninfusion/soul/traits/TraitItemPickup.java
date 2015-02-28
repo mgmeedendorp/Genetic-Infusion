@@ -40,10 +40,12 @@ public class TraitItemPickup extends Trait {
                 EntityItem entityitem = (EntityItem) aList;
 
                 if(!entityitem.isDead && entityitem.getEntityItem() != null) {
-                    ItemStack itemstack = entityitem.getEntityItem(); int i = getArmorImportance(itemstack);
+                    ItemStack itemstack = entityitem.getEntityItem();
+                    int i = getArmorImportance(itemstack);
 
                     if(i > -1) {
-                        boolean flag = true; ItemStack itemstack1 = UtilSoulEntity.getEquipmentInSlot(entity, i);
+                        boolean flag = true;
+                        ItemStack itemstack1 = UtilSoulEntity.getEquipmentInSlot(entity, i);
 
                         if(itemstack1 != null) {
                             if(i == 0) {
@@ -93,9 +95,11 @@ public class TraitItemPickup extends Trait {
                                 }
                             }
 
-                            UtilSoulEntity.setEquipmentInSlot(entity, i, itemstack); equipmentDropChances[i] = 2.0F;
+                            UtilSoulEntity.setEquipmentInSlot(entity, i, itemstack);
+                            equipmentDropChances[i] = 2.0F;
                             entity.setFloatArray("equipmentDropChances", equipmentDropChances);
-                            entity.setBoolean("persistenceRequired", true); onItemPickup(entity, entityitem, 1);
+                            entity.setBoolean("persistenceRequired", true);
+                            onItemPickup(entity, entityitem, 1);
                             entityitem.setDead();
                         }
                     }
@@ -122,7 +126,8 @@ public class TraitItemPickup extends Trait {
 
             for(int j = 0; j < 5; ++j) {
                 ItemStack[] previousEquipment = entity.getItemStackArray("previousEquipment");
-                ItemStack prevStack = previousEquipment[j]; ItemStack currStack = living.getEquipmentInSlot(j);
+                ItemStack prevStack = previousEquipment[j];
+                ItemStack currStack = living.getEquipmentInSlot(j);
 
                 if(!ItemStack.areItemStacksEqual(currStack, prevStack)) {
                     ((WorldServer) entity.getWorld()).getEntityTracker().func_151247_a(living, new S04PacketEntityEquipment(entity.getEntityId(), j, currStack));

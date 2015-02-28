@@ -3,7 +3,9 @@ package seremis.geninfusion.soul;
 import seremis.geninfusion.api.soul.ITrait;
 import seremis.geninfusion.api.soul.ITraitRegistry;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public class TraitRegistry implements ITraitRegistry {
 

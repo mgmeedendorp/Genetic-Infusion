@@ -3,7 +3,6 @@ package seremis.geninfusion.soul.allele;
 import net.minecraft.nbt.NBTTagCompound;
 import seremis.geninfusion.api.soul.EnumAlleleType;
 import seremis.geninfusion.api.soul.util.animation.AnimationPart;
-import seremis.geninfusion.api.soul.util.animation.AnimationPartWave;
 import seremis.geninfusion.soul.Allele;
 
 public class AlleleAnimationPartArray extends Allele {
@@ -44,7 +43,7 @@ public class AlleleAnimationPartArray extends Allele {
         super.readFromNBT(compound);
         value = new AnimationPart[compound.getInteger("length")];
         for(int i = 0; i < value.length; i++) {
-            NBTTagCompound compound1 = compound.getCompoundTag("value"+i);
+            NBTTagCompound compound1 = compound.getCompoundTag("value" + i);
             value[i] = AnimationPart.createFromNBT(compound1);
         }
     }

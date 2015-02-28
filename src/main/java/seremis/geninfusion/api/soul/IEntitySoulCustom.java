@@ -1,6 +1,5 @@
 package seremis.geninfusion.api.soul;
 
-import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.item.ItemStack;
@@ -136,7 +135,6 @@ public interface IEntitySoulCustom extends IRangedAttackMob {
      * @param name The name of the variable
      */
     Object getObject(String name);
-
 
 
     NBTTagCompound getEntityData();

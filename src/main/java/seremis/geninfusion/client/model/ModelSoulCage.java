@@ -4,8 +4,7 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
 /**
- * SoulCage - Seremis
- * Created using Tabula 4.1.1
+ * SoulCage - Seremis Created using Tabula 4.1.1
  */
 public class ModelSoulCage extends ModelBase {
     public ModelRenderer top2;

@@ -1,6 +1,5 @@
 package seremis.geninfusion.soul;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import seremis.geninfusion.api.soul.*;
 import seremis.geninfusion.api.soul.lib.Genes;

@@ -12,9 +12,9 @@ public abstract class GeneMoveSpeed extends Gene {
         AlleleDouble allele2 = (AlleleDouble) chromosome.getSecondary();
 
         if(rand.nextBoolean()) {
-            allele1.value = allele1.value*((rand.nextFloat()*2*0.1)+0.9);
+            allele1.value = allele1.value * ((rand.nextFloat() * 2 * 0.1) + 0.9);
         } else {
-            allele2.value = allele2.value*((rand.nextFloat()*2*0.1)+0.9);
+            allele2.value = allele2.value * ((rand.nextFloat() * 2 * 0.1) + 0.9);
         }
         return chromosome;
     }

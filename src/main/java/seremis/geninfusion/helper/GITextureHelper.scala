@@ -36,8 +36,8 @@ object GITextureHelper {
             val nrCorners = rand.nextInt(60)
             val startX = result.getWidth * rand.nextFloat()
             val startY = result.getHeight * rand.nextFloat()
-            val sizeX = rand.nextInt(((result.getWidth - startX)*rand.nextFloat + 1).asInstanceOf[Int])
-            val sizeY = rand.nextInt(((result.getHeight - startY)*rand.nextFloat + 1).asInstanceOf[Int])
+            val sizeX = rand.nextInt(((result.getWidth - startX) * rand.nextFloat + 1).asInstanceOf[Int])
+            val sizeY = rand.nextInt(((result.getHeight - startY) * rand.nextFloat + 1).asInstanceOf[Int])
 
             addPolygon(graphics, image2, nrCorners, startX.asInstanceOf[Int], startY.asInstanceOf[Int], sizeX, sizeY)
         }
