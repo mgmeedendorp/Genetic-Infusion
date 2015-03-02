@@ -1,5 +1,7 @@
 package seremis.geninfusion.api.soul.util.animation;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.nbt.NBTTagCompound;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 
@@ -41,21 +43,25 @@ public class AnimationPartLinear extends AnimationPart {
         readFromNBT(compound);
     }
 
-    private boolean firstTick = true;
+    @Override
+    public void init(IEntitySoulCustom entity) {
+        if(rotationPointX != null)
+            entity.setFloat(rotationPointX + "Base", modelPart.rotationPointX);
+        if(rotationPointY != null)
+            entity.setFloat(rotationPointY + "Base", modelPart.rotationPointY);
+        if(rotationPointZ != null)
+            entity.setFloat(rotationPointZ + "Base", modelPart.rotationPointZ);
+        if(rotateAngleX != null)
+            entity.setFloat(rotateAngleX + "Base", modelPart.rotateAngleX);
+        if(rotateAngleY != null)
+            entity.setFloat(rotateAngleY + "Base", modelPart.rotateAngleY);
+        if(rotateAngleZ != null)
+            entity.setFloat(rotateAngleZ + "Base", modelPart.rotateAngleZ);
+    }
 
     @Override
     public void animate(IEntitySoulCustom entity) {
         super.animate(entity);
-
-        if(firstTick) {
-            if(rotationPointX != null)
-                entity.setFloat(rotationPointX, modelPart.rotationPointX);
-            if(rotationPointY != null)
-                entity.setFloat(rotationPointY, modelPart.rotationPointY);
-            if(rotationPointZ != null)
-                entity.setFloat(rotationPointZ, modelPart.rotationPointZ);
-            firstTick = false;
-        }
 
         modelPart.rotateAngleX += entity.getFloat(rotateAngleX) * rotateAngleXModifier;
         modelPart.rotateAngleY += entity.getFloat(rotateAngleY) * rotateAngleYModifier;

@@ -36,6 +36,11 @@ public abstract class AnimationPart implements INBTTagable {
     }
 
     /**
+     * Initialize this AnimationPart, call this before the first animate() call.
+     */
+    public void init(IEntitySoulCustom entity) {}
+
+    /**
      * Execute the animation for the passed entity.
      */
     public void animate(IEntitySoulCustom entity) {

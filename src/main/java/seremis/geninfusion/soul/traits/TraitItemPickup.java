@@ -31,9 +31,8 @@ public class TraitItemPickup extends Trait {
         entity.getWorld().theProfiler.startSection("looting");
 
         boolean canPickUpItems = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_PICKS_UP_ITEMS);
-        boolean isDead = entity.getBoolean("isDead");
 
-        if(GeneticInfusion.serverProxy().isServerWorld(entity.getWorld()) && canPickUpItems && !isDead && entity.getWorld().getGameRules().getGameRuleBooleanValue("mobGriefing")) {
+        if(GeneticInfusion.serverProxy().isServerWorld(entity.getWorld()) && canPickUpItems && !((EntityLiving)entity).isDead && entity.getWorld().getGameRules().getGameRuleBooleanValue("mobGriefing")) {
             List list = entity.getWorld().getEntitiesWithinAABB(EntityItem.class, entity.getBoundingBox().expand(1.0D, 0.0D, 1.0D));
 
             for(Object aList : list) {

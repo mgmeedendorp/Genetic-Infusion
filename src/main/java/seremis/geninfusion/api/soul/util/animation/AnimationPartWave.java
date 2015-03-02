@@ -90,21 +90,18 @@ public class AnimationPartWave extends AnimationPart {
         readFromNBT(compound);
     }
 
-    private boolean firstTick = true;
+    public void init(IEntitySoulCustom entity) {
+        if(rotationPointX != null)
+            entity.setFloat(rotationPointX, modelPart.rotationPointX);
+        if(rotationPointY != null)
+            entity.setFloat(rotationPointY, modelPart.rotationPointY);
+        if(rotationPointZ != null)
+            entity.setFloat(rotationPointZ, modelPart.rotationPointZ);
+    }
 
     @Override
     public void animate(IEntitySoulCustom entity) {
         super.animate(entity);
-
-        if(firstTick) {
-            if(rotationPointX != null)
-                entity.setFloat(rotationPointX, modelPart.rotationPointX);
-            if(rotationPointY != null)
-                entity.setFloat(rotationPointY, modelPart.rotationPointY);
-            if(rotationPointZ != null)
-                entity.setFloat(rotationPointZ, modelPart.rotationPointZ);
-            firstTick = false;
-        }
 
         float period = entity.getFloat(this.period);
         float amplitude = entity.getFloat(this.amplitude);
