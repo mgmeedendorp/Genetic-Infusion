@@ -231,18 +231,5 @@ public class Genes {
     public static final String GENE_MODEL_EARS = ID + ".gene.modelEars";
     public static final String GENE_MODEL_CLOAK = ID + ".gene.modelCloak";
 
-    public static final String GENE_ANIM_LINEAR_HEAD = ID + ".gene.animLinearHead";
-    public static final String GENE_ANIM_LINEAR_BODY = ID + ".gene.animLinearBody";
-    public static final String GENE_ANIM_LINEAR_CLOAK = ID + ".gene.animLinearCloak";
-    public static final String GENE_ANIM_LINEAR_EARS = ID + ".gene.animLinearEars";
-    public static final String GENE_ANIM_LINEAR_ARM_LEFT = ID + ".gene.animLinearArmLeft";
-    public static final String GENE_ANIM_LINEAR_ARM_RIGHT = ID + ".gene.animLinearArmRight";
-    public static final String GENE_ANIM_LINEAR_LEG_LEFT = ID + ".gene.animLinearLegLeft";
-    public static final String GENE_ANIM_LINEAR_LEG_RIGHT = ID + ".gene.animLinearLegRight";
-    public static final String GENE_ANIM_WAVE_ARM_LEFT = ID + ".gene.animWaveArmLeft";
-    public static final String GENE_ANIM_WAVE_ARM_RIGHT = ID + ".gene.animWaveArmRight";
-    public static final String GENE_ANIM_WAVE_LEG_LEFT = ID + ".gene.animWaveLegLeft";
-    public static final String GENE_ANIM_WAVE_LEG_RIGHT = ID + ".gene.animWaveLegRight";
-
     public static final String GENE_TEXTURE = ID + ".gene.texture";
 }

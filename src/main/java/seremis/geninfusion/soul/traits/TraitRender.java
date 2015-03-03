@@ -3,93 +3,12 @@ package seremis.geninfusion.soul.traits;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.item.EnumAction;
-import net.minecraft.util.MathHelper;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.ModelPart;
-import seremis.geninfusion.api.soul.util.animation.AnimationPart;
 
 public class TraitRender extends Trait {
-
-    @Override
-    public void firstTick(IEntitySoulCustom entity) {
-        if(entity.getWorld().isRemote) {
-            ModelPart[] head = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL_HEAD);
-            ModelPart[] body = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL_BODY);
-            ModelPart[] armLeft = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL_ARM_LEFT);
-            ModelPart[] armRight = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL_ARM_RIGHT);
-            ModelPart[] legLeft = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL_LEG_LEFT);
-            ModelPart[] legRight = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL_LEG_RIGHT);
-            ModelPart[] ears = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL_EARS);
-            ModelPart[] cloak = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL_CLOAK);
-
-            AnimationPart[] animationLinearHead = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_LINEAR_HEAD);
-            AnimationPart[] animationLinearBody = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_LINEAR_BODY);
-            AnimationPart[] animationLinearArmLeft = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_LINEAR_ARM_LEFT);
-            AnimationPart[] animationLinearArmRight = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_LINEAR_ARM_RIGHT);
-            AnimationPart[] animationLinearLegLeft = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_LINEAR_LEG_LEFT);
-            AnimationPart[] animationLinearLegRight = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_LINEAR_LEG_RIGHT);
-            AnimationPart[] animationLinearEars = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_LINEAR_EARS);
-            AnimationPart[] animationLinearCloak = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_LINEAR_CLOAK);
-
-            AnimationPart[] animationWaveArmLeft = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_WAVE_ARM_LEFT);
-            AnimationPart[] animationWaveArmRight = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_WAVE_ARM_RIGHT);
-            AnimationPart[] animationWaveLegLeft = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_WAVE_LEG_LEFT);
-            AnimationPart[] animationWaveLegRight = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_WAVE_LEG_RIGHT);
-
-            for(int i = 0; i < animationLinearHead.length; i++) {
-                animationLinearHead[i].setAnimationModel(head[i]).init(entity);
-            }
-
-            for(int i = 0; i < animationLinearBody.length; i++) {
-                animationLinearBody[i].setAnimationModel(body[i]).init(entity);
-            }
-
-            for(int i = 0; i < animationLinearArmLeft.length; i++) {
-                animationLinearArmLeft[i].setAnimationModel(armLeft[i]).init(entity);
-            }
-
-            for(int i = 0; i < animationLinearArmRight.length; i++) {
-                animationLinearArmRight[i].setAnimationModel(armRight[i]).init(entity);
-            }
-
-            for(int i = 0; i < animationLinearLegLeft.length; i++) {
-                animationLinearLegLeft[i].setAnimationModel(legLeft[i]).init(entity);
-            }
-
-            for(int i = 0; i < animationLinearLegRight.length; i++) {
-                animationLinearLegRight[i].setAnimationModel(legRight[i]).init(entity);
-            }
-
-            for(int i = 0; i < animationLinearEars.length; i++) {
-                animationLinearEars[i].setAnimationModel(ears[i]).init(entity);
-            }
-
-            for(int i = 0; i < animationLinearCloak.length; i++) {
-                animationLinearCloak[i].setAnimationModel(cloak[i]).init(entity);
-            }
-
-            for(int i = 0; i < animationWaveArmLeft.length; i++) {
-                animationWaveArmLeft[i].setAnimationModel(armLeft[i]).init(entity);
-            }
-
-            for(int i = 0; i < animationWaveArmRight.length; i++) {
-                animationWaveArmRight[i].setAnimationModel(armRight[i]).init(entity);
-            }
-
-            for(int i = 0; i < animationWaveLegLeft.length; i++) {
-                animationWaveLegLeft[i].setAnimationModel(legLeft[i]).init(entity);
-            }
-
-            for(int i = 0; i < animationWaveLegRight.length; i++) {
-                animationWaveLegRight[i].setAnimationModel(legRight[i]).init(entity);
-            }
-
-            System.out.println("Debug #UMPH: " + armRight[0].rotateAngleX);
-        }
-    }
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -103,248 +22,39 @@ public class TraitRender extends Trait {
         ModelPart[] ears = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL_EARS);
         ModelPart[] cloak = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL_CLOAK);
 
-        AnimationPart[] animationLinearHead = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_LINEAR_HEAD);
-        AnimationPart[] animationLinearBody = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_LINEAR_BODY);
-        AnimationPart[] animationLinearArmLeft = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_LINEAR_ARM_LEFT);
-        AnimationPart[] animationLinearArmRight = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_LINEAR_ARM_RIGHT);
-        AnimationPart[] animationLinearLegLeft = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_LINEAR_LEG_LEFT);
-        AnimationPart[] animationLinearLegRight = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_LINEAR_LEG_RIGHT);
-        AnimationPart[] animationLinearEars = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_LINEAR_EARS);
-        AnimationPart[] animationLinearCloak = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_LINEAR_CLOAK);
-
-        AnimationPart[] animationWaveArmLeft = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_WAVE_ARM_LEFT);
-        AnimationPart[] animationWaveArmRight = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_WAVE_ARM_RIGHT);
-        AnimationPart[] animationWaveLegLeft = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_WAVE_LEG_LEFT);
-        AnimationPart[] animationWaveLegRight = SoulHelper.geneRegistry.getValueAnimationPartArray(entity, Genes.GENE_ANIM_WAVE_LEG_RIGHT);
-
-        entity.setFloat("legLeftWavePeriod", timeModifier * 0.6662F);
-        entity.setFloat("legLeftWaveAmplitude", walkSpeed * 1.4F);
-        entity.setFloat("legLeftWaveOffsetHor", (float) Math.PI);
-
-        entity.setFloat("legRightWavePeriod", timeModifier * 0.6662F);
-        entity.setFloat("legRightWaveAmplitude", walkSpeed * 1.4F);
-        entity.setFloat("legRightWaveOffsetHor", 0.0F);
-
-        entity.setFloat("armLeftWavePeriod", timeModifier * 0.6662F);
-        entity.setFloat("armLeftWaveAmplitude", walkSpeed);
-        entity.setFloat("armLeftWaveOffsetHor", 0.0F);
-
-        entity.setFloat("armRightWavePeriod", timeModifier * 0.6662F);
-        entity.setFloat("armRightWaveAmplitude", walkSpeed);
-        entity.setFloat("armRightWaveOffsetHor", (float) Math.PI);
-
-        entity.setFloat("headLinearRotateAngleX", rotationPitch / (180F / (float) Math.PI));
-        entity.setFloat("headLinearRotateAngleY", rotationYawHead / (180F / (float) Math.PI));
-
-        entity.setFloat("armRightLinearRotationPointY", 2F);
-        entity.setFloat("armLeftLinearRotationPointY", 2F);
-
-        entity.setFloat("legRightLinearRotationPointX", -1.9F);
-        entity.setFloat("legLeftLinearRotationPointX", 1.9F);
-
-        float bodyAngleX;
-        float bodyAngleY = 0.0F;
-        float bodyAngleZ = 0.0F;
-        float armRightPointX = entity.getFloat("armRightWaveRotationPointX");
-        float armRightPointZ = entity.getFloat("armRightWaveRotationPointZ");
-        float armLeftPointX = entity.getFloat("armLeftWaveRotationPointX");
-        float armLeftPointZ = entity.getFloat("armLeftWaveRotationPointZ");
-
-        float armRightAngleX = entity.getFloat("armRightWaveRotateAngleX");
-        float armRightAngleY = entity.getFloat("armRightWaveRotateAngleY");
-        float armRightAngleZ = entity.getFloat("armRightWaveRotateAngleZ");
-        float armLeftAngleX = entity.getFloat("armLeftWaveRotateAngleX");
-        float armLeftAngleY = entity.getFloat("armLeftWaveRotateAngleY");
-        float armLeftAngleZ = entity.getFloat("armLeftWaveRotateAngleZ");
-
-        float legLeftAngleX = 0.0F;
-        float legRightAngleX = 0.0F;
-        float legLeftAngleY = 0.0F;
-        float legRightAngleY = 0.0F;
-
-        float legRightPointY;
-        float legRightPointZ;
-        float legLeftPointY;
-        float legLeftPointZ;
-
-        float headPointY;
-
-        if(((EntityLiving) entity).isRiding()) {
-            armRightAngleX += -((float) Math.PI / 5F);
-            armLeftAngleX += -((float) Math.PI / 5F);
-            legRightAngleX = -((float) Math.PI * 2F / 5F);
-            legLeftAngleX = -((float) Math.PI * 2F / 5F);
-            legRightAngleY = ((float) Math.PI / 10F);
-            legLeftAngleY = -((float) Math.PI / 10F);
-        }
-
-        if(((EntityLiving) entity).getHeldItem() != null) {
-            armRightAngleX = armRightAngleX * 0.5F - ((float) Math.PI / 10F);
-        }
-
-        float swingProgress = ((EntityLiving) entity).getSwingProgress(entity.getFloat("partialTickTime"));
-
-        if(swingProgress > -9990.0F) {
-            float f6 = swingProgress;
-            bodyAngleY = MathHelper.sin(MathHelper.sqrt_float(f6) * (float) Math.PI * 2.0F) * 0.2F;
-            armRightPointZ = MathHelper.sin(bodyAngleY) * 5.0F;
-            armRightPointX = -MathHelper.cos(bodyAngleY) * 5.0F;
-            armLeftPointZ = -MathHelper.sin(bodyAngleY) * 5.0F;
-            armLeftPointX = MathHelper.cos(bodyAngleY) * 5.0F;
-
-            armRightAngleY += bodyAngleY;
-            armLeftAngleY += bodyAngleY;
-            armLeftAngleX += bodyAngleY;
-
-            f6 = 1.0F - swingProgress;
-            f6 *= f6;
-            f6 *= f6;
-            f6 = 1.0F - f6;
-            float f7 = MathHelper.sin(f6 * (float) Math.PI);
-            float f8 = MathHelper.sin(swingProgress * (float) Math.PI) * -(entity.getFloat("headLinearRotateAngleX") - 0.7F) * 0.75F;
-
-            armRightAngleX -= (float) ((double) f7 * 1.2D * (double) f8);
-            armRightAngleY += bodyAngleY * 2.0F;
-            armRightAngleZ = MathHelper.sin(swingProgress * (float) Math.PI) * -0.4F;
-        }
-
-        if(((EntityLiving) entity).isSneaking()) {
-            bodyAngleX = 0.5F;
-            armRightAngleX += 0.5F;
-            armLeftAngleX += 0.5F;
-            legRightPointZ = 4.0F;
-            legLeftPointZ = 4.0F;
-            legRightPointY = 9.0F;
-            legLeftPointY = 9.0F;
-            headPointY = 1.0F;
-        } else {
-            bodyAngleX = 0.0F;
-            legRightPointZ = 0.1F;
-            legLeftPointZ = 0.1F;
-            legRightPointY = 12.0F;
-            legLeftPointY = 12.0F;
-            headPointY = 0.0F;
-        }
-
-        armRightAngleZ += MathHelper.cos(specialRotation * 0.09F) * 0.05F + 0.05F;
-        armLeftAngleZ -= MathHelper.cos(specialRotation * 0.09F) * 0.05F + 0.05F;
-        armRightAngleX += MathHelper.cos(specialRotation * 0.067F) * 0.05F;
-        armLeftAngleX -= MathHelper.cos(specialRotation * 0.067F) * 0.05F;
-
-        if((((EntityLiving) entity).getHeldItem() != null && ((EntityLiving) entity).getHeldItem().getItemUseAction() == EnumAction.bow)) {
-            armRightAngleZ = 0.0F;
-            armLeftAngleZ = 0.0F;
-            armRightAngleY = -0.1F + entity.getFloat("headLinearRotateAngleY");
-            armLeftAngleY = 0.1F + entity.getFloat("headLinearRotateAngleY") + 0.4F;
-            armRightAngleX = -((float) Math.PI / 2F) + entity.getFloat("headLinearRotateAngleX");
-            armLeftAngleX = -((float) Math.PI / 2F) + entity.getFloat("headLinearRotateAngleX");
-            armRightAngleZ += MathHelper.cos(specialRotation * 0.09F) * 0.05F + 0.05F;
-            armLeftAngleZ -= MathHelper.cos(specialRotation * 0.09F) * 0.05F + 0.05F;
-            armRightAngleX += MathHelper.sin(specialRotation * 0.067F) * 0.05F;
-            armLeftAngleX -= MathHelper.sin(specialRotation * 0.067F) * 0.05F;
-        }
-
-
-        entity.setFloat("bodyLinearRotateAngleX", bodyAngleX);
-        entity.setFloat("bodyLinearRotateAngleY", bodyAngleY);
-        entity.setFloat("bodyLinearRotateAngleZ", bodyAngleZ);
-        entity.setFloat("armRightLinearRotationPointX", armRightPointX);
-        entity.setFloat("armRightLinearRotationPointZ", armRightPointZ);
-        entity.setFloat("armLeftLinearRotationPointX", armLeftPointX);
-        entity.setFloat("armLeftLinearRotationPointZ", armLeftPointZ);
-        entity.setFloat("armRightLinearRotateAngleX", armRightAngleX);
-        entity.setFloat("armRightLinearRotateAngleY", armRightAngleY);
-        entity.setFloat("armRightLinearRotateAngleZ", armRightAngleZ);
-        entity.setFloat("armLeftLinearRotateAngleX", armLeftAngleX);
-        entity.setFloat("armLeftLinearRotateAngleY", armLeftAngleY);
-        entity.setFloat("armLeftLinearRotateAngleZ", armLeftAngleZ);
-        entity.setFloat("legLeftLinearRotationPointY", legLeftPointY);
-        entity.setFloat("legLeftLinearRotationPointZ", legLeftPointZ);
-        entity.setFloat("legRightLinearRotationPointY", legRightPointY);
-        entity.setFloat("legRightLinearRotationPointZ", legRightPointZ);
-        entity.setFloat("legLeftLinearRotateAngleX", legLeftAngleX);
-        entity.setFloat("legRightLinearRotateAngleX", legRightAngleX);
-        entity.setFloat("legLeftLinearRotateAngleY", legLeftAngleY);
-        entity.setFloat("legRightLinearRotateAngleY", legRightAngleY);
-        entity.setFloat("headLinearRotationPointY", headPointY);
-
         for(int i = 0; i < head.length; i++) {
-            if(i < animationLinearHead.length) {
-                head[i].resetRotations();
-                animationLinearHead[i].animate(entity);
-            }
             head[i].render(0.0625F);
         }
 
         for(int i = 0; i < body.length; i++) {
-            if(i < animationLinearBody.length) {
-                body[i].resetRotations();
-                animationLinearBody[i].animate(entity);
-            }
             body[i].render(0.0625F);
         }
 
         for(int i = 0; i < armLeft.length; i++) {
-            if(i < animationWaveArmLeft.length) {
-                armLeft[i].resetRotations();
-                animationWaveArmLeft[i].animate(entity);
-            }
-            if(i < animationLinearArmLeft.length) {
-                animationLinearArmLeft[i].animate(entity);
-            }
             armLeft[i].render(0.0625F);
         }
 
         for(int i = 0; i < armRight.length; i++) {
-            if(i < animationWaveArmRight.length) {
-                armRight[i].resetRotations();
-                armRight[i].rotateAngleX = entity.getFloat("armRightLinearRotateAngleXBase");
-                armRight[i].rotateAngleY = entity.getFloat("armRightLinearRotateAngleYBase");
-                armRight[i].rotateAngleZ = entity.getFloat("armRightLinearRotateAngleZBase");
-                animationWaveArmRight[i].animate(entity);
-            }
-            if(i < animationLinearArmRight.length) {
-                animationLinearArmRight[i].animate(entity);
-            }
             armRight[i].render(0.0625F);
         }
 
         for(int i = 0; i < legLeft.length; i++) {
-            if(i < animationWaveLegLeft.length) {
-                legLeft[i].resetRotations();
-                animationWaveLegLeft[i].animate(entity);
-            }
-            if(i < animationLinearLegLeft.length) {
-                animationLinearLegLeft[i].animate(entity);
-            }
             legLeft[i].render(0.0625F);
         }
 
         for(int i = 0; i < legRight.length; i++) {
-            if(i < animationWaveLegRight.length) {
-                legRight[i].resetRotations();
-                animationWaveLegRight[i].animate(entity);
-            }
-            if(i < animationLinearLegRight.length) {
-                animationLinearLegRight[i].animate(entity);
-            }
             legRight[i].render(0.0625F);
         }
 
-        //        for(int i = 0; i < cloak.length; i++) {
-        //            if(i < animationLinearCloak.length) {
-        //                animationLinearCloak[i].animate(entity);
-        //            }
-        //            cloak[i].render(0.0625F);
-        //        }
+        for(int i = 0; i < cloak.length; i++) {
+            cloak[i].render(0.0625F);
+        }
 
         for(int i = 0; i < ears.length; i++) {
-            if(i < animationLinearEars.length) {
-                ears[i].resetRotations();
-                animationLinearEars[i].animate(entity);
-            }
             ears[i].render(0.0625F);
         }
+
+
     }
 
     @Override

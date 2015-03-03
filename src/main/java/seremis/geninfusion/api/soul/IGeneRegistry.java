@@ -3,7 +3,6 @@ package seremis.geninfusion.api.soul;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
 import seremis.geninfusion.api.soul.util.ModelPart;
-import seremis.geninfusion.api.soul.util.animation.AnimationPart;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -53,8 +52,6 @@ public interface IGeneRegistry {
 
     public ModelPart getValueModelPart(IEntitySoulCustom entity, String name);
 
-    public AnimationPart getValueAnimationPart(IEntitySoulCustom entity, String name);
-
     public Class getValueClass(IEntitySoulCustom entity, String name);
 
     public boolean[] getValueBooleanArray(IEntitySoulCustom entity, String name);
@@ -70,8 +67,6 @@ public interface IGeneRegistry {
     public ItemStack[] getValueItemStackArray(IEntitySoulCustom entity, String name);
 
     public ModelPart[] getValueModelPartArray(IEntitySoulCustom entity, String name);
-
-    public AnimationPart[] getValueAnimationPartArray(IEntitySoulCustom entity, String name);
 
     public Class[] getValueClassArray(IEntitySoulCustom entity, String name);
 

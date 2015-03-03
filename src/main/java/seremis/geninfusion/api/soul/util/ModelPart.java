@@ -148,10 +148,8 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         this.rotateAngleZ = 0.0F;
     }
 
-    public static ModelPart[] getHeadFromModel(ModelBiped model, EntityLiving entity) {
+    public static ModelPart[] getHeadFromModel(ModelBiped model) {
         ModelPart[] parts = new ModelPart[2];
-
-        model.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, entity);
 
         parts[0] = modelRendererToModelPart(model.bipedHead);
         parts[1] = modelRendererToModelPart(model.bipedHeadwear);
@@ -159,41 +157,25 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         return parts;
     }
 
-    public static ModelPart[] getBodyFromModel(ModelBiped model, EntityLiving entity) {
+    public static ModelPart[] getBodyFromModel(ModelBiped model) {
         ModelPart[] parts = new ModelPart[1];
-
-        model.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, entity);
 
         parts[0] = modelRendererToModelPart(model.bipedBody);
 
         return parts;
     }
 
-    public static ModelPart[] getArmsFromModel(ModelBiped model, EntityLiving entity) {
+    public static ModelPart[] getArmsFromModel(ModelBiped model) {
         ModelPart[] parts = new ModelPart[2];
-
-        System.out.println("Debug #0: " + model.bipedRightArm.rotateAngleX);
-        model.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, entity);
-
-        System.out.println("Debug #1: " + model.bipedRightArm.rotateAngleX);
-
-        System.out.println("Debug #2: " + model.bipedRightArm.rotateAngleX);
 
         parts[0] = modelRendererToModelPart(model.bipedLeftArm);
         parts[1] = modelRendererToModelPart(model.bipedRightArm);
 
-        parts[1].rotateAngleX = (float) (180/Math.PI);
-
-        System.out.println("Debug #3: " + parts[1].rotateAngleX);
-
         return parts;
     }
 
-    public static ModelPart[] getLegsFromModel(ModelBiped model, EntityLiving entity) {
+    public static ModelPart[] getLegsFromModel(ModelBiped model) {
         ModelPart[] parts = new ModelPart[2];
-
-        model.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, entity);
-        model.onGround = entity.getSwingProgress(0);
 
         parts[0] = modelRendererToModelPart(model.bipedLeftLeg);
         parts[1] = modelRendererToModelPart(model.bipedRightLeg);
@@ -201,22 +183,16 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         return parts;
     }
 
-    public static ModelPart[] getEarsFromModel(ModelBiped model, EntityLiving entity) {
+    public static ModelPart[] getEarsFromModel(ModelBiped model) {
         ModelPart[] parts = new ModelPart[1];
-
-        model.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, entity);
-        model.onGround = entity.getSwingProgress(0);
 
         parts[0] = modelRendererToModelPart(model.bipedEars);
 
         return parts;
     }
 
-    public static ModelPart[] getCloakFromModel(ModelBiped model, EntityLiving entity) {
+    public static ModelPart[] getCloakFromModel(ModelBiped model) {
         ModelPart[] parts = new ModelPart[1];
-
-        model.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, entity);
-        model.onGround = entity.getSwingProgress(0);
 
         parts[0] = modelRendererToModelPart(model.bipedCloak);
 

@@ -14,7 +14,6 @@ import seremis.geninfusion.api.soul.IChromosome;
 import seremis.geninfusion.api.soul.IStandardSoul;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.ModelPart;
-import seremis.geninfusion.api.soul.util.animation.AnimationPart;
 import seremis.geninfusion.soul.Chromosome;
 import seremis.geninfusion.soul.allele.*;
 
@@ -370,45 +369,21 @@ public class StandardSoul implements IStandardSoul {
         } else if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST_2_TARGET)) {
             return new Chromosome(new AlleleClassArray(true, new Class[]{EntityPlayer.class}));
         } else if(gene.equals(Genes.GENE_MODEL_HEAD)) {
-            return new Chromosome(new AlleleModelPartArray(true, ModelPart.getHeadFromModel(new ModelZombie(), entity)));
+            return new Chromosome(new AlleleModelPartArray(true, ModelPart.getHeadFromModel(new ModelZombie())));
         } else if(gene.equals(Genes.GENE_MODEL_BODY)) {
-            return new Chromosome(new AlleleModelPartArray(true, ModelPart.getBodyFromModel(new ModelZombie(), entity)));
+            return new Chromosome(new AlleleModelPartArray(true, ModelPart.getBodyFromModel(new ModelZombie())));
         } else if(gene.equals(Genes.GENE_MODEL_ARM_LEFT)) {
-            return new Chromosome(new AlleleModelPartArray(true, new ModelPart[]{ModelPart.getArmsFromModel(new ModelZombie(), entity)[0]}));
+            return new Chromosome(new AlleleModelPartArray(true, new ModelPart[]{ModelPart.getArmsFromModel(new ModelZombie())[0]}));
         } else if(gene.equals(Genes.GENE_MODEL_ARM_RIGHT)) {
-            return new Chromosome(new AlleleModelPartArray(true, new ModelPart[]{ModelPart.getArmsFromModel(new ModelZombie(), entity)[1]}));
+            return new Chromosome(new AlleleModelPartArray(true, new ModelPart[]{ModelPart.getArmsFromModel(new ModelZombie())[1]}));
         } else if(gene.equals(Genes.GENE_MODEL_LEG_LEFT)) {
-            return new Chromosome(new AlleleModelPartArray(true, new ModelPart[]{ModelPart.getLegsFromModel(new ModelZombie(), entity)[0]}));
+            return new Chromosome(new AlleleModelPartArray(true, new ModelPart[]{ModelPart.getLegsFromModel(new ModelZombie())[0]}));
         } else if(gene.equals(Genes.GENE_MODEL_LEG_RIGHT)) {
-            return new Chromosome(new AlleleModelPartArray(true, new ModelPart[]{ModelPart.getLegsFromModel(new ModelZombie(), entity)[1]}));
+            return new Chromosome(new AlleleModelPartArray(true, new ModelPart[]{ModelPart.getLegsFromModel(new ModelZombie())[1]}));
         } else if(gene.equals(Genes.GENE_MODEL_EARS)) {
-            return new Chromosome(new AlleleModelPartArray(true, ModelPart.getEarsFromModel(new ModelZombie(), entity)));
+            return new Chromosome(new AlleleModelPartArray(true, ModelPart.getEarsFromModel(new ModelZombie())));
         } else if(gene.equals(Genes.GENE_MODEL_CLOAK)) {
-            return new Chromosome(new AlleleModelPartArray(true, ModelPart.getCloakFromModel(new ModelZombie(), entity)));
-        } else if(gene.equals(Genes.GENE_ANIM_LINEAR_HEAD)) {
-            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedHeadLinearAnimationParts()));
-        } else if(gene.equals(Genes.GENE_ANIM_LINEAR_BODY)) {
-            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedBodyLinearAnimationParts()));
-        } else if(gene.equals(Genes.GENE_ANIM_WAVE_ARM_LEFT)) {
-            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedArmLeftWaveAnimationParts()));
-        } else if(gene.equals(Genes.GENE_ANIM_WAVE_ARM_RIGHT)) {
-            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedArmRightWaveAnimationParts()));
-        } else if(gene.equals(Genes.GENE_ANIM_WAVE_LEG_LEFT)) {
-            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedLegLeftWaveAnimationParts()));
-        } else if(gene.equals(Genes.GENE_ANIM_WAVE_LEG_RIGHT)) {
-            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedLegRightWaveAnimationParts()));
-        } else if(gene.equals(Genes.GENE_ANIM_LINEAR_CLOAK)) {
-            return new Chromosome(new AlleleAnimationPartArray(true, new AnimationPart[]{}));
-        } else if(gene.equals(Genes.GENE_ANIM_LINEAR_EARS)) {
-            return new Chromosome(new AlleleAnimationPartArray(true, new AnimationPart[]{}));
-        } else if(gene.equals(Genes.GENE_ANIM_LINEAR_ARM_LEFT)) {
-            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedArmLeftLinearAnimationParts()));
-        } else if(gene.equals(Genes.GENE_ANIM_LINEAR_ARM_RIGHT)) {
-            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedArmRightLinearAnimationParts()));
-        } else if(gene.equals(Genes.GENE_ANIM_LINEAR_LEG_LEFT)) {
-            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedLegLeftLinearAnimationParts()));
-        } else if(gene.equals(Genes.GENE_ANIM_LINEAR_LEG_RIGHT)) {
-            return new Chromosome(new AlleleAnimationPartArray(true, AnimationPart.bipedLegRightLinearAnimationParts()));
+            return new Chromosome(new AlleleModelPartArray(true, ModelPart.getCloakFromModel(new ModelZombie())));
         } else if(gene.equals(Genes.GENE_TEXTURE)) {
             return new Chromosome(new AlleleString(true, "textures/entity/zombie/zombie.png"), new AlleleString(false, "textures/entity/skeleton/skeleton.png"));
         }

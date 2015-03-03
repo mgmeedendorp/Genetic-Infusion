@@ -5,7 +5,6 @@ import net.minecraft.entity.monster.EntityZombie;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.lib.Traits;
 import seremis.geninfusion.soul.gene.*;
-import seremis.geninfusion.soul.gene.animation.GeneAnim;
 import seremis.geninfusion.soul.gene.model.GeneModel;
 import seremis.geninfusion.soul.gene.newAI.GeneAIIndex;
 import seremis.geninfusion.soul.gene.newAI.arrowAttack.*;
@@ -324,19 +323,6 @@ public class ModSouls {
         geneRegistry.registerGene(Genes.GENE_MODEL_LEG_RIGHT, new GeneModel());
         geneRegistry.registerGene(Genes.GENE_MODEL_EARS, new GeneModel());
         geneRegistry.registerGene(Genes.GENE_MODEL_CLOAK, new GeneModel());
-
-        geneRegistry.registerGene(Genes.GENE_ANIM_LINEAR_ARM_LEFT, new GeneAnim());
-        geneRegistry.registerGene(Genes.GENE_ANIM_LINEAR_ARM_RIGHT, new GeneAnim());
-        geneRegistry.registerGene(Genes.GENE_ANIM_LINEAR_BODY, new GeneAnim());
-        geneRegistry.registerGene(Genes.GENE_ANIM_LINEAR_CLOAK, new GeneAnim());
-        geneRegistry.registerGene(Genes.GENE_ANIM_LINEAR_EARS, new GeneAnim());
-        geneRegistry.registerGene(Genes.GENE_ANIM_LINEAR_HEAD, new GeneAnim());
-        geneRegistry.registerGene(Genes.GENE_ANIM_WAVE_LEG_LEFT, new GeneAnim());
-        geneRegistry.registerGene(Genes.GENE_ANIM_WAVE_LEG_RIGHT, new GeneAnim());
-        geneRegistry.registerGene(Genes.GENE_ANIM_WAVE_ARM_LEFT, new GeneAnim());
-        geneRegistry.registerGene(Genes.GENE_ANIM_WAVE_ARM_RIGHT, new GeneAnim());
-        geneRegistry.registerGene(Genes.GENE_ANIM_LINEAR_LEG_LEFT, new GeneAnim());
-        geneRegistry.registerGene(Genes.GENE_ANIM_LINEAR_LEG_RIGHT, new GeneAnim());
 
         geneRegistry.registerGene(Genes.GENE_TEXTURE, new GeneTexture());
 
