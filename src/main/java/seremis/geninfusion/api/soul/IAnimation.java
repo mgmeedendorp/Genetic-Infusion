@@ -4,10 +4,30 @@ public interface IAnimation {
 
     /**
      * If this animation applies to this entity. This only gets called in the entity's first render tick!
-     * @param entity the entity to be animated
-     * @return true if the entity should be animated
+     * @param entity The entity to be animated.
+     * @return Whether this animation applies to the passed entity.
      */
-    public boolean shouldAnimate(IEntitySoulCustom entity);
+    public boolean canAnimateEntity(IEntitySoulCustom entity);
+
+    /**
+     * Should this animation be started this tick? This gets called every tick if canAnimateEntity() returns true.
+     * @param entity The entity to be animated.
+     * @return Whether this animation should start.
+     */
+    public boolean shouldStartAnimation(IEntitySoulCustom entity);
+
+    /**
+     * Start this animation. This gets called at the start of an animation.
+     * @param entity The entity to be animated.
+     */
+    public void startAnimation(IEntitySoulCustom entity);
+
+    /**
+     * Checks if this animation should continue executing, checked before every animate() call. If this returns false, the animation will stop.
+     * @param entity The entity to be animated.
+     * @return If this animation should continue
+     */
+    public boolean continueAnimation(IEntitySoulCustom entity);
 
     /**
      * Animate this entity.
@@ -20,4 +40,17 @@ public interface IAnimation {
      * @param scale The scale this entity should render at. Standard at 0.0625F (1/16). Has the same value as the 6th parameter in setRotationAngles.
      */
     public void animate(IEntitySoulCustom entity, float timeModifier, float walkSpeed, float specialRotation, float rotationYawHead, float rotationPitch, float scale);
+
+    /**
+     * Checks if this animation can be interrupted by another animation.
+     * @param entity The entity to be animated.
+     * @return Whether this animation can be interrupted.
+     */
+    public boolean canBeInterrupted(IEntitySoulCustom entity);
+
+    /**
+     * Reset the animation, gets called when continueAnimation() returns false.
+     * @param entity The entity to be animated.
+     */
+    public void resetAnimation(IEntitySoulCustom entity);
 }
