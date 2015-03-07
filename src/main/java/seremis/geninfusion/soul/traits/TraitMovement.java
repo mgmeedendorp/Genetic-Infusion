@@ -8,7 +8,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldServer;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
-import seremis.geninfusion.api.soul.util.UtilSoulEntity;
 
 public class TraitMovement extends Trait {
 
@@ -134,7 +133,7 @@ public class TraitMovement extends Trait {
             living.rotationPitch = (float) ((double) living.rotationPitch + (entity.getDouble("newRotationPitch") - (double) living.rotationPitch) / (double) newPosRotationIncrements);
             --newPosRotationIncrements;
             living.setPosition(d0, d1, d2);
-            UtilSoulEntity.setRotation(entity, living.rotationYaw, living.rotationPitch);
+            entity.setRotation(living.rotationYaw, living.rotationPitch);
         } else if(!living.isClientWorld()) {
             living.motionX *= 0.98D;
             living.motionY *= 0.98D;

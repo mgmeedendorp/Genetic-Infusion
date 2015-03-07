@@ -18,4 +18,5 @@ public class Traits {
     public static final String TRAIT_RENDER = ID + ".trait.render";
     public static final String TRAIT_TEXTURE = ID + ".trait.texture";
     public static final String TRAIT_NAVIGATE = ID + ".trait.navigate";
+    public static final String TRAIT_ANIMATION = ID + ".trait.animation";
 }

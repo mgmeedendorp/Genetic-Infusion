@@ -44,6 +44,7 @@ object GeneticInfusion {
         SoulHelper.standardSoulRegistry = new StandardSoulRegistry
         SoulHelper.instanceHelper = new InstanceHelper
         SoulHelper.entityModel = new ModelEntitySoulCustom
+        SoulHelper.animationRegistry = new AnimationRegistry
 
         ModBlocks.init
         ModItems.init

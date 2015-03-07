@@ -49,8 +49,14 @@ public interface IAnimation {
     public boolean canBeInterrupted(IEntitySoulCustom entity);
 
     /**
+     * Returns the animation type of this animation. Animations with the same animation types cannot run concurrently, except for EnumAnimationType.UNDEFINED.
+     * @return This animation's animation type.
+     */
+    public EnumAnimationType getAnimationType();
+
+    /**
      * Reset the animation, gets called when continueAnimation() returns false.
      * @param entity The entity to be animated.
      */
-    public void resetAnimation(IEntitySoulCustom entity);
+    public void stopAnimation(IEntitySoulCustom entity);
 }

@@ -210,4 +210,10 @@ public interface IEntitySoulCustom extends IRangedAttackMob {
     void detachHome();
 
     void setHomeArea(int x, int y, int z, int maxDistance);
+
+    void despawnEntity();
+
+    void setRotation(float rotationYaw, float rotationPitch);
+
+    void updateArmSwingProgress();
 }

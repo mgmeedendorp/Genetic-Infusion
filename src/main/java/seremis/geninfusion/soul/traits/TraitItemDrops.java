@@ -14,7 +14,6 @@ import seremis.geninfusion.GeneticInfusion;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
-import seremis.geninfusion.api.soul.util.UtilSoulEntity;
 import seremis.geninfusion.soul.allele.AlleleFloatArray;
 import seremis.geninfusion.soul.allele.AlleleInventory;
 
@@ -95,7 +94,7 @@ public class TraitItemDrops extends Trait {
 
             for(int k = 0; k < j; ++k) {
                 for(ItemStack stack : drops) {
-                    UtilSoulEntity.dropItem(entity, stack, 0.0F);
+                    ((EntityLiving)entity).entityDropItem(stack, 0.0F);
                 }
             }
         }
@@ -105,7 +104,7 @@ public class TraitItemDrops extends Trait {
         float[] equipmentDropChances = ((AlleleFloatArray) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_EQUIPMENT_DROP_CHANCES)).value;
 
         for(int j = 0; j < 5; ++j) {
-            ItemStack itemstack = UtilSoulEntity.getEquipmentInSlot(entity, j);
+            ItemStack itemstack = entity.getItemStackArray("equipment") != null ? entity.getItemStackArray("equipment")[j] : null;
 
             float dropChance = equipmentDropChances[j];
 
@@ -126,7 +125,7 @@ public class TraitItemDrops extends Trait {
 
                     itemstack.setItemDamage(l);
                 }
-                UtilSoulEntity.dropItem(entity, itemstack, 0.0F);
+                ((EntityLiving)entity).entityDropItem(itemstack, 0.0F);
             }
         }
     }
@@ -137,7 +136,7 @@ public class TraitItemDrops extends Trait {
 
         for(int i = 0; i < drops.length; i++) {
             if(entity.getRandom().nextInt((int) (dropChances[i] * 100F)) == 0) {
-                UtilSoulEntity.dropItem(entity, drops[i], 0.0F);
+                ((EntityLiving)entity).entityDropItem(drops[i], 0.0F);
             }
         }
     }

@@ -8,7 +8,7 @@ import seremis.geninfusion.soul.TraitHandler;
 public class ModelEntitySoulCustom extends ModelBase {
 
     @Override
-    public void render(Entity entity, float timeModifier, float walkSpeed, float specialRotation, float rotationYawHead, float rotationPitch, float scale) {
-        TraitHandler.render((IEntitySoulCustom) entity, timeModifier, walkSpeed, specialRotation, rotationYawHead, rotationPitch, scale);
+    public void render(Entity entity, float timeModifier, float limbSwing, float specialRotation, float rotationYawHead, float rotationPitch, float scale) {
+        TraitHandler.render((IEntitySoulCustom) entity, timeModifier, limbSwing, specialRotation, rotationYawHead, rotationPitch, scale);
     }
 }

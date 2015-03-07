@@ -198,6 +198,14 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     override def attackEntityWithRangedAttack(entity: EntityLivingBase, distanceModified: Float) = TraitHandler.attackEntityWithRangedAttack(this, entity, distanceModified)
 
+    override def despawnEntity() = super.despawnEntity()
+
+    override def setRotation(rotationYaw: Float, rotationPitch: Float) = super.setRotation(rotationYaw, rotationPitch)
+
+    override def updateArmSwingProgress() = super.updateArmSwingProgress()
+
+    override def isAIEnabled(): Boolean = SoulHelper.geneRegistry.getValueBoolean(this, Genes.GENE_USE_NEW_AI)
+
     override def readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)
         soul = new Soul(compound)

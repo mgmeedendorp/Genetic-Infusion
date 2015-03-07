@@ -368,22 +368,8 @@ public class StandardSoul implements IStandardSoul {
             return new Chromosome(new AlleleFloatArray(true, new float[]{3.0F}));
         } else if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST_2_TARGET)) {
             return new Chromosome(new AlleleClassArray(true, new Class[]{EntityPlayer.class}));
-        } else if(gene.equals(Genes.GENE_MODEL_HEAD)) {
-            return new Chromosome(new AlleleModelPartArray(true, ModelPart.getHeadFromModel(new ModelZombie())));
-        } else if(gene.equals(Genes.GENE_MODEL_BODY)) {
-            return new Chromosome(new AlleleModelPartArray(true, ModelPart.getBodyFromModel(new ModelZombie())));
-        } else if(gene.equals(Genes.GENE_MODEL_ARM_LEFT)) {
-            return new Chromosome(new AlleleModelPartArray(true, new ModelPart[]{ModelPart.getArmsFromModel(new ModelZombie())[0]}));
-        } else if(gene.equals(Genes.GENE_MODEL_ARM_RIGHT)) {
-            return new Chromosome(new AlleleModelPartArray(true, new ModelPart[]{ModelPart.getArmsFromModel(new ModelZombie())[1]}));
-        } else if(gene.equals(Genes.GENE_MODEL_LEG_LEFT)) {
-            return new Chromosome(new AlleleModelPartArray(true, new ModelPart[]{ModelPart.getLegsFromModel(new ModelZombie())[0]}));
-        } else if(gene.equals(Genes.GENE_MODEL_LEG_RIGHT)) {
-            return new Chromosome(new AlleleModelPartArray(true, new ModelPart[]{ModelPart.getLegsFromModel(new ModelZombie())[1]}));
-        } else if(gene.equals(Genes.GENE_MODEL_EARS)) {
-            return new Chromosome(new AlleleModelPartArray(true, ModelPart.getEarsFromModel(new ModelZombie())));
-        } else if(gene.equals(Genes.GENE_MODEL_CLOAK)) {
-            return new Chromosome(new AlleleModelPartArray(true, ModelPart.getCloakFromModel(new ModelZombie())));
+        } else if(gene.equals(Genes.GENE_MODEL)) {
+            return new Chromosome(new AlleleModelPartArray(true, ModelPart.getModelPartsFromModel(new ModelZombie())));
         } else if(gene.equals(Genes.GENE_TEXTURE)) {
             return new Chromosome(new AlleleString(true, "textures/entity/zombie/zombie.png"), new AlleleString(false, "textures/entity/skeleton/skeleton.png"));
         }

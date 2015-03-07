@@ -19,7 +19,6 @@ import seremis.geninfusion.GeneticInfusion;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
-import seremis.geninfusion.api.soul.util.UtilSoulEntity;
 
 import java.util.List;
 import java.util.Random;
@@ -44,7 +43,7 @@ public class TraitItemPickup extends Trait {
 
                     if(i > -1) {
                         boolean flag = true;
-                        ItemStack itemstack1 = UtilSoulEntity.getEquipmentInSlot(entity, i);
+                        ItemStack itemstack1 = getEquipmentInSlot(entity, i);
 
                         if(itemstack1 != null) {
                             if(i == 0) {
@@ -83,7 +82,7 @@ public class TraitItemPickup extends Trait {
                             float dropChance = equipmentDropChances[i];
 
                             if(itemstack1 != null && new Random().nextFloat() - 0.1F < dropChance) {
-                                UtilSoulEntity.dropItem(entity, itemstack1, 0.0F);
+                                ((EntityLiving)entity).entityDropItem(itemstack1, 0.0F);
                             }
 
                             if(itemstack.getItem() == Items.diamond && entityitem.func_145800_j() != null) {
@@ -94,7 +93,7 @@ public class TraitItemPickup extends Trait {
                                 }
                             }
 
-                            UtilSoulEntity.setEquipmentInSlot(entity, i, itemstack);
+                            setEquipmentInSlot(entity, i, itemstack);
                             equipmentDropChances[i] = 2.0F;
                             entity.setFloatArray("equipmentDropChances", equipmentDropChances);
                             entity.setBoolean("persistenceRequired", true);
@@ -144,10 +143,6 @@ public class TraitItemPickup extends Trait {
                     entity.setItemStackArray("previousEquipment", previousEquipment);
                 }
             }
-
-            if(living.ticksExisted % 20 == 0) {
-                living.func_110142_aN().func_94549_h();
-            }
         }
 
         entity.getWorld().theProfiler.endSection();
@@ -181,5 +176,15 @@ public class TraitItemPickup extends Trait {
 
             entitytracker.func_151247_a(ent, new S0DPacketCollectItem(ent.getEntityId(), entity.getEntityId()));
         }
+    }
+
+    public ItemStack getEquipmentInSlot(IEntitySoulCustom entity, int slot) {
+        return entity.getItemStackArray("equipment") != null ? entity.getItemStackArray("equipment")[slot] : null;
+    }
+
+    public void setEquipmentInSlot(IEntitySoulCustom entity, int slot, ItemStack stack) {
+        ItemStack[] equipment = entity.getItemStackArray("equipment");
+        equipment[slot] = stack;
+        entity.setItemStackArray("equipment", equipment);
     }
 }

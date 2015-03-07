@@ -3,6 +3,7 @@ package seremis.geninfusion.soul.traits;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.SharedMonsterAttributes;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
@@ -12,49 +13,12 @@ public class TraitRender extends Trait {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void render(IEntitySoulCustom entity, float timeModifier, float walkSpeed, float specialRotation, float rotationYawHead, float rotationPitch, float scale) {
-        ModelPart[] head = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL_HEAD);
-        ModelPart[] body = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL_BODY);
-        ModelPart[] armLeft = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL_ARM_LEFT);
-        ModelPart[] armRight = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL_ARM_RIGHT);
-        ModelPart[] legLeft = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL_LEG_LEFT);
-        ModelPart[] legRight = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL_LEG_RIGHT);
-        ModelPart[] ears = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL_EARS);
-        ModelPart[] cloak = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL_CLOAK);
+    public void render(IEntitySoulCustom entity, float timeModifier, float limbSwing, float specialRotation, float rotationYawHead, float rotationPitch, float scale) {
+        ModelPart[] model = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL);
 
-        for(int i = 0; i < head.length; i++) {
-            head[i].render(0.0625F);
+        for(int i = 0; i < model.length; i++) {
+            model[i].render(0.0625F);
         }
-
-        for(int i = 0; i < body.length; i++) {
-            body[i].render(0.0625F);
-        }
-
-        for(int i = 0; i < armLeft.length; i++) {
-            armLeft[i].render(0.0625F);
-        }
-
-        for(int i = 0; i < armRight.length; i++) {
-            armRight[i].render(0.0625F);
-        }
-
-        for(int i = 0; i < legLeft.length; i++) {
-            legLeft[i].render(0.0625F);
-        }
-
-        for(int i = 0; i < legRight.length; i++) {
-            legRight[i].render(0.0625F);
-        }
-
-        for(int i = 0; i < cloak.length; i++) {
-            cloak[i].render(0.0625F);
-        }
-
-        for(int i = 0; i < ears.length; i++) {
-            ears[i].render(0.0625F);
-        }
-
-
     }
 
     @Override
@@ -123,5 +87,13 @@ public class TraitRender extends Trait {
 
         living.worldObj.theProfiler.endSection();
         entity.setFloat("field_70764_aw", entity.getFloat("field_70764_aw") + f2);
+
+        entity.updateArmSwingProgress();
+
+        boolean burnsInDaylight = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_BURNS_IN_DAYLIGHT);
+
+        if (living.getBrightness(1.0F) > 0.5F && burnsInDaylight) {
+            entity.setInteger("entityAge", entity.getInteger("entityAge") + 2);
+        }
     }
 }

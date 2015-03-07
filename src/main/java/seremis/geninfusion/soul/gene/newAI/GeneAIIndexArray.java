@@ -1,4 +1,4 @@
-package seremis.geninfusion.soul.gene;
+package seremis.geninfusion.soul.gene.newAI;
 
 import seremis.geninfusion.api.soul.IAllele;
 import seremis.geninfusion.soul.Gene;

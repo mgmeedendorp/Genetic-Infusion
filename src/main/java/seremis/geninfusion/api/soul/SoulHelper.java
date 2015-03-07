@@ -20,6 +20,8 @@ public class SoulHelper {
 
     public static IInstanceHelper instanceHelper;
 
+    public static IAnimationRegistry animationRegistry;
+
     /**
      * The model used for all EntitySoulCustoms, this only contains a bridge method that redirects all render() calls to
      * Traits, but is useful for declaring new ModelRenderers or ModelParts.

@@ -222,14 +222,6 @@ public class Genes {
     public static final String GENE_AI_WATCH_CLOSEST_2_CHANCE = ID + ".gene.aiWatchClosest2Chance";
 
     //Rendering related Genes
-    public static final String GENE_MODEL_BODY = ID + ".gene.modelBody";
-    public static final String GENE_MODEL_HEAD = ID + ".gene.modelHead";
-    public static final String GENE_MODEL_ARM_LEFT = ID + ".gene.modelArmLeft";
-    public static final String GENE_MODEL_ARM_RIGHT = ID + ".gene.modelArmRight";
-    public static final String GENE_MODEL_LEG_LEFT = ID + ".gene.modelLegLeft";
-    public static final String GENE_MODEL_LEG_RIGHT = ID + ".gene.modelLegRight";
-    public static final String GENE_MODEL_EARS = ID + ".gene.modelEars";
-    public static final String GENE_MODEL_CLOAK = ID + ".gene.modelCloak";
-
+    public static final String GENE_MODEL = ID + ".gene.model";
     public static final String GENE_TEXTURE = ID + ".gene.texture";
 }

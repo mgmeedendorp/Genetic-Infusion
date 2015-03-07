@@ -175,9 +175,9 @@ public class TraitHandler {
     }
 
     @SideOnly(Side.CLIENT)
-    public static void render(IEntitySoulCustom entity, float timeModifier, float walkSpeed, float specialRotation, float rotationYawHead, float rotationPitch, float scale) {
+    public static void render(IEntitySoulCustom entity, float timeModifier, float limbSwing, float specialRotation, float rotationYawHead, float rotationPitch, float scale) {
         for(ITrait trait : SoulHelper.traitRegistry.getTraits()) {
-            trait.render(entity, timeModifier, walkSpeed, specialRotation, rotationYawHead, rotationPitch, scale);
+            trait.render(entity, timeModifier, limbSwing, specialRotation, rotationYawHead, rotationPitch, scale);
         }
     }
 

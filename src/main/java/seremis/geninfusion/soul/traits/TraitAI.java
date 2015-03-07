@@ -5,10 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAILookIdle;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAITasks;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,7 +17,6 @@ import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.IGeneRegistry;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
-import seremis.geninfusion.api.soul.util.UtilSoulEntity;
 import seremis.geninfusion.soul.entity.ai.*;
 
 public class TraitAI extends Trait {
@@ -123,6 +119,13 @@ public class TraitAI extends Trait {
                 double moveSpeed = gReg.getValueDouble(entity, Genes.GENE_AI_FLEE_SUN_MOVE_SPEED);
 
                 tasks.addTask(index, new EntityAIFleeSunCustom(entity, moveSpeed));
+            }
+
+            if(gReg.getValueBoolean(entity, Genes.GENE_AI_BREAK_DOOR)) {
+                int index = gReg.getValueInteger(entity, Genes.GENE_AI_BREAK_DOOR_INDEX);
+
+                tasks.addTask(index, new EntityAIBreakDoor(living));
+                ((EntityLiving) entity).getNavigator().setBreakDoors(true);
             }
 
 
@@ -410,7 +413,7 @@ public class TraitAI extends Trait {
         boolean useOldAI = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_USE_OLD_AI);
         entity.getWorld().theProfiler.startSection("ai");
 
-        if(UtilSoulEntity.isMovementBlocked(entity)) {
+        if(((EntityLiving)entity).getHealth() <= 0.0F) {
             entity.setBoolean("isJumping", false);
             entity.setFloat("moveStrafing", 0.0F);
             entity.setFloat("moveForward", 0.0F);
@@ -482,7 +485,7 @@ public class TraitAI extends Trait {
 
             int i = MathHelper.floor_double(entity.getBoundingBox().minY + 0.5D);
             boolean flag = entity.getBoolean("inWater");
-            boolean flag1 = UtilSoulEntity.handleLavaMovement(entity);
+            boolean flag1 = ((EntityLiving)entity).handleLavaMovement();
             entity.setFloat("rotationPitch", 0.0F);
 
             PathEntity pathToEntity = (PathEntity) entity.getObject("pathToEntity");
@@ -545,7 +548,7 @@ public class TraitAI extends Trait {
                 }
 
                 if(entityToAttack != null) {
-                    UtilSoulEntity.faceEntity(entity, entityToAttack, 30.0F, 30.0F);
+                    ((EntityLiving)entity).faceEntity(entityToAttack, 30.0F, 30.0F);
                 }
 
                 if(entity.getBoolean("isCollidedHorizontally") && pathToEntity == null) {
@@ -575,7 +578,7 @@ public class TraitAI extends Trait {
         entity.setInteger("entityAge", entity.getInteger("entityAge") + 1);
         entity.setFloat("moveForward", 0.0F);
         entity.setFloat("moveStrafing", 0.0F);
-        UtilSoulEntity.despawnEntity(entity);
+        entity.despawnEntity();
         float f = 8.0F;
 
         if(entity.getRandom().nextFloat() < 0.02F) {
@@ -593,7 +596,7 @@ public class TraitAI extends Trait {
         int numTicksToChaseTarget = entity.getInteger("numTicksToChaseTarget");
 
         if(currentTarget != null) {
-            UtilSoulEntity.faceEntity(entity, currentTarget, 10.0F, (float) 40);
+            ((EntityLiving)entity).faceEntity(currentTarget, 10.0F, 40F);
 
             if(numTicksToChaseTarget-- <= 0 || currentTarget.isDead || currentTarget.getDistanceSqToEntity((Entity) entity) > (double) (f * f)) {
                 entity.setObject("currentTarget", null);
@@ -611,7 +614,7 @@ public class TraitAI extends Trait {
         entity.setInteger("numTicksToChaseTarget", numTicksToChaseTarget);
 
         boolean flag1 = entity.getBoolean("inWater");
-        boolean flag = UtilSoulEntity.handleLavaMovement(entity);
+        boolean flag = ((EntityLiving)entity).handleLavaMovement();
 
         if(flag1 || flag) {
             entity.setBoolean("isJumping", entity.getRandom().nextFloat() < 0.8F);
@@ -621,7 +624,7 @@ public class TraitAI extends Trait {
     public void updateAITasks(IEntitySoulCustom entity) {
         entity.setInteger("entityAge", entity.getInteger("entityAge") + 1);
         entity.getWorld().theProfiler.startSection("checkDespawn");
-        UtilSoulEntity.despawnEntity(entity);
+        entity.despawnEntity();
         entity.getWorld().theProfiler.endSection();
         entity.getWorld().theProfiler.startSection("sensing");
         ((EntityLiving) entity).getEntitySenses().clearSensingCache();

@@ -13,7 +13,6 @@ import net.minecraftforge.common.ForgeHooks;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
-import seremis.geninfusion.api.soul.util.UtilSoulEntity;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
 
 public class TraitAttacked extends Trait {
@@ -25,6 +24,8 @@ public class TraitAttacked extends Trait {
 
     @Override
     public void onUpdate(IEntitySoulCustom entity) {
+        EntityLiving living = (EntityLiving) entity;
+
         int attackTime = entity.getInteger("attackTime");
         int hurtTime = entity.getInteger("hurtTime");
         int hurtResistantTime = entity.getInteger("hurtResistantTime");
@@ -47,7 +48,7 @@ public class TraitAttacked extends Trait {
             --hurtResistantTime;
         }
 
-        if(UtilSoulEntity.getHealth(entity) <= 0.0F) {
+        if(((EntityLiving)entity).getHealth() <= 0.0F) {
             entity.onDeathUpdate();
         }
 
@@ -63,9 +64,9 @@ public class TraitAttacked extends Trait {
 
         if(entityLivingToAttack != null) {
             if(!entityLivingToAttack.isEntityAlive()) {
-                ((EntityLiving) entity).setRevengeTarget(null);
+                living.setRevengeTarget(null);
             } else if(ticksExisted - entity.getInteger("revengeTimer") > 100) {
-                ((EntityLiving) entity).setRevengeTarget(null);
+                living.setRevengeTarget(null);
             }
         }
 
@@ -76,10 +77,30 @@ public class TraitAttacked extends Trait {
         entity.setInteger("ticksExisted", ticksExisted);
         entity.setObject("lastAttacker", lastAttacker);
         entity.setObject("entityLivingToAttack", entityLivingToAttack);
+
+        if(!entity.getWorld().isRemote) {
+            int arrowCount = living.getArrowCountInEntity();
+
+            if(arrowCount > 0) {
+                if(living.arrowHitTimer <= 0) {
+                    living.arrowHitTimer = 20 * (30 - arrowCount);
+                }
+
+                if(--living.arrowHitTimer <= 0) {
+                    living.setArrowCountInEntity(arrowCount - 1);
+                }
+            }
+
+            if(living.ticksExisted % 20 == 0) {
+                living.func_110142_aN().func_94549_h();
+            }
+        }
     }
 
     @Override
     public boolean attackEntityFrom(IEntitySoulCustom entity, DamageSource source, float damage) {
+        EntityLiving living = (EntityLiving) entity;
+
         if(ForgeHooks.onLivingAttack((EntityLivingBase) entity, source, damage))
             return false;
 
@@ -90,7 +111,7 @@ public class TraitAttacked extends Trait {
         } else {
             entity.setInteger("entityAge", 0);
 
-            if(UtilSoulEntity.getHealth(entity) <= 0.0F) {
+            if(living.getHealth() <= 0.0F) {
                 return false;
             } else if(source.isFireDamage() && ((EntityLiving) entity).isPotionActive(Potion.fireResistance)) {
                 return false;
@@ -125,7 +146,7 @@ public class TraitAttacked extends Trait {
                     flag = false;
                 } else {
                     lastDamage = damage;
-                    entity.setFloat("prevHealth", UtilSoulEntity.getHealth(entity));
+                    entity.setFloat("prevHealth", living.getHealth());
                     hurtResistantTime = maxHurtResistantTime;
                     entity.damageEntity(source, damage);
 
@@ -188,7 +209,7 @@ public class TraitAttacked extends Trait {
 
                 String s;
 
-                if(UtilSoulEntity.getHealth(entity) <= 0.0F) {
+                if(living.getHealth() <= 0.0F) {
                     s = entity.getDeathSound();
 
                     if(flag && s != null) {
@@ -229,7 +250,7 @@ public class TraitAttacked extends Trait {
             ((EntityLiving) entity).setAbsorptionAmount(((EntityLiving) entity).getAbsorptionAmount() - (f1 - damage));
 
             if(damage != 0.0F) {
-                float f2 = UtilSoulEntity.getHealth(entity);
+                float f2 = ((EntityLiving)entity).getHealth();
                 ((EntityLiving) entity).setHealth(f2 - damage);
                 ((EntityLiving) entity).func_110142_aN().func_94547_a(source, f2, damage);
                 ((EntityLiving) entity).setAbsorptionAmount(((EntityLiving) entity).getAbsorptionAmount() - damage);

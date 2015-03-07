@@ -4,7 +4,10 @@ import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.entity.RenderBiped;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.tileentity.TileEntitySkullRenderer;
 import net.minecraft.entity.Entity;
@@ -12,22 +15,22 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.opengl.GL11;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
-import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.util.ModelPart;
 import seremis.geninfusion.soul.TraitHandler;
-
-import java.util.UUID;
+import seremis.geninfusion.soul.entity.animation.AnimationCache;
 
 @SideOnly(Side.CLIENT)
 public class RenderEntitySoulCustom extends RenderLiving {
@@ -59,7 +62,7 @@ public class RenderEntitySoulCustom extends RenderLiving {
 
         if(itemstack1 != null) {
             GL11.glPushMatrix();
-            ModelPart head = SoulHelper.geneRegistry.getValueModelPartArray(custom, Genes.GENE_MODEL_HEAD)[0];
+            ModelPart head = AnimationCache.getModelHead(custom);
             head.postRender(0.0625F);
             item = itemstack1.getItem();
 
@@ -86,7 +89,7 @@ public class RenderEntitySoulCustom extends RenderLiving {
                     if(nbttagcompound.hasKey("SkullOwner", 10)) {
                         gameprofile = NBTUtil.func_152459_a(nbttagcompound.getCompoundTag("SkullOwner"));
                     } else if(nbttagcompound.hasKey("SkullOwner", 8) && !StringUtils.isNullOrEmpty(nbttagcompound.getString("SkullOwner"))) {
-                        gameprofile = new GameProfile((UUID) null, nbttagcompound.getString("SkullOwner"));
+                        gameprofile = new GameProfile(null, nbttagcompound.getString("SkullOwner"));
                     }
                 }
 
@@ -107,7 +110,7 @@ public class RenderEntitySoulCustom extends RenderLiving {
                 GL11.glScalef(f1, f1, f1);
             }
 
-            ModelPart rightArm = SoulHelper.geneRegistry.getValueModelPartArray(custom, Genes.GENE_MODEL_ARM_RIGHT)[0];
+            ModelPart rightArm = AnimationCache.getModelArms(custom)[0];
             rightArm.postRender(0.0625F);
 
             GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F);

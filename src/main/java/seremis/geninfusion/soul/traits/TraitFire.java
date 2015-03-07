@@ -8,7 +8,6 @@ import net.minecraft.util.MathHelper;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
-import seremis.geninfusion.api.soul.util.UtilSoulEntity;
 import seremis.geninfusion.soul.allele.AlleleBoolean;
 
 public class TraitFire extends Trait {
@@ -20,6 +19,8 @@ public class TraitFire extends Trait {
 
     @Override
     public void onUpdate(IEntitySoulCustom entity) {
+        EntityLiving living = (EntityLiving) entity;
+
         boolean burnsInDayLight = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_BURNS_IN_DAYLIGHT)).value;
         boolean childrenBurnInDaylight = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_CHILDREN_BURN_IN_DAYLIGHT)).value;
 
@@ -30,20 +31,20 @@ public class TraitFire extends Trait {
         boolean isImmuneToFire = entity.getBoolean("isImmuneToFire");
 
         if(burnsInDayLight && !isImmuneToFire) {
-            if(entity.getWorld().isDaytime() && !entity.getWorld().isRemote && (!((EntityLiving) entity).isChild() || childrenBurnInDaylight)) {
-                float f = ((EntityLiving) entity).getBrightness(1.0F);
+            if(entity.getWorld().isDaytime() && !entity.getWorld().isRemote && (!living.isChild() || childrenBurnInDaylight)) {
+                float f = living.getBrightness(1.0F);
 
                 if(f > 0.5F && entity.getRandom().nextFloat() * 30.0F < (f - 0.4F) * 2.0F && entity.getWorld().canBlockSeeTheSky(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ))) {
                     boolean flag = true;
-                    ItemStack itemstack = ((EntityLiving) entity).getEquipmentInSlot(4);
+                    ItemStack itemstack = living.getEquipmentInSlot(4);
 
                     if(itemstack != null) {
                         if(itemstack.isItemStackDamageable()) {
                             itemstack.setItemDamage(itemstack.getItemDamageForDisplay() + entity.getRandom().nextInt(2));
 
                             if(itemstack.getItemDamageForDisplay() >= itemstack.getMaxDamage()) {
-                                ((EntityLiving) entity).renderBrokenItemStack(itemstack);
-                                ((EntityLiving) entity).setCurrentItemOrArmor(4, null);
+                                living.renderBrokenItemStack(itemstack);
+                                living.setCurrentItemOrArmor(4, null);
                             }
                         }
 
@@ -51,7 +52,7 @@ public class TraitFire extends Trait {
                     }
 
                     if(flag) {
-                        ((EntityLiving) entity).setFire(8);
+                        living.setFire(8);
                     }
                 }
             }
@@ -77,28 +78,34 @@ public class TraitFire extends Trait {
             }
         }
 
-        if(UtilSoulEntity.handleLavaMovement(entity)) {
+        if(((EntityLiving)entity).handleLavaMovement()) {
             entity.setOnFireFromLava();
             entity.setFloat("fallDistance", entity.getFloat("fallDistance") * 0.5F);
         }
 
         if(entity.getDouble("posY") < -64.0D) {
-            ((EntityLiving) entity).setDead();
+            living.setDead();
         }
 
         if(!entity.getWorld().isRemote) {
             entity.setFlag(0, fire > 0);
         }
+
+        if (living.isEntityAlive() && living.isWet()) {
+            living.extinguish();
+        }
     }
 
     @Override
     public boolean attackEntityAsMob(IEntitySoulCustom entity, Entity entityToAttack) {
+        EntityLiving living = (EntityLiving) entity;
+
         boolean setEntitiesOnFire = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_SET_ON_FIRE_FROM_ATTACK)).value;
 
-        int i = entity.getWorld().difficultySetting.getDifficultyId();
+        int difficulty = entity.getWorld().difficultySetting.getDifficultyId();
 
-        if(setEntitiesOnFire && ((EntityLiving) entity).getEquipmentInSlot(0) == null && ((EntityLiving) entity).isBurning() && entity.getRandom().nextFloat() < (float) i * 0.3F) {
-            entityToAttack.setFire(2 * i);
+        if(setEntitiesOnFire && living.getEquipmentInSlot(0) == null && living.isBurning() && entity.getRandom().nextFloat() < (float) difficulty * 0.3F) {
+            entityToAttack.setFire(2 * difficulty);
         }
         return true;
     }

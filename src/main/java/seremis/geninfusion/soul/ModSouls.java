@@ -2,11 +2,16 @@ package seremis.geninfusion.soul;
 
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
+import seremis.geninfusion.api.soul.lib.Animations;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.lib.Traits;
+import seremis.geninfusion.soul.entity.animation.AnimationHead;
+import seremis.geninfusion.soul.entity.animation.AnimationWalkTwoArmed;
+import seremis.geninfusion.soul.entity.animation.AnimationWalkTwoLegged;
 import seremis.geninfusion.soul.gene.*;
 import seremis.geninfusion.soul.gene.model.GeneModel;
 import seremis.geninfusion.soul.gene.newAI.GeneAIIndex;
+import seremis.geninfusion.soul.gene.newAI.GeneAIIndexArray;
 import seremis.geninfusion.soul.gene.newAI.arrowAttack.*;
 import seremis.geninfusion.soul.gene.newAI.attackOnCollide.GeneAIAttackOnCollide;
 import seremis.geninfusion.soul.gene.newAI.attackOnCollide.GeneAIAttackOnCollideLongMemory;
@@ -315,14 +320,7 @@ public class ModSouls {
         geneRegistry.registerMasterGene(Genes.GENE_USE_NEW_AI, new GeneUseNewAI());
         geneRegistry.registerMasterGene(Genes.GENE_USE_OLD_AI, new GeneUseOldAI());
 
-        geneRegistry.registerGene(Genes.GENE_MODEL_BODY, new GeneModel());
-        geneRegistry.registerGene(Genes.GENE_MODEL_HEAD, new GeneModel());
-        geneRegistry.registerGene(Genes.GENE_MODEL_ARM_LEFT, new GeneModel());
-        geneRegistry.registerGene(Genes.GENE_MODEL_ARM_RIGHT, new GeneModel());
-        geneRegistry.registerGene(Genes.GENE_MODEL_LEG_LEFT, new GeneModel());
-        geneRegistry.registerGene(Genes.GENE_MODEL_LEG_RIGHT, new GeneModel());
-        geneRegistry.registerGene(Genes.GENE_MODEL_EARS, new GeneModel());
-        geneRegistry.registerGene(Genes.GENE_MODEL_CLOAK, new GeneModel());
+        geneRegistry.registerGene(Genes.GENE_MODEL, new GeneModel());
 
         geneRegistry.registerGene(Genes.GENE_TEXTURE, new GeneTexture());
 
@@ -340,8 +338,13 @@ public class ModSouls {
         traitRegistry.registerTrait(Traits.TRAIT_HOME_AREA, new TraitHomeArea());
         traitRegistry.registerTrait(Traits.TRAIT_TEXTURE, new TraitTexture());
         traitRegistry.registerTrait(Traits.TRAIT_NAVIGATE, new TraitNavigate());
+        traitRegistry.registerTrait(Traits.TRAIT_ANIMATION, new TraitAnimation());
 
         standardSoulRegistry.register(new StandardSoulZombie(), EntityZombie.class);
         standardSoulRegistry.register(new StandardSoulSkeleton(), EntitySkeleton.class);
+
+        animationRegistry.register(Animations.ANIMATION_WALK_FOUR_LEGGED(), new AnimationWalkTwoLegged());
+        animationRegistry.register(Animations.ANIMATION_WALK_TWO_ARMED(), new AnimationWalkTwoArmed());
+        animationRegistry.register(Animations.ANIMATION_HEAD(), new AnimationHead());
     }
 }

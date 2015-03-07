@@ -93,7 +93,7 @@ public class Trait implements ITrait {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void render(IEntitySoulCustom entity, float timeModifier, float walkSpeed, float specialRotation, float rotationYawHead, float rotationPitch, float scale) {}
+    public void render(IEntitySoulCustom entity, float timeModifier, float limbSwing, float specialRotation, float rotationYawHead, float rotationPitch, float scale) {}
 
     @Override
     public boolean isWithinHomeDistanceCurrentPosition(IEntitySoulCustom entity) {

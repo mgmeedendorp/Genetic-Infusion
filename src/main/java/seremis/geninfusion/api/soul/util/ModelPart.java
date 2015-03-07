@@ -1,15 +1,16 @@
 package seremis.geninfusion.api.soul.util;
 
-import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.helper.GIReflectionHelper;
 import seremis.geninfusion.util.INBTTagable;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class ModelPart extends ModelRenderer implements INBTTagable {
@@ -142,61 +143,19 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         return this;
     }
 
-    public void resetRotations() {
-        this.rotateAngleX = 0.0F;
-        this.rotateAngleY = 0.0F;
-        this.rotateAngleZ = 0.0F;
-    }
+    public static ModelPart[] getModelPartsFromModel(ModelBase model) {
+        ArrayList<ModelPart> parts = new ArrayList<ModelPart>();
 
-    public static ModelPart[] getHeadFromModel(ModelBiped model) {
-        ModelPart[] parts = new ModelPart[2];
+        Field[] fields = GIReflectionHelper.getFields(model);
 
-        parts[0] = modelRendererToModelPart(model.bipedHead);
-        parts[1] = modelRendererToModelPart(model.bipedHeadwear);
+        for(Field field : fields) {
+            if(field.getType().equals(ModelRenderer.class) && !field.getName().equals("bipedCloak") && !field.getName().equals("bipedEars")) {
+                ModelRenderer renderer = (ModelRenderer) GIReflectionHelper.getField(model, field.getName());
+                parts.add(modelRendererToModelPart(renderer));
+            }
+        }
 
-        return parts;
-    }
-
-    public static ModelPart[] getBodyFromModel(ModelBiped model) {
-        ModelPart[] parts = new ModelPart[1];
-
-        parts[0] = modelRendererToModelPart(model.bipedBody);
-
-        return parts;
-    }
-
-    public static ModelPart[] getArmsFromModel(ModelBiped model) {
-        ModelPart[] parts = new ModelPart[2];
-
-        parts[0] = modelRendererToModelPart(model.bipedLeftArm);
-        parts[1] = modelRendererToModelPart(model.bipedRightArm);
-
-        return parts;
-    }
-
-    public static ModelPart[] getLegsFromModel(ModelBiped model) {
-        ModelPart[] parts = new ModelPart[2];
-
-        parts[0] = modelRendererToModelPart(model.bipedLeftLeg);
-        parts[1] = modelRendererToModelPart(model.bipedRightLeg);
-
-        return parts;
-    }
-
-    public static ModelPart[] getEarsFromModel(ModelBiped model) {
-        ModelPart[] parts = new ModelPart[1];
-
-        parts[0] = modelRendererToModelPart(model.bipedEars);
-
-        return parts;
-    }
-
-    public static ModelPart[] getCloakFromModel(ModelBiped model) {
-        ModelPart[] parts = new ModelPart[1];
-
-        parts[0] = modelRendererToModelPart(model.bipedCloak);
-
-        return parts;
+        return parts.toArray(new ModelPart[parts.size()]);
     }
 
     public static ModelPart modelRendererToModelPart(ModelRenderer model) {
