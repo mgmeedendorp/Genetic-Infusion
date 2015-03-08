@@ -1,10 +1,14 @@
 package seremis.geninfusion.api.soul.util;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.Vec3;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.helper.GIReflectionHelper;
 import seremis.geninfusion.util.INBTTagable;
@@ -14,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class ModelPart extends ModelRenderer implements INBTTagable {
+
+    public float initialRotationPointX, initialRotationPointY, initialRotationPointZ;
 
     public ModelPart(String boxName) {
         super(SoulHelper.entityModel, boxName);
@@ -30,6 +36,25 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
     public ModelPart(NBTTagCompound compound) {
         this(compound.getString("boxName"));
         readFromNBT(compound);
+    }
+
+    private boolean firstTick = true;
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void render(float scale) {
+        if(firstTick) {
+            initialRotationPointX = rotationPointX;
+            initialRotationPointY = rotationPointY;
+            initialRotationPointZ = rotationPointZ;
+            firstTick = false;
+        }
+        super.render(scale);
+    }
+
+
+    public Vec3 getInitialRotationPoints() {
+        return Vec3.createVectorHelper(initialRotationPointX, initialRotationPointY, initialRotationPointZ);
     }
 
     @Override
@@ -143,8 +168,10 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         return this;
     }
 
-    public static ModelPart[] getModelPartsFromModel(ModelBase model) {
+    public static ModelPart[] getModelPartsFromModel(ModelBase model, EntityLiving entity) {
         ArrayList<ModelPart> parts = new ArrayList<ModelPart>();
+
+        model.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, entity);
 
         Field[] fields = GIReflectionHelper.getFields(model);
 
@@ -177,6 +204,9 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         modelPart.offsetY = model.offsetY;
         modelPart.offsetZ = model.offsetZ;
         modelPart.setTextureOffset((Integer) GIReflectionHelper.getField(model, "textureOffsetX"), (Integer) GIReflectionHelper.getField(model, "textureOffsetY"));
+        modelPart.initialRotationPointX = modelPart.rotationPointX;
+        modelPart.initialRotationPointY = modelPart.rotationPointY;
+        modelPart.initialRotationPointZ = modelPart.rotationPointZ;
         return modelPart;
     }
 }

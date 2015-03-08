@@ -8,6 +8,11 @@ import seremis.geninfusion.api.soul.{EnumAnimationType, IEntitySoulCustom}
 class AnimationWalkTwoLegged extends Animation {
 
     override def canAnimateEntity(entity: IEntitySoulCustom): Boolean = {
+        println("model: " + getModel(entity).length)
+        println("legs: " + getModelLegs(entity).length)
+        println("arms: " + getModelArms(entity).length)
+        println("head: " + getModelHead(entity).length)
+        println("wings: " + getModelWings(entity).length)
         getModelLegs(entity).length == 2
     }
 
@@ -40,11 +45,13 @@ class AnimationWalkTwoLegged extends Animation {
             legs(0).rotationPointY = 9.0F
             legs(1).rotationPointY = 9.0F
         } else {
-            legs(0).rotationPointZ = 0.1F
-            legs(1).rotationPointZ = 0.1F
-            legs(0).rotationPointY = 12.0F
-            legs(1).rotationPointY = 12.0F
+            legs(0).rotationPointZ = legs(0).initialRotationPointZ
+            legs(1).rotationPointZ = legs(1).initialRotationPointZ
+            legs(0).rotationPointY = legs(0).initialRotationPointY
+            legs(1).rotationPointY = legs(1).initialRotationPointY
         }
+
+        getModelWings(entity).foreach(part => part.rotateAngleY += 1)
     }
 
     override def canBeInterrupted(entity: IEntitySoulCustom): Boolean = false

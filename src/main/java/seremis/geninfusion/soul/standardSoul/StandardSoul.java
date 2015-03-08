@@ -1,6 +1,11 @@
 package seremis.geninfusion.soul.standardSoul;
 
+import net.minecraft.client.model.ModelChicken;
+import net.minecraft.client.model.ModelCow;
+import net.minecraft.client.model.ModelSkeleton;
 import net.minecraft.client.model.ModelZombie;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -369,9 +374,9 @@ public class StandardSoul implements IStandardSoul {
         } else if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST_2_TARGET)) {
             return new Chromosome(new AlleleClassArray(true, new Class[]{EntityPlayer.class}));
         } else if(gene.equals(Genes.GENE_MODEL)) {
-            return new Chromosome(new AlleleModelPartArray(true, ModelPart.getModelPartsFromModel(new ModelZombie())));
+            return new Chromosome(new AlleleModelPartArray(true, ModelPart.getModelPartsFromModel(new ModelChicken(), entity)));
         } else if(gene.equals(Genes.GENE_TEXTURE)) {
-            return new Chromosome(new AlleleString(true, "textures/entity/zombie/zombie.png"), new AlleleString(false, "textures/entity/skeleton/skeleton.png"));
+            return new Chromosome(new AlleleString(true, "textures/entity/chicken.png"), new AlleleString(false, "textures/entity/chicken.png"));
         }
         return null;
     }

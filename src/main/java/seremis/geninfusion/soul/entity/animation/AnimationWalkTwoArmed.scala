@@ -59,7 +59,7 @@ class AnimationWalkTwoArmed extends Animation {
             f6 *= f6
             f6 = 1.0F - f6
             val f7 = MathHelper.sin(f6 * PI)
-            val f8: Float = MathHelper.sin(swingProgress * PI) * -(head.rotateAngleX - 0.7F) * 0.75F
+            val f8: Float = MathHelper.sin(swingProgress * PI) * -(head(0).rotateAngleX - 0.7F) * 0.75F
             arms(0).rotateAngleX = (arms(0).rotateAngleX.toDouble - (f7.toDouble * 1.2D + f8.toDouble)).toFloat
             arms(0).rotateAngleY += body.rotateAngleY * 2.0F
             arms(0).rotateAngleZ = MathHelper.sin(swingProgress * PI) * -0.4F
@@ -80,10 +80,10 @@ class AnimationWalkTwoArmed extends Animation {
             val f7 = 0.0F
             arms(0).rotateAngleZ = 0.0F
             arms(1).rotateAngleZ = 0.0F
-            arms(0).rotateAngleY = -(0.1F - f6 * 0.6F) + head.rotateAngleY
-            arms(1).rotateAngleY = 0.1F - f6 * 0.6F + head.rotateAngleY + 0.4F
-            arms(0).rotateAngleX = -(PI / 2F) + head.rotateAngleX
-            arms(1).rotateAngleX = -(PI / 2F) + head.rotateAngleX
+            arms(0).rotateAngleY = -(0.1F - f6 * 0.6F) + head(0).rotateAngleY
+            arms(1).rotateAngleY = 0.1F - f6 * 0.6F + head(0).rotateAngleY + 0.4F
+            arms(0).rotateAngleX = -(PI / 2F) + head(0).rotateAngleX
+            arms(1).rotateAngleX = -(PI / 2F) + head(0).rotateAngleX
             arms(0).rotateAngleX -= f6 * 1.2F - f7 * 0.4F
             arms(1).rotateAngleX -= f6 * 1.2F - f7 * 0.4F
             arms(0).rotateAngleZ += MathHelper.cos(limbSwing * 0.09F) * 0.05F + 0.05F

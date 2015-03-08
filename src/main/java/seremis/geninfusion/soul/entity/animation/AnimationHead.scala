@@ -18,15 +18,17 @@ class AnimationHead extends Animation {
     override def animate(entity: IEntitySoulCustom, timeModifier: Float, limbSwing: Float, specialRotation: Float, rotationYawHead: Float, rotationPitch: Float, scale: Float): Unit = {
         val living = entity.asInstanceOf[EntityLiving]
 
-        val head = getModelHead(entity)
+        val headParts = getModelHead(entity)
 
-        head.rotateAngleY = rotationYawHead / (180F / PI)
-        head.rotateAngleX = rotationPitch / (180F / PI)
+        for(head <- headParts) {
+            head.rotateAngleY = rotationYawHead / (180F / PI)
+            head.rotateAngleX = rotationPitch / (180F / PI)
 
-        if(living.isSneaking) {
-            head.rotationPointY = 1.0F
-        } else {
-            head.rotationPointY = 0.0F
+            if(living.isSneaking) {
+                head.rotationPointY = 1.0F
+            } else {
+                head.rotationPointY = head.initialRotationPointY
+            }
         }
     }
 

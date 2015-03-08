@@ -21,14 +21,18 @@ abstract class Animation extends IAnimation {
 
     def getModelBody(entity: IEntitySoulCustom): ModelPart = AnimationCache.getModelBody(entity)
 
-    def getModelHead(entity: IEntitySoulCustom): ModelPart = AnimationCache.getModelHead(entity)
+    def getModelHead(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelHead(entity)
+
+    def getModelWings(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelWings(entity)
 }
 
 object AnimationCache {
     var cachedLegs: Map[IEntitySoulCustom, Array[ModelPart]] = Map()
     var cachedArms: Map[IEntitySoulCustom, Array[ModelPart]] = Map()
     var cachedBody: Map[IEntitySoulCustom, ModelPart] = Map()
-    var cachedHead: Map[IEntitySoulCustom, ModelPart] = Map()
+    var cachedHead: Map[IEntitySoulCustom, Array[ModelPart]] = Map()
+    var cachedWings: Map[IEntitySoulCustom, Array[ModelPart]] = Map()
+
     var cachedCoords: Map[(ModelPart, ModelBox), (Vec3, Vec3)] = Map()
 
     def getModel(entity: IEntitySoulCustom): Array[ModelPart] = {
@@ -115,12 +119,14 @@ object AnimationCache {
         cachedBody.get(entity).get
     }
 
-    def getModelHead(entity: IEntitySoulCustom): ModelPart = {
+    def getModelHead(entity: IEntitySoulCustom): Array[ModelPart] = {
         if(!cachedHead.contains(entity)) {
             val model = getModel(entity)
-            var lastHead: ModelPart = null
-            var head: ModelPart = null
-            var height = -23.0F
+            var head: ListBuffer[ModelPart] = ListBuffer()
+
+            var headCandidate: ModelPart = null
+            var candidateMaxY = 23.0F
+            var candidateMinY = 23.0F
 
             for(part <- model) {
                 if(!part.equals(getModelBody(entity))) {
@@ -133,19 +139,19 @@ object AnimationCache {
 
                     for(obj: Any <- part.cubeList) {
                         val box = obj.asInstanceOf[ModelBox]
-                        if(Math.min(box.posX1, box.posX2) < minX)
+                        if((Math.min(box.posX1, box.posX2) + part.offsetX) * MathHelper.cos(part.rotateAngleY) < minX)
                             minX = Math.min(box.posX1, box.posX2)
-                        if(Math.max(box.posX1, box.posX2) > maxX)
+                        if((Math.max(box.posX1, box.posX2) + part.offsetX) * MathHelper.cos(part.rotateAngleY) > maxX)
                             maxX = Math.max(box.posX1, box.posX2)
 
-                        if(Math.min(box.posY1, box.posY2) < minY)
+                        if((Math.min(box.posY1, box.posY2) + part.offsetY) * MathHelper.cos(part.rotateAngleX) < minY)
                             minY = Math.min(box.posY1, box.posY2)
-                        if(Math.max(box.posY1, box.posY2) > maxY)
+                        if((Math.max(box.posY1, box.posY2) + part.offsetY) * MathHelper.cos(part.rotateAngleX) > maxY)
                             maxY = Math.max(box.posY1, box.posY2)
 
-                        if(Math.min(box.posZ1, box.posZ2) < minZ)
+                        if((Math.min(box.posZ1, box.posZ2) + part.offsetZ) * MathHelper.cos(part.rotateAngleY) < minZ)
                             minZ = Math.min(box.posZ1, box.posZ2)
-                        if(Math.max(box.posZ1, box.posZ2) > maxZ)
+                        if((Math.max(box.posZ1, box.posZ2) + part.offsetZ) * MathHelper.cos(part.rotateAngleY) > maxZ)
                             maxZ = Math.max(box.posZ1, box.posZ2)
                     }
 
@@ -153,21 +159,45 @@ object AnimationCache {
                     val dy = maxY - minY
                     val dz = maxZ - minZ
 
-                    if(maxY > height && dy < 1.5F * dx && dz < 1.5F * dy && dx <= 1.5F * dy) {
-                        lastHead = head
-                        head = part
-                        height = maxY
+                    if(maxY < candidateMaxY && dy < 2 * dx && dz < 2 * dy && dx <= 2 * dy) {
+                        headCandidate = part
+                        candidateMaxY = maxY + part.rotationPointY
+                        candidateMinY = minY + part.rotationPointY
                     }
                 }
             }
-            if(lastHead != null) {
-                cachedHead += (entity -> lastHead)
-            } else {
-                cachedHead += (entity -> head)
+            head += headCandidate
+
+            for(part <- model) {
+                val nearY = part.rotationPointY + part.offsetY * MathHelper.cos(part.rotateAngleX)
+                if(!part.equals(head(0)) && !getModelArms(entity).toList.contains(part) && !part.equals(getModelBody(entity)) && nearY <= candidateMaxY && partsTouching(head(0), part)) {
+                    head += part
+                }
             }
+
+            cachedHead += (entity -> head.to[Array])
         }
         cachedHead.get(entity).get
     }
+
+    def getModelWings(entity: IEntitySoulCustom): Array[ModelPart] = {
+        if(!cachedWings.contains(entity)) {
+            val model = getModel(entity)
+            var wings: ListBuffer[ModelPart] = ListBuffer()
+
+            for(part <- model) {
+                if(!getModelHead(entity).toList.contains(part) && !getModelArms(entity).toList.contains(part) && !getModelLegs(entity).toList.contains(part) && !getModelBody(entity).equals(part) && partsTouching(part, getModelBody(entity))) {
+                    wings += part
+                }
+            }
+            cachedWings += (entity -> wings.to[Array])
+        }
+        cachedWings.get(entity).get
+    }
+
+    def partsTouching(part1: ModelPart, part2: ModelPart): Boolean = asScalaBuffer(part1.cubeList).exists(box1 => asScalaBuffer(part2.cubeList).exists(box2 => coordsTouch(getPartBoxCoordinates(part1, box1.asInstanceOf[ModelBox]), getPartBoxCoordinates(part2, box2.asInstanceOf[ModelBox]))))
+
+    def coordsTouch(coords1: (Vec3, Vec3), coords2: (Vec3, Vec3)): Boolean = coords1._2.xCoord > coords2._1.xCoord && coords1._1.xCoord < coords2._2.xCoord && coords1._2.yCoord > coords2._1.yCoord && coords1._1.yCoord < coords2._2.yCoord && coords1._2.zCoord > coords2._1.zCoord && coords1._1.zCoord < coords2._2.zCoord
 
     def intersectsPlaneX(part: ModelPart, x: Float): Boolean = asScalaBuffer(part.cubeList).exists(box => interX(getPartBoxCoordinates(part, box.asInstanceOf[ModelBox]), x))
     def intersectsPlaneY(part: ModelPart, y: Float): Boolean = asScalaBuffer(part.cubeList).exists(box => interY(getPartBoxCoordinates(part, box.asInstanceOf[ModelBox]), y))

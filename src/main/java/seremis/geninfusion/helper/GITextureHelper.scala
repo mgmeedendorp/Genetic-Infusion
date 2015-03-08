@@ -19,7 +19,7 @@ object GITextureHelper {
         try {
             return ImageIO.read(getClass.getResourceAsStream("/assets/" + location.getResourceDomain + "/" + location.getResourcePath))
         } catch {
-            case e: IOException => e.printStackTrace()
+            case e: Exception => e.printStackTrace()
         }
         null
     }
