@@ -8,6 +8,8 @@ import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.boss.EntityWither;
 import seremis.geninfusion.api.soul.IChromosome;
 import seremis.geninfusion.soul.Gene;
+import seremis.geninfusion.soul.allele.AlleleClass;
+import seremis.geninfusion.soul.allele.AlleleClassArray;
 import seremis.geninfusion.soul.allele.AlleleString;
 
 import java.util.ArrayList;
@@ -16,18 +18,29 @@ public abstract class GeneTarget extends Gene {
 
     @Override
     public IChromosome mutate(IChromosome chromosome) {
-        AlleleString allele1 = (AlleleString) chromosome.getPrimary();
-        AlleleString allele2 = (AlleleString) chromosome.getSecondary();
+        if(possibleAlleles().equals(AlleleClass.class)) {
+            AlleleClass allele1 = (AlleleClass) chromosome.getPrimary();
+            AlleleClass allele2 = (AlleleClass) chromosome.getSecondary();
 
-        if(rand.nextBoolean()) {
-            allele1.value = possibleTargets()[rand.nextInt(possibleTargets().length)];
-        } else {
-            allele2.value = possibleTargets()[rand.nextInt(possibleTargets().length)];
+            if(rand.nextBoolean()) {
+                allele1.value = possibleTargets()[rand.nextInt(possibleTargets().length)];
+            } else {
+                allele2.value = possibleTargets()[rand.nextInt(possibleTargets().length)];
+            }
+        } else if(possibleAlleles().equals(AlleleClassArray.class)) {
+            AlleleClassArray allele1 = (AlleleClassArray) chromosome.getPrimary();
+            AlleleClassArray allele2 = (AlleleClassArray) chromosome.getSecondary();
+
+            if(rand.nextBoolean()) {
+                allele1.value[rand.nextInt(allele1.value.length)] = possibleTargets()[rand.nextInt(possibleTargets().length)];
+            } else {
+                allele2.value[rand.nextInt(allele2.value.length)] = possibleTargets()[rand.nextInt(possibleTargets().length)];
+            }
         }
         return chromosome;
     }
 
-    public String[] possibleTargets() {
+    public Class[] possibleTargets() {
         return sensibleTargets();
     }
 
@@ -37,17 +50,17 @@ public abstract class GeneTarget extends Gene {
      *
      * @return A String[] with the names of all sensible target entities.
      */
-    public String[] sensibleTargets() {
-        ArrayList<String> list = new ArrayList<String>();
+    public Class[] sensibleTargets() {
+        ArrayList<Class> list = new ArrayList<Class>();
 
         for(Object obj : EntityList.classToStringMapping.keySet()) {
             Class<Entity> entity = (Class<Entity>) obj;
 
             if(EntityLiving.class.isAssignableFrom(entity) && !(EntityDragon.class.isAssignableFrom(entity) || EntityDragonPart.class.isAssignableFrom(entity) || EntityWither.class.isAssignableFrom(entity))) {
-                list.add(entity.getName());
+                list.add(entity.getClass());
             }
         }
 
-        return list.toArray(new String[list.size()]);
+        return list.toArray(new Class[list.size()]);
     }
 }

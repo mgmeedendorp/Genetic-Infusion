@@ -19,6 +19,7 @@ public class AlleleIntArray extends Allele {
         for(int i = 1; i < args.length; i++) {
             value[i - 1] = (Integer) args[i];
         }
+        type = EnumAlleleType.INT_ARRAY;
     }
 
     public AlleleIntArray(NBTTagCompound compound) {

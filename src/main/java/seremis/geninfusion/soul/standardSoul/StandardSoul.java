@@ -374,9 +374,9 @@ public class StandardSoul implements IStandardSoul {
         } else if(gene.equals(Genes.GENE_AI_WATCH_CLOSEST_2_TARGET)) {
             return new Chromosome(new AlleleClassArray(true, new Class[]{EntityPlayer.class}));
         } else if(gene.equals(Genes.GENE_MODEL)) {
-            return new Chromosome(new AlleleModelPartArray(true, ModelPart.getModelPartsFromModel(new ModelChicken(), entity)));
+            return new Chromosome(new AlleleModelPartArray(true, ModelPart.getModelPartsFromModel(new ModelSkeleton(), entity)));
         } else if(gene.equals(Genes.GENE_TEXTURE)) {
-            return new Chromosome(new AlleleString(true, "textures/entity/chicken.png"), new AlleleString(false, "textures/entity/chicken.png"));
+            return new Chromosome(new AlleleString(true, "textures/entity/skeleton/skeleton.png"), new AlleleString(false, "textures/entity/skeleton/skeleton.png"));
         }
         return null;
     }

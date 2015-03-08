@@ -1,11 +1,13 @@
 package seremis.geninfusion.soul.standardSoul;
 
+import net.minecraft.client.model.ModelSkeleton;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import seremis.geninfusion.api.soul.IChromosome;
 import seremis.geninfusion.api.soul.lib.Genes;
+import seremis.geninfusion.api.soul.util.ModelPart;
 import seremis.geninfusion.soul.Chromosome;
 import seremis.geninfusion.soul.allele.*;
 
@@ -94,6 +96,11 @@ public class StandardSoulSkeleton extends StandardSoul {
             return new Chromosome(new AlleleIntArray(true, new int[]{0}));
         if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_VISIBLE))
             return new Chromosome(new AlleleBooleanArray(true, new boolean[]{true}));
+
+        if(gene.equals(Genes.GENE_MODEL))
+            return new Chromosome(new AlleleModelPartArray(true, ModelPart.getModelPartsFromModel(new ModelSkeleton(), entity)));
+        if(gene.equals(Genes.GENE_TEXTURE))
+            return new Chromosome(new AlleleString(true, "textures/entity/skeleton/skeleton.png"), new AlleleString(false, "textures/entity/skeleton/skeleton.png"));
 
         return super.getChromosomeFromGene(entity, gene);
     }

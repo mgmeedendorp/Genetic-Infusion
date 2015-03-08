@@ -19,6 +19,7 @@ public class AlleleBooleanArray extends Allele {
         for(int i = 1; i < args.length; i++) {
             value[i - 1] = (Boolean) args[i];
         }
+        type = EnumAlleleType.BOOLEAN_ARRAY;
     }
 
     public AlleleBooleanArray(NBTTagCompound compound) {

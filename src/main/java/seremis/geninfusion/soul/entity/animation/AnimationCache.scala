@@ -27,11 +27,11 @@ abstract class Animation extends IAnimation {
 }
 
 object AnimationCache {
-    var cachedLegs: Map[IEntitySoulCustom, Array[ModelPart]] = Map()
-    var cachedArms: Map[IEntitySoulCustom, Array[ModelPart]] = Map()
-    var cachedBody: Map[IEntitySoulCustom, ModelPart] = Map()
-    var cachedHead: Map[IEntitySoulCustom, Array[ModelPart]] = Map()
-    var cachedWings: Map[IEntitySoulCustom, Array[ModelPart]] = Map()
+    var cachedLegs: Map[Array[ModelPart], Array[ModelPart]] = Map()
+    var cachedArms: Map[Array[ModelPart], Array[ModelPart]] = Map()
+    var cachedBody: Map[Array[ModelPart], ModelPart] = Map()
+    var cachedHead: Map[Array[ModelPart], Array[ModelPart]] = Map()
+    var cachedWings: Map[Array[ModelPart], Array[ModelPart]] = Map()
 
     var cachedCoords: Map[(ModelPart, ModelBox), (Vec3, Vec3)] = Map()
 
@@ -39,9 +39,10 @@ object AnimationCache {
         SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL)
     }
 
-    def getModelLegs(entity: IEntitySoulCustom): Array[ModelPart] = {
-        if(!cachedLegs.contains(entity)) {
-            val model = getModel(entity)
+    def getModelLegs(entity: IEntitySoulCustom): Array[ModelPart] = getModelLegs(getModel(entity))
+
+    def getModelLegs(model: Array[ModelPart]): Array[ModelPart] = {
+        if(!cachedLegs.contains(model)) {
             var legs: ListBuffer[ModelPart] = ListBuffer()
 
             for(part <- model) {
@@ -49,18 +50,19 @@ object AnimationCache {
                     legs += part
                 }
             }
-            cachedLegs += (entity -> legs.to[Array])
+            cachedLegs += (model -> legs.to[Array])
         }
-        cachedLegs.get(entity).get
+        cachedLegs.get(model).get
     }
 
-    def getModelArms(entity: IEntitySoulCustom): Array[ModelPart] = {
-        if(!cachedArms.contains(entity)) {
-            val model = getModel(entity)
+    def getModelArms(entity: IEntitySoulCustom): Array[ModelPart] = getModelArms(getModel(entity))
+
+    def getModelArms(model: Array[ModelPart]): Array[ModelPart] = {
+        if(!cachedArms.contains(model)) {
             var arms: ListBuffer[ModelPart] = ListBuffer()
 
             for(part <- model) {
-                if(!intersectsPlaneY(part, 23.0F) && !part.equals(getModelBody(entity))) {
+                if(!intersectsPlaneY(part, 23.0F) && !part.equals(getModelBody(model))) {
                     var minX = 0.0F
                     var minY = 0.0F
                     var minZ = 0.0F
@@ -95,33 +97,38 @@ object AnimationCache {
                     }
                 }
             }
-            cachedArms += (entity -> arms.to[Array])
+            cachedArms += (model -> arms.to[Array])
         }
-        cachedArms.get(entity).get
+        cachedArms.get(model).get
     }
 
-    def getModelBody(entity: IEntitySoulCustom): ModelPart = {
-        if(!cachedBody.contains(entity)) {
-            val model = getModel(entity)
+    def getModelBody(entity: IEntitySoulCustom): ModelPart = getModelBody(getModel(entity))
+
+    def getModelBody(model: Array[ModelPart]): ModelPart = {
+        if(!cachedBody.contains(model)) {
             var body: ModelPart = null
             var volume = 0.0F
 
             for(part <- model) {
                 var partVolume = 0.0F
+
                 asScalaBuffer(part.cubeList).foreach(box => partVolume += Math.abs(box.asInstanceOf[ModelBox].posX1 - box.asInstanceOf[ModelBox].posX2) * Math.abs(box.asInstanceOf[ModelBox].posY1 - box.asInstanceOf[ModelBox].posY2) * Math.abs(box.asInstanceOf[ModelBox].posZ1 - box.asInstanceOf[ModelBox].posZ2))
+
                 if(partVolume > volume) {
                     volume = partVolume
                     body = part
                 }
+                println(partVolume)
             }
-            cachedBody += (entity -> body)
+            cachedBody += (model -> body)
         }
-        cachedBody.get(entity).get
+        cachedBody.get(model).get
     }
 
-    def getModelHead(entity: IEntitySoulCustom): Array[ModelPart] = {
-        if(!cachedHead.contains(entity)) {
-            val model = getModel(entity)
+    def getModelHead(entity: IEntitySoulCustom): Array[ModelPart] = getModelHead(getModel(entity))
+
+    def getModelHead(model: Array[ModelPart]): Array[ModelPart] = {
+        if(!cachedHead.contains(model)) {
             var head: ListBuffer[ModelPart] = ListBuffer()
 
             var headCandidate: ModelPart = null
@@ -129,7 +136,7 @@ object AnimationCache {
             var candidateMinY = 23.0F
 
             for(part <- model) {
-                if(!part.equals(getModelBody(entity))) {
+                if(!part.equals(getModelBody(model))) {
                     var minX = 0.0F
                     var minY = 0.0F
                     var minZ = 0.0F
@@ -169,30 +176,31 @@ object AnimationCache {
             head += headCandidate
 
             for(part <- model) {
-                val nearY = part.rotationPointY + part.offsetY * MathHelper.cos(part.rotateAngleX)
-                if(!part.equals(head(0)) && !getModelArms(entity).toList.contains(part) && !part.equals(getModelBody(entity)) && nearY <= candidateMaxY && partsTouching(head(0), part)) {
+                val nearY = part.rotationPointY + part.offsetY * MathHelper.cos(part.rotateAngleX+0.001F)
+                if(!part.equals(head(0)) && !getModelArms(model).toList.contains(part) && !part.equals(getModelBody(model)) && nearY <= candidateMaxY && partsTouching(head(0), part) && false) {
                     head += part
                 }
             }
 
-            cachedHead += (entity -> head.to[Array])
+            cachedHead += (model -> head.to[Array])
         }
-        cachedHead.get(entity).get
+        cachedHead.get(model).get
     }
 
-    def getModelWings(entity: IEntitySoulCustom): Array[ModelPart] = {
-        if(!cachedWings.contains(entity)) {
-            val model = getModel(entity)
+    def getModelWings(entity: IEntitySoulCustom): Array[ModelPart] = getModelWings(getModel(entity))
+
+    def getModelWings(model: Array[ModelPart]): Array[ModelPart] = {
+        if(!cachedWings.contains(model)) {
             var wings: ListBuffer[ModelPart] = ListBuffer()
 
             for(part <- model) {
-                if(!getModelHead(entity).toList.contains(part) && !getModelArms(entity).toList.contains(part) && !getModelLegs(entity).toList.contains(part) && !getModelBody(entity).equals(part) && partsTouching(part, getModelBody(entity))) {
+                if(!getModelHead(model).toList.contains(part) && !getModelArms(model).toList.contains(part) && !getModelLegs(model).toList.contains(part) && !getModelBody(model).equals(part) && partsTouching(part, getModelBody(model))) {
                     wings += part
                 }
             }
-            cachedWings += (entity -> wings.to[Array])
+            cachedWings += (model -> wings.to[Array])
         }
-        cachedWings.get(entity).get
+        cachedWings.get(model).get
     }
 
     def partsTouching(part1: ModelPart, part2: ModelPart): Boolean = asScalaBuffer(part1.cubeList).exists(box1 => asScalaBuffer(part2.cubeList).exists(box2 => coordsTouch(getPartBoxCoordinates(part1, box1.asInstanceOf[ModelBox]), getPartBoxCoordinates(part2, box2.asInstanceOf[ModelBox]))))

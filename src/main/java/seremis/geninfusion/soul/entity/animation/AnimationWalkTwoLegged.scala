@@ -9,6 +9,7 @@ class AnimationWalkTwoLegged extends Animation {
 
     override def canAnimateEntity(entity: IEntitySoulCustom): Boolean = {
         println("model: " + getModel(entity).length)
+        println("body: " + getModelBody(entity))
         println("legs: " + getModelLegs(entity).length)
         println("arms: " + getModelArms(entity).length)
         println("head: " + getModelHead(entity).length)
@@ -51,7 +52,7 @@ class AnimationWalkTwoLegged extends Animation {
             legs(1).rotationPointY = legs(1).initialRotationPointY
         }
 
-        getModelWings(entity).foreach(part => part.rotateAngleY += 1)
+        getModelBody(entity).rotateAngleY += 1
     }
 
     override def canBeInterrupted(entity: IEntitySoulCustom): Boolean = false

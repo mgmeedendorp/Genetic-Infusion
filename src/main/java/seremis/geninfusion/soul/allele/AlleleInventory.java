@@ -25,6 +25,7 @@ public class AlleleInventory extends Allele {
         for(int i = 1; i < args.length; i++) {
             inventory.setInventorySlotContents(i - 1, (ItemStack) args[i]);
         }
+        type = EnumAlleleType.INVENTORY;
     }
 
     public AlleleInventory(NBTTagCompound compound) {

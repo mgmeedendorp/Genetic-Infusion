@@ -17,6 +17,7 @@ public class AlleleItemStack extends Allele {
     public AlleleItemStack(Object... args) {
         super(args);
         stack = (ItemStack) args[1];
+        type = EnumAlleleType.ITEMSTACK;
     }
 
     public AlleleItemStack(NBTTagCompound compound) {

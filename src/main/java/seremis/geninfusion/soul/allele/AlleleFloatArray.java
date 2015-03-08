@@ -19,6 +19,7 @@ public class AlleleFloatArray extends Allele {
         for(int i = 1; i < args.length; i++) {
             value[i - 1] = (Float) args[i];
         }
+        type = EnumAlleleType.FLOAT_ARRAY;
     }
 
     public AlleleFloatArray(NBTTagCompound compound) {

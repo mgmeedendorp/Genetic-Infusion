@@ -17,6 +17,7 @@ public class AlleleModelPartArray extends Allele {
     public AlleleModelPartArray(Object... args) {
         super(args);
         value = (ModelPart[]) args[1];
+        type = EnumAlleleType.MODEL_PART_ARRAY;
     }
 
     public AlleleModelPartArray(NBTTagCompound compound) {

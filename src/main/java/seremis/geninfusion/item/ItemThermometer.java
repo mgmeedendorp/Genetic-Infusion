@@ -3,6 +3,7 @@ package seremis.geninfusion.item;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -15,13 +16,13 @@ import seremis.geninfusion.lib.Items;
 
 public class ItemThermometer extends GIItem {
 
-    private String[] subNames = {Items.THERMOMETER_META_0_UNLOCALIZED_NAME(), Items.THERMOMETER_META_1_UNLOCALIZED_NAME()};
+    private String[] subNames = {Items.THERMOMETER_META_0_UNLOCALIZED_NAME(), Items.THERMOMETER_META_1_UNLOCALIZED_NAME(), "ab"};
 
     public ItemThermometer() {
         super();
         setHasSubtypes(true);
         setMaxDamage(0);
-        setNumbersofMetadata(2);
+        setNumbersofMetadata(3);
         setUnlocalizedName(Items.THERMOMETER_UNLOCALIZED_NAME());
     }
 
@@ -44,6 +45,10 @@ public class ItemThermometer extends GIItem {
             }
             if(stack.getItemDamage() == 1) {
                 EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityZombie(world)), x, y + 1, z);
+                world.spawnEntityInWorld(entity);
+            }
+            if(stack.getItemDamage() == 2) {
+                EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.produceOffspring(SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityZombie(world)), SoulHelper.standardSoulRegistry.getSoulForEntity(new EntitySkeleton(world))), x, y + 1, z);
                 world.spawnEntityInWorld(entity);
             }
         }

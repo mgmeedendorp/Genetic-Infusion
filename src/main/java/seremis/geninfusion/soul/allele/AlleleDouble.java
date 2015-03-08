@@ -16,6 +16,7 @@ public class AlleleDouble extends Allele {
     public AlleleDouble(Object... args) {
         super(args);
         value = (Double) args[1];
+        type = EnumAlleleType.DOUBLE;
     }
 
     public AlleleDouble(NBTTagCompound compound) {

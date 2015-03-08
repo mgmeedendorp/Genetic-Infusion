@@ -25,10 +25,17 @@ class AnimationWalkTwoArmed extends Animation {
         val body = getModelBody(entity)
         val head = getModelHead(entity)
 
-        arms(0).rotateAngleX = MathHelper.cos(timeModifier * 0.6662F + PI) * 2.0F * limbSwing * 0.5F
-        arms(1).rotateAngleX = MathHelper.cos(timeModifier * 0.6662F) * 2.0F * limbSwing * 0.5F
-        arms(0).rotateAngleZ = 0.0F
-        arms(1).rotateAngleZ = 0.0F
+        arms(0).rotationPointX = arms(0).initialRotationPointX
+        arms(0).rotationPointY = arms(0).initialRotationPointY
+        arms(0).rotationPointZ = arms(0).initialRotationPointZ
+        arms(1).rotationPointX = arms(1).initialRotationPointX
+        arms(1).rotationPointY = arms(1).initialRotationPointY
+        arms(1).rotationPointZ = arms(1).initialRotationPointZ
+
+        arms(0).rotateAngleX += MathHelper.cos(timeModifier * 0.6662F + PI) * 2.0F * limbSwing * 0.5F
+        arms(1).rotateAngleX += MathHelper.cos(timeModifier * 0.6662F) * 2.0F * limbSwing * 0.5F
+        arms(0).rotateAngleZ = arms(0).initialRotateAngleZ
+        arms(1).rotateAngleZ = arms(1).initialRotateAngleZ
 
         if(living.isRiding) {
             arms(0).rotateAngleX += -(PI / 5F)
@@ -39,8 +46,8 @@ class AnimationWalkTwoArmed extends Animation {
             arms(0).rotateAngleX = arms(0).rotateAngleX * 0.5F - (Math.PI.toFloat / 10F)
         }
 
-        arms(0).rotateAngleY = 0.0F
-        arms(1).rotateAngleY = 0.0F
+        arms(0).rotateAngleY = arms(0).initialRotateAngleY
+        arms(1).rotateAngleY = arms(1).initialRotateAngleY
 
         val swingProgress = living.getSwingProgress(entity.getFloat("partialTickTime"))
 
@@ -78,8 +85,8 @@ class AnimationWalkTwoArmed extends Animation {
         if (living.getHeldItem != null && living.getHeldItem.getItemUseAction == EnumAction.bow) {
             val f6 = 0.0F
             val f7 = 0.0F
-            arms(0).rotateAngleZ = 0.0F
-            arms(1).rotateAngleZ = 0.0F
+            arms(0).rotateAngleZ = arms(0).initialRotateAngleZ
+            arms(1).rotateAngleZ = arms(1).initialRotateAngleZ
             arms(0).rotateAngleY = -(0.1F - f6 * 0.6F) + head(0).rotateAngleY
             arms(1).rotateAngleY = 0.1F - f6 * 0.6F + head(0).rotateAngleY + 0.4F
             arms(0).rotateAngleX = -(PI / 2F) + head(0).rotateAngleX

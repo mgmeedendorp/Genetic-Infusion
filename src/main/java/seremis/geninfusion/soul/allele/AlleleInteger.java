@@ -16,6 +16,7 @@ public class AlleleInteger extends Allele {
     public AlleleInteger(Object... args) {
         super(args);
         value = (Integer) args[1];
+        type = EnumAlleleType.INTEGER;
     }
 
     public AlleleInteger(NBTTagCompound compound) {

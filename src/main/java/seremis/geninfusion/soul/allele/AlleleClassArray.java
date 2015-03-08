@@ -20,6 +20,7 @@ public class AlleleClassArray extends Allele {
         for(int i = 1; i < args.length; i++) {
             value[i - 1] = (Class) args[i];
         }
+        type = EnumAlleleType.CLASS_ARRAY;
     }
 
     public AlleleClassArray(NBTTagCompound compound) {

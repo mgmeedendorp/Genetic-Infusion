@@ -20,6 +20,7 @@ import java.util.Random;
 public class ModelPart extends ModelRenderer implements INBTTagable {
 
     public float initialRotationPointX, initialRotationPointY, initialRotationPointZ;
+    public float initialRotateAngleX, initialRotateAngleY, initialRotateAngleZ;
 
     public ModelPart(String boxName) {
         super(SoulHelper.entityModel, boxName);
@@ -47,6 +48,9 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
             initialRotationPointX = rotationPointX;
             initialRotationPointY = rotationPointY;
             initialRotationPointZ = rotationPointZ;
+            initialRotateAngleX = rotateAngleX;
+            initialRotateAngleY = rotateAngleY;
+            initialRotateAngleZ = rotateAngleZ;
             firstTick = false;
         }
         super.render(scale);
@@ -55,6 +59,10 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
 
     public Vec3 getInitialRotationPoints() {
         return Vec3.createVectorHelper(initialRotationPointX, initialRotationPointY, initialRotationPointZ);
+    }
+
+    public Vec3 getInitialRotateAngles() {
+        return Vec3.createVectorHelper(initialRotateAngleX, initialRotateAngleY, initialRotateAngleZ);
     }
 
     @Override
@@ -204,9 +212,19 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         modelPart.offsetY = model.offsetY;
         modelPart.offsetZ = model.offsetZ;
         modelPart.setTextureOffset((Integer) GIReflectionHelper.getField(model, "textureOffsetX"), (Integer) GIReflectionHelper.getField(model, "textureOffsetY"));
-        modelPart.initialRotationPointX = modelPart.rotationPointX;
-        modelPart.initialRotationPointY = modelPart.rotationPointY;
-        modelPart.initialRotationPointZ = modelPart.rotationPointZ;
         return modelPart;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof ModelPart) {
+            ModelPart part = (ModelPart) obj;
+            NBTTagCompound compound1 = new NBTTagCompound();
+            NBTTagCompound compound2 = new NBTTagCompound();
+            this.writeToNBT(compound1);
+            part.writeToNBT(compound2);
+            return compound1.equals(compound2);
+        }
+        return false;
     }
 }

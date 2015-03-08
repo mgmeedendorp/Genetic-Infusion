@@ -19,6 +19,7 @@ public class AlleleDoubleArray extends Allele {
         for(int i = 1; i < args.length; i++) {
             value[i - 1] = (Float) args[i];
         }
+        type = EnumAlleleType.DOUBLE_ARRAY;
     }
 
     public AlleleDoubleArray(NBTTagCompound compound) {

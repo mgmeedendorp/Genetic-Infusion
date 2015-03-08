@@ -16,6 +16,7 @@ public class AlleleFloat extends Allele {
     public AlleleFloat(Object... args) {
         super(args);
         value = (Float) args[1];
+        type = EnumAlleleType.FLOAT;
     }
 
     public AlleleFloat(NBTTagCompound compound) {

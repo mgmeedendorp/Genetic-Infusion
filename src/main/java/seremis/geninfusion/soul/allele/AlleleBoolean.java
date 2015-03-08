@@ -16,6 +16,7 @@ public class AlleleBoolean extends Allele {
     public AlleleBoolean(Object... args) {
         super(args);
         value = (Boolean) args[1];
+        type = EnumAlleleType.BOOLEAN;
     }
 
     public AlleleBoolean(NBTTagCompound compound) {
