@@ -110,15 +110,17 @@ object AnimationCache {
             var volume = 0.0F
 
             for(part <- model) {
-                var partVolume = 0.0F
+                if(getModelLegs(model) == null || getModelLegs(model)(0) == null || getModelLegs(model)(1) == null || partsTouching(part, getModelLegs(model)(0)) && partsTouching(part, getModelLegs(model)(1))) {
+                    var partVolume = 0.0F
 
-                asScalaBuffer(part.cubeList).foreach(box => partVolume += Math.abs(box.asInstanceOf[ModelBox].posX1 - box.asInstanceOf[ModelBox].posX2) * Math.abs(box.asInstanceOf[ModelBox].posY1 - box.asInstanceOf[ModelBox].posY2) * Math.abs(box.asInstanceOf[ModelBox].posZ1 - box.asInstanceOf[ModelBox].posZ2))
+                    part.cubeList.foreach(box => partVolume += Math.abs(box.asInstanceOf[ModelBox].posX1 - box.asInstanceOf[ModelBox].posX2) * Math.abs(box.asInstanceOf[ModelBox].posY1 - box.asInstanceOf[ModelBox].posY2) * Math.abs(box.asInstanceOf[ModelBox].posZ1 - box.asInstanceOf[ModelBox].posZ2))
 
-                if(partVolume > volume) {
-                    volume = partVolume
-                    body = part
+                    if(partVolume > volume) {
+                        volume = partVolume
+                        body = part
+                    }
+                    println(partVolume)
                 }
-                println(partVolume)
             }
             cachedBody += (model -> body)
         }
@@ -177,7 +179,7 @@ object AnimationCache {
 
             for(part <- model) {
                 val nearY = part.rotationPointY + part.offsetY * MathHelper.cos(part.rotateAngleX+0.001F)
-                if(!part.equals(head(0)) && !getModelArms(model).toList.contains(part) && !part.equals(getModelBody(model)) && nearY <= candidateMaxY && partsTouching(head(0), part) && false) {
+                if(!part.equals(head(0)) && !getModelArms(model).toList.contains(part) && !part.equals(getModelBody(model)) && nearY <= candidateMaxY && partsTouching(head(0), part)) {
                     head += part
                 }
             }
@@ -203,13 +205,32 @@ object AnimationCache {
         cachedWings.get(model).get
     }
 
-    def partsTouching(part1: ModelPart, part2: ModelPart): Boolean = asScalaBuffer(part1.cubeList).exists(box1 => asScalaBuffer(part2.cubeList).exists(box2 => coordsTouch(getPartBoxCoordinates(part1, box1.asInstanceOf[ModelBox]), getPartBoxCoordinates(part2, box2.asInstanceOf[ModelBox]))))
+    def isPartUnder(lowerPart: ModelPart, higherPart: ModelPart): Boolean = {
+        lowerPart.cubeList.exists(lowerCube => {
+            higherPart.cubeList.exists(higherCube => {
+                coordsBeneath(getPartBoxCoordinates(lowerPart, lowerCube.asInstanceOf[ModelBox]), getPartBoxCoordinates(higherPart, higherCube.asInstanceOf[ModelBox]))
+            })
+        })
+    }
 
-    def coordsTouch(coords1: (Vec3, Vec3), coords2: (Vec3, Vec3)): Boolean = coords1._2.xCoord > coords2._1.xCoord && coords1._1.xCoord < coords2._2.xCoord && coords1._2.yCoord > coords2._1.yCoord && coords1._1.yCoord < coords2._2.yCoord && coords1._2.zCoord > coords2._1.zCoord && coords1._1.zCoord < coords2._2.zCoord
+    def partsTouching(part1: ModelPart, part2: ModelPart): Boolean = {
+        part1.cubeList.exists(box1 => {
+            part2.cubeList.exists(box2 => {
+                coordsTouch(getPartBoxCoordinates(part1, box1.asInstanceOf[ModelBox]), getPartBoxCoordinates(part2, box2.asInstanceOf[ModelBox]))
+            })
+        })
+    }
 
-    def intersectsPlaneX(part: ModelPart, x: Float): Boolean = asScalaBuffer(part.cubeList).exists(box => interX(getPartBoxCoordinates(part, box.asInstanceOf[ModelBox]), x))
-    def intersectsPlaneY(part: ModelPart, y: Float): Boolean = asScalaBuffer(part.cubeList).exists(box => interY(getPartBoxCoordinates(part, box.asInstanceOf[ModelBox]), y))
-    def intersectsPlaneZ(part: ModelPart, z: Float): Boolean = asScalaBuffer(part.cubeList).exists(box => interZ(getPartBoxCoordinates(part, box.asInstanceOf[ModelBox]), z))
+    def coordsBeneath(lowerCoords: (Vec3, Vec3), higherCoords: (Vec3, Vec3)): Boolean = getHighestCoordY(lowerCoords) >= getLowestCoordY(higherCoords)
+
+    def getHighestCoordY(coords: (Vec3, Vec3)): Float = Math.min(coords._1.yCoord, coords._2.yCoord).toFloat
+    def getLowestCoordY(coords: (Vec3, Vec3)): Float = Math.max(coords._1.yCoord, coords._2.yCoord).toFloat
+
+    def coordsTouch(coords1: (Vec3, Vec3), coords2: (Vec3, Vec3)): Boolean = coords1._2.xCoord >= coords2._1.xCoord && coords1._1.xCoord <= coords2._2.xCoord && coords1._2.yCoord >= coords2._1.yCoord && coords1._1.yCoord <= coords2._2.yCoord && coords1._2.zCoord >= coords2._1.zCoord && coords1._1.zCoord <= coords2._2.zCoord
+
+    def intersectsPlaneX(part: ModelPart, x: Float): Boolean = part.cubeList.exists(box => interX(getPartBoxCoordinates(part, box.asInstanceOf[ModelBox]), x))
+    def intersectsPlaneY(part: ModelPart, y: Float): Boolean = part.cubeList.exists(box => interY(getPartBoxCoordinates(part, box.asInstanceOf[ModelBox]), y))
+    def intersectsPlaneZ(part: ModelPart, z: Float): Boolean = part.cubeList.exists(box => interZ(getPartBoxCoordinates(part, box.asInstanceOf[ModelBox]), z))
 
     def interX(coords: (Vec3, Vec3), x: Float) = isInBetween(x, coords._1.xCoord, coords._2.xCoord)
     def interY(coords: (Vec3, Vec3), y: Float) = isInBetween(y, coords._1.yCoord, coords._2.yCoord)

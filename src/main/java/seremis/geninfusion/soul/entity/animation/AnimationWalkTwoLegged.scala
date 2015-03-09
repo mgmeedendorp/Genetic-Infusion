@@ -52,7 +52,7 @@ class AnimationWalkTwoLegged extends Animation {
             legs(1).rotationPointY = legs(1).initialRotationPointY
         }
 
-        getModelBody(entity).rotateAngleY += 1
+        getModelBody(entity).rotateAngleZ += 1
     }
 
     override def canBeInterrupted(entity: IEntitySoulCustom): Boolean = false

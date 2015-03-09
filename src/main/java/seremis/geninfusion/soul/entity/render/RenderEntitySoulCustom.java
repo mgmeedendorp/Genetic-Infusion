@@ -105,7 +105,7 @@ public class RenderEntitySoulCustom extends RenderLiving {
                 GL11.glScalef(f1, f1, f1);
             }
 
-            if(AnimationCache.getModelArms(custom) != null && AnimationCache.getModelArms(custom).length > 0) {
+            if(!living.isDead && AnimationCache.getModelArms(custom) != null && AnimationCache.getModelArms(custom).length > 0) {
                 ModelPart rightArm = AnimationCache.getModelArms(custom)[0];
                 rightArm.postRender(0.0625F);
 
