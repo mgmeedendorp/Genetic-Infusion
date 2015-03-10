@@ -72,22 +72,20 @@ public class GeneModel extends Gene {
         ModelPart[] body3 = new ModelPart[] {AnimationCache.getModelBody(allele3.value)};
         ModelPart[] body4 = new ModelPart[] {AnimationCache.getModelBody(allele4.value)};
 
-        System.out.println(Arrays.toString(arms1));
-
         ArrayList<ModelPart[]> list1 = new ArrayList<ModelPart[]>();
         ArrayList<ModelPart[]> list2 = new ArrayList<ModelPart[]>();
 
-        list1.add(rand.nextBoolean() ? head1 : head2);
-        list1.add(rand.nextBoolean() ? arms1 : arms2);
-        list1.add(rand.nextBoolean() ? legs1 : legs2);
-        list1.add(rand.nextBoolean() ? wings1 : wings2);
-        list1.add(rand.nextBoolean() ? body1 : body2);
+        list1.add(rand.nextBoolean() ? head1 : head3);
+        list1.add(rand.nextBoolean() ? arms1 : arms3);
+        list1.add(rand.nextBoolean() ? legs1 : legs3);
+        list1.add(rand.nextBoolean() ? wings1 : wings3);
+        list1.add(rand.nextBoolean() ? body1 : body3);
 
-        list2.add(rand.nextBoolean() ? head3 : head4);
-        list2.add(rand.nextBoolean() ? arms3 : arms4);
-        list2.add(rand.nextBoolean() ? legs3 : legs4);
-        list2.add(rand.nextBoolean() ? wings3 : wings4);
-        list2.add(rand.nextBoolean() ? body3 : body4);
+        list2.add(rand.nextBoolean() ? head2 : head4);
+        list2.add(rand.nextBoolean() ? arms2 : arms4);
+        list2.add(rand.nextBoolean() ? legs2 : legs4);
+        list2.add(rand.nextBoolean() ? wings2 : wings4);
+        list2.add(rand.nextBoolean() ? body2 : body4);
 
         ArrayList<ModelPart> result1 = new ArrayList<ModelPart>();
         ArrayList<ModelPart> result2 = new ArrayList<ModelPart>();

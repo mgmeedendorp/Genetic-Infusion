@@ -7,22 +7,27 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import seremis.geninfusion.GeneticInfusion;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.lib.Items;
+import seremis.geninfusion.soul.entity.EntitySoulCustomCreature;
 
-public class ItemThermometer extends GIItem {
+import java.util.List;
 
-    private String[] subNames = {Items.THERMOMETER_META_0_UNLOCALIZED_NAME(), Items.THERMOMETER_META_1_UNLOCALIZED_NAME(), "ab"};
+public class ItemDebugger extends GIItem {
 
-    public ItemThermometer() {
+    private String[] subNames = {Items.DEBUGGER_META_0_UNLOCALIZED_NAME(), Items.DEBUGGER_META_1_UNLOCALIZED_NAME(), Items.DEBUGGER_META_2_UNLOCALIZED_NAME(), Items.DEBUGGER_META_3_UNLOCALIZED_NAME()};
+
+    public ItemDebugger() {
         super();
         setHasSubtypes(true);
         setMaxDamage(0);
-        setNumbersofMetadata(3);
+        setNumbersofMetadata(4);
         setUnlocalizedName(Items.THERMOMETER_UNLOCALIZED_NAME());
     }
 
@@ -44,12 +49,21 @@ public class ItemThermometer extends GIItem {
                 }
             }
             if(stack.getItemDamage() == 1) {
-                EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityZombie(world)), x, y + 1, z);
+                EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityZombie(world)), x+0.5F, y + 1, z+0.5F);
                 world.spawnEntityInWorld(entity);
             }
             if(stack.getItemDamage() == 2) {
-                EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.produceOffspring(SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityZombie(world)), SoulHelper.standardSoulRegistry.getSoulForEntity(new EntitySkeleton(world))), x, y + 1, z);
+                EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.produceOffspring(SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityZombie(world)), SoulHelper.standardSoulRegistry.getSoulForEntity(new EntitySkeleton(world))), x+0.5F, y + 1, z+0.5F);
                 world.spawnEntityInWorld(entity);
+            }
+            if(stack.getItemDamage() == 3) {
+                List entities = world.getEntitiesWithinAABB(EntitySoulCustomCreature.class, AxisAlignedBB.getBoundingBox(x, y, z, x+2, y+2, z+2));
+                for(Object obj : entities) {
+                    EntityLiving entity = (EntityLiving) obj;
+                    NBTTagCompound nbt = new NBTTagCompound();
+                    entity.writeToNBT(nbt);
+                    System.out.println(nbt);
+                }
             }
         }
         return true;

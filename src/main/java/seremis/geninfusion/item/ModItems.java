@@ -9,11 +9,11 @@ import seremis.geninfusion.lib.Items;
 public class ModItems {
 
     public static GIItem titaniumIngot;
-    public static ItemThermometer thermometer;
+    public static ItemDebugger thermometer;
 
     public static void init() {
         titaniumIngot = new GIItem().setUnlocalizedName(Items.TITANIUM_INGOT_UNLOCALIZED_NAME());
-        thermometer = new ItemThermometer();
+        thermometer = new ItemDebugger();
 
         registerItem(titaniumIngot, Items.TITANIUM_INGOT_UNLOCALIZED_NAME());
         registerItem(thermometer, Items.THERMOMETER_UNLOCALIZED_NAME());

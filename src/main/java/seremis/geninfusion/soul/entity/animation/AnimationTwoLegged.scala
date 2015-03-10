@@ -5,17 +5,9 @@ import net.minecraft.util.MathHelper
 import seremis.geninfusion.api.soul.util.ModelPart
 import seremis.geninfusion.api.soul.{EnumAnimationType, IEntitySoulCustom}
 
-class AnimationWalkTwoLegged extends Animation {
+class AnimationTwoLegged extends Animation {
 
-    override def canAnimateEntity(entity: IEntitySoulCustom): Boolean = {
-        println("model: " + getModel(entity).length)
-        println("body: " + getModelBody(entity))
-        println("legs: " + getModelLegs(entity).length)
-        println("arms: " + getModelArms(entity).length)
-        println("head: " + getModelHead(entity).length)
-        println("wings: " + getModelWings(entity).length)
-        getModelLegs(entity).length == 2
-    }
+    override def canAnimateEntity(entity: IEntitySoulCustom): Boolean = getModelLegs(entity).length == 2
 
     override def shouldStartAnimation(entity: IEntitySoulCustom): Boolean = true
 
@@ -51,8 +43,6 @@ class AnimationWalkTwoLegged extends Animation {
             legs(0).rotationPointY = legs(0).initialRotationPointY
             legs(1).rotationPointY = legs(1).initialRotationPointY
         }
-
-        getModelBody(entity).rotateAngleZ += 1
     }
 
     override def canBeInterrupted(entity: IEntitySoulCustom): Boolean = false

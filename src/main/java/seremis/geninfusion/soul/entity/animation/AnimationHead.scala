@@ -5,9 +5,7 @@ import seremis.geninfusion.api.soul.{EnumAnimationType, IEntitySoulCustom}
 
 class AnimationHead extends Animation {
 
-    override def canAnimateEntity(entity: IEntitySoulCustom): Boolean = {
-        getModelHead(entity) != null
-    }
+    override def canAnimateEntity(entity: IEntitySoulCustom): Boolean = getModelHead(entity) != null
 
     override def shouldStartAnimation(entity: IEntitySoulCustom): Boolean = true
 

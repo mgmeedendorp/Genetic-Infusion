@@ -5,12 +5,14 @@ import java.awt.{Graphics, Polygon}
 import java.io._
 import javax.imageio.ImageIO
 
+import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.util.ResourceLocation
 import seremis.geninfusion.GeneticInfusion
 import seremis.geninfusion.lib.Localizations
 
 import scala.util.Random
 
+@SideOnly(Side.CLIENT)
 object GITextureHelper {
 
     val rand = new Random
@@ -44,7 +46,11 @@ object GITextureHelper {
 
         graphics.dispose
 
-        writeBufferedImage(result, new ResourceLocation(Localizations.LOC_ENTITY_CUSTOM_TEXTURES + fileName))
+        try {
+            writeBufferedImage(result, new ResourceLocation(Localizations.LOC_ENTITY_CUSTOM_TEXTURES + fileName))
+        } catch {
+            case e: Exception => e.printStackTrace()
+        }
 
         result
     }

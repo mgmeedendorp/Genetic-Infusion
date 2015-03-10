@@ -22,10 +22,10 @@ public abstract class GeneMoveSpeed extends Gene {
             AlleleDoubleArray allele1 = (AlleleDoubleArray) chromosome.getPrimary();
             AlleleDoubleArray allele2 = (AlleleDoubleArray) chromosome.getSecondary();
 
-            for(int i = 0; i < allele1.value.length; i++) {
-                if(rand.nextBoolean()) {
+            for(int i = 0; i < Math.max(allele1.value.length, allele2.value.length); i++) {
+                if(rand.nextBoolean() && allele1.value.length < i) {
                     allele1.value[i] = allele1.value[i] * ((rand.nextFloat() * 2 * 0.1) + 0.9);
-                } else {
+                } else if(allele2.value.length < i) {
                     allele2.value[i] = allele2.value[i] * ((rand.nextFloat() * 2 * 0.1) + 0.9);
                 }
             }

@@ -18,6 +18,7 @@ abstract class Animation extends IAnimation {
     def getModelLegs(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelLegs(entity)
 
     def getModelArms(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelArms(entity)
+    def armsHorizontal(entity: IEntitySoulCustom): Boolean = AnimationCache.armsHorizontal(entity)
 
     def getModelBody(entity: IEntitySoulCustom): ModelPart = AnimationCache.getModelBody(entity)
 
@@ -34,6 +35,8 @@ object AnimationCache {
     var cachedWings: Map[Array[ModelPart], Array[ModelPart]] = Map()
 
     var cachedCoords: Map[(ModelPart, ModelBox), (Vec3, Vec3)] = Map()
+    var cachedArmsHorizontal: Map[Array[ModelPart], Boolean] = Map()
+    var cachedOuterBox: Map[ModelPart, (Vec3, Vec3)] = Map()
 
     def getModel(entity: IEntitySoulCustom): Array[ModelPart] = {
         SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL)
@@ -110,7 +113,7 @@ object AnimationCache {
             var volume = 0.0F
 
             for(part <- model) {
-                if(getModelLegs(model) == null || getModelLegs(model)(0) == null || getModelLegs(model)(1) == null || partsTouching(part, getModelLegs(model)(0)) && partsTouching(part, getModelLegs(model)(1))) {
+                if(getModelLegs(model).length == 0 || getModelLegs(model)(0) == null || getModelLegs(model)(1) == null || partsTouching(part, getModelLegs(model)(0)) && partsTouching(part, getModelLegs(model)(1))) {
                     var partVolume = 0.0F
 
                     part.cubeList.foreach(box => partVolume += Math.abs(box.asInstanceOf[ModelBox].posX1 - box.asInstanceOf[ModelBox].posX2) * Math.abs(box.asInstanceOf[ModelBox].posY1 - box.asInstanceOf[ModelBox].posY2) * Math.abs(box.asInstanceOf[ModelBox].posZ1 - box.asInstanceOf[ModelBox].posZ2))
@@ -119,7 +122,6 @@ object AnimationCache {
                         volume = partVolume
                         body = part
                     }
-                    println(partVolume)
                 }
             }
             cachedBody += (model -> body)
@@ -203,6 +205,47 @@ object AnimationCache {
             cachedWings += (model -> wings.to[Array])
         }
         cachedWings.get(model).get
+    }
+
+    def armsHorizontal(entity: IEntitySoulCustom): Boolean = armsHorizontal(getModel(entity))
+
+    def armsHorizontal(model: Array[ModelPart]): Boolean = {
+        if(!cachedArmsHorizontal.contains(model)) {
+            getModelArms(model).foreach(part => {
+                val box = getModelPartOuterBox(part)
+                val diffX = Math.abs(box._1.xCoord - box._2.xCoord)
+                val diffY = Math.abs(box._1.yCoord - box._2.yCoord)
+                val diffZ = Math.abs(box._1.zCoord - box._2.zCoord)
+
+                cachedArmsHorizontal += (model -> (diffX > diffY * 1.5F || diffZ > diffY * 1.5F))
+            })
+        }
+        cachedArmsHorizontal.get(model).get
+    }
+
+    def getModelPartOuterBox(part: ModelPart): (Vec3, Vec3) = {
+        if(!cachedOuterBox.contains(part)) {
+            val near = Vec3.createVectorHelper(Double.PositiveInfinity, Double.PositiveInfinity, Double.PositiveInfinity)
+            val far = Vec3.createVectorHelper(Double.NegativeInfinity, Double.NegativeInfinity, Double.NegativeInfinity)
+            part.cubeList.foreach(cube => {
+                val coords = getPartBoxCoordinates(part, cube.asInstanceOf[ModelBox])
+
+                if(coords._1.xCoord < near.xCoord)
+                    near.xCoord = coords._1.xCoord
+                if(coords._1.yCoord < near.yCoord)
+                    near.yCoord = coords._1.yCoord
+                if(coords._1.zCoord < near.zCoord)
+                    near.zCoord = coords._1.zCoord
+                if(coords._2.xCoord > far.xCoord)
+                    far.xCoord = coords._2.xCoord
+                if(coords._2.yCoord > far.yCoord)
+                    far.yCoord = coords._2.yCoord
+                if(coords._2.zCoord > far.zCoord)
+                    far.zCoord = coords._2.zCoord
+            })
+            cachedOuterBox += (part -> (near, far))
+        }
+        cachedOuterBox.get(part).get
     }
 
     def isPartUnder(lowerPart: ModelPart, higherPart: ModelPart): Boolean = {

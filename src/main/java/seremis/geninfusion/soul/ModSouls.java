@@ -6,8 +6,8 @@ import seremis.geninfusion.api.soul.lib.Animations;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.lib.Traits;
 import seremis.geninfusion.soul.entity.animation.AnimationHead;
-import seremis.geninfusion.soul.entity.animation.AnimationWalkTwoArmed;
-import seremis.geninfusion.soul.entity.animation.AnimationWalkTwoLegged;
+import seremis.geninfusion.soul.entity.animation.AnimationTwoArmed;
+import seremis.geninfusion.soul.entity.animation.AnimationTwoLegged;
 import seremis.geninfusion.soul.gene.*;
 import seremis.geninfusion.soul.gene.model.GeneModel;
 import seremis.geninfusion.soul.gene.newAI.GeneAIIndex;
@@ -343,8 +343,8 @@ public class ModSouls {
         standardSoulRegistry.register(new StandardSoulZombie(), EntityZombie.class);
         standardSoulRegistry.register(new StandardSoulSkeleton(), EntitySkeleton.class);
 
-        animationRegistry.register(Animations.ANIMATION_WALK_FOUR_LEGGED(), new AnimationWalkTwoLegged());
-        animationRegistry.register(Animations.ANIMATION_WALK_TWO_ARMED(), new AnimationWalkTwoArmed());
+        animationRegistry.register(Animations.ANIMATION_WALK_FOUR_LEGGED(), new AnimationTwoLegged());
+        animationRegistry.register(Animations.ANIMATION_WALK_TWO_ARMED(), new AnimationTwoArmed());
         animationRegistry.register(Animations.ANIMATION_HEAD(), new AnimationHead());
     }
 }
