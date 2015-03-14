@@ -1,6 +1,5 @@
 package seremis.geninfusion.soul.standardSoul;
 
-import net.minecraft.client.model.ModelSkeleton;
 import net.minecraft.client.model.ModelZombie;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntityVillager;

@@ -5,8 +5,10 @@ import net.minecraft.util.ResourceLocation;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
+import seremis.geninfusion.api.soul.util.ModelPart;
 import seremis.geninfusion.helper.GITextureHelper;
 import seremis.geninfusion.lib.Localizations;
+import seremis.geninfusion.soul.allele.AlleleModelPartArray;
 import seremis.geninfusion.soul.allele.AlleleString;
 
 public class TraitTexture extends Trait {
@@ -16,7 +18,11 @@ public class TraitTexture extends Trait {
         if(entity.getWorld().isRemote && !GITextureHelper.getFile(toResource(getEntityTexture(entity))).exists()) {
             ResourceLocation parent1 = toResource(((AlleleString) SoulHelper.geneRegistry.getChromosomeFor(entity, Genes.GENE_TEXTURE).getPrimary()).value);
             ResourceLocation parent2 = toResource(((AlleleString) SoulHelper.geneRegistry.getChromosomeFor(entity, Genes.GENE_TEXTURE).getSecondary()).value);
-            GITextureHelper.mergeTextures(parent1, parent2, entity.getEntityId() + ".png");
+
+            ModelPart[] model1 = ((AlleleModelPartArray)SoulHelper.geneRegistry.getChromosomeFor(entity, Genes.GENE_MODEL).getActive()).value;
+            ModelPart[] model2 = ((AlleleModelPartArray)SoulHelper.geneRegistry.getChromosomeFor(entity, Genes.GENE_MODEL).getRecessive()).value;
+
+            GITextureHelper.mergeModelTextures(model1, GITextureHelper.getBufferedImage(parent1), model2, GITextureHelper.getBufferedImage(parent2));
         }
     }
 

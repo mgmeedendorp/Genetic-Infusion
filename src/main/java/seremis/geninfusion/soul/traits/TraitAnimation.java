@@ -91,7 +91,7 @@ public class TraitAnimation extends Trait {
 
         if(!registry.getAnimation(animation).getAnimationType().equals(EnumAnimationType.UNDEFINED)) {
             for(String name : activeAnimations) {
-                if(registry.getAnimation(name).getAnimationType().equals(registry.getAnimation(animation))) {
+                if(registry.getAnimation(name).getAnimationType().equals(registry.getAnimation(animation).getAnimationType())) {
                     return name;
                 }
             }

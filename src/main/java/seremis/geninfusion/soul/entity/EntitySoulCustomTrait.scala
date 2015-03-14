@@ -20,7 +20,6 @@ import seremis.geninfusion.soul.{Soul, TraitHandler}
 import seremis.geninfusion.util.INBTTagable
 
 trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEntityAdditionalSpawnData with INBTTagable {
-
     var syncLogic = new VariableSyncLogic(this)
     var soul: ISoul
     val world: World

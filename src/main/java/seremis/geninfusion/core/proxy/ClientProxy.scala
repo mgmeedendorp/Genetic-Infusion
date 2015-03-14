@@ -28,7 +28,7 @@ class ClientProxy extends CommonProxy {
         super.removeEntity(entity)
 
         if(isRenderWorld(entity.worldObj)) {
-            entity.worldObj.removeEntity(entity);
+            entity.worldObj.removeEntity(entity)
         }
     }
 

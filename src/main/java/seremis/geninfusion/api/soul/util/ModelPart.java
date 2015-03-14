@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.model.TexturedQuad;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -15,6 +16,7 @@ import seremis.geninfusion.util.INBTTagable;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class ModelPart extends ModelRenderer implements INBTTagable {
@@ -65,14 +67,30 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         return Vec3.createVectorHelper(initialRotateAngleX, initialRotateAngleY, initialRotateAngleZ);
     }
 
+    public int getTextureOffsetX() {
+        return (Integer) GIReflectionHelper.getField(this, "textureOffsetX");
+    }
+
+    public int getTextureOffsetY() {
+        return (Integer) GIReflectionHelper.getField(this, "textureOffsetY");
+    }
+
+    public List<ModelBox> getBoxList() {
+        return cubeList;
+    }
+
+    public TexturedQuad[] getBoxQuads(ModelBox box) {
+        return (TexturedQuad[]) GIReflectionHelper.getField(box, "quadList");
+    }
+
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         if(boxName != null && !boxName.equals(""))
             compound.setString("boxName", boxName);
         compound.setFloat("textureWidth", textureWidth);
         compound.setFloat("textureHeight", textureHeight);
-        compound.setInteger("textureOffsetX", (Integer) GIReflectionHelper.getField(this, "textureOffsetX"));
-        compound.setInteger("textureOffsetY", (Integer) GIReflectionHelper.getField(this, "textureOffsetY"));
+        compound.setInteger("textureOffsetX", getTextureOffsetX());
+        compound.setInteger("textureOffsetY", getTextureOffsetY());
         compound.setFloat("rotationPointX", rotationPointX);
         compound.setFloat("rotationPointY", rotationPointY);
         compound.setFloat("rotationPointZ", rotationPointZ);
@@ -157,7 +175,7 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
     private Random rand = new Random();
 
     public ModelPart mutate() {
-        switch(rand.nextInt(3)) {
+        switch(rand.nextInt(2)) {
             case 0:
                 rotationPointX = (float) (rotationPointX * ((rand.nextFloat() * 2 * 0.1) + 0.9));
                 rotationPointY = (float) (rotationPointY * ((rand.nextFloat() * 2 * 0.1) + 0.9));
@@ -168,11 +186,7 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
                 rotateAngleY = (float) (rotateAngleY * ((rand.nextFloat() * 2 * 0.1) + 0.9));
                 rotateAngleZ = (float) (rotateAngleZ * ((rand.nextFloat() * 2 * 0.1) + 0.9));
                 break;
-            case 2:
-                cubeList.remove(rand.nextInt(cubeList.size()));
-                break;
         }
-
         return this;
     }
 

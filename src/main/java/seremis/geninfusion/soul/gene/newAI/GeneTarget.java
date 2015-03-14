@@ -10,7 +10,6 @@ import seremis.geninfusion.api.soul.IChromosome;
 import seremis.geninfusion.soul.Gene;
 import seremis.geninfusion.soul.allele.AlleleClass;
 import seremis.geninfusion.soul.allele.AlleleClassArray;
-import seremis.geninfusion.soul.allele.AlleleString;
 
 import java.util.ArrayList;
 

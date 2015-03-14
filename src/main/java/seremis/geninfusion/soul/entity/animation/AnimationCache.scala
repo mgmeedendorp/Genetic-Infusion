@@ -73,8 +73,7 @@ object AnimationCache {
                     var maxY = 0.0F
                     var maxZ = 0.0F
 
-                    for(obj: Any <- part.cubeList) {
-                        val box = obj.asInstanceOf[ModelBox]
+                    for(box <- part.getBoxList) {
                         if(Math.min(box.posX1, box.posX2) < minX)
                             minX = Math.min(box.posX1, box.posX2)
                         if(Math.max(box.posX1, box.posX2) > maxX)
@@ -113,10 +112,10 @@ object AnimationCache {
             var volume = 0.0F
 
             for(part <- model) {
-                if(getModelLegs(model).length == 0 || getModelLegs(model)(0) == null || getModelLegs(model)(1) == null || partsTouching(part, getModelLegs(model)(0)) && partsTouching(part, getModelLegs(model)(1))) {
+                if(getModelLegs(model).length == 0 || getModelLegs(model)(0) == null || getModelLegs(model).length == 2 && getModelLegs(model)(1) == null || getModelLegs(model).length == 1 && partsTouching(part, getModelLegs(model)(0)) || partsTouching(part, getModelLegs(model)(0)) && partsTouching(part, getModelLegs(model)(1))) {
                     var partVolume = 0.0F
 
-                    part.cubeList.foreach(box => partVolume += Math.abs(box.asInstanceOf[ModelBox].posX1 - box.asInstanceOf[ModelBox].posX2) * Math.abs(box.asInstanceOf[ModelBox].posY1 - box.asInstanceOf[ModelBox].posY2) * Math.abs(box.asInstanceOf[ModelBox].posZ1 - box.asInstanceOf[ModelBox].posZ2))
+                    part.getBoxList.foreach(box => partVolume += Math.abs(box.posX1 - box.posX2) * Math.abs(box.posY1 - box.posY2) * Math.abs(box.posZ1 - box.posZ2))
 
                     if(partVolume > volume) {
                         volume = partVolume
@@ -148,8 +147,7 @@ object AnimationCache {
                     var maxY = 0.0F
                     var maxZ = 0.0F
 
-                    for(obj: Any <- part.cubeList) {
-                        val box = obj.asInstanceOf[ModelBox]
+                    for(box <- part.getBoxList) {
                         if((Math.min(box.posX1, box.posX2) + part.offsetX) * MathHelper.cos(part.rotateAngleY) < minX)
                             minX = Math.min(box.posX1, box.posX2)
                         if((Math.max(box.posX1, box.posX2) + part.offsetX) * MathHelper.cos(part.rotateAngleY) > maxX)
@@ -227,8 +225,8 @@ object AnimationCache {
         if(!cachedOuterBox.contains(part)) {
             val near = Vec3.createVectorHelper(Double.PositiveInfinity, Double.PositiveInfinity, Double.PositiveInfinity)
             val far = Vec3.createVectorHelper(Double.NegativeInfinity, Double.NegativeInfinity, Double.NegativeInfinity)
-            part.cubeList.foreach(cube => {
-                val coords = getPartBoxCoordinates(part, cube.asInstanceOf[ModelBox])
+            part.getBoxList.foreach(cube => {
+                val coords = getPartBoxCoordinates(part, cube)
 
                 if(coords._1.xCoord < near.xCoord)
                     near.xCoord = coords._1.xCoord
@@ -249,17 +247,17 @@ object AnimationCache {
     }
 
     def isPartUnder(lowerPart: ModelPart, higherPart: ModelPart): Boolean = {
-        lowerPart.cubeList.exists(lowerCube => {
-            higherPart.cubeList.exists(higherCube => {
-                coordsBeneath(getPartBoxCoordinates(lowerPart, lowerCube.asInstanceOf[ModelBox]), getPartBoxCoordinates(higherPart, higherCube.asInstanceOf[ModelBox]))
+        lowerPart.getBoxList.exists(lowerBox => {
+            higherPart.getBoxList.exists(higherBox => {
+                coordsBeneath(getPartBoxCoordinates(lowerPart, lowerBox), getPartBoxCoordinates(higherPart, higherBox))
             })
         })
     }
 
     def partsTouching(part1: ModelPart, part2: ModelPart): Boolean = {
-        part1.cubeList.exists(box1 => {
-            part2.cubeList.exists(box2 => {
-                coordsTouch(getPartBoxCoordinates(part1, box1.asInstanceOf[ModelBox]), getPartBoxCoordinates(part2, box2.asInstanceOf[ModelBox]))
+        part1.getBoxList.exists(box1 => {
+            part2.getBoxList.exists(box2 => {
+                coordsTouch(getPartBoxCoordinates(part1, box1), getPartBoxCoordinates(part2, box2))
             })
         })
     }
@@ -271,9 +269,9 @@ object AnimationCache {
 
     def coordsTouch(coords1: (Vec3, Vec3), coords2: (Vec3, Vec3)): Boolean = coords1._2.xCoord >= coords2._1.xCoord && coords1._1.xCoord <= coords2._2.xCoord && coords1._2.yCoord >= coords2._1.yCoord && coords1._1.yCoord <= coords2._2.yCoord && coords1._2.zCoord >= coords2._1.zCoord && coords1._1.zCoord <= coords2._2.zCoord
 
-    def intersectsPlaneX(part: ModelPart, x: Float): Boolean = part.cubeList.exists(box => interX(getPartBoxCoordinates(part, box.asInstanceOf[ModelBox]), x))
-    def intersectsPlaneY(part: ModelPart, y: Float): Boolean = part.cubeList.exists(box => interY(getPartBoxCoordinates(part, box.asInstanceOf[ModelBox]), y))
-    def intersectsPlaneZ(part: ModelPart, z: Float): Boolean = part.cubeList.exists(box => interZ(getPartBoxCoordinates(part, box.asInstanceOf[ModelBox]), z))
+    def intersectsPlaneX(part: ModelPart, x: Float): Boolean = part.getBoxList.exists(box => interX(getPartBoxCoordinates(part, box), x))
+    def intersectsPlaneY(part: ModelPart, y: Float): Boolean = part.getBoxList.exists(box => interY(getPartBoxCoordinates(part, box), y))
+    def intersectsPlaneZ(part: ModelPart, z: Float): Boolean = part.getBoxList.exists(box => interZ(getPartBoxCoordinates(part, box), z))
 
     def interX(coords: (Vec3, Vec3), x: Float) = isInBetween(x, coords._1.xCoord, coords._2.xCoord)
     def interY(coords: (Vec3, Vec3), y: Float) = isInBetween(y, coords._1.yCoord, coords._2.yCoord)
