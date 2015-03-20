@@ -54,4 +54,16 @@ public class SoulHelper {
     }
 
     private static Random rand = new Random();
+
+    //Do never, ever change this if you don't know what you're doing!
+    public static int textureID = 0;
+
+    /**
+     * Get the next available texture ID, this is used as the name of the texture.
+     * This number persists over saves.
+     * @return The next textureID
+     */
+    public static int getNextAvailableTextureID() {
+        return textureID++;
+    }
 }
