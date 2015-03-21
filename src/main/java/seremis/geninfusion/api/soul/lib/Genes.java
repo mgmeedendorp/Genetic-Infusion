@@ -2,7 +2,7 @@ package seremis.geninfusion.api.soul.lib;
 
 public class Genes {
 
-    public static String ID = "placeholder";
+    public static final String ID = "geninfusion";
 
     public static final String GENE_MAX_HEALTH = ID + ".gene.maxHealth";
     public static final String GENE_INVULNERABLE = ID + ".gene.invulnerable";
@@ -38,7 +38,7 @@ public class Genes {
     public static final String GENE_USE_OLD_AI = ID + ".gene.useOldAI";
     public static final String GENE_VERTICAL_FACE_SPEED = ID + ".gene.verticalFaceSpeed";
     public static final String GENE_IS_CREATURE = ID + ".gene.isCreature";
-    public static final String GENE_CEASE_AI_MOVEMENT = "gene.ceaseAIMovement";
+    public static final String GENE_CEASE_AI_MOVEMENT = ".gene.ceaseAIMovement";
     public static final String GENE_CHILDREN_BURN_IN_DAYLIGHT = ID + ".gene.childrenBurn";
     public static final String GENE_IS_TAMEABLE = ID + ".gene.isTameable";
     public static final String GENE_TOUCH_ATTACK = ID + ".gene.touchAttack";
@@ -67,25 +67,25 @@ public class Genes {
     public static final String GENE_AI_BEG_INDEX = ID + ".gene.aiBegIndex";
     public static final String GENE_AI_BEG_RANGE = ID + ".gene.aiBegRange";
 
-    public static final String GENE_AI_BREAK_DOOR = ID + "gene.aiBreakDoor";
+    public static final String GENE_AI_BREAK_DOOR = ID + ".gene.aiBreakDoor";
     public static final String GENE_AI_BREAK_DOOR_INDEX = ID + ".gene.aiBreakDoorIndex";
 
-    public static final String GENE_AI_CONTROLLED_BY_PLAYER = ID + "gene.aiControlledByPlayer";
+    public static final String GENE_AI_CONTROLLED_BY_PLAYER = ID + ".gene.aiControlledByPlayer";
     public static final String GENE_AI_CONTROLLED_BY_PLAYER_INDEX = ID + ".gene.aiControlledByPlayerIndex";
-    public static final String GENE_AI_CONTROLLED_BY_PLAYER_MAX_SPEED = ID + "gene.aiControlledByPlayerMaxSpeed";
+    public static final String GENE_AI_CONTROLLED_BY_PLAYER_MAX_SPEED = ID + ".gene.aiControlledByPlayerMaxSpeed";
 
-    public static final String GENE_AI_CREEPER_SWELL = ID + "gene.aiCreeperSwell";
+    public static final String GENE_AI_CREEPER_SWELL = ID + ".gene.aiCreeperSwell";
     public static final String GENE_AI_CREEPER_SWELL_INDEX = ID + ".gene.aiCreeperSwellIndex";
 
-    public static final String GENE_AI_DEFEND_VILLAGE = ID + "gene.aiDefendVillage";
+    public static final String GENE_AI_DEFEND_VILLAGE = ID + ".gene.aiDefendVillage";
     public static final String GENE_AI_DEFEND_VILLAGE_INDEX = ID + ".gene.aiDefendVillageIndex";
 
-    public static final String GENE_AI_EAT_GRASS = ID + "gene.aiEatGrass";
+    public static final String GENE_AI_EAT_GRASS = ID + ".gene.aiEatGrass";
     public static final String GENE_AI_EAT_GRASS_INDEX = ID + ".gene.aiEatGrassIndex";
 
-    public static final String GENE_AI_FLEE_SUN = ID + "gene.aiFleeSun";
+    public static final String GENE_AI_FLEE_SUN = ID + ".gene.aiFleeSun";
     public static final String GENE_AI_FLEE_SUN_INDEX = ID + ".gene.aiFleeSunIndex";
-    public static final String GENE_AI_FLEE_SUN_MOVE_SPEED = ID + "gene.aiFleeSunMoveSpeed";
+    public static final String GENE_AI_FLEE_SUN_MOVE_SPEED = ID + ".gene.aiFleeSunMoveSpeed";
 
     public static final String GENE_AI_FOLLOW_GOLEM = ID + ".gene.aiFollowGolem";
     public static final String GENE_AI_FOLLOW_GOLEM_INDEX = ID + ".gene.aiFollowGolemIndex";

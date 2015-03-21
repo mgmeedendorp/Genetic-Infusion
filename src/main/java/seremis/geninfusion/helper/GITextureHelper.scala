@@ -7,6 +7,7 @@ import javafx.geometry.Rectangle2D
 import javax.imageio.ImageIO
 
 import cpw.mods.fml.relauncher.{Side, SideOnly}
+import net.minecraft.client.model.TexturedQuad
 import net.minecraft.util.ResourceLocation
 import seremis.geninfusion.GeneticInfusion
 import seremis.geninfusion.api.soul.util.ModelPart
@@ -58,27 +59,35 @@ object GITextureHelper {
             val texturedQuads = part.getBoxQuads(box)
 
             for(quad <- texturedQuads) {
-                var quadPositionsMin = (quad.vertexPositions(1).texturePositionX, quad.vertexPositions(1).texturePositionY)
-                var quadPositionsMax = (quad.vertexPositions(3).texturePositionX, quad.vertexPositions(3).texturePositionY)
-
-                var quadCoordsMin = (part.textureWidth * quadPositionsMin._1, part.textureHeight * quadPositionsMin._2)
-                var quadCoordsMax = (part.textureWidth * quadPositionsMax._1, part.textureHeight * quadPositionsMax._2)
-
-                val quadSize = (Math.abs(quadCoordsMax._1 - quadCoordsMin._1).toInt, Math.abs(quadCoordsMax._2 - quadCoordsMin._2).toInt)
-
-                quadCoordsMin = (quadCoordsMin._1 + textureOffset._1, quadCoordsMin._2 + textureOffset._2)
-                quadCoordsMax = (quadCoordsMax._1 + textureOffset._1, quadCoordsMax._2 + textureOffset._2)
-
-                quadPositionsMin = (quadCoordsMin._1/part.textureWidth, quadCoordsMin._2/part.textureHeight)
-                quadPositionsMax = ((quadCoordsMax._1 + quadSize._1)/part.textureWidth, (quadCoordsMax._2 + quadSize._2)/part.textureHeight)
-
-                quad.vertexPositions(0) = quad.vertexPositions(0).setTexturePosition(quadPositionsMax._1, quadPositionsMin._2)
-                quad.vertexPositions(1) = quad.vertexPositions(1).setTexturePosition(quadPositionsMin._1, quadPositionsMin._2)
-                quad.vertexPositions(2) = quad.vertexPositions(2).setTexturePosition(quadPositionsMin._1, quadPositionsMax._2)
-                quad.vertexPositions(3) = quad.vertexPositions(3).setTexturePosition(quadPositionsMax._1, quadPositionsMax._2)
+                moveModelBoxQuadTextureOffset(part, quad, textureOffset)
             }
+
+            part.setBoxQuads(box, texturedQuads)
         }
         part
+    }
+
+    def moveModelBoxQuadTextureOffset(part: ModelPart, quad: TexturedQuad, textureOffset: (Int, Int)): TexturedQuad = {
+        var quadPositionsMin = (quad.vertexPositions(1).texturePositionX, quad.vertexPositions(1).texturePositionY)
+        var quadPositionsMax = (quad.vertexPositions(3).texturePositionX, quad.vertexPositions(3).texturePositionY)
+
+        var quadCoordsMin = (part.textureWidth * quadPositionsMin._1, part.textureHeight * quadPositionsMin._2)
+        var quadCoordsMax = (part.textureWidth * quadPositionsMax._1, part.textureHeight * quadPositionsMax._2)
+
+        val quadSize = (Math.abs(quadCoordsMax._1 - quadCoordsMin._1).toInt, Math.abs(quadCoordsMax._2 - quadCoordsMin._2).toInt)
+
+        quadCoordsMin = (quadCoordsMin._1 + textureOffset._1, quadCoordsMin._2 + textureOffset._2)
+        quadCoordsMax = (quadCoordsMax._1 + textureOffset._1, quadCoordsMax._2 + textureOffset._2)
+
+        quadPositionsMin = (quadCoordsMin._1/part.textureWidth, quadCoordsMin._2/part.textureHeight)
+        quadPositionsMax = ((quadCoordsMax._1 + quadSize._1)/part.textureWidth, (quadCoordsMax._2 + quadSize._2)/part.textureHeight)
+
+        quad.vertexPositions(0) = quad.vertexPositions(0).setTexturePosition(quadPositionsMin._1, quadPositionsMax._2)
+        quad.vertexPositions(1) = quad.vertexPositions(1).setTexturePosition(quadPositionsMax._1, quadPositionsMax._2)
+        quad.vertexPositions(2) = quad.vertexPositions(2).setTexturePosition(quadPositionsMax._1, quadPositionsMin._2)
+        quad.vertexPositions(3) = quad.vertexPositions(3).setTexturePosition(quadPositionsMin._1, quadPositionsMin._2)
+
+        quad
     }
 
     /**
@@ -91,6 +100,7 @@ object GITextureHelper {
         val time = System.currentTimeMillis()
 
         var textureRectsSource: ListBuffer[Rectangle2D] = ListBuffer()
+        var texturedQuadsList: ListBuffer[TexturedQuad] = ListBuffer()
 
         for(box <- part.getBoxList) {
             val texturedQuads = part.getBoxQuads(box)
@@ -106,26 +116,22 @@ object GITextureHelper {
                 val quadSize = (Math.abs(quadCoordsMax._1 - quadCoordsMin._1).toInt, Math.abs(quadCoordsMax._2 - quadCoordsMin._2).toInt)
                 
                 textureRectsSource += new Rectangle2D(quadCoords._1, quadCoords._2, quadSize._1, quadSize._2)
+                texturedQuadsList += quad
             }
         }
 
-        val textureRectsDest = distributeSquaresOnTexture(textureRectsSource)
+        val result = stitchImages(textureRectsSource, ListBuffer.fill(textureRectsSource.size)(image))
 
-        val finalImage = new BufferedImage(textureRectsDest._1._1, textureRectsDest._1._2, BufferedImage.TYPE_INT_ARGB)
-        val graphics = finalImage.getGraphics
+        for(i <- 0 until result._2.size) {
+            val rect = result._2.get(i)
+            val quad = texturedQuadsList.get(i)
 
-        for(i <- 0 until textureRectsDest._2.size) {
-            val sourceRect = textureRectsSource.get(i)
-            val destRect = textureRectsDest._2.get(i)
-
-            graphics.drawImage(image, destRect.getMinX.toInt, destRect.getMinY.toInt, destRect.getMaxX.toInt, destRect.getMaxY.toInt, sourceRect.getMinX.toInt, sourceRect.getMinY.toInt, sourceRect.getMaxX.toInt, sourceRect.getMaxY.toInt, null)
+            moveModelBoxQuadTextureOffset(part, quad, (rect.getMinX.toInt, rect.getMinY.toInt))
         }
-
-        graphics.dispose()
 
         println("getModelPartTexture Time: " + (System.currentTimeMillis() - time))
 
-        finalImage
+        result._1
     }
 
     def distributeSquaresOnTexture(usedRects: ListBuffer[Rectangle2D]): ((Int, Int), ListBuffer[Rectangle2D]) = {
@@ -160,8 +166,6 @@ object GITextureHelper {
         if(rowMaxY >= textureSize._2) {
             textureSize = (textureSize._1, textureSize._2 * 2)
         }
-
-        println("textureSize: " + textureSize)
 
         (textureSize, resultList)
     }

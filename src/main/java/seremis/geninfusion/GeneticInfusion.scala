@@ -40,9 +40,6 @@ object GeneticInfusion {
         logger = event.getModLog
         GIConfig.configure(new Configuration(event.getSuggestedConfigurationFile))
 
-        Genes.ID = DefaultProps.ID
-        Traits.ID = DefaultProps.ID
-
         SoulHelper.geneRegistry = new GeneRegistry
         SoulHelper.traitRegistry = new TraitRegistry
         SoulHelper.standardSoulRegistry = new StandardSoulRegistry

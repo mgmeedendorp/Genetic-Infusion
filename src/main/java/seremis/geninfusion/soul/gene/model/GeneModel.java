@@ -3,6 +3,7 @@ package seremis.geninfusion.soul.gene.model;
 import javafx.geometry.Rectangle2D;
 import net.minecraft.util.ResourceLocation;
 import scala.Tuple2;
+import scala.Tuple3;
 import scala.collection.mutable.ListBuffer;
 import seremis.geninfusion.api.soul.EnumAlleleType;
 import seremis.geninfusion.api.soul.IAllele;
@@ -18,8 +19,8 @@ import seremis.geninfusion.soul.allele.AlleleString;
 import seremis.geninfusion.soul.entity.animation.AnimationCache;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import static scala.collection.JavaConversions.*;
@@ -97,26 +98,23 @@ public class GeneModel extends Gene {
         ModelPart[] body3 = new ModelPart[] {AnimationCache.getModelBody(allele3.value)};
         ModelPart[] body4 = new ModelPart[] {AnimationCache.getModelBody(allele4.value)};
 
-        ArrayList<Tuple2<ModelPart[], BufferedImage>> inherited1 = new ArrayList<Tuple2<ModelPart[], BufferedImage>>();
-        ArrayList<Tuple2<ModelPart[], BufferedImage>> uninherited1 = new ArrayList<Tuple2<ModelPart[], BufferedImage>>();
+        List<Tuple2<ModelPart[], BufferedImage>> inherited1 = new LinkedList<Tuple2<ModelPart[], BufferedImage>>();
+        List<Tuple2<ModelPart[], BufferedImage>> inherited2 = new LinkedList<Tuple2<ModelPart[], BufferedImage>>();
 
-        ArrayList<Tuple2<ModelPart[], BufferedImage>> inherited2 = new ArrayList<Tuple2<ModelPart[], BufferedImage>>();
-        ArrayList<Tuple2<ModelPart[], BufferedImage>> uninherited2 = new ArrayList<Tuple2<ModelPart[], BufferedImage>>();
+        randomlyInherit(inherited1, head1, texture1, head3, texture3);
+        randomlyInherit(inherited1, arms1, texture1, arms3, texture3);
+        randomlyInherit(inherited1, legs1, texture1, legs3, texture3);
+        randomlyInherit(inherited1, wings1, texture1, wings3, texture3);
+        randomlyInherit(inherited1, body1, texture1, body3, texture3);
 
-        randomlyInherit(inherited1, uninherited1, head1, texture1, head3, texture3);
-        randomlyInherit(inherited1, uninherited1, arms1, texture1, arms3, texture3);
-        randomlyInherit(inherited1, uninherited1, legs1, texture1, legs3, texture3);
-        randomlyInherit(inherited1, uninherited1, wings1, texture1, wings3, texture3);
-        randomlyInherit(inherited1, uninherited1, body1, texture1, body3, texture3);
+        randomlyInherit(inherited2, head2, texture2, head4, texture4);
+        randomlyInherit(inherited2, arms2, texture2, arms4, texture4);
+        randomlyInherit(inherited2, legs2, texture2, legs4, texture4);
+        randomlyInherit(inherited2, wings2, texture2,  wings4, texture4);
+        randomlyInherit(inherited2, body2, texture2, body4, texture4);
 
-        randomlyInherit(inherited2, uninherited2, head2, texture2, head4, texture4);
-        randomlyInherit(inherited2, uninherited2, arms2, texture2, arms4, texture4);
-        randomlyInherit(inherited2, uninherited2, legs2, texture2, legs4, texture4);
-        randomlyInherit(inherited2, uninherited2, wings2, texture2,  wings4, texture4);
-        randomlyInherit(inherited2, uninherited2, body2, texture2, body4, texture4);
-
-        Tuple2<BufferedImage, List<Rectangle2D>> parent1Tuple = createParentTexture(inherited1, uninherited1);
-        Tuple2<BufferedImage, List<Rectangle2D>> parent2Tuple = createParentTexture(inherited2, uninherited2);
+        Tuple3<BufferedImage, List<Rectangle2D>, List<ModelPart>> parent1Tuple = createParentTexture(inherited1);
+        Tuple3<BufferedImage, List<Rectangle2D>, List<ModelPart>> parent2Tuple = createParentTexture(inherited2);
 
         BufferedImage parent1Texture = parent1Tuple._1();
         BufferedImage parent2Texture = parent2Tuple._1();
@@ -137,15 +135,33 @@ public class GeneModel extends Gene {
 
         offspring[geneIdTexture] = SoulHelper.instanceHelper.getIChromosomeInstance(textureAllele1, textureAllele2);
 
-        ArrayList<ModelPart> result1 = new ArrayList<ModelPart>();
-        ArrayList<ModelPart> result2 = new ArrayList<ModelPart>();
+        List<ModelPart> result1 = new LinkedList<ModelPart>();
+        List<ModelPart> result2 = new LinkedList<ModelPart>();
 
         for(Tuple2<ModelPart[], BufferedImage> tuple : inherited1) {
             Collections.addAll(result1, tuple._1());
         }
 
+        for(int i = 0; i < parent1Tuple._2().size(); i++) {
+            ModelPart part = parent1Tuple._3().get(i);
+            Rectangle2D rect = parent1Tuple._2().get(i);
+
+            part.setTextureSize(parent1Texture.getWidth(), parent1Texture.getHeight());
+
+            GITextureHelper.moveModelPartTextureOffset(part, new Tuple2<Object, Object>((int) rect.getMinX(), (int) rect.getMinY()));
+        }
+
         for(Tuple2<ModelPart[], BufferedImage> tuple : inherited2) {
             Collections.addAll(result2, tuple._1());
+        }
+
+        for(int i = 0; i < parent2Tuple._2().size(); i++) {
+            ModelPart part = parent2Tuple._3().get(i);
+            Rectangle2D rect = parent2Tuple._2().get(i);
+
+            part.setTextureSize(parent2Texture.getWidth(), parent2Texture.getHeight());
+
+            GITextureHelper.moveModelPartTextureOffset(part, new Tuple2<Object, Object>((int) rect.getMinX(), (int) rect.getMinY()));
         }
 
         IAllele resultAllele1 = SoulHelper.instanceHelper.getIAlleleInstance(EnumAlleleType.MODEL_PART_ARRAY, true, result1.toArray(new ModelPart[result1.size()]));
@@ -154,13 +170,11 @@ public class GeneModel extends Gene {
         return SoulHelper.instanceHelper.getIChromosomeInstance(resultAllele1, resultAllele2);
     }
 
-    private void randomlyInherit(List<Tuple2<ModelPart[], BufferedImage>> inherited, List<Tuple2<ModelPart[], BufferedImage>> uninherited, ModelPart[] parent1, BufferedImage texture1, ModelPart[] parent2, BufferedImage texture2) {
+    private void randomlyInherit(List<Tuple2<ModelPart[], BufferedImage>> inherited, ModelPart[] parent1, BufferedImage texture1, ModelPart[] parent2, BufferedImage texture2) {
         if(rand.nextBoolean()) {
             inherited.add(new Tuple2<ModelPart[], BufferedImage>(parent1, texture1));
-            uninherited.add(new Tuple2<ModelPart[], BufferedImage>(parent2, texture2));
         } else {
             inherited.add(new Tuple2<ModelPart[], BufferedImage>(parent2, texture2));
-            uninherited.add(new Tuple2<ModelPart[], BufferedImage>(parent1, texture1));
         }
     }
 
@@ -168,25 +182,21 @@ public class GeneModel extends Gene {
         return new ResourceLocation(location);
     }
 
-    private Tuple2<BufferedImage, List<Rectangle2D>> createParentTexture(List<Tuple2<ModelPart[], BufferedImage>> inherited, List<Tuple2<ModelPart[], BufferedImage>> uninherited) {
-        List<BufferedImage> modelPartImages = new ArrayList<BufferedImage>();
-        List<Rectangle2D> textureRects = new ArrayList<Rectangle2D>();
+    private Tuple3<BufferedImage, List<Rectangle2D>, List<ModelPart>> createParentTexture(List<Tuple2<ModelPart[], BufferedImage>> inherited) {
+        List<BufferedImage> modelPartImages = new LinkedList<BufferedImage>();
+        List<Rectangle2D> textureRects = new LinkedList<Rectangle2D>();
+        List<ModelPart> parts = new LinkedList<ModelPart>();
 
-        for(int i = 0; i < inherited.size(); i++) {
-            ModelPart[] parent1Inherited = inherited.get(i)._1();
-            ModelPart[] parent1Uninherited = uninherited.get(i)._1();
+        for(Tuple2<ModelPart[], BufferedImage> tuple : inherited) {
+            ModelPart[] partArray = tuple._1();
+            BufferedImage wholeTexture1 = tuple._2();
 
-            BufferedImage wholeTexture1 = inherited.get(i)._2();
-            BufferedImage wholeTexture2 = uninherited.get(i)._2();
-
-            for(int j = 0; j < Math.min(parent1Inherited.length, parent1Uninherited.length); j++) {
-                BufferedImage tex1 = GITextureHelper.getModelPartTexture(parent1Inherited[j], wholeTexture1);
-                BufferedImage tex2 = GITextureHelper.getModelPartTexture(parent1Uninherited[j], wholeTexture2);
-
-                BufferedImage image = GITextureHelper.mergeImages(tex1, tex2);
+            for(ModelPart part : partArray) {
+                BufferedImage image = GITextureHelper.getModelPartTexture(part, wholeTexture1);
 
                 textureRects.add(new Rectangle2D(0, 0, image.getWidth(), image.getHeight()));
                 modelPartImages.add(image);
+                parts.add(part);
             }
         }
         ListBuffer<Rectangle2D> rectBuffer = new ListBuffer<Rectangle2D>();
@@ -202,6 +212,6 @@ public class GeneModel extends Gene {
 
         Tuple2<BufferedImage, ListBuffer<Rectangle2D>> result = GITextureHelper.stitchImages(rectBuffer, imageBuffer);
 
-        return new Tuple2<BufferedImage, List<Rectangle2D>>(result._1(), bufferAsJavaList(result._2()));
+        return new Tuple3<BufferedImage, List<Rectangle2D>, List<ModelPart>>(result._1(), bufferAsJavaList(result._2()), parts);
     }
 }

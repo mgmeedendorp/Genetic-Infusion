@@ -83,6 +83,11 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         return (TexturedQuad[]) GIReflectionHelper.getField(box, "quadList");
     }
 
+    public ModelBox setBoxQuads(ModelBox box, TexturedQuad[] quads) {
+        GIReflectionHelper.setField(box, "quadList", quads);
+        return box;
+    }
+
     @Override
     public void writeToNBT(NBTTagCompound compound) {
         if(boxName != null && !boxName.equals(""))

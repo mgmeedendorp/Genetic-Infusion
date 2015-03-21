@@ -7,18 +7,15 @@ import seremis.geninfusion.api.soul.util.ModelPart;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * @author Seremis
- */
 public interface IGeneRegistry {
 
     public void registerGene(String name, IGene gene);
 
     public void registerMasterGene(String name, IMasterGene gene);
 
-    void registerCustomInheritance(String name);
+    public void registerCustomInheritance(String name);
 
-    void registerCustomInheritance(IGene gene);
+    public void registerCustomInheritance(IGene gene);
 
     boolean useNormalInheritance(IGene gene);
 
