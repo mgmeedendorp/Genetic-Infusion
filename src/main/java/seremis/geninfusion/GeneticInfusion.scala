@@ -7,6 +7,7 @@ import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.common.config.Configuration
 import org.apache.logging.log4j.{Level, Logger}
 import seremis.geninfusion.api.soul.SoulHelper
+import seremis.geninfusion.api.soul.lib.{Traits, Genes}
 import seremis.geninfusion.block.ModBlocks
 import seremis.geninfusion.core.proxy.CommonProxy
 import seremis.geninfusion.core.{GIConfig, GICreativeTab}
@@ -38,6 +39,9 @@ object GeneticInfusion {
     def preInit(event: FMLPreInitializationEvent): Unit = {
         logger = event.getModLog
         GIConfig.configure(new Configuration(event.getSuggestedConfigurationFile))
+
+        Genes.ID = DefaultProps.ID
+        Traits.ID = DefaultProps.ID
 
         SoulHelper.geneRegistry = new GeneRegistry
         SoulHelper.traitRegistry = new TraitRegistry

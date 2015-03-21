@@ -16,6 +16,16 @@ public interface IGeneRegistry {
 
     public void registerMasterGene(String name, IMasterGene gene);
 
+    void registerCustomInheritance(String name);
+
+    void registerCustomInheritance(IGene gene);
+
+    boolean useNormalInheritance(IGene gene);
+
+    boolean useNormalInheritance(String name);
+
+    List<IGene> getCustomInheritanceGenes();
+
     public IGene getGene(String name);
 
     public String getGeneName(IGene gene);

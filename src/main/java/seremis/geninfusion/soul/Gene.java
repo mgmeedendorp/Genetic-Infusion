@@ -106,4 +106,14 @@ public abstract class Gene implements IGene {
 
         return SoulHelper.instanceHelper.getIChromosomeInstance(allele1, allele2);
     }
+
+    @Override
+    public IChromosome advancedInherit(IChromosome[] parent1, IChromosome[] parent2, IChromosome[] offspring) {
+        int geneId = SoulHelper.geneRegistry.getGeneId(this);
+
+        IAllele allele1 = rand.nextBoolean() ? parent1[geneId].getPrimary() : parent1[geneId].getSecondary();
+        IAllele allele2 = rand.nextBoolean() ? parent2[geneId].getPrimary() : parent2[geneId].getSecondary();
+
+        return SoulHelper.instanceHelper.getIChromosomeInstance(allele1, allele2);
+    }
 }

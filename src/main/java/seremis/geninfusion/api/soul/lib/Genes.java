@@ -2,7 +2,7 @@ package seremis.geninfusion.api.soul.lib;
 
 public class Genes {
 
-    public static final String ID = "geninfusion";
+    public static String ID = "placeholder";
 
     public static final String GENE_MAX_HEALTH = ID + ".gene.maxHealth";
     public static final String GENE_INVULNERABLE = ID + ".gene.invulnerable";

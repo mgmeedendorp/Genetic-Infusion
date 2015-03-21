@@ -44,13 +44,26 @@ public class SoulHelper {
         for(int i = 0; i < chromosomes1.length; i++) {
             IGene gene = SoulHelper.geneRegistry.getGene(i);
 
-            offspring[i] = gene.inherit(chromosomes1[i], chromosomes2[i]);
+            if(geneRegistry.useNormalInheritance(gene)) {
+                offspring[i] = gene.inherit(chromosomes1[i], chromosomes2[i]);
 
-            if(rand.nextInt(100) < 5) {
-                offspring[i] = gene.mutate(offspring[i]);
+                if(rand.nextInt(100) < 5) {
+                    offspring[i] = gene.mutate(offspring[i]);
+                }
             }
         }
-        return SoulHelper.instanceHelper.getISoulInstance(offspring);
+
+        for(int i = 0; i < geneRegistry.getCustomInheritanceGenes().size(); i++) {
+            IGene gene = geneRegistry.getCustomInheritanceGenes().get(i);
+
+            offspring[geneRegistry.getGeneId(gene)] = gene.advancedInherit(chromosomes1, chromosomes2, offspring);
+
+            if(rand.nextInt(100) < 5) {
+                offspring[geneRegistry.getGeneId(gene)] = gene.mutate(offspring[geneRegistry.getGeneId(gene)]);
+            }
+        }
+
+        return instanceHelper.getISoulInstance(offspring);
     }
 
     private static Random rand = new Random();

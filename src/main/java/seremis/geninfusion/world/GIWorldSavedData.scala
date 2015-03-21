@@ -12,6 +12,6 @@ class GIWorldSavedData extends WorldSavedData(DefaultProps.ID) {
     }
 
     override def writeToNBT(compound: NBTTagCompound) {
-        compound.setInteger(DefaultProps.ID + "currentTextureID", SoulHelper.textureID)
+        compound.setInteger("currentTextureID", SoulHelper.textureID)
     }
 }

@@ -320,9 +320,9 @@ public class ModSouls {
         geneRegistry.registerMasterGene(Genes.GENE_USE_NEW_AI, new GeneUseNewAI());
         geneRegistry.registerMasterGene(Genes.GENE_USE_OLD_AI, new GeneUseOldAI());
 
-        geneRegistry.registerGene(Genes.GENE_MODEL, new GeneModel());
-
         geneRegistry.registerGene(Genes.GENE_TEXTURE, new GeneTexture());
+        geneRegistry.registerGene(Genes.GENE_MODEL, new GeneModel());
+        geneRegistry.registerCustomInheritance(Genes.GENE_MODEL);
 
         traitRegistry.registerTrait(Traits.TRAIT_FIRE, new TraitFire());
         traitRegistry.registerTrait(Traits.TRAIT_MOVEMENT, new TraitMovement());

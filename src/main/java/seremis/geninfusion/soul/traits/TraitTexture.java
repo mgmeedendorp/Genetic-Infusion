@@ -16,37 +16,17 @@ import java.awt.image.BufferedImage;
 public class TraitTexture extends Trait {
 
     @Override
-    public void firstTick(IEntitySoulCustom entity) {
-        if(entity.getWorld().isRemote && !GITextureHelper.getFile(toResource(getEntityTexture(entity))).exists()) {
-            ResourceLocation parent1 = toResource(((AlleleString) SoulHelper.geneRegistry.getChromosomeFor(entity, Genes.GENE_TEXTURE).getPrimary()).value);
-            ResourceLocation parent2 = toResource(((AlleleString) SoulHelper.geneRegistry.getChromosomeFor(entity, Genes.GENE_TEXTURE).getSecondary()).value);
-
-            ModelPart[] model1 = ((AlleleModelPartArray)SoulHelper.geneRegistry.getChromosomeFor(entity, Genes.GENE_MODEL).getActive()).value;
-            ModelPart[] model2 = ((AlleleModelPartArray)SoulHelper.geneRegistry.getChromosomeFor(entity, Genes.GENE_MODEL).getRecessive()).value;
-
-            BufferedImage image1 = GITextureHelper.getBufferedImage(parent1);
-            BufferedImage image2 = GITextureHelper.getBufferedImage(parent2);
-
-            BufferedImage texture = GITextureHelper.mergeModelTextures(model1, image1, model2, image2);
-
-            entity.setInteger("textureID", SoulHelper.getNextAvailableTextureID());
-            entity.makePersistent("textureID");
-
-            GITextureHelper.writeBufferedImage(texture, toResource(getEntityTexture(entity)));
-        }
-    }
-
-    @Override
     public String getEntityTexture(IEntitySoulCustom entity) {
-        return Localizations.LOC_ENTITY_CUSTOM_TEXTURES() + entity.getInteger("textureID") + ".png";
-    }
-
-    public ResourceLocation toResource(String string) {
-        return new ResourceLocation(string);
+        return SoulHelper.geneRegistry.getValueString(entity, Genes.GENE_TEXTURE);
     }
 
     @Override
     public void onDeath(IEntitySoulCustom entity, DamageSource source) {
-        GITextureHelper.deleteTexture(toResource(Localizations.LOC_ENTITY_CUSTOM_TEXTURES() + entity.getInteger("textureID") + ".png"));
+        //TODO if it doesn't spawn a Soul, remove the texture
+        GITextureHelper.deleteTexture(toResource(getEntityTexture(entity)));
+    }
+
+    public ResourceLocation toResource(String string) {
+        return new ResourceLocation(string);
     }
 }

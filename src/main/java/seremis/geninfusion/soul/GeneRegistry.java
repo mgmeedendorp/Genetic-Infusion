@@ -6,6 +6,7 @@ import seremis.geninfusion.api.soul.*;
 import seremis.geninfusion.api.soul.util.ModelPart;
 import seremis.geninfusion.soul.allele.*;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,7 +17,10 @@ public class GeneRegistry implements IGeneRegistry {
     public LinkedHashMap<IGene, String> genesInv = new LinkedHashMap<IGene, String>();
     public LinkedHashMap<IGene, Integer> ids = new LinkedHashMap<IGene, Integer>();
     public LinkedHashMap<Integer, IGene> idsInv = new LinkedHashMap<Integer, IGene>();
+
     public LinkedHashMap<String, IMasterGene> masterGenes = new LinkedHashMap<String, IMasterGene>();
+
+    public LinkedList<IGene> customInheritance = new LinkedList<IGene>();
 
     @Override
     public void registerGene(String name, IGene gene) {
@@ -35,6 +39,31 @@ public class GeneRegistry implements IGeneRegistry {
     }
 
     @Override
+    public void registerCustomInheritance(String name) {
+        customInheritance.add(getGene(name));
+    }
+
+    @Override
+    public void registerCustomInheritance(IGene gene) {
+        customInheritance.add(gene);
+    }
+
+    @Override
+    public boolean useNormalInheritance(IGene gene) {
+        return !customInheritance.contains(gene);
+    }
+
+    @Override
+    public boolean useNormalInheritance(String name) {
+        return useNormalInheritance(getGene(name));
+    }
+
+    @Override
+    public List<IGene> getCustomInheritanceGenes() {
+        return customInheritance;
+    }
+
+    @Override
     public IGene getGene(String name) {
         return genes.get(name);
     }
@@ -46,7 +75,7 @@ public class GeneRegistry implements IGeneRegistry {
 
     @Override
     public int getGeneId(String name) {
-        return getGene(name) != null ? getGeneId(getGene(name)) : null;
+        return getGeneId(getGene(name));
     }
 
     @Override

@@ -2,7 +2,7 @@ package seremis.geninfusion.api.soul.lib;
 
 public class Traits {
 
-    public static final String ID = "geninfusion";
+    public static String ID = "placeholder";
 
     public static final String TRAIT_FIRE = ID + ".trait.fire";
     public static final String TRAIT_MOVEMENT = ID + ".trait.movement";

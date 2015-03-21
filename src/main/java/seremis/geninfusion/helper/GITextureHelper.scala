@@ -10,12 +10,10 @@ import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.util.ResourceLocation
 import seremis.geninfusion.GeneticInfusion
 import seremis.geninfusion.api.soul.util.ModelPart
-import seremis.geninfusion.soul.entity.animation.AnimationCache
-
-import scala.collection.mutable.ListBuffer
-import scala.util.Random
 
 import scala.collection.JavaConversions._
+import scala.collection.mutable.ListBuffer
+import scala.util.Random
 
 @SideOnly(Side.CLIENT)
 object GITextureHelper {
@@ -36,63 +34,15 @@ object GITextureHelper {
         null
     }
 
-    //model1 HAS TO BE THE DOMINANT ALLELE!
-    def mergeModelTextures(model1: Array[ModelPart], texture1: BufferedImage, model2: Array[ModelPart], texture2: BufferedImage): BufferedImage = {
-        val time = System.currentTimeMillis()
-
-        var modelPartImages: ListBuffer[BufferedImage] = ListBuffer()
-        var textureRectsSource: ListBuffer[Rectangle2D] = ListBuffer()
-
-        var model1PartArrayList: ListBuffer[Array[ModelPart]] = ListBuffer()
-        var model2PartArrayList: ListBuffer[Array[ModelPart]] = ListBuffer()
-
-        val model1Head = AnimationCache.getModelHead(model1)
-        val model2Head = AnimationCache.getModelHead(model2)
-        val model1Body = AnimationCache.getModelBody(model1)
-        val model2Body = AnimationCache.getModelBody(model2)
-        val model1Arms = AnimationCache.getModelArms(model1)
-        val model2Arms = AnimationCache.getModelArms(model2)
-        val model1Legs = AnimationCache.getModelLegs(model1)
-        val model2Legs = AnimationCache.getModelLegs(model2)
-        val model1Wings = AnimationCache.getModelWings(model1)
-        val model2Wings = AnimationCache.getModelWings(model2)
-
-        model1PartArrayList += model1Head
-        model1PartArrayList += Array(model1Body)
-        model1PartArrayList += model1Arms
-        model1PartArrayList += model1Legs
-        model1PartArrayList += model1Wings
-
-        model2PartArrayList += model2Head
-        model2PartArrayList += Array(model2Body)
-        model2PartArrayList += model2Arms
-        model2PartArrayList += model2Legs
-        model2PartArrayList += model2Wings
-
-        for(i <- 0 until Math.min(model1PartArrayList.length, model2PartArrayList.length)) {
-            for(j <- 0 until Math.min(model1PartArrayList.get(i).length, model2PartArrayList.get(i).length)) {
-                val model1PartImage = getModelPartTexture(model1PartArrayList.get(i)(j), texture1)
-                val model2PartImage = getModelPartTexture(model2PartArrayList.get(i)(j), texture2)
-
-                val image = mergeImages(model1PartImage, model2PartImage)
-
-                val imageSize = (image.getWidth, image.getHeight)
-
-                textureRectsSource += new Rectangle2D(0, 0, imageSize._1, imageSize._2)
-                modelPartImages += image
-            }
-        }
-
-        val textureRectsDest = distributeSquaresOnTexture(textureRectsSource)
-
-        println("final texturesize: " + textureRectsDest._1)
+    def stitchImages(rects: ListBuffer[Rectangle2D], images: ListBuffer[BufferedImage]): (BufferedImage, ListBuffer[Rectangle2D]) = {
+        val textureRectsDest = distributeSquaresOnTexture(rects)
 
         val finalImage = new BufferedImage(textureRectsDest._1._1, textureRectsDest._1._2, BufferedImage.TYPE_INT_ARGB)
         val graphics = finalImage.getGraphics
 
         for(i <- 0 until textureRectsDest._2.size) {
-            val sourceRect = textureRectsSource.get(i)
-            val sourceImage = modelPartImages.get(i)
+            val sourceRect = rects.get(i)
+            val sourceImage = images.get(i)
             val destRect = textureRectsDest._2.get(i)
 
             graphics.drawImage(sourceImage, destRect.getMinX.toInt, destRect.getMinY.toInt, destRect.getMaxX.toInt, destRect.getMaxY.toInt, sourceRect.getMinX.toInt, sourceRect.getMinY.toInt, sourceRect.getMaxX.toInt, sourceRect.getMaxY.toInt, null)
@@ -100,18 +50,7 @@ object GITextureHelper {
 
         graphics.dispose()
 
-        for(i <- 0 until Math.min(model1PartArrayList.length, model2PartArrayList.length)) {
-            for(j <- 0 until Math.min(model1PartArrayList.get(i).length, model2PartArrayList.get(i).length)) {
-                val part = model1PartArrayList.get(i)(j)
-                val destRect = textureRectsDest._2.get(i)
-
-                moveModelPartTextureOffset(part, (destRect.getMinX.toInt, destRect.getMinY.toInt))
-            }
-        }
-
-        println("mergeModelTextures Time: " + (System.currentTimeMillis() - time))
-
-        finalImage
+        (finalImage, textureRectsDest._2)
     }
 
     def moveModelPartTextureOffset(part: ModelPart, textureOffset: (Int, Int)): ModelPart = {
