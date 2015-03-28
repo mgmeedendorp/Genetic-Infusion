@@ -20,7 +20,7 @@ import seremis.geninfusion.soul.entity.animation.AnimationCache;
 
 import java.awt.image.BufferedImage;
 import java.util.Collections;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import static scala.collection.JavaConversions.*;
@@ -98,8 +98,8 @@ public class GeneModel extends Gene {
         ModelPart[] body3 = new ModelPart[] {AnimationCache.getModelBody(allele3.value)};
         ModelPart[] body4 = new ModelPart[] {AnimationCache.getModelBody(allele4.value)};
 
-        List<Tuple2<ModelPart[], BufferedImage>> inherited1 = new LinkedList<Tuple2<ModelPart[], BufferedImage>>();
-        List<Tuple2<ModelPart[], BufferedImage>> inherited2 = new LinkedList<Tuple2<ModelPart[], BufferedImage>>();
+        List<Tuple2<ModelPart[], BufferedImage>> inherited1 = new ArrayList<Tuple2<ModelPart[], BufferedImage>>();
+        List<Tuple2<ModelPart[], BufferedImage>> inherited2 = new ArrayList<Tuple2<ModelPart[], BufferedImage>>();
 
         randomlyInherit(inherited1, head1, texture1, head3, texture3);
         randomlyInherit(inherited1, arms1, texture1, arms3, texture3);
@@ -135,8 +135,8 @@ public class GeneModel extends Gene {
 
         offspring[geneIdTexture] = SoulHelper.instanceHelper.getIChromosomeInstance(textureAllele1, textureAllele2);
 
-        List<ModelPart> result1 = new LinkedList<ModelPart>();
-        List<ModelPart> result2 = new LinkedList<ModelPart>();
+        List<ModelPart> result1 = new ArrayList<ModelPart>();
+        List<ModelPart> result2 = new ArrayList<ModelPart>();
 
         for(Tuple2<ModelPart[], BufferedImage> tuple : inherited1) {
             Collections.addAll(result1, tuple._1());
@@ -183,9 +183,9 @@ public class GeneModel extends Gene {
     }
 
     private Tuple3<BufferedImage, List<Rectangle2D>, List<ModelPart>> createParentTexture(List<Tuple2<ModelPart[], BufferedImage>> inherited) {
-        List<BufferedImage> modelPartImages = new LinkedList<BufferedImage>();
-        List<Rectangle2D> textureRects = new LinkedList<Rectangle2D>();
-        List<ModelPart> parts = new LinkedList<ModelPart>();
+        List<BufferedImage> modelPartImages = new ArrayList<BufferedImage>();
+        List<Rectangle2D> textureRects = new ArrayList<Rectangle2D>();
+        List<ModelPart> parts = new ArrayList<ModelPart>();
 
         for(Tuple2<ModelPart[], BufferedImage> tuple : inherited) {
             ModelPart[] partArray = tuple._1();

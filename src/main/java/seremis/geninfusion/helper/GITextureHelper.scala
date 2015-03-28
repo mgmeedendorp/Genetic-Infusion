@@ -90,6 +90,29 @@ object GITextureHelper {
         quad
     }
 
+    def setModelBoxQuadTextureOffset(part: ModelPart, quad: TexturedQuad, textureOffset: (Int, Int)): TexturedQuad = {
+        var quadPositionsMin = (quad.vertexPositions(1).texturePositionX, quad.vertexPositions(1).texturePositionY)
+        var quadPositionsMax = (quad.vertexPositions(3).texturePositionX, quad.vertexPositions(3).texturePositionY)
+
+        var quadCoordsMin = (part.textureWidth * quadPositionsMin._1, part.textureHeight * quadPositionsMin._2)
+        var quadCoordsMax = (part.textureWidth * quadPositionsMax._1, part.textureHeight * quadPositionsMax._2)
+
+        val quadSize = (Math.abs(quadCoordsMax._1 - quadCoordsMin._1).toInt, Math.abs(quadCoordsMax._2 - quadCoordsMin._2).toInt)
+
+        quadCoordsMin = (textureOffset._1, textureOffset._2)
+        quadCoordsMax = (textureOffset._1, textureOffset._2)
+
+        quadPositionsMin = (quadCoordsMin._1/part.textureWidth, quadCoordsMin._2/part.textureHeight)
+        quadPositionsMax = ((quadCoordsMax._1 + quadSize._1)/part.textureWidth, (quadCoordsMax._2 + quadSize._2)/part.textureHeight)
+
+        quad.vertexPositions(0) = quad.vertexPositions(0).setTexturePosition(quadPositionsMin._1, quadPositionsMax._2)
+        quad.vertexPositions(1) = quad.vertexPositions(1).setTexturePosition(quadPositionsMax._1, quadPositionsMax._2)
+        quad.vertexPositions(2) = quad.vertexPositions(2).setTexturePosition(quadPositionsMax._1, quadPositionsMin._2)
+        quad.vertexPositions(3) = quad.vertexPositions(3).setTexturePosition(quadPositionsMin._1, quadPositionsMin._2)
+
+        quad
+    }
+
     /**
      * Creates a new BufferedImage with only the texture of the ModelPart part from the provided BufferedImage image with the texture of the whole model.
      * @param part The ModelPart from which the texture should be returned.
@@ -126,7 +149,7 @@ object GITextureHelper {
             val rect = result._2.get(i)
             val quad = texturedQuadsList.get(i)
 
-            moveModelBoxQuadTextureOffset(part, quad, (rect.getMinX.toInt, rect.getMinY.toInt))
+            setModelBoxQuadTextureOffset(part, quad, (rect.getMinX.toInt, rect.getMinY.toInt))
         }
 
         println("getModelPartTexture Time: " + (System.currentTimeMillis() - time))
@@ -259,7 +282,8 @@ object GITextureHelper {
         try {
             val file = getFile(location)
 
-            file.delete()
+            if(file.exists())
+                file.delete()
         } catch {
             case e: Exception => e.printStackTrace()
         }
