@@ -146,9 +146,9 @@ public class GeneModel extends Gene {
             ModelPart part = parent1Tuple._3().get(i);
             Rectangle2D rect = parent1Tuple._2().get(i);
 
-            part.setTextureSize(parent1Texture.getWidth(), parent1Texture.getHeight());
+            part = GITextureHelper.changeModelPartTextureSize(part, new Tuple2<Object, Object>(parent1Texture.getWidth(), parent1Texture.getHeight()));
 
-            GITextureHelper.moveModelPartTextureOffset(part, new Tuple2<Object, Object>((int) rect.getMinX(), (int) rect.getMinY()));
+            parent1Tuple._3().add(i, GITextureHelper.moveModelPartTextureOffset(part, new Tuple2<Object, Object>((int) rect.getMinX(), (int) rect.getMinY())));
         }
 
         for(Tuple2<ModelPart[], BufferedImage> tuple : inherited2) {
@@ -159,9 +159,9 @@ public class GeneModel extends Gene {
             ModelPart part = parent2Tuple._3().get(i);
             Rectangle2D rect = parent2Tuple._2().get(i);
 
-            part.setTextureSize(parent2Texture.getWidth(), parent2Texture.getHeight());
+            part = GITextureHelper.changeModelPartTextureSize(part, new Tuple2<Object, Object>(parent2Texture.getWidth(), parent2Texture.getHeight()));
 
-            GITextureHelper.moveModelPartTextureOffset(part, new Tuple2<Object, Object>((int) rect.getMinX(), (int) rect.getMinY()));
+            parent2Tuple._3().add(i, GITextureHelper.moveModelPartTextureOffset(part, new Tuple2<Object, Object>((int) rect.getMinX(), (int) rect.getMinY())));
         }
 
         IAllele resultAllele1 = SoulHelper.instanceHelper.getIAlleleInstance(EnumAlleleType.MODEL_PART_ARRAY, true, result1.toArray(new ModelPart[result1.size()]));
