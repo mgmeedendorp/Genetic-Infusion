@@ -70,8 +70,8 @@ object GITextureHelper {
     }
 
     def moveModelBoxQuadTextureOffset(part: ModelPart, quad: TexturedQuad, textureOffset: (Int, Int)): TexturedQuad = {
-        var quadPositionsMin = (quad.vertexPositions(3).texturePositionX, quad.vertexPositions(3).texturePositionY)
-        var quadPositionsMax = (quad.vertexPositions(1).texturePositionX, quad.vertexPositions(1).texturePositionY)
+        var quadPositionsMin = (Math.min(Math.min(quad.vertexPositions(0).texturePositionX, quad.vertexPositions(1).texturePositionX), Math.min(quad.vertexPositions(2).texturePositionX, quad.vertexPositions(3).texturePositionX)), Math.min(Math.min(quad.vertexPositions(1).texturePositionY, quad.vertexPositions(2).texturePositionY), Math.min(quad.vertexPositions(2).texturePositionY, quad.vertexPositions(3).texturePositionY)))
+        var quadPositionsMax = (Math.max(Math.max(quad.vertexPositions(0).texturePositionX, quad.vertexPositions(1).texturePositionX), Math.max(quad.vertexPositions(2).texturePositionX, quad.vertexPositions(3).texturePositionX)), Math.max(Math.max(quad.vertexPositions(1).texturePositionY, quad.vertexPositions(2).texturePositionY), Math.max(quad.vertexPositions(2).texturePositionY, quad.vertexPositions(3).texturePositionY)))
 
         var quadCoordsMin = (part.textureWidth * quadPositionsMin._1, part.textureHeight * quadPositionsMin._2)
         var quadCoordsMax = (part.textureWidth * quadPositionsMax._1, part.textureHeight * quadPositionsMax._2)
@@ -79,7 +79,7 @@ object GITextureHelper {
         val quadSize = (Math.abs(quadCoordsMax._1 - quadCoordsMin._1).toInt, Math.abs(quadCoordsMax._2 - quadCoordsMin._2).toInt)
 
         quadCoordsMin = (quadCoordsMin._1 + textureOffset._1, quadCoordsMin._2 + textureOffset._2)
-        quadCoordsMax = (quadCoordsMax._1 + textureOffset._1 + quadSize._1, quadCoordsMax._2 + textureOffset._2 + quadSize._2)
+        quadCoordsMax = (quadCoordsMax._1 + textureOffset._1, quadCoordsMax._2 + textureOffset._2)
 
         quadPositionsMin = (quadCoordsMin._1/part.textureWidth, quadCoordsMin._2/part.textureHeight)
         quadPositionsMax = (quadCoordsMax._1/part.textureWidth, quadCoordsMax._2/part.textureHeight)
@@ -93,8 +93,8 @@ object GITextureHelper {
     }
 
     def setModelBoxQuadTextureOffset(part: ModelPart, quad: TexturedQuad, textureOffset: (Int, Int)): TexturedQuad = {
-        var quadPositionsMin = (quad.vertexPositions(3).texturePositionX, quad.vertexPositions(3).texturePositionY)
-        var quadPositionsMax = (quad.vertexPositions(1).texturePositionX, quad.vertexPositions(1).texturePositionY)
+        var quadPositionsMin = (Math.min(Math.min(quad.vertexPositions(0).texturePositionX, quad.vertexPositions(1).texturePositionX), Math.min(quad.vertexPositions(2).texturePositionX, quad.vertexPositions(3).texturePositionX)), Math.min(Math.min(quad.vertexPositions(1).texturePositionY, quad.vertexPositions(2).texturePositionY), Math.min(quad.vertexPositions(2).texturePositionY, quad.vertexPositions(3).texturePositionY)))
+        var quadPositionsMax = (Math.max(Math.max(quad.vertexPositions(0).texturePositionX, quad.vertexPositions(1).texturePositionX), Math.max(quad.vertexPositions(2).texturePositionX, quad.vertexPositions(3).texturePositionX)), Math.max(Math.max(quad.vertexPositions(1).texturePositionY, quad.vertexPositions(2).texturePositionY), Math.max(quad.vertexPositions(2).texturePositionY, quad.vertexPositions(3).texturePositionY)))
 
         var quadCoordsMin = (part.textureWidth * quadPositionsMin._1, part.textureHeight * quadPositionsMin._2)
         var quadCoordsMax = (part.textureWidth * quadPositionsMax._1, part.textureHeight * quadPositionsMax._2)
@@ -131,8 +131,8 @@ object GITextureHelper {
             val texturedQuads = part.getBoxQuads(box)
 
             for(quad <- texturedQuads) {
-                val quadPositionsMin = (quad.vertexPositions(3).texturePositionX, quad.vertexPositions(3).texturePositionY)
-                val quadPositionsMax = (quad.vertexPositions(1).texturePositionX, quad.vertexPositions(1).texturePositionY)
+                val quadPositionsMin = (Math.min(Math.min(quad.vertexPositions(0).texturePositionX, quad.vertexPositions(1).texturePositionX), Math.min(quad.vertexPositions(2).texturePositionX, quad.vertexPositions(3).texturePositionX)), Math.min(Math.min(quad.vertexPositions(1).texturePositionY, quad.vertexPositions(2).texturePositionY), Math.min(quad.vertexPositions(2).texturePositionY, quad.vertexPositions(3).texturePositionY)))
+                val quadPositionsMax = (Math.max(Math.max(quad.vertexPositions(0).texturePositionX, quad.vertexPositions(1).texturePositionX), Math.max(quad.vertexPositions(2).texturePositionX, quad.vertexPositions(3).texturePositionX)), Math.max(Math.max(quad.vertexPositions(1).texturePositionY, quad.vertexPositions(2).texturePositionY), Math.max(quad.vertexPositions(2).texturePositionY, quad.vertexPositions(3).texturePositionY)))
 
                 val quadCoordsMin = (part.textureWidth * quadPositionsMin._1, part.textureHeight * quadPositionsMin._2)
                 val quadCoordsMax = (part.textureWidth * quadPositionsMax._1, part.textureHeight * quadPositionsMax._2)
@@ -165,30 +165,32 @@ object GITextureHelper {
         val oldSize = (part.textureWidth, part.textureHeight)
         part.setTextureSize(newSize._1, newSize._2)
 
-        for(box <- part.getBoxList) {
-            val texturedQuads = part.getBoxQuads(box)
+        if(!(oldSize._1 == newSize._1 && oldSize._2 == newSize._2)) {
+            for(box <- part.getBoxList) {
+                val texturedQuads = part.getBoxQuads(box)
 
-            for(quad <- texturedQuads) {
-                var quadPositionsMin = (quad.vertexPositions(3).texturePositionX, quad.vertexPositions(3).texturePositionY)
-                var quadPositionsMax = (quad.vertexPositions(1).texturePositionX, quad.vertexPositions(1).texturePositionY)
+                for(quad <- texturedQuads) {
+                    var quadPositionsMin = (Math.min(Math.min(quad.vertexPositions(0).texturePositionX, quad.vertexPositions(1).texturePositionX), Math.min(quad.vertexPositions(2).texturePositionX, quad.vertexPositions(3).texturePositionX)), Math.min(Math.min(quad.vertexPositions(1).texturePositionY, quad.vertexPositions(2).texturePositionY), Math.min(quad.vertexPositions(2).texturePositionY, quad.vertexPositions(3).texturePositionY)))
+                    var quadPositionsMax = (Math.max(Math.max(quad.vertexPositions(0).texturePositionX, quad.vertexPositions(1).texturePositionX), Math.max(quad.vertexPositions(2).texturePositionX, quad.vertexPositions(3).texturePositionX)), Math.max(Math.max(quad.vertexPositions(1).texturePositionY, quad.vertexPositions(2).texturePositionY), Math.max(quad.vertexPositions(2).texturePositionY, quad.vertexPositions(3).texturePositionY)))
 
-                var quadCoordsMin = (oldSize._1 * quadPositionsMin._1, oldSize._2 * quadPositionsMin._2)
-                var quadCoordsMax = (oldSize._1 * quadPositionsMax._1, oldSize._2 * quadPositionsMax._2)
+                    var quadCoordsMin = (oldSize._1 * quadPositionsMin._1, oldSize._2 * quadPositionsMin._2)
+                    var quadCoordsMax = (oldSize._1 * quadPositionsMax._1, oldSize._2 * quadPositionsMax._2)
 
-                val quadSize = (Math.abs(quadCoordsMax._1 - quadCoordsMin._1).toInt, Math.abs(quadCoordsMax._2 - quadCoordsMin._2).toInt)
+                    val quadSize = (Math.abs(quadCoordsMax._1 - quadCoordsMin._1).toInt, Math.abs(quadCoordsMax._2 - quadCoordsMin._2).toInt)
 
-                quadCoordsMin = (quadCoordsMin._1, quadCoordsMin._2)
-                quadCoordsMax = (quadCoordsMax._1 + quadSize._1, quadCoordsMax._2 + quadSize._2)
+                    quadCoordsMin = (quadCoordsMin._1, quadCoordsMin._2)
+                    quadCoordsMax = (quadCoordsMax._1, quadCoordsMax._2)
 
-                quadPositionsMin = (quadCoordsMin._1/part.textureWidth, quadCoordsMin._2/part.textureHeight)
-                quadPositionsMax = (quadCoordsMax._1/part.textureWidth, quadCoordsMax._2/part.textureHeight)
+                    quadPositionsMin = (quadCoordsMin._1 / part.textureWidth, quadCoordsMin._2 / part.textureHeight)
+                    quadPositionsMax = (quadCoordsMax._1 / part.textureWidth, quadCoordsMax._2 / part.textureHeight)
 
-                quad.vertexPositions(0) = quad.vertexPositions(0).setTexturePosition(quadPositionsMin._1, quadPositionsMax._2)
-                quad.vertexPositions(1) = quad.vertexPositions(1).setTexturePosition(quadPositionsMax._1, quadPositionsMax._2)
-                quad.vertexPositions(2) = quad.vertexPositions(2).setTexturePosition(quadPositionsMax._1, quadPositionsMin._2)
-                quad.vertexPositions(3) = quad.vertexPositions(3).setTexturePosition(quadPositionsMin._1, quadPositionsMin._2)
+                    quad.vertexPositions(0) = quad.vertexPositions(0).setTexturePosition(quadPositionsMin._1, quadPositionsMax._2)
+                    quad.vertexPositions(1) = quad.vertexPositions(1).setTexturePosition(quadPositionsMax._1, quadPositionsMax._2)
+                    quad.vertexPositions(2) = quad.vertexPositions(2).setTexturePosition(quadPositionsMax._1, quadPositionsMin._2)
+                    quad.vertexPositions(3) = quad.vertexPositions(3).setTexturePosition(quadPositionsMin._1, quadPositionsMin._2)
+                }
+                part.setBoxQuads(box, texturedQuads)
             }
-            part.setBoxQuads(box, texturedQuads)
         }
         part
     }
@@ -203,7 +205,7 @@ object GITextureHelper {
         for(rect <- usedRects) {
             val newRect = new Rectangle2D(position._1, position._2, rect.getWidth, rect.getHeight)
 
-            if(newRect.getWidth.toInt > textureSize._1) {
+            if(newRect.getWidth.toInt + position._1 > textureSize._1) {
                 textureSize = (textureSize._1 * 2, textureSize._2)
             }
 
@@ -213,7 +215,7 @@ object GITextureHelper {
                 position = (0, rowMaxY)
             }
 
-            if(position._2 >= textureSize._2) {
+            if(position._2 > textureSize._2) {
                 textureSize = (textureSize._1, textureSize._2 * 2)
             }
 

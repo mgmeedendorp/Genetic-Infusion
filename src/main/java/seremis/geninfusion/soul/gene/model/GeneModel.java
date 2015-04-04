@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static scala.collection.JavaConversions.*;
+import static scala.collection.JavaConverters.*;
 
 public class GeneModel extends Gene {
 
@@ -142,26 +143,8 @@ public class GeneModel extends Gene {
             Collections.addAll(result1, tuple._1());
         }
 
-        for(int i = 0; i < parent1Tuple._2().size(); i++) {
-            ModelPart part = parent1Tuple._3().get(i);
-            Rectangle2D rect = parent1Tuple._2().get(i);
-
-            part = GITextureHelper.changeModelPartTextureSize(part, new Tuple2<Object, Object>(parent1Texture.getWidth(), parent1Texture.getHeight()));
-
-            parent1Tuple._3().add(i, GITextureHelper.moveModelPartTextureOffset(part, new Tuple2<Object, Object>((int) rect.getMinX(), (int) rect.getMinY())));
-        }
-
         for(Tuple2<ModelPart[], BufferedImage> tuple : inherited2) {
             Collections.addAll(result2, tuple._1());
-        }
-
-        for(int i = 0; i < parent2Tuple._2().size(); i++) {
-            ModelPart part = parent2Tuple._3().get(i);
-            Rectangle2D rect = parent2Tuple._2().get(i);
-
-            part = GITextureHelper.changeModelPartTextureSize(part, new Tuple2<Object, Object>(parent2Texture.getWidth(), parent2Texture.getHeight()));
-
-            parent2Tuple._3().add(i, GITextureHelper.moveModelPartTextureOffset(part, new Tuple2<Object, Object>((int) rect.getMinX(), (int) rect.getMinY())));
         }
 
         IAllele resultAllele1 = SoulHelper.instanceHelper.getIAlleleInstance(EnumAlleleType.MODEL_PART_ARRAY, true, result1.toArray(new ModelPart[result1.size()]));
@@ -202,15 +185,25 @@ public class GeneModel extends Gene {
         ListBuffer<Rectangle2D> rectBuffer = new ListBuffer<Rectangle2D>();
         ListBuffer<BufferedImage> imageBuffer = new ListBuffer<BufferedImage>();
 
-        for(Rectangle2D rect : textureRects) {
-            rectBuffer.$plus$eq(rect);
-        }
+        for(int i = 0; i < modelPartImages.size(); i++) {
+            Rectangle2D rect = textureRects.get(i);
+            BufferedImage image = modelPartImages.get(i);
 
-        for(BufferedImage image : modelPartImages) {
+            rectBuffer.$plus$eq(rect);
             imageBuffer.$plus$eq(image);
         }
 
         Tuple2<BufferedImage, ListBuffer<Rectangle2D>> result = GITextureHelper.stitchImages(rectBuffer, imageBuffer);
+
+        for(int i = 0; i < parts.size(); i++) {
+            ModelPart part = parts.get(i);
+            Rectangle2D rect = bufferAsJavaList(result._2()).get(i);
+
+            GITextureHelper.changeModelPartTextureSize(part, new Tuple2<Object, Object> (result._1().getWidth(), result._1().getHeight()));
+            GITextureHelper.moveModelPartTextureOffset(part, new Tuple2<Object, Object> ((int) rect.getMinX(), (int) rect.getMinY()));
+
+            part.setTextureOffset(0, 0);
+        }
 
         return new Tuple3<BufferedImage, List<Rectangle2D>, List<ModelPart>>(result._1(), bufferAsJavaList(result._2()), parts);
     }

@@ -2,10 +2,7 @@ package seremis.geninfusion.api.soul.util;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelBox;
-import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.model.TexturedQuad;
+import net.minecraft.client.model.*;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -15,9 +12,7 @@ import seremis.geninfusion.helper.GIReflectionHelper;
 import seremis.geninfusion.util.INBTTagable;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class ModelPart extends ModelRenderer implements INBTTagable {
 
@@ -231,6 +226,16 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         modelPart.offsetY = model.offsetY;
         modelPart.offsetZ = model.offsetZ;
         modelPart.setTextureOffset((Integer) GIReflectionHelper.getField(model, "textureOffsetX"), (Integer) GIReflectionHelper.getField(model, "textureOffsetY"));
+
+        ModelBase modelBase = (ModelBase) GIReflectionHelper.getField(modelPart, "baseModel");
+        ModelBase modelBase2 = (ModelBase) GIReflectionHelper.getField(model, "baseModel");
+
+        HashMap<String, TextureOffset> map = (HashMap<String, TextureOffset>) GIReflectionHelper.getField(modelBase, "modelTextureMap");
+
+        map.putAll((HashMap<String, TextureOffset>) GIReflectionHelper.getField(modelBase2, "modelTextureMap"));
+
+        System.out.println(Arrays.toString(map.values().toArray()));
+
         return modelPart;
     }
 
