@@ -74,6 +74,11 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         return cubeList;
     }
 
+    public ModelPart setBoxList(List<ModelBox> boxList) {
+        cubeList = boxList;
+        return this;
+    }
+
     public TexturedQuad[] getBoxQuads(ModelBox box) {
         return (TexturedQuad[]) GIReflectionHelper.getField(box, "quadList");
     }
@@ -108,7 +113,7 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
 
         if(childModels != null) {
             for(Object childModel : childModels) {
-                ModelPart modelPart = (ModelPart) childModel;
+                ModelPart modelPart = ModelPart.modelRendererToModelPart((ModelRenderer) childModel);
                 NBTTagCompound compound1 = new NBTTagCompound();
 
                 modelPart.writeToNBT(compound1);
@@ -226,16 +231,6 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         modelPart.offsetY = model.offsetY;
         modelPart.offsetZ = model.offsetZ;
         modelPart.setTextureOffset((Integer) GIReflectionHelper.getField(model, "textureOffsetX"), (Integer) GIReflectionHelper.getField(model, "textureOffsetY"));
-
-        ModelBase modelBase = (ModelBase) GIReflectionHelper.getField(modelPart, "baseModel");
-        ModelBase modelBase2 = (ModelBase) GIReflectionHelper.getField(model, "baseModel");
-
-        HashMap<String, TextureOffset> map = (HashMap<String, TextureOffset>) GIReflectionHelper.getField(modelBase, "modelTextureMap");
-
-        map.putAll((HashMap<String, TextureOffset>) GIReflectionHelper.getField(modelBase2, "modelTextureMap"));
-
-        System.out.println(Arrays.toString(map.values().toArray()));
-
         return modelPart;
     }
 

@@ -16,7 +16,7 @@ public class TraitRender extends Trait {
         ModelPart[] model = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL);
 
         for(int i = 0; i < model.length; i++) {
-            model[i].render(0.0625F);
+            model[i].render(scale);
         }
     }
 

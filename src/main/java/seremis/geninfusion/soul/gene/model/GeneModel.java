@@ -57,6 +57,13 @@ public class GeneModel extends Gene {
         return chromosome;
     }
 
+//    @Override
+//    public IChromosome advancedInherit(IChromosome[] parent1, IChromosome[] parent2, IChromosome[] offspring) {
+//        int geneId = SoulHelper.geneRegistry.getGeneId(this);
+//
+//        return parent1[geneId];
+//    }
+
     @Override
     public IChromosome advancedInherit(IChromosome[] parent1, IChromosome[] parent2, IChromosome[] offspring) {
         int geneId = SoulHelper.geneRegistry.getGeneId(this);
@@ -172,10 +179,10 @@ public class GeneModel extends Gene {
 
         for(Tuple2<ModelPart[], BufferedImage> tuple : inherited) {
             ModelPart[] partArray = tuple._1();
-            BufferedImage wholeTexture1 = tuple._2();
+            BufferedImage wholeTexture = tuple._2();
 
             for(ModelPart part : partArray) {
-                BufferedImage image = GITextureHelper.getModelPartTexture(part, wholeTexture1);
+                BufferedImage image = GITextureHelper.getModelPartTexture(part, wholeTexture);
 
                 textureRects.add(new Rectangle2D(0, 0, image.getWidth(), image.getHeight()));
                 modelPartImages.add(image);
@@ -199,10 +206,9 @@ public class GeneModel extends Gene {
             ModelPart part = parts.get(i);
             Rectangle2D rect = bufferAsJavaList(result._2()).get(i);
 
-            GITextureHelper.changeModelPartTextureSize(part, new Tuple2<Object, Object> (result._1().getWidth(), result._1().getHeight()));
-            GITextureHelper.moveModelPartTextureOffset(part, new Tuple2<Object, Object> ((int) rect.getMinX(), (int) rect.getMinY()));
-
-            part.setTextureOffset(0, 0);
+            GITextureHelper.changeModelPartTextureSize(part, new Tuple2<Object, Object>(result._1().getWidth(), result._1().getHeight()));
+            parts.remove(i);
+            parts.add(i, GITextureHelper.moveModelPartTextureOffset(part, new Tuple2<Object, Object>((int) rect.getMinX(), (int) rect.getMinY())));
         }
 
         return new Tuple3<BufferedImage, List<Rectangle2D>, List<ModelPart>>(result._1(), bufferAsJavaList(result._2()), parts);

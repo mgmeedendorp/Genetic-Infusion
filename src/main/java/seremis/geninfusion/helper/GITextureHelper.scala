@@ -56,15 +56,19 @@ object GITextureHelper {
 
     def moveModelPartTextureOffset(part: ModelPart, textureOffset: (Int, Int)): ModelPart = {
         if(!textureOffset.equals((0, 0))) {
-            for(box <- part.getBoxList) {
-                val texturedQuads = part.getBoxQuads(box)
+            val boxList = part.getBoxList
 
-                for(quad <- texturedQuads) {
-                    moveModelBoxQuadTextureOffset(part, quad, textureOffset)
+            for(i <- 0 until boxList.size) {
+                val texturedQuads = part.getBoxQuads(boxList(i))
+
+                for(i <- 0 until texturedQuads.size) {
+                    texturedQuads(i) = moveModelBoxQuadTextureOffset(part, texturedQuads(i), textureOffset)
                 }
 
-                part.setBoxQuads(box, texturedQuads)
+                part.setBoxQuads(boxList(i), texturedQuads)
             }
+
+            part.setBoxList(boxList)
         }
         part
     }
@@ -84,10 +88,10 @@ object GITextureHelper {
         quadPositionsMin = (quadCoordsMin._1/part.textureWidth, quadCoordsMin._2/part.textureHeight)
         quadPositionsMax = (quadCoordsMax._1/part.textureWidth, quadCoordsMax._2/part.textureHeight)
 
-        quad.vertexPositions(0) = quad.vertexPositions(0).setTexturePosition(quadPositionsMin._1, quadPositionsMax._2)
-        quad.vertexPositions(1) = quad.vertexPositions(1).setTexturePosition(quadPositionsMax._1, quadPositionsMax._2)
-        quad.vertexPositions(2) = quad.vertexPositions(2).setTexturePosition(quadPositionsMax._1, quadPositionsMin._2)
-        quad.vertexPositions(3) = quad.vertexPositions(3).setTexturePosition(quadPositionsMin._1, quadPositionsMin._2)
+        quad.vertexPositions(0) = quad.vertexPositions(0).setTexturePosition(quadPositionsMax._1, quadPositionsMin._2)
+        quad.vertexPositions(1) = quad.vertexPositions(1).setTexturePosition(quadPositionsMin._1, quadPositionsMin._2)
+        quad.vertexPositions(2) = quad.vertexPositions(2).setTexturePosition(quadPositionsMin._1, quadPositionsMax._2)
+        quad.vertexPositions(3) = quad.vertexPositions(3).setTexturePosition(quadPositionsMax._1, quadPositionsMax._2)
 
         quad
     }
@@ -107,10 +111,10 @@ object GITextureHelper {
         quadPositionsMin = (quadCoordsMin._1/part.textureWidth, quadCoordsMin._2/part.textureHeight)
         quadPositionsMax = (quadCoordsMax._1/part.textureWidth, quadCoordsMax._2/part.textureHeight)
 
-        quad.vertexPositions(0) = quad.vertexPositions(0).setTexturePosition(quadPositionsMin._1, quadPositionsMax._2)
-        quad.vertexPositions(1) = quad.vertexPositions(1).setTexturePosition(quadPositionsMax._1, quadPositionsMax._2)
-        quad.vertexPositions(2) = quad.vertexPositions(2).setTexturePosition(quadPositionsMax._1, quadPositionsMin._2)
-        quad.vertexPositions(3) = quad.vertexPositions(3).setTexturePosition(quadPositionsMin._1, quadPositionsMin._2)
+        quad.vertexPositions(0) = quad.vertexPositions(0).setTexturePosition(quadPositionsMax._1, quadPositionsMin._2)
+        quad.vertexPositions(1) = quad.vertexPositions(1).setTexturePosition(quadPositionsMin._1, quadPositionsMin._2)
+        quad.vertexPositions(2) = quad.vertexPositions(2).setTexturePosition(quadPositionsMin._1, quadPositionsMax._2)
+        quad.vertexPositions(3) = quad.vertexPositions(3).setTexturePosition(quadPositionsMax._1, quadPositionsMax._2)
 
         quad
     }
@@ -122,10 +126,11 @@ object GITextureHelper {
      * @return A section of the passed BufferedImage with the passed ModelPart's texture.
      */
     def getModelPartTexture(part: ModelPart, image: BufferedImage): BufferedImage = {
-        val time = System.currentTimeMillis()
+        val time = System.nanoTime()
 
         var textureRectsSource: ListBuffer[Rectangle2D] = ListBuffer()
         var texturedQuadsList: ListBuffer[TexturedQuad] = ListBuffer()
+
 
         for(box <- part.getBoxList) {
             val texturedQuads = part.getBoxQuads(box)
@@ -156,7 +161,7 @@ object GITextureHelper {
             setModelBoxQuadTextureOffset(part, quad, (rect.getMinX.toInt, rect.getMinY.toInt))
         }
 
-        println("getModelPartTexture Time: " + (System.currentTimeMillis() - time))
+        println("getModelPartTexture Time: " + (System.nanoTime() - time)/1000/1000F)
 
         result._1
     }
@@ -184,10 +189,10 @@ object GITextureHelper {
                     quadPositionsMin = (quadCoordsMin._1 / part.textureWidth, quadCoordsMin._2 / part.textureHeight)
                     quadPositionsMax = (quadCoordsMax._1 / part.textureWidth, quadCoordsMax._2 / part.textureHeight)
 
-                    quad.vertexPositions(0) = quad.vertexPositions(0).setTexturePosition(quadPositionsMin._1, quadPositionsMax._2)
-                    quad.vertexPositions(1) = quad.vertexPositions(1).setTexturePosition(quadPositionsMax._1, quadPositionsMax._2)
-                    quad.vertexPositions(2) = quad.vertexPositions(2).setTexturePosition(quadPositionsMax._1, quadPositionsMin._2)
-                    quad.vertexPositions(3) = quad.vertexPositions(3).setTexturePosition(quadPositionsMin._1, quadPositionsMin._2)
+                    quad.vertexPositions(0) = quad.vertexPositions(0).setTexturePosition(quadPositionsMax._1, quadPositionsMin._2)
+                    quad.vertexPositions(1) = quad.vertexPositions(1).setTexturePosition(quadPositionsMin._1, quadPositionsMin._2)
+                    quad.vertexPositions(2) = quad.vertexPositions(2).setTexturePosition(quadPositionsMin._1, quadPositionsMax._2)
+                    quad.vertexPositions(3) = quad.vertexPositions(3).setTexturePosition(quadPositionsMax._1, quadPositionsMax._2)
                 }
                 part.setBoxQuads(box, texturedQuads)
             }
@@ -215,7 +220,7 @@ object GITextureHelper {
                 position = (0, rowMaxY)
             }
 
-            if(position._2 > textureSize._2) {
+            if(position._2 >= textureSize._2) {
                 textureSize = (textureSize._1, textureSize._2 * 2)
             }
 
