@@ -210,11 +210,13 @@ object GITextureHelper {
         for(rect <- usedRects) {
             val newRect = new Rectangle2D(position._1, position._2, rect.getWidth, rect.getHeight)
 
-            if(newRect.getWidth.toInt + position._1 > textureSize._1) {
+            if(newRect.getWidth.toInt > textureSize._1) {
                 textureSize = (textureSize._1 * 2, textureSize._2)
             }
 
             position = (position._1 + newRect.getWidth.toInt, position._2)
+
+            rowMaxY = Math.max(rowMaxY, newRect.getMaxY).toInt
 
             if(position._1 >= textureSize._1) {
                 position = (0, rowMaxY)
@@ -223,8 +225,6 @@ object GITextureHelper {
             if(position._2 >= textureSize._2) {
                 textureSize = (textureSize._1, textureSize._2 * 2)
             }
-
-            rowMaxY = Math.max(rowMaxY, newRect.getMaxY).toInt
 
             resultList += newRect
         }

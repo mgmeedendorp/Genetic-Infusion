@@ -121,8 +121,8 @@ public class GeneModel extends Gene {
         randomlyInherit(inherited2, wings2, texture2,  wings4, texture4);
         randomlyInherit(inherited2, body2, texture2, body4, texture4);
 
-        Tuple3<BufferedImage, List<Rectangle2D>, List<ModelPart>> parent1Tuple = createParentTexture(inherited1);
-        Tuple3<BufferedImage, List<Rectangle2D>, List<ModelPart>> parent2Tuple = createParentTexture(inherited2);
+        Tuple2<BufferedImage, List<ModelPart>> parent1Tuple = createParentTexture(inherited1);
+        Tuple2<BufferedImage, List<ModelPart>> parent2Tuple = createParentTexture(inherited2);
 
         BufferedImage parent1Texture = parent1Tuple._1();
         BufferedImage parent2Texture = parent2Tuple._1();
@@ -143,19 +143,8 @@ public class GeneModel extends Gene {
 
         offspring[geneIdTexture] = SoulHelper.instanceHelper.getIChromosomeInstance(textureAllele1, textureAllele2);
 
-        List<ModelPart> result1 = new ArrayList<ModelPart>();
-        List<ModelPart> result2 = new ArrayList<ModelPart>();
-
-        for(Tuple2<ModelPart[], BufferedImage> tuple : inherited1) {
-            Collections.addAll(result1, tuple._1());
-        }
-
-        for(Tuple2<ModelPart[], BufferedImage> tuple : inherited2) {
-            Collections.addAll(result2, tuple._1());
-        }
-
-        IAllele resultAllele1 = SoulHelper.instanceHelper.getIAlleleInstance(EnumAlleleType.MODEL_PART_ARRAY, true, result1.toArray(new ModelPart[result1.size()]));
-        IAllele resultAllele2 = SoulHelper.instanceHelper.getIAlleleInstance(EnumAlleleType.MODEL_PART_ARRAY, false, result2.toArray(new ModelPart[result2.size()]));
+        IAllele resultAllele1 = SoulHelper.instanceHelper.getIAlleleInstance(EnumAlleleType.MODEL_PART_ARRAY, true, parent1Tuple._2().toArray(new ModelPart[parent1Tuple._2().size()]));
+        IAllele resultAllele2 = SoulHelper.instanceHelper.getIAlleleInstance(EnumAlleleType.MODEL_PART_ARRAY, false, parent2Tuple._2().toArray(new ModelPart[parent2Tuple._2().size()]));
 
         return SoulHelper.instanceHelper.getIChromosomeInstance(resultAllele1, resultAllele2);
     }
@@ -172,7 +161,7 @@ public class GeneModel extends Gene {
         return new ResourceLocation(location);
     }
 
-    private Tuple3<BufferedImage, List<Rectangle2D>, List<ModelPart>> createParentTexture(List<Tuple2<ModelPart[], BufferedImage>> inherited) {
+    public static Tuple2<BufferedImage, List<ModelPart>> createParentTexture(List<Tuple2<ModelPart[], BufferedImage>> inherited) {
         List<BufferedImage> modelPartImages = new ArrayList<BufferedImage>();
         List<Rectangle2D> textureRects = new ArrayList<Rectangle2D>();
         List<ModelPart> parts = new ArrayList<ModelPart>();
@@ -207,10 +196,9 @@ public class GeneModel extends Gene {
             Rectangle2D rect = bufferAsJavaList(result._2()).get(i);
 
             GITextureHelper.changeModelPartTextureSize(part, new Tuple2<Object, Object>(result._1().getWidth(), result._1().getHeight()));
-            parts.remove(i);
-            parts.add(i, GITextureHelper.moveModelPartTextureOffset(part, new Tuple2<Object, Object>((int) rect.getMinX(), (int) rect.getMinY())));
+            GITextureHelper.moveModelPartTextureOffset(part, new Tuple2<Object, Object>((int) rect.getMinX(), (int) rect.getMinY()));
         }
 
-        return new Tuple3<BufferedImage, List<Rectangle2D>, List<ModelPart>>(result._1(), bufferAsJavaList(result._2()), parts);
+        return new Tuple2<BufferedImage, List<ModelPart>>(result._1(), parts);
     }
 }

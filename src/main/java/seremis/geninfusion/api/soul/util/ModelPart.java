@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.Vec3;
+import net.minecraftforge.common.util.Constants;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.helper.GIReflectionHelper;
 import seremis.geninfusion.util.INBTTagable;
@@ -128,18 +129,63 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         if(cubeList != null) {
             for(Object cube : cubeList) {
                 ModelBox box = (ModelBox) cube;
-                NBTTagCompound compound1 = new NBTTagCompound();
+                NBTTagCompound boxCompound = new NBTTagCompound();
 
                 if(box.field_78247_g != null && !box.field_78247_g.equals(""))
                     compound.setString("boxName", box.field_78247_g);
-                compound1.setFloat("originX", box.posX1);
-                compound1.setFloat("originY", box.posY1);
-                compound1.setFloat("originZ", box.posZ1);
-                compound1.setInteger("sizeX", (int) (box.posX2 - box.posX1));
-                compound1.setInteger("sizeY", (int) (box.posY2 - box.posY1));
-                compound1.setInteger("sizeZ", (int) (box.posZ2 - box.posZ1));
+                boxCompound.setFloat("originX", box.posX1);
+                boxCompound.setFloat("originY", box.posY1);
+                boxCompound.setFloat("originZ", box.posZ1);
+                boxCompound.setInteger("sizeX", (int) (box.posX2 - box.posX1));
+                boxCompound.setInteger("sizeY", (int) (box.posY2 - box.posY1));
+                boxCompound.setInteger("sizeZ", (int) (box.posZ2 - box.posZ1));
+                TexturedQuad[] quads = (TexturedQuad[]) GIReflectionHelper.getField(box, "quadList");
 
-                boxList.appendTag(compound1);
+                NBTTagList quadList = new NBTTagList();
+
+                for(TexturedQuad quad : quads) {
+                    NBTTagList vertexList = new NBTTagList();
+
+                    PositionTextureVertex[] vertices = quad.vertexPositions;
+
+                    for(PositionTextureVertex vertex : vertices) {
+                        NBTTagCompound vertexCompound = new NBTTagCompound();
+
+                        vertexCompound.setDouble("vectorX", vertex.vector3D.xCoord);
+                        vertexCompound.setDouble("vectorY", vertex.vector3D.yCoord);
+                        vertexCompound.setDouble("vectorZ", vertex.vector3D.zCoord);
+                        vertexCompound.setFloat("texturePositionX", vertex.texturePositionX);
+                        vertexCompound.setFloat("texturePositionY", vertex.texturePositionY);
+
+                        vertexList.appendTag(vertexCompound);
+                    }
+                    //NBT y u make me do dis >:(
+                    NBTTagCompound vertexListCompound = new NBTTagCompound();
+                    vertexListCompound.setTag("vertexList", vertexList);
+
+                    quadList.appendTag(vertexListCompound);
+                }
+                boxCompound.setTag("quadList", quadList);
+
+
+                NBTTagList vertexList = new NBTTagList();
+                PositionTextureVertex[] vertices = (PositionTextureVertex[]) GIReflectionHelper.getField(box, "vertexPositions");
+
+                for(PositionTextureVertex vertex : vertices) {
+                    NBTTagCompound vertexCompound = new NBTTagCompound();
+
+                    vertexCompound.setDouble("vectorX", vertex.vector3D.xCoord);
+                    vertexCompound.setDouble("vectorY", vertex.vector3D.yCoord);
+                    vertexCompound.setDouble("vectorZ", vertex.vector3D.zCoord);
+                    vertexCompound.setFloat("texturePositionX", vertex.texturePositionX);
+                    vertexCompound.setFloat("texturePositionY", vertex.texturePositionY);
+
+                    vertexList.appendTag(vertexCompound);
+                }
+
+                boxCompound.setTag("vertexList", vertexList);
+
+                boxList.appendTag(boxCompound);
             }
         }
         compound.setTag("cubeList", boxList);
@@ -173,6 +219,44 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         for(int i = 0; i < boxList.tagCount(); i++) {
             NBTTagCompound boxCompound = boxList.getCompoundTagAt(i);
             ModelBox box = new ModelBox(this, (Integer) GIReflectionHelper.getField(this, "textureOffsetX"), (Integer) GIReflectionHelper.getField(this, "textureOffsetY"), boxCompound.getFloat("originX"), boxCompound.getFloat("originY"), boxCompound.getFloat("originZ"), boxCompound.getInteger("sizeX"), boxCompound.getInteger("sizeY"), boxCompound.getInteger("sizeZ"), 0.0F);
+
+            NBTTagList quadList = (NBTTagList) boxCompound.getTag("quadList");
+
+            TexturedQuad[] quads = new TexturedQuad[quadList.tagCount()];
+
+            for(int j = 0; j < quadList.tagCount(); j++) {
+                NBTTagCompound vertexListCompound = quadList.getCompoundTagAt(j);
+                NBTTagList vertexList = vertexListCompound.getTagList("vertexList", Constants.NBT.TAG_COMPOUND);
+
+                PositionTextureVertex[] vertices = new PositionTextureVertex[vertexList.tagCount()];
+
+                for(int k = 0; k < vertexList.tagCount(); k++) {
+                    NBTTagCompound vertexCompound = vertexList.getCompoundTagAt(k);
+
+                    Vec3 vector = Vec3.createVectorHelper(vertexCompound.getDouble("vectorX"), vertexCompound.getDouble("vectorY"), vertexCompound.getDouble("vectorZ"));
+                    vertices[k] = new PositionTextureVertex(vector, vertexCompound.getFloat("texturePositionX"), vertexCompound.getFloat("texturePositionY"));
+                }
+
+                quads[j] = new TexturedQuad(vertices);
+            }
+
+            GIReflectionHelper.setField(box, "quadList", quads);
+
+
+            NBTTagList vertexList = boxCompound.getTagList("vertexList", Constants.NBT.TAG_COMPOUND);
+
+            PositionTextureVertex[] vertices = new PositionTextureVertex[vertexList.tagCount()];
+
+            for(int k = 0; k < vertexList.tagCount(); k++) {
+                NBTTagCompound vertexCompound = vertexList.getCompoundTagAt(k);
+
+                Vec3 vector = Vec3.createVectorHelper(vertexCompound.getDouble("vectorX"), vertexCompound.getDouble("vectorY"), vertexCompound.getDouble("vectorZ"));
+                vertices[k] = new PositionTextureVertex(vector, vertexCompound.getFloat("texturePositionX"), vertexCompound.getFloat("texturePositionY"));
+            }
+
+            GIReflectionHelper.setField(box, "vertexPositions", vertices);
+
+
             cubeList.add(box);
         }
     }
