@@ -57,13 +57,6 @@ public class GeneModel extends Gene {
         return chromosome;
     }
 
-//    @Override
-//    public IChromosome advancedInherit(IChromosome[] parent1, IChromosome[] parent2, IChromosome[] offspring) {
-//        int geneId = SoulHelper.geneRegistry.getGeneId(this);
-//
-//        return parent1[geneId];
-//    }
-
     @Override
     public IChromosome advancedInherit(IChromosome[] parent1, IChromosome[] parent2, IChromosome[] offspring) {
         int geneId = SoulHelper.geneRegistry.getGeneId(this);
