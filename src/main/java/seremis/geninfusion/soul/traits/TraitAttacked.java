@@ -48,7 +48,7 @@ public class TraitAttacked extends Trait {
             --hurtResistantTime;
         }
 
-        if(((EntityLiving)entity).getHealth() <= 0.0F) {
+        if(((EntityLiving) entity).getHealth() <= 0.0F) {
             entity.onDeathUpdate();
         }
 
@@ -250,7 +250,7 @@ public class TraitAttacked extends Trait {
             ((EntityLiving) entity).setAbsorptionAmount(((EntityLiving) entity).getAbsorptionAmount() - (f1 - damage));
 
             if(damage != 0.0F) {
-                float f2 = ((EntityLiving)entity).getHealth();
+                float f2 = ((EntityLiving) entity).getHealth();
                 ((EntityLiving) entity).setHealth(f2 - damage);
                 ((EntityLiving) entity).func_110142_aN().func_94547_a(source, f2, damage);
                 ((EntityLiving) entity).setAbsorptionAmount(((EntityLiving) entity).getAbsorptionAmount() - damage);

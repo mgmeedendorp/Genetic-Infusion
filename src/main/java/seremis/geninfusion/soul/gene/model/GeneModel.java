@@ -3,7 +3,6 @@ package seremis.geninfusion.soul.gene.model;
 import javafx.geometry.Rectangle2D;
 import net.minecraft.util.ResourceLocation;
 import scala.Tuple2;
-import scala.Tuple3;
 import scala.collection.mutable.ListBuffer;
 import seremis.geninfusion.api.soul.EnumAlleleType;
 import seremis.geninfusion.api.soul.IAllele;
@@ -19,12 +18,10 @@ import seremis.geninfusion.soul.allele.AlleleString;
 import seremis.geninfusion.soul.entity.animation.AnimationCache;
 
 import java.awt.image.BufferedImage;
-import java.util.Collections;
 import java.util.ArrayList;
 import java.util.List;
 
-import static scala.collection.JavaConversions.*;
-import static scala.collection.JavaConverters.*;
+import static scala.collection.JavaConversions.bufferAsJavaList;
 
 public class GeneModel extends Gene {
 
@@ -94,10 +91,10 @@ public class GeneModel extends Gene {
         ModelPart[] wings2 = AnimationCache.getModelWings(allele2.value);
         ModelPart[] wings3 = AnimationCache.getModelWings(allele3.value);
         ModelPart[] wings4 = AnimationCache.getModelWings(allele4.value);
-        ModelPart[] body1 = new ModelPart[] {AnimationCache.getModelBody(allele1.value)};
-        ModelPart[] body2 = new ModelPart[] {AnimationCache.getModelBody(allele2.value)};
-        ModelPart[] body3 = new ModelPart[] {AnimationCache.getModelBody(allele3.value)};
-        ModelPart[] body4 = new ModelPart[] {AnimationCache.getModelBody(allele4.value)};
+        ModelPart[] body1 = new ModelPart[]{AnimationCache.getModelBody(allele1.value)};
+        ModelPart[] body2 = new ModelPart[]{AnimationCache.getModelBody(allele2.value)};
+        ModelPart[] body3 = new ModelPart[]{AnimationCache.getModelBody(allele3.value)};
+        ModelPart[] body4 = new ModelPart[]{AnimationCache.getModelBody(allele4.value)};
 
         List<Tuple2<ModelPart[], BufferedImage>> inherited1 = new ArrayList<Tuple2<ModelPart[], BufferedImage>>();
         List<Tuple2<ModelPart[], BufferedImage>> inherited2 = new ArrayList<Tuple2<ModelPart[], BufferedImage>>();
@@ -111,7 +108,7 @@ public class GeneModel extends Gene {
         randomlyInherit(inherited2, head2, texture2, head4, texture4);
         randomlyInherit(inherited2, arms2, texture2, arms4, texture4);
         randomlyInherit(inherited2, legs2, texture2, legs4, texture4);
-        randomlyInherit(inherited2, wings2, texture2,  wings4, texture4);
+        randomlyInherit(inherited2, wings2, texture2, wings4, texture4);
         randomlyInherit(inherited2, body2, texture2, body4, texture4);
 
         Tuple2<BufferedImage, List<ModelPart>> parent1Tuple = createParentTexture(inherited1);

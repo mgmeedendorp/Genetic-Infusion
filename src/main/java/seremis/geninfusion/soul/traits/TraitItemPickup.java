@@ -31,7 +31,7 @@ public class TraitItemPickup extends Trait {
 
         boolean canPickUpItems = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_PICKS_UP_ITEMS);
 
-        if(GeneticInfusion.serverProxy().isServerWorld(entity.getWorld()) && canPickUpItems && !((EntityLiving)entity).isDead && entity.getWorld().getGameRules().getGameRuleBooleanValue("mobGriefing")) {
+        if(GeneticInfusion.serverProxy().isServerWorld(entity.getWorld()) && canPickUpItems && !((EntityLiving) entity).isDead && entity.getWorld().getGameRules().getGameRuleBooleanValue("mobGriefing")) {
             List list = entity.getWorld().getEntitiesWithinAABB(EntityItem.class, entity.getBoundingBox().expand(1.0D, 0.0D, 1.0D));
 
             for(Object aList : list) {
@@ -82,7 +82,7 @@ public class TraitItemPickup extends Trait {
                             float dropChance = equipmentDropChances[i];
 
                             if(itemstack1 != null && new Random().nextFloat() - 0.1F < dropChance) {
-                                ((EntityLiving)entity).entityDropItem(itemstack1, 0.0F);
+                                ((EntityLiving) entity).entityDropItem(itemstack1, 0.0F);
                             }
 
                             if(itemstack.getItem() == Items.diamond && entityitem.func_145800_j() != null) {

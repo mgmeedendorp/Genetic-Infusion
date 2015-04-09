@@ -28,7 +28,7 @@ class AnimationTwoLegged extends Animation {
         if(living.isRiding) {
             legs(0).rotateAngleX = -(PI * 2F / 5F)
             legs(1).rotateAngleX = -(PI * 2F / 5F)
-            legs(0).rotateAngleY = PI/ 10F
+            legs(0).rotateAngleY = PI / 10F
             legs(1).rotateAngleY = -(PI / 10F)
         }
 

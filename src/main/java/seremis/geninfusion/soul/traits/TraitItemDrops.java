@@ -94,7 +94,7 @@ public class TraitItemDrops extends Trait {
 
             for(int k = 0; k < j; ++k) {
                 for(ItemStack stack : drops) {
-                    ((EntityLiving)entity).entityDropItem(stack, 0.0F);
+                    ((EntityLiving) entity).entityDropItem(stack, 0.0F);
                 }
             }
         }
@@ -125,7 +125,7 @@ public class TraitItemDrops extends Trait {
 
                     itemstack.setItemDamage(l);
                 }
-                ((EntityLiving)entity).entityDropItem(itemstack, 0.0F);
+                ((EntityLiving) entity).entityDropItem(itemstack, 0.0F);
             }
         }
     }
@@ -136,7 +136,7 @@ public class TraitItemDrops extends Trait {
 
         for(int i = 0; i < drops.length; i++) {
             if(entity.getRandom().nextInt((int) (dropChances[i] * 100F)) == 0) {
-                ((EntityLiving)entity).entityDropItem(drops[i], 0.0F);
+                ((EntityLiving) entity).entityDropItem(drops[i], 0.0F);
             }
         }
     }

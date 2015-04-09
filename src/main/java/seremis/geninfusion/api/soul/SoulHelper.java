@@ -24,7 +24,8 @@ public class SoulHelper {
 
     /**
      * The model used for all EntitySoulCustoms, this only contains a bridge method that redirects all render() calls to
-     * Traits, but can be useful for declaring new ModelRenderers or ModelParts and can be used to set the textureOffset on individual cubes within a ModelRenderer/ModelPart.
+     * Traits, but can be useful for declaring new ModelRenderers or ModelParts and can be used to set the textureOffset
+     * on individual cubes within a ModelRenderer/ModelPart.
      */
     public static ModelBase entityModel;
 
@@ -72,8 +73,8 @@ public class SoulHelper {
     public static int textureID = 0;
 
     /**
-     * Get the next available texture ID, this is used as the name of the texture.
-     * This number persists over saves.
+     * Get the next available texture ID, this is used as the name of the texture. This number persists over saves.
+     *
      * @return The next textureID
      */
     public static int getNextAvailableTextureID() {

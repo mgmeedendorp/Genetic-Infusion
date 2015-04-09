@@ -91,7 +91,7 @@ public class TraitRender extends Trait {
 
         boolean burnsInDaylight = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_BURNS_IN_DAYLIGHT);
 
-        if (living.getBrightness(1.0F) > 0.5F && burnsInDaylight) {
+        if(living.getBrightness(1.0F) > 0.5F && burnsInDaylight) {
             entity.setInteger("entityAge", entity.getInteger("entityAge") + 2);
         }
     }

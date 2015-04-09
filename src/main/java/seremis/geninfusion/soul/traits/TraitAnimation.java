@@ -2,8 +2,6 @@ package seremis.geninfusion.soul.traits;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.SharedMonsterAttributes;
 import seremis.geninfusion.api.soul.*;
 
 import java.util.ArrayList;
@@ -41,10 +39,10 @@ public class TraitAnimation extends Trait {
             List<String> possibleAnimations = new ArrayList<String>(Arrays.asList(possibleAnimationsArray));
 
             String[] activeAnimationArray = entity.getStringArray("activeAnimations");
-            List<String> activeAnimations =  new ArrayList<String>(Arrays.asList(activeAnimationArray != null ? activeAnimationArray : new String[] {}));
+            List<String> activeAnimations = new ArrayList<String>(Arrays.asList(activeAnimationArray != null ? activeAnimationArray : new String[]{}));
 
             String[] pendingAnimationArray = entity.getStringArray("pendingAnimations");
-            List<String> pendingAnimations =  new ArrayList<String>(Arrays.asList(pendingAnimationArray != null ? pendingAnimationArray : new String[] {}));
+            List<String> pendingAnimations = new ArrayList<String>(Arrays.asList(pendingAnimationArray != null ? pendingAnimationArray : new String[]{}));
 
             for(String name : possibleAnimations) {
                 IAnimation animation = registry.getAnimation(name);

@@ -413,7 +413,7 @@ public class TraitAI extends Trait {
         boolean useOldAI = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_USE_OLD_AI);
         entity.getWorld().theProfiler.startSection("ai");
 
-        if(((EntityLiving)entity).getHealth() <= 0.0F) {
+        if(((EntityLiving) entity).getHealth() <= 0.0F) {
             entity.setBoolean("isJumping", false);
             entity.setFloat("moveStrafing", 0.0F);
             entity.setFloat("moveForward", 0.0F);
@@ -485,7 +485,7 @@ public class TraitAI extends Trait {
 
             int i = MathHelper.floor_double(entity.getBoundingBox().minY + 0.5D);
             boolean flag = entity.getBoolean("inWater");
-            boolean flag1 = ((EntityLiving)entity).handleLavaMovement();
+            boolean flag1 = ((EntityLiving) entity).handleLavaMovement();
             entity.setFloat("rotationPitch", 0.0F);
 
             PathEntity pathToEntity = (PathEntity) entity.getObject("pathToEntity");
@@ -548,7 +548,7 @@ public class TraitAI extends Trait {
                 }
 
                 if(entityToAttack != null) {
-                    ((EntityLiving)entity).faceEntity(entityToAttack, 30.0F, 30.0F);
+                    ((EntityLiving) entity).faceEntity(entityToAttack, 30.0F, 30.0F);
                 }
 
                 if(entity.getBoolean("isCollidedHorizontally") && pathToEntity == null) {
@@ -596,7 +596,7 @@ public class TraitAI extends Trait {
         int numTicksToChaseTarget = entity.getInteger("numTicksToChaseTarget");
 
         if(currentTarget != null) {
-            ((EntityLiving)entity).faceEntity(currentTarget, 10.0F, 40F);
+            ((EntityLiving) entity).faceEntity(currentTarget, 10.0F, 40F);
 
             if(numTicksToChaseTarget-- <= 0 || currentTarget.isDead || currentTarget.getDistanceSqToEntity((Entity) entity) > (double) (f * f)) {
                 entity.setObject("currentTarget", null);
@@ -614,7 +614,7 @@ public class TraitAI extends Trait {
         entity.setInteger("numTicksToChaseTarget", numTicksToChaseTarget);
 
         boolean flag1 = entity.getBoolean("inWater");
-        boolean flag = ((EntityLiving)entity).handleLavaMovement();
+        boolean flag = ((EntityLiving) entity).handleLavaMovement();
 
         if(flag1 || flag) {
             entity.setBoolean("isJumping", entity.getRandom().nextFloat() < 0.8F);

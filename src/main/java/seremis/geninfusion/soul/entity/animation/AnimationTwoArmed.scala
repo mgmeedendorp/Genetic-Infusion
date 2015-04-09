@@ -97,7 +97,7 @@ class AnimationTwoArmed extends Animation {
                 arms(0).rotateAngleX += MathHelper.sin(limbSwing * 0.067F) * 0.05F
                 arms(1).rotateAngleX -= MathHelper.sin(limbSwing * 0.067F) * 0.05F
             }
-            
+
         } else {
             val swingProgress = living.getSwingProgress(entity.getFloat("partialTickTime"))
 

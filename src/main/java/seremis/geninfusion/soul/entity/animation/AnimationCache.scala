@@ -4,7 +4,7 @@ import net.minecraft.client.model.ModelBox
 import net.minecraft.util.{MathHelper, Vec3}
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.util.ModelPart
-import seremis.geninfusion.api.soul.{SoulHelper, IAnimation, IEntitySoulCustom}
+import seremis.geninfusion.api.soul.{IAnimation, IEntitySoulCustom, SoulHelper}
 
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ListBuffer
@@ -18,6 +18,7 @@ abstract class Animation extends IAnimation {
     def getModelLegs(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelLegs(entity)
 
     def getModelArms(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelArms(entity)
+
     def armsHorizontal(entity: IEntitySoulCustom): Boolean = AnimationCache.armsHorizontal(entity)
 
     def getModelBody(entity: IEntitySoulCustom): ModelPart = AnimationCache.getModelBody(entity)
@@ -178,7 +179,7 @@ object AnimationCache {
             head += headCandidate
 
             for(part <- model) {
-                val nearY = part.rotationPointY + part.offsetY * MathHelper.cos(part.rotateAngleX+0.001F)
+                val nearY = part.rotationPointY + part.offsetY * MathHelper.cos(part.rotateAngleX + 0.001F)
                 if(!part.equals(head(0)) && !getModelArms(model).toList.contains(part) && !part.equals(getModelBody(model)) && nearY <= candidateMaxY && partsTouching(head(0), part)) {
                     head += part
                 }
@@ -241,7 +242,7 @@ object AnimationCache {
                 if(coords._2.zCoord > far.zCoord)
                     far.zCoord = coords._2.zCoord
             })
-            cachedOuterBox += (part -> (near, far))
+            cachedOuterBox += (part ->(near, far))
         }
         cachedOuterBox.get(part).get
     }
@@ -265,16 +266,21 @@ object AnimationCache {
     def coordsBeneath(lowerCoords: (Vec3, Vec3), higherCoords: (Vec3, Vec3)): Boolean = getHighestCoordY(lowerCoords) >= getLowestCoordY(higherCoords)
 
     def getHighestCoordY(coords: (Vec3, Vec3)): Float = Math.min(coords._1.yCoord, coords._2.yCoord).toFloat
+
     def getLowestCoordY(coords: (Vec3, Vec3)): Float = Math.max(coords._1.yCoord, coords._2.yCoord).toFloat
 
     def coordsTouch(coords1: (Vec3, Vec3), coords2: (Vec3, Vec3)): Boolean = coords1._2.xCoord >= coords2._1.xCoord && coords1._1.xCoord <= coords2._2.xCoord && coords1._2.yCoord >= coords2._1.yCoord && coords1._1.yCoord <= coords2._2.yCoord && coords1._2.zCoord >= coords2._1.zCoord && coords1._1.zCoord <= coords2._2.zCoord
 
     def intersectsPlaneX(part: ModelPart, x: Float): Boolean = part.getBoxList.exists(box => interX(getPartBoxCoordinates(part, box), x))
+
     def intersectsPlaneY(part: ModelPart, y: Float): Boolean = part.getBoxList.exists(box => interY(getPartBoxCoordinates(part, box), y))
+
     def intersectsPlaneZ(part: ModelPart, z: Float): Boolean = part.getBoxList.exists(box => interZ(getPartBoxCoordinates(part, box), z))
 
     def interX(coords: (Vec3, Vec3), x: Float) = isInBetween(x, coords._1.xCoord, coords._2.xCoord)
+
     def interY(coords: (Vec3, Vec3), y: Float) = isInBetween(y, coords._1.yCoord, coords._2.yCoord)
+
     def interZ(coords: (Vec3, Vec3), z: Float) = isInBetween(z, coords._1.zCoord, coords._2.zCoord)
 
     def isInBetween(value: Double, min: Double, max: Double): Boolean = value <= Math.max(min, max) && value >= Math.min(min, max)
@@ -288,7 +294,7 @@ object AnimationCache {
             val farY = part.rotationPointY + (part.offsetY + Math.abs(box.posY2 - box.posY1)) * MathHelper.cos(part.rotateAngleX)
             val farZ = part.rotationPointZ + (part.offsetZ + Math.abs(box.posZ2 - box.posZ1)) * MathHelper.cos(part.rotateAngleY)
 
-            cachedCoords += ((part, box) -> (Vec3.createVectorHelper(nearX, nearY, nearZ), Vec3.createVectorHelper(farX, farY, farZ)))
+            cachedCoords += ((part, box) ->(Vec3.createVectorHelper(nearX, nearY, nearZ), Vec3.createVectorHelper(farX, farY, farZ)))
         }
         cachedCoords.get((part, box)).get
     }

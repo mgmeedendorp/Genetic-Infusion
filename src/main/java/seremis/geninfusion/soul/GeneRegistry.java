@@ -6,7 +6,6 @@ import seremis.geninfusion.api.soul.*;
 import seremis.geninfusion.api.soul.util.ModelPart;
 import seremis.geninfusion.soul.allele.*;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;

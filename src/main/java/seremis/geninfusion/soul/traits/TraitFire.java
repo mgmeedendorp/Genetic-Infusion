@@ -78,7 +78,7 @@ public class TraitFire extends Trait {
             }
         }
 
-        if(((EntityLiving)entity).handleLavaMovement()) {
+        if(((EntityLiving) entity).handleLavaMovement()) {
             entity.setOnFireFromLava();
             entity.setFloat("fallDistance", entity.getFloat("fallDistance") * 0.5F);
         }
@@ -91,7 +91,7 @@ public class TraitFire extends Trait {
             entity.setFlag(0, fire > 0);
         }
 
-        if (living.isEntityAlive() && living.isWet()) {
+        if(living.isEntityAlive() && living.isWet()) {
             living.extinguish();
         }
     }

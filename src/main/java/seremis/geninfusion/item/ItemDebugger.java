@@ -49,15 +49,15 @@ public class ItemDebugger extends GIItem {
                 }
             }
             if(stack.getItemDamage() == 1) {
-                EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityZombie(world)), x+0.5F, y + 1, z+0.5F);
+                EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityZombie(world)), x + 0.5F, y + 1, z + 0.5F);
                 world.spawnEntityInWorld(entity);
             }
             if(stack.getItemDamage() == 2) {
-                EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.produceOffspring(SoulHelper.standardSoulRegistry.getSoulForEntity(new EntitySkeleton(world)), SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityZombie(world))), x+0.5F, y + 1, z+0.5F);
+                EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.produceOffspring(SoulHelper.standardSoulRegistry.getSoulForEntity(new EntitySkeleton(world)), SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityZombie(world))), x + 0.5F, y + 1, z + 0.5F);
                 world.spawnEntityInWorld(entity);
             }
             if(stack.getItemDamage() == 3) {
-                List entities = world.getEntitiesWithinAABB(EntitySoulCustomCreature.class, AxisAlignedBB.getBoundingBox(x, y, z, x+2, y+2, z+2));
+                List entities = world.getEntitiesWithinAABB(EntitySoulCustomCreature.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 2, y + 2, z + 2));
                 for(Object obj : entities) {
                     EntityLiving entity = (EntityLiving) obj;
                     NBTTagCompound nbt = new NBTTagCompound();

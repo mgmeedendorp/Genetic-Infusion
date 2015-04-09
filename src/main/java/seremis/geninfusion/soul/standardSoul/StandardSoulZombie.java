@@ -126,7 +126,6 @@ public class StandardSoulZombie extends StandardSoul {
             return new Chromosome(new AlleleString(true, "textures/entity/zombie/zombie.png"), new AlleleString(false, "textures/entity/zombie/zombie.png"));
 
 
-
         return super.getChromosomeFromGene(entity, gene);
     }
 }

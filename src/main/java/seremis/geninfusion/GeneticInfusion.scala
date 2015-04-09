@@ -7,7 +7,6 @@ import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.common.config.Configuration
 import org.apache.logging.log4j.{Level, Logger}
 import seremis.geninfusion.api.soul.SoulHelper
-import seremis.geninfusion.api.soul.lib.{Traits, Genes}
 import seremis.geninfusion.block.ModBlocks
 import seremis.geninfusion.core.proxy.CommonProxy
 import seremis.geninfusion.core.{GIConfig, GICreativeTab}

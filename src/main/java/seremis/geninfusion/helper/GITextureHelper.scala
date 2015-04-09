@@ -85,8 +85,8 @@ object GITextureHelper {
         quadCoordsMin = (quadCoordsMin._1 + textureOffset._1, quadCoordsMin._2 + textureOffset._2)
         quadCoordsMax = (quadCoordsMax._1 + textureOffset._1, quadCoordsMax._2 + textureOffset._2)
 
-        quadPositionsMin = (quadCoordsMin._1/part.textureWidth, quadCoordsMin._2/part.textureHeight)
-        quadPositionsMax = (quadCoordsMax._1/part.textureWidth, quadCoordsMax._2/part.textureHeight)
+        quadPositionsMin = (quadCoordsMin._1 / part.textureWidth, quadCoordsMin._2 / part.textureHeight)
+        quadPositionsMax = (quadCoordsMax._1 / part.textureWidth, quadCoordsMax._2 / part.textureHeight)
 
         quad.vertexPositions(0) = quad.vertexPositions(0).setTexturePosition(quadPositionsMax._1, quadPositionsMin._2)
         quad.vertexPositions(1) = quad.vertexPositions(1).setTexturePosition(quadPositionsMin._1, quadPositionsMin._2)
@@ -108,8 +108,8 @@ object GITextureHelper {
         quadCoordsMin = (textureOffset._1, textureOffset._2)
         quadCoordsMax = (textureOffset._1 + quadSize._1, textureOffset._2 + quadSize._2)
 
-        quadPositionsMin = (quadCoordsMin._1/part.textureWidth, quadCoordsMin._2/part.textureHeight)
-        quadPositionsMax = (quadCoordsMax._1/part.textureWidth, quadCoordsMax._2/part.textureHeight)
+        quadPositionsMin = (quadCoordsMin._1 / part.textureWidth, quadCoordsMin._2 / part.textureHeight)
+        quadPositionsMax = (quadCoordsMax._1 / part.textureWidth, quadCoordsMax._2 / part.textureHeight)
 
         quad.vertexPositions(0) = quad.vertexPositions(0).setTexturePosition(quadPositionsMax._1, quadPositionsMin._2)
         quad.vertexPositions(1) = quad.vertexPositions(1).setTexturePosition(quadPositionsMin._1, quadPositionsMin._2)
@@ -161,7 +161,7 @@ object GITextureHelper {
             setModelBoxQuadTextureOffset(part, quad, (rect.getMinX.toInt, rect.getMinY.toInt))
         }
 
-        println("getModelPartTexture Time: " + (System.nanoTime() - time)/1000/1000F)
+        println("getModelPartTexture Time: " + (System.nanoTime() - time) / 1000 / 1000F)
 
         result._1
     }

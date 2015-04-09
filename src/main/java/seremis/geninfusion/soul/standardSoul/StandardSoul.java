@@ -1,11 +1,6 @@
 package seremis.geninfusion.soul.standardSoul;
 
-import net.minecraft.client.model.ModelChicken;
-import net.minecraft.client.model.ModelCow;
 import net.minecraft.client.model.ModelSkeleton;
-import net.minecraft.client.model.ModelZombie;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
