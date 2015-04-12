@@ -91,10 +91,10 @@ public class GeneModel extends Gene {
         ModelPart[] wings2 = AnimationCache.getModelWings(allele2.value);
         ModelPart[] wings3 = AnimationCache.getModelWings(allele3.value);
         ModelPart[] wings4 = AnimationCache.getModelWings(allele4.value);
-        ModelPart[] body1 = new ModelPart[]{AnimationCache.getModelBody(allele1.value)};
-        ModelPart[] body2 = new ModelPart[]{AnimationCache.getModelBody(allele2.value)};
-        ModelPart[] body3 = new ModelPart[]{AnimationCache.getModelBody(allele3.value)};
-        ModelPart[] body4 = new ModelPart[]{AnimationCache.getModelBody(allele4.value)};
+        ModelPart[] body1 = new ModelPart[] {AnimationCache.getModelBody(allele1.value)};
+        ModelPart[] body2 = new ModelPart[] {AnimationCache.getModelBody(allele2.value)};
+        ModelPart[] body3 = new ModelPart[] {AnimationCache.getModelBody(allele3.value)};
+        ModelPart[] body4 = new ModelPart[] {AnimationCache.getModelBody(allele4.value)};
 
         List<Tuple2<ModelPart[], BufferedImage>> inherited1 = new ArrayList<Tuple2<ModelPart[], BufferedImage>>();
         List<Tuple2<ModelPart[], BufferedImage>> inherited2 = new ArrayList<Tuple2<ModelPart[], BufferedImage>>();

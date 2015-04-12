@@ -6,6 +6,7 @@ import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.helper.GITextureHelper;
+import seremis.geninfusion.lib.Localizations;
 import seremis.geninfusion.soul.allele.AlleleString;
 
 public class TraitTexture extends Trait {
@@ -13,6 +14,7 @@ public class TraitTexture extends Trait {
     @Override
     public String getEntityTexture(IEntitySoulCustom entity) {
         try {
+            //return Localizations.LOC_MODEL_TEXTURES() + Localizations.BLANK();
             return SoulHelper.geneRegistry.getValueString(entity, Genes.GENE_TEXTURE);
         } catch(NullPointerException e) {
             return "textures/entity/zombie/zombie.png";

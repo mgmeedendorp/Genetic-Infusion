@@ -56,19 +56,11 @@ object GITextureHelper {
 
     def moveModelPartTextureOffset(part: ModelPart, textureOffset: (Int, Int)): ModelPart = {
         if(!textureOffset.equals((0, 0))) {
-            val boxList = part.getBoxList
-
-            for(i <- 0 until boxList.size) {
-                val texturedQuads = part.getBoxQuads(boxList(i))
-
-                for(i <- 0 until texturedQuads.size) {
-                    texturedQuads(i) = moveModelBoxQuadTextureOffset(part, texturedQuads(i), textureOffset)
+            for(box <- part.getBoxList) {
+                for(quad <- part.getBoxQuads(box)) {
+                    moveModelBoxQuadTextureOffset(part, quad, textureOffset)
                 }
-
-                part.setBoxQuads(boxList(i), texturedQuads)
             }
-
-            part.setBoxList(boxList)
         }
         part
     }
@@ -79,8 +71,6 @@ object GITextureHelper {
 
         var quadCoordsMin = (part.textureWidth * quadPositionsMin._1, part.textureHeight * quadPositionsMin._2)
         var quadCoordsMax = (part.textureWidth * quadPositionsMax._1, part.textureHeight * quadPositionsMax._2)
-
-        val quadSize = (Math.abs(quadCoordsMax._1 - quadCoordsMin._1).toInt, Math.abs(quadCoordsMax._2 - quadCoordsMin._2).toInt)
 
         quadCoordsMin = (quadCoordsMin._1 + textureOffset._1, quadCoordsMin._2 + textureOffset._2)
         quadCoordsMax = (quadCoordsMax._1 + textureOffset._1, quadCoordsMax._2 + textureOffset._2)
@@ -126,8 +116,6 @@ object GITextureHelper {
      * @return A section of the passed BufferedImage with the passed ModelPart's texture.
      */
     def getModelPartTexture(part: ModelPart, image: BufferedImage): BufferedImage = {
-        val time = System.nanoTime()
-
         var textureRectsSource: ListBuffer[Rectangle2D] = ListBuffer()
         var texturedQuadsList: ListBuffer[TexturedQuad] = ListBuffer()
 
@@ -161,8 +149,6 @@ object GITextureHelper {
             setModelBoxQuadTextureOffset(part, quad, (rect.getMinX.toInt, rect.getMinY.toInt))
         }
 
-        println("getModelPartTexture Time: " + (System.nanoTime() - time) / 1000 / 1000F)
-
         result._1
     }
 
@@ -181,8 +167,6 @@ object GITextureHelper {
                     var quadCoordsMin = (oldSize._1 * quadPositionsMin._1, oldSize._2 * quadPositionsMin._2)
                     var quadCoordsMax = (oldSize._1 * quadPositionsMax._1, oldSize._2 * quadPositionsMax._2)
 
-                    val quadSize = (Math.abs(quadCoordsMax._1 - quadCoordsMin._1).toInt, Math.abs(quadCoordsMax._2 - quadCoordsMin._2).toInt)
-
                     quadCoordsMin = (quadCoordsMin._1, quadCoordsMin._2)
                     quadCoordsMax = (quadCoordsMax._1, quadCoordsMax._2)
 
@@ -194,7 +178,6 @@ object GITextureHelper {
                     quad.vertexPositions(2) = quad.vertexPositions(2).setTexturePosition(quadPositionsMin._1, quadPositionsMax._2)
                     quad.vertexPositions(3) = quad.vertexPositions(3).setTexturePosition(quadPositionsMax._1, quadPositionsMax._2)
                 }
-                part.setBoxQuads(box, texturedQuads)
             }
         }
         part

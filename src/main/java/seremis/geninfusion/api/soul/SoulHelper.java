@@ -69,7 +69,6 @@ public class SoulHelper {
 
     private static Random rand = new Random();
 
-    //Do never, ever change this if you don't know what you're doing!
     public static int textureID = 0;
 
     /**

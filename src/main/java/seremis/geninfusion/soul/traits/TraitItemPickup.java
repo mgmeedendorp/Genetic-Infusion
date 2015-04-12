@@ -7,10 +7,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
+import net.minecraft.item.*;
 import net.minecraft.network.play.server.S04PacketEntityEquipment;
 import net.minecraft.network.play.server.S0DPacketCollectItem;
 import net.minecraft.stats.AchievementList;
@@ -47,7 +44,7 @@ public class TraitItemPickup extends Trait {
 
                         if(itemstack1 != null) {
                             if(i == 0) {
-                                if(itemstack.getItem() instanceof ItemSword && !(itemstack1.getItem() instanceof ItemSword)) {
+                                if((itemstack.getItem() instanceof ItemSword || itemstack.getItem().getItemUseAction(itemstack) == EnumAction.bow) && (!(itemstack1.getItem() instanceof ItemSword) || !(itemstack1.getItem().getItemUseAction(itemstack1) == EnumAction.bow))) {
                                     flag = true;
                                 } else if(itemstack.getItem() instanceof ItemSword) {
                                     ItemSword itemsword = (ItemSword) itemstack.getItem();

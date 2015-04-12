@@ -77,18 +77,8 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         return cubeList;
     }
 
-    public ModelPart setBoxList(List<ModelBox> boxList) {
-        cubeList = boxList;
-        return this;
-    }
-
     public TexturedQuad[] getBoxQuads(ModelBox box) {
         return (TexturedQuad[]) GIReflectionHelper.getField(box, "quadList");
-    }
-
-    public ModelBox setBoxQuads(ModelBox box, TexturedQuad[] quads) {
-        GIReflectionHelper.setField(box, "quadList", quads);
-        return box;
     }
 
     @Override
@@ -97,8 +87,6 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
             compound.setString("boxName", boxName);
         compound.setFloat("textureWidth", textureWidth);
         compound.setFloat("textureHeight", textureHeight);
-        compound.setInteger("textureOffsetX", getTextureOffsetX());
-        compound.setInteger("textureOffsetY", getTextureOffsetY());
         compound.setFloat("rotationPointX", rotationPointX);
         compound.setFloat("rotationPointY", rotationPointY);
         compound.setFloat("rotationPointZ", rotationPointZ);
@@ -161,7 +149,6 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
 
                         vertexList.appendTag(vertexCompound);
                     }
-                    //NBT y u make me do dis >:(
                     NBTTagCompound vertexListCompound = new NBTTagCompound();
                     vertexListCompound.setTag("vertexList", vertexList);
 
@@ -195,9 +182,11 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
+        if(compound.hasKey("boxName"))
+            GIReflectionHelper.setField(this, "boxName", compound.getString("boxName"));
+
         textureWidth = compound.getFloat("textureWidth");
         textureHeight = compound.getFloat("textureHeight");
-        setTextureOffset(compound.getInteger("textureOffsetX"), compound.getInteger("textureOffsetY"));
         rotationPointX = compound.getFloat("rotationPointX");
         rotationPointY = compound.getFloat("rotationPointY");
         rotationPointZ = compound.getFloat("rotationPointZ");
@@ -258,7 +247,6 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
 
             GIReflectionHelper.setField(box, "vertexPositions", vertices);
 
-
             cubeList.add(box);
         }
     }
@@ -284,7 +272,10 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
     public static ModelPart[] getModelPartsFromModel(ModelBase model, EntityLiving entity) {
         ArrayList<ModelPart> parts = new ArrayList<ModelPart>();
 
-        model.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, entity);
+        //With this skeletons animate without zombie arms without having bows in their hands
+        if(!(model instanceof ModelSkeleton)) {
+            model.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, entity);
+        }
 
         Field[] fields = GIReflectionHelper.getFields(model);
 

@@ -1,3 +1,6 @@
 package seremis.geninfusion.tileentity;
 
-public class TileSoulCage extends GITile {}
+public class TileSoulCage extends GITile {
+
+
+}

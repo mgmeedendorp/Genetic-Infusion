@@ -17,6 +17,9 @@ abstract class Animation extends IAnimation {
 
     def getModelLegs(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelLegs(entity)
 
+    def getModelLeftArms(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelLeftArms(entity)
+    def getModelRightArms(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelRightArms(entity)
+
     def getModelArms(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelArms(entity)
 
     def armsHorizontal(entity: IEntitySoulCustom): Boolean = AnimationCache.armsHorizontal(entity)
@@ -30,7 +33,8 @@ abstract class Animation extends IAnimation {
 
 object AnimationCache {
     var cachedLegs: Map[Array[ModelPart], Array[ModelPart]] = Map()
-    var cachedArms: Map[Array[ModelPart], Array[ModelPart]] = Map()
+    var cachedArmsLeft: Map[Array[ModelPart], Array[ModelPart]] = Map()
+    var cachedArmsRight: Map[Array[ModelPart], Array[ModelPart]] = Map()
     var cachedBody: Map[Array[ModelPart], ModelPart] = Map()
     var cachedHead: Map[Array[ModelPart], Array[ModelPart]] = Map()
     var cachedWings: Map[Array[ModelPart], Array[ModelPart]] = Map()
@@ -59,10 +63,19 @@ object AnimationCache {
         cachedLegs.get(model).get
     }
 
-    def getModelArms(entity: IEntitySoulCustom): Array[ModelPart] = getModelArms(getModel(entity))
+    def getModelArms(entity: IEntitySoulCustom): Array[ModelPart] = getModelLeftArms(entity) ++ getModelRightArms(entity)
+    def getModelArms(model: Array[ModelPart]): Array[ModelPart] = getModelLeftArms(model) ++ getModelRightArms(model)
 
-    def getModelArms(model: Array[ModelPart]): Array[ModelPart] = {
-        if(!cachedArms.contains(model)) {
+    def getModelLeftArms(entity: IEntitySoulCustom): Array[ModelPart] = getModelArms(entity, true)
+    def getModelRightArms(entity: IEntitySoulCustom): Array[ModelPart] = getModelArms(entity, false)
+
+    def getModelLeftArms(model: Array[ModelPart]): Array[ModelPart] = getModelArms(model, true)
+    def getModelRightArms(model: Array[ModelPart]): Array[ModelPart] = getModelArms(model, false)
+
+    def getModelArms(entity: IEntitySoulCustom, leftArm: Boolean): Array[ModelPart] = getModelArms(getModel(entity), leftArm)
+
+    def getModelArms(model: Array[ModelPart], leftArm: Boolean): Array[ModelPart] = {
+        if(!(cachedArmsLeft.contains(model) && leftArm || cachedArmsRight.contains(model) && !leftArm)) {
             var arms: ListBuffer[ModelPart] = ListBuffer()
 
             for(part <- model) {
@@ -95,14 +108,20 @@ object AnimationCache {
                     val dy = maxY - minY
                     val dz = maxZ - minZ
 
-                    if(dy >= 3 * dx && dy >= 3 * dz) {
+                    if(dy >= 3 * dx && dy >= 3 * dz && (maxX > 0 && leftArm || minX < 0 && !leftArm)) {
                         arms += part
                     }
                 }
             }
-            cachedArms += (model -> arms.to[Array])
+            if(leftArm)
+                cachedArmsLeft += (model -> arms.to[Array])
+            else
+                cachedArmsRight += (model -> arms.to[Array])
         }
-        cachedArms.get(model).get
+        if(leftArm)
+            cachedArmsLeft.get(model).get
+        else
+            cachedArmsRight.get(model).get
     }
 
     def getModelBody(entity: IEntitySoulCustom): ModelPart = getModelBody(getModel(entity))
@@ -180,7 +199,7 @@ object AnimationCache {
 
             for(part <- model) {
                 val nearY = part.rotationPointY + part.offsetY * MathHelper.cos(part.rotateAngleX + 0.001F)
-                if(!part.equals(head(0)) && !getModelArms(model).toList.contains(part) && !part.equals(getModelBody(model)) && nearY <= candidateMaxY && partsTouching(head(0), part)) {
+                if(!part.equals(head.head) && !getModelArms(model).toList.contains(part) && !part.equals(getModelBody(model)) && nearY <= candidateMaxY && partsTouching(head.head, part)) {
                     head += part
                 }
             }
