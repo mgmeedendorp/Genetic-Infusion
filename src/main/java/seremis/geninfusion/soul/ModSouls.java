@@ -1,7 +1,5 @@
 package seremis.geninfusion.soul;
 
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntityZombie;
 import seremis.geninfusion.api.soul.lib.Animations;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.api.soul.lib.Traits;
@@ -136,7 +134,6 @@ public class ModSouls {
         geneRegistry.registerGene(Genes.GENE_CEASE_AI_MOVEMENT, new GeneCeaseAIMovement());
         geneRegistry.registerGene(Genes.GENE_CHILDREN_BURN_IN_DAYLIGHT, new GeneChildrenBurnInDaylight());
         geneRegistry.registerGene(Genes.GENE_IS_TAMEABLE, new GeneIsTameable());
-        geneRegistry.registerGene(Genes.GENE_TOUCH_ATTACK, new GeneTouchToAttack());
 
         geneRegistry.registerGene(Genes.GENE_AI_ARROW_ATTACK_MAX_RANGED_ATTACK_TIME, new GeneAIArrowAttackMaxRangedAttackTime());
         geneRegistry.registerGene(Genes.GENE_AI_ARROW_ATTACK_MIN_RANGED_ATTACK_TIME, new GeneAIArrowAttackMinRangedAttackTime());
@@ -340,8 +337,8 @@ public class ModSouls {
         traitRegistry.registerTrait(Traits.TRAIT_NAVIGATE, new TraitNavigate());
         traitRegistry.registerTrait(Traits.TRAIT_ANIMATION, new TraitAnimation());
 
-        standardSoulRegistry.register(new StandardSoulZombie(), EntityZombie.class);
-        standardSoulRegistry.register(new StandardSoulSkeleton(), EntitySkeleton.class);
+        standardSoulRegistry.register(new StandardSoulZombie());
+        standardSoulRegistry.register(new StandardSoulSkeleton());
 
         animationRegistry.register(Animations.ANIMATION_WALK_FOUR_LEGGED(), new AnimationTwoLegged());
         animationRegistry.register(Animations.ANIMATION_WALK_TWO_ARMED(), new AnimationTwoArmed());

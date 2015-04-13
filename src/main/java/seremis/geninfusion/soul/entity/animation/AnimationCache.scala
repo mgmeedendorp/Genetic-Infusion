@@ -108,7 +108,9 @@ object AnimationCache {
                     val dy = maxY - minY
                     val dz = maxZ - minZ
 
-                    if(dy >= 3 * dx && dy >= 3 * dz && (maxX > 0 && leftArm || minX < 0 && !leftArm)) {
+                    val absoluteX = part.rotationPointX + part.offsetX * MathHelper.cos(part.rotateAngleY)
+
+                    if(dy >= 3 * dx && dy >= 3 * dz && (absoluteX > 0 && leftArm || absoluteX < 0 && !leftArm)) {
                         arms += part
                     }
                 }

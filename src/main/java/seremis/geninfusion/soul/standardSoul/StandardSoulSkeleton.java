@@ -2,6 +2,7 @@ package seremis.geninfusion.soul.standardSoul;
 
 import net.minecraft.client.model.ModelSkeleton;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -12,6 +13,12 @@ import seremis.geninfusion.soul.Chromosome;
 import seremis.geninfusion.soul.allele.*;
 
 public class StandardSoulSkeleton extends StandardSoul {
+
+    @Override
+    public boolean isStandardSoulForEntity(EntityLiving entity) {
+        //Is Skeleton and not a Wither Skeleton
+        return entity instanceof EntitySkeleton && ((EntitySkeleton) entity).getSkeletonType() != 1;
+    }
 
     @Override
     public IChromosome getChromosomeFromGene(EntityLiving entity, String gene) {
@@ -41,8 +48,6 @@ public class StandardSoulSkeleton extends StandardSoul {
             return new Chromosome(new AlleleBoolean(true, true));
         if(gene.equals(Genes.GENE_USE_OLD_AI))
             return new Chromosome(new AlleleBoolean(true, false));
-        if(gene.equals(Genes.GENE_TOUCH_ATTACK))
-            return new Chromosome(new AlleleBoolean(true, false));
 
         if(gene.equals(Genes.GENE_AI_ARROW_ATTACK))
             return new Chromosome(new AlleleBoolean(true, true));
@@ -70,10 +75,17 @@ public class StandardSoulSkeleton extends StandardSoul {
         if(gene.equals(Genes.GENE_AI_RESTRICT_SUN_INDEX))
             return new Chromosome(new AlleleInteger(true, 2));
 
+        if(gene.equals(Genes.GENE_AI_FLEE_SUN))
+            return new Chromosome(new AlleleBoolean(false, true));
+        if(gene.equals(Genes.GENE_AI_FLEE_SUN_INDEX))
+            return new Chromosome(new AlleleInteger(true, 3));
+        if(gene.equals(Genes.GENE_AI_FLEE_SUN_MOVE_SPEED))
+            return new Chromosome(new AlleleDouble(false, 1.0D));
+
         if(gene.equals(Genes.GENE_AI_LOOK_IDLE))
             return new Chromosome(new AlleleBoolean(true, true));
         if(gene.equals(Genes.GENE_AI_LOOK_IDLE_INDEX))
-            return new Chromosome(new AlleleInteger(true, 6));
+            return new Chromosome(new AlleleInteger(false, 6));
 
         if(gene.equals(Genes.GENE_AI_HURT_BY_TARGET))
             return new Chromosome(new AlleleBoolean(true, true));
@@ -96,6 +108,8 @@ public class StandardSoulSkeleton extends StandardSoul {
             return new Chromosome(new AlleleIntArray(true, new int[]{0}));
         if(gene.equals(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_VISIBLE))
             return new Chromosome(new AlleleBooleanArray(true, new boolean[]{true}));
+
+
 
         if(gene.equals(Genes.GENE_MODEL))
             return new Chromosome(new AlleleModelPartArray(true, ModelPart.getModelPartsFromModel(new ModelSkeleton(), entity)));

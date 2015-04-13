@@ -41,15 +41,15 @@ object GeneticInfusion {
 
         SoulHelper.geneRegistry = new GeneRegistry
         SoulHelper.traitRegistry = new TraitRegistry
-        SoulHelper.standardSoulRegistry = new StandardSoulRegistry
+        SoulHelper.standardSoulRegistry = StandardSoulRegistry
         SoulHelper.instanceHelper = new InstanceHelper
         SoulHelper.entityModel = new ModelEntitySoulCustom
         SoulHelper.animationRegistry = new AnimationRegistry
 
-        ModBlocks.init
-        ModItems.init
-        ModEntity.init
-        ModSouls.init
+        ModBlocks.init()
+        ModItems.init()
+        ModEntity.init()
+        ModSouls.init()
     }
 
     @EventHandler
@@ -57,16 +57,16 @@ object GeneticInfusion {
         serverProxy.registerRendering()
         serverProxy.registerHandlers()
 
-        RecipeHelper.initRecipes
-        RecipeHelper.initSmelting
+        RecipeHelper.initRecipes()
+        RecipeHelper.initSmelting()
         FMLCommonHandler.instance.bus.register(new GIEventHandler)
         MinecraftForge.EVENT_BUS.register(new GIEventHandler)
-        packetPipeline.initialise
+        packetPipeline.initialise()
     }
 
     @EventHandler
     def postInit(event: FMLPostInitializationEvent) {
-        packetPipeline.postInitialise
+        packetPipeline.postInitialise()
         logger.log(Level.INFO, DefaultProps.name + " is loaded successfully.")
     }
 }

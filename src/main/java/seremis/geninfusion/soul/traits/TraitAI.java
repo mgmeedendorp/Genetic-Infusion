@@ -128,27 +128,17 @@ public class TraitAI extends Trait {
                 ((EntityLiving) entity).getNavigator().setBreakDoors(true);
             }
 
+            if(gReg.getValueBoolean(entity, Genes.GENE_AI_ARROW_ATTACK)) {
+                int index = gReg.getValueInteger(entity, Genes.GENE_AI_ARROW_ATTACK_INDEX);
+                int maxRangedAttackTime = gReg.getValueInteger(entity, Genes.GENE_AI_ARROW_ATTACK_MAX_RANGED_ATTACK_TIME);
+                int minRangedAttackTime = gReg.getValueInteger(entity, Genes.GENE_AI_ARROW_ATTACK_MIN_RANGED_ATTACK_TIME);
+                double moveSpeed = gReg.getValueDouble(entity, Genes.GENE_AI_ARROW_ATTACK_MOVE_SPEED);
+                float rangedAttackTimeModifier = gReg.getValueFloat(entity, Genes.GENE_AI_ARROW_ATTACK_RANGED_ATTACK_TIME_MODIFIER);
 
-            //        if(gReg.getValueBoolean(entity, Genes.GENE_AI_ARROW_ATTACK)) {
-            //            int maxRangedAttackTime = gReg.getValueInteger(entity, Genes.GENE_AI_ARROW_ATTACK_MAX_RANGED_ATTACK_TIME);
-            //            int minRangedAttackTime = gReg.getValueInteger(entity, Genes.GENE_AI_ARROW_ATTACK_MIN_RANGED_ATTACK_TIME);
-            //            double moveSpeed = gReg.getValueDouble(entity, Genes.GENE_AI_ARROW_ATTACK_MOVE_SPEED);
-            //            float rangedAttackTimeModifier = gReg.getValueFloat(entity, Genes.GENE_AI_ARROW_ATTACK_RANGED_ATTACK_TIME_MODIFIER);
-            //
-            //            tasks.addTask(attackIndex, new EntityAIArrowAttack(entity, moveSpeed, minRangedAttackTime, maxRangedAttackTime, rangedAttackTimeModifier));
-            //        }
-            //
-            //        if(gReg.getValueBoolean(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE)) {
-            //            try {
-            //                boolean longMemory = gReg.getValueBoolean(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_LONG_MEMORY);
-            //                double moveSpeed = gReg.getValueDouble(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_MOVE_SPEED);
-            //                Class target = Class.forName(gReg.getValueString(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_TARGET));
-            //
-            //                tasks.addTask(attackIndex, new EntityAIAttackOnCollide((EntityCreature) entity, target, moveSpeed, longMemory));
-            //            } catch(Exception e) {
-            //                e.printStackTrace();
-            //            }
-            //        }
+                tasks.addTask(index, new EntityAIArrowAttack(entity, moveSpeed, minRangedAttackTime, maxRangedAttackTime, rangedAttackTimeModifier));
+            }
+
+
             //
             //        if(gReg.getValueBoolean(entity, Genes.GENE_AI_AVOID_ENTITY)) {
             //            try {

@@ -18,7 +18,7 @@ import seremis.geninfusion.soul.Chromosome;
 import seremis.geninfusion.soul.allele.*;
 
 
-public class StandardSoul implements IStandardSoul {
+public abstract class StandardSoul implements IStandardSoul {
 
     @Override
     public IChromosome getChromosomeFromGene(EntityLiving entity, String gene) {
@@ -96,8 +96,6 @@ public class StandardSoul implements IStandardSoul {
             return new Chromosome(new AlleleInteger(true, entity.getVerticalFaceSpeed()));
         if(gene.equals(Genes.GENE_IS_TAMEABLE))
             return new Chromosome(new AlleleBoolean(true, entity instanceof EntityTameable));
-        if(gene.equals(Genes.GENE_TOUCH_ATTACK))
-            return new Chromosome(new AlleleBoolean(true, true));
 
         if(gene.equals(Genes.GENE_AI_ARROW_ATTACK))
             return new Chromosome(new AlleleBoolean(true, false));

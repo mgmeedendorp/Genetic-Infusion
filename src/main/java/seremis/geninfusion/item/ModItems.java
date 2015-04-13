@@ -26,6 +26,6 @@ public class ModItems {
     }
 
     public static void registerItem(Item item, String name) {
-        GameRegistry.registerItem(item, DefaultProps.nameLower() + ".item." + name);
+        GameRegistry.registerItem(item, name);
     }
 }

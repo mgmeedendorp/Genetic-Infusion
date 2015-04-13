@@ -36,17 +36,20 @@ public class TraitItemPickup extends Trait {
 
                 if(!entityitem.isDead && entityitem.getEntityItem() != null) {
                     ItemStack itemstack = entityitem.getEntityItem();
-                    int i = getArmorImportance(itemstack);
+                    int armorSlot = getArmorSlot(itemstack);
 
-                    if(i > -1) {
+                    if(armorSlot > -1) {
                         boolean flag = true;
-                        ItemStack itemstack1 = getEquipmentInSlot(entity, i);
+                        ItemStack itemstack1 = getEquipmentInSlot(entity, armorSlot);
 
                         if(itemstack1 != null) {
-                            if(i == 0) {
-                                if((itemstack.getItem() instanceof ItemSword || itemstack.getItem().getItemUseAction(itemstack) == EnumAction.bow) && (!(itemstack1.getItem() instanceof ItemSword) || !(itemstack1.getItem().getItemUseAction(itemstack1) == EnumAction.bow))) {
+                            if(armorSlot == 0) {
+                                boolean canShootBow = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_AI_ARROW_ATTACK);
+                                boolean canFightWithSword = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE);
+
+                                if(((itemstack.getItem() instanceof ItemSword && canFightWithSword) || (itemstack.getItemUseAction() == EnumAction.bow && canShootBow)) && (!(itemstack1.getItem() instanceof ItemSword && canFightWithSword) || !(itemstack1.getItemUseAction() == EnumAction.bow && canShootBow))) {
                                     flag = true;
-                                } else if(itemstack.getItem() instanceof ItemSword) {
+                                } else if(itemstack.getItem() instanceof ItemSword && itemstack1.getItem() instanceof ItemSword) {
                                     ItemSword itemsword = (ItemSword) itemstack.getItem();
                                     ItemSword itemsword1 = (ItemSword) itemstack1.getItem();
 
@@ -76,7 +79,7 @@ public class TraitItemPickup extends Trait {
 
                         if(flag) {
                             float[] equipmentDropChances = entity.getFloatArray("equipmentDropChances");
-                            float dropChance = equipmentDropChances[i];
+                            float dropChance = equipmentDropChances[armorSlot];
 
                             if(itemstack1 != null && new Random().nextFloat() - 0.1F < dropChance) {
                                 ((EntityLiving) entity).entityDropItem(itemstack1, 0.0F);
@@ -90,8 +93,8 @@ public class TraitItemPickup extends Trait {
                                 }
                             }
 
-                            setEquipmentInSlot(entity, i, itemstack);
-                            equipmentDropChances[i] = 2.0F;
+                            setEquipmentInSlot(entity, armorSlot, itemstack);
+                            equipmentDropChances[armorSlot] = 2.0F;
                             entity.setFloatArray("equipmentDropChances", equipmentDropChances);
                             entity.setBoolean("persistenceRequired", true);
                             onItemPickup(entity, entityitem, 1);
@@ -145,7 +148,7 @@ public class TraitItemPickup extends Trait {
         entity.getWorld().theProfiler.endSection();
     }
 
-    public static int getArmorImportance(ItemStack stack) {
+    public static int getArmorSlot(ItemStack stack) {
         if(stack.getItem() != Item.getItemFromBlock(Blocks.pumpkin) && stack.getItem() != Items.skull) {
             if(stack.getItem() instanceof ItemArmor) {
 

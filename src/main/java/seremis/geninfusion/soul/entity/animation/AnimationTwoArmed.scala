@@ -35,7 +35,9 @@ class AnimationTwoArmed extends Animation {
         rightArm.rotationPointY = rightArm.initialRotationPointY
         rightArm.rotationPointZ = rightArm.initialRotationPointZ
 
-        if(!armsHorizontal(entity)) {
+        if(!armsHorizontal(entity) || (living.getHeldItem != null && living.getHeldItem.getItemUseAction == EnumAction.bow)) {
+            leftArm.rotateAngleX = leftArm.initialRotateAngleX
+            rightArm.rotateAngleX = rightArm.initialRotateAngleX
             leftArm.rotateAngleX += MathHelper.cos(timeModifier * 0.6662F + PI) * 2.0F * limbSwing * 0.5F
             rightArm.rotateAngleX += MathHelper.cos(timeModifier * 0.6662F) * 2.0F * limbSwing * 0.5F
             leftArm.rotateAngleZ = leftArm.initialRotateAngleZ
@@ -76,6 +78,23 @@ class AnimationTwoArmed extends Animation {
                 leftArm.rotateAngleZ = MathHelper.sin(swingProgress * PI) * -0.4F
             }
 
+            if(living.getHeldItem != null && living.getHeldItem.getItemUseAction == EnumAction.bow) {
+                val f6 = 0.0F
+                val f7 = 0.0F
+                leftArm.rotateAngleZ = leftArm.initialRotateAngleZ
+                rightArm.rotateAngleZ = rightArm.initialRotateAngleZ
+                leftArm.rotateAngleY = -(0.1F - f6 * 0.6F) + head(0).rotateAngleY
+                rightArm.rotateAngleY = 0.1F - f6 * 0.6F + head(0).rotateAngleY + 0.4F
+                leftArm.rotateAngleX = -(PI / 2F) + head(0).rotateAngleX
+                rightArm.rotateAngleX = -(PI / 2F) + head(0).rotateAngleX
+                leftArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F
+                rightArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F
+                leftArm.rotateAngleZ += MathHelper.cos(limbSwing * 0.09F) * 0.05F + 0.05F
+                rightArm.rotateAngleZ -= MathHelper.cos(limbSwing * 0.09F) * 0.05F + 0.05F
+                leftArm.rotateAngleX += MathHelper.sin(limbSwing * 0.067F) * 0.05F
+                rightArm.rotateAngleX -= MathHelper.sin(limbSwing * 0.067F) * 0.05F
+            }
+
             if(living.isSneaking) {
                 leftArm.rotateAngleX += 0.4F
                 rightArm.rotateAngleX += 0.4F
@@ -105,23 +124,6 @@ class AnimationTwoArmed extends Animation {
             rightArm.rotateAngleZ -= MathHelper.cos(specialRotation * 0.09F) * 0.05F + 0.05F
             leftArm.rotateAngleX += MathHelper.sin(specialRotation * 0.067F) * 0.05F
             rightArm.rotateAngleX -= MathHelper.sin(specialRotation * 0.067F) * 0.05F
-        }
-
-        if(living.getHeldItem != null && living.getHeldItem.getItemUseAction == EnumAction.bow) {
-            val f6 = 0.0F
-            val f7 = 0.0F
-            leftArm.rotateAngleZ = leftArm.initialRotateAngleZ
-            rightArm.rotateAngleZ = rightArm.initialRotateAngleZ
-            leftArm.rotateAngleY = -(0.1F - f6 * 0.6F) + head(0).rotateAngleY
-            rightArm.rotateAngleY = 0.1F - f6 * 0.6F + head(0).rotateAngleY + 0.4F
-            leftArm.rotateAngleX = -(PI / 2F) + head(0).rotateAngleX
-            rightArm.rotateAngleX = -(PI / 2F) + head(0).rotateAngleX
-            leftArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F
-            rightArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F
-            leftArm.rotateAngleZ += MathHelper.cos(limbSwing * 0.09F) * 0.05F + 0.05F
-            rightArm.rotateAngleZ -= MathHelper.cos(limbSwing * 0.09F) * 0.05F + 0.05F
-            leftArm.rotateAngleX += MathHelper.sin(limbSwing * 0.067F) * 0.05F
-            rightArm.rotateAngleX -= MathHelper.sin(limbSwing * 0.067F) * 0.05F
         }
     }
 

@@ -41,7 +41,6 @@ public class Genes {
     public static final String GENE_CEASE_AI_MOVEMENT = ".gene.ceaseAIMovement";
     public static final String GENE_CHILDREN_BURN_IN_DAYLIGHT = ID + ".gene.childrenBurn";
     public static final String GENE_IS_TAMEABLE = ID + ".gene.isTameable";
-    public static final String GENE_TOUCH_ATTACK = ID + ".gene.touchAttack";
 
     public static final String GENE_AI_ARROW_ATTACK = ID + ".gene.aiArrowAttack";
     public static final String GENE_AI_ARROW_ATTACK_INDEX = ID + ".gene.aiArrowAttackIndex";

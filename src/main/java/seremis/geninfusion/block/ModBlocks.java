@@ -48,10 +48,10 @@ public class ModBlocks {
     }
 
     public static void registerBlock(Block block, String name) {
-        GameRegistry.registerBlock(block, DefaultProps.nameLower() + ".block." + name);
+        GameRegistry.registerBlock(block, name);
     }
 
     public static void registerBlock(Block block, Class<? extends ItemBlock> itemBlock, String name) {
-        GameRegistry.registerBlock(block, itemBlock, DefaultProps.nameLower() + ".block." + name);
+        GameRegistry.registerBlock(block, itemBlock, name);
     }
 }

@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.item.EnumAction;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
@@ -31,9 +32,7 @@ public class TraitAttack extends Trait {
     public boolean attackEntityAsMob(IEntitySoulCustom entity, Entity entityToAttack) {
         EntityLiving living = (EntityLiving) entity;
 
-        boolean touchAttack = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_TOUCH_ATTACK);
-
-        if(touchAttack) {
+        if(SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE)) {
             float f = (float) living.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
             int i = 0;
 
@@ -74,25 +73,26 @@ public class TraitAttack extends Trait {
     public void attackEntityWithRangedAttack(IEntitySoulCustom entity, EntityLivingBase target, float distanceModified) {
         EntityLiving living = (EntityLiving) entity;
 
-        EntityArrow entityarrow = new EntityArrow(living.worldObj, living, target, 1.6F, (float) (14 - living.worldObj.difficultySetting.getDifficultyId() * 4));
-        int powerLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, living.getHeldItem());
-        int punchLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, living.getHeldItem());
-        entityarrow.setDamage((double) (distanceModified * 2.0F) + entity.getRandom().nextGaussian() * 0.25D + (double) ((float) entity.getWorld().difficultySetting.getDifficultyId() * 0.11F));
+        if(living.getHeldItem() != null && living.getHeldItem().getItemUseAction() == EnumAction.bow) {
+            EntityArrow entityarrow = new EntityArrow(living.worldObj, living, target, 1.6F, (float) (14 - living.worldObj.difficultySetting.getDifficultyId() * 4));
+            int powerLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, living.getHeldItem());
+            int punchLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, living.getHeldItem());
+            entityarrow.setDamage((double) (distanceModified * 2.0F) + entity.getRandom().nextGaussian() * 0.25D + (double) ((float) entity.getWorld().difficultySetting.getDifficultyId() * 0.11F));
 
-        if(powerLevel > 0) {
-            entityarrow.setDamage(entityarrow.getDamage() + (double) powerLevel * 0.5D + 0.5D);
+            if(powerLevel > 0) {
+                entityarrow.setDamage(entityarrow.getDamage() + (double) powerLevel * 0.5D + 0.5D);
+            }
+
+            if(punchLevel > 0) {
+                entityarrow.setKnockbackStrength(punchLevel);
+            }
+
+            if(EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, living.getHeldItem()) > 0) {
+                entityarrow.setFire(100);
+            }
+
+            entity.playSound("random.bow", 1.0F, 1.0F / (entity.getRandom().nextFloat() * 0.4F + 0.8F));
+            entity.getWorld().spawnEntityInWorld(entityarrow);
         }
-
-        if(punchLevel > 0) {
-            entityarrow.setKnockbackStrength(punchLevel);
-        }
-
-        //TODO skeleton type
-        if(EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, living.getHeldItem()) > 0) {
-            entityarrow.setFire(100);
-        }
-
-        entity.playSound("random.bow", 1.0F, 1.0F / (entity.getRandom().nextFloat() * 0.4F + 0.8F));
-        entity.getWorld().spawnEntityInWorld(entityarrow);
     }
 }

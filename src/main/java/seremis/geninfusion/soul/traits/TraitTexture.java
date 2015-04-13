@@ -14,7 +14,6 @@ public class TraitTexture extends Trait {
     @Override
     public String getEntityTexture(IEntitySoulCustom entity) {
         try {
-            //return Localizations.LOC_MODEL_TEXTURES() + Localizations.BLANK();
             return SoulHelper.geneRegistry.getValueString(entity, Genes.GENE_TEXTURE);
         } catch(NullPointerException e) {
             return "textures/entity/zombie/zombie.png";

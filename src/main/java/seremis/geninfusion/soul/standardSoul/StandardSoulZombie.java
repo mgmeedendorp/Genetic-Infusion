@@ -1,8 +1,8 @@
 package seremis.geninfusion.soul.standardSoul;
 
-import net.minecraft.client.model.ModelSkeleton;
 import net.minecraft.client.model.ModelZombie;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -14,6 +14,11 @@ import seremis.geninfusion.soul.Chromosome;
 import seremis.geninfusion.soul.allele.*;
 
 public class StandardSoulZombie extends StandardSoul {
+
+    @Override
+    public boolean isStandardSoulForEntity(EntityLiving entity) {
+        return entity instanceof EntityZombie;
+    }
 
     @Override
     public IChromosome getChromosomeFromGene(EntityLiving entity, String gene) {
