@@ -90,6 +90,7 @@ import seremis.geninfusion.soul.gene.newAI.watchClosest2.GeneAIWatchClosest2Chan
 import seremis.geninfusion.soul.gene.newAI.watchClosest2.GeneAIWatchClosest2Range;
 import seremis.geninfusion.soul.gene.newAI.watchClosest2.GeneAIWatchClosest2Target;
 import seremis.geninfusion.soul.gene.oldAI.GeneCeaseAIMovement;
+import seremis.geninfusion.soul.standardSoul.StandardSoulCreeper;
 import seremis.geninfusion.soul.standardSoul.StandardSoulSkeleton;
 import seremis.geninfusion.soul.standardSoul.StandardSoulZombie;
 import seremis.geninfusion.soul.traits.*;
@@ -339,6 +340,7 @@ public class ModSouls {
 
         standardSoulRegistry.register(new StandardSoulZombie());
         standardSoulRegistry.register(new StandardSoulSkeleton());
+        standardSoulRegistry.register(new StandardSoulCreeper());
 
         animationRegistry.register(Animations.ANIMATION_WALK_FOUR_LEGGED(), new AnimationTwoLegged());
         animationRegistry.register(Animations.ANIMATION_WALK_TWO_ARMED(), new AnimationTwoArmed());
