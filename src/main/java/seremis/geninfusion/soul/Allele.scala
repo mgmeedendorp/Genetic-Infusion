@@ -1,43 +1,36 @@
 package seremis.geninfusion.soul
 
 import net.minecraft.nbt.NBTTagCompound
-import seremis.geninfusion.api.soul.{IAllele, EnumAlleleType}
+import seremis.geninfusion.api.soul.IAllele
+import seremis.geninfusion.util.UtilNBT._
 
-object Allele {
-    def readAlleleFromNBT(compound: NBTTagCompound): IAllele = {
-        val alleleType = EnumAlleleType.values()(compound.getInteger("type"))
+import scala.reflect.ClassTag
 
-        try {
-            val constructor = alleleType.clazz.getConstructor(classOf[NBTTagCompound])
+class Allele[T: ClassTag](var dominant: Boolean, var alleleData: T) extends IAllele[T] {
 
-            return constructor.newInstance(compound)
-        } catch {
-            case e: Exception => e.printStackTrace()
-        }
-        null
-    }
-}
-
-abstract class Allele(var dominant: Boolean, var alleleType: EnumAlleleType) extends IAllele {
-
-    def this(compound: NBTTagCompound) {
-        this()
-        readFromNBT(compound)
+    def this() {
+        this(false, AnyRef.asInstanceOf[T])
     }
 
     override def isDominant: Boolean = dominant
 
+    override def getAlleleData: T = alleleData
+
     override def writeToNBT(compound: NBTTagCompound) {
-        compound.setBoolean("isDominant", dominant)
-        compound.setInteger("type", alleleType.ordinal())
+        alleleData.writeToNBT(compound, "alleleData")
+        dominant.readFromNBT(compound, "dominant")
     }
 
     override def readFromNBT(compound: NBTTagCompound) {
-        dominant = compound.getBoolean("isDominant")
-        alleleType = EnumAlleleType.values()(compound.getInteger("type"))
+        alleleData.readFromNBT(compound, "alleleData")
+        dominant.readFromNBT(compound, "dominant")
     }
+}
 
-    override def toString: String = {
-        "Allele[type: " + alleleType + ", isDominant: " + dominant + "]"
+object Allele {
+    def fromNBT(compound: NBTTagCompound): Allele[Any] = {
+        val allele = new Allele[Any]()
+        allele.readFromNBT(compound)
+        allele
     }
 }

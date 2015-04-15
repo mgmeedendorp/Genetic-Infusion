@@ -13,13 +13,12 @@ import net.minecraftforge.common.ForgeHooks;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
-import seremis.geninfusion.soul.allele.AlleleBoolean;
 
 public class TraitAttacked extends Trait {
 
     @Override
     public void firstTick(IEntitySoulCustom entity) {
-        entity.setBoolean("invulnerable", ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_INVULNERABLE)).value);
+        entity.setBoolean("invulnerable", SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_INVULNERABLE));
     }
 
     @Override

@@ -311,6 +311,12 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         return modelPart;
     }
 
+    public static ModelPart fromNBT(NBTTagCompound compound) {
+        ModelPart part = new ModelPart();
+        part.readFromNBT(compound);
+        return part;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof ModelPart) {

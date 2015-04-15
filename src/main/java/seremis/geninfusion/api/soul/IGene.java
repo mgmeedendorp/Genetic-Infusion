@@ -2,7 +2,11 @@ package seremis.geninfusion.api.soul;
 
 public interface IGene {
 
-    Class<? extends IAllele> possibleAlleles();
+    /**
+     * Return the EnumAlleleType this IGene contains.
+     * @return The EnumAlleleType of this IGene.
+     */
+    EnumAlleleType getAlleleType();
 
     /**
      * Mutate a chromosome containing a value associated with this IGene.
@@ -32,4 +36,10 @@ public interface IGene {
      * @return The chromosome of the offspring.
      */
     IChromosome advancedInherit(IChromosome[] parent1, IChromosome[] parent2, IChromosome[] offspring);
+
+    /**
+     * Turns off mutations for this IGene.
+     * @return This IGene
+     */
+    IGene noMutations();
 }

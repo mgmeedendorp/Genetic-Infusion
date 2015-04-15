@@ -14,7 +14,6 @@ import net.minecraft.world.World
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.util.Data
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
-import seremis.geninfusion.soul.allele.{AlleleFloat, AlleleInteger, AlleleString}
 import seremis.geninfusion.soul.entity.logic.VariableSyncLogic
 import seremis.geninfusion.soul.{Soul, TraitHandler}
 import seremis.geninfusion.util.INBTTagable
@@ -72,19 +71,19 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     //TODO
     //override def isChild: Boolean = getBoolean("isChild")
 
-    override def getTalkInterval: Int = SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_TALK_INTERVAL).asInstanceOf[AlleleInteger].value
+    override def getTalkInterval: Int = SoulHelper.geneRegistry.getValueInteger(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_TALK_INTERVAL)
 
-    override def getDeathSound: String = SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_DEATH_SOUND).asInstanceOf[AlleleString].value
+    override def getDeathSound: String = SoulHelper.geneRegistry.getValueString(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_DEATH_SOUND)
 
-    override def getLivingSound: String = SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_LIVING_SOUND).asInstanceOf[AlleleString].value
+    override def getLivingSound: String = SoulHelper.geneRegistry.getValueString(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_LIVING_SOUND)
 
-    override def getHurtSound: String = SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_HURT_SOUND).asInstanceOf[AlleleString].value
+    override def getHurtSound: String = SoulHelper.geneRegistry.getValueString(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_HURT_SOUND)
 
-    override def getSplashSound: String = SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_SPLASH_SOUND).asInstanceOf[AlleleString].value
+    override def getSplashSound: String = SoulHelper.geneRegistry.getValueString(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_SPLASH_SOUND)
 
-    override def getSwimSound: String = SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_SWIM_SOUND).asInstanceOf[AlleleString].value
+    override def getSwimSound: String = SoulHelper.geneRegistry.getValueString(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_SWIM_SOUND)
 
-    override def getSoundVolume: Float = SoulHelper.geneRegistry.getActiveFor(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_SOUND_VOLUME).asInstanceOf[AlleleFloat].value
+    override def getSoundVolume: Float = SoulHelper.geneRegistry.getValueFloat(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_SOUND_VOLUME)
 
     override def getSoundPitch: Float = super.getSoundPitch
 
@@ -203,7 +202,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     override def updateArmSwingProgress() = super.updateArmSwingProgress()
 
-    override def isAIEnabled(): Boolean = SoulHelper.geneRegistry.getValueBoolean(this, Genes.GENE_USE_NEW_AI)
+    override def isAIEnabled: Boolean = SoulHelper.geneRegistry.getValueBoolean(this, Genes.GENE_USE_NEW_AI)
 
     override def readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)

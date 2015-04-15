@@ -21,10 +21,10 @@ object StandardSoulRegistry extends IStandardSoulRegistry {
             chromosomes(i) = getStandardSoulForEntity(entity).getChromosomeFromGene(entity, name)
             if(chromosomes(i) == null) {
                 throw new NullPointerException("There seems to be a Gene: (" + name + ") without an associated Chromosome for Entity: (" + entity + ").")
-            } else if(!EnumAlleleType.getForClass(gene.possibleAlleles()).equals(EnumAlleleType.getForClass(chromosomes(i).getPrimary().getClass()))) {
-                throw new ClassCastException("Someone associated a Gene: (" + name + ") with an Allele (" + chromosomes(i).getPrimary() + ") that isn't allowed for this gene. It should be: " + gene.possibleAlleles())
-            } else if(!EnumAlleleType.getForClass(gene.possibleAlleles()).equals(EnumAlleleType.getForClass(chromosomes(i).getPrimary().getClass()))) {
-                throw new ClassCastException("Someone associated a Gene: (" + name + ") with an Allele (" + chromosomes(i).getSecondary() + ") that isn't allowed for this gene. It should be: " + gene.possibleAlleles())
+            } else if(!gene.getAlleleType.equals(EnumAlleleType.forClass(chromosomes(i).getPrimary.getAlleleData.getClass))) {
+                throw new ClassCastException("Someone associated a Gene: (" + name + ") with an Allele (" + chromosomes(i).getPrimary.getAlleleData.getClass + ") that isn't allowed for this gene. It should be: " + gene.getAlleleType.clzz)
+            } else if(!gene.getAlleleType.equals(EnumAlleleType.forClass(chromosomes(i).getSecondary.getAlleleData.getClass))) {
+                throw new ClassCastException("Someone associated a Gene: (" + name + ") with an Allele (" + chromosomes(i).getSecondary.getAlleleData.getClass + ") that isn't allowed for this gene. It should be: " + gene.getAlleleType.clzz)
             }
         }
         new Soul(chromosomes)

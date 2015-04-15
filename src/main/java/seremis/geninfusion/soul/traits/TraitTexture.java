@@ -6,8 +6,6 @@ import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.helper.GITextureHelper;
-import seremis.geninfusion.lib.Localizations;
-import seremis.geninfusion.soul.allele.AlleleString;
 
 public class TraitTexture extends Trait {
 
@@ -24,7 +22,7 @@ public class TraitTexture extends Trait {
     public void onDeath(IEntitySoulCustom entity, DamageSource source) {
         //TODO if it doesn't spawn a Soul, remove the texture
         GITextureHelper.deleteTexture(toResource(getEntityTexture(entity)));
-        GITextureHelper.deleteTexture(toResource(((AlleleString) SoulHelper.geneRegistry.getChromosomeFor(entity, Genes.GENE_TEXTURE).getRecessive()).value));
+        GITextureHelper.deleteTexture(toResource((String) SoulHelper.geneRegistry.getChromosomeFor(entity, Genes.GENE_TEXTURE).getRecessive().getAlleleData()));
     }
 
     public ResourceLocation toResource(String string) {

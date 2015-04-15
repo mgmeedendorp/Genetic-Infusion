@@ -14,8 +14,6 @@ import seremis.geninfusion.GeneticInfusion;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
-import seremis.geninfusion.soul.allele.AlleleFloatArray;
-import seremis.geninfusion.soul.allele.AlleleInventory;
 
 import java.util.ArrayList;
 
@@ -83,7 +81,7 @@ public class TraitItemDrops extends Trait {
     }
 
     private void dropFewItems(IEntitySoulCustom entity, boolean recentlyHit, int lootingLevel) {
-        ItemStack[] drops = ((AlleleInventory) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_ITEM_DROPS)).inventory.getItemStacks();
+        ItemStack[] drops = SoulHelper.geneRegistry.getValueItemStackArray(entity, Genes.GENE_ITEM_DROPS);
 
         if(drops.length != 0) {
             int j = entity.getRandom().nextInt(3);
@@ -101,7 +99,7 @@ public class TraitItemDrops extends Trait {
     }
 
     private void dropEquipment(IEntitySoulCustom entity, boolean recentlyHit, int lootingLevel) {
-        float[] equipmentDropChances = ((AlleleFloatArray) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_EQUIPMENT_DROP_CHANCES)).value;
+        float[] equipmentDropChances = SoulHelper.geneRegistry.getValueFloatArray(entity, Genes.GENE_EQUIPMENT_DROP_CHANCES);
 
         for(int j = 0; j < 5; ++j) {
             ItemStack itemstack = entity.getItemStackArray("equipment") != null ? entity.getItemStackArray("equipment")[j] : null;
@@ -131,8 +129,8 @@ public class TraitItemDrops extends Trait {
     }
 
     private void dropRareDrop(IEntitySoulCustom entity, boolean reallyRandomThingy) {
-        ItemStack[] drops = ((AlleleInventory) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_RARE_ITEM_DROPS)).inventory.getItemStacks();
-        float[] dropChances = ((AlleleFloatArray) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_RARE_ITEM_DROP_CHANCES)).value;
+        ItemStack[] drops = SoulHelper.geneRegistry.getValueItemStackArray(entity, Genes.GENE_RARE_ITEM_DROPS);
+        float[] dropChances = SoulHelper.geneRegistry.getValueFloatArray(entity, Genes.GENE_RARE_ITEM_DROP_CHANCES);
 
         for(int i = 0; i < drops.length; i++) {
             if(entity.getRandom().nextInt((int) (dropChances[i] * 100F)) == 0) {

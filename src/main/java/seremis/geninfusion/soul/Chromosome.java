@@ -76,8 +76,8 @@ public class Chromosome implements IChromosome {
     public void readFromNBT(NBTTagCompound compound) {
         NBTTagList list = compound.getTagList("alleles", Constants.NBT.TAG_COMPOUND);
 
-        allele1 = Allele.readAlleleFromNBT(list.getCompoundTagAt(0));
-        allele2 = Allele.readAlleleFromNBT(list.getCompoundTagAt(1));
+        allele1 = Allele.fromNBT(list.getCompoundTagAt(0));
+        allele2 = Allele.fromNBT(list.getCompoundTagAt(1));
     }
 
     @Override

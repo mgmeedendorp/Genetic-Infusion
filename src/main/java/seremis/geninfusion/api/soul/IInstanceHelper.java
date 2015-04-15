@@ -10,5 +10,5 @@ public interface IInstanceHelper {
 
     IChromosome getIChromosomeInstance(IAllele allele1, IAllele allele2);
 
-    IAllele getIAlleleInstance(EnumAlleleType alleleType, Object... args);
+    IAllele<?> getIAlleleInstance(EnumAlleleType alleleType, Object... args);
 }

@@ -9,7 +9,6 @@ import net.minecraft.util.DamageSource;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
-import seremis.geninfusion.soul.allele.AlleleBoolean;
 
 /**
  * @author Seremis
@@ -18,7 +17,7 @@ public class TraitFluids extends Trait {
 
     @Override
     public void onUpdate(IEntitySoulCustom entity) {
-        boolean drownsInWater = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_DROWNS_IN_WATER)).value;
+        boolean drownsInWater = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_DROWNS_IN_WATER);
 
         if(drownsInWater) {
             if(!entity.getBoolean("isDead") && ((EntityLiving) entity).isInsideOfMaterial(Material.water)) {
@@ -52,7 +51,7 @@ public class TraitFluids extends Trait {
             ((EntityLiving) entity).extinguish();
         }
 
-        boolean drownsInAir = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_DROWNS_IN_AIR)).value;
+        boolean drownsInAir = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_DROWNS_IN_AIR);
 
         if(drownsInAir) {
             int air = ((EntityLiving) entity).getAir();

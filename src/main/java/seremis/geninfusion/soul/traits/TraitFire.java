@@ -8,21 +8,20 @@ import net.minecraft.util.MathHelper;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.api.soul.lib.Genes;
-import seremis.geninfusion.soul.allele.AlleleBoolean;
 
 public class TraitFire extends Trait {
 
     @Override
     public void firstTick(IEntitySoulCustom entity) {
-        entity.setBoolean("isImmuneToFire", ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_IMMUNE_TO_FIRE)).value);
+        entity.setBoolean("isImmuneToFire", SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_IMMUNE_TO_FIRE));
     }
 
     @Override
     public void onUpdate(IEntitySoulCustom entity) {
         EntityLiving living = (EntityLiving) entity;
 
-        boolean burnsInDayLight = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_BURNS_IN_DAYLIGHT)).value;
-        boolean childrenBurnInDaylight = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_CHILDREN_BURN_IN_DAYLIGHT)).value;
+        boolean burnsInDayLight = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_BURNS_IN_DAYLIGHT);
+        boolean childrenBurnInDaylight = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_CHILDREN_BURN_IN_DAYLIGHT);
 
         double posX = entity.getDouble("posX");
         double posY = entity.getDouble("posY");
@@ -100,7 +99,7 @@ public class TraitFire extends Trait {
     public boolean attackEntityAsMob(IEntitySoulCustom entity, Entity entityToAttack) {
         EntityLiving living = (EntityLiving) entity;
 
-        boolean setEntitiesOnFire = ((AlleleBoolean) SoulHelper.geneRegistry.getActiveFor(entity, Genes.GENE_SET_ON_FIRE_FROM_ATTACK)).value;
+        boolean setEntitiesOnFire = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_SET_ON_FIRE_FROM_ATTACK);
 
         int difficulty = entity.getWorld().difficultySetting.getDifficultyId();
 
