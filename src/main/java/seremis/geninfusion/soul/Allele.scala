@@ -8,17 +8,14 @@ import scala.reflect.ClassTag
 
 class Allele[T: ClassTag](var dominant: Boolean, var alleleData: T) extends IAllele[T] {
 
-    def this() {
-        this(false, AnyRef.asInstanceOf[T])
-    }
-
     override def isDominant: Boolean = dominant
 
     override def getAlleleData: T = alleleData
 
     override def writeToNBT(compound: NBTTagCompound) {
         alleleData.writeToNBT(compound, "alleleData")
-        dominant.readFromNBT(compound, "dominant")
+        println(compound)
+        dominant.writeToNBT(compound, "dominant")
     }
 
     override def readFromNBT(compound: NBTTagCompound) {
@@ -28,9 +25,14 @@ class Allele[T: ClassTag](var dominant: Boolean, var alleleData: T) extends IAll
 }
 
 object Allele {
-    def fromNBT(compound: NBTTagCompound): Allele[Any] = {
-        val allele = new Allele[Any]()
-        allele.readFromNBT(compound)
+    def fromNBT(compound: NBTTagCompound): Allele[_] = {
+        var allele: Allele[_] = null
+        val dataType = "".readFromNBT(compound, "alleleData")
+        val dominant = false.readFromNBT(compound, "dominant")
+
+        allele = new Allele[dataType.type](dominant, dataType)
+
+        println("Allele.fromNBT() compound:  " + compound)
         allele
     }
 }

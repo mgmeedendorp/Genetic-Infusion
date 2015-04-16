@@ -8,15 +8,15 @@ import seremis.geninfusion.api.soul.IChromosome;
 
 public class Chromosome implements IChromosome {
 
-    public IAllele allele1;
-    public IAllele allele2;
+    public IAllele<?> allele1;
+    public IAllele<?> allele2;
 
-    public Chromosome(IAllele allele1, IAllele allele2) {
+    public Chromosome(IAllele<?> allele1, IAllele<?> allele2) {
         this.allele1 = allele1;
         this.allele2 = allele2;
     }
 
-    public Chromosome(IAllele allele) {
+    public Chromosome(IAllele<?> allele) {
         this.allele1 = allele;
         this.allele2 = allele;
     }
@@ -26,7 +26,7 @@ public class Chromosome implements IChromosome {
     }
 
     @Override
-    public IAllele getActive() {
+    public IAllele<?> getActive() {
         if(allele1.isDominant()) {
             return allele1;
         }
@@ -37,7 +37,7 @@ public class Chromosome implements IChromosome {
     }
 
     @Override
-    public IAllele getRecessive() {
+    public IAllele<?> getRecessive() {
         if(!allele1.isDominant()) {
             return allele1;
         }
@@ -48,12 +48,12 @@ public class Chromosome implements IChromosome {
     }
 
     @Override
-    public IAllele getPrimary() {
+    public IAllele<?> getPrimary() {
         return allele1;
     }
 
     @Override
-    public IAllele getSecondary() {
+    public IAllele<?> getSecondary() {
         return allele2;
     }
 

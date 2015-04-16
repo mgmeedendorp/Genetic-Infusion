@@ -4,7 +4,6 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.item.ItemStack;
 import seremis.geninfusion.api.soul.util.ModelPart;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public interface IGeneRegistry {
@@ -33,7 +32,7 @@ public interface IGeneRegistry {
 
     int getGeneId(IGene gene);
 
-    LinkedList<IGene> getGenes();
+    List<IGene> getGenes();
 
     IGene getGene(int id);
 

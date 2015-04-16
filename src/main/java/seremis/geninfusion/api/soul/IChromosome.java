@@ -4,11 +4,11 @@ import seremis.geninfusion.util.INBTTagable;
 
 public interface IChromosome extends INBTTagable {
 
-    IAllele getActive();
+    IAllele<?> getActive();
 
-    IAllele getRecessive();
+    IAllele<?> getRecessive();
 
-    IAllele getPrimary();
+    IAllele<?> getPrimary();
 
-    IAllele getSecondary();
+    IAllele<?> getSecondary();
 }

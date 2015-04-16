@@ -26,7 +26,7 @@ object UtilNBT {
             val result = new Array[T](list.tagCount())
 
             for(i <- 0 until list.tagCount()) {
-                result(i).readFromNBT(list.getCompoundTagAt(i), name)
+                result(i).readFromNBT(list.getCompoundTagAt(i), name + "." + i)
             }
             array = result
         }
@@ -76,10 +76,12 @@ object UtilNBT {
                 case a: Array[_] =>
                     a.writeToNBT(compound, name)
                     compound.setString(name + ".dataType", "array")
+                case _ =>
+                    println("ERROR writing NBT Data " + primitive)
             }
         }
 
-        def readFromNBT(compound: NBTTagCompound, name: String)(implicit m: ClassTag[T]) {
+        def readFromNBT(compound: NBTTagCompound, name: String)(implicit m: ClassTag[T]): T = {
             val dataType = compound.getString(name + ".dataType")
 
             dataType match {
@@ -109,7 +111,10 @@ object UtilNBT {
                     val array = new Array[T](0)
                     array.readFromNBT(compound, name)
                     primitive = array.asInstanceOf[T]
+                case _ =>
+                    println("ERROR " + dataType)
             }
+            primitive
         }
     }
 }
