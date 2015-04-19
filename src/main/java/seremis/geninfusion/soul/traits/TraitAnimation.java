@@ -13,9 +13,9 @@ public class TraitAnimation extends Trait {
     @Override
     public void firstTick(IEntitySoulCustom entity) {
         if(entity.getWorld().isRemote) {
-            IAnimationRegistry registry = SoulHelper.animationRegistry;
+            IAnimationRegistry registry = SoulHelper.animationRegistry();
 
-            List<IAnimation> animations = registry.getAnimations();
+            List<IAnimation> animations = new ArrayList<IAnimation>(Arrays.asList(registry.getAnimations()));
             List<String> possibleAnimations = new ArrayList<String>();
 
             for(IAnimation animation : animations) {
@@ -31,7 +31,7 @@ public class TraitAnimation extends Trait {
     @Override
     @SideOnly(Side.CLIENT)
     public void render(IEntitySoulCustom entity, float timeModifier, float limbSwing, float specialRotation, float rotationYawHead, float rotationPitch, float scale) {
-        IAnimationRegistry registry = SoulHelper.animationRegistry;
+        IAnimationRegistry registry = SoulHelper.animationRegistry();
 
         String[] possibleAnimationsArray = entity.getStringArray("possibleAnimations");
 
@@ -85,7 +85,7 @@ public class TraitAnimation extends Trait {
     }
 
     public String getSameTypeAnimationActive(List<String> activeAnimations, String animation) {
-        IAnimationRegistry registry = SoulHelper.animationRegistry;
+        IAnimationRegistry registry = SoulHelper.animationRegistry();
 
         if(!registry.getAnimation(animation).getAnimationType().equals(EnumAnimationType.UNDEFINED)) {
             for(String name : activeAnimations) {

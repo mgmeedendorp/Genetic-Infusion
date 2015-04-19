@@ -18,7 +18,7 @@ public class TraitAttacked extends Trait {
 
     @Override
     public void firstTick(IEntitySoulCustom entity) {
-        entity.setBoolean("invulnerable", SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_INVULNERABLE));
+        entity.setBoolean("invulnerable", SoulHelper.geneRegistry().getValueBoolean(entity, Genes.GENE_INVULNERABLE));
     }
 
     @Override

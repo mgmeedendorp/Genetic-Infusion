@@ -1,13 +1,10 @@
 package seremis.geninfusion.soul
 
-import java.util
-
 import net.minecraft.entity.EntityLiving
 import net.minecraft.item.ItemStack
 import seremis.geninfusion.api.soul._
 import seremis.geninfusion.api.soul.util.ModelPart
 
-import scala.collection.JavaConversions._
 import scala.collection.immutable.HashMap
 import scala.collection.mutable.ListBuffer
 
@@ -35,7 +32,7 @@ class GeneRegistry extends IGeneRegistry {
     override def registerGene(name: String, alleleType: EnumAlleleType): IGene = registerGene(name, new Gene(alleleType))
 
     override def registerMasterGene(name: String, gene: IMasterGene): IMasterGene = {
-        registerGene(name, gene)
+        registerGene(name, gene.asInstanceOf[IGene])
         masterGenes += (name -> gene)
         gene
     }
@@ -52,7 +49,7 @@ class GeneRegistry extends IGeneRegistry {
 
     override def useNormalInheritance(name: String): Boolean = useNormalInheritance(getGene(name))
 
-    override def getCustomInheritanceGenes: util.List[IGene] = customInheritance.toList
+    override def getCustomInheritanceGenes: List[IGene] = customInheritance.toList
 
     override def getGene(name: String): IGene = genes.get(name).get
 
@@ -62,7 +59,7 @@ class GeneRegistry extends IGeneRegistry {
 
     override def getGeneId(gene: IGene): Int = ids.get(gene).get
 
-    override def getGenes: util.List[IGene] = genes.values.toList
+    override def getGenes: List[IGene] = genes.values.toList
 
     override def getGene(id: Int): IGene = idsInv.get(id).get
 
@@ -76,23 +73,22 @@ class GeneRegistry extends IGeneRegistry {
     }
 
     override def getChromosomeFor(entity: EntityLiving, name: String): IChromosome = {
-        getSoulFor(entity).getChromosomes()(getGeneId(name))
+        getSoulFor(entity).getChromosomes(getGeneId(name))
     }
 
     override def getChromosomeFor(entity: IEntitySoulCustom, name: String): IChromosome = {
         getChromosomeFor(entity.asInstanceOf[EntityLiving], name)
     }
 
-    override def getActiveFor(entity: EntityLiving, name: String): IAllele[_] = {
+    override def getActiveFor(entity: EntityLiving, name: String): IAllele = {
         if (getChromosomeFor(entity, name) != null) getChromosomeFor(entity, name).getActive else null
     }
 
-    override def getActiveFor(entity: IEntitySoulCustom, name: String): IAllele[_] = {
+    override def getActiveFor(entity: IEntitySoulCustom, name: String): IAllele = {
         if (getChromosomeFor(entity, name) != null) getChromosomeFor(entity, name).getActive else null
     }
 
     override def getValueBoolean(entity: IEntitySoulCustom, name: String): Boolean = {
-        val a = getActiveFor(entity, name)
         getActiveFor(entity, name).getAlleleData.asInstanceOf[Boolean]
     }
 
@@ -133,6 +129,13 @@ class GeneRegistry extends IGeneRegistry {
     }
 
     override def getValueFloatArray(entity: IEntitySoulCustom, name: String): Array[Float] = {
+        for(gene <- getGenes) {
+            val name = getGeneName(gene)
+
+            println(name + " " + getActiveFor(entity, name).getAlleleData.getClass + " " + getActiveFor(entity, name).getAlleleData + " " + gene.getAlleleType)
+        }
+
+        println(getActiveFor(entity, name).getAlleleData.getClass + " " + getActiveFor(entity, name).getAlleleData)
         getActiveFor(entity, name).getAlleleData.asInstanceOf[Array[Float]]
     }
 
@@ -156,7 +159,7 @@ class GeneRegistry extends IGeneRegistry {
         getActiveFor(entity, name).getAlleleData.asInstanceOf[Array[Class[_]]]
     }
 
-    override def getControlledGenes(masterGeneName: String): util.List[String] = {
+    override def getControlledGenes(masterGeneName: String): List[String] = {
         getGene(masterGeneName).asInstanceOf[IMasterGene].getControlledGenes
     }
 }

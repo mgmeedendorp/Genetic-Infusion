@@ -23,12 +23,12 @@ public class TraitAI extends Trait {
 
     @Override
     public void firstTick(IEntitySoulCustom entity) {
-        boolean useNewAI = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_USE_NEW_AI);
+        boolean useNewAI = SoulHelper.geneRegistry().getValueBoolean(entity, Genes.GENE_USE_NEW_AI);
 
         if(useNewAI) {
             EntityLiving living = (EntityLiving) entity;
 
-            IGeneRegistry gReg = SoulHelper.geneRegistry;
+            IGeneRegistry gReg = SoulHelper.geneRegistry();
             EntityAITasks tasks = living.tasks;
             EntityAITasks targetTasks = living.targetTasks;
 
@@ -399,8 +399,8 @@ public class TraitAI extends Trait {
 
     @Override
     public void onUpdate(IEntitySoulCustom entity) {
-        boolean useNewAI = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_USE_NEW_AI);
-        boolean useOldAI = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_USE_OLD_AI);
+        boolean useNewAI = SoulHelper.geneRegistry().getValueBoolean(entity, Genes.GENE_USE_NEW_AI);
+        boolean useOldAI = SoulHelper.geneRegistry().getValueBoolean(entity, Genes.GENE_USE_OLD_AI);
         entity.getWorld().theProfiler.startSection("ai");
 
         if(((EntityLiving) entity).getHealth() <= 0.0F) {

@@ -109,13 +109,13 @@ class GeneModel extends Gene(EnumAlleleType.MODELPART_ARRAY) {
         GITextureHelper.writeBufferedImage(parent1Texture, parent1TextureLocation)
         GITextureHelper.writeBufferedImage(parent2Texture, parent2TextureLocation)
 
-        val textureAllele1 = new Allele[String](true, parent1TextureLocationString)
-        val textureAllele2 = new Allele[String](false, parent2TextureLocationString)
+        val textureAllele1 = new Allele(true, parent1TextureLocationString)
+        val textureAllele2 = new Allele(false, parent2TextureLocationString)
 
         offspring(geneIdTexture) = SoulHelper.instanceHelper.getIChromosomeInstance(textureAllele1, textureAllele2)
 
-        val resultAllele1 = new Allele[Array[ModelPart]](true, parent1Tuple._2.to[Array])
-        val resultAllele2 = new Allele[Array[ModelPart]](false, parent2Tuple._2.to[Array])
+        val resultAllele1 = new Allele(true, parent1Tuple._2.to[Array])
+        val resultAllele2 = new Allele(false, parent2Tuple._2.to[Array])
 
         SoulHelper.instanceHelper.getIChromosomeInstance(resultAllele1, resultAllele2)
     }

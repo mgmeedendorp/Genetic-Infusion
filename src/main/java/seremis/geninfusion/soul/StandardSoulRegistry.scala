@@ -21,8 +21,8 @@ object StandardSoulRegistry extends IStandardSoulRegistry {
             chromosomes(i) = getStandardSoulForEntity(entity).getChromosomeFromGene(entity, name)
             if(chromosomes(i) == null) {
                 throw new NullPointerException("There seems to be a Gene: (" + name + ") without an associated Chromosome for Entity: (" + entity + ").")
-            } else if(!gene.getAlleleType.equals(SoulHelper.geneRegistry.getGene(i).getAlleleType)) {
-                throw new ClassCastException("Someone associated a Gene: (" + name + ") with an Allele (" + chromosomes(i).getPrimary.getAlleleData.getClass + ") that isn't allowed for this gene. It should be: " + gene.getAlleleType.clzz)
+            } else if(!EnumAlleleType.forClass(chromosomes(i).getPrimary.getAlleleData.getClass).equals(SoulHelper.geneRegistry.getGene(i).getAlleleType)) {
+                throw new ClassCastException("Someone associated a Gene: (" + name + ") with an Allele (" + chromosomes(i).getPrimary.getAlleleData.getClass.getName + ") that isn't allowed for this gene. It should be: " + gene.getAlleleType.clzz.getName)
             }
         }
         new Soul(chromosomes)

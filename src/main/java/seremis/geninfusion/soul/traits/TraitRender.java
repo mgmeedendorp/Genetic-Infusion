@@ -13,7 +13,7 @@ public class TraitRender extends Trait {
     @Override
     @SideOnly(Side.CLIENT)
     public void render(IEntitySoulCustom entity, float timeModifier, float limbSwing, float specialRotation, float rotationYawHead, float rotationPitch, float scale) {
-        ModelPart[] model = SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL);
+        ModelPart[] model = SoulHelper.geneRegistry().getValueModelPartArray(entity, Genes.GENE_MODEL);
 
         for(int i = 0; i < model.length; i++) {
             model[i].render(scale);
@@ -89,7 +89,7 @@ public class TraitRender extends Trait {
 
         entity.updateArmSwingProgress();
 
-        boolean burnsInDaylight = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_BURNS_IN_DAYLIGHT);
+        boolean burnsInDaylight = SoulHelper.geneRegistry().getValueBoolean(entity, Genes.GENE_BURNS_IN_DAYLIGHT);
 
         if(living.getBrightness(1.0F) > 0.5F && burnsInDaylight) {
             entity.setInteger("entityAge", entity.getInteger("entityAge") + 2);

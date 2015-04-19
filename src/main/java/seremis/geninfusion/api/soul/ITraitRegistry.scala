@@ -1,11 +1,6 @@
-package seremis.geninfusion.api.soul;
+package seremis.geninfusion.api.soul
 
-import java.util.LinkedList;
-
-/**
- * @author Seremis
- */
-public interface ITraitRegistry {
+trait ITraitRegistry {
 
     /**
      * Register an ITrait. Registering an ITrait wil enable this trait's methods to be called to change or add
@@ -14,21 +9,21 @@ public interface ITraitRegistry {
      * @param name  a name for the ITrait.
      * @param trait The instance of the ITrait
      */
-    public void registerTrait(String name, ITrait trait);
+    def registerTrait(name: String, `trait`: ITrait)
 
     /**
      * Remove an ITrait from registry. This will completely stop the trait from being executed ever.
      *
      * @param name the name of the ITrait
      */
-    public void unregisterTrait(String name);
+    def unregisterTrait(name: String)
 
     /**
      * Remove an ITrait from registry. This will completely stop the trait from being executed ever.
      *
      * @param trait the ITrait to be removed.
      */
-    public void unregisterTrait(ITrait trait);
+    def unregisterTrait(`trait`: ITrait)
 
     /**
      * Returns the instance of the ITrait that was registered with the passed name.
@@ -36,7 +31,7 @@ public interface ITraitRegistry {
      * @param name The name of the trait
      * @return The ITrait instance that has this name
      */
-    public ITrait getTrait(String name);
+    def getTrait(name: String): ITrait
 
     /**
      * Returns the name of an ITrait from it's instance.
@@ -44,7 +39,7 @@ public interface ITraitRegistry {
      * @param trait The ITrait instance
      * @return The name of the ITrait
      */
-    public String getName(ITrait trait);
+    def getName(`trait`: ITrait): String
 
     /**
      * Returns the Id of an ITrait from it's instance.
@@ -52,7 +47,7 @@ public interface ITraitRegistry {
      * @param trait The ITrait instance
      * @return The id of the ITrait
      */
-    public int getId(ITrait trait);
+    def getId(`trait`: ITrait): Int
 
     /**
      * Returns the Id of an ITrait from it's name.
@@ -60,12 +55,12 @@ public interface ITraitRegistry {
      * @param name The name of the ITrait
      * @return The id of the ITrait
      */
-    public int getId(String name);
+    def getId(name: String): Int
 
     /**
-     * Returns an ArrayList of all registered ITraits.
+     * Returns an Array of all registered ITraits.
      *
-     * @return An ArrayList of ITraits.
+     * @return An Array of ITraits.
      */
-    public LinkedList<ITrait> getTraits();
+    def getTraits: Array[ITrait]
 }

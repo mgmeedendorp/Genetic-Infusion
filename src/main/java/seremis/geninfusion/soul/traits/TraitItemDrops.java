@@ -81,7 +81,7 @@ public class TraitItemDrops extends Trait {
     }
 
     private void dropFewItems(IEntitySoulCustom entity, boolean recentlyHit, int lootingLevel) {
-        ItemStack[] drops = SoulHelper.geneRegistry.getValueItemStackArray(entity, Genes.GENE_ITEM_DROPS);
+        ItemStack[] drops = SoulHelper.geneRegistry().getValueItemStackArray(entity, Genes.GENE_ITEM_DROPS);
 
         if(drops.length != 0) {
             int j = entity.getRandom().nextInt(3);
@@ -99,7 +99,7 @@ public class TraitItemDrops extends Trait {
     }
 
     private void dropEquipment(IEntitySoulCustom entity, boolean recentlyHit, int lootingLevel) {
-        float[] equipmentDropChances = SoulHelper.geneRegistry.getValueFloatArray(entity, Genes.GENE_EQUIPMENT_DROP_CHANCES);
+        float[] equipmentDropChances = SoulHelper.geneRegistry().getValueFloatArray(entity, Genes.GENE_EQUIPMENT_DROP_CHANCES);
 
         for(int j = 0; j < 5; ++j) {
             ItemStack itemstack = entity.getItemStackArray("equipment") != null ? entity.getItemStackArray("equipment")[j] : null;
@@ -129,8 +129,8 @@ public class TraitItemDrops extends Trait {
     }
 
     private void dropRareDrop(IEntitySoulCustom entity, boolean reallyRandomThingy) {
-        ItemStack[] drops = SoulHelper.geneRegistry.getValueItemStackArray(entity, Genes.GENE_RARE_ITEM_DROPS);
-        float[] dropChances = SoulHelper.geneRegistry.getValueFloatArray(entity, Genes.GENE_RARE_ITEM_DROP_CHANCES);
+        ItemStack[] drops = SoulHelper.geneRegistry().getValueItemStackArray(entity, Genes.GENE_RARE_ITEM_DROPS);
+        float[] dropChances = SoulHelper.geneRegistry().getValueFloatArray(entity, Genes.GENE_RARE_ITEM_DROP_CHANCES);
 
         for(int i = 0; i < drops.length; i++) {
             if(entity.getRandom().nextInt((int) (dropChances[i] * 100F)) == 0) {

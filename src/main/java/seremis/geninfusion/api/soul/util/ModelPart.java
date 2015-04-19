@@ -23,15 +23,15 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
     public float initialRotateAngleX, initialRotateAngleY, initialRotateAngleZ;
 
     public ModelPart(String boxName) {
-        super(SoulHelper.entityModel, boxName);
+        super(SoulHelper.entityModel(), boxName);
     }
 
     public ModelPart() {
-        super(SoulHelper.entityModel);
+        super(SoulHelper.entityModel());
     }
 
     public ModelPart(int textureOffsetX, int textureOffsetY) {
-        super(SoulHelper.entityModel, textureOffsetX, textureOffsetY);
+        super(SoulHelper.entityModel(), textureOffsetX, textureOffsetY);
     }
 
     public ModelPart(NBTTagCompound compound) {

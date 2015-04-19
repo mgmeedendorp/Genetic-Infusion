@@ -13,7 +13,7 @@ object ModSouls {
 
     def init() {
         geneRegistry.registerGene(Genes.GENE_MAX_HEALTH, DOUBLE)
-        geneRegistry.registerGene(Genes.GENE_INVULNERABLE, BOOLEAN)
+        geneRegistry.registerGene(Genes.GENE_INVULNERABLE, BOOLEAN).noMutations
         geneRegistry.registerGene(Genes.GENE_ATTACK_DAMAGE, DOUBLE)
         geneRegistry.registerGene(Genes.GENE_MOVEMENT_SPEED, DOUBLE)
         geneRegistry.registerGene(Genes.GENE_FOLLOW_RANGE, DOUBLE)
@@ -57,7 +57,7 @@ object ModSouls {
 
         geneRegistry.registerGene(Genes.GENE_AI_ATTACK_ON_COLLIDE_TARGET, CLASS_ARRAY)
         geneRegistry.registerGene(Genes.GENE_AI_ATTACK_ON_COLLIDE_MOVE_SPEED, new GeneMoveSpeed(DOUBLE_ARRAY))
-        geneRegistry.registerGene(Genes.GENE_AI_ATTACK_ON_COLLIDE_LONG_MEMORY, BOOLEAN)
+        geneRegistry.registerGene(Genes.GENE_AI_ATTACK_ON_COLLIDE_LONG_MEMORY, BOOLEAN_ARRAY)
         geneRegistry.registerGene(Genes.GENE_AI_ATTACK_ON_COLLIDE_INDEX, INTEGER_ARRAY).noMutations
         geneRegistry.registerMasterGene(Genes.GENE_AI_ATTACK_ON_COLLIDE, new GeneAIAttackOnCollide)
 

@@ -4,17 +4,14 @@ import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.soul.IAllele
 import seremis.geninfusion.util.UtilNBT._
 
-import scala.reflect.ClassTag
-
-class Allele[T: ClassTag](var dominant: Boolean, var alleleData: T) extends IAllele[T] {
+class Allele(var dominant: Boolean, var alleleData: Any) extends IAllele {
 
     override def isDominant: Boolean = dominant
 
-    override def getAlleleData: T = alleleData
+    override def getAlleleData: Any = alleleData
 
     override def writeToNBT(compound: NBTTagCompound) {
         alleleData.writeToNBT(compound, "alleleData")
-        println(compound)
         dominant.writeToNBT(compound, "dominant")
     }
 
@@ -25,14 +22,14 @@ class Allele[T: ClassTag](var dominant: Boolean, var alleleData: T) extends IAll
 }
 
 object Allele {
-    def fromNBT(compound: NBTTagCompound): Allele[_] = {
-        var allele: Allele[_] = null
-        val dataType = "".readFromNBT(compound, "alleleData")
+    def fromNBT(compound: NBTTagCompound): Allele = {
+        var data: Any = AnyRef.readFromNBT(compound, "alleleData")
+        val dataType = "".readFromNBT(compound, "alleleData.dataType")
+
         val dominant = false.readFromNBT(compound, "dominant")
 
-        allele = new Allele[dataType.type](dominant, dataType)
+        val allele = new Allele(dominant, data)
 
-        println("Allele.fromNBT() compound:  " + compound)
         allele
     }
 }

@@ -1,14 +1,13 @@
-package seremis.geninfusion.api.soul;
+package seremis.geninfusion.api.soul
 
-public interface IAnimation {
-
+trait IAnimation {
     /**
      * If this animation applies to this entity. This only gets called in the entity's first render tick!
      *
      * @param entity The entity to be animated.
      * @return Whether this animation applies to the passed entity.
      */
-    public boolean canAnimateEntity(IEntitySoulCustom entity);
+    def canAnimateEntity(entity: IEntitySoulCustom): Boolean
 
     /**
      * Should this animation be started this tick? This gets called every tick if canAnimateEntity() returns true.
@@ -16,14 +15,14 @@ public interface IAnimation {
      * @param entity The entity to be animated.
      * @return Whether this animation should start.
      */
-    public boolean shouldStartAnimation(IEntitySoulCustom entity);
+    def shouldStartAnimation(entity: IEntitySoulCustom): Boolean
 
     /**
      * Start this animation. This gets called at the start of an animation.
      *
      * @param entity The entity to be animated.
      */
-    public void startAnimation(IEntitySoulCustom entity);
+    def startAnimation(entity: IEntitySoulCustom)
 
     /**
      * Checks if this animation should continue executing, checked before every animate() call. If this returns false,
@@ -32,7 +31,7 @@ public interface IAnimation {
      * @param entity The entity to be animated.
      * @return If this animation should continue
      */
-    public boolean continueAnimation(IEntitySoulCustom entity);
+    def continueAnimation(entity: IEntitySoulCustom): Boolean
 
     /**
      * Animate this entity.
@@ -51,7 +50,7 @@ public interface IAnimation {
      * @param scale           The scale this entity should render at. Standard at 0.0625F (1/16). Has the same value as
      *                        the 6th parameter in setRotationAngles.
      */
-    public void animate(IEntitySoulCustom entity, float timeModifier, float walkSpeed, float specialRotation, float rotationYawHead, float rotationPitch, float scale);
+    def animate(entity: IEntitySoulCustom, timeModifier: Float, walkSpeed: Float, specialRotation: Float, rotationYawHead: Float, rotationPitch: Float, scale: Float)
 
     /**
      * Checks if this animation can be interrupted by another animation.
@@ -59,7 +58,7 @@ public interface IAnimation {
      * @param entity The entity to be animated.
      * @return Whether this animation can be interrupted.
      */
-    public boolean canBeInterrupted(IEntitySoulCustom entity);
+    def canBeInterrupted(entity: IEntitySoulCustom): Boolean
 
     /**
      * Returns the animation type of this animation. Animations with the same animation types cannot run concurrently,
@@ -67,12 +66,12 @@ public interface IAnimation {
      *
      * @return This animation's animation type.
      */
-    public EnumAnimationType getAnimationType();
+    def getAnimationType: EnumAnimationType
 
     /**
      * Reset the animation, gets called when continueAnimation() returns false.
      *
      * @param entity The entity to be animated.
      */
-    public void stopAnimation(IEntitySoulCustom entity);
+    def stopAnimation(entity: IEntitySoulCustom)
 }

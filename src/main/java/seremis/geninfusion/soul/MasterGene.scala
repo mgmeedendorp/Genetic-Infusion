@@ -11,7 +11,7 @@ abstract class MasterGene(alleleType: EnumAlleleType) extends Gene(alleleType) w
 
     var controlledGenes: ListBuffer[String] = ListBuffer()
 
-    override def getControlledGenes: util.List[String] = controlledGenes.toList
+    override def getControlledGenes: List[String] = controlledGenes.toList
 
     override def addControlledGene(name: String) = controlledGenes += name
 }

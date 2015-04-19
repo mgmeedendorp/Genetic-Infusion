@@ -32,7 +32,7 @@ public class TraitAttack extends Trait {
     public boolean attackEntityAsMob(IEntitySoulCustom entity, Entity entityToAttack) {
         EntityLiving living = (EntityLiving) entity;
 
-        if(SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE)) {
+        if(SoulHelper.geneRegistry().getValueBoolean(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE)) {
             float f = (float) living.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
             int i = 0;
 

@@ -1,7 +1,6 @@
 package seremis.geninfusion.api.soul;
 
 import net.minecraft.item.ItemStack;
-import scala.Array;
 import seremis.geninfusion.api.soul.util.ModelPart;
 
 public enum EnumAlleleType {

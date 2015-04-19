@@ -50,11 +50,15 @@ public class ItemDebugger extends GIItem {
                 }
             }
             if(stack.getItemDamage() == 1) {
-                EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.standardSoulRegistry.getSoulForEntity(new EntitySkeleton(world)), x + 0.5F, y + 1, z + 0.5F);
-                world.spawnEntityInWorld(entity);
+                try {
+                    EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper().getSoulEntityInstance(world, SoulHelper.standardSoulRegistry().getSoulForEntity(new EntitySkeleton(world)), x + 0.5F, y + 1, z + 0.5F);
+                    world.spawnEntityInWorld(entity);
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
             }
             if(stack.getItemDamage() == 2) {
-                EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.produceOffspring(SoulHelper.standardSoulRegistry.getSoulForEntity(new EntitySkeleton(world)), SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityZombie(world))), x + 0.5F, y + 1, z + 0.5F);
+                EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper().getSoulEntityInstance(world, SoulHelper.produceOffspring(SoulHelper.standardSoulRegistry().getSoulForEntity(new EntitySkeleton(world)), SoulHelper.standardSoulRegistry().getSoulForEntity(new EntityZombie(world))), x + 0.5F, y + 1, z + 0.5F);
                 world.spawnEntityInWorld(entity);
             }
             if(stack.getItemDamage() == 3) {
@@ -65,7 +69,7 @@ public class ItemDebugger extends GIItem {
                     entity.writeToNBT(nbt);
                     System.out.println(nbt);
 
-                    System.out.println(SoulHelper.geneRegistry.getValueBoolean((IEntitySoulCustom) entity, Genes.GENE_AI_ATTACK_ON_COLLIDE));
+                    System.out.println(SoulHelper.geneRegistry().getValueBoolean((IEntitySoulCustom) entity, Genes.GENE_AI_ATTACK_ON_COLLIDE));
                 }
             }
         }

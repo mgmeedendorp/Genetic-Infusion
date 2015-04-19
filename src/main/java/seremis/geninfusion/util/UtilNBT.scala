@@ -8,6 +8,40 @@ import scala.reflect.ClassTag
 
 object UtilNBT {
 
+    def loadFromNBT(compound: NBTTagCompound, name: String): AnyRef = {
+        val dataType = compound.getString(name + ".dataType")
+
+        dataType match {
+            case "boolean" =>
+                compound.getBoolean(name)
+            case "byte" =>
+                compound.getByte(name)
+            case "short" =>
+                compound.getShort(name)
+            case "integer" =>
+                compound.getInteger(name)
+            case "float" =>
+                compound.getFloat(name)
+            case "double" =>
+                compound.getDouble(name)
+            case "long" =>
+                 compound.getLong(name)
+            case "string" =>
+                compound.getString(name)
+            case "class" =>
+                Class.forName(compound.getString(name))
+            case "itemStack" =>
+                ItemStack.loadItemStackFromNBT(compound.getCompoundTag(name))
+            case "modelPart" =>
+                ModelPart.fromNBT(compound.getCompoundTag(name))
+            case "array" =>
+//                val arrayDataType = compound.getString(name + ".0.dataType");
+//                array.readFromNBT(compound, name)
+//                array.asInstanceOf[T]
+        }
+        null
+    }
+
     implicit class ArrayToNBT[T](var array: Array[T]) {
 
         def writeToNBT(compound: NBTTagCompound, name: String) {
@@ -111,6 +145,7 @@ object UtilNBT {
                     val array = new Array[T](0)
                     array.readFromNBT(compound, name)
                     primitive = array.asInstanceOf[T]
+                    println("array: " + primitive.toString)
                 case _ =>
                     println("ERROR " + dataType)
             }

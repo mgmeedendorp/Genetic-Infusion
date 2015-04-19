@@ -46,8 +46,8 @@ public class TraitNavigate extends Trait {
 
     @Override
     public float getBlockPathWeight(IEntitySoulCustom entity, int x, int y, int z) {
-        boolean burnsInDaylight = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_BURNS_IN_DAYLIGHT);
-        boolean eatsGrass = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_AI_EAT_GRASS);
+        boolean burnsInDaylight = SoulHelper.geneRegistry().getValueBoolean(entity, Genes.GENE_BURNS_IN_DAYLIGHT);
+        boolean eatsGrass = SoulHelper.geneRegistry().getValueBoolean(entity, Genes.GENE_AI_EAT_GRASS);
 
         if(burnsInDaylight) {
             return 0.5F - entity.getWorld().getLightBrightness(x, y, z);

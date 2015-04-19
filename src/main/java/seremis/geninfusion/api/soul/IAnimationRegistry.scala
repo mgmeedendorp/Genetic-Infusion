@@ -1,16 +1,14 @@
-package seremis.geninfusion.api.soul;
+package seremis.geninfusion.api.soul
 
-import java.util.List;
-
-public interface IAnimationRegistry {
-
+trait IAnimationRegistry {
+    
     /**
      * Register a new IAnimation.
      *
      * @param animation The IAnimation to register.
      * @param name      The unique name of the IAnimation.
      */
-    public void register(String name, IAnimation animation);
+    def register(name: String, animation: IAnimation)
 
     /**
      * Get an IAnimation.
@@ -18,7 +16,7 @@ public interface IAnimationRegistry {
      * @param name The name of the IAnimation.
      * @return The IAnimation with the name.
      */
-    public IAnimation getAnimation(String name);
+    def getAnimation(name: String): IAnimation
 
     /**
      * Get an IAnimation's name from an instance of IAnimation.
@@ -26,10 +24,10 @@ public interface IAnimationRegistry {
      * @param animation The IAnimation instance to get the name of.
      * @return The name of the IAnimation.
      */
-    public String getName(IAnimation animation);
+    def getName(animation: IAnimation): String
 
     /**
      * Get a List of all the registered IAnimations.
      */
-    public List<IAnimation> getAnimations();
+    def getAnimations: Array[IAnimation]
 }

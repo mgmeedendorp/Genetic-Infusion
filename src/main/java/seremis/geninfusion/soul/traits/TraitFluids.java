@@ -17,7 +17,7 @@ public class TraitFluids extends Trait {
 
     @Override
     public void onUpdate(IEntitySoulCustom entity) {
-        boolean drownsInWater = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_DROWNS_IN_WATER);
+        boolean drownsInWater = SoulHelper.geneRegistry().getValueBoolean(entity, Genes.GENE_DROWNS_IN_WATER);
 
         if(drownsInWater) {
             if(!entity.getBoolean("isDead") && ((EntityLiving) entity).isInsideOfMaterial(Material.water)) {
@@ -51,7 +51,7 @@ public class TraitFluids extends Trait {
             ((EntityLiving) entity).extinguish();
         }
 
-        boolean drownsInAir = SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_DROWNS_IN_AIR);
+        boolean drownsInAir = SoulHelper.geneRegistry().getValueBoolean(entity, Genes.GENE_DROWNS_IN_AIR);
 
         if(drownsInAir) {
             int air = ((EntityLiving) entity).getAir();

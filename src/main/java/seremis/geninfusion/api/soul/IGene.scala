@@ -1,12 +1,12 @@
-package seremis.geninfusion.api.soul;
+package seremis.geninfusion.api.soul
 
-public interface IGene {
+trait IGene {
 
     /**
      * Return the EnumAlleleType this IGene contains.
      * @return The EnumAlleleType of this IGene.
      */
-    EnumAlleleType getAlleleType();
+    def getAlleleType: EnumAlleleType
 
     /**
      * Mutate a chromosome containing a value associated with this IGene.
@@ -14,7 +14,7 @@ public interface IGene {
      * @param chromosome The chromosome to mutate
      * @return A mutated version of this chromosome
      */
-    IChromosome mutate(IChromosome chromosome);
+    def mutate(chromosome: IChromosome): IChromosome
 
     /**
      * Combine the chromosomes containing a value associated with this gene to one to create offspring.
@@ -23,7 +23,7 @@ public interface IGene {
      * @param chromosome2 The chromosome of the other parent
      * @return The chromosome of the offspring
      */
-    IChromosome inherit(IChromosome chromosome1, IChromosome chromosome2);
+    def inherit(chromosome1: IChromosome, chromosome2: IChromosome): IChromosome
 
     /**
      * An advanced version of inherit(). This wil be used instead of inherit() if this IGene is registered with
@@ -35,11 +35,11 @@ public interface IGene {
      *                  constructed.
      * @return The chromosome of the offspring.
      */
-    IChromosome advancedInherit(IChromosome[] parent1, IChromosome[] parent2, IChromosome[] offspring);
+    def advancedInherit(parent1: Array[IChromosome], parent2: Array[IChromosome], offspring: Array[IChromosome]): IChromosome
 
     /**
      * Turns off mutations for this IGene.
      * @return This IGene
      */
-    IGene noMutations();
+    def noMutations: IGene
 }

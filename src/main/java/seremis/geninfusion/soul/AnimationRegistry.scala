@@ -1,10 +1,6 @@
 package seremis.geninfusion.soul
 
-import java.util
-
 import seremis.geninfusion.api.soul.{IAnimation, IAnimationRegistry}
-
-import scala.collection.JavaConversions
 
 class AnimationRegistry extends IAnimationRegistry {
 
@@ -18,8 +14,8 @@ class AnimationRegistry extends IAnimationRegistry {
         }
     }
 
-    override def getAnimations: util.List[IAnimation] = {
-        JavaConversions.seqAsJavaList(animations.values.toSeq)
+    override def getAnimations: Array[IAnimation] = {
+        animations.values.toArray
     }
 
     override def getName(animation: IAnimation): String = {

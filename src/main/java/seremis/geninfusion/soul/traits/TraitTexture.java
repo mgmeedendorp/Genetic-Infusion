@@ -12,7 +12,7 @@ public class TraitTexture extends Trait {
     @Override
     public String getEntityTexture(IEntitySoulCustom entity) {
         try {
-            return SoulHelper.geneRegistry.getValueString(entity, Genes.GENE_TEXTURE);
+            return SoulHelper.geneRegistry().getValueString(entity, Genes.GENE_TEXTURE);
         } catch(NullPointerException e) {
             return "textures/entity/zombie/zombie.png";
         }
@@ -22,7 +22,7 @@ public class TraitTexture extends Trait {
     public void onDeath(IEntitySoulCustom entity, DamageSource source) {
         //TODO if it doesn't spawn a Soul, remove the texture
         GITextureHelper.deleteTexture(toResource(getEntityTexture(entity)));
-        GITextureHelper.deleteTexture(toResource((String) SoulHelper.geneRegistry.getChromosomeFor(entity, Genes.GENE_TEXTURE).getRecessive().getAlleleData()));
+        GITextureHelper.deleteTexture(toResource((String) SoulHelper.geneRegistry().getChromosomeFor(entity, Genes.GENE_TEXTURE).getRecessive().getAlleleData()));
     }
 
     public ResourceLocation toResource(String string) {
