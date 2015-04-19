@@ -1,7 +1,7 @@
 package seremis.geninfusion.util
 
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.{NBTTagList, NBTTagCompound}
+import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import seremis.geninfusion.api.soul.util.ModelPart
 
 import scala.reflect.ClassTag
@@ -52,6 +52,7 @@ object UtilNBT {
                 array(i).writeToNBT(arrayCompound, name + "." + i)
                 list.appendTag(arrayCompound)
             }
+            println("write Array to NBT: " + list)
             compound.setTag(name, list)
         }
 
@@ -142,12 +143,9 @@ object UtilNBT {
                 case "modelPart" =>
                     primitive = ModelPart.fromNBT(compound.getCompoundTag(name)).asInstanceOf[T]
                 case "array" =>
-                    val array = new Array[T](0)
-                    array.readFromNBT(compound, name)
-                    primitive = array.asInstanceOf[T]
-                    println("array: " + primitive.toString)
+
                 case _ =>
-                    println("ERROR " + dataType)
+                    println("ERROR " + name + " " + dataType + " " + compound)
             }
             primitive
         }

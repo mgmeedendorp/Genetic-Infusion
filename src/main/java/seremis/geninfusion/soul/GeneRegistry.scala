@@ -135,7 +135,7 @@ class GeneRegistry extends IGeneRegistry {
             println(name + " " + getActiveFor(entity, name).getAlleleData.getClass + " " + getActiveFor(entity, name).getAlleleData + " " + gene.getAlleleType)
         }
 
-        println(getActiveFor(entity, name).getAlleleData.getClass + " " + getActiveFor(entity, name).getAlleleData)
+        println(getActiveFor(entity, name).getAlleleData.getClass + " " + getActiveFor(entity, name).getAlleleData + " " + name)
         getActiveFor(entity, name).getAlleleData.asInstanceOf[Array[Float]]
     }
 

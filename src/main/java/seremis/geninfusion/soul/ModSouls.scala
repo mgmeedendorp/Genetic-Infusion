@@ -43,7 +43,7 @@ object ModSouls {
         geneRegistry.registerGene(Genes.GENE_SET_ON_FIRE_FROM_ATTACK, BOOLEAN)
         geneRegistry.registerGene(Genes.GENE_EXPERIENCE_VALUE, INTEGER)
         geneRegistry.registerGene(Genes.GENE_VERTICAL_FACE_SPEED, INTEGER)
-        geneRegistry.registerGene(Genes.GENE_IS_CREATURE, BOOLEAN)
+        geneRegistry.registerGene(Genes.GENE_IS_CREATURE, BOOLEAN).noMutations
         geneRegistry.registerGene(Genes.GENE_CEASE_AI_MOVEMENT, BOOLEAN)
         geneRegistry.registerGene(Genes.GENE_CHILDREN_BURN_IN_DAYLIGHT, BOOLEAN)
         geneRegistry.registerGene(Genes.GENE_IS_TAMEABLE, BOOLEAN)
