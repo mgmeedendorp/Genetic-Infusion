@@ -8,11 +8,7 @@ import seremis.geninfusion.api.soul.{EnumAnimationType, IEntitySoulCustom}
 
 class AnimationTwoArmed extends Animation {
 
-    override def canAnimateEntity(entity: IEntitySoulCustom): Boolean =  {
-        val arms = getModelArms(entity)
-        val bool = getModelArms(entity).length == 2 && getModelLeftArms(entity).length == 1 && getModelRightArms(entity).length == 1
-        return bool
-    }
+    override def canAnimateEntity(entity: IEntitySoulCustom): Boolean = return getModelArms(entity).length == 2 && getModelLeftArms(entity).length == 1 && getModelRightArms(entity).length == 1
 
     override def shouldStartAnimation(entity: IEntitySoulCustom): Boolean = true
 

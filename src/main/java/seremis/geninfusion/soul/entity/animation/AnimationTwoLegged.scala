@@ -2,12 +2,11 @@ package seremis.geninfusion.soul.entity.animation
 
 import net.minecraft.entity.EntityLiving
 import net.minecraft.util.MathHelper
-import seremis.geninfusion.api.soul.util.ModelPart
 import seremis.geninfusion.api.soul.{EnumAnimationType, IEntitySoulCustom}
 
 class AnimationTwoLegged extends Animation {
 
-    override def canAnimateEntity(entity: IEntitySoulCustom): Boolean = getModelLegs(entity).length == 2
+    override def canAnimateEntity(entity: IEntitySoulCustom): Boolean = getModelLegs(entity).length == 2 && getModelLeftLegs(entity).length == 1 && getModelRightLegs(entity).length == 1
 
     override def shouldStartAnimation(entity: IEntitySoulCustom): Boolean = true
 
@@ -18,30 +17,31 @@ class AnimationTwoLegged extends Animation {
     override def animate(entity: IEntitySoulCustom, timeModifier: Float, limbSwing: Float, specialRotation: Float, rotationYawHead: Float, rotationPitch: Float, scale: Float) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        val legs: Array[ModelPart] = getModelLegs(entity)
+        val leftLeg = getModelLeftLegs(entity)(0)
+        val rightLeg = getModelRightLegs(entity)(0)
 
-        legs(0).rotateAngleX = MathHelper.cos(timeModifier * 0.6662F) * 1.4F * limbSwing
-        legs(1).rotateAngleX = MathHelper.cos(timeModifier * 0.6662F + PI) * 1.4F * limbSwing
-        legs(0).rotateAngleY = 0.0F
-        legs(1).rotateAngleY = 0.0F
+        leftLeg.rotateAngleX = MathHelper.cos(timeModifier * 0.6662F) * 1.4F * limbSwing
+        rightLeg.rotateAngleX = MathHelper.cos(timeModifier * 0.6662F + PI) * 1.4F * limbSwing
+        leftLeg.rotateAngleY = 0.0F
+        rightLeg.rotateAngleY = 0.0F
 
         if(living.isRiding) {
-            legs(0).rotateAngleX = -(PI * 2F / 5F)
-            legs(1).rotateAngleX = -(PI * 2F / 5F)
-            legs(0).rotateAngleY = PI / 10F
-            legs(1).rotateAngleY = -(PI / 10F)
+            leftLeg.rotateAngleX = -(PI * 2F / 5F)
+            rightLeg.rotateAngleX = -(PI * 2F / 5F)
+            leftLeg.rotateAngleY = PI / 10F
+            rightLeg.rotateAngleY = -(PI / 10F)
         }
 
         if(living.isSneaking) {
-            legs(0).rotationPointZ = 4.0F
-            legs(1).rotationPointZ = 4.0F
-            legs(0).rotationPointY = 9.0F
-            legs(1).rotationPointY = 9.0F
+            leftLeg.rotationPointZ = 4.0F
+            rightLeg.rotationPointZ = 4.0F
+            leftLeg.rotationPointY = 9.0F
+            rightLeg.rotationPointY = 9.0F
         } else {
-            legs(0).rotationPointZ = legs(0).initialRotationPointZ
-            legs(1).rotationPointZ = legs(1).initialRotationPointZ
-            legs(0).rotationPointY = legs(0).initialRotationPointY
-            legs(1).rotationPointY = legs(1).initialRotationPointY
+            leftLeg.rotationPointZ = leftLeg.initialRotationPointZ
+            rightLeg.rotationPointZ = rightLeg.initialRotationPointZ
+            leftLeg.rotationPointY = leftLeg.initialRotationPointY
+            rightLeg.rotationPointY = rightLeg.initialRotationPointY
         }
     }
 

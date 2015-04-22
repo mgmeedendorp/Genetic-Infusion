@@ -15,6 +15,9 @@ abstract class Animation extends IAnimation {
 
     def getModel(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModel(entity)
 
+    def getModelLeftLegs(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelLeftLegs(entity)
+    def getModelRightLegs(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelRightLeg(entity)
+    
     def getModelLegs(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelLegs(entity)
 
     def getModelLeftArms(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelLeftArms(entity)
@@ -32,7 +35,8 @@ abstract class Animation extends IAnimation {
 }
 
 object AnimationCache {
-    var cachedLegs: Map[Array[ModelPart], Array[ModelPart]] = Map()
+    var cachedLegsLeft: Map[Array[ModelPart], Array[ModelPart]] = Map()
+    var cachedLegsRight: Map[Array[ModelPart], Array[ModelPart]] = Map()
     var cachedArmsLeft: Map[Array[ModelPart], Array[ModelPart]] = Map()
     var cachedArmsRight: Map[Array[ModelPart], Array[ModelPart]] = Map()
     var cachedBody: Map[Array[ModelPart], ModelPart] = Map()
@@ -47,20 +51,38 @@ object AnimationCache {
         SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_MODEL)
     }
 
-    def getModelLegs(entity: IEntitySoulCustom): Array[ModelPart] = getModelLegs(getModel(entity))
+    def getModelLegs(model: Array[ModelPart]): Array[ModelPart] = getModelLeftLegs(model) ++ getModelRightLeg(model)
+    def getModelLegs(entity: IEntitySoulCustom): Array[ModelPart] = getModelLeftLegs(entity) ++ getModelRightLeg(entity)
 
-    def getModelLegs(model: Array[ModelPart]): Array[ModelPart] = {
-        if(!cachedLegs.contains(model)) {
+    def getModelRightLeg(model: Array[ModelPart]): Array[ModelPart] = getModelLegs(model, false)
+    def getModelLeftLegs(model: Array[ModelPart]): Array[ModelPart] = getModelLegs(model, true)
+
+    def getModelRightLeg(entity: IEntitySoulCustom): Array[ModelPart] = getModelLegs(entity, false)
+    def getModelLeftLegs(entity: IEntitySoulCustom): Array[ModelPart] = getModelLegs(entity, true)
+
+    def getModelLegs(entity: IEntitySoulCustom, leftLeg: Boolean): Array[ModelPart] = getModelLegs(getModel(entity), leftLeg)
+
+    def getModelLegs(model: Array[ModelPart], leftLeg: Boolean): Array[ModelPart] = {
+        if(!(cachedLegsLeft.contains(model) && leftLeg || cachedLegsRight.contains(model) && !leftLeg)) {
             var legs: ListBuffer[ModelPart] = ListBuffer()
 
             for(part <- model) {
-                if(intersectsPlaneY(part, 23.0F)) {
+                val absoluteX = part.rotationPointX + part.offsetX * MathHelper.cos(part.rotateAngleY)
+
+                if(intersectsPlaneY(part, 23.0F) && (absoluteX > 0 && leftLeg || absoluteX < 0 && !leftLeg)) {
                     legs += part
                 }
             }
-            cachedLegs += (model -> legs.to[Array])
+
+            if(leftLeg)
+                cachedLegsLeft += (model -> legs.to[Array])
+            else
+                cachedLegsRight += (model -> legs.to[Array])
         }
-        cachedLegs.get(model).get
+        if(leftLeg)
+            cachedLegsLeft.get(model).get
+        else
+            cachedLegsRight.get(model).get
     }
 
     def getModelArms(entity: IEntitySoulCustom): Array[ModelPart] = getModelLeftArms(entity) ++ getModelRightArms(entity)

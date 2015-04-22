@@ -17,7 +17,7 @@ import scala.collection.mutable.ListBuffer
 class GeneModel extends Gene(EnumAlleleType.MODELPART_ARRAY) {
 
     override def mutate(chromosome: IChromosome): IChromosome = {
-        val allele1Data = chromosome.getPrimary.getAlleleData.asInstanceOf[Array[ModelPart]]
+        var allele1Data = chromosome.getPrimary.getAlleleData.asInstanceOf[Array[ModelPart]]
         val allele2Data = chromosome.getSecondary.getAlleleData.asInstanceOf[Array[ModelPart]]
 
         if(rand.nextBoolean()) {
