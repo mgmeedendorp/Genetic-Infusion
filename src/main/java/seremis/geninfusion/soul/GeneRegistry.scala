@@ -1,9 +1,7 @@
 package seremis.geninfusion.soul
 
 import net.minecraft.entity.EntityLiving
-import net.minecraft.item.ItemStack
 import seremis.geninfusion.api.soul._
-import seremis.geninfusion.api.soul.util.ModelPart
 
 import scala.collection.immutable.HashMap
 import scala.collection.mutable.ListBuffer
@@ -88,75 +86,8 @@ class GeneRegistry extends IGeneRegistry {
         if (getChromosomeFor(entity, name) != null) getChromosomeFor(entity, name).getActive else null
     }
 
-    override def getValueBoolean(entity: IEntitySoulCustom, name: String): Boolean = {
-        getActiveFor(entity, name).getAlleleData.asInstanceOf[Boolean]
-    }
-
-    override def getValueInteger(entity: IEntitySoulCustom, name: String): Int = {
-        getActiveFor(entity, name).getAlleleData.asInstanceOf[Integer]
-    }
-
-    override def getValueFloat(entity: IEntitySoulCustom, name: String): Float = {
-        getActiveFor(entity, name).getAlleleData.asInstanceOf[Float]
-    }
-
-    override def getValueDouble(entity: IEntitySoulCustom, name: String): Double = {
-        getActiveFor(entity, name).getAlleleData.asInstanceOf[Double]
-    }
-
-    override def getValueString(entity: IEntitySoulCustom, name: String): String = {
-        getActiveFor(entity, name).getAlleleData.asInstanceOf[String]
-    }
-
-    override def getValueItemStack(entity: IEntitySoulCustom, name: String): ItemStack = {
-        getActiveFor(entity, name).getAlleleData.asInstanceOf[ItemStack]
-    }
-
-    override def getValueModelPart(entity: IEntitySoulCustom, name: String): ModelPart = {
-        getActiveFor(entity, name).getAlleleData.asInstanceOf[ModelPart]
-    }
-
-    override def getValueClass(entity: IEntitySoulCustom, name: String): Class[_] = {
-        getActiveFor(entity, name).getAlleleData.asInstanceOf[Class[_]]
-    }
-
-    override def getValueBooleanArray(entity: IEntitySoulCustom, name: String): Array[Boolean] = {
-        getActiveFor(entity, name).getAlleleData.asInstanceOf[Array[Boolean]]
-    }
-
-    override def getValueIntegerArray(entity: IEntitySoulCustom, name: String): Array[Int] = {
-        getActiveFor(entity, name).getAlleleData.asInstanceOf[Array[Int]]
-    }
-
-    override def getValueFloatArray(entity: IEntitySoulCustom, name: String): Array[Float] = {
-        for(gene <- getGenes) {
-            val name = getGeneName(gene)
-
-            println(name + " " + getActiveFor(entity, name).getAlleleData.getClass + " " + getActiveFor(entity, name).getAlleleData + " " + gene.getAlleleType)
-        }
-
-        println(getActiveFor(entity, name).getAlleleData.getClass + " " + getActiveFor(entity, name).getAlleleData + " " + name)
-        getActiveFor(entity, name).getAlleleData.asInstanceOf[Array[Float]]
-    }
-
-    override def getValueDoubleArray(entity: IEntitySoulCustom, name: String): Array[Double] = {
-        getActiveFor(entity, name).getAlleleData.asInstanceOf[Array[Double]]
-    }
-
-    override def getValueStringArray(entity: IEntitySoulCustom, name: String): Array[String] = {
-        getActiveFor(entity, name).getAlleleData.asInstanceOf[Array[String]]
-    }
-
-    override def getValueItemStackArray(entity: IEntitySoulCustom, name: String): Array[ItemStack] = {
-        getActiveFor(entity, name).getAlleleData.asInstanceOf[Array[ItemStack]]
-    }
-
-    override def getValueModelPartArray(entity: IEntitySoulCustom, name: String): Array[ModelPart] = {
-        getActiveFor(entity, name).getAlleleData.asInstanceOf[Array[ModelPart]]
-    }
-
-    override def getValueClassArray(entity: IEntitySoulCustom, name: String): Array[Class[_]] = {
-        getActiveFor(entity, name).getAlleleData.asInstanceOf[Array[Class[_]]]
+    override def getValueFromAllele[T](entity: IEntitySoulCustom, name: String): T = {
+        getActiveFor(entity, name).getAlleleData.asInstanceOf[T]
     }
 
     override def getControlledGenes(masterGeneName: String): List[String] = {

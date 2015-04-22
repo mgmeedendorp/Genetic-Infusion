@@ -1,35 +1,36 @@
 package seremis.geninfusion.soul
 
 import net.minecraft.nbt.NBTTagCompound
-import seremis.geninfusion.api.soul.IAllele
-import seremis.geninfusion.util.UtilNBT._
+import seremis.geninfusion.api.soul.{EnumAlleleType, IAllele}
 
-class Allele(var dominant: Boolean, var alleleData: Any) extends IAllele {
+class Allele(var dominant: Boolean, var alleleData: Any, var alleleType: EnumAlleleType) extends IAllele {
 
     override def isDominant: Boolean = dominant
 
     override def getAlleleData: Any = alleleData
+    override def getAlleleType: EnumAlleleType = alleleType
 
-    override def writeToNBT(compound: NBTTagCompound) {
-        alleleData.writeToNBT(compound, "alleleData")
-        dominant.writeToNBT(compound, "dominant")
+    override def writeToNBT(compound: NBTTagCompound): NBTTagCompound = {
+        compound.setInteger("alleleType", alleleType.ordinal())
+        alleleType.writeValueToNBT(compound, "alleleData", alleleData)
+        compound.setBoolean("dominant", dominant)
+        compound
     }
 
-    override def readFromNBT(compound: NBTTagCompound) {
-        alleleData.readFromNBT(compound, "alleleData")
-        dominant.readFromNBT(compound, "dominant")
+    override def readFromNBT(compound: NBTTagCompound): NBTTagCompound = {
+        EnumAlleleType.values()(compound.getInteger("alleleType"))
+        alleleData = alleleType.readValueFromNBT(compound, "alleleData")
+        dominant = compound.getBoolean("dominant")
+        compound
     }
 }
 
 object Allele {
-    def fromNBT(compound: NBTTagCompound): Allele = {
-        var data: Any = AnyRef.readFromNBT(compound, "alleleData")
-        val dataType = "".readFromNBT(compound, "alleleData.dataType")
+    def fromNBT[_](compound: NBTTagCompound): Allele = {
+        val dominant = compound.getBoolean("dominant")
+        val alleleType = EnumAlleleType.values()(compound.getInteger("alleleType"))
+        val alleleData = alleleType.readValueFromNBT(compound, "alleleData")
 
-        val dominant = false.readFromNBT(compound, "dominant")
-
-        val allele = new Allele(dominant, data)
-
-        allele
+        new Allele(dominant, alleleData, alleleType)
     }
 }

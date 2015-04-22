@@ -13,7 +13,7 @@ class Soul(var chromosomes: Array[IChromosome]) extends ISoul {
 
     override def getChromosomes: Array[IChromosome] = chromosomes
 
-    override def writeToNBT(compound: NBTTagCompound) {
+    override def writeToNBT(compound: NBTTagCompound): NBTTagCompound = {
         compound.setInteger("genomeLength", chromosomes.length)
 
         val tagList = new NBTTagList()
@@ -24,9 +24,10 @@ class Soul(var chromosomes: Array[IChromosome]) extends ISoul {
             tagList.appendTag(compound1)
         }
         compound.setTag("chromosomes", tagList)
+        compound
     }
 
-    override def readFromNBT(compound: NBTTagCompound) {
+    override def readFromNBT(compound: NBTTagCompound): NBTTagCompound = {
         chromosomes = Array.ofDim[IChromosome](compound.getInteger("genomeLength"))
 
         val tagList = compound.getTagList("chromosomes", Constants.NBT.TAG_COMPOUND)
@@ -35,6 +36,7 @@ class Soul(var chromosomes: Array[IChromosome]) extends ISoul {
             val compound1 = tagList.getCompoundTagAt(i)
             chromosomes(i) = new Chromosome(compound1)
         }
+        compound
     }
 
     override def toString: String = {

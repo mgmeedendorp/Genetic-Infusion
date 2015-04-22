@@ -44,7 +44,7 @@ object AnimationCache {
     var cachedOuterBox: Map[ModelPart, (Vec3, Vec3)] = Map()
 
     def getModel(entity: IEntitySoulCustom): Array[ModelPart] = {
-        SoulHelper.geneRegistry.getValueModelPartArray(entity, Genes.GENE_MODEL)
+        SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_MODEL)
     }
 
     def getModelLegs(entity: IEntitySoulCustom): Array[ModelPart] = getModelLegs(getModel(entity))

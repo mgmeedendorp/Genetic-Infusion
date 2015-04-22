@@ -5,7 +5,6 @@ import java.util
 import net.minecraft.entity.EntityLiving
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
-import seremis.geninfusion.api.soul.IEntitySoulCustom
 import seremis.geninfusion.api.soul.util.Data
 import seremis.geninfusion.helper.GIReflectionHelper
 import seremis.geninfusion.util.INBTTagable
@@ -402,7 +401,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
         }
     }
 
-    override def writeToNBT(compound: NBTTagCompound) {
+    override def writeToNBT(compound: NBTTagCompound): NBTTagCompound = {
         if(persistent.nonEmpty) {
             val tagList = new NBTTagList()
             val stringList = new util.ArrayList[String]()
@@ -592,9 +591,10 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
                 compound.setTag("data", tagList)
             }
         }
+        compound
     }
 
-    override def readFromNBT(compound: NBTTagCompound) {
+    override def readFromNBT(compound: NBTTagCompound): NBTTagCompound = {
         data.readFromNBT(compound)
     }
 }

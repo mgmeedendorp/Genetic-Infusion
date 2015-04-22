@@ -6,19 +6,19 @@ import javafx.geometry.Rectangle2D
 import net.minecraft.util.ResourceLocation
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.util.ModelPart
-import seremis.geninfusion.api.soul.{SoulHelper, IChromosome, EnumAlleleType}
+import seremis.geninfusion.api.soul.{EnumAlleleType, IChromosome, SoulHelper}
 import seremis.geninfusion.helper.GITextureHelper
 import seremis.geninfusion.lib.Localizations
-import seremis.geninfusion.soul.{Allele, Gene}
 import seremis.geninfusion.soul.entity.animation.AnimationCache
+import seremis.geninfusion.soul.{Allele, Gene}
 
 import scala.collection.mutable.ListBuffer
 
 class GeneModel extends Gene(EnumAlleleType.MODELPART_ARRAY) {
 
     override def mutate(chromosome: IChromosome): IChromosome = {
-        var allele1Data = chromosome.getPrimary.getAlleleData.asInstanceOf[Array[ModelPart]]
-        var allele2Data = chromosome.getSecondary.getAlleleData.asInstanceOf[Array[ModelPart]]
+        val allele1Data = chromosome.getPrimary.getAlleleData.asInstanceOf[Array[ModelPart]]
+        val allele2Data = chromosome.getSecondary.getAlleleData.asInstanceOf[Array[ModelPart]]
 
         if(rand.nextBoolean()) {
             for(part <- allele1Data) {
@@ -109,13 +109,13 @@ class GeneModel extends Gene(EnumAlleleType.MODELPART_ARRAY) {
         GITextureHelper.writeBufferedImage(parent1Texture, parent1TextureLocation)
         GITextureHelper.writeBufferedImage(parent2Texture, parent2TextureLocation)
 
-        val textureAllele1 = new Allele(true, parent1TextureLocationString)
-        val textureAllele2 = new Allele(false, parent2TextureLocationString)
+        val textureAllele1 = new Allele(true, parent1TextureLocationString, EnumAlleleType.STRING)
+        val textureAllele2 = new Allele(false, parent2TextureLocationString, EnumAlleleType.STRING)
 
         offspring(geneIdTexture) = SoulHelper.instanceHelper.getIChromosomeInstance(textureAllele1, textureAllele2)
 
-        val resultAllele1 = new Allele(true, parent1Tuple._2.to[Array])
-        val resultAllele2 = new Allele(false, parent2Tuple._2.to[Array])
+        val resultAllele1 = new Allele(true, parent1Tuple._2.to[Array], EnumAlleleType.MODELPART_ARRAY)
+        val resultAllele2 = new Allele(false, parent2Tuple._2.to[Array], EnumAlleleType.MODELPART_ARRAY)
 
         SoulHelper.instanceHelper.getIChromosomeInstance(resultAllele1, resultAllele2)
     }

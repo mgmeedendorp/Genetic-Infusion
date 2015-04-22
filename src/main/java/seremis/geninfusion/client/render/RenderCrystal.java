@@ -47,7 +47,7 @@ public class RenderCrystal extends TileEntitySpecialRenderer implements ISimpleB
     @Override
     @SideOnly(Side.CLIENT)
     public int getRenderId() {
-        return RenderIds.soulCageRenderID();
+        return RenderIds.crystalRenderID();
     }
 
     private static ModelCrystal model = new ModelCrystal();

@@ -12,7 +12,7 @@ public class TraitTexture extends Trait {
     @Override
     public String getEntityTexture(IEntitySoulCustom entity) {
         try {
-            return SoulHelper.geneRegistry().getValueString(entity, Genes.GENE_TEXTURE);
+            return SoulHelper.geneRegistry().getValueFromAllele(entity, Genes.GENE_TEXTURE);
         } catch(NullPointerException e) {
             return "textures/entity/zombie/zombie.png";
         }

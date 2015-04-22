@@ -1,8 +1,6 @@
 package seremis.geninfusion.api.soul
 
 import net.minecraft.entity.EntityLiving
-import net.minecraft.item.ItemStack
-import seremis.geninfusion.api.soul.util.ModelPart
 
 trait IGeneRegistry {
 
@@ -44,37 +42,7 @@ trait IGeneRegistry {
 
     def getActiveFor(entity: IEntitySoulCustom, name: String): IAllele
 
-    def getValueBoolean(entity: IEntitySoulCustom, name: String): Boolean
-
-    def getValueInteger(entity: IEntitySoulCustom, name: String): Int
-
-    def getValueFloat(entity: IEntitySoulCustom, name: String): Float
-
-    def getValueDouble(entity: IEntitySoulCustom, name: String): Double
-
-    def getValueString(entity: IEntitySoulCustom, name: String): String
-
-    def getValueItemStack(entity: IEntitySoulCustom, name: String): ItemStack
-
-    def getValueModelPart(entity: IEntitySoulCustom, name: String): ModelPart
-
-    def getValueClass(entity: IEntitySoulCustom, name: String): Class[_]
-
-    def getValueBooleanArray(entity: IEntitySoulCustom, name: String): Array[Boolean]
-
-    def getValueIntegerArray(entity: IEntitySoulCustom, name: String): Array[Int]
-
-    def getValueFloatArray(entity: IEntitySoulCustom, name: String): Array[Float]
-
-    def getValueDoubleArray(entity: IEntitySoulCustom, name: String): Array[Double]
-
-    def getValueStringArray(entity: IEntitySoulCustom, name: String): Array[String]
-
-    def getValueItemStackArray(entity: IEntitySoulCustom, name: String): Array[ItemStack]
-
-    def getValueModelPartArray(entity: IEntitySoulCustom, name: String): Array[ModelPart]
-
-    def getValueClassArray(entity: IEntitySoulCustom, name: String): Array[Class[_]]
+    def getValueFromAllele[T](entity: IEntitySoulCustom, name: String): T
 
     def getControlledGenes(masterGeneName: String): List[String]
 }

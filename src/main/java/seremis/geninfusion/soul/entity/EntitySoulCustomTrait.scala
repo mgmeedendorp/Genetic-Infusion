@@ -16,14 +16,13 @@ import seremis.geninfusion.api.soul.util.Data
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
 import seremis.geninfusion.soul.entity.logic.VariableSyncLogic
 import seremis.geninfusion.soul.{Soul, TraitHandler}
-import seremis.geninfusion.util.INBTTagable
 
-trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEntityAdditionalSpawnData with INBTTagable {
+trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEntityAdditionalSpawnData {
     var syncLogic = new VariableSyncLogic(this)
     var soul: ISoul
     val world: World
 
-    //isDead = true
+   // isDead = true
 
     override def writeSpawnData(data: ByteBuf) {
         val compound: NBTTagCompound = new NBTTagCompound
@@ -62,7 +61,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     override def getEntityId: Int = super.getEntityId
 
-    override def onDeathUpdate() = super.onDeathUpdate()
+    override def onDeathUpdate = super.onDeathUpdate()
 
     override def setFlag(id: Int, value: Boolean) = super.setFlag(id, value)
 
@@ -73,19 +72,19 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     //TODO
     //override def isChild: Boolean = getBoolean("isChild")
 
-    override def getTalkInterval: Int = SoulHelper.geneRegistry.getValueInteger(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_TALK_INTERVAL)
+    override def getTalkInterval: Int = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_TALK_INTERVAL)
 
-    override def getDeathSound: String = SoulHelper.geneRegistry.getValueString(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_DEATH_SOUND)
+    override def getDeathSound: String = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_DEATH_SOUND)
 
-    override def getLivingSound: String = SoulHelper.geneRegistry.getValueString(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_LIVING_SOUND)
+    override def getLivingSound: String = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_LIVING_SOUND)
 
-    override def getHurtSound: String = SoulHelper.geneRegistry.getValueString(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_HURT_SOUND)
+    override def getHurtSound: String = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_HURT_SOUND)
 
-    override def getSplashSound: String = SoulHelper.geneRegistry.getValueString(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_SPLASH_SOUND)
+    override def getSplashSound: String = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_SPLASH_SOUND)
 
-    override def getSwimSound: String = SoulHelper.geneRegistry.getValueString(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_SWIM_SOUND)
+    override def getSwimSound: String = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_SWIM_SOUND)
 
-    override def getSoundVolume: Float = SoulHelper.geneRegistry.getValueFloat(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_SOUND_VOLUME)
+    override def getSoundVolume: Float = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GENE_SOUND_VOLUME)
 
     override def getSoundPitch: Float = super.getSoundPitch
 
@@ -136,7 +135,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
         TraitHandler.playSoundAtEntity(this, name, volume, pitch)
     }
 
-    override def updateAITick() {
+    override def updateAITick {
         TraitHandler.updateAITick(this)
     }
 
@@ -156,7 +155,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     override def isMovementCeased: Boolean = false
 
-    override def findPlayerToAttack(): Entity = TraitHandler.findPlayerToAttack(this)
+    override def findPlayerToAttack: Entity = TraitHandler.findPlayerToAttack(this)
 
     override def applyArmorCalculations(source: DamageSource, damage: Float): Float = TraitHandler.applyArmorCalculations(this, source, damage)
 
@@ -164,23 +163,23 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     override def damageArmor(damage: Float) = TraitHandler.damageArmor(this, damage)
 
-    override def setOnFireFromLava() = TraitHandler.setOnFireFromLava(this)
+    override def setOnFireFromLava = TraitHandler.setOnFireFromLava(this)
 
     override def getBlockPathWeight(x: Int, y: Int, z: Int): Float = TraitHandler.getBlockPathWeight(this, x, y, z)
 
-    override def updateEntityActionState() = TraitHandler.updateEntityActionState(this)
+    override def updateEntityActionState = TraitHandler.updateEntityActionState(this)
 
-    override def updateWanderPath() = TraitHandler.updateWanderPath(this)
+    override def updateWanderPath = TraitHandler.updateWanderPath(this)
 
     override def canDespawn = super.canDespawn
 
-    override def setBeenAttacked() = super.setBeenAttacked()
+    override def setBeenAttacked = super.setBeenAttacked()
 
-    override def updatePotionEffects() = super.updatePotionEffects()
+    override def updatePotionEffects = super.updatePotionEffects()
 
-    override def jump() = super.jump()
+    override def jump = super.jump()
 
-    override def collideWithNearbyEntities() = super.collideWithNearbyEntities()
+    override def collideWithNearbyEntities = super.collideWithNearbyEntities()
 
     override def isWithinHomeDistance(x: Int, y: Int, z: Int): Boolean = TraitHandler.isWithinHomeDistance(this, x, y, z)
 
@@ -192,19 +191,19 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     override def getMaxHomeDistance: Float = TraitHandler.getMaxHomeDistance(this)
 
-    override def detachHome() = TraitHandler.detachHome(this)
+    override def detachHome = TraitHandler.detachHome(this)
 
     override def setHomeArea(x: Int, y: Int, z: Int, maxDistance: Int) = TraitHandler.setHomeArea(this, x, y, z, maxDistance)
 
     override def attackEntityWithRangedAttack(entity: EntityLivingBase, distanceModified: Float) = TraitHandler.attackEntityWithRangedAttack(this, entity, distanceModified)
 
-    override def despawnEntity() = super.despawnEntity()
+    override def despawnEntity = super.despawnEntity()
 
     override def setRotation(rotationYaw: Float, rotationPitch: Float) = super.setRotation(rotationYaw, rotationPitch)
 
-    override def updateArmSwingProgress() = super.updateArmSwingProgress()
+    override def updateArmSwingProgress = super.updateArmSwingProgress()
 
-    override def isAIEnabled: Boolean = SoulHelper.geneRegistry.getValueBoolean(this, Genes.GENE_USE_NEW_AI)
+    override def isAIEnabled: Boolean = SoulHelper.geneRegistry.getValueFromAllele(this, Genes.GENE_USE_NEW_AI)
 
     override def readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)

@@ -82,7 +82,7 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound compound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         if(boxName != null && !boxName.equals(""))
             compound.setString("boxName", boxName);
         compound.setFloat("textureWidth", textureWidth);
@@ -178,10 +178,11 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
             }
         }
         compound.setTag("cubeList", boxList);
+        return compound;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
+    public NBTTagCompound readFromNBT(NBTTagCompound compound) {
         if(compound.hasKey("boxName"))
             GIReflectionHelper.setField(this, "boxName", compound.getString("boxName"));
 
@@ -249,6 +250,7 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
 
             cubeList.add(box);
         }
+        return compound;
     }
 
     private Random rand = new Random();

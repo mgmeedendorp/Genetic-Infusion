@@ -41,7 +41,7 @@ class Chromosome(var allele1: IAllele, var allele2: IAllele) extends IChromosome
 
     override def getSecondary: IAllele = allele2
 
-    override def writeToNBT(compound: NBTTagCompound) {
+    override def writeToNBT(compound: NBTTagCompound): NBTTagCompound = {
         val list = new NBTTagList()
 
         val compound1 = new NBTTagCompound()
@@ -53,13 +53,15 @@ class Chromosome(var allele1: IAllele, var allele2: IAllele) extends IChromosome
         list.appendTag(compound2)
 
         compound.setTag("alleles", list)
+        compound
     }
 
-    override def readFromNBT(compound: NBTTagCompound) {
+    override def readFromNBT(compound: NBTTagCompound): NBTTagCompound = {
         val list = compound.getTagList("alleles", Constants.NBT.TAG_COMPOUND)
 
         allele1 = Allele.fromNBT(list.getCompoundTagAt(0))
         allele2 = Allele.fromNBT(list.getCompoundTagAt(1))
+        compound
     }
 
     override def toString: String = {

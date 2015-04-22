@@ -26,7 +26,7 @@ public class TraitItemPickup extends Trait {
     public void onUpdate(IEntitySoulCustom entity) {
         entity.getWorld().theProfiler.startSection("looting");
 
-        boolean canPickUpItems = SoulHelper.geneRegistry().getValueBoolean(entity, Genes.GENE_PICKS_UP_ITEMS);
+        boolean canPickUpItems = SoulHelper.geneRegistry().getValueFromAllele(entity, Genes.GENE_PICKS_UP_ITEMS);
 
         if(GeneticInfusion.serverProxy().isServerWorld(entity.getWorld()) && canPickUpItems && !((EntityLiving) entity).isDead && entity.getWorld().getGameRules().getGameRuleBooleanValue("mobGriefing")) {
             List list = entity.getWorld().getEntitiesWithinAABB(EntityItem.class, entity.getBoundingBox().expand(1.0D, 0.0D, 1.0D));
@@ -44,8 +44,8 @@ public class TraitItemPickup extends Trait {
 
                         if(itemstack1 != null) {
                             if(armorSlot == 0) {
-                                boolean canShootBow = SoulHelper.geneRegistry().getValueBoolean(entity, Genes.GENE_AI_ARROW_ATTACK);
-                                boolean canFightWithSword = SoulHelper.geneRegistry().getValueBoolean(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE);
+                                boolean canShootBow = SoulHelper.geneRegistry().getValueFromAllele(entity, Genes.GENE_AI_ARROW_ATTACK);
+                                boolean canFightWithSword = SoulHelper.geneRegistry().getValueFromAllele(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE);
 
                                 if(((itemstack.getItem() instanceof ItemSword && canFightWithSword) || (itemstack.getItemUseAction() == EnumAction.bow && canShootBow)) && (!(itemstack1.getItem() instanceof ItemSword && canFightWithSword) || !(itemstack1.getItemUseAction() == EnumAction.bow && canShootBow))) {
                                     flag = true;

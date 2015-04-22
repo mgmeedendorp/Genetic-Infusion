@@ -6,9 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.oredict.OreDictionary;
 import seremis.geninfusion.lib.Blocks;
-import seremis.geninfusion.lib.DefaultProps;
 import seremis.geninfusion.tileentity.TileCrystal;
-import seremis.geninfusion.tileentity.TileSoulCage;
 import seremis.geninfusion.world.GIWorldGenerator;
 
 public class ModBlocks {
@@ -16,7 +14,6 @@ public class ModBlocks {
     public static Block oreTitanium;
     public static BlockCrystal crystal;
     public static BlockConnectedGlass connectedGlass;
-    public static BlockSoulCage soulCage;
 
     public static GIWorldGenerator worldGen;
 
@@ -25,12 +22,10 @@ public class ModBlocks {
         oreTitanium = new GIBlock(Material.rock).setHardness(20F).setBlockName(Blocks.ORE_TITANIUM_UNLOCALIZED_NAME());
         crystal = new BlockCrystal(Material.coral);
         connectedGlass = new BlockConnectedGlass(Material.glass);
-        soulCage = new BlockSoulCage(Material.rock);
 
         registerBlock(oreTitanium, Blocks.ORE_TITANIUM_UNLOCALIZED_NAME());
         registerBlock(crystal, Blocks.CRYSTAL_UNLOCALIZED_NAME());
         registerBlock(connectedGlass, Blocks.CONNECTED_GLASS_UNLOCALIZED_NAME());
-        registerBlock(soulCage, Blocks.SOUL_CAGE_UNLOCALIZED_NAME());
 
         worldGen = new GIWorldGenerator();
         GameRegistry.registerWorldGenerator(worldGen, 0);
@@ -44,7 +39,6 @@ public class ModBlocks {
 
     public static void tileEntity() {
         GameRegistry.registerTileEntity(TileCrystal.class, Blocks.CRYSTAL_UNLOCALIZED_NAME());
-        GameRegistry.registerTileEntity(TileSoulCage.class, Blocks.SOUL_CAGE_UNLOCALIZED_NAME());
     }
 
     public static void registerBlock(Block block, String name) {

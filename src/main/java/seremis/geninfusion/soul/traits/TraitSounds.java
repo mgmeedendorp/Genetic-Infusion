@@ -32,6 +32,7 @@ public class TraitSounds extends Trait {
 
     @Override
     public void firstTick(IEntitySoulCustom entity) {
-        entity.setInteger("talkInterval", SoulHelper.geneRegistry().getValueInteger(entity, Genes.GENE_TALK_INTERVAL));
+        Object a = SoulHelper.geneRegistry().getGeneId(Genes.GENE_TALK_INTERVAL);
+        entity.setInteger("talkInterval", SoulHelper.geneRegistry().<Integer>getValueFromAllele(entity, Genes.GENE_TALK_INTERVAL));
     }
 }

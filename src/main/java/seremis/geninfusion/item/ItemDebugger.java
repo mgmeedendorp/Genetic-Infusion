@@ -14,7 +14,6 @@ import net.minecraft.world.World;
 import seremis.geninfusion.GeneticInfusion;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
 import seremis.geninfusion.api.soul.SoulHelper;
-import seremis.geninfusion.api.soul.lib.Genes;
 import seremis.geninfusion.lib.Items;
 import seremis.geninfusion.soul.entity.EntitySoulCustomCreature;
 
@@ -51,7 +50,7 @@ public class ItemDebugger extends GIItem {
             }
             if(stack.getItemDamage() == 1) {
                 try {
-                    EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper().getSoulEntityInstance(world, SoulHelper.standardSoulRegistry().getSoulForEntity(new EntitySkeleton(world)), x + 0.5F, y + 1, z + 0.5F);
+                    EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper().getSoulEntityInstance(world, SoulHelper.standardSoulRegistry().getSoulForEntity(new EntityZombie(world)), x + 0.5F, y + 1, z + 0.5F);
                     world.spawnEntityInWorld(entity);
                 } catch(Exception e) {
                     e.printStackTrace();
@@ -69,7 +68,6 @@ public class ItemDebugger extends GIItem {
                     entity.writeToNBT(nbt);
                     System.out.println(nbt);
 
-                    System.out.println(SoulHelper.geneRegistry().getValueBoolean((IEntitySoulCustom) entity, Genes.GENE_AI_ATTACK_ON_COLLIDE));
                 }
             }
         }

@@ -35,9 +35,9 @@ class Gene(alleleType: EnumAlleleType) extends IGene {
             alleleType match {
                 case EnumAlleleType.BOOLEAN =>
                     if(rand.nextBoolean())
-                        allele1Data = !allele1Data.asInstanceOf[java.lang.Boolean]
+                        allele1Data = !allele1Data.asInstanceOf[Boolean]
                     else
-                        allele2Data = !allele2Data.asInstanceOf[java.lang.Boolean]
+                        allele2Data = !allele2Data.asInstanceOf[Boolean]
                 case EnumAlleleType.BYTE =>
                     if(rand.nextBoolean())
                         allele1Data = allele1Data.asInstanceOf[Byte] * (rand.nextFloat() * 2)

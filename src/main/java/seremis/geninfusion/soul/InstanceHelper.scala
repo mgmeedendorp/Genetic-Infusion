@@ -10,7 +10,7 @@ class InstanceHelper extends IInstanceHelper {
     override def getSoulEntityInstance(world: World, soul: ISoul, x: Double, y: Double, z: Double): IEntitySoulCustom = {
         var entity: IEntitySoulCustom = new EntitySoulCustom(world, soul, x, y, z)
 
-        if (SoulHelper.geneRegistry.getValueBoolean(entity, Genes.GENE_IS_CREATURE)) {
+        if (SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_IS_CREATURE)) {
             entity = new EntitySoulCustomCreature(world, soul, x, y, z)
         }
 
@@ -23,6 +23,6 @@ class InstanceHelper extends IInstanceHelper {
 
     override def getIAlleleInstance(args: AnyRef*): IAllele =  {
         //TODO test this
-        new Allele(args(0).asInstanceOf[Boolean], args(1))
+        new Allele(args(0).asInstanceOf[Boolean], args(1), EnumAlleleType.forClass(args(1).getClass))
     }
 }

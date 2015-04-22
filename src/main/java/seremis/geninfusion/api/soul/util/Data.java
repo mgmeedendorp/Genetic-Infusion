@@ -349,7 +349,7 @@ public class Data implements INBTTagable {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound compound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         NBTTagList tagList = new NBTTagList();
         ArrayList<String> stringList = new ArrayList<String>();
         if(!booleanDataMap.isEmpty()) {
@@ -470,10 +470,11 @@ public class Data implements INBTTagable {
             stringList.clear();
         }
         compound.setTag("data", tagList);
+        return compound;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
+    public NBTTagCompound readFromNBT(NBTTagCompound compound) {
         if(compound.hasKey("data")) {
             NBTTagList tagList = (NBTTagList) compound.getTag("data");
             NBTTagCompound compoundBoolean = null;
@@ -592,6 +593,7 @@ public class Data implements INBTTagable {
                 }
             }
         }
+        return compound;
     }
 
     public boolean equals(Object obj) {

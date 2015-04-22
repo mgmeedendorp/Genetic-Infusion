@@ -38,7 +38,7 @@ public class Genes {
     public static final String GENE_USE_OLD_AI = ID + ".gene.useOldAI";
     public static final String GENE_VERTICAL_FACE_SPEED = ID + ".gene.verticalFaceSpeed";
     public static final String GENE_IS_CREATURE = ID + ".gene.isCreature";
-    public static final String GENE_CEASE_AI_MOVEMENT = ".gene.ceaseAIMovement";
+    public static final String GENE_CEASE_AI_MOVEMENT = ID + ".gene.ceaseAIMovement";
     public static final String GENE_CHILDREN_BURN_IN_DAYLIGHT = ID + ".gene.childrenBurn";
     public static final String GENE_IS_TAMEABLE = ID + ".gene.isTameable";
 

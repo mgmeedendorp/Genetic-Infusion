@@ -4,7 +4,7 @@ import net.minecraft.nbt.NBTTagCompound
 
 trait INBTTagable {
 
-    def writeToNBT(compound: NBTTagCompound)
+    def writeToNBT(compound: NBTTagCompound): NBTTagCompound
 
-    def readFromNBT(compound: NBTTagCompound)
+    def readFromNBT(compound: NBTTagCompound): NBTTagCompound
 }
