@@ -10,6 +10,8 @@ class TraitFire extends Trait {
 
     override def firstTick(entity: IEntitySoulCustom) {
         entity.setBoolean("isImmuneToFire", SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_IMMUNE_TO_FIRE))
+
+        entity.setFuseState(-1)
     }
 
     override def onUpdate(entity: IEntitySoulCustom) {
@@ -71,6 +73,7 @@ class TraitFire extends Trait {
                 fire -= 1
             }
         }
+        entity.setInteger("fire", fire)
 
         if(entity.asInstanceOf[EntityLiving].handleLavaMovement()) {
             entity.setOnFireFromLava

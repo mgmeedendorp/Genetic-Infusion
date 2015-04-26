@@ -23,7 +23,7 @@ class TraitAttacked extends Trait {
         var hurtTime = entity.getInteger("hurtTime")
         var hurtResistantTime = entity.getInteger("hurtResistantTime")
         var recentlyHit = entity.getInteger("recentlyHit")
-        var ticksExisted = entity.getInteger("ticksExisted")
+        val ticksExisted = entity.getInteger("ticksExisted")
         var lastAttacker = entity.getObject("lastAttacker").asInstanceOf[EntityLivingBase]
         val entityLivingToAttack = entity.getObject("entityLivingToAttack").asInstanceOf[EntityLivingBase]
 

@@ -67,7 +67,7 @@ class StandardSoulCreeper extends StandardSoul {
         if(gene == Genes.GENE_AI_ATTACK_ON_COLLIDE_MOVE_SPEED)
             return new Chromosome(new Allele(false, Array(1.0D), EnumAlleleType.DOUBLE_ARRAY))
         if(gene == Genes.GENE_AI_ATTACK_ON_COLLIDE_TARGET)
-            return new Chromosome(new Allele(false, Array(null), EnumAlleleType.CLASS_ARRAY))
+            return new Chromosome(new Allele(false, Array(null.asInstanceOf[Class[_]]), EnumAlleleType.CLASS_ARRAY))
 
         if(gene == Genes.GENE_AI_WANDER)
             return new Chromosome(new Allele(true, true, EnumAlleleType.BOOLEAN))
