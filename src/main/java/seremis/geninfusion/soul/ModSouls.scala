@@ -47,6 +47,7 @@ object ModSouls {
         geneRegistry.registerGene(Genes.GENE_CEASE_AI_MOVEMENT, BOOLEAN)
         geneRegistry.registerGene(Genes.GENE_CHILDREN_BURN_IN_DAYLIGHT, BOOLEAN)
         geneRegistry.registerGene(Genes.GENE_IS_TAMEABLE, BOOLEAN)
+        geneRegistry.registerGene(Genes.GENE_CAN_BE_CHARGED, BOOLEAN)
 
         geneRegistry.registerGene(Genes.GENE_AI_ARROW_ATTACK_MAX_RANGED_ATTACK_TIME, INTEGER)
         geneRegistry.registerGene(Genes.GENE_AI_ARROW_ATTACK_MIN_RANGED_ATTACK_TIME, INTEGER)

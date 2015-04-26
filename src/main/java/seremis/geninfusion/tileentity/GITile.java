@@ -66,7 +66,7 @@ public class GITile extends TileEntity {
     }
 
     public void sendTileDataToServer(int id, byte[] data) {
-        if(GeneticInfusion.serverProxy().isRenderWorld(worldObj)) {
+        if(GeneticInfusion.commonProxy().isRenderWorld(worldObj)) {
             GeneticInfusion.packetPipeline().sendToServer(new PacketTileData(data, id, this.xCoord, this.yCoord, this.zCoord));
         } else {
             setTileDataFromClient(id, data);
@@ -78,7 +78,7 @@ public class GITile extends TileEntity {
     }
 
     public void sendTileDataToClient(int id, byte[] data) {
-        if(GeneticInfusion.serverProxy().isServerWorld(worldObj)) {
+        if(GeneticInfusion.commonProxy().isServerWorld(worldObj)) {
             GeneticInfusion.packetPipeline().sendToAllAround(new PacketTileData(data, id, xCoord, yCoord, zCoord), new TargetPoint(worldObj.provider.dimensionId, xCoord, yCoord, zCoord, 128));
         } else {
             setTileDataFromServer(id, data);

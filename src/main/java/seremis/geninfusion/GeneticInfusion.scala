@@ -32,7 +32,7 @@ object GeneticInfusion {
     val instance = this
 
     @SidedProxy(clientSide = Localizations.LOC_CLIENTPROXY, serverSide = Localizations.LOC_COMMONPROXY)
-    var serverProxy: CommonProxy = null
+    var commonProxy: CommonProxy = null
 
     @EventHandler
     def preInit(event: FMLPreInitializationEvent): Unit = {
@@ -54,8 +54,8 @@ object GeneticInfusion {
 
     @EventHandler
     def init(event: FMLInitializationEvent) {
-        serverProxy.registerRendering()
-        serverProxy.registerHandlers()
+        commonProxy.registerRendering()
+        commonProxy.registerHandlers()
 
         RecipeHelper.initRecipes()
         RecipeHelper.initSmelting()

@@ -62,4 +62,14 @@ object GIRandomPositionGenerator extends RandomPositionGenerator {
             null
         }
     }
+
+    /**
+     * finds a random target within par1(x,z) and par2 (y) blocks in the reverse direction of the point par3
+     */
+    def findRandomTargetBlockAwayFrom(entity : IEntitySoulCustom, areaRadius : Int, areaHeight : Int, targetDirection : Vec3): Vec3 = {
+        staticVector.xCoord = entity.asInstanceOf[EntityLiving].posX - targetDirection.xCoord
+        staticVector.yCoord = entity.asInstanceOf[EntityLiving].posY - targetDirection.yCoord
+        staticVector.zCoord = entity.asInstanceOf[EntityLiving].posZ - targetDirection.zCoord
+        return findRandomTargetBlock(entity, areaRadius, areaHeight, staticVector)
+    }
 }

@@ -15,7 +15,7 @@ public class GIEntityLiving extends EntityLiving {
     }
 
     public void sendEntityDataToClient(int id, byte[] value) {
-        if(GeneticInfusion.serverProxy().isServerWorld(worldObj)) {
+        if(GeneticInfusion.commonProxy().isServerWorld(worldObj)) {
             GeneticInfusion.packetPipeline().sendToAllAround(new PacketEntityData(value, id, getEntityId()), new TargetPoint(worldObj.provider.dimensionId, posX, posY, posZ, 128));
         } else {
             receivePacketOnServer(id, value);
@@ -23,7 +23,7 @@ public class GIEntityLiving extends EntityLiving {
     }
 
     public void sendEntityDataToServer(int id, byte[] value) {
-        if(GeneticInfusion.serverProxy().isRenderWorld(worldObj)) {
+        if(GeneticInfusion.commonProxy().isRenderWorld(worldObj)) {
             GeneticInfusion.packetPipeline().sendToServer(new PacketEntityData(value, id, getEntityId()));
         } else {
             receivePacketOnServer(id, value);

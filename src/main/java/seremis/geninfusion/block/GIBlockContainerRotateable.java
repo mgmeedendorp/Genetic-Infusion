@@ -45,7 +45,7 @@ public class GIBlockContainerRotateable extends GIBlockContainer {
         if(!useTile) {
             world.setBlockMetadataWithNotify(x, y, z, direction - 2, 3);
         }
-        if(useTile && GeneticInfusion.serverProxy().isServerWorld(world)) {
+        if(useTile && GeneticInfusion.commonProxy().isServerWorld(world)) {
             TileEntity tile = world.getTileEntity(x, y, z);
             if(tile != null && tile instanceof GITile) {
                 ((GITile) tile).setDirection(direction);

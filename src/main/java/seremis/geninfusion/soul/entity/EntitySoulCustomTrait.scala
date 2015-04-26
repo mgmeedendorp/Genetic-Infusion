@@ -6,6 +6,7 @@ import java.util.Random
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData
 import io.netty.buffer.ByteBuf
 import net.minecraft.entity._
+import net.minecraft.entity.effect.EntityLightningBolt
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{CompressedStreamTools, NBTSizeTracker, NBTTagCompound}
@@ -197,6 +198,8 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     override def attackEntityWithRangedAttack(entity: EntityLivingBase, distanceModified: Float) = TraitHandler.attackEntityWithRangedAttack(this, entity, distanceModified)
 
+    override def onStruckByLightning(lightning: EntityLightningBolt) = TraitHandler.onStruckByLightning(this, lightning)
+
     override def despawnEntity = super.despawnEntity()
 
     override def setRotation(rotationYaw: Float, rotationPitch: Float) = super.setRotation(rotationYaw, rotationPitch)
@@ -204,6 +207,22 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     override def updateArmSwingProgress = super.updateArmSwingProgress()
 
     override def isAIEnabled: Boolean = SoulHelper.geneRegistry.getValueFromAllele(this, Genes.GENE_USE_NEW_AI)
+
+    override def dealFireDamage(damage: Int) = super.dealFireDamage(damage)
+
+    override def isTamed: Boolean = (getDataWatcher.getWatchableObjectByte(16) & 4) != 0
+
+    /**
+     * Gets the fuse state of this entity. This is used to make the entity explode. This method is similar to getCreeperState() in EntityCreeper.
+     * @return The current fuse state. 1 is 'fused' (about to explode), -1 is 'idle'.
+     */
+    override def getFuseState: Int = getDataWatcher.getWatchableObjectByte(16)
+
+    /**
+     * Sets the fuse state of this entity. This is used to make the entity explode. This method is similar to setCreeperState() in EntityCreeper.
+     * @param state The fuse state of this entity.  1 is 'fused' (about to explode), -1 is 'idle'.
+     */
+    override def setFuseState(state: Int) = getDataWatcher.updateObject(16, state.toByte)
 
     override def readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)

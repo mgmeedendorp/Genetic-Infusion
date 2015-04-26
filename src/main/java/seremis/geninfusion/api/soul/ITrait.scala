@@ -1,13 +1,14 @@
 package seremis.geninfusion.api.soul
 
 import cpw.mods.fml.relauncher.{Side, SideOnly}
+import net.minecraft.entity.effect.EntityLightningBolt
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.{Entity, EntityLivingBase, IEntityLivingData}
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.{ChunkCoordinates, DamageSource}
+import seremis.geninfusion.soul.entity.EntitySoulCustomTrait
 
 trait ITrait {
-
     def onUpdate(entity: IEntitySoulCustom)
 
     def interact(entity: IEntitySoulCustom, player: EntityPlayer): Boolean
@@ -71,4 +72,6 @@ trait ITrait {
     def readFromNBT(entity: IEntitySoulCustom, compound: NBTTagCompound)
 
     def getEntityTexture(entity: IEntitySoulCustom): String
+
+    def onStruckByLightning(entity: IEntitySoulCustom, lightingBolt: EntityLightningBolt)
 }

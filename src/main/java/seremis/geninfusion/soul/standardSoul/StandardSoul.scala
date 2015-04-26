@@ -96,6 +96,8 @@ abstract class StandardSoul extends IStandardSoul {
             return new Chromosome(new Allele(true, false, EnumAlleleType.BOOLEAN))
         if(gene == Genes.GENE_USE_OLD_AI)
             return new Chromosome(new Allele(true, true, EnumAlleleType.BOOLEAN))
+        if(gene == Genes.GENE_CAN_BE_CHARGED)
+            return new Chromosome(new Allele(true, false, EnumAlleleType.BOOLEAN))
 
         //AI genes
         if(gene == Genes.GENE_AI_ARROW_ATTACK)
@@ -384,9 +386,9 @@ abstract class StandardSoul extends IStandardSoul {
             return new Chromosome(new Allele(true, true, EnumAlleleType.BOOLEAN))
         if(gene == Genes.GENE_AI_WANDER_INDEX)
             return new Chromosome(new Allele(true, 5, EnumAlleleType.INTEGER))
-
         if(gene == Genes.GENE_AI_WANDER_MOVE_SPEED)
             return new Chromosome(new Allele(true, 1.0D, EnumAlleleType.DOUBLE))
+
         if(gene == Genes.GENE_AI_WATCH_CLOSEST)
             return new Chromosome(new Allele(true, true, EnumAlleleType.BOOLEAN))
         if(gene == Genes.GENE_AI_WATCH_CLOSEST_INDEX)
