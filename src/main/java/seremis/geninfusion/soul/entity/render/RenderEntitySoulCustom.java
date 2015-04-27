@@ -31,7 +31,7 @@ import seremis.geninfusion.soul.entity.animation.AnimationCache;
 public class RenderEntitySoulCustom extends RenderLiving {
 
     public RenderEntitySoulCustom() {
-        super(SoulHelper.entityModel(), 1.0F);
+        super(SoulHelper.entityModel(), 0.3F);
     }
 
     @Override

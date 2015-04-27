@@ -23,7 +23,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     var soul: ISoul
     val world: World
 
-   // isDead = true
+    //isDead = true
 
     override def writeSpawnData(data: ByteBuf) {
         val compound: NBTTagCompound = new NBTTagCompound
@@ -210,19 +210,20 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     override def dealFireDamage(damage: Int) = super.dealFireDamage(damage)
 
-    override def isTamed: Boolean = (getDataWatcher.getWatchableObjectByte(16) & 4) != 0
+    //TODO tamed with DataWatcherHelper
+    override def isTamed: Boolean = false
 
     /**
      * Gets the fuse state of this entity. This is used to make the entity explode. This method is similar to getCreeperState() in EntityCreeper.
      * @return The current fuse state. 1 is 'fused' (about to explode), -1 is 'idle'.
      */
-    override def getFuseState: Int = getDataWatcher.getWatchableObjectByte(16)
+    override def getFuseState: Int = getDataWatcher.getWatchableObjectByte(getInteger("fuseStateWatcherId"))
 
     /**
      * Sets the fuse state of this entity. This is used to make the entity explode. This method is similar to setCreeperState() in EntityCreeper.
      * @param state The fuse state of this entity.  1 is 'fused' (about to explode), -1 is 'idle'.
      */
-    override def setFuseState(state: Int) = getDataWatcher.updateObject(16, state.toByte)
+    override def setFuseState(state: Int) = getDataWatcher.updateObject(getInteger("fuseStateWatcherId"), state.toByte)
 
     override def readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)

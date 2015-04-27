@@ -12,7 +12,7 @@ class EntityAICreeperSwellCustom(entity: IEntitySoulCustom) extends EntityAIBase
 
     setMutexBits(1)
 
-    override def shouldExecute(): Boolean = entity.getFuseState > 0 || living.getAttackTarget != null && living.getDistanceSqToEntity(attackTarget) < 9.0D
+    override def shouldExecute(): Boolean = entity.getFuseState > 0 || living.getAttackTarget != null && living.getDistanceSqToEntity(living.getAttackTarget) < 9.0D
 
     override def startExecuting() {
         living.getNavigator.clearPathEntity()

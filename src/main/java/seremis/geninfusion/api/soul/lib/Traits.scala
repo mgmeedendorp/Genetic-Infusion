@@ -21,4 +21,5 @@ object Traits {
     val TRAIT_TEXTURE = ID + ".trait.texture"
     val TRAIT_NAVIGATE = ID + ".trait.navigate"
     val TRAIT_ANIMATION = ID + ".trait.animation"
+    val TRAIT_EXPLODE = ID + ".trait.explode"
 }

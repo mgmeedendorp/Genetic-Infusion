@@ -3,8 +3,8 @@ package seremis.geninfusion.soul
 import seremis.geninfusion.api.soul.EnumAlleleType._
 import seremis.geninfusion.api.soul.SoulHelper._
 import seremis.geninfusion.api.soul.lib.{Animations, Traits, Genes}
-import seremis.geninfusion.soul.entity.animation.{AnimationHead, AnimationTwoArmed, AnimationTwoLegged}
-import seremis.geninfusion.soul.gene.{GeneModel, GeneUseOldAI, GeneUseNewAI, GeneMoveSpeed}
+import seremis.geninfusion.soul.entity.animation.{AnimationFourLegged, AnimationHead, AnimationTwoArmed, AnimationTwoLegged}
+import seremis.geninfusion.soul.gene._
 import seremis.geninfusion.soul.gene.newAI._
 import seremis.geninfusion.soul.standardSoul.{StandardSoulCreeper, StandardSoulSkeleton, StandardSoulZombie}
 import seremis.geninfusion.soul.traits._
@@ -47,7 +47,6 @@ object ModSouls {
         geneRegistry.registerGene(Genes.GENE_CEASE_AI_MOVEMENT, BOOLEAN)
         geneRegistry.registerGene(Genes.GENE_CHILDREN_BURN_IN_DAYLIGHT, BOOLEAN)
         geneRegistry.registerGene(Genes.GENE_IS_TAMEABLE, BOOLEAN)
-        geneRegistry.registerGene(Genes.GENE_CAN_BE_CHARGED, BOOLEAN)
 
         geneRegistry.registerGene(Genes.GENE_AI_ARROW_ATTACK_MAX_RANGED_ATTACK_TIME, INTEGER)
         geneRegistry.registerGene(Genes.GENE_AI_ARROW_ATTACK_MIN_RANGED_ATTACK_TIME, INTEGER)
@@ -235,6 +234,12 @@ object ModSouls {
         geneRegistry.registerGene(Genes.GENE_MODEL, new GeneModel)
         geneRegistry.registerCustomInheritance(Genes.GENE_MODEL)
 
+        geneRegistry.registerGene(Genes.GENE_FUSE_TIME, INTEGER)
+        geneRegistry.registerGene(Genes.GENE_EXPLOSION_RADIUS, INTEGER)
+        geneRegistry.registerGene(Genes.GENE_CAN_BE_CHARGED, BOOLEAN)
+        geneRegistry.registerGene(Genes.GENE_FLINT_AND_STEEL_IGNITE, BOOLEAN)
+        geneRegistry.registerMasterGene(Genes.GENE_EXPLODES, new GeneExplodes)
+
         traitRegistry.registerTrait(Traits.TRAIT_FIRE, new TraitFire)
         traitRegistry.registerTrait(Traits.TRAIT_MOVEMENT, new TraitMovement)
         traitRegistry.registerTrait(Traits.TRAIT_ATTACKED, new TraitAttacked)
@@ -250,13 +255,15 @@ object ModSouls {
         traitRegistry.registerTrait(Traits.TRAIT_TEXTURE, new TraitTexture)
         traitRegistry.registerTrait(Traits.TRAIT_NAVIGATE, new TraitNavigate)
         traitRegistry.registerTrait(Traits.TRAIT_ANIMATION, new TraitAnimation)
+        traitRegistry.registerTrait(Traits.TRAIT_EXPLODE, new TraitExplode)
 
         standardSoulRegistry.register(new StandardSoulZombie)
         standardSoulRegistry.register(new StandardSoulSkeleton)
         standardSoulRegistry.register(new StandardSoulCreeper)
 
-        animationRegistry.register(Animations.ANIMATION_WALK_FOUR_LEGGED, new AnimationTwoLegged)
+        animationRegistry.register(Animations.ANIMATION_WALK_TWO_LEGGED, new AnimationTwoLegged)
         animationRegistry.register(Animations.ANIMATION_WALK_TWO_ARMED, new AnimationTwoArmed)
         animationRegistry.register(Animations.ANIMATION_HEAD, new AnimationHead)
+        animationRegistry.register(Animations.ANIMATION_WALK_FOUR_LEGGED, new AnimationFourLegged)
     }
 }

@@ -69,7 +69,7 @@ object AnimationCache {
             for(part <- model) {
                 val absoluteX = part.rotationPointX + part.offsetX * MathHelper.cos(part.rotateAngleY)
 
-                if(intersectsPlaneY(part, 23.0F) && (absoluteX > 0 && leftLeg || absoluteX < 0 && !leftLeg)) {
+                if(intersectsPlaneY(part, 22.0F) && (absoluteX > 0 && leftLeg || absoluteX < 0 && !leftLeg)) {
                     legs += part
                 }
             }

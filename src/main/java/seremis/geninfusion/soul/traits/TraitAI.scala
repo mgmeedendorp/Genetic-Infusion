@@ -35,8 +35,15 @@ class TraitAI extends Trait {
                 val moveSpeed: Array[Double] = gReg.getValueFromAllele(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_MOVE_SPEED)
                 val target: Array[Class[_]] = gReg.getValueFromAllele(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_TARGET)
 
-                for(i <- 0 until index.length)
-                    tasks.addTask(index(i), new EntityAIAttackOnCollideCustom(entity, target(i), moveSpeed(i), longMemory(i)))
+                if(index != null && index.length != 0) {
+                    for(i <- 0 until index.length) {
+                        if(target != null && target.length != 0) {
+                            tasks.addTask(index(i), new EntityAIAttackOnCollideCustom(entity, target(i), moveSpeed(i), longMemory(i)))
+                        } else {
+                            tasks.addTask(index(i), new EntityAIAttackOnCollideCustom(entity, moveSpeed(i), longMemory(i)))
+                        }
+                    }
+                }
             }
 
             if(gReg.getValueFromAllele(entity, Genes.GENE_AI_MOVE_TOWARDS_RESTRICTION)) {
@@ -67,8 +74,9 @@ class TraitAI extends Trait {
                 val range: Array[Float] = gReg.getValueFromAllele(entity, Genes.GENE_AI_WATCH_CLOSEST_RANGE)
                 val chance: Array[Float] = gReg.getValueFromAllele(entity, Genes.GENE_AI_WATCH_CLOSEST_CHANCE)
 
-                for(i <- 0 until target.length)
-                    tasks.addTask(index(i), new EntityAIWatchClosest(living, target(i), range(i), chance(i)))
+                if(index != null && index.length != 0)
+                    for(i <- 0 until target.length)
+                        tasks.addTask(index(i), new EntityAIWatchClosest(living, target(i), range(i), chance(i)))
             }
 
             if(gReg.getValueFromAllele(entity, Genes.GENE_AI_LOOK_IDLE)) {
@@ -93,11 +101,13 @@ class TraitAI extends Trait {
                 val entitySelector: Array[String] = gReg.getValueFromAllele(entity, Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_ENTITY_SELECTOR)
                 var selector: IEntitySelector = null
 
-                for(i <- 0 until target.length) {
-                    if(entitySelector(i) == "mobSelector") {
-                        selector = IMob.mobSelector
+                if(index != null && index.length != 0) {
+                    for(i <- 0 until target.length) {
+                        if(entitySelector(i) == "mobSelector") {
+                            selector = IMob.mobSelector
+                        }
+                        targetTasks.addTask(index(i), new EntityAINearestAttackableTargetCustom(entity, target(i), targetChance(i), visible(i), nearbyOnly(i), selector))
                     }
-                    targetTasks.addTask(index(i), new EntityAINearestAttackableTargetCustom(entity, target(i), targetChance(i), visible(i), nearbyOnly(i), selector))
                 }
             }
 
@@ -138,8 +148,9 @@ class TraitAI extends Trait {
                 val range: Array[Float] = gReg.getValueFromAllele(entity, Genes.GENE_AI_AVOID_ENTITY_RANGE)
                 val target: Array[Class[_]] = gReg.getValueFromAllele(entity, Genes.GENE_AI_AVOID_ENTITY_TARGET)
 
-                for(i <- 0 until index.length)
-                    tasks.addTask(index(i), new EntityAIAvoidEntityCustom(entity, target(i), range(i), farSpeed(i), nearSpeed(i)))
+                if(index != null && index.length != 0)
+                    for(i <- 0 until index.length)
+                        tasks.addTask(index(i), new EntityAIAvoidEntityCustom(entity, target(i), range(i), farSpeed(i), nearSpeed(i)))
             }
 
             if(gReg.getValueFromAllele(entity, Genes.GENE_AI_CREEPER_SWELL)) {

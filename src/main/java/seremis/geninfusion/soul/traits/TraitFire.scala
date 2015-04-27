@@ -1,17 +1,15 @@
 package seremis.geninfusion.soul.traits
 
-import net.minecraft.entity.{Entity, EntityLiving}
 import net.minecraft.entity.effect.EntityLightningBolt
+import net.minecraft.entity.{Entity, EntityLiving}
 import net.minecraft.util.{DamageSource, MathHelper}
-import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.api.soul.lib.Genes
+import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
 class TraitFire extends Trait {
 
     override def firstTick(entity: IEntitySoulCustom) {
         entity.setBoolean("isImmuneToFire", SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_IMMUNE_TO_FIRE))
-
-        entity.setFuseState(-1)
     }
 
     override def onUpdate(entity: IEntitySoulCustom) {
@@ -110,7 +108,6 @@ class TraitFire extends Trait {
             entity.asInstanceOf[EntityLiving].setFire(15)
         }
     }
-
     override def onStruckByLightning(entity: IEntitySoulCustom, lightningBolt: EntityLightningBolt) {
         val living = entity.asInstanceOf[EntityLiving]
 
@@ -119,11 +116,6 @@ class TraitFire extends Trait {
 
         if(entity.getInteger("fire") == 0) {
             living.setFire(8)
-        }
-
-        val canBeCharged = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_CAN_BE_CHARGED)
-        if(canBeCharged) {
-            //TODO charged creeper
         }
     }
 }

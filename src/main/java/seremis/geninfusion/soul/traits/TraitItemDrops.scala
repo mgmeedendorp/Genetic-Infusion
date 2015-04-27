@@ -116,8 +116,10 @@ class TraitItemDrops extends Trait {
         val drops = SoulHelper.geneRegistry.getValueFromAllele[Array[ItemStack]](entity, Genes.GENE_RARE_ITEM_DROPS)
         val dropChances = entity.getFloatArray("equipmentDropChances")
 
-        for(i <- 0 until drops.length if entity.getRandom.nextInt((dropChances(i) * 100F).toInt) == 0) {
-            entity.asInstanceOf[EntityLiving].entityDropItem(drops(i), 0.0F)
+        if(drops != null && drops.length != null) {
+            for(i <- 0 until drops.length if entity.getRandom.nextInt((dropChances(i) * 100F).toInt) == 0) {
+                entity.asInstanceOf[EntityLiving].entityDropItem(drops(i), 0.0F)
+            }
         }
     }
 }

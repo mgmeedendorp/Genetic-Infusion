@@ -287,7 +287,6 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
                 parts.add(modelRendererToModelPart(renderer));
             }
         }
-
         return parts.toArray(new ModelPart[parts.size()]);
     }
 

@@ -25,6 +25,7 @@ archivesBaseName = "geninfusion"
 minecraft {
     version = "1.7.10-10.13.3.1389-1710ls"
     assetDir = "eclipse/assets"
+    mappings = "stable_12"
 }
 
 dependencies {
