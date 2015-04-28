@@ -17,15 +17,9 @@ class TraitExplode extends Trait {
         val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_EXPLODES)
 
         if(explodes) {
-            val fuseStateWatcherId = DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, -1.toByte.asInstanceOf[Byte])
-            val chargedWatcherId = DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, 0.toByte.asInstanceOf[Byte])
-            val ignitedWatcherId = DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, 0.toByte.asInstanceOf[Byte])
-
-            println("ids: " + fuseStateWatcherId + " " + chargedWatcherId + " " + ignitedWatcherId)
-
-            entity.setInteger("fuseStateWatcherId", fuseStateWatcherId)
-            entity.setInteger("chargedWatcherId", chargedWatcherId)
-            entity.setInteger("ignitedWatcherId", ignitedWatcherId)
+            DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, -1.toByte.asInstanceOf[Byte], "fuseState")
+            DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, 0.toByte.asInstanceOf[Byte], "charged")
+            DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, 0.toByte.asInstanceOf[Byte], "ignited")
 
             entity.setInteger("explosionRadius", SoulHelper.geneRegistry.getValueFromAllele[Int](entity, Genes.GENE_EXPLOSION_RADIUS))
             entity.setInteger("fuseTime", SoulHelper.geneRegistry.getValueFromAllele[Int](entity, Genes.GENE_FUSE_TIME))
