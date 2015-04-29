@@ -66,6 +66,17 @@ class TraitItemDrops extends Trait {
                 }
             }
         }
+
+        val dropsWhenKilledBySpecificEntity = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_DROPS_ITEM_WHEN_KILLED_BY_SPECIFIC_ENTITY)
+
+        if(dropsWhenKilledBySpecificEntity) {
+            val specificEntityClass = SoulHelper.geneRegistry.getValueFromAllele[Class[_]](entity, Genes.GENE_KILLED_BY_SPECIFIC_ENTITY_ENTITY)
+            val drops = SoulHelper.geneRegistry.getValueFromAllele[Array[ItemStack]](entity, Genes.GENE_KILLED_BY_SPECIFIC_ENTITY_DROPS)
+
+            if(specificEntityClass != null && drops != null && source.getEntity != null && source.getEntity.getClass == specificEntityClass) {
+                living.entityDropItem(drops(entity.getRandom.nextInt(drops.length)), 0.0F)
+            }
+        }
     }
 
     private def dropFewItems(entity: IEntitySoulCustom, recentlyHit: Boolean, lootingLevel: Int) {

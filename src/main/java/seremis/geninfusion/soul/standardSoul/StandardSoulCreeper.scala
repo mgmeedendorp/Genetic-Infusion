@@ -2,7 +2,7 @@ package seremis.geninfusion.soul.standardSoul
 
 import net.minecraft.client.model.ModelCreeper
 import net.minecraft.entity.EntityLiving
-import net.minecraft.entity.monster.EntityCreeper
+import net.minecraft.entity.monster.{EntitySkeleton, EntityCreeper}
 import net.minecraft.entity.passive.EntityOcelot
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
@@ -124,6 +124,13 @@ class StandardSoulCreeper extends StandardSoul {
         //Explosion related genes
         if(gene == GENE_EXPLODES)
             return new Chromosome(new Allele(false, true, BOOLEAN))
+
+        if(gene == GENE_DROPS_ITEM_WHEN_KILLED_BY_SPECIFIC_ENTITY)
+            return new Chromosome(new Allele(false, true, BOOLEAN))
+        if(gene == GENE_KILLED_BY_SPECIFIC_ENTITY_DROPS)
+            return new Chromosome(new Allele(true, Array(Items.record_11, Items.record_13, Items.record_blocks, Items.record_cat, Items.record_chirp, Items.record_far, Items.record_mall, Items.record_mellohi, Items.record_stal, Items.record_strad, Items.record_wait, Items.record_ward).map(b => new ItemStack(b)), ITEMSTACK_ARRAY))
+        if(gene == GENE_KILLED_BY_SPECIFIC_ENTITY_ENTITY)
+            return new Chromosome(new Allele(true, classOf[EntitySkeleton], CLASS))
 
         super.getChromosomeFromGene(entity, gene)
     }

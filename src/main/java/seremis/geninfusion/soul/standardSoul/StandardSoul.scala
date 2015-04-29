@@ -7,11 +7,10 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.{EntityCreature, EntityLiving, SharedMonsterAttributes}
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.soul.EnumAlleleType._
 import seremis.geninfusion.api.soul.lib.Genes._
 import seremis.geninfusion.api.soul.util.ModelPart
-import seremis.geninfusion.api.soul.{IAllele, IChromosome, IStandardSoul}
+import seremis.geninfusion.api.soul.{IChromosome, IStandardSoul}
 import seremis.geninfusion.soul.{Allele, Chromosome}
 
 abstract class StandardSoul extends IStandardSoul {
@@ -432,6 +431,12 @@ abstract class StandardSoul extends IStandardSoul {
         if(gene == GENE_CAN_BE_CHARGED)
             return new Chromosome(new Allele(true, true, BOOLEAN))
 
+        if(gene == GENE_DROPS_ITEM_WHEN_KILLED_BY_SPECIFIC_ENTITY)
+            return new Chromosome(new Allele(true, false, BOOLEAN))
+        if(gene == GENE_KILLED_BY_SPECIFIC_ENTITY_DROPS)
+            return new Chromosome(new Allele(false, null, ITEMSTACK_ARRAY))
+        if(gene == GENE_KILLED_BY_SPECIFIC_ENTITY_ENTITY)
+            return new Chromosome(new Allele(false, null, CLASS))
 
         null
     }

@@ -224,9 +224,13 @@ object Genes {
     val GENE_MODEL = ID + ".gene.model"
     val GENE_TEXTURE = ID + ".gene.texture"
 
-    val GENE_EXPLODES = ID + ".gene.expodes"
+    val GENE_EXPLODES = ID + ".gene.explodes"
     val GENE_FUSE_TIME = ID + ".gene.fuseTime"
     val GENE_EXPLOSION_RADIUS = ID + ".gene.explosionRadius"
     val GENE_FLINT_AND_STEEL_IGNITE = ID + ".gene.flintAndSteelIgnite"
     val GENE_CAN_BE_CHARGED = ID + ".gene.canBeCharged"
+
+    val GENE_DROPS_ITEM_WHEN_KILLED_BY_SPECIFIC_ENTITY = ID + ".gene.dropsItemWhenKilledBySpecificEntity"
+    val GENE_KILLED_BY_SPECIFIC_ENTITY_DROPS = ID + ".gene.killedBySpecificEntityDrops"
+    val GENE_KILLED_BY_SPECIFIC_ENTITY_ENTITY = ID + ".gene.killedBySpecificEntityEntity"
 }
