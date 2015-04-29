@@ -95,8 +95,8 @@ class TraitItemDrops extends Trait {
 
             if(itemstack != null && itemstack.getItem != null && (recentlyHit || flag1) && entity.getRandom.nextFloat() - lootingLevel.toFloat * 0.01F < dropChance) {
                 if(!flag1 && itemstack.isItemStackDamageable) {
-                    val maxStackDamage = Math.max(itemstack.getMaxDamage - 25, 1)
-                    var stackDamage = itemstack.getMaxDamage - entity.getRandom.nextInt(entity.getRandom.nextInt(maxStackDamage) + 1)
+                    val maxStackDamage = Math.max(itemstack.getMaxDurability - 25, 1)
+                    var stackDamage = itemstack.getMaxDurability - entity.getRandom.nextInt(entity.getRandom.nextInt(maxStackDamage) + 1)
 
                     if(stackDamage > maxStackDamage) {
                         stackDamage = maxStackDamage
@@ -105,7 +105,7 @@ class TraitItemDrops extends Trait {
                     if(stackDamage < 1) {
                         stackDamage = 1
                     }
-                    itemstack.setItemDamage(stackDamage)
+                    itemstack.setMetadata(stackDamage)
                 }
                 entity.asInstanceOf[EntityLiving].entityDropItem(itemstack, 0.0F)
             }
@@ -116,7 +116,7 @@ class TraitItemDrops extends Trait {
         val drops = SoulHelper.geneRegistry.getValueFromAllele[Array[ItemStack]](entity, Genes.GENE_RARE_ITEM_DROPS)
         val dropChances = entity.getFloatArray("equipmentDropChances")
 
-        if(drops != null && drops.length != null) {
+        if(drops != null && drops.length != 0) {
             for(i <- 0 until drops.length if entity.getRandom.nextInt((dropChances(i) * 100F).toInt) == 0) {
                 entity.asInstanceOf[EntityLiving].entityDropItem(drops(i), 0.0F)
             }

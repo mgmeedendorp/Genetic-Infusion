@@ -49,7 +49,7 @@ class TraitItemPickup extends Trait {
                                 } else if(newStack.getItem.isInstanceOf[ItemSword] && currentStack.getItem.isInstanceOf[ItemSword]) {
                                     val newSword = newStack.getItem.asInstanceOf[ItemSword]
                                     val oldSword = currentStack.getItem.asInstanceOf[ItemSword]
-                                    dropEquipment = if(newSword.func_150931_i() == oldSword.func_150931_i()) newStack.getItemDamage > currentStack.getItemDamage || newStack.hasTagCompound && !currentStack.hasTagCompound else newSword.func_150931_i() > oldSword.func_150931_i()
+                                    dropEquipment = if(newSword.func_150931_i() == oldSword.func_150931_i()) newStack.getMetadata > currentStack.getMetadata || newStack.hasTagCompound && !currentStack.hasTagCompound else newSword.func_150931_i() > oldSword.func_150931_i()
                                 } else {
                                     dropEquipment = false
                                 }
@@ -58,7 +58,7 @@ class TraitItemPickup extends Trait {
                             } else if(newStack.getItem.isInstanceOf[ItemArmor]) {
                                 val newArmor = newStack.getItem.asInstanceOf[ItemArmor]
                                 val oldArmor = currentStack.getItem.asInstanceOf[ItemArmor]
-                                dropEquipment = if(newArmor.damageReduceAmount == oldArmor.damageReduceAmount) newStack.getItemDamage > currentStack.getItemDamage || newStack.hasTagCompound && !currentStack.hasTagCompound else newArmor.damageReduceAmount > oldArmor.damageReduceAmount
+                                dropEquipment = if(newArmor.damageReduceAmount == oldArmor.damageReduceAmount) newStack.getMetadata > currentStack.getMetadata || newStack.hasTagCompound && !currentStack.hasTagCompound else newArmor.damageReduceAmount > oldArmor.damageReduceAmount
                             } else {
                                 dropEquipment = false
                             }
@@ -71,8 +71,8 @@ class TraitItemPickup extends Trait {
                                 living.entityDropItem(currentStack, 0.0F)
                             }
 
-                            if(newStack.getItem == Items.diamond && item.func_145800_j() != null) {
-                                val player = entity.getWorld.getPlayerEntityByName(item.func_145800_j())
+                            if(newStack.getItem == Items.diamond && item.getThrower != null) {
+                                val player = entity.getWorld.getPlayerEntityByName(item.getThrower)
                                 if(player != null) {
                                     player.triggerAchievement(AchievementList.field_150966_x)
                                 }
@@ -109,7 +109,7 @@ class TraitItemPickup extends Trait {
                 val currStack = living.getEquipmentInSlot(j)
 
                 if(!ItemStack.areItemStacksEqual(currStack, prevStack)) {
-                    entity.getWorld.asInstanceOf[WorldServer].getEntityTracker.func_151247_a(living, new S04PacketEntityEquipment(entity.getEntityId, j, currStack))
+                    entity.getWorld.asInstanceOf[WorldServer].getEntityTracker.sendToAllTrackingEntity(living, new S04PacketEntityEquipment(entity.getEntityId, j, currStack))
 
                     if(prevStack != null) {
                         living.getAttributeMap.removeAttributeModifiers(prevStack.getAttributeModifiers)
@@ -131,7 +131,7 @@ class TraitItemPickup extends Trait {
     def onItemPickup(entity: IEntitySoulCustom, ent: Entity, stackSize: Int) {
         if(!ent.isDead && GeneticInfusion.commonProxy.isServerWorld(entity.getWorld)) {
             val entitytracker = entity.getWorld.asInstanceOf[WorldServer].getEntityTracker
-            entitytracker.func_151247_a(ent, new S0DPacketCollectItem(ent.getEntityId, entity.getEntityId))
+            entitytracker.sendToAllTrackingEntity(ent, new S0DPacketCollectItem(ent.getEntityId, entity.getEntityId))
         }
     }
 

@@ -18,13 +18,13 @@ public class EntityAIHurtByTargetCustom extends EntityAITargetCustom {
     }
 
     public boolean shouldExecute() {
-        int revengeTimer = living.func_142015_aE();
+        int revengeTimer = living.getRevengeTimer();
         return revengeTimer != lastRevengeTimer && isSuitableTarget(living.getAITarget(), false);
     }
 
     public void startExecuting() {
         living.setAttackTarget(living.getAITarget());
-        lastRevengeTimer = living.func_142015_aE();
+        lastRevengeTimer = living.getRevengeTimer();
 
         if(this.entityCallsForHelp) {
             double followRange = getFollowRange();

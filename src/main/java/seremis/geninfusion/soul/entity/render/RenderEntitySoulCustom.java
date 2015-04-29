@@ -82,13 +82,13 @@ public class RenderEntitySoulCustom extends RenderLiving {
                     NBTTagCompound nbttagcompound = itemstack1.getTagCompound();
 
                     if(nbttagcompound.hasKey("SkullOwner", 10)) {
-                        gameprofile = NBTUtil.func_152459_a(nbttagcompound.getCompoundTag("SkullOwner"));
+                        gameprofile = NBTUtil.readGameProfileFromNBT(nbttagcompound.getCompoundTag("SkullOwner"));
                     } else if(nbttagcompound.hasKey("SkullOwner", 8) && !StringUtils.isNullOrEmpty(nbttagcompound.getString("SkullOwner"))) {
                         gameprofile = new GameProfile(null, nbttagcompound.getString("SkullOwner"));
                     }
                 }
 
-                TileEntitySkullRenderer.field_147536_b.func_152674_a(-0.5F, 0.0F, -0.5F, 1, 180.0F, itemstack1.getItemDamage(), gameprofile);
+                TileEntitySkullRenderer.field_147536_b.func_152674_a(-0.5F, 0.0F, -0.5F, 1, 180.0F, itemstack1.getMetadata(), gameprofile);
             }
 
             GL11.glPopMatrix();
@@ -154,7 +154,7 @@ public class RenderEntitySoulCustom extends RenderLiving {
                 float f5;
 
                 if(itemstack.getItem().requiresMultipleRenderPasses()) {
-                    for(i = 0; i < itemstack.getItem().getRenderPasses(itemstack.getItemDamage()); ++i) {
+                    for(i = 0; i < itemstack.getItem().getRenderPasses(itemstack.getMetadata()); ++i) {
                         int j = itemstack.getItem().getColorFromItemStack(itemstack, i);
                         f5 = (float) (j >> 16 & 255) / 255.0F;
                         f2 = (float) (j >> 8 & 255) / 255.0F;

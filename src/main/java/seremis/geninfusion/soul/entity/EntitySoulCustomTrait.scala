@@ -45,7 +45,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
         data.readBytes(abyte)
         var compound: NBTTagCompound = null
         try {
-            compound = CompressedStreamTools.func_152457_a(abyte, NBTSizeTracker.field_152451_a)
+            compound = CompressedStreamTools.decompress(abyte, NBTSizeTracker.INFINITE)
         } catch {
             case e: IOException =>
                 e.printStackTrace()
@@ -212,18 +212,6 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     //TODO tamed with DataWatcherHelper
     override def isTamed: Boolean = false
-
-    /**
-     * Gets the fuse state of this entity. This is used to make the entity explode. This method is similar to getCreeperState() in EntityCreeper.
-     * @return The current fuse state. 1 is 'fused' (about to explode), -1 is 'idle'.
-     */
-    override def getFuseState: Int = getDataWatcher.getWatchableObjectByte(getInteger("fuseStateWatcherId"))
-
-    /**
-     * Sets the fuse state of this entity. This is used to make the entity explode. This method is similar to setCreeperState() in EntityCreeper.
-     * @param state The fuse state of this entity.  1 is 'fused' (about to explode), -1 is 'idle'.
-     */
-    override def setFuseState(state: Int) = getDataWatcher.updateObject(getInteger("fuseStateWatcherId"), state.toByte)
 
     override def readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)

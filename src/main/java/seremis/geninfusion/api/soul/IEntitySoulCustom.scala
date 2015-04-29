@@ -210,17 +210,5 @@ trait IEntitySoulCustom extends IRangedAttackMob {
 
     def isTamed: Boolean
 
-    /**
-     * Gets the fuse state of this entity. This is used to make the entity explode. This method is similar to getCreeperState() in EntityCreeper.
-     * @return The current fuse state. 1 is 'fused' (about to explode), -1 is 'idle'.
-     */
-    def getFuseState: Int
-
-    /**
-     * Sets the fuse state of this entity. This is used to make the entity explode. This method is similar to setCreeperState() in EntityCreeper.
-     * @param state The fuse state of this entity.  1 is 'fused' (about to explode), -1 is 'idle'.
-     */
-    def setFuseState(state: Int)
-
     def dealFireDamage(damage: Int)
 }

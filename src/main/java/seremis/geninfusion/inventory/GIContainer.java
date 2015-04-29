@@ -70,7 +70,7 @@ public class GIContainer extends Container {
                     continue;
                 }
 
-                if(itemstack1 != null && itemstack1.isItemEqual(stack) && (!stack.getHasSubtypes() || stack.getItemDamage() == itemstack1.getItemDamage()) && ItemStack.areItemStackTagsEqual(stack, itemstack1)) {
+                if(itemstack1 != null && itemstack1.isItemEqual(stack) && (!stack.getHasSubtypes() || stack.getMetadata() == itemstack1.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, itemstack1)) {
                     int l = itemstack1.stackSize + stack.stackSize;
 
                     int limit = Math.min(stack.getMaxStackSize(), slot.getSlotStackLimit() - itemstack1.stackSize);

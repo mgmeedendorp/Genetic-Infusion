@@ -19,7 +19,7 @@ public class ModBlocks {
 
     public static void init() {
 
-        oreTitanium = new GIBlock(Material.rock).setHardness(20F).setBlockName(Blocks.ORE_TITANIUM_UNLOCALIZED_NAME());
+        oreTitanium = new GIBlock(Material.rock).setHardness(20F).setTextureName(Blocks.ORE_TITANIUM_UNLOCALIZED_NAME());
         crystal = new BlockCrystal(Material.coral);
         connectedGlass = new BlockConnectedGlass(Material.glass);
 

@@ -33,7 +33,7 @@ public class UtilBlock {
         float ry = rand.nextFloat() * 0.8F + 0.5F;
         float rz = rand.nextFloat() * 0.8F + 0.5F;
 
-        EntityItem entityItem = new EntityItem(world, x + rx, y + ry, z + rz, new ItemStack(stack.getItem(), stack.stackSize, stack.getItemDamage()));
+        EntityItem entityItem = new EntityItem(world, x + rx, y + ry, z + rz, new ItemStack(stack.getItem(), stack.stackSize, stack.getMetadata()));
 
         if(stack.hasTagCompound()) {
             entityItem.getEntityItem().setTagCompound((NBTTagCompound) stack.getTagCompound().copy());
@@ -60,7 +60,7 @@ public class UtilBlock {
     public static void dropItemsFromTile(World world, int x, int y, int z) {
 
         TileEntity tileEntity = world.getTileEntity(x, y, z);
-        if(!(tileEntity instanceof IInventory) || GeneticInfusion.commonProxy().isRenderWorld(tileEntity.getWorldObj())) {
+        if(!(tileEntity instanceof IInventory) || GeneticInfusion.commonProxy().isRenderWorld(tileEntity.getWorld())) {
             return;
         }
         IInventory inventory = (IInventory) tileEntity;
@@ -74,7 +74,7 @@ public class UtilBlock {
      */
     public static void dropItemsFromTile(World world, int x, int y, int z, int slot) {
         TileEntity tileEntity = world.getTileEntity(x, y, z);
-        if(!(tileEntity instanceof IInventory) || GeneticInfusion.commonProxy().isRenderWorld(tileEntity.getWorldObj())) {
+        if(!(tileEntity instanceof IInventory) || GeneticInfusion.commonProxy().isRenderWorld(tileEntity.getWorld())) {
             return;
         }
         IInventory inventory = (IInventory) tileEntity;
@@ -87,7 +87,7 @@ public class UtilBlock {
             float ry = rand.nextFloat() * 0.8F + 0.1F;
             float rz = rand.nextFloat() * 0.8F + 0.1F;
 
-            EntityItem entityItem = new EntityItem(world, x + rx, y + ry, z + rz, new ItemStack(item.getItem(), item.stackSize, item.getItemDamage()));
+            EntityItem entityItem = new EntityItem(world, x + rx, y + ry, z + rz, new ItemStack(item.getItem(), item.stackSize, item.getMetadata()));
 
             if(item.hasTagCompound()) {
                 entityItem.getEntityItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());

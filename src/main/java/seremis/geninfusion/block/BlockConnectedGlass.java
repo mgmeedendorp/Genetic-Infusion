@@ -15,16 +15,16 @@ public class BlockConnectedGlass extends GIBlock {
 
     public BlockConnectedGlass(Material material) {
         super(material);
-        setBlockName(Blocks.CONNECTED_GLASS_UNLOCALIZED_NAME());
+        setTextureName(Blocks.CONNECTED_GLASS_UNLOCALIZED_NAME());
         setHardness(2F);
         setResistance(3F);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister iconregister) {
-        super.registerBlockIcons(iconregister);
-        textureHelper.registerBlockIcons(iconregister);
+    public void registerIcons(IIconRegister iconregister) {
+        super.registerIcons(iconregister);
+        textureHelper.registerIcons(iconregister);
     }
 
     @Override

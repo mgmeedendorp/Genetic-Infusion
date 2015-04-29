@@ -34,9 +34,9 @@ class TraitFire extends Trait {
 
                     if(helmet != null) {
                         if(helmet.isItemStackDamageable) {
-                            helmet.setItemDamage(helmet.getItemDamageForDisplay + entity.getRandom.nextInt(2))
+                            helmet.setMetadata(helmet.getCurrentDurability + entity.getRandom.nextInt(2))
 
-                            if(helmet.getItemDamageForDisplay >= helmet.getMaxDamage) {
+                            if(helmet.getCurrentDurability >= helmet.getMaxDurability) {
                                 living.renderBrokenItemStack(helmet)
                                 living.setCurrentItemOrArmor(4, null)
                             }
@@ -110,7 +110,7 @@ class TraitFire extends Trait {
     }
     override def onStruckByLightning(entity: IEntitySoulCustom, lightningBolt: EntityLightningBolt) {
         val living = entity.asInstanceOf[EntityLiving]
-
+        println("lightning")
         entity.dealFireDamage(5)
         entity.setInteger("fire", entity.getInteger("fire") + 1)
 

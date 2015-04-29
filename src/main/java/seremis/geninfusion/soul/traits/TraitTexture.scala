@@ -6,6 +6,7 @@ import seremis.geninfusion.api.soul.IEntitySoulCustom
 import seremis.geninfusion.api.soul.SoulHelper
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.helper.GITextureHelper
+import seremis.geninfusion.lib.Localizations
 
 class TraitTexture extends Trait {
 
@@ -13,7 +14,7 @@ class TraitTexture extends Trait {
         try {
             SoulHelper.geneRegistry.getValueFromAllele[String](entity, Genes.GENE_TEXTURE)
         } catch {
-            case e: NullPointerException => "textures/entity/zombie/zombie.png"
+            case e: NullPointerException => Localizations.LOC_MODEL_TEXTURES + Localizations.BLANK
         }
     }
 

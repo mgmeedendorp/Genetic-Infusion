@@ -126,7 +126,7 @@ class TraitMovement extends Trait {
             newPosRotationIncrements -= 1
             living.setPosition(posX, posY, posZ)
             entity.setRotation(living.rotationYaw, living.rotationPitch)
-        } else if(!living.isClientWorld) {
+        } else if(living.isServerWorld) {
             living.motionX *= 0.98D
             living.motionY *= 0.98D
             living.motionZ *= 0.98D

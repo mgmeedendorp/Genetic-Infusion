@@ -13,7 +13,7 @@ public class ModEntity {
     }
 
     public static void register() {
-        EntityRegistry.registerModEntity(EntitySoulCustom.class, Entities.soulEntityName(), Entities.soulEntityID(), GeneticInfusion.instance(), 80, 1, false);
-        EntityRegistry.registerModEntity(EntitySoulCustomCreature.class, Entities.soulEntityCreatureName(), Entities.soulEntityCreatureID(), GeneticInfusion.instance(), 80, 1, false);
+        EntityRegistry.registerModEntity(EntitySoulCustom.class, Entities.soulEntityName(), Entities.soulEntityID(), GeneticInfusion.instance(), 80, 20, true);
+        EntityRegistry.registerModEntity(EntitySoulCustomCreature.class, Entities.soulEntityCreatureName(), Entities.soulEntityCreatureID(), GeneticInfusion.instance(), 80, 20, true);
     }
 }

@@ -25,13 +25,13 @@ public class GIBlock extends Block {
 
     public GIBlock(Material material) {
         super(material);
-        setBlockName("");
+        this.setTextureName("");
         setCreativeTab(GeneticInfusion.creativeTab());
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister iconRegister) {
+    public void registerIcons(IIconRegister iconRegister) {
         if(!needsIcon) {
             return;
         }

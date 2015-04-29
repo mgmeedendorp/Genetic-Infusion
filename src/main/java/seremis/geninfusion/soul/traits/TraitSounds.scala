@@ -9,7 +9,8 @@ import seremis.geninfusion.api.soul.lib.Genes
 class TraitSounds extends Trait {
 
     override def playSound(entity: IEntitySoulCustom, name: String, volume: Float, pitch: Float) {
-        entity.getWorld.playSoundAtEntity(entity.asInstanceOf[Entity], name, volume, pitch)
+        if(name != null && !name.equals(""))
+            entity.getWorld.playSoundAtEntity(entity.asInstanceOf[Entity], name, volume, pitch)
     }
 
     override def onUpdate(entity: IEntitySoulCustom) {

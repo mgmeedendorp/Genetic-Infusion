@@ -80,7 +80,7 @@ class TraitAttacked extends Trait {
             }
 
             if(living.ticksExisted % 20 == 0) {
-                living.func_110142_aN().func_94549_h()
+                living.getCombatTracker().func_94549_h()
             }
         }
     }
@@ -252,7 +252,7 @@ class TraitAttacked extends Trait {
                 val health = living.getHealth
 
                 living.setHealth(health - damageDealt)
-                living.func_110142_aN().func_94547_a(source, health, damageDealt)
+                living.getCombatTracker().func_94547_a(source, health, damageDealt)
                 living.setAbsorptionAmount(living.getAbsorptionAmount - damageDealt)
             }
         }
@@ -291,7 +291,7 @@ class TraitAttacked extends Trait {
             if(damageDealt <= 0.0F) {
                 0.0F
             } else {
-                damageModifier = EnchantmentHelper.getEnchantmentModifierDamage(entity.asInstanceOf[EntityLiving].getLastActiveItems, source)
+                damageModifier = EnchantmentHelper.getEnchantmentModifierDamage(living.getInventory, source)
                 if(damageModifier > 20) {
                     damageModifier = 20
                 }
@@ -323,6 +323,6 @@ class TraitAttacked extends Trait {
         }
 
         entity.setBoolean("dead", true)
-        living.func_110142_aN().func_94549_h()
+        living.getCombatTracker().func_94549_h()
     }
 }

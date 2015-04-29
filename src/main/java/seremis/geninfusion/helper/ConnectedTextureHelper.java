@@ -36,7 +36,7 @@ public class ConnectedTextureHelper {
     }
 
     @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister iconRegister) {
+    public void registerIcons(IIconRegister iconRegister) {
         for(int i = 0; i < textures.length; i++) {
             icons[i] = iconRegister.registerIcon(DefaultProps.ID() + ":connected/" + textures[i]);
         }

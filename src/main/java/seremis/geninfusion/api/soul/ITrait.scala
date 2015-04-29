@@ -6,7 +6,6 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.{Entity, EntityLivingBase, IEntityLivingData}
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.{ChunkCoordinates, DamageSource}
-import seremis.geninfusion.soul.entity.EntitySoulCustomTrait
 
 trait ITrait {
     def onUpdate(entity: IEntitySoulCustom)
