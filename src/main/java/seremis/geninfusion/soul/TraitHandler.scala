@@ -57,10 +57,7 @@ object TraitHandler {
         data
     }
 
-    def playSoundAtEntity(entity: IEntitySoulCustom,
-                          name: String,
-                          volume: Float,
-                          pitch: Float) {
+    def playSoundAtEntity(entity: IEntitySoulCustom, name: String, volume: Float, pitch: Float) {
         for (trt <- SoulHelper.traitRegistry.getTraits) {
             trt.playSound(entity, name, volume, pitch)
         }
@@ -137,10 +134,7 @@ object TraitHandler {
         }
     }
 
-    def getBlockPathWeight(entity: IEntitySoulCustom,
-                           x: Int,
-                           y: Int,
-                           z: Int): Float = {
+    def getBlockPathWeight(entity: IEntitySoulCustom, x: Int, y: Int, z: Int): Float = {
         var flag = 0.0F
         for (trt <- SoulHelper.traitRegistry.getTraits) {
             val tmp = trt.getBlockPathWeight(entity, x, y, z)
@@ -170,16 +164,9 @@ object TraitHandler {
     }
 
     @SideOnly(Side.CLIENT)
-    def render(entity: IEntitySoulCustom,
-               timeModifier: Float,
-               limbSwing: Float,
-               specialRotation: Float,
-               rotationYawHead: Float,
-               rotationPitch: Float,
-               scale: Float) {
+    def render(entity: IEntitySoulCustom, timeModifier: Float, limbSwing: Float, specialRotation: Float, rotationYawHead: Float, rotationPitch: Float, scale: Float) {
         for (trt <- SoulHelper.traitRegistry.getTraits) {
-            trt.render(entity, timeModifier, limbSwing, specialRotation, rotationYawHead, rotationPitch,
-                scale)
+            trt.render(entity, timeModifier, limbSwing, specialRotation, rotationYawHead, rotationPitch, scale)
         }
     }
 
@@ -191,10 +178,7 @@ object TraitHandler {
         flag
     }
 
-    def isWithinHomeDistance(entity: IEntitySoulCustom,
-                             x: Int,
-                             y: Int,
-                             z: Int): Boolean = {
+    def isWithinHomeDistance(entity: IEntitySoulCustom, x: Int, y: Int, z: Int): Boolean = {
         var flag = false
         for (trt <- SoulHelper.traitRegistry.getTraits if trt.isWithinHomeDistance(entity, x, y, z)) {
             flag = true
@@ -213,11 +197,7 @@ object TraitHandler {
         flag
     }
 
-    def setHomeArea(entity: IEntitySoulCustom,
-                    x: Int,
-                    y: Int,
-                    z: Int,
-                    maxDistance: Int) {
+    def setHomeArea(entity: IEntitySoulCustom, x: Int, y: Int, z: Int, maxDistance: Int) {
         for (trt <- SoulHelper.traitRegistry.getTraits) {
             trt.setHomeArea(entity, x, y, z, maxDistance)
         }
@@ -260,6 +240,7 @@ object TraitHandler {
         }
     }
 
+    @SideOnly(Side.CLIENT)
     def getEntityTexture(entity: IEntitySoulCustom): String = {
         var flag: String = null
         for (trt <- SoulHelper.traitRegistry.getTraits) {
@@ -274,6 +255,56 @@ object TraitHandler {
     def onStruckByLightning(entity: IEntitySoulCustom, lightingBolt: EntityLightningBolt) {
         for(trt <- SoulHelper.traitRegistry.getTraits) {
             trt.onStruckByLightning(entity, lightingBolt)
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    def preRenderCallback(entity: IEntitySoulCustom, partialTickTime: Float) {
+        for(trt <- SoulHelper.traitRegistry.getTraits) {
+            trt.preRenderCallback(entity, partialTickTime)
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    def getColorMultiplier(entity: IEntitySoulCustom, brightness: Float, partialTickTime: Float): Int = {
+        var flag = 0
+        for(trt <- SoulHelper.traitRegistry.getTraits) {
+            val tmp = trt.getColorMultiplier(entity, brightness, partialTickTime)
+            if(tmp != 0) {
+                flag = tmp
+            }
+        }
+        flag
+    }
+
+    @SideOnly(Side.CLIENT)
+    def shouldRenderPass(entity: IEntitySoulCustom, renderPass: Int, partialTickTime: Float): Int = {
+        var flag = 0
+        for(trt <- SoulHelper.traitRegistry.getTraits) {
+            val tmp = trt.shouldRenderPass(entity, renderPass, partialTickTime)
+            if(tmp != 0) {
+                flag = tmp
+            }
+        }
+        flag
+    }
+
+    @SideOnly(Side.CLIENT)
+    def inheritRenderPass(entity: IEntitySoulCustom, renderPass: Int, partialTickTime: Float): Int = {
+        var flag = 0
+        for(trt <- SoulHelper.traitRegistry.getTraits) {
+            val tmp = trt.inheritRenderPass(entity, renderPass, partialTickTime)
+            if(tmp != 0) {
+                flag = tmp
+            }
+        }
+        flag
+    }
+
+    @SideOnly(Side.CLIENT)
+    def renderEquippedItems(entity: IEntitySoulCustom, partialTickTime: Float) {
+        for(trt <- SoulHelper.traitRegistry.getTraits) {
+            trt.renderEquippedItems(entity, partialTickTime)
         }
     }
 }

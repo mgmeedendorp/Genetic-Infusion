@@ -4,7 +4,9 @@ import java.io.IOException
 import java.util.Random
 
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData
+import cpw.mods.fml.relauncher.{Side, SideOnly}
 import io.netty.buffer.ByteBuf
+import net.minecraft.client.renderer.entity.RenderLiving
 import net.minecraft.entity._
 import net.minecraft.entity.effect.EntityLightningBolt
 import net.minecraft.entity.player.EntityPlayer
@@ -209,6 +211,14 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     override def isAIEnabled: Boolean = SoulHelper.geneRegistry.getValueFromAllele(this, Genes.GENE_USE_NEW_AI)
 
     override def dealFireDamage(damage: Int) = super.dealFireDamage(damage)
+
+    var renderer: RenderLiving = null
+
+    @SideOnly(Side.CLIENT)
+    override def getEntityRender: RenderLiving = renderer
+
+    @SideOnly(Side.CLIENT)
+    override def setEntityRender(render: RenderLiving) = renderer = render
 
     //TODO tamed with DataWatcherHelper
     override def isTamed: Boolean = false

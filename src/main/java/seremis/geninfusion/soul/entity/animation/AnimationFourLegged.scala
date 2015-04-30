@@ -72,9 +72,9 @@ class AnimationFourLegged extends Animation {
         val rightLeg2: ModelPart = getModelRightLegs(entity)(1)
 
         leftLeg1.rotateAngleX = MathHelper.cos(timeModifier * 0.6662F) * 1.4F * walkSpeed
-        rightLeg1.rotateAngleX = MathHelper.cos(timeModifier * 0.6662F + PI) * 1.4F * walkSpeed
         leftLeg2.rotateAngleX = MathHelper.cos(timeModifier * 0.6662F + PI) * 1.4F * walkSpeed
-        rightLeg2.rotateAngleX = MathHelper.cos(timeModifier * 0.6662F) * 1.4F * walkSpeed
+        rightLeg2.rotateAngleX = MathHelper.cos(timeModifier * 0.6662F + PI) * 1.4F * walkSpeed
+        rightLeg1.rotateAngleX = MathHelper.cos(timeModifier * 0.6662F) * 1.4F * walkSpeed
     }
 
     /**

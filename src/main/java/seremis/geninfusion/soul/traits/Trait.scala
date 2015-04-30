@@ -52,9 +52,6 @@ class Trait extends ITrait {
 
     override def attackEntityWithRangedAttack(entity: IEntitySoulCustom, target: EntityLivingBase, distanceModified: Float) {}
 
-    @SideOnly(Side.CLIENT)
-    override def render(entity: IEntitySoulCustom, timeModifier: Float, limbSwing: Float, specialRotation: Float, rotationYawHead: Float, rotationPitch: Float, scale: Float) {}
-
     override def isWithinHomeDistanceCurrentPosition(entity: IEntitySoulCustom): Boolean = false
 
     override def isWithinHomeDistance(entity: IEntitySoulCustom, x: Int, y: Int, z: Int): Boolean = false
@@ -73,7 +70,26 @@ class Trait extends ITrait {
 
     override def readFromNBT(entity: IEntitySoulCustom, compound: NBTTagCompound) {}
 
-    override def getEntityTexture(entity: IEntitySoulCustom): String = null
-
     override def onStruckByLightning(entity: IEntitySoulCustom, lightingBolt: EntityLightningBolt) {}
+
+    @SideOnly(Side.CLIENT)
+    override def render(entity: IEntitySoulCustom, timeModifier: Float, limbSwing: Float, specialRotation: Float, rotationYawHead: Float, rotationPitch: Float, scale: Float) {}
+
+    @SideOnly(Side.CLIENT)
+    override def preRenderCallback(entity: IEntitySoulCustom, partialTickTime: Float) {}
+
+    @SideOnly(Side.CLIENT)
+    override def inheritRenderPass(entity: IEntitySoulCustom, renderPass: Int, partialTickTime: Float): Int = 0
+
+    @SideOnly(Side.CLIENT)
+    override def shouldRenderPass(entity: IEntitySoulCustom, renderPass: Int, partialTickTime: Float): Int = 0
+
+    @SideOnly(Side.CLIENT)
+    override def getColorMultiplier(entity: IEntitySoulCustom, brightness: Float, partialTickTime: Float): Int = 0
+
+    @SideOnly(Side.CLIENT)
+    override def renderEquippedItems(entity: IEntitySoulCustom, partialTickTime: Float) {}
+
+    @SideOnly(Side.CLIENT)
+    override def getEntityTexture(entity: IEntitySoulCustom): String = null
 }

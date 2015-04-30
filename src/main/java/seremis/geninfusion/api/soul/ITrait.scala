@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.{ChunkCoordinates, DamageSource}
 
 trait ITrait {
+
     def onUpdate(entity: IEntitySoulCustom)
 
     def interact(entity: IEntitySoulCustom, player: EntityPlayer): Boolean
@@ -50,8 +51,6 @@ trait ITrait {
 
     def attackEntityWithRangedAttack(entity: IEntitySoulCustom, target: EntityLivingBase, distanceModified: Float)
 
-    @SideOnly(Side.CLIENT) def render(entity: IEntitySoulCustom, timeModifier: Float, walkSpeed: Float, specialRotation: Float, rotationYawHead: Float, rotationPitch: Float, scale: Float)
-
     def isWithinHomeDistanceCurrentPosition(entity: IEntitySoulCustom): Boolean
 
     def isWithinHomeDistance(entity: IEntitySoulCustom, x: Int, y: Int, z: Int): Boolean
@@ -70,7 +69,19 @@ trait ITrait {
 
     def readFromNBT(entity: IEntitySoulCustom, compound: NBTTagCompound)
 
-    def getEntityTexture(entity: IEntitySoulCustom): String
-
     def onStruckByLightning(entity: IEntitySoulCustom, lightingBolt: EntityLightningBolt)
+
+    @SideOnly(Side.CLIENT) def render(entity: IEntitySoulCustom, timeModifier: Float, walkSpeed: Float, specialRotation: Float, rotationYawHead: Float, rotationPitch: Float, scale: Float)
+
+    @SideOnly(Side.CLIENT) def preRenderCallback(entity: IEntitySoulCustom, partialTickTime: Float)
+
+    @SideOnly(Side.CLIENT) def getColorMultiplier(entity: IEntitySoulCustom, brightness: Float, partialTickTime: Float): Int
+
+    @SideOnly(Side.CLIENT) def shouldRenderPass(entity: IEntitySoulCustom, renderPass: Int, partialTickTime: Float): Int
+
+    @SideOnly(Side.CLIENT) def inheritRenderPass(entity: IEntitySoulCustom, renderPass: Int, partialTickTime: Float): Int
+
+    @SideOnly(Side.CLIENT) def renderEquippedItems(entity: IEntitySoulCustom, partialTickTime: Float)
+
+    @SideOnly(Side.CLIENT) def getEntityTexture(entity: IEntitySoulCustom): String
 }

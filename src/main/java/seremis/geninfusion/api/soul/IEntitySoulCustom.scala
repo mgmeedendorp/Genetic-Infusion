@@ -2,6 +2,8 @@ package seremis.geninfusion.api.soul
 
 import java.util.Random
 
+import cpw.mods.fml.relauncher.{SideOnly, Side}
+import net.minecraft.client.renderer.entity.RenderLiving
 import net.minecraft.entity.{Entity, IRangedAttackMob}
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -211,4 +213,10 @@ trait IEntitySoulCustom extends IRangedAttackMob {
     def isTamed: Boolean
 
     def dealFireDamage(damage: Int)
+
+    @SideOnly(Side.CLIENT)
+    def getEntityRender: RenderLiving
+
+    @SideOnly(Side.CLIENT)
+    def setEntityRender(render: RenderLiving)
 }
