@@ -41,6 +41,8 @@ class GeneModel extends Gene(EnumAlleleType.MODELPART_ARRAY) {
     override def advancedInherit(parent1: Array[IChromosome], parent2: Array[IChromosome], offspring: Array[IChromosome]): IChromosome = {
         val geneId = SoulHelper.geneRegistry.getGeneId(this)
         val geneIdTexture = SoulHelper.geneRegistry.getGeneId(Genes.GENE_TEXTURE)
+        val geneIdHeight = SoulHelper.geneRegistry.getGeneId(Genes.GENE_HEIGHT)
+        val geneIdWidth = SoulHelper.geneRegistry.getGeneId(Genes.GENE_WIDTH)
 
         val textureChromosome1 = parent1(geneIdTexture)
         val textureChromosome2 = parent2(geneIdTexture)
@@ -93,11 +95,13 @@ class GeneModel extends Gene(EnumAlleleType.MODELPART_ARRAY) {
         randomlyInherit(inherited2, wings2, texture2, wings4, texture4)
         randomlyInherit(inherited2, body2, texture2, body4, texture4)
 
+        //TODO adjust modelpart location for connecting limbs
+
         val parent1Tuple = createParentTexture(inherited1)
         val parent2Tuple = createParentTexture(inherited2)
 
-        val parent1Texture = parent1Tuple._1
-        val parent2Texture = parent2Tuple._1
+        var parent1Texture = parent1Tuple._1
+        var parent2Texture = parent2Tuple._1
 
         val textureId = SoulHelper.getNextAvailableTextureID
         val parent1TextureLocationString = Localizations.LOC_ENTITY_CUSTOM_TEXTURES + textureId + "_texture1.png"
@@ -106,6 +110,9 @@ class GeneModel extends Gene(EnumAlleleType.MODELPART_ARRAY) {
         val parent1TextureLocation = toResource(parent1TextureLocationString)
         val parent2TextureLocation = toResource(parent2TextureLocationString)
 
+        parent1Texture = GITextureHelper.mergeImages(parent1Texture, parent2Texture)
+        parent2Texture = GITextureHelper.mergeImages(parent2Texture, parent1Texture)
+
         GITextureHelper.writeBufferedImage(parent1Texture, parent1TextureLocation)
         GITextureHelper.writeBufferedImage(parent2Texture, parent2TextureLocation)
 
@@ -113,6 +120,18 @@ class GeneModel extends Gene(EnumAlleleType.MODELPART_ARRAY) {
         val textureAllele2 = new Allele(false, parent2TextureLocationString, EnumAlleleType.STRING)
 
         offspring(geneIdTexture) = SoulHelper.instanceHelper.getIChromosomeInstance(textureAllele1, textureAllele2)
+
+        val widthAllele1 = new Allele(true, AnimationCache.getModelWidth(parent1Tuple._2.to[Array]), EnumAlleleType.FLOAT)
+        val widthAllele2 = new Allele(false, AnimationCache.getModelWidth(parent2Tuple._2.to[Array]), EnumAlleleType.FLOAT)
+
+        offspring(geneIdWidth) = SoulHelper.instanceHelper.getIChromosomeInstance(widthAllele1, widthAllele2)
+
+        val heightAllele1 = new Allele(true, AnimationCache.getModelHeight(parent1Tuple._2.to[Array]), EnumAlleleType.FLOAT)
+        val heightAllele2 = new Allele(false, AnimationCache.getModelHeight(parent2Tuple._2.to[Array]), EnumAlleleType.FLOAT)
+
+        offspring(geneIdHeight) = SoulHelper.instanceHelper.getIChromosomeInstance(heightAllele1, heightAllele2)
+
+        println("width: " + widthAllele1.getAlleleData + " height: " + heightAllele1.getAlleleData)
 
         val resultAllele1 = new Allele(true, parent1Tuple._2.to[Array], EnumAlleleType.MODELPART_ARRAY)
         val resultAllele2 = new Allele(false, parent2Tuple._2.to[Array], EnumAlleleType.MODELPART_ARRAY)

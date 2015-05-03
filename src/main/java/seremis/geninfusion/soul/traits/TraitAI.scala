@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.entity.{Entity, EntityCreature, EntityLiving, SharedMonsterAttributes}
 import net.minecraft.pathfinding.PathEntity
 import net.minecraft.util.MathHelper
+import seremis.geninfusion.api.soul.lib.VariableLib._
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.soul.entity.ai._
@@ -350,10 +351,10 @@ class TraitAI extends Trait {
         entity.getWorld.theProfiler.startSection("ai")
 
         if(entity.asInstanceOf[EntityLiving].getHealth <= 0.0F) {
-            entity.setBoolean("isJumping", false)
-            entity.setFloat("moveStrafing", 0.0F)
-            entity.setFloat("moveForward", 0.0F)
-            entity.setFloat("randomYawVelocity", 0.0F)
+            entity.setBoolean(ENTITY_IS_JUMPING, false)
+            entity.setFloat(ENTITY_MOVE_STRAFING, 0.0F)
+            entity.setFloat(ENTITY_MOVE_FORWARD, 0.0F)
+            entity.setFloat(ENTITY_RANDOM_YAW_VELOCITY, 0.0F)
         } else if(!entity.getWorld.isRemote) {
             if(useNewAI) {
                 entity.getWorld.theProfiler.startSection("newAi")
@@ -363,7 +364,7 @@ class TraitAI extends Trait {
                 entity.getWorld.theProfiler.startSection("oldAi")
                 entity.updateEntityActionState
                 entity.getWorld.theProfiler.endSection()
-                entity.setFloat("rotationYawHead", entity.getFloat("rotationYaw"))
+                entity.setFloat(ENTITY_ROTATION_YAW_HEAD, entity.getFloat(ENTITY_ROTATION_YAW))
             }
         }
         entity.getWorld.theProfiler.endSection()
@@ -375,7 +376,7 @@ class TraitAI extends Trait {
         if(SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_IS_CREATURE)) {
             entity.getWorld.theProfiler.startSection("ai")
 
-            var fleeingTick = entity.getInteger("fleeingTick")
+            var fleeingTick = entity.getInteger(ENTITY_FLEEING_TICK)
 
             if(fleeingTick >= 0) {
                 val iattributeinstance = living.getEntityAttribute(SharedMonsterAttributes.movementSpeed)
@@ -383,17 +384,17 @@ class TraitAI extends Trait {
                 fleeingTick -= 1
             }
 
-            entity.setInteger("fleeingTick", fleeingTick)
-            entity.setBoolean("hasAttacked", entity.isMovementCeased)
+            entity.setInteger(ENTITY_FLEEING_TICK, fleeingTick)
+            entity.setBoolean(ENTITY_HAS_ATTACKED, entity.isMovementCeased)
 
             val f4 = 16.0F
-            var entityToAttack = entity.getObject("entityToAttack").asInstanceOf[Entity]
+            var entityToAttack = entity.getObject(ENTITY_ENTITY_TO_ATTACK).asInstanceOf[Entity]
 
             if(entityToAttack == null) {
                 entityToAttack = entity.findPlayerToAttack
 
                 if(entityToAttack != null) {
-                    entity.setObject("pathToEntity", entity.getWorld.getPathEntityToEntity(entity.asInstanceOf[Entity], entityToAttack, f4, true, false, false, true))
+                    entity.setObject(ENTITY_PATH_TO_ENTITY, entity.getWorld.getPathEntityToEntity(entity.asInstanceOf[Entity], entityToAttack, f4, true, false, false, true))
                 }
             } else if(entityToAttack.isEntityAlive) {
                 val distance = entityToAttack.getDistanceToEntity(entity.asInstanceOf[Entity])
@@ -409,33 +410,33 @@ class TraitAI extends Trait {
                 entityToAttack = null
             }
 
-            entity.setObject("entityToAttack", entityToAttack)
+            entity.setObject(ENTITY_ENTITY_TO_ATTACK, entityToAttack)
 
             entity.getWorld.theProfiler.endSection()
 
-            if(!entity.getBoolean("hasAttacked") && entityToAttack != null && (entity.getObject("pathToEntity") == null || entity.getRandom.nextInt(20) == 0)) {
-                entity.setObject("pathToEntity", entity.getWorld.getPathEntityToEntity(entity.asInstanceOf[Entity], entityToAttack, f4, true, false, false, true))
-            } else if(!entity.getBoolean("hasAttacked") && (entity.getObject("pathToEntity") == null && entity.getRandom.nextInt(180) == 0 || entity.getRandom.nextInt(120) == 0 || entity.getInteger("fleeingTick") > 0) && entity.getInteger("entityAge") < 100) {
+            if(!entity.getBoolean(ENTITY_HAS_ATTACKED) && entityToAttack != null && (entity.getObject(ENTITY_PATH_TO_ENTITY) == null || entity.getRandom.nextInt(20) == 0)) {
+                entity.setObject(ENTITY_PATH_TO_ENTITY, entity.getWorld.getPathEntityToEntity(entity.asInstanceOf[Entity], entityToAttack, f4, true, false, false, true))
+            } else if(!entity.getBoolean(ENTITY_HAS_ATTACKED) && (entity.getObject(ENTITY_PATH_TO_ENTITY) == null && entity.getRandom.nextInt(180) == 0 || entity.getRandom.nextInt(120) == 0 || entity.getInteger(ENTITY_FLEEING_TICK) > 0) && entity.getInteger(ENTITY_ENTITY_AGE) < 100) {
                 entity.updateWanderPath
             }
 
             val i = MathHelper.floor_double(entity.getBoundingBox.minY + 0.5D)
-            val flag = entity.getBoolean("inWater")
+            val flag = entity.getBoolean(ENTITY_IN_WATER)
             val flag1 = entity.asInstanceOf[EntityLiving].handleLavaMovement()
-            entity.setFloat("rotationPitch", 0.0F)
+            entity.setFloat(ENTITY_ROTATION_PITCH, 0.0F)
 
-            var pathToEntity = entity.getObject("pathToEntity").asInstanceOf[PathEntity]
+            var pathToEntity = entity.getObject(ENTITY_PATH_TO_ENTITY).asInstanceOf[PathEntity]
 
             if(pathToEntity != null && entity.getRandom.nextInt(100) != 0) {
                 entity.getWorld.theProfiler.startSection("followpath")
                 var vec3 = pathToEntity.getPosition(living)
-                val d0 = (entity.getFloat("width") * 2.0F).toDouble
+                val d0 = (entity.getFloat(ENTITY_WIDTH) * 2.0F).toDouble
 
-                val posX = entity.getDouble("posX")
-                val posZ = entity.getDouble("posZ")
-                var rotationYaw = entity.getFloat("rotationYaw")
-                var moveForward = entity.getFloat("moveForward")
-                var moveStrafing = entity.getFloat("moveStrafing")
+                val posX = entity.getDouble(ENTITY_POS_X)
+                val posZ = entity.getDouble(ENTITY_POS_Z)
+                var rotationYaw = entity.getFloat(ENTITY_ROTATION_YAW)
+                var moveForward = entity.getFloat(ENTITY_MOVE_FORWARD)
+                var moveStrafing = entity.getFloat(ENTITY_MOVE_STRAFING)
 
                 while(vec3 != null && vec3.squareDistanceTo(posX, vec3.yCoord, posZ) < d0 * d0) {
                     pathToEntity.incrementPathIndex()
@@ -448,7 +449,7 @@ class TraitAI extends Trait {
                     }
                 }
 
-                entity.setBoolean("isJumping", false)
+                entity.setBoolean(ENTITY_IS_JUMPING, false)
 
                 if(vec3 != null) {
                     val d1 = vec3.xCoord - posX
@@ -468,7 +469,7 @@ class TraitAI extends Trait {
 
                     rotationYaw += f2
 
-                    if(entity.getBoolean("hasAttacked") && entityToAttack != null) {
+                    if(entity.getBoolean(ENTITY_HAS_ATTACKED) && entityToAttack != null) {
                         val d4 = entityToAttack.posX - posX
                         val d5 = entityToAttack.posZ - posZ
                         val f3 = rotationYaw
@@ -479,7 +480,7 @@ class TraitAI extends Trait {
                     }
 
                     if(d3 > 0.0D) {
-                        entity.setBoolean("isJumping", true)
+                        entity.setBoolean(ENTITY_IS_JUMPING, true)
                     }
                 }
 
@@ -487,24 +488,24 @@ class TraitAI extends Trait {
                     entity.asInstanceOf[EntityLiving].faceEntity(entityToAttack, 30.0F, 30.0F)
                 }
 
-                if(entity.getBoolean("isCollidedHorizontally") && pathToEntity == null) {
-                    entity.setBoolean("isJumping", true)
+                if(entity.getBoolean(ENTITY_IS_COLLIDED_HORIZONTALLY) && pathToEntity == null) {
+                    entity.setBoolean(ENTITY_IS_JUMPING, true)
                 }
 
                 if(entity.getRandom.nextFloat() < 0.8F && (flag || flag1)) {
-                    entity.setBoolean("isJumping", true)
+                    entity.setBoolean(ENTITY_IS_JUMPING, true)
                 }
 
-                entity.setFloat("rotationYaw", rotationYaw)
-                entity.setFloat("moveForward", moveForward)
-                entity.setFloat("moveStrafing", moveStrafing)
+                entity.setFloat(ENTITY_ROTATION_YAW, rotationYaw)
+                entity.setFloat(ENTITY_MOVE_FORWARD, moveForward)
+                entity.setFloat(ENTITY_MOVE_STRAFING, moveStrafing)
 
                 entity.getWorld.theProfiler.endSection()
             } else {
                 updateEntityActionStateLiving(entity)
                 pathToEntity = null
             }
-            entity.setObject("pathToEntity", pathToEntity)
+            entity.setObject(ENTITY_PATH_TO_ENTITY, pathToEntity)
         } else {
             updateEntityActionStateLiving(entity)
         }
@@ -513,9 +514,9 @@ class TraitAI extends Trait {
     def updateEntityActionStateLiving(entity: IEntitySoulCustom) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        entity.setInteger("entityAge", entity.getInteger("entityAge") + 1)
-        entity.setFloat("moveForward", 0.0F)
-        entity.setFloat("moveStrafing", 0.0F)
+        entity.setInteger(ENTITY_ENTITY_AGE, entity.getInteger(ENTITY_ENTITY_AGE) + 1)
+        entity.setFloat(ENTITY_MOVE_FORWARD, 0.0F)
+        entity.setFloat(ENTITY_MOVE_STRAFING, 0.0F)
         entity.despawnEntity
         val f = 8.0F
 
@@ -523,45 +524,45 @@ class TraitAI extends Trait {
             val entityplayer = entity.getWorld.getClosestPlayerToEntity(entity.asInstanceOf[Entity], f.toDouble)
 
             if(entityplayer != null) {
-                entity.setObject("currentTarget", entityplayer)
-                entity.setInteger("numTicksToChaseTarget", 10 + entity.getRandom.nextInt(20))
+                entity.setObject(ENTITY_CURRENT_TARGET, entityplayer)
+                entity.setInteger(ENTITY_NUM_TICKS_TO_CHASE_TARGET, 10 + entity.getRandom.nextInt(20))
             } else {
-                entity.setFloat("randomYawVelocity", (entity.getRandom.nextFloat() - 0.5F) * 20.0F)
+                entity.setFloat(ENTITY_RANDOM_YAW_VELOCITY, (entity.getRandom.nextFloat() - 0.5F) * 20.0F)
             }
         }
 
-        val currentTarget = entity.getObject("currentTarget").asInstanceOf[Entity]
-        var numTicksToChaseTarget = entity.getInteger("numTicksToChaseTarget")
+        val currentTarget = entity.getObject(ENTITY_CURRENT_TARGET).asInstanceOf[Entity]
+        var numTicksToChaseTarget = entity.getInteger(ENTITY_NUM_TICKS_TO_CHASE_TARGET)
 
         if(currentTarget != null) {
             living.faceEntity(currentTarget, 10.0F, 40F)
 
             numTicksToChaseTarget -= 1
             if(numTicksToChaseTarget <= 0 || currentTarget.isDead || currentTarget.getDistanceSqToEntity(living) > (f * f).toDouble) {
-                entity.setObject("currentTarget", null)
+                entity.setObject(ENTITY_CURRENT_TARGET, null)
             }
         } else {
             if(entity.getRandom.nextFloat() < 0.05F) {
-                entity.setFloat("randomYawVelocity", (entity.getRandom.nextFloat() - 0.5F) * 20.0F)
+                entity.setFloat(ENTITY_RANDOM_YAW_VELOCITY, (entity.getRandom.nextFloat() - 0.5F) * 20.0F)
             }
 
-            entity.setFloat("rotationYaw", entity.getFloat("rotationYaw") + entity.getFloat("randomYawVelocity"))
-            entity.setFloat("rotationPitch", entity.getFloat("defaultPitch"))
+            entity.setFloat(ENTITY_ROTATION_YAW, entity.getFloat(ENTITY_ROTATION_YAW) + entity.getFloat(ENTITY_RANDOM_YAW_VELOCITY))
+            entity.setFloat(ENTITY_ROTATION_PITCH, entity.getFloat(ENTITY_DEFAULT_PITCH))
         }
 
-        entity.setObject("currentTarget", currentTarget)
-        entity.setInteger("numTicksToChaseTarget", numTicksToChaseTarget)
+        entity.setObject(ENTITY_CURRENT_TARGET, currentTarget)
+        entity.setInteger(ENTITY_NUM_TICKS_TO_CHASE_TARGET, numTicksToChaseTarget)
 
-        val flag1 = entity.getBoolean("inWater")
+        val flag1 = entity.getBoolean(ENTITY_IN_WATER)
         val flag = living.handleLavaMovement()
 
         if(flag1 || flag) {
-            entity.setBoolean("isJumping", entity.getRandom.nextFloat() < 0.8F)
+            entity.setBoolean(ENTITY_IS_JUMPING, entity.getRandom.nextFloat() < 0.8F)
         }
     }
 
     def updateAITasks(entity: IEntitySoulCustom) {
-        entity.setInteger("entityAge", entity.getInteger("entityAge") + 1)
+        entity.setInteger(ENTITY_ENTITY_AGE, entity.getInteger(ENTITY_ENTITY_AGE) + 1)
         entity.getWorld.theProfiler.startSection("checkDespawn")
         entity.despawnEntity
         entity.getWorld.theProfiler.endSection()

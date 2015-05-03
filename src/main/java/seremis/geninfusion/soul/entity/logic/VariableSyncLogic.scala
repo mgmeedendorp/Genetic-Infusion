@@ -355,7 +355,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
 
     def getDoubleArray(name: String): Array[Double] = {
         if(fields.contains(name)) {
-            GIReflectionHelper.getField(entity, name).asInstanceOf[Array[Double]]
+            GIReflectionHelper. getField(entity, name).asInstanceOf[Array[Double]]
         } else {
             data.getDoubleArray(name)
         }

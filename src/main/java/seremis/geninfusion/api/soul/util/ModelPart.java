@@ -9,6 +9,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.common.util.Constants;
 import seremis.geninfusion.api.soul.SoulHelper;
+import seremis.geninfusion.api.soul.lib.VariableLib;
 import seremis.geninfusion.helper.GIReflectionHelper;
 import seremis.geninfusion.util.INBTTagable;
 
@@ -66,11 +67,11 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
     }
 
     public int getTextureOffsetX() {
-        return (Integer) GIReflectionHelper.getField(this, "textureOffsetX");
+        return (Integer) GIReflectionHelper.getField(this, VariableLib.MODELRENDERER_TEXTURE_OFFSET_X());
     }
 
     public int getTextureOffsetY() {
-        return (Integer) GIReflectionHelper.getField(this, "textureOffsetY");
+        return (Integer) GIReflectionHelper.getField(this, VariableLib.MODELRENDERER_TEXTURE_OFFSET_Y());
     }
 
     public List<ModelBox> getBoxList() {
@@ -78,7 +79,7 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
     }
 
     public TexturedQuad[] getBoxQuads(ModelBox box) {
-        return (TexturedQuad[]) GIReflectionHelper.getField(box, "quadList");
+        return (TexturedQuad[]) GIReflectionHelper.getField(box, VariableLib.MODELBOX_QUAD_LIST());
     }
 
     @Override
@@ -129,7 +130,7 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
                 boxCompound.setInteger("sizeX", (int) (box.posX2 - box.posX1));
                 boxCompound.setInteger("sizeY", (int) (box.posY2 - box.posY1));
                 boxCompound.setInteger("sizeZ", (int) (box.posZ2 - box.posZ1));
-                TexturedQuad[] quads = (TexturedQuad[]) GIReflectionHelper.getField(box, "quadList");
+                TexturedQuad[] quads = (TexturedQuad[]) GIReflectionHelper.getField(box, VariableLib.MODELBOX_QUAD_LIST());
 
                 NBTTagList quadList = new NBTTagList();
 
@@ -158,7 +159,7 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
 
 
                 NBTTagList vertexList = new NBTTagList();
-                PositionTextureVertex[] vertices = (PositionTextureVertex[]) GIReflectionHelper.getField(box, "vertexPositions");
+                PositionTextureVertex[] vertices = (PositionTextureVertex[]) GIReflectionHelper.getField(box, VariableLib.MODELBOX_VERTEX_POSITIONS());
 
                 for(PositionTextureVertex vertex : vertices) {
                     NBTTagCompound vertexCompound = new NBTTagCompound();
@@ -184,7 +185,7 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
     @Override
     public NBTTagCompound readFromNBT(NBTTagCompound compound) {
         if(compound.hasKey("boxName"))
-            GIReflectionHelper.setField(this, "boxName", compound.getString("boxName"));
+            GIReflectionHelper.setField(this, VariableLib.MODELRENDERER_BOX_NAME(), compound.getString("boxName"));
 
         textureWidth = compound.getFloat("textureWidth");
         textureHeight = compound.getFloat("textureHeight");
@@ -210,7 +211,7 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         NBTTagList boxList = (NBTTagList) compound.getTag("cubeList");
         for(int i = 0; i < boxList.tagCount(); i++) {
             NBTTagCompound boxCompound = boxList.getCompoundTagAt(i);
-            ModelBox box = new ModelBox(this, (Integer) GIReflectionHelper.getField(this, "textureOffsetX"), (Integer) GIReflectionHelper.getField(this, "textureOffsetY"), boxCompound.getFloat("originX"), boxCompound.getFloat("originY"), boxCompound.getFloat("originZ"), boxCompound.getInteger("sizeX"), boxCompound.getInteger("sizeY"), boxCompound.getInteger("sizeZ"), 0.0F);
+            ModelBox box = new ModelBox(this, (Integer) GIReflectionHelper.getField(this, VariableLib.MODELRENDERER_TEXTURE_OFFSET_X()), (Integer) GIReflectionHelper.getField(this, VariableLib.MODELRENDERER_TEXTURE_OFFSET_Y()), boxCompound.getFloat("originX"), boxCompound.getFloat("originY"), boxCompound.getFloat("originZ"), boxCompound.getInteger("sizeX"), boxCompound.getInteger("sizeY"), boxCompound.getInteger("sizeZ"), 0.0F);
 
             NBTTagList quadList = (NBTTagList) boxCompound.getTag("quadList");
 
@@ -232,7 +233,7 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
                 quads[j] = new TexturedQuad(vertices);
             }
 
-            GIReflectionHelper.setField(box, "quadList", quads);
+            GIReflectionHelper.setField(box, VariableLib.MODELBOX_QUAD_LIST(), quads);
 
 
             NBTTagList vertexList = boxCompound.getTagList("vertexList", Constants.NBT.TAG_COMPOUND);
@@ -246,7 +247,7 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
                 vertices[k] = new PositionTextureVertex(vector, vertexCompound.getFloat("texturePositionX"), vertexCompound.getFloat("texturePositionY"));
             }
 
-            GIReflectionHelper.setField(box, "vertexPositions", vertices);
+            GIReflectionHelper.setField(box, VariableLib.MODELBOX_VERTEX_POSITIONS(), vertices);
 
             cubeList.add(box);
         }
@@ -282,7 +283,7 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         Field[] fields = GIReflectionHelper.getFields(model);
 
         for(Field field : fields) {
-            if(field.getType().equals(ModelRenderer.class) && !field.getName().equals("bipedCloak") && !field.getName().equals("bipedEars")) {
+            if(field.getType().equals(ModelRenderer.class) && !field.getName().equals("bipedCloak") && !field.getName().equals("bipedEars") && !field.getName().equals("bipedHeadwear")) {
                 ModelRenderer renderer = (ModelRenderer) GIReflectionHelper.getField(model, field.getName());
                 parts.add(modelRendererToModelPart(renderer));
             }
@@ -308,7 +309,7 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         modelPart.offsetX = model.offsetX;
         modelPart.offsetY = model.offsetY;
         modelPart.offsetZ = model.offsetZ;
-        modelPart.setTextureOffset((Integer) GIReflectionHelper.getField(model, "textureOffsetX"), (Integer) GIReflectionHelper.getField(model, "textureOffsetY"));
+        modelPart.setTextureOffset((Integer) GIReflectionHelper.getField(model, VariableLib.MODELRENDERER_TEXTURE_OFFSET_X()), (Integer) GIReflectionHelper.getField(model, VariableLib.MODELRENDERER_TEXTURE_OFFSET_Y()));
         return modelPart;
     }
 

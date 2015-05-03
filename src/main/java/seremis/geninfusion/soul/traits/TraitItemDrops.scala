@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.DamageSource
 import net.minecraftforge.common.ForgeHooks
 import seremis.geninfusion.GeneticInfusion
+import seremis.geninfusion.api.soul.lib.VariableLib._
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
@@ -21,7 +22,7 @@ class TraitItemDrops extends Trait {
         val killer = source.getEntity
         val attackTarget = living.func_94060_bK()
 
-        val scoreValue = entity.getInteger("scoreValue")
+        val scoreValue = entity.getInteger(ENTITY_SCORE_VALUE)
 
         if(scoreValue >= 0 && attackTarget != null) {
             attackTarget.addToPlayerScore(living, scoreValue)
@@ -38,14 +39,14 @@ class TraitItemDrops extends Trait {
                 lootingLevel = EnchantmentHelper.getLootingModifier(killer.asInstanceOf[EntityLivingBase])
             }
 
-            entity.setBoolean("captureDrops", true)
+            entity.setBoolean(ENTITY_CAPTURE_DROPS, true)
 
-            val capturedDrops = entity.getObject("capturedDrops").asInstanceOf[util.ArrayList[EntityItem]]
+            val capturedDrops = entity.getObject(ENTITY_CAPTURED_DROPS).asInstanceOf[util.ArrayList[EntityItem]]
             capturedDrops.clear()
-            entity.setObject("capturedDrops", capturedDrops)
+            entity.setObject(ENTITY_CAPTURED_DROPS, capturedDrops)
 
             var rareDropValue = 0
-            val recentlyHit = entity.getInteger("recentlyHit")
+            val recentlyHit = entity.getInteger(ENTITY_RECENTLY_HIT)
             if(!entity.asInstanceOf[EntityLiving].isChild &&
                 entity.getWorld.getGameRules.getGameRuleBooleanValue("doMobLoot")) {
                 this.dropFewItems(entity, recentlyHit > 0, lootingLevel)
@@ -58,7 +59,7 @@ class TraitItemDrops extends Trait {
                 }
             }
 
-            entity.setBoolean("captureDrops", false)
+            entity.setBoolean(ENTITY_CAPTURE_DROPS, false)
 
             if(!ForgeHooks.onLivingDrops(entity.asInstanceOf[EntityLiving], source, capturedDrops, lootingLevel, recentlyHit > 0, rareDropValue)) {
                 for(item <- capturedDrops.toArray(new Array[EntityItem](capturedDrops.size()))) {
@@ -96,10 +97,10 @@ class TraitItemDrops extends Trait {
     }
 
     private def dropEquipment(entity: IEntitySoulCustom, recentlyHit: Boolean, lootingLevel: Int) {
-        val equipmentDropChances = entity.getFloatArray("equipmentDropChances")
+        val equipmentDropChances = entity.getFloatArray(ENTITY_EQUIPMENT_DROP_CHANCES)
 
         for(j <- 0 until 5) {
-            val itemstack = if(entity.getItemStackArray("equipment") != null) entity.getItemStackArray("equipment")(j) else null
+            val itemstack = if(entity.getItemStackArray(ENTITY_EQUIPMENT) != null) entity.getItemStackArray(ENTITY_EQUIPMENT)(j) else null
 
             val dropChance = equipmentDropChances(j)
             val flag1 = dropChance > 1.0F
@@ -125,7 +126,7 @@ class TraitItemDrops extends Trait {
 
     private def dropRareDrop(entity: IEntitySoulCustom, reallyRandomThingy: Boolean) {
         val drops = SoulHelper.geneRegistry.getValueFromAllele[Array[ItemStack]](entity, Genes.GENE_RARE_ITEM_DROPS)
-        val dropChances = entity.getFloatArray("equipmentDropChances")
+        val dropChances = entity.getFloatArray(ENTITY_EQUIPMENT_DROP_CHANCES)
 
         if(drops != null && drops.length != 0) {
             for(i <- 0 until drops.length if entity.getRandom.nextInt((dropChances(i) * 100F).toInt) == 0) {

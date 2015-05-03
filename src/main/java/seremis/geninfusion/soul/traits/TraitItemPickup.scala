@@ -11,6 +11,7 @@ import net.minecraft.network.play.server.{S04PacketEntityEquipment, S0DPacketCol
 import net.minecraft.stats.AchievementList
 import net.minecraft.world.WorldServer
 import seremis.geninfusion.GeneticInfusion
+import seremis.geninfusion.api.soul.lib.VariableLib._
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
@@ -64,7 +65,7 @@ class TraitItemPickup extends Trait {
                             }
                         }
                         if(dropEquipment) {
-                            val equipmentDropChances = entity.getFloatArray("equipmentDropChances");
+                            val equipmentDropChances = entity.getFloatArray(ENTITY_EQUIPMENT_DROP_CHANCES)
                             val dropChance = equipmentDropChances(armorSlot)
 
                             if(currentStack != null && new Random().nextFloat() - 0.1F < dropChance) {
@@ -79,8 +80,8 @@ class TraitItemPickup extends Trait {
                             }
                             setEquipmentInSlot(entity, armorSlot, newStack)
                             equipmentDropChances(armorSlot) = 2.0F
-                            entity.setFloatArray("equipmentDropChances", equipmentDropChances)
-                            entity.setBoolean("persistenceRequired", true)
+                            entity.setFloatArray(ENTITY_EQUIPMENT_DROP_CHANCES, equipmentDropChances)
+                            entity.setBoolean(ENTITY_PERSISTENCE_REQUIRED, true)
                             onItemPickup(entity, item, 1)
                             item.setDead()
                         }
@@ -104,7 +105,7 @@ class TraitItemPickup extends Trait {
             }
 
             for(j <- 0 until 5) {
-                val previousEquipment = entity.getItemStackArray("previousEquipment")
+                val previousEquipment = entity.getItemStackArray(ENTITY_PREVIOUS_EQUIPMENT)
                 val prevStack = previousEquipment(j)
                 val currStack = living.getEquipmentInSlot(j)
 
@@ -121,7 +122,7 @@ class TraitItemPickup extends Trait {
 
                     previousEquipment(j) = if(currStack == null) null else currStack.copy()
 
-                    entity.setItemStackArray("previousEquipment", previousEquipment)
+                    entity.setItemStackArray(ENTITY_PREVIOUS_EQUIPMENT, previousEquipment)
                 }
             }
         }
@@ -136,7 +137,7 @@ class TraitItemPickup extends Trait {
     }
 
     def getEquipmentInSlot(entity: IEntitySoulCustom, slot: Int): ItemStack = {
-        if(entity.getItemStackArray("equipment") != null) entity.getItemStackArray("equipment")(slot) else null
+        if(entity.getItemStackArray(ENTITY_EQUIPMENT) != null) entity.getItemStackArray(ENTITY_EQUIPMENT)(slot) else null
     }
 
     def getArmorSlot(stack: ItemStack): Int = {
@@ -154,8 +155,8 @@ class TraitItemPickup extends Trait {
     }
 
     def setEquipmentInSlot(entity: IEntitySoulCustom, slot: Int, stack: ItemStack) {
-        val equipment = entity.getItemStackArray("equipment")
+        val equipment = entity.getItemStackArray(ENTITY_EQUIPMENT)
         equipment(slot) = stack
-        entity.setItemStackArray("equipment", equipment)
+        entity.setItemStackArray(ENTITY_EQUIPMENT, equipment)
     }
 }

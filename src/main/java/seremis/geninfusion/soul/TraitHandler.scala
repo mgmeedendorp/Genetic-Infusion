@@ -307,4 +307,10 @@ object TraitHandler {
             trt.renderEquippedItems(entity, partialTickTime)
         }
     }
+
+    def setDead(entity: IEntitySoulCustom) {
+        for(trt <- SoulHelper.traitRegistry.getTraits) {
+            trt.setDead(entity)
+        }
+    }
 }

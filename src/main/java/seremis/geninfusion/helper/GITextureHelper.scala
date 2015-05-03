@@ -173,10 +173,17 @@ object GITextureHelper {
                     quadPositionsMin = (quadCoordsMin._1 / part.textureWidth, quadCoordsMin._2 / part.textureHeight)
                     quadPositionsMax = (quadCoordsMax._1 / part.textureWidth, quadCoordsMax._2 / part.textureHeight)
 
-                    quad.vertexPositions(0) = quad.vertexPositions(0).setTexturePosition(quadPositionsMax._1, quadPositionsMin._2)
-                    quad.vertexPositions(1) = quad.vertexPositions(1).setTexturePosition(quadPositionsMin._1, quadPositionsMin._2)
-                    quad.vertexPositions(2) = quad.vertexPositions(2).setTexturePosition(quadPositionsMin._1, quadPositionsMax._2)
-                    quad.vertexPositions(3) = quad.vertexPositions(3).setTexturePosition(quadPositionsMax._1, quadPositionsMax._2)
+                    if(!part.mirror) {
+                        quad.vertexPositions(0) = quad.vertexPositions(0).setTexturePosition(quadPositionsMax._1, quadPositionsMin._2)
+                        quad.vertexPositions(1) = quad.vertexPositions(1).setTexturePosition(quadPositionsMin._1, quadPositionsMin._2)
+                        quad.vertexPositions(2) = quad.vertexPositions(2).setTexturePosition(quadPositionsMin._1, quadPositionsMax._2)
+                        quad.vertexPositions(3) = quad.vertexPositions(3).setTexturePosition(quadPositionsMax._1, quadPositionsMax._2)
+                    } else {
+                        quad.vertexPositions(0) = quad.vertexPositions(0).setTexturePosition(quadPositionsMax._1, quadPositionsMin._2)
+                        quad.vertexPositions(1) = quad.vertexPositions(1).setTexturePosition(quadPositionsMax._1, quadPositionsMax._2)
+                        quad.vertexPositions(2) = quad.vertexPositions(2).setTexturePosition(quadPositionsMin._1, quadPositionsMax._2)
+                        quad.vertexPositions(3) = quad.vertexPositions(3).setTexturePosition(quadPositionsMin._1, quadPositionsMin._2)
+                    }
                 }
             }
         }

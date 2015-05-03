@@ -5,12 +5,15 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import seremis.geninfusion.GeneticInfusion;
 import seremis.geninfusion.api.soul.IEntitySoulCustom;
+import seremis.geninfusion.api.soul.ISoul;
 import seremis.geninfusion.api.soul.SoulHelper;
 import seremis.geninfusion.lib.Items;
 
@@ -53,6 +56,14 @@ public class ItemDebugger extends GIItem {
             }
             if(stack.getMetadata() == 2) {
                 EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper().getSoulEntityInstance(world, SoulHelper.produceOffspring(SoulHelper.standardSoulRegistry().getSoulForEntity(new EntityCreeper(world)), SoulHelper.standardSoulRegistry().getSoulForEntity(new EntityCreeper(world))), x + 0.5F, y + 1, z + 0.5F);
+                world.spawnEntityInWorld(entity);
+            }
+            if(stack.getMetadata() == 3) {
+                ISoul soul1 = SoulHelper.produceOffspring(SoulHelper.standardSoulRegistry().getSoulForEntity(new EntityZombie(world)), SoulHelper.geneRegistry().getSoulFor(new EntitySkeleton(world)));
+                ISoul soul2 = SoulHelper.produceOffspring(soul1, SoulHelper.standardSoulRegistry().getSoulForEntity(new EntityCreeper(world)));
+                ISoul soul3 = SoulHelper.produceOffspring(soul2, SoulHelper.standardSoulRegistry().getSoulForEntity(new EntityCreeper(world)));
+                EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper().getSoulEntityInstance(world, soul3, x + 0.5F, y + 1, z + 0.5F);
+
                 world.spawnEntityInWorld(entity);
             }
         }

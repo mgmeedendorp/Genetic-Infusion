@@ -47,10 +47,12 @@ abstract class StandardSoul extends IStandardSoul {
             return new Chromosome(new Allele(true, entity.getMaxInPortalTime, INTEGER))
         if(gene == GENE_VERTICAL_FACE_SPEED)
             return new Chromosome(new Allele(true, entity.getVerticalFaceSpeed, INTEGER))
-        //TODO better isTameable check
         if(gene == GENE_IS_TAMEABLE)
             return new Chromosome(new Allele(true, entity.isInstanceOf[EntityTameable], BOOLEAN))
-
+        if(gene == GENE_WIDTH)
+            return new Chromosome(new Allele(true, entity.width, FLOAT))
+        if(gene == GENE_HEIGHT)
+            return new Chromosome(new Allele(true, entity.height, FLOAT))
 
         //Manual genes.
         if(gene == GENE_BURNS_IN_DAYLIGHT) 
@@ -97,8 +99,6 @@ abstract class StandardSoul extends IStandardSoul {
             return new Chromosome(new Allele(true, false, BOOLEAN))
         if(gene == GENE_USE_OLD_AI)
             return new Chromosome(new Allele(true, true, BOOLEAN))
-        if(gene == GENE_CAN_BE_CHARGED)
-            return new Chromosome(new Allele(true, false, BOOLEAN))
 
         //AI genes
         if(gene == GENE_AI_ARROW_ATTACK)
@@ -420,8 +420,6 @@ abstract class StandardSoul extends IStandardSoul {
 
 
         //Explosion related genes
-        if(gene == GENE_EXPLODES)
-            return new Chromosome(new Allele(true, false, BOOLEAN))
         if(gene == GENE_FUSE_TIME)
             return new Chromosome(new Allele(true, 30, INTEGER))
         if(gene == GENE_EXPLOSION_RADIUS)

@@ -84,4 +84,6 @@ trait ITrait {
     @SideOnly(Side.CLIENT) def renderEquippedItems(entity: IEntitySoulCustom, partialTickTime: Float)
 
     @SideOnly(Side.CLIENT) def getEntityTexture(entity: IEntitySoulCustom): String
+
+    def setDead(entity: IEntitySoulCustom)
 }

@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLiving
 import seremis.geninfusion.api.soul.IEntitySoulCustom
 import seremis.geninfusion.api.soul.SoulHelper
+import seremis.geninfusion.api.soul.lib.VariableLib._
 import seremis.geninfusion.api.soul.lib.Genes
 
 class TraitSounds extends Trait {
@@ -16,11 +17,11 @@ class TraitSounds extends Trait {
     override def onUpdate(entity: IEntitySoulCustom) {
         entity.getWorld.theProfiler.startSection("mobBaseTick")
 
-        val livingSoundTime = entity.getInteger("livingSoundTime") + 1
-        entity.setInteger("livingSoundTime", livingSoundTime)
+        val livingSoundTime = entity.getInteger(ENTITY_LIVING_SOUND_TIME) + 1
+        entity.setInteger(ENTITY_LIVING_SOUND_TIME, livingSoundTime)
 
-        if (!entity.getBoolean("isDead") && entity.getRandom.nextInt(1000) < livingSoundTime) {
-            entity.setInteger("livingSoundTime", -entity.getInteger("talkInterval"))
+        if (!entity.getBoolean(ENTITY_IS_DEAD) && entity.getRandom.nextInt(1000) < livingSoundTime) {
+            entity.setInteger(ENTITY_LIVING_SOUND_TIME, -entity.getInteger(ENTITY_TALK_INTERVAL))
             entity.asInstanceOf[EntityLiving].playLivingSound()
         }
 
@@ -28,6 +29,6 @@ class TraitSounds extends Trait {
     }
 
     override def firstTick(entity: IEntitySoulCustom) {
-        entity.setInteger("talkInterval", SoulHelper.geneRegistry.getValueFromAllele[Integer](entity, Genes.GENE_TALK_INTERVAL))
+        entity.setInteger(ENTITY_TALK_INTERVAL, SoulHelper.geneRegistry.getValueFromAllele[Integer](entity, Genes.GENE_TALK_INTERVAL))
     }
 }

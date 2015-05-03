@@ -14,6 +14,7 @@ import net.minecraft.util.{MathHelper, StringUtils}
 import net.minecraftforge.client.{IItemRenderer, MinecraftForgeClient}
 import org.lwjgl.opengl.GL11
 import seremis.geninfusion.api.soul.lib.Genes
+import seremis.geninfusion.api.soul.lib.VariableLib._
 import seremis.geninfusion.api.soul.util.{DataWatcherHelper, ModelPart}
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.helper.GIRenderHelper
@@ -152,10 +153,10 @@ class TraitRender extends Trait {
 
     @SideOnly(Side.CLIENT)
     override def preRenderCallback(entity: IEntitySoulCustom, partialTickTime: Float) {
-        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_EXPLODES)
+        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_AI_CREEPER_SWELL)
 
         if(explodes) {
-            var flashIntensity: Float = entity.getInteger("lastActiveTime").toFloat + (entity.getInteger("timeSinceIgnited") - entity.getInteger("lastActiveTime").toFloat * partialTickTime) / (entity.getInteger("fuseTime") - 2).toFloat;
+            var flashIntensity: Float = entity.getInteger(ENTITY_TIME_SINCE_IGNITED).toFloat + (entity.getInteger(ENTITY_TIME_SINCE_IGNITED) - entity.getInteger(ENTITY_TIME_SINCE_IGNITED).toFloat * partialTickTime) / (entity.getInteger(ENTITY_FUSE_TIME) - 2).toFloat
             val f2: Float = 1.0F + MathHelper.sin(flashIntensity * 100.0F) * flashIntensity * 0.01F
 
             if(flashIntensity < 0.0F) {
@@ -176,7 +177,7 @@ class TraitRender extends Trait {
 
     @SideOnly(Side.CLIENT)
     override def inheritRenderPass(entity: IEntitySoulCustom, renderPass: Int, partialTickTime: Float): Int = {
-        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_EXPLODES)
+        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_AI_CREEPER_SWELL)
 
         if(explodes)
             return -1
@@ -188,10 +189,11 @@ class TraitRender extends Trait {
     override def shouldRenderPass(entity: IEntitySoulCustom, renderPass: Int, partialTickTime: Float): Int = {
         val living = entity.asInstanceOf[EntityLiving]
 
+        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_AI_CREEPER_SWELL)
         val canBeCharged = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_CAN_BE_CHARGED)
 
-        if(canBeCharged) {
-            val isCharged = DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, "charged").asInstanceOf[Byte] == 1
+        if(explodes && canBeCharged) {
+            val isCharged = DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, ENTITY_CHARGED).asInstanceOf[Byte] == 1
 
             if(isCharged){
                 GL11.glDepthMask(!living.isInvisible)
@@ -230,10 +232,10 @@ class TraitRender extends Trait {
 
     @SideOnly(Side.CLIENT)
     override def getColorMultiplier(entity: IEntitySoulCustom, brightness: Float, partialTickTime: Float): Int = {
-        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_EXPLODES)
+        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_AI_CREEPER_SWELL)
 
         if(explodes) {
-            val flashIntensity: Float = entity.getInteger("lastActiveTime").toFloat + (entity.getInteger("timeSinceIgnited") - entity.getInteger("lastActiveTime").toFloat * partialTickTime) / (entity.getInteger("fuseTime") - 2).toFloat;
+            val flashIntensity: Float = entity.getInteger(ENTITY_TIME_SINCE_IGNITED).toFloat + (entity.getInteger(ENTITY_TIME_SINCE_IGNITED) - entity.getInteger(ENTITY_TIME_SINCE_IGNITED).toFloat * partialTickTime) / (entity.getInteger(ENTITY_FUSE_TIME) - 2).toFloat
 
             if((flashIntensity * 10.0F).toInt % 2 == 0) {
                 return 0
@@ -263,7 +265,7 @@ class TraitRender extends Trait {
         val distSq = (dX * dX + dZ * dZ).toFloat
         var yawOffset = living.renderYawOffset
         var f2 = 0.0F
-        entity.setFloat("field_70768_au", entity.getFloat("field_110154_aX"))
+        entity.setFloat(ENTITY_PREV_ON_GROUND_SPEED_FACTOR, entity.getFloat(ENTITY_ON_GROUND_SPEED_FACTOR))
         var f3 = 0.0F
 
         if(distSq > 0.0025000002F) {
@@ -280,7 +282,7 @@ class TraitRender extends Trait {
             f3 = 0.0F
         }
 
-        entity.setFloat("field_110154_aX", entity.getFloat("field_110154_aX") + (f3 - entity.getFloat("field_110154_aX")) * 0.3F)
+        entity.setFloat(ENTITY_ON_GROUND_SPEED_FACTOR, entity.getFloat(ENTITY_ON_GROUND_SPEED_FACTOR) + (f3 - entity.getFloat(ENTITY_ON_GROUND_SPEED_FACTOR)) * 0.3F)
 
         living.worldObj.theProfiler.startSection("headTurn")
 
@@ -324,14 +326,14 @@ class TraitRender extends Trait {
 
         living.worldObj.theProfiler.endSection()
 
-        entity.setFloat("field_70764_aw", entity.getFloat("field_70764_aw") + f2)
+        entity.setFloat(ENTITY_MOVED_DISTANCE, entity.getFloat(ENTITY_MOVED_DISTANCE) + f2)
 
         entity.updateArmSwingProgress
 
         val burnsInDaylight = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_BURNS_IN_DAYLIGHT)
 
         if(living.getBrightness(1.0F) > 0.5F && burnsInDaylight) {
-            entity.setInteger("entityAge", entity.getInteger("entityAge") + 2)
+            entity.setInteger(ENTITY_ENTITY_AGE, entity.getInteger(ENTITY_ENTITY_AGE) + 2)
         }
     }
 }

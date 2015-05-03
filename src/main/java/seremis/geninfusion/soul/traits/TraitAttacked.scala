@@ -8,24 +8,25 @@ import net.minecraft.potion.Potion
 import net.minecraft.util.DamageSource
 import net.minecraftforge.common.ForgeHooks
 import seremis.geninfusion.api.soul.lib.Genes
+import seremis.geninfusion.api.soul.lib.VariableLib._
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
 class TraitAttacked extends Trait {
 
     override def firstTick(entity: IEntitySoulCustom) {
-        entity.setBoolean("invulnerable", SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_INVULNERABLE))
+        entity.setBoolean(ENTITY_INVULNERABLE, SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_INVULNERABLE))
     }
 
     override def onUpdate(entity: IEntitySoulCustom) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        var attackTime = entity.getInteger("attackTime")
-        var hurtTime = entity.getInteger("hurtTime")
-        var hurtResistantTime = entity.getInteger("hurtResistantTime")
-        var recentlyHit = entity.getInteger("recentlyHit")
-        val ticksExisted = entity.getInteger("ticksExisted")
-        var lastAttacker = entity.getObject("lastAttacker").asInstanceOf[EntityLivingBase]
-        val entityLivingToAttack = entity.getObject("entityLivingToAttack").asInstanceOf[EntityLivingBase]
+        var attackTime = entity.getInteger(ENTITY_ATTACK_TIME)
+        var hurtTime = entity.getInteger(ENTITY_HURT_TIME)
+        var hurtResistantTime = entity.getInteger(ENTITY_HURT_RESISTANT_TIME)
+        var recentlyHit = entity.getInteger(ENTITY_RECENTLY_HIT)
+        val ticksExisted = entity.getInteger(ENTITY_TICKS_EXISTED)
+        var lastAttacker = entity.getObject(ENTITY_LAST_ATTACKER).asInstanceOf[EntityLivingBase]
+        val entityLivingToAttack = entity.getObject(ENTITY_ENTITY_LIVING_TO_ATTACK).asInstanceOf[EntityLivingBase]
 
         if(attackTime > 0) {
             attackTime -= 1
@@ -42,7 +43,7 @@ class TraitAttacked extends Trait {
         if(recentlyHit > 0) {
             recentlyHit -= 1
         } else {
-            entity.setObject("attackingPlayer", null)
+            entity.setObject(ENTITY_ATTACKING_PLAYER, null)
         }
 
         if(lastAttacker != null && !lastAttacker.isEntityAlive) {
@@ -52,18 +53,18 @@ class TraitAttacked extends Trait {
         if(entityLivingToAttack != null) {
             if(!entityLivingToAttack.isEntityAlive) {
                 living.setRevengeTarget(null)
-            } else if(ticksExisted - entity.getInteger("revengeTimer") > 100) {
+            } else if(ticksExisted - entity.getInteger(ENTITY_REVENGE_TIMER) > 100) {
                 living.setRevengeTarget(null)
             }
         }
 
-        entity.setInteger("attackTime", attackTime)
-        entity.setInteger("hurtTime", hurtTime)
-        entity.setInteger("hurtResistantTime", hurtResistantTime)
-        entity.setInteger("recentlyHit", recentlyHit)
-        entity.setInteger("ticksExisted", ticksExisted)
-        entity.setObject("lastAttacker", lastAttacker)
-        entity.setObject("entityLivingToAttack", entityLivingToAttack)
+        entity.setInteger(ENTITY_ATTACK_TIME, attackTime)
+        entity.setInteger(ENTITY_HURT_TIME, hurtTime)
+        entity.setInteger(ENTITY_HURT_RESISTANT_TIME, hurtResistantTime)
+        entity.setInteger(ENTITY_RECENTLY_HIT, recentlyHit)
+        entity.setInteger(ENTITY_TICKS_EXISTED, ticksExisted)
+        entity.setObject(ENTITY_LAST_ATTACKER, lastAttacker)
+        entity.setObject(ENTITY_ENTITY_LIVING_TO_ATTACK, entityLivingToAttack)
 
         if(!entity.getWorld.isRemote) {
             val arrowCount = living.getArrowCountInEntity
@@ -80,7 +81,7 @@ class TraitAttacked extends Trait {
             }
 
             if(living.ticksExisted % 20 == 0) {
-                living.getCombatTracker().func_94549_h()
+                living.getCombatTracker.func_94549_h()
             }
         }
     }
@@ -93,12 +94,12 @@ class TraitAttacked extends Trait {
         if(ForgeHooks.onLivingAttack(entity.asInstanceOf[EntityLivingBase], source, dealtDamage))
             return false
 
-        if(entity.getBoolean("invulnerable")) {
+        if(entity.getBoolean(ENTITY_INVULNERABLE)) {
             false
         } else if(entity.getWorld.isRemote) {
             false
         } else {
-            entity.setInteger("entityAge", 0)
+            entity.setInteger(ENTITY_ENTITY_AGE, 0)
 
             if(living.getHealth <= 0.0F) {
                 false
@@ -110,17 +111,17 @@ class TraitAttacked extends Trait {
                     dealtDamage *= 0.75F
                 }
 
-                entity.setFloat("limbSwingAmount", 1.5F)
+                entity.setFloat(ENTITY_LIMB_SWING_AMOUNT, 1.5F)
                 var flag = true
 
-                var hurtResistantTime = entity.getInteger("hurtResistantTime")
-                val maxHurtResistantTime = entity.getInteger("maxHurtResistantTime")
-                var recentlyHit = entity.getInteger("recentlyHit")
-                var hurtTime = entity.getInteger("hurtTime")
-                var maxHurtTime = entity.getInteger("maxHurtTime")
+                var hurtResistantTime = entity.getInteger(ENTITY_HURT_RESISTANT_TIME)
+                val maxHurtResistantTime = entity.getInteger(ENTITY_MAX_HURT_RESISTANT_TIME)
+                var recentlyHit = entity.getInteger(ENTITY_RECENTLY_HIT)
+                var hurtTime = entity.getInteger(ENTITY_HURT_TIME)
+                var maxHurtTime = entity.getInteger(ENTITY_MAX_HURT_TIME)
                 var attackedAtYaw = 0.0f
-                var lastDamage = entity.getFloat("lastDamage")
-                var attackingPlayer = entity.getObject("attackingPlayer").asInstanceOf[EntityPlayer]
+                var lastDamage = entity.getFloat(ENTITY_LAST_DAMAGE)
+                var attackingPlayer = entity.getObject(ENTITY_ATTACKING_PLAYER).asInstanceOf[EntityPlayer]
 
                 if(hurtResistantTime.toFloat > maxHurtResistantTime.toFloat / 2.0F) {
                     if(dealtDamage <= lastDamage) {
@@ -132,7 +133,7 @@ class TraitAttacked extends Trait {
                     flag = false
                 } else {
                     lastDamage = dealtDamage
-                    entity.setFloat("prevHealth", living.getHealth)
+                    entity.setFloat(ENTITY_PREV_HEALTH, living.getHealth)
                     hurtResistantTime = maxHurtResistantTime
                     entity.damageEntity(source, dealtDamage)
 
@@ -176,29 +177,29 @@ class TraitAttacked extends Trait {
                     }
 
                     if(attacker != null) {
-                        var dx = attacker.posX - entity.getDouble("posX")
-                        var dz = attacker.posZ - entity.getDouble("posZ")
+                        var dx = attacker.posX - entity.getDouble(ENTITY_POS_X)
+                        var dz = attacker.posZ - entity.getDouble(ENTITY_POS_Z)
 
                         while(dx * dx + dz * dz < 1.0E-4D) {
                             dx = (Math.random() - Math.random()) * 0.01D
                             dz = (Math.random() - Math.random()) * 0.01D
                         }
 
-                        attackedAtYaw = (Math.atan2(dz, dx) * 180.0D / Math.PI).toFloat - entity.getFloat("rotationYaw")
+                        attackedAtYaw = (Math.atan2(dz, dx) * 180.0D / Math.PI).toFloat - entity.getFloat(ENTITY_ROTATION_YAW)
                         entity.asInstanceOf[EntityLiving].knockBack(attacker, dealtDamage, dx, dz)
                     } else {
                         attackedAtYaw = ((Math.random() * 2.0D).toInt * 180).toFloat
                     }
                 }
 
-                entity.setInteger("hurtResistantTime", hurtResistantTime)
-                entity.setInteger("maxHurtResistantTime", maxHurtResistantTime)
-                entity.setInteger("recentlyHit", recentlyHit)
-                entity.setInteger("hurtTime", hurtTime)
-                entity.setInteger("maxHurtTime", maxHurtTime)
-                entity.setFloat("attackedAtYaw", attackedAtYaw)
-                entity.setFloat("lastDamage", lastDamage)
-                entity.setObject("attackingPlayer", attackingPlayer)
+                entity.setInteger(ENTITY_HURT_RESISTANT_TIME, hurtResistantTime)
+                entity.setInteger(ENTITY_MAX_HURT_RESISTANT_TIME, maxHurtResistantTime)
+                entity.setInteger(ENTITY_RECENTLY_HIT, recentlyHit)
+                entity.setInteger(ENTITY_HURT_TIME, hurtTime)
+                entity.setInteger(ENTITY_MAX_HURT_TIME, maxHurtTime)
+                entity.setFloat(ENTITY_ATTACKED_AT_YAW, attackedAtYaw)
+                entity.setFloat(ENTITY_LAST_DAMAGE, lastDamage)
+                entity.setObject(ENTITY_ATTACKING_PLAYER, attackingPlayer)
 
                 var sound: String = null
 
@@ -220,7 +221,7 @@ class TraitAttacked extends Trait {
 
                 if(living.riddenByEntity != entity && living.ridingEntity != entity) {
                     if(attacker != entity) {
-                        entity.setObject("entityToAttack", attacker)
+                        entity.setObject(ENTITY_ENTITY_TO_ATTACK, attacker)
                     }
                     true
                 } else {
@@ -233,7 +234,7 @@ class TraitAttacked extends Trait {
     override def damageEntity(entity: IEntitySoulCustom, source: DamageSource, damage: Float) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        if(!entity.getBoolean("invulnerable")) {
+        if(!entity.getBoolean(ENTITY_INVULNERABLE)) {
             var damageDealt = ForgeHooks.onLivingHurt(living, source, damage)
 
             if(damageDealt <= 0)
@@ -252,7 +253,7 @@ class TraitAttacked extends Trait {
                 val health = living.getHealth
 
                 living.setHealth(health - damageDealt)
-                living.getCombatTracker().func_94547_a(source, health, damageDealt)
+                living.getCombatTracker.func_94547_a(source, health, damageDealt)
                 living.setAbsorptionAmount(living.getAbsorptionAmount - damageDealt)
             }
         }
@@ -314,15 +315,19 @@ class TraitAttacked extends Trait {
         val attacker = source.getEntity
         val attackTarget = living.func_94060_bK()
 
-        if(entity.getInteger("scoreValue") >= 0 && attackTarget != null) {
-            attackTarget.addToPlayerScore(living, entity.getInteger("scoreValue"))
+        if(entity.getInteger(ENTITY_SCORE_VALUE) >= 0 && attackTarget != null) {
+            attackTarget.addToPlayerScore(living, entity.getInteger(ENTITY_SCORE_VALUE))
         }
 
         if(attacker != null) {
             attacker.onKillEntity(living)
         }
 
-        entity.setBoolean("dead", true)
+        entity.setBoolean(ENTITY_DEAD, true)
         living.getCombatTracker().func_94549_h()
+    }
+
+    override def setDead(entity: IEntitySoulCustom) {
+        entity.setBoolean(ENTITY_IS_DEAD, true)
     }
 }

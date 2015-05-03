@@ -43,6 +43,8 @@ object Genes {
     val GENE_CEASE_AI_MOVEMENT = ID + ".gene.ceaseAIMovement"
     val GENE_CHILDREN_BURN_IN_DAYLIGHT = ID + ".gene.childrenBurn"
     val GENE_IS_TAMEABLE = ID + ".gene.isTameable"
+    val GENE_WIDTH = ID + ".gene.width"
+    val GENE_HEIGHT = ID + ".gene.height"
 
     val GENE_AI_ARROW_ATTACK = ID + ".gene.aiArrowAttack"
     val GENE_AI_ARROW_ATTACK_INDEX = ID + ".gene.aiArrowAttackIndex"
@@ -224,7 +226,6 @@ object Genes {
     val GENE_MODEL = ID + ".gene.model"
     val GENE_TEXTURE = ID + ".gene.texture"
 
-    val GENE_EXPLODES = ID + ".gene.explodes"
     val GENE_FUSE_TIME = ID + ".gene.fuseTime"
     val GENE_EXPLOSION_RADIUS = ID + ".gene.explosionRadius"
     val GENE_FLINT_AND_STEEL_IGNITE = ID + ".gene.flintAndSteelIgnite"

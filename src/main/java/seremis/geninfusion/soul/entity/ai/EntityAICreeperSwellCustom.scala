@@ -3,6 +3,7 @@ package seremis.geninfusion.soul.entity.ai
 import net.minecraft.entity.ai.EntityAIBase
 import net.minecraft.entity.{EntityLiving, EntityLivingBase}
 import seremis.geninfusion.api.soul.IEntitySoulCustom
+import seremis.geninfusion.api.soul.lib.VariableLib
 import seremis.geninfusion.api.soul.util.DataWatcherHelper
 
 import java.lang.Byte
@@ -38,7 +39,7 @@ class EntityAICreeperSwellCustom(entity: IEntitySoulCustom) extends EntityAIBase
         }
     }
 
-    def setFuseState(state: Int) = DataWatcherHelper.updateObject(living.getDataWatcher, "fuseState", state.toByte.asInstanceOf[Byte])
+    def setFuseState(state: Int) = DataWatcherHelper.updateObject(living.getDataWatcher, VariableLib.ENTITY_FUSE_STATE, state.toByte.asInstanceOf[Byte])
 
-    def getFuseState: Int = DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, "fuseState").asInstanceOf[Byte].toInt
+    def getFuseState: Int = DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, VariableLib.ENTITY_FUSE_STATE).asInstanceOf[Byte].toInt
 }

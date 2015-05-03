@@ -28,6 +28,7 @@ class Gene(alleleType: EnumAlleleType) extends IGene {
     }
 
     override def mutate(chromosome: IChromosome): IChromosome = {
+        mutate = false
         if(mutate) {
             var allele1Data = chromosome.getPrimary.getAlleleData
             var allele2Data = chromosome.getSecondary.getAlleleData

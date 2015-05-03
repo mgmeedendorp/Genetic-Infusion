@@ -330,15 +330,67 @@ object AnimationCache {
 
     def getPartBoxCoordinates(part: ModelPart, box: ModelBox): (Vec3, Vec3) = {
         if(!cachedCoords.contains((part, box))) {
-            val nearX = part.rotationPointX + part.offsetX * MathHelper.cos(part.rotateAngleY)
-            val nearY = part.rotationPointY + part.offsetY * MathHelper.cos(part.rotateAngleX)
-            val nearZ = part.rotationPointZ + part.offsetZ * MathHelper.cos(part.rotateAngleY)
-            val farX = part.rotationPointX + (part.offsetX + Math.abs(box.posX2 - box.posX1)) * MathHelper.cos(part.rotateAngleY)
-            val farY = part.rotationPointY + (part.offsetY + Math.abs(box.posY2 - box.posY1)) * MathHelper.cos(part.rotateAngleX)
-            val farZ = part.rotationPointZ + (part.offsetZ + Math.abs(box.posZ2 - box.posZ1)) * MathHelper.cos(part.rotateAngleY)
+            val x1 = part.rotationPointX + (part.offsetX + Math.min(box.posX2, box.posX1)) * MathHelper.cos(part.rotateAngleY)
+            val y1 = part.rotationPointY + (part.offsetX + Math.min(box.posY2, box.posY1)) * MathHelper.cos(part.rotateAngleX)
+            val z1 = part.rotationPointZ + (part.offsetX + Math.min(box.posZ2, box.posZ1)) * MathHelper.cos(part.rotateAngleY)
+            val x2 = part.rotationPointX + (part.offsetX + Math.max(box.posX2, box.posX1)) * MathHelper.cos(part.rotateAngleY)
+            val y2 = part.rotationPointY + (part.offsetY + Math.max(box.posY2, box.posY1)) * MathHelper.cos(part.rotateAngleX)
+            val z2 = part.rotationPointZ + (part.offsetZ + Math.max(box.posZ2, box.posZ1)) * MathHelper.cos(part.rotateAngleY)
+
+            val nearX = Math.min(x1, x2)
+            val nearY = Math.min(y1, y2)
+            val nearZ = Math.min(z1, z2)
+            val farX = Math.max(x1, x2)
+            val farY = Math.max(y1, y2)
+            val farZ = Math.max(z1, z2)
 
             cachedCoords += ((part, box) ->(Vec3.createVectorHelper(nearX, nearY, nearZ), Vec3.createVectorHelper(farX, farY, farZ)))
         }
         cachedCoords.get((part, box)).get
+    }
+
+    def getModelWidth(model: Array[ModelPart]): Float = {
+        var minX, minZ = Float.PositiveInfinity
+        var maxX, maxZ = Float.NegativeInfinity
+
+        for(part <- model) {
+            val outerBox = getModelPartOuterBox(part)
+
+            if(outerBox._1.xCoord < minX)
+                minX = outerBox._1.xCoord.toFloat
+            if(outerBox._1.zCoord < minZ)
+                minZ = outerBox._1.zCoord.toFloat
+            if(outerBox._2.xCoord > maxX)
+                maxX = outerBox._2.xCoord.toFloat
+            if(outerBox._2.zCoord > maxZ)
+                maxZ = outerBox._2.zCoord.toFloat
+        }
+
+        val dX = maxX - minX
+        val dZ = maxZ - minZ
+
+        var width = 0.0F
+
+        if(dX > dZ * 1.5F || dZ > dX * 1.5F) {
+            width = (dX + dZ)/2
+        } else {
+            width = Math.max(dX, dZ)
+        }
+        width/16
+    }
+
+    def getModelHeight(model: Array[ModelPart]): Float = {
+        var minY = Float.PositiveInfinity
+        var maxY = Float.NegativeInfinity
+
+        for(part <- model) {
+            val outerBox = getModelPartOuterBox(part)
+
+            if(outerBox._1.yCoord < minY)
+                minY = outerBox._1.yCoord.toFloat
+            if(outerBox._2.yCoord > maxY)
+                maxY = outerBox._2.yCoord.toFloat
+        }
+        (maxY - minY)/16
     }
 }

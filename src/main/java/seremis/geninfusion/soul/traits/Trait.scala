@@ -92,4 +92,6 @@ class Trait extends ITrait {
 
     @SideOnly(Side.CLIENT)
     override def getEntityTexture(entity: IEntitySoulCustom): String = null
+
+    override def setDead(entity: IEntitySoulCustom) {}
 }

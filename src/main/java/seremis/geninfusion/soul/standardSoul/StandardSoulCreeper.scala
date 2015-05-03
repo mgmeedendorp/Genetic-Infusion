@@ -121,10 +121,6 @@ class StandardSoulCreeper extends StandardSoul {
         if(gene == GENE_TEXTURE)
             return new Chromosome(new Allele(true, "textures/entity/creeper/creeper.png", STRING), new Allele(false, "textures/entity/creeper/creeper.png", STRING))
 
-        //Explosion related genes
-        if(gene == GENE_EXPLODES)
-            return new Chromosome(new Allele(false, true, BOOLEAN))
-
         if(gene == GENE_DROPS_ITEM_WHEN_KILLED_BY_SPECIFIC_ENTITY)
             return new Chromosome(new Allele(false, true, BOOLEAN))
         if(gene == GENE_KILLED_BY_SPECIFIC_ENTITY_DROPS)

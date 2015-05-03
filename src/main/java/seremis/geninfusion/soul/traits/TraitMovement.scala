@@ -6,8 +6,7 @@ import net.minecraft.entity.EntityLiving
 import net.minecraft.util.{DamageSource, MathHelper}
 import net.minecraft.world.WorldServer
 import seremis.geninfusion.api.soul.IEntitySoulCustom
-
-//remove if not needed
+import seremis.geninfusion.api.soul.lib.VariableLib._
 
 class TraitMovement extends Trait {
 
@@ -35,9 +34,9 @@ class TraitMovement extends Trait {
             val server = living.worldObj.asInstanceOf[WorldServer].func_73046_m()
             val maxInPortalTime = living.getMaxInPortalTime
 
-            var portalCounter = entity.getInteger("portalCounter")
+            var portalCounter = entity.getInteger(ENTITY_PORTAL_COUNTER)
 
-            if(entity.getBoolean("inPortal")) {
+            if(entity.getBoolean(ENTITY_IN_PORTAL)) {
                 if(server.getAllowNether) {
                     portalCounter += 1
 
@@ -46,7 +45,7 @@ class TraitMovement extends Trait {
                         living.timeUntilPortal = living.getPortalCooldown
                         living.travelToDimension(if(living.worldObj.provider.dimensionId == -1) 0 else -1)
                     }
-                    entity.setBoolean("inPortal", false)
+                    entity.setBoolean(ENTITY_IN_PORTAL, false)
                 }
             } else {
                 if(portalCounter > 0) {
@@ -57,7 +56,7 @@ class TraitMovement extends Trait {
                     portalCounter = 0
                 }
             }
-            entity.setInteger("portalCounter", portalCounter)
+            entity.setInteger(ENTITY_PORTAL_COUNTER, portalCounter)
 
             if(living.timeUntilPortal > 0) {
                 living.timeUntilPortal -= 1
@@ -98,7 +97,7 @@ class TraitMovement extends Trait {
 
         entity.updatePotionEffects
 
-        entity.setFloat("field_70763_ax", entity.getFloat("field_70764_aw"))
+        entity.setFloat(ENTITY_PREV_MOVED_DISTANCE, entity.getFloat(ENTITY_MOVED_DISTANCE))
         living.prevRenderYawOffset = living.renderYawOffset
         living.prevRotationYawHead = living.rotationYawHead
         living.prevRotationYaw = living.rotationYaw
@@ -106,23 +105,23 @@ class TraitMovement extends Trait {
 
         living.worldObj.theProfiler.endSection()
 
-        if(entity.getInteger("jumpTicks") > 0) {
-            entity.setInteger("jumpTicks", entity.getInteger("jumpTicks") - 1)
+        if(entity.getInteger(ENTITY_JUMP_TICK) > 0) {
+            entity.setInteger(ENTITY_JUMP_TICK, entity.getInteger(ENTITY_JUMP_TICK) - 1)
         }
 
-        var newPosRotationIncrements = entity.getInteger("newPosRotationIncrements")
-        val newPosX = entity.getDouble("newPosX")
-        val newPosY = entity.getDouble("newPosY")
-        val newPosZ = entity.getDouble("newPosZ")
+        var newPosRotationIncrements = entity.getInteger(ENTITY_NEW_POS_ROTATION_INCREMENTS)
+        val newPosX = entity.getDouble(ENTITY_NEW_POS_X)
+        val newPosY = entity.getDouble(ENTITY_NEW_POS_Y)
+        val newPosZ = entity.getDouble(ENTITY_NEW_POS_Z)
 
         if(newPosRotationIncrements > 0) {
             val posX = living.posX + (newPosX - living.posX) / newPosRotationIncrements.toDouble
             val posY = living.posY + (newPosY - living.posY) / newPosRotationIncrements.toDouble
             val posZ = living.posZ + (newPosZ - living.posZ) / newPosRotationIncrements.toDouble
-            val deltaRotationYaw = MathHelper.wrapAngleTo180_double(entity.getDouble("newRotationYaw") - living.rotationYaw.toDouble)
+            val deltaRotationYaw = MathHelper.wrapAngleTo180_double(entity.getDouble(ENTITY_NEW_ROTATION_YAW) - living.rotationYaw.toDouble)
 
             living.rotationYaw = (living.rotationYaw.toDouble + deltaRotationYaw / newPosRotationIncrements.toDouble).toFloat
-            living.rotationPitch = (living.rotationPitch.toDouble + (entity.getDouble("newRotationPitch") - living.rotationPitch.toDouble) / newPosRotationIncrements.toDouble).toFloat
+            living.rotationPitch = (living.rotationPitch.toDouble + (entity.getDouble(ENITTY_NEW_ROTATION_PITCH) - living.rotationPitch.toDouble) / newPosRotationIncrements.toDouble).toFloat
             newPosRotationIncrements -= 1
             living.setPosition(posX, posY, posZ)
             entity.setRotation(living.rotationYaw, living.rotationPitch)
@@ -131,7 +130,7 @@ class TraitMovement extends Trait {
             living.motionY *= 0.98D
             living.motionZ *= 0.98D
         }
-        entity.setInteger("newPosRotationIncrements", newPosRotationIncrements)
+        entity.setInteger(ENTITY_NEW_POS_ROTATION_INCREMENTS, newPosRotationIncrements)
 
         if(Math.abs(living.motionX) < 0.005D) {
             living.motionX = 0.0D
@@ -147,17 +146,17 @@ class TraitMovement extends Trait {
 
         living.worldObj.theProfiler.startSection("jump")
 
-        if(entity.getBoolean("isJumping")) {
+        if(entity.getBoolean(ENTITY_IS_JUMPING)) {
             if(!living.isInWater && !living.handleLavaMovement()) {
-                if(living.onGround && entity.getInteger("jumpTicks") == 0) {
+                if(living.onGround && entity.getInteger(ENTITY_JUMP_TICK) == 0) {
                     entity.jump
-                    entity.setInteger("jumpTicks", 10)
+                    entity.setInteger(ENTITY_JUMP_TICK, 10)
                 }
             } else {
                 living.motionY += 0.03999999910593033D
             }
         } else {
-            entity.setInteger("jumpTicks", 0)
+            entity.setInteger(ENTITY_JUMP_TICK, 0)
         }
 
         living.worldObj.theProfiler.endSection()
@@ -167,7 +166,7 @@ class TraitMovement extends Trait {
         living.moveStrafing *= 0.98F
         living.moveForward *= 0.98F
 
-        entity.setFloat("randomYawVelocity", entity.getFloat("randomYawVelocity") * 0.9F)
+        entity.setFloat(ENTITY_RANDOM_YAW_VELOCITY, entity.getFloat(ENTITY_RANDOM_YAW_VELOCITY) * 0.9F)
         living.moveEntityWithHeading(living.moveStrafing, living.moveForward)
 
         living.worldObj.theProfiler.endSection()

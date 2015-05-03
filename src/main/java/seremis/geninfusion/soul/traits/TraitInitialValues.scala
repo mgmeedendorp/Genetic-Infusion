@@ -1,6 +1,7 @@
 package seremis.geninfusion.soul.traits
 
 import net.minecraft.entity.{EntityLiving, SharedMonsterAttributes}
+import seremis.geninfusion.api.soul.lib.VariableLib._
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
@@ -12,7 +13,7 @@ class TraitInitialValues extends Trait {
         val maxHealth: Double = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_MAX_HEALTH)
         attributeMap.getAttributeInstance(SharedMonsterAttributes.maxHealth).setBaseValue(maxHealth)
 
-        entity.setFloat("health", maxHealth.toFloat)
+        entity.setFloat(ENTITY_HEALTH, maxHealth.toFloat)
 
         val attackDamage: Double = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_ATTACK_DAMAGE)
         attributeMap.getAttributeInstance(SharedMonsterAttributes.attackDamage).setBaseValue(attackDamage)
@@ -26,11 +27,16 @@ class TraitInitialValues extends Trait {
         val followRange: Double = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_FOLLOW_RANGE)
         attributeMap.getAttributeInstance(SharedMonsterAttributes.followRange).setBaseValue(followRange)
 
-        entity.setInteger("creatureAttribute", SoulHelper.geneRegistry.getValueFromAllele[Integer](entity, Genes.GENE_CREATURE_ATTRIBUTE))
-        entity.setInteger("experienceValue", SoulHelper.geneRegistry.getValueFromAllele[Integer](entity, Genes.GENE_EXPERIENCE_VALUE))
+        val width: Float = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_WIDTH)
+        val height: Float = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_HEIGHT)
 
-        entity.setFloatArray("equipmentDropChances", SoulHelper.geneRegistry.getValueFromAllele[Array[Float]](entity, Genes.GENE_EQUIPMENT_DROP_CHANCES))
+        entity.setSize(width, height)
 
-        entity.setBoolean("aiEnabled", SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_USE_NEW_AI))
+        entity.setInteger(ENTITY_CREATURE_ATTRIBUTE, SoulHelper.geneRegistry.getValueFromAllele[Integer](entity, Genes.GENE_CREATURE_ATTRIBUTE))
+        entity.setInteger(ENTITY_EXPERIENCE_VALUE, SoulHelper.geneRegistry.getValueFromAllele[Integer](entity, Genes.GENE_EXPERIENCE_VALUE))
+
+        entity.setFloatArray(ENTITY_EQUIPMENT_DROP_CHANCES, SoulHelper.geneRegistry.getValueFromAllele[Array[Float]](entity, Genes.GENE_EQUIPMENT_DROP_CHANCES))
+
+        entity.setBoolean(ENTITY_AI_ENABLED, SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_USE_NEW_AI))
     }
 }

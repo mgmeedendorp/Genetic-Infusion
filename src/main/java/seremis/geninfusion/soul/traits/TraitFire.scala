@@ -4,12 +4,13 @@ import net.minecraft.entity.effect.EntityLightningBolt
 import net.minecraft.entity.{Entity, EntityLiving}
 import net.minecraft.util.{DamageSource, MathHelper}
 import seremis.geninfusion.api.soul.lib.Genes
+import seremis.geninfusion.api.soul.lib.VariableLib._
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
 class TraitFire extends Trait {
 
     override def firstTick(entity: IEntitySoulCustom) {
-        entity.setBoolean("isImmuneToFire", SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_IMMUNE_TO_FIRE))
+        entity.setBoolean(ENITTY_IS_IMMUNE_TO_FIRE, SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_IMMUNE_TO_FIRE))
     }
 
     override def onUpdate(entity: IEntitySoulCustom) {
@@ -18,11 +19,11 @@ class TraitFire extends Trait {
         val burnsInDayLight: Boolean = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_BURNS_IN_DAYLIGHT)
         val childrenBurnInDaylight: Boolean = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_CHILDREN_BURN_IN_DAYLIGHT)
 
-        val posX = entity.getDouble("posX")
-        val posY = entity.getDouble("posY")
-        val posZ = entity.getDouble("posZ")
+        val posX = entity.getDouble(ENTITY_POS_X)
+        val posY = entity.getDouble(ENTITY_POS_Y)
+        val posZ = entity.getDouble(ENTITY_POS_Z)
 
-        val isImmuneToFire = entity.getBoolean("isImmuneToFire")
+        val isImmuneToFire = entity.getBoolean(ENITTY_IS_IMMUNE_TO_FIRE)
 
         if(burnsInDayLight && !isImmuneToFire) {
             if(entity.getWorld.isDaytime && !entity.getWorld.isRemote && (!living.isChild || childrenBurnInDaylight)) {
@@ -52,7 +53,7 @@ class TraitFire extends Trait {
             }
         }
 
-        var fire = entity.getInteger("fire")
+        var fire = entity.getInteger(ENTITY_FIRE)
 
         if(entity.getWorld.isRemote) {
             fire = 0
@@ -71,14 +72,14 @@ class TraitFire extends Trait {
                 fire -= 1
             }
         }
-        entity.setInteger("fire", fire)
+        entity.setInteger(ENTITY_FIRE, fire)
 
         if(entity.asInstanceOf[EntityLiving].handleLavaMovement()) {
             entity.setOnFireFromLava
-            entity.setFloat("fallDistance", entity.getFloat("fallDistance") * 0.5F)
+            entity.setFloat(ENTITY_FALL_DISTANCE, entity.getFloat(ENTITY_FALL_DISTANCE) * 0.5F)
         }
 
-        if(entity.getDouble("posY") < -64.0D) {
+        if(entity.getDouble(ENTITY_POS_Y) < -64.0D) {
             living.setDead()
         }
 
@@ -103,18 +104,18 @@ class TraitFire extends Trait {
     }
 
     override def setOnFireFromLava(entity: IEntitySoulCustom) {
-        if(!entity.getBoolean("isImmuneToFire")) {
+        if(!entity.getBoolean(ENITTY_IS_IMMUNE_TO_FIRE)) {
             entity.attackEntityFrom(DamageSource.lava, 4.0F)
             entity.asInstanceOf[EntityLiving].setFire(15)
         }
     }
     override def onStruckByLightning(entity: IEntitySoulCustom, lightningBolt: EntityLightningBolt) {
         val living = entity.asInstanceOf[EntityLiving]
-        println("lightning")
-        entity.dealFireDamage(5)
-        entity.setInteger("fire", entity.getInteger("fire") + 1)
 
-        if(entity.getInteger("fire") == 0) {
+        entity.dealFireDamage(5)
+        entity.setInteger(ENTITY_FIRE, entity.getInteger(ENTITY_FIRE) + 1)
+
+        if(entity.getInteger(ENTITY_FIRE) == 0) {
             living.setFire(8)
         }
     }

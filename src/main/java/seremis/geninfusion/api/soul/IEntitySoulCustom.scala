@@ -219,4 +219,6 @@ trait IEntitySoulCustom extends IRangedAttackMob {
 
     @SideOnly(Side.CLIENT)
     def setEntityRender(render: RenderLiving)
+
+    def setSize(width: Float, height: Float)
 }

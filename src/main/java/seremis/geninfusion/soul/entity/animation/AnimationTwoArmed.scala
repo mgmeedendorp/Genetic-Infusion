@@ -3,6 +3,7 @@ package seremis.geninfusion.soul.entity.animation
 import net.minecraft.entity.EntityLiving
 import net.minecraft.item.EnumAction
 import net.minecraft.util.MathHelper
+import seremis.geninfusion.api.soul.lib.VariableLib
 import seremis.geninfusion.api.soul.util.ModelPart
 import seremis.geninfusion.api.soul.{EnumAnimationType, IEntitySoulCustom}
 
@@ -51,18 +52,20 @@ class AnimationTwoArmed extends Animation {
             leftArm.rotateAngleY = leftArm.initialRotateAngleY
             rightArm.rotateAngleY = rightArm.initialRotateAngleY
 
-            val swingProgress = living.getSwingProgress(entity.getFloat("partialTickTime"))
+            val swingProgress = living.getSwingProgress(entity.getFloat(VariableLib.ENTITY_PARTIAL_TICK_TIME))
 
             if(swingProgress > -9990.0F) {
                 var f6 = swingProgress
 
-                leftArm.rotationPointZ = MathHelper.sin(body.rotateAngleY) * 5.0F
-                leftArm.rotationPointX = -MathHelper.cos(body.rotateAngleY) * 5.0F
-                rightArm.rotationPointZ = -MathHelper.sin(body.rotateAngleY) * 5.0F
-                rightArm.rotationPointX = MathHelper.cos(body.rotateAngleY) * 5.0F
-                leftArm.rotateAngleY += body.rotateAngleY
-                rightArm.rotateAngleY += body.rotateAngleY
-                rightArm.rotateAngleX += body.rotateAngleY
+                if(body != null) {
+                    leftArm.rotationPointZ = MathHelper.sin(body.rotateAngleY) * 5.0F
+                    leftArm.rotationPointX = -MathHelper.cos(body.rotateAngleY) * 5.0F
+                    rightArm.rotationPointZ = -MathHelper.sin(body.rotateAngleY) * 5.0F
+                    rightArm.rotationPointX = MathHelper.cos(body.rotateAngleY) * 5.0F
+                    leftArm.rotateAngleY += body.rotateAngleY
+                    rightArm.rotateAngleY += body.rotateAngleY
+                    rightArm.rotateAngleX += body.rotateAngleY
+                }
                 f6 = 1.0F - swingProgress
                 f6 *= f6
                 f6 *= f6
@@ -70,7 +73,8 @@ class AnimationTwoArmed extends Animation {
                 val f7 = MathHelper.sin(f6 * PI)
                 val f8: Float = MathHelper.sin(swingProgress * PI) * -(head(0).rotateAngleX - 0.7F) * 0.75F
                 leftArm.rotateAngleX = (leftArm.rotateAngleX.toDouble - (f7.toDouble * 1.2D + f8.toDouble)).toFloat
-                leftArm.rotateAngleY += body.rotateAngleY * 2.0F
+                if(body != null)
+                    leftArm.rotateAngleY += body.rotateAngleY * 2.0F
                 leftArm.rotateAngleZ = MathHelper.sin(swingProgress * PI) * -0.4F
             }
 
@@ -102,7 +106,7 @@ class AnimationTwoArmed extends Animation {
             rightArm.rotateAngleX -= MathHelper.sin(limbSwing * 0.067F) * 0.05F
 
         } else {
-            val swingProgress = living.getSwingProgress(entity.getFloat("partialTickTime"))
+            val swingProgress = living.getSwingProgress(entity.getFloat(VariableLib.ENTITY_PARTIAL_TICK_TIME))
 
             val f6 = MathHelper.sin(swingProgress * PI)
             val f7 = MathHelper.sin((1.0F - (1.0F - swingProgress) * (1.0F - swingProgress)) * PI)

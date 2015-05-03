@@ -220,8 +220,12 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     @SideOnly(Side.CLIENT)
     override def setEntityRender(render: RenderLiving) = renderer = render
 
+    override def setDead = TraitHandler.setDead(this)
+
     //TODO tamed with DataWatcherHelper
     override def isTamed: Boolean = false
+
+    override def setSize(width: Float, height: Float) = super.setSize(width, height)
 
     override def readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)

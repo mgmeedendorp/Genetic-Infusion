@@ -23,12 +23,11 @@ public class GIWorldGenerator implements IWorldGenerator {
     }
 
     private void generateSurface(World world, Random random, int blockX, int blockZ) {
-
         for(int i = 0; i < 7; i++) {
-            int Xcoord = blockX + random.nextInt(1);
-            int Ycoord = random.nextInt(60);
-            int Zcoord = blockZ + random.nextInt(1);
-            new WorldGenMinable(ModBlocks.oreTitanium, 10).generate(world, random, Xcoord, Ycoord, Zcoord);
+            int xCoord = blockX + random.nextInt(1);
+            int yCoord = random.nextInt(60);
+            int zCoord = blockZ + random.nextInt(1);
+            new WorldGenMinable(ModBlocks.oreTitanium, 10).generate(world, random, xCoord, yCoord, zCoord);
         }
     }
 
