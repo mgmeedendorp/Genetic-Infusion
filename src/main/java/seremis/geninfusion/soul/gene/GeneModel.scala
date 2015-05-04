@@ -39,7 +39,7 @@ class GeneModel extends Gene(EnumAlleleType.MODELPART_ARRAY) {
     }
 
     override def advancedInherit(parent1: Array[IChromosome], parent2: Array[IChromosome], offspring: Array[IChromosome]): IChromosome = {
-        val geneId = SoulHelper.geneRegistry.getGeneId(this)
+        val geneIdModel = SoulHelper.geneRegistry.getGeneId(this)
         val geneIdTexture = SoulHelper.geneRegistry.getGeneId(Genes.GENE_TEXTURE)
         val geneIdHeight = SoulHelper.geneRegistry.getGeneId(Genes.GENE_HEIGHT)
         val geneIdWidth = SoulHelper.geneRegistry.getGeneId(Genes.GENE_WIDTH)
@@ -52,8 +52,8 @@ class GeneModel extends Gene(EnumAlleleType.MODELPART_ARRAY) {
         val texture3 = GITextureHelper.getBufferedImage(toResource(textureChromosome1.getSecondary.getAlleleData.asInstanceOf[String]))
         val texture4 = GITextureHelper.getBufferedImage(toResource(textureChromosome2.getSecondary.getAlleleData.asInstanceOf[String]))
 
-        val chromosome1 = parent1(geneId)
-        val chromosome2 = parent2(geneId)
+        val chromosome1 = parent1(geneIdModel)
+        val chromosome2 = parent2(geneIdModel)
 
         val allele1 = chromosome1.getPrimary.getAlleleData.asInstanceOf[Array[ModelPart]]
         val allele2 = chromosome2.getPrimary.getAlleleData.asInstanceOf[Array[ModelPart]]
@@ -95,10 +95,11 @@ class GeneModel extends Gene(EnumAlleleType.MODELPART_ARRAY) {
         randomlyInherit(inherited2, wings2, texture2, wings4, texture4)
         randomlyInherit(inherited2, body2, texture2, body4, texture4)
 
-        //TODO adjust modelpart location for connecting limbs
-
         val parent1Tuple = createParentTexture(inherited1)
         val parent2Tuple = createParentTexture(inherited2)
+
+        AnimationCache.attachModelPartsToBody(allele1, allele3, parent1Tuple._2.to[Array])
+        AnimationCache.attachModelPartsToBody(allele2, allele4, parent2Tuple._2.to[Array])
 
         var parent1Texture = parent1Tuple._1
         var parent2Texture = parent2Tuple._1
@@ -130,8 +131,6 @@ class GeneModel extends Gene(EnumAlleleType.MODELPART_ARRAY) {
         val heightAllele2 = new Allele(false, AnimationCache.getModelHeight(parent2Tuple._2.to[Array]), EnumAlleleType.FLOAT)
 
         offspring(geneIdHeight) = SoulHelper.instanceHelper.getIChromosomeInstance(heightAllele1, heightAllele2)
-
-        println("width: " + widthAllele1.getAlleleData + " height: " + heightAllele1.getAlleleData)
 
         val resultAllele1 = new Allele(true, parent1Tuple._2.to[Array], EnumAlleleType.MODELPART_ARRAY)
         val resultAllele2 = new Allele(false, parent2Tuple._2.to[Array], EnumAlleleType.MODELPART_ARRAY)

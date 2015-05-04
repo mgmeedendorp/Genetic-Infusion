@@ -23,7 +23,7 @@ group = "seremis.geninfusion"
 archivesBaseName = "geninfusion"
 
 minecraft {
-    version = "1.7.10-10.13.3.1389-1710ls"
+    version = "1.7.10-10.13.3.1399-1.7.10"
     assetDir = "eclipse/assets"
     mappings = "stable_12"
 }

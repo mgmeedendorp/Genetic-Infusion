@@ -16,7 +16,7 @@ abstract class Animation extends IAnimation {
     def getModel(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModel(entity)
 
     def getModelLeftLegs(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelLeftLegs(entity)
-    def getModelRightLegs(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelRightLeg(entity)
+    def getModelRightLegs(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelRightLegs(entity)
     
     def getModelLegs(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelLegs(entity)
 
@@ -46,18 +46,20 @@ object AnimationCache {
     var cachedCoords: Map[(ModelPart, ModelBox), (Vec3, Vec3)] = Map()
     var cachedArmsHorizontal: Map[Array[ModelPart], Boolean] = Map()
     var cachedOuterBox: Map[ModelPart, (Vec3, Vec3)] = Map()
+    var cachedWidth: Map[Array[ModelPart], Float] = Map()
+    var cachedHeight: Map[Array[ModelPart], Float] = Map()
 
     def getModel(entity: IEntitySoulCustom): Array[ModelPart] = {
         SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_MODEL)
     }
 
-    def getModelLegs(model: Array[ModelPart]): Array[ModelPart] = getModelLeftLegs(model) ++ getModelRightLeg(model)
-    def getModelLegs(entity: IEntitySoulCustom): Array[ModelPart] = getModelLeftLegs(entity) ++ getModelRightLeg(entity)
+    def getModelLegs(model: Array[ModelPart]): Array[ModelPart] = getModelLeftLegs(model) ++ getModelRightLegs(model)
+    def getModelLegs(entity: IEntitySoulCustom): Array[ModelPart] = getModelLeftLegs(entity) ++ getModelRightLegs(entity)
 
-    def getModelRightLeg(model: Array[ModelPart]): Array[ModelPart] = getModelLegs(model, false)
+    def getModelRightLegs(model: Array[ModelPart]): Array[ModelPart] = getModelLegs(model, false)
     def getModelLeftLegs(model: Array[ModelPart]): Array[ModelPart] = getModelLegs(model, true)
 
-    def getModelRightLeg(entity: IEntitySoulCustom): Array[ModelPart] = getModelLegs(entity, false)
+    def getModelRightLegs(entity: IEntitySoulCustom): Array[ModelPart] = getModelLegs(entity, false)
     def getModelLeftLegs(entity: IEntitySoulCustom): Array[ModelPart] = getModelLegs(entity, true)
 
     def getModelLegs(entity: IEntitySoulCustom, leftLeg: Boolean): Array[ModelPart] = getModelLegs(getModel(entity), leftLeg)
@@ -156,15 +158,18 @@ object AnimationCache {
             var volume = 0.0F
 
             for(part <- model) {
-                if(getModelLegs(model).length == 0 || getModelLegs(model)(0) == null || getModelLegs(model).length == 2 && getModelLegs(model)(1) == null || getModelLegs(model).length == 1 && partsTouching(part, getModelLegs(model)(0)) || partsTouching(part, getModelLegs(model)(0)) && partsTouching(part, getModelLegs(model)(1))) {
-                    var partVolume = 0.0F
+                if(getModelLegs(model) != null && getModelLegs(model).exists(leg => partsTouching(leg, part))) {
+                    //                if(getModelLegs(model).length == 0 || getModelLegs(model)(0) == null || getModelLegs(model).length == 2 && getModelLegs(model)(1) == null || getModelLegs(model).length == 1 && partsTouching(part, getModelLegs(model)(0)) || partsTouching(part, getModelLegs(model)(0)) && partsTouching(part, getModelLegs(model)(1))) {
+                    var partVolume = 0.0D
 
                     part.getBoxList.foreach(box => partVolume += Math.abs(box.posX1 - box.posX2) * Math.abs(box.posY1 - box.posY2) * Math.abs(box.posZ1 - box.posZ2))
+                    //println(partVolume + " " + )
 
                     if(partVolume > volume) {
-                        volume = partVolume
+                        volume = partVolume.toFloat
                         body = part
                     }
+                    //                }
                 }
             }
             cachedBody += (model -> body)
@@ -183,7 +188,7 @@ object AnimationCache {
             var candidateMinY = 23.0F
 
             for(part <- model) {
-                if(!part.equals(getModelBody(model))) {
+                if(getModelBody(model) != part) {
                     var minX = 0.0F
                     var minY = 0.0F
                     var minZ = 0.0F
@@ -240,7 +245,7 @@ object AnimationCache {
             var wings: ListBuffer[ModelPart] = ListBuffer()
 
             for(part <- model) {
-                if(!getModelHead(model).toList.contains(part) && !getModelArms(model).toList.contains(part) && !getModelLegs(model).toList.contains(part) && !getModelBody(model).equals(part) && partsTouching(part, getModelBody(model))) {
+                if(getModelHead(model) != null && !getModelHead(model).toList.contains(part) && getModelArms(model) != null && !getModelArms(model).toList.contains(part) && getModelLegs(model) != null && !getModelLegs(model).toList.contains(part) && getModelBody(model) != null && !getModelBody(model).equals(part) && partsTouching(part, getModelBody(model))) {
                     wings += part
                 }
             }
@@ -349,48 +354,122 @@ object AnimationCache {
         cachedCoords.get((part, box)).get
     }
 
+    def getModelWidth(entity: IEntitySoulCustom): Float = getModelWidth(getModel(entity))
+
     def getModelWidth(model: Array[ModelPart]): Float = {
-        var minX, minZ = Float.PositiveInfinity
-        var maxX, maxZ = Float.NegativeInfinity
+        if(!cachedWidth.contains(model)) {
+            var minX, minZ = Float.PositiveInfinity
+            var maxX, maxZ = Float.NegativeInfinity
 
-        for(part <- model) {
-            val outerBox = getModelPartOuterBox(part)
+            for(part <- model) {
+                val outerBox = getModelPartOuterBox(part)
 
-            if(outerBox._1.xCoord < minX)
-                minX = outerBox._1.xCoord.toFloat
-            if(outerBox._1.zCoord < minZ)
-                minZ = outerBox._1.zCoord.toFloat
-            if(outerBox._2.xCoord > maxX)
-                maxX = outerBox._2.xCoord.toFloat
-            if(outerBox._2.zCoord > maxZ)
-                maxZ = outerBox._2.zCoord.toFloat
+                if(outerBox._1.xCoord < minX)
+                    minX = outerBox._1.xCoord.toFloat
+                if(outerBox._1.zCoord < minZ)
+                    minZ = outerBox._1.zCoord.toFloat
+                if(outerBox._2.xCoord > maxX)
+                    maxX = outerBox._2.xCoord.toFloat
+                if(outerBox._2.zCoord > maxZ)
+                    maxZ = outerBox._2.zCoord.toFloat
+            }
+
+            val dX = maxX - minX
+            val dZ = maxZ - minZ
+
+            var width = 0.0F
+
+            if(dX > dZ * 1.3F || dZ > dX * 1.3F) {
+                width = (dX + dZ) / 2
+            } else {
+                width = Math.max(dX, dZ)
+            }
+            cachedWidth += (model -> width / 16)
         }
-
-        val dX = maxX - minX
-        val dZ = maxZ - minZ
-
-        var width = 0.0F
-
-        if(dX > dZ * 1.5F || dZ > dX * 1.5F) {
-            width = (dX + dZ)/2
-        } else {
-            width = Math.max(dX, dZ)
-        }
-        width/16
+        cachedWidth.get(model).get
     }
 
+    def getModelHeight(entity: IEntitySoulCustom): Float = getModelHeight(getModel(entity))
+
     def getModelHeight(model: Array[ModelPart]): Float = {
-        var minY = Float.PositiveInfinity
-        var maxY = Float.NegativeInfinity
+        if(!cachedHeight.contains(model)) {
+            var minY = Float.PositiveInfinity
+            var maxY = Float.NegativeInfinity
 
-        for(part <- model) {
-            val outerBox = getModelPartOuterBox(part)
+            for(part <- model) {
+                val outerBox = getModelPartOuterBox(part)
 
-            if(outerBox._1.yCoord < minY)
-                minY = outerBox._1.yCoord.toFloat
-            if(outerBox._2.yCoord > maxY)
-                maxY = outerBox._2.yCoord.toFloat
+                if(outerBox._1.yCoord < minY)
+                    minY = outerBox._1.yCoord.toFloat
+                if(outerBox._2.yCoord > maxY)
+                    maxY = outerBox._2.yCoord.toFloat
+            }
+            cachedHeight += (model -> (maxY - minY) / 16)
         }
-        (maxY - minY)/16
+        cachedHeight.get(model).get
+    }
+
+    def attachModelPartsToBody(parent1: Array[ModelPart], parent2: Array[ModelPart], model: Array[ModelPart]): Array[ModelPart] = {
+        val legsLeft = if(getModelLeftLegs(parent1).forall(m => model.contains(m))) getModelLeftLegs(parent1) else if(getModelLeftLegs(parent2).forall(m => model.contains(m))) getModelLeftLegs(parent2) else null
+        val legsRight = if(getModelRightLegs(parent1).forall(m => model.contains(m))) getModelRightLegs(parent1) else if(getModelRightLegs(parent2).forall(m => model.contains(m))) getModelRightLegs(parent2) else null
+        val body = if(model.contains(getModelBody(parent1))) getModelBody(parent1) else if(model.contains(getModelBody(parent2))) getModelBody(parent2) else null
+        val armsLeft = if(getModelLeftArms(parent1).forall(m => model.contains(m))) getModelLeftArms(parent1) else if(getModelLeftArms(parent2).forall(m => model.contains(m))) getModelLeftArms(parent2) else null
+        val armsRight = if(getModelRightArms(parent1).forall(m => model.contains(m))) getModelRightArms(parent1) else if(getModelRightArms(parent2).forall(m => model.contains(m))) getModelRightArms(parent2) else null
+        val head = if(getModelHead(parent1).forall(m => model.contains(m))) getModelHead(parent1) else if(getModelHead(parent2).forall(m => model.contains(m))) getModelHead(parent2) else null
+
+        var highestLegY = 23.0F
+
+        for(leg <- legsLeft ++ legsRight) {
+            highestLegY = Math.min(getModelPartOuterBox(leg)._1.yCoord, getModelPartOuterBox(leg)._2.yCoord).toFloat
+            if(!intersectsPlaneY(leg, 23.0F)) {
+                var outerBox = getModelPartOuterBox(leg)
+                val dY = 23.0 - Math.max(outerBox._1.yCoord, outerBox._2.yCoord)
+
+                leg.rotationPointY += dY.toFloat
+
+                cachedOuterBox -= leg
+                leg.getBoxList.foreach(box => cachedCoords -= (leg -> box))
+                outerBox = getModelPartOuterBox(leg)
+
+                highestLegY = Math.min(highestLegY, Math.min(outerBox._1.yCoord, outerBox._2.yCoord)).toFloat
+            }
+        }
+
+        val bodyBox = getModelPartOuterBox(body)
+
+        println(bodyBox)
+        println(Math.max(bodyBox._1.yCoord, bodyBox._2.yCoord))
+        println(highestLegY)
+        println((legsLeft ++ legsRight).length)
+
+        val lowestYBody = Math.max(bodyBox._1.yCoord, bodyBox._2.yCoord)
+        if(highestLegY != lowestYBody) {
+            val dY = highestLegY - lowestYBody
+
+            body.rotationPointY += dY.toFloat
+            (armsLeft ++ armsRight ++ head).foreach(m => m.rotationPointY += dY.toFloat)
+        }
+
+        modelChanged(model)
+
+       // body.rotateAngleZ = (Math.PI/2/2).toFloat
+        head.foreach(h => h.rotateAngleZ = (Math.PI/4).toFloat)
+
+        model
+    }
+
+    def modelChanged(model: Array[ModelPart]) {
+        if(cachedArmsHorizontal.contains(model)) cachedArmsHorizontal -= model
+        if(cachedArmsLeft.contains(model)) cachedArmsLeft -= model
+        if(cachedArmsRight.contains(model)) cachedArmsRight -= model
+        if(cachedBody.contains(model)) cachedBody -= model
+        model.foreach(p => p.getBoxList.foreach(b => if(cachedCoords.contains(p -> b)) cachedCoords -= (p -> b)))
+        if(cachedHead.contains(model)) cachedHead -= model
+        if(cachedHeight.contains(model)) cachedHeight -= model
+        if(cachedLegsLeft.contains(model)) cachedLegsLeft -= model
+        if(cachedLegsRight.contains(model)) cachedLegsRight -= model
+        model.foreach(p => if(cachedOuterBox.contains(p)) cachedOuterBox -= p)
+        if(cachedWidth.contains(model)) cachedWidth -= model
+        if(cachedWings.contains(model)) cachedWings -= model
     }
 }

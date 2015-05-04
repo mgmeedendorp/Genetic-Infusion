@@ -10,7 +10,7 @@ import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 class TraitFire extends Trait {
 
     override def firstTick(entity: IEntitySoulCustom) {
-        entity.setBoolean(ENITTY_IS_IMMUNE_TO_FIRE, SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_IMMUNE_TO_FIRE))
+        entity.setBoolean(ENTITY_IS_IMMUNE_TO_FIRE, SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_IMMUNE_TO_FIRE))
     }
 
     override def onUpdate(entity: IEntitySoulCustom) {
@@ -23,7 +23,7 @@ class TraitFire extends Trait {
         val posY = entity.getDouble(ENTITY_POS_Y)
         val posZ = entity.getDouble(ENTITY_POS_Z)
 
-        val isImmuneToFire = entity.getBoolean(ENITTY_IS_IMMUNE_TO_FIRE)
+        val isImmuneToFire = entity.getBoolean(ENTITY_IS_IMMUNE_TO_FIRE)
 
         if(burnsInDayLight && !isImmuneToFire) {
             if(entity.getWorld.isDaytime && !entity.getWorld.isRemote && (!living.isChild || childrenBurnInDaylight)) {
@@ -104,7 +104,7 @@ class TraitFire extends Trait {
     }
 
     override def setOnFireFromLava(entity: IEntitySoulCustom) {
-        if(!entity.getBoolean(ENITTY_IS_IMMUNE_TO_FIRE)) {
+        if(!entity.getBoolean(ENTITY_IS_IMMUNE_TO_FIRE)) {
             entity.attackEntityFrom(DamageSource.lava, 4.0F)
             entity.asInstanceOf[EntityLiving].setFire(15)
         }

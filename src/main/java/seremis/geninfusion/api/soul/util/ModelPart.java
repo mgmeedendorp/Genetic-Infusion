@@ -283,7 +283,7 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
         Field[] fields = GIReflectionHelper.getFields(model);
 
         for(Field field : fields) {
-            if(field.getType().equals(ModelRenderer.class) && !field.getName().equals("bipedCloak") && !field.getName().equals("bipedEars") && !field.getName().equals("bipedHeadwear")) {
+            if(field.getType().equals(ModelRenderer.class) && !field.getName().equals(VariableLib.MODELBIPED_CLOAK()) && !field.getName().equals(VariableLib.MODELBIPED_EARS()) && !field.getName().equals(VariableLib.MODELBIPED_HEADWEAR()) && !field.getName().equals("field_78133_b")) {
                 ModelRenderer renderer = (ModelRenderer) GIReflectionHelper.getField(model, field.getName());
                 parts.add(modelRendererToModelPart(renderer));
             }

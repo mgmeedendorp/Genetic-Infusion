@@ -63,7 +63,7 @@ object VariableLib {
     final val ENTITY_EXPLOSION_RADIUS = "explosionRadius"
     final val ENTITY_FUSE_TIME = "fuseTime"
     final val ENTITY_TIME_SINCE_IGNITED = "timeSinceIgnited"
-    final val ENITTY_IS_IMMUNE_TO_FIRE = "isImmuneToFire"
+    final val ENTITY_IS_IMMUNE_TO_FIRE = "isImmuneToFire"
     final val ENTITY_FIRE = "fire"
     final val ENTITY_FALL_DISTANCE = "fallDistance"
     final val ENTITY_IS_DEAD = "isDead"
@@ -100,4 +100,7 @@ object VariableLib {
     final val MODELRENDERER_TEXTURE_OFFSET_Y = "textureOffsetY"
     final val MODELBOX_QUAD_LIST = "quadList"
     final val MODELBOX_VERTEX_POSITIONS = "vertexPositions"
+    final val MODELBIPED_EARS = "bipedEars"
+    final val MODELBIPED_CLOAK = "bipedCloak"
+    final val MODELBIPED_HEADWEAR = "bipedHeadwear"
 }

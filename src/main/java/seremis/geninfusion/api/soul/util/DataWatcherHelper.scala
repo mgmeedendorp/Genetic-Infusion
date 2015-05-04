@@ -134,15 +134,17 @@ object DataWatcherHelper {
      * @param name The name of the object.
      */
     def readObjectFromNBT(compound: NBTTagCompound, dataWatcher: DataWatcher, name: String) {
-        val id = getObjectId(dataWatcher, name)
-        val dataType = compound.getString(name + ".type")
+        if(ids.contains(dataWatcher)) {
+            val id = getObjectId(dataWatcher, name)
+            val dataType = compound.getString(name + ".type")
 
-        if(dataType == "byte") dataWatcher.updateObject(id, compound.getByte(name))
-        if(dataType == "short") dataWatcher.updateObject(id, compound.getShort(name))
-        if(dataType == "integer") dataWatcher.updateObject(id, compound.getInteger(name))
-        if(dataType == "float") dataWatcher.updateObject(id, compound.getFloat(name))
-        if(dataType == "string") dataWatcher.updateObject(id, compound.getString(name))
-        if(dataType == "itemStack") dataWatcher.updateObject(id, ItemStack.loadItemStackFromNBT(compound.getCompoundTag(name)))
-        if(dataType == "chunkCoordinates") dataWatcher.updateObject(id, new ChunkCoordinates(compound.getInteger(name + ".x"), compound.getInteger(name + ".y"), compound.getInteger(name + ".z")))
+            if(dataType == "byte") dataWatcher.updateObject(id, compound.getByte(name))
+            if(dataType == "short") dataWatcher.updateObject(id, compound.getShort(name))
+            if(dataType == "integer") dataWatcher.updateObject(id, compound.getInteger(name))
+            if(dataType == "float") dataWatcher.updateObject(id, compound.getFloat(name))
+            if(dataType == "string") dataWatcher.updateObject(id, compound.getString(name))
+            if(dataType == "itemStack") dataWatcher.updateObject(id, ItemStack.loadItemStackFromNBT(compound.getCompoundTag(name)))
+            if(dataType == "chunkCoordinates") dataWatcher.updateObject(id, new ChunkCoordinates(compound.getInteger(name + ".x"), compound.getInteger(name + ".y"), compound.getInteger(name + ".z")))
+        }
     }
 }
