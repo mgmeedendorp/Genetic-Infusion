@@ -158,18 +158,16 @@ object AnimationCache {
             var volume = 0.0F
 
             for(part <- model) {
-                if(getModelLegs(model) != null && getModelLegs(model).exists(leg => partsTouching(leg, part))) {
-                    //                if(getModelLegs(model).length == 0 || getModelLegs(model)(0) == null || getModelLegs(model).length == 2 && getModelLegs(model)(1) == null || getModelLegs(model).length == 1 && partsTouching(part, getModelLegs(model)(0)) || partsTouching(part, getModelLegs(model)(0)) && partsTouching(part, getModelLegs(model)(1))) {
+                val lowestPartY = Math.max(getModelPartOuterBox(part)._1.yCoord, getModelPartOuterBox(part)._2.yCoord).toFloat + 0.001F
+                if(getModelLegs(model) != null && getModelLegs(model).exists(leg => intersectsPlaneY(leg, lowestPartY))) {
                     var partVolume = 0.0D
 
                     part.getBoxList.foreach(box => partVolume += Math.abs(box.posX1 - box.posX2) * Math.abs(box.posY1 - box.posY2) * Math.abs(box.posZ1 - box.posZ2))
-                    //println(partVolume + " " + )
 
                     if(partVolume > volume) {
                         volume = partVolume.toFloat
                         body = part
                     }
-                    //                }
                 }
             }
             cachedBody += (model -> body)
@@ -452,8 +450,8 @@ object AnimationCache {
 
         modelChanged(model)
 
-       // body.rotateAngleZ = (Math.PI/2/2).toFloat
-        head.foreach(h => h.rotateAngleZ = (Math.PI/4).toFloat)
+        body.rotateAngleZ = (Math.PI/2/2).toFloat
+        head.foreach(h => h.rotateAngleY = (Math.PI/4).toFloat)
 
         model
     }
