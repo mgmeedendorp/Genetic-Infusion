@@ -144,6 +144,8 @@ class GeneModel extends Gene(EnumAlleleType.MODELPART_ARRAY) {
         } else {
             inherited += (parent2 -> texture2)
         }
+        //TODO remove, testing code
+        (parent1 zip parent2 zip inherited(inherited.length - 1)._1).foreach{case (parents, offspring) =>  if(offspring != null) offspring.nameTag = parents._1.nameTag + " " + parents._2.nameTag}
     }
 
     private def toResource(location: String): ResourceLocation = new ResourceLocation(location)
@@ -157,7 +159,7 @@ class GeneModel extends Gene(EnumAlleleType.MODELPART_ARRAY) {
             val partArray = tuple._1
             val wholeTexture = tuple._2
 
-            for (part <- partArray) {
+            for (part <- partArray if part != null) {
                 val image = GITextureHelper.getModelPartTexture(part, wholeTexture)
                 textureRects += new Rectangle2D(0, 0, image.getWidth, image.getHeight)
                 modelPartImages += image

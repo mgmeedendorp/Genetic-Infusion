@@ -23,6 +23,13 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
     public float initialRotationPointX, initialRotationPointY, initialRotationPointZ;
     public float initialRotateAngleX, initialRotateAngleY, initialRotateAngleZ;
 
+    public String nameTag;
+
+    public ModelPart(int a, String nameTag) {
+        super(SoulHelper.entityModel());
+        this.nameTag = nameTag;
+    }
+
     public ModelPart(String boxName) {
         super(SoulHelper.entityModel(), boxName);
     }
@@ -286,6 +293,8 @@ public class ModelPart extends ModelRenderer implements INBTTagable {
             if(field.getType().equals(ModelRenderer.class) && !field.getName().equals(VariableLib.MODELBIPED_CLOAK()) && !field.getName().equals(VariableLib.MODELBIPED_EARS()) && !field.getName().equals(VariableLib.MODELBIPED_HEADWEAR()) && !field.getName().equals("field_78133_b")) {
                 ModelRenderer renderer = (ModelRenderer) GIReflectionHelper.getField(model, field.getName());
                 parts.add(modelRendererToModelPart(renderer));
+                //TODO remove, testing code
+                parts.get(parts.size() - 1).nameTag = model.getClass().getSimpleName();
             }
         }
         return parts.toArray(new ModelPart[parts.size()]);

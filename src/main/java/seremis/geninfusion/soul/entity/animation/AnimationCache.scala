@@ -158,8 +158,8 @@ object AnimationCache {
             var volume = 0.0F
 
             for(part <- model) {
-                val lowestPartY = Math.max(getModelPartOuterBox(part)._1.yCoord, getModelPartOuterBox(part)._2.yCoord).toFloat + 0.001F
-                if(getModelLegs(model) != null && getModelLegs(model).exists(leg => intersectsPlaneY(leg, lowestPartY))) {
+                val lowestPartY = Math.max(getModelPartOuterBox(part)._1.yCoord, getModelPartOuterBox(part)._2.yCoord).toFloat
+                if(getModelLegs(model) == null || getModelLegs(model).exists(leg => intersectsPlaneY(leg, lowestPartY + 1F))) {
                     var partVolume = 0.0D
 
                     part.getBoxList.foreach(box => partVolume += Math.abs(box.posX1 - box.posX2) * Math.abs(box.posY1 - box.posY2) * Math.abs(box.posZ1 - box.posZ2))
@@ -408,12 +408,14 @@ object AnimationCache {
     }
 
     def attachModelPartsToBody(parent1: Array[ModelPart], parent2: Array[ModelPart], model: Array[ModelPart]): Array[ModelPart] = {
+        val time = System.nanoTime()
+
         val legsLeft = if(getModelLeftLegs(parent1).forall(m => model.contains(m))) getModelLeftLegs(parent1) else if(getModelLeftLegs(parent2).forall(m => model.contains(m))) getModelLeftLegs(parent2) else null
         val legsRight = if(getModelRightLegs(parent1).forall(m => model.contains(m))) getModelRightLegs(parent1) else if(getModelRightLegs(parent2).forall(m => model.contains(m))) getModelRightLegs(parent2) else null
         val body = if(model.contains(getModelBody(parent1))) getModelBody(parent1) else if(model.contains(getModelBody(parent2))) getModelBody(parent2) else null
         val armsLeft = if(getModelLeftArms(parent1).forall(m => model.contains(m))) getModelLeftArms(parent1) else if(getModelLeftArms(parent2).forall(m => model.contains(m))) getModelLeftArms(parent2) else null
         val armsRight = if(getModelRightArms(parent1).forall(m => model.contains(m))) getModelRightArms(parent1) else if(getModelRightArms(parent2).forall(m => model.contains(m))) getModelRightArms(parent2) else null
-        val head = if(getModelHead(parent1).forall(m => model.contains(m))) getModelHead(parent1) else if(getModelHead(parent2).forall(m => model.contains(m))) getModelHead(parent2) else null
+        val heads = if(getModelHead(parent1).forall(m => model.contains(m))) getModelHead(parent1) else if(getModelHead(parent2).forall(m => model.contains(m))) getModelHead(parent2) else null
 
         var highestLegY = 23.0F
 
@@ -435,23 +437,29 @@ object AnimationCache {
 
         val bodyBox = getModelPartOuterBox(body)
 
-        println(bodyBox)
-        println(Math.max(bodyBox._1.yCoord, bodyBox._2.yCoord))
-        println(highestLegY)
-        println((legsLeft ++ legsRight).length)
-
         val lowestYBody = Math.max(bodyBox._1.yCoord, bodyBox._2.yCoord)
         if(highestLegY != lowestYBody) {
             val dY = highestLegY - lowestYBody
 
             body.rotationPointY += dY.toFloat
-            (armsLeft ++ armsRight ++ head).foreach(m => m.rotationPointY += dY.toFloat)
+            (armsLeft ++ armsRight ++ heads).foreach(m => m.rotationPointY += dY.toFloat)
+        }
+
+        var lowestHeadY = Float.NegativeInfinity
+
+        for(head <- heads) {
+            lowestHeadY = Math.max(Math.max(getModelPartOuterBox(head)._1.yCoord, getModelPartOuterBox(head)._2.yCoord), lowestHeadY).toFloat
+        }
+
+        if(!intersectsPlaneY(body, lowestHeadY)) {
+            val dy = Math.min(bodyBox._1.yCoord, bodyBox._2.yCoord).toFloat - lowestHeadY
+
+            heads.foreach(head => head.rotationPointY += dy)
         }
 
         modelChanged(model)
 
-        body.rotateAngleZ = (Math.PI/2/2).toFloat
-        head.foreach(h => h.rotateAngleY = (Math.PI/4).toFloat)
+        println("attachModelPartsToBodyTime: " + (System.nanoTime() - time)/1000000)
 
         model
     }
