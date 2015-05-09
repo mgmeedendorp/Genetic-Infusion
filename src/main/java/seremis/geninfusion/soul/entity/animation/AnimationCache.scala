@@ -158,16 +158,13 @@ object AnimationCache {
             var volume = 0.0F
 
             for(part <- model) {
-                val lowestPartY = Math.max(getModelPartOuterBox(part)._1.yCoord, getModelPartOuterBox(part)._2.yCoord).toFloat
-                if(getModelLegs(model) == null || getModelLegs(model).exists(leg => intersectsPlaneY(leg, lowestPartY + 1F))) {
-                    var partVolume = 0.0D
+                var partVolume = 0.0D
 
-                    part.getBoxList.foreach(box => partVolume += Math.abs(box.posX1 - box.posX2) * Math.abs(box.posY1 - box.posY2) * Math.abs(box.posZ1 - box.posZ2))
+                part.getBoxList.foreach(box => partVolume += Math.abs(box.posX1 - box.posX2) * Math.abs(box.posY1 - box.posY2) * Math.abs(box.posZ1 - box.posZ2))
 
-                    if(partVolume > volume) {
-                        volume = partVolume.toFloat
-                        body = part
-                    }
+                if(partVolume > volume) {
+                    volume = partVolume.toFloat
+                    body = part
                 }
             }
             cachedBody += (model -> body)
@@ -333,19 +330,25 @@ object AnimationCache {
 
     def getPartBoxCoordinates(part: ModelPart, box: ModelBox): (Vec3, Vec3) = {
         if(!cachedCoords.contains((part, box))) {
-            val x1 = part.rotationPointX + (part.offsetX + Math.min(box.posX2, box.posX1)) * MathHelper.cos(part.rotateAngleY)
-            val y1 = part.rotationPointY + (part.offsetX + Math.min(box.posY2, box.posY1)) * MathHelper.cos(part.rotateAngleX)
-            val z1 = part.rotationPointZ + (part.offsetX + Math.min(box.posZ2, box.posZ1)) * MathHelper.cos(part.rotateAngleY)
-            val x2 = part.rotationPointX + (part.offsetX + Math.max(box.posX2, box.posX1)) * MathHelper.cos(part.rotateAngleY)
-            val y2 = part.rotationPointY + (part.offsetY + Math.max(box.posY2, box.posY1)) * MathHelper.cos(part.rotateAngleX)
-            val z2 = part.rotationPointZ + (part.offsetZ + Math.max(box.posZ2, box.posZ1)) * MathHelper.cos(part.rotateAngleY)
+            val pos1 = Vec3.createVectorHelper(part.offsetX + Math.min(box.posX2, box.posX1), part.offsetY + Math.min(box.posY2, box.posY1), part.offsetZ + Math.min(box.posZ2, box.posZ1))
+            val pos2 = Vec3.createVectorHelper(part.offsetX + Math.max(box.posX2, box.posX1), part.offsetY + Math.max(box.posY2, box.posY1), part.offsetZ + Math.max(box.posZ2, box.posZ1))
 
-            val nearX = Math.min(x1, x2)
-            val nearY = Math.min(y1, y2)
-            val nearZ = Math.min(z1, z2)
-            val farX = Math.max(x1, x2)
-            val farY = Math.max(y1, y2)
-            val farZ = Math.max(z1, z2)
+            pos1.rotateAroundX(part.rotateAngleX)
+            pos1.rotateAroundY(part.rotateAngleY)
+            pos1.rotateAroundZ(part.rotateAngleZ)
+            pos2.rotateAroundX(part.rotateAngleX)
+            pos2.rotateAroundY(part.rotateAngleY)
+            pos2.rotateAroundZ(part.rotateAngleZ)
+
+            pos1.addVector(part.rotationPointX, part.rotationPointY, part.rotationPointZ)
+            pos2.addVector(part.rotationPointX, part.rotationPointY, part.rotationPointZ)
+
+            val nearX = Math.min(pos1.xCoord, pos2.xCoord)
+            val nearY = Math.min(pos1.yCoord, pos2.yCoord)
+            val nearZ = Math.min(pos1.zCoord, pos2.zCoord)
+            val farX = Math.max(pos1.xCoord, pos2.xCoord)
+            val farY = Math.max(pos1.yCoord, pos2.yCoord)
+            val farZ = Math.max(pos1.zCoord, pos2.zCoord)
 
             cachedCoords += ((part, box) ->(Vec3.createVectorHelper(nearX, nearY, nearZ), Vec3.createVectorHelper(farX, farY, farZ)))
         }
@@ -451,10 +454,27 @@ object AnimationCache {
             lowestHeadY = Math.max(Math.max(getModelPartOuterBox(head)._1.yCoord, getModelPartOuterBox(head)._2.yCoord), lowestHeadY).toFloat
         }
 
-        if(!intersectsPlaneY(body, lowestHeadY)) {
+        val highestYBody = Math.min(bodyBox._1.yCoord, bodyBox._2.yCoord).toFloat
+
+        if(lowestHeadY != highestYBody) {
             val dy = Math.min(bodyBox._1.yCoord, bodyBox._2.yCoord).toFloat - lowestHeadY
 
             heads.foreach(head => head.rotationPointY += dy)
+        }
+
+        if(armsLeft != null && armsRight != null && armsLeft.length == 1 && armsRight.length == 1) {
+            for(arm <- armsLeft ++ armsRight) {
+                val armBox = getModelPartOuterBox(arm)
+                val armTop = Math.min(armBox._1.yCoord, armBox._2.yCoord).toFloat
+
+                println(armBox)
+
+                if(armTop != highestYBody) {
+                    val dy = highestYBody - armTop
+
+                    arm.rotationPointY += dy
+                }
+            }
         }
 
         modelChanged(model)
