@@ -69,9 +69,10 @@ object AnimationCache {
             var legs: ListBuffer[ModelPart] = ListBuffer()
 
             for(part <- model) {
-                val absoluteX = part.rotationPointX + part.offsetX * MathHelper.cos(part.rotateAngleY)
+                val outerBox = getModelPartOuterBox(part)
+                val outerX = if(Math.max(Math.abs(outerBox._1.xCoord), Math.abs(outerBox._2.xCoord)) == Math.abs(outerBox._1.xCoord)) outerBox._1.xCoord else outerBox._2.xCoord
 
-                if(intersectsPlaneY(part, 22.0F) && (absoluteX > 0 && leftLeg || absoluteX < 0 && !leftLeg)) {
+                if(intersectsPlaneY(part, 22.0F) && (outerX > 0 && leftLeg || outerX < 0 && !leftLeg)) {
                     legs += part
                 }
             }
@@ -158,13 +159,16 @@ object AnimationCache {
             var volume = 0.0F
 
             for(part <- model) {
-                var partVolume = 0.0D
+                val lowestPartY = Math.max(getModelPartOuterBox(part)._1.yCoord, getModelPartOuterBox(part)._2.yCoord).toFloat
+                if(getModelLegs(model) == null || getModelLegs(model).exists(leg => intersectsPlaneY(leg, lowestPartY + 1F))) {
+                    var partVolume = 0.0D
 
-                part.getBoxList.foreach(box => partVolume += Math.abs(box.posX1 - box.posX2) * Math.abs(box.posY1 - box.posY2) * Math.abs(box.posZ1 - box.posZ2))
+                    part.getBoxList.foreach(box => partVolume += Math.abs(box.posX1 - box.posX2) * Math.abs(box.posY1 - box.posY2) * Math.abs(box.posZ1 - box.posZ2))
 
-                if(partVolume > volume) {
-                    volume = partVolume.toFloat
-                    body = part
+                    if(partVolume > volume) {
+                        volume = partVolume.toFloat
+                        body = part
+                    }
                 }
             }
             cachedBody += (model -> body)
@@ -330,8 +334,8 @@ object AnimationCache {
 
     def getPartBoxCoordinates(part: ModelPart, box: ModelBox): (Vec3, Vec3) = {
         if(!cachedCoords.contains((part, box))) {
-            val pos1 = Vec3.createVectorHelper(part.offsetX + Math.min(box.posX2, box.posX1), part.offsetY + Math.min(box.posY2, box.posY1), part.offsetZ + Math.min(box.posZ2, box.posZ1))
-            val pos2 = Vec3.createVectorHelper(part.offsetX + Math.max(box.posX2, box.posX1), part.offsetY + Math.max(box.posY2, box.posY1), part.offsetZ + Math.max(box.posZ2, box.posZ1))
+            var pos1 = Vec3.createVectorHelper(part.offsetX + Math.min(box.posX2, box.posX1), part.offsetY + Math.min(box.posY2, box.posY1), part.offsetZ + Math.min(box.posZ2, box.posZ1))
+            var pos2 = Vec3.createVectorHelper(part.offsetX + Math.max(box.posX2, box.posX1), part.offsetY + Math.max(box.posY2, box.posY1), part.offsetZ + Math.max(box.posZ2, box.posZ1))
 
             pos1.rotateAroundX(part.rotateAngleX)
             pos1.rotateAroundY(part.rotateAngleY)
@@ -340,8 +344,8 @@ object AnimationCache {
             pos2.rotateAroundY(part.rotateAngleY)
             pos2.rotateAroundZ(part.rotateAngleZ)
 
-            pos1.addVector(part.rotationPointX, part.rotationPointY, part.rotationPointZ)
-            pos2.addVector(part.rotationPointX, part.rotationPointY, part.rotationPointZ)
+            pos1 = pos1.addVector(part.rotationPointX, part.rotationPointY, part.rotationPointZ)
+            pos2 = pos2.addVector(part.rotationPointX, part.rotationPointY, part.rotationPointZ)
 
             val nearX = Math.min(pos1.xCoord, pos2.xCoord)
             val nearY = Math.min(pos1.yCoord, pos2.yCoord)
