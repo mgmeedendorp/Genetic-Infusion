@@ -26,7 +26,7 @@ public class ItemDebugger extends GIItem {
         setHasSubtypes(true);
         setMaxDurability(0);
         setNumbersofMetadata(4);
-        setUnlocalizedName(Items.THERMOMETER_UNLOCALIZED_NAME());
+        setUnlocalizedName(Items.DEBUGGER_UNLOCALIZED_NAME());
     }
 
     @Override
@@ -48,7 +48,7 @@ public class ItemDebugger extends GIItem {
             }
             if(stack.getMetadata() == 1) {
                 try {
-                    EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper().getSoulEntityInstance(world, SoulHelper.standardSoulRegistry().getSoulForEntity(new EntityCreeper(world)), x + 0.5F, y + 1, z + 0.5F);
+                    EntityLivingBase entity = (EntityLivingBase) SoulHelper.instanceHelper().getSoulEntityInstance(world, SoulHelper.standardSoulRegistry().getSoulForEntity(new EntityZombie(world)), x + 0.5F, y + 1, z + 0.5F);
                     world.spawnEntityInWorld(entity);
                 } catch(Exception e) {
                     e.printStackTrace();
