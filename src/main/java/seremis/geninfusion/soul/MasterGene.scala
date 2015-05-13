@@ -1,6 +1,6 @@
 package seremis.geninfusion.soul
 
-import seremis.geninfusion.api.soul.{IChromosome, EnumAlleleType, IMasterGene, SoulHelper}
+import seremis.geninfusion.api.soul.{EnumAlleleType, IChromosome, IMasterGene, SoulHelper}
 
 import scala.collection.mutable.ListBuffer
 

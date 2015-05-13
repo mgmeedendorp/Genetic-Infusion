@@ -5,9 +5,10 @@ import net.minecraft.entity.DataWatcher
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ChunkCoordinates
+
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
-import util.control.Breaks._
+import scala.util.control.Breaks._
 
 
 object DataWatcherHelper {

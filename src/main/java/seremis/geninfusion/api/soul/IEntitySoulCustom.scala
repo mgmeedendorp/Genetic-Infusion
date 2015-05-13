@@ -2,7 +2,7 @@ package seremis.geninfusion.api.soul
 
 import java.util.Random
 
-import cpw.mods.fml.relauncher.{SideOnly, Side}
+import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.client.renderer.entity.RenderLiving
 import net.minecraft.entity.{Entity, IRangedAttackMob}
 import net.minecraft.item.ItemStack

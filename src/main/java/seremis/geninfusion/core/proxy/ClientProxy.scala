@@ -4,11 +4,11 @@ import cpw.mods.fml.client.FMLClientHandler
 import cpw.mods.fml.client.registry.{ClientRegistry, RenderingRegistry}
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.entity.Entity
-import seremis.geninfusion.client.render.{RenderCrystal}
+import seremis.geninfusion.client.render.RenderCrystal
 import seremis.geninfusion.lib.RenderIds
 import seremis.geninfusion.soul.entity.render.RenderEntitySoulCustom
 import seremis.geninfusion.soul.entity.{EntitySoulCustom, EntitySoulCustomCreature}
-import seremis.geninfusion.tileentity.{TileCrystal}
+import seremis.geninfusion.tileentity.TileCrystal
 
 class ClientProxy extends CommonProxy {
 

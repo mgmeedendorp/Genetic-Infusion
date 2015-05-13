@@ -2,7 +2,7 @@ package seremis.geninfusion.soul.standardSoul
 
 import net.minecraft.client.model.ModelCreeper
 import net.minecraft.entity.EntityLiving
-import net.minecraft.entity.monster.{EntitySkeleton, EntityCreeper}
+import net.minecraft.entity.monster.{EntityCreeper, EntitySkeleton}
 import net.minecraft.entity.passive.EntityOcelot
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items

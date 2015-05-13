@@ -1,7 +1,7 @@
 package seremis.geninfusion.util
 
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.{NBTTagList, NBTTagCompound}
+import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import seremis.geninfusion.api.soul.util.ModelPart
 
 import scala.reflect.ClassTag

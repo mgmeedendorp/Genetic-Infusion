@@ -3,7 +3,6 @@ package seremis.geninfusion.world
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.world.WorldSavedData
 import seremis.geninfusion.api.soul.SoulHelper
-import seremis.geninfusion.helper.GIReflectionHelper
 import seremis.geninfusion.lib.DefaultProps
 
 class GIWorldSavedData extends WorldSavedData(DefaultProps.ID) {

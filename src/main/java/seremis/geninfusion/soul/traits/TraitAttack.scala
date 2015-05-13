@@ -1,13 +1,13 @@
 package seremis.geninfusion.soul.traits
 
 import net.minecraft.enchantment.{Enchantment, EnchantmentHelper}
-import net.minecraft.entity.{Entity, EntityLiving, EntityLivingBase, SharedMonsterAttributes}
 import net.minecraft.entity.projectile.EntityArrow
+import net.minecraft.entity.{Entity, EntityLiving, EntityLivingBase, SharedMonsterAttributes}
 import net.minecraft.item.EnumAction
 import net.minecraft.util.{DamageSource, MathHelper}
-import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
-import seremis.geninfusion.api.soul.lib.VariableLib._
 import seremis.geninfusion.api.soul.lib.Genes
+import seremis.geninfusion.api.soul.lib.VariableLib._
+import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
 class TraitAttack extends Trait {
 

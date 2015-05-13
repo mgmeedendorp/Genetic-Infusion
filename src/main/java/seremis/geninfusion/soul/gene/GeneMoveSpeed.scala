@@ -1,6 +1,6 @@
 package seremis.geninfusion.soul.gene
 
-import seremis.geninfusion.api.soul.{IChromosome, EnumAlleleType}
+import seremis.geninfusion.api.soul.{EnumAlleleType, IChromosome}
 import seremis.geninfusion.soul.Gene
 
 class GeneMoveSpeed(alleleType: EnumAlleleType) extends Gene(alleleType) {

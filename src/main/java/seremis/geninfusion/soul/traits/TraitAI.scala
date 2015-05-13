@@ -7,8 +7,8 @@ import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.entity.{Entity, EntityCreature, EntityLiving, SharedMonsterAttributes}
 import net.minecraft.pathfinding.PathEntity
 import net.minecraft.util.MathHelper
-import seremis.geninfusion.api.soul.lib.VariableLib._
 import seremis.geninfusion.api.soul.lib.Genes
+import seremis.geninfusion.api.soul.lib.VariableLib._
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.soul.entity.ai._
 

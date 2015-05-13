@@ -1,7 +1,6 @@
 package seremis.geninfusion.soul
 
-import seremis.geninfusion.api.soul.ITrait
-import seremis.geninfusion.api.soul.ITraitRegistry
+import seremis.geninfusion.api.soul.{ITrait, ITraitRegistry}
 
 class TraitRegistry extends ITraitRegistry {
 

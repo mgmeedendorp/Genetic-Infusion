@@ -15,14 +15,12 @@ import seremis.geninfusion.handler.GIEventHandler
 import seremis.geninfusion.helper.RecipeHelper
 import seremis.geninfusion.item.ModItems
 import seremis.geninfusion.lib.{DefaultProps, Localizations}
-import seremis.geninfusion.network.PacketPipeline
+import seremis.geninfusion.network.ModPackets
 import seremis.geninfusion.soul._
 import seremis.geninfusion.soul.entity.render.ModelEntitySoulCustom
 
 @Mod(modid = DefaultProps.ID, name = DefaultProps.name, version = DefaultProps.version, acceptedMinecraftVersions = DefaultProps.acceptedMinecraftVersions, modLanguage = DefaultProps.modLanguage)
 object GeneticInfusion {
-
-    val packetPipeline = new PacketPipeline
 
     val creativeTab = new GICreativeTab(DefaultProps.ID)
 
@@ -46,6 +44,7 @@ object GeneticInfusion {
         SoulHelper.entityModel = new ModelEntitySoulCustom
         SoulHelper.animationRegistry = new AnimationRegistry
 
+        ModPackets.init()
         ModBlocks.init()
         ModItems.init()
         ModEntity.init()
@@ -61,12 +60,10 @@ object GeneticInfusion {
         RecipeHelper.initSmelting()
         FMLCommonHandler.instance.bus.register(new GIEventHandler)
         MinecraftForge.EVENT_BUS.register(new GIEventHandler)
-        packetPipeline.initialise()
     }
 
     @EventHandler
     def postInit(event: FMLPostInitializationEvent) {
-        packetPipeline.postInitialise()
         logger.log(Level.INFO, DefaultProps.name + " is loaded successfully.")
     }
 }

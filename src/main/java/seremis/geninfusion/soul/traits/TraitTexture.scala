@@ -1,8 +1,8 @@
 package seremis.geninfusion.soul.traits
 
 import net.minecraft.util.ResourceLocation
-import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.api.soul.lib.Genes
+import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.helper.GITextureHelper
 import seremis.geninfusion.lib.Localizations
 

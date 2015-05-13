@@ -6,11 +6,10 @@ import net.minecraft.entity.monster.EntitySkeleton
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
-import seremis.geninfusion.api.soul.{EnumAlleleType, IChromosome}
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.util.ModelPart
-import seremis.geninfusion.soul.Chromosome
-import seremis.geninfusion.soul.Allele
+import seremis.geninfusion.api.soul.{EnumAlleleType, IChromosome}
+import seremis.geninfusion.soul.{Allele, Chromosome}
 
 class StandardSoulSkeleton extends StandardSoul {
 

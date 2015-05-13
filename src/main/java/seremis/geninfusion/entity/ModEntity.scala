@@ -3,7 +3,7 @@ package seremis.geninfusion.entity
 import cpw.mods.fml.common.registry.EntityRegistry
 import seremis.geninfusion.GeneticInfusion
 import seremis.geninfusion.lib.Entities
-import seremis.geninfusion.soul.entity.{EntitySoulCustomCreature, EntitySoulCustom}
+import seremis.geninfusion.soul.entity.{EntitySoulCustom, EntitySoulCustomCreature}
 
 object ModEntity {
 

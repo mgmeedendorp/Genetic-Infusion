@@ -1,10 +1,8 @@
 package seremis.geninfusion.soul
 
-import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.nbt.NBTTagList
+import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import net.minecraftforge.common.util.Constants
-import seremis.geninfusion.api.soul.IAllele
-import seremis.geninfusion.api.soul.IChromosome
+import seremis.geninfusion.api.soul.{IAllele, IChromosome}
 
 class Chromosome(var allele1: IAllele, var allele2: IAllele) extends IChromosome {
 

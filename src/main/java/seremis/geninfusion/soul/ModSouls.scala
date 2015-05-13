@@ -2,8 +2,8 @@ package seremis.geninfusion.soul
 
 import seremis.geninfusion.api.soul.EnumAlleleType._
 import seremis.geninfusion.api.soul.SoulHelper._
-import seremis.geninfusion.api.soul.lib.Genes._
 import seremis.geninfusion.api.soul.lib.Animations._
+import seremis.geninfusion.api.soul.lib.Genes._
 import seremis.geninfusion.api.soul.lib.Traits._
 import seremis.geninfusion.soul.entity.animation.{AnimationFourLegged, AnimationHead, AnimationTwoArmed, AnimationTwoLegged}
 import seremis.geninfusion.soul.gene._
