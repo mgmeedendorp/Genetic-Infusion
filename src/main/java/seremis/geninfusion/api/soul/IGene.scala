@@ -6,7 +6,7 @@ trait IGene {
      * Return the EnumAlleleType this IGene contains.
      * @return The EnumAlleleType of this IGene.
      */
-    def getAlleleType: EnumAlleleType
+    def getAlleleType: IAlleleType
 
     /**
      * Mutate a chromosome containing a value associated with this IGene.

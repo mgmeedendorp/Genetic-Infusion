@@ -43,6 +43,7 @@ object GeneticInfusion {
         SoulHelper.instanceHelper = new InstanceHelper
         SoulHelper.entityModel = new ModelEntitySoulCustom
         SoulHelper.animationRegistry = new AnimationRegistry
+        SoulHelper.alleleTypeRegistry = new AlleleTypeRegistry
 
         ModPackets.init()
         ModBlocks.init()

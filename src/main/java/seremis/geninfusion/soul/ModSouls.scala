@@ -1,10 +1,13 @@
 package seremis.geninfusion.soul
 
+import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.soul.EnumAlleleType._
 import seremis.geninfusion.api.soul.SoulHelper._
 import seremis.geninfusion.api.soul.lib.Animations._
 import seremis.geninfusion.api.soul.lib.Genes._
 import seremis.geninfusion.api.soul.lib.Traits._
+import seremis.geninfusion.api.soul.util.ModelPart
 import seremis.geninfusion.soul.entity.animation.{AnimationFourLegged, AnimationHead, AnimationTwoArmed, AnimationTwoLegged}
 import seremis.geninfusion.soul.gene._
 import seremis.geninfusion.soul.gene.newAI._
@@ -272,5 +275,50 @@ object ModSouls {
         animationRegistry.register(ANIMATION_WALK_TWO_ARMED, new AnimationTwoArmed)
         animationRegistry.register(ANIMATION_HEAD, new AnimationHead)
         animationRegistry.register(ANIMATION_WALK_FOUR_LEGGED, new AnimationFourLegged)
+
+        alleleTypeRegistry.registerAlleleType(new AlleleType(classOf[Boolean]) {
+            override def writeToNBT(compound: NBTTagCompound, value: Boolean) = compound.setBoolean("value", value)
+            override def readFromNBT(compound: NBTTagCompound): Boolean = compound.getBoolean("value")
+        })
+        alleleTypeRegistry.registerAlleleType(new AlleleType(classOf[Byte]) {
+            override def writeToNBT(compound: NBTTagCompound, value: Byte) = compound.setByte("value", value)
+            override def readFromNBT(compound: NBTTagCompound): Byte = compound.getByte("value")
+        })
+        alleleTypeRegistry.registerAlleleType(new AlleleType(classOf[Short]) {
+            override def writeToNBT(compound: NBTTagCompound, value: Short) = compound.setShort("value", value)
+            override def readFromNBT(compound: NBTTagCompound): Short = compound.getShort("value")
+        })
+        alleleTypeRegistry.registerAlleleType(new AlleleType(classOf[Int]) {
+            override def writeToNBT(compound: NBTTagCompound, value: Int) = compound.setInteger("value", value)
+            override def readFromNBT(compound: NBTTagCompound): Int = compound.getInteger("value")
+        })
+        alleleTypeRegistry.registerAlleleType(new AlleleType(classOf[Float]) {
+            override def writeToNBT(compound: NBTTagCompound, value: Float) = compound.setFloat("value", value)
+            override def readFromNBT(compound: NBTTagCompound): Float = compound.getFloat("value")
+        })
+        alleleTypeRegistry.registerAlleleType(new AlleleType(classOf[Double]) {
+            override def writeToNBT(compound: NBTTagCompound, value: Double) = compound.setDouble("value", value)
+            override def readFromNBT(compound: NBTTagCompound): Double = compound.getDouble("value")
+        })
+        alleleTypeRegistry.registerAlleleType(new AlleleType(classOf[Long]) {
+            override def writeToNBT(compound: NBTTagCompound, value: Long) = compound.setLong("value", value)
+            override def readFromNBT(compound: NBTTagCompound): Long = compound.getLong("value")
+        })
+        alleleTypeRegistry.registerAlleleType(new AlleleType(classOf[String]) {
+            override def writeToNBT(compound: NBTTagCompound, value: String) = compound.setString("value", value)
+            override def readFromNBT(compound: NBTTagCompound): String = compound.getString("value")
+        })
+        alleleTypeRegistry.registerAlleleType(new AlleleType(classOf[Class[_]]) {
+            override def writeToNBT(compound: NBTTagCompound, value: Class[_]) = compound.setString("value", value.getName)
+            override def readFromNBT(compound: NBTTagCompound): Class[_] = Class.forName(compound.getString("value"))
+        })
+        alleleTypeRegistry.registerAlleleType(new AlleleType(classOf[ItemStack]) {
+            override def writeToNBT(compound: NBTTagCompound, value: ItemStack) = compound.setTag("value", value.writeToNBT(compound))
+            override def readFromNBT(compound: NBTTagCompound): ItemStack = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("value"))
+        })
+        alleleTypeRegistry.registerAlleleType(new AlleleType(classOf[ModelPart]) {
+            override def writeToNBT(compound: NBTTagCompound, value: ModelPart) = compound.setTag("value", value.writeToNBT(compound))
+            override def readFromNBT(compound: NBTTagCompound): ModelPart = ModelPart.fromNBT(compound.getCompoundTag("value"))
+        })
     }
 }

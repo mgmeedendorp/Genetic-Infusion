@@ -217,7 +217,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
         }
     }
 
-    def getObject(name: String): Object = {
+    def getObject(name: String): Any = {
         if(fields.contains(name)) {
             GIReflectionHelper.getField(entity, name).asInstanceOf[Object]
         } else {
@@ -404,15 +404,15 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
     override def writeToNBT(compound: NBTTagCompound): NBTTagCompound = {
         if(persistent.nonEmpty) {
             val tagList = new NBTTagList()
-            val stringList = new util.ArrayList[String]()
-            if(!data.booleanDataMap.isEmpty) {
+            val stringList: ListBuffer[String] = ListBuffer()
+            if(data.booleanDataMap.nonEmpty) {
                 stringList.addAll(data.booleanDataMap.keySet)
                 val booleanCompound = new NBTTagCompound()
                 var j = 0
                 for(i <- 0 until data.booleanDataMap.size) {
                     if(persistent.contains(stringList.get(i))) {
-                        booleanCompound.setString("boolean" + j + "Name", stringList.get(i))
-                        booleanCompound.setBoolean("boolean" + j + "Value", data.booleanDataMap.get(stringList.get(i)))
+                        booleanCompound.setString("boolean" + j + "Name", stringList.get(i).get)
+                        booleanCompound.setBoolean("boolean" + j + "Value", data.booleanDataMap.get(stringList.get(i)).get)
                         j += 1
                     }
                 }
@@ -423,14 +423,14 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
                 }
                 stringList.clear()
             }
-            if(!data.byteDataMap.isEmpty) {
+            if(data.byteDataMap.nonEmpty) {
                 stringList.addAll(data.byteDataMap.keySet)
                 val byteCompound = new NBTTagCompound()
                 var j = 0
                 for(i <- 0 until data.byteDataMap.size) {
                     if(persistent.contains(stringList.get(i))) {
-                        byteCompound.setString("byte" + j + "Name", stringList.get(i))
-                        byteCompound.setByte("byte" + j + "Value", data.byteDataMap.get(stringList.get(i)))
+                        byteCompound.setString("byte" + j + "Name", stringList.get(i).get)
+                        byteCompound.setByte("byte" + j + "Value", data.byteDataMap.get(stringList.get(i)).get)
                         j += 1
                     }
                 }
@@ -441,14 +441,14 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
                 }
                 stringList.clear()
             }
-            if(!data.shortDataMap.isEmpty) {
+            if(data.shortDataMap.nonEmpty) {
                 stringList.addAll(data.shortDataMap.keySet)
                 val shortCompound = new NBTTagCompound()
                 var j = 0
                 for(i <- 0 until data.shortDataMap.size) {
                     if(persistent.contains(stringList.get(i))) {
-                        shortCompound.setString("short" + j + "Name", stringList.get(i))
-                        shortCompound.setShort("short" + j + "Value", data.shortDataMap.get(stringList.get(i)))
+                        shortCompound.setString("short" + j + "Name", stringList.get(i).get)
+                        shortCompound.setShort("short" + j + "Value", data.shortDataMap.get(stringList.get(i)).get)
                         j += 1
                     }
                 }
@@ -459,14 +459,14 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
                 }
                 stringList.clear()
             }
-            if(!data.integerDataMap.isEmpty) {
+            if(data.integerDataMap.nonEmpty) {
                 stringList.addAll(data.integerDataMap.keySet)
                 val integerCompound = new NBTTagCompound()
                 var j = 0
                 for(i <- 0 until data.integerDataMap.size) {
                     if(persistent.contains(stringList.get(i))) {
-                        integerCompound.setString("integer" + j + "Name", stringList.get(i))
-                        integerCompound.setInteger("integer" + j + "Value", data.integerDataMap.get(stringList.get(i)))
+                        integerCompound.setString("integer" + j + "Name", stringList.get(i).get)
+                        integerCompound.setInteger("integer" + j + "Value", data.integerDataMap.get(stringList.get(i)).get)
                         j += 1
                     }
                 }
@@ -477,14 +477,14 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
                 }
                 stringList.clear()
             }
-            if(!data.floatDataMap.isEmpty) {
+            if(data.floatDataMap.nonEmpty) {
                 stringList.addAll(data.floatDataMap.keySet)
                 val floatCompound = new NBTTagCompound()
                 var j = 0
                 for(i <- 0 until data.floatDataMap.size) {
                     if(persistent.contains(stringList.get(i))) {
-                        floatCompound.setString("float" + j + "Name", stringList.get(i))
-                        floatCompound.setFloat("float" + j + "Value", data.floatDataMap.get(stringList.get(i)))
+                        floatCompound.setString("float" + j + "Name", stringList.get(i).get)
+                        floatCompound.setFloat("float" + j + "Value", data.floatDataMap.get(stringList.get(i)).get)
                         j += 1
                     }
                 }
@@ -495,14 +495,14 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
                 }
                 stringList.clear()
             }
-            if(!data.doubleDataMap.isEmpty) {
+            if(data.doubleDataMap.nonEmpty) {
                 stringList.addAll(data.doubleDataMap.keySet)
                 val doubleCompound = new NBTTagCompound()
                 var j = 0
                 for(i <- 0 until data.doubleDataMap.size) {
                     if(persistent.contains(stringList.get(i))) {
-                        doubleCompound.setString("double" + j + "Name", stringList.get(i))
-                        doubleCompound.setDouble("double" + j + "Value", data.doubleDataMap.get(stringList.get(i)))
+                        doubleCompound.setString("double" + j + "Name", stringList.get(i).get)
+                        doubleCompound.setDouble("double" + j + "Value", data.doubleDataMap.get(stringList.get(i)).get)
                         j += 1
                     }
                 }
@@ -513,14 +513,14 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
                 }
                 stringList.clear()
             }
-            if(!data.longDataMap.isEmpty) {
+            if(data.longDataMap.nonEmpty) {
                 stringList.addAll(data.longDataMap.keySet)
                 val longCompound = new NBTTagCompound()
                 var j = 0
                 for(i <- 0 until data.longDataMap.size) {
                     if(persistent.contains(stringList.get(i))) {
-                        longCompound.setString("long" + j + "Name", stringList.get(i))
-                        longCompound.setLong("long" + j + "Value", data.longDataMap.get(stringList.get(i)))
+                        longCompound.setString("long" + j + "Name", stringList.get(i).get)
+                        longCompound.setLong("long" + j + "Value", data.longDataMap.get(stringList.get(i)).get)
                         j += 1
                     }
                 }
@@ -531,14 +531,14 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
                 }
                 stringList.clear()
             }
-            if(!data.stringDataMap.isEmpty) {
+            if(data.stringDataMap.nonEmpty) {
                 stringList.addAll(data.stringDataMap.keySet)
                 val stringCompound = new NBTTagCompound()
                 var j = 0
                 for(i <- 0 until data.stringDataMap.size) {
                     if(persistent.contains(stringList.get(i))) {
-                        stringCompound.setString("string" + j + "Name", stringList.get(i))
-                        stringCompound.setString("string" + j + "Value", data.stringDataMap.get(stringList.get(i)))
+                        stringCompound.setString("string" + j + "Name", stringList.get(i).get)
+                        stringCompound.setString("string" + j + "Value", data.stringDataMap.get(stringList.get(i)).get)
                         j += 1
                     }
                 }
@@ -549,14 +549,14 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
                 }
                 stringList.clear()
             }
-            if(!data.nbtDataMap.isEmpty) {
+            if(data.nbtDataMap.nonEmpty) {
                 stringList.addAll(data.nbtDataMap.keySet)
                 val nbtCompound = new NBTTagCompound()
                 var j = 0
                 for(i <- 0 until data.nbtDataMap.size) {
                     if(persistent.contains(stringList.get(i))) {
-                        nbtCompound.setString("nbt" + j + "Name", stringList.get(i))
-                        nbtCompound.setTag("nbt" + j + "Value", data.nbtDataMap.get(stringList.get(i)))
+                        nbtCompound.setString("nbt" + j + "Name", stringList.get(i).get)
+                        nbtCompound.setTag("nbt" + j + "Value", data.nbtDataMap.get(stringList.get(i)).get)
                         j += 1
                     }
                 }
@@ -567,15 +567,15 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
                 }
                 stringList.clear()
             }
-            if(!data.dataDataMap.isEmpty) {
-                stringList.addAll(data.dataDataMap.keySet)
+            if(data.dataDataMap.nonEmpty) {
+                stringList.addAll(data.dataDataMap.keys)
                 val dataCompound = new NBTTagCompound()
                 var j = 0
                 for(i <- 0 until data.dataDataMap.size) {
                     if(persistent.contains(stringList.get(i))) {
-                        dataCompound.setString("data" + j + "Name", stringList.get(i))
+                        dataCompound.setString("data" + j + "Name", stringList.get(i).get)
                         val cmp = new NBTTagCompound()
-                        data.dataDataMap.get(stringList.get(i)).writeToNBT(cmp)
+                        data.dataDataMap.get(stringList.get(i).get).writeToNBT(cmp)
                         dataCompound.setTag("data" + j + "Value", cmp)
                         j += 1
                     }

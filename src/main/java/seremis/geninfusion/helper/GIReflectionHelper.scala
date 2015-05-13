@@ -2,15 +2,12 @@ package seremis.geninfusion.helper
 
 import java.lang.reflect.Field
 
-import scala.util.control.Breaks
-
 object GIReflectionHelper {
 
     var fields: Map[Class[_], Map[String, Field]] = Map()
 
     def indexFields(clzz: Class[_]) {
         var superClass: Any = clzz
-        val outer = new Breaks
         var fields: Map[String, Field] = Map()
 
         while(superClass != null) {

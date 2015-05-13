@@ -20,6 +20,8 @@ object SoulHelper {
 
     var animationRegistry: IAnimationRegistry = null
 
+    var alleleTypeRegistry: IAlleleTypeRegistry = null
+
     /**
      * The model used for all EntitySoulCustoms, this only contains a bridge method that redirects all render() calls to
      * Traits, but can be useful for declaring new ModelRenderers or ModelParts and can be used to set the textureOffset
