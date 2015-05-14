@@ -2,7 +2,7 @@ package seremis.geninfusion.soul.entity.animation
 
 import net.minecraft.entity.EntityLiving
 import net.minecraft.util.MathHelper
-import seremis.geninfusion.api.soul.{EnumAnimationType, IEntitySoulCustom}
+import seremis.geninfusion.api.soul.{AnimationType, EnumAnimationType, IEntitySoulCustom}
 
 class AnimationTwoLegged extends Animation {
 
@@ -47,7 +47,7 @@ class AnimationTwoLegged extends Animation {
 
     override def canBeInterrupted(entity: IEntitySoulCustom): Boolean = false
 
-    override def getAnimationType: EnumAnimationType = EnumAnimationType.UNDEFINED
+    override def getAnimationType: AnimationType = EnumAnimationType.UNDEFINED
 
     override def stopAnimation(entity: IEntitySoulCustom) {}
 }

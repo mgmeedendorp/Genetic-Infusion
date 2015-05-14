@@ -39,8 +39,6 @@ class GeneModel extends Gene(classOf[Array[ModelPart]]) {
     }
 
     override def advancedInherit(parent1: Array[IChromosome], parent2: Array[IChromosome], offspring: Array[IChromosome]): IChromosome = {
-        val time = System.nanoTime()
-
         val geneIdModel = SoulHelper.geneRegistry.getGeneId(this)
         val geneIdTexture = SoulHelper.geneRegistry.getGeneId(Genes.GENE_TEXTURE)
         val geneIdHeight = SoulHelper.geneRegistry.getGeneId(Genes.GENE_HEIGHT)
@@ -136,8 +134,6 @@ class GeneModel extends Gene(classOf[Array[ModelPart]]) {
 
         val resultAllele1 = new Allele(true, parent1Tuple._2.to[Array], classOf[Array[ModelPart]])
         val resultAllele2 = new Allele(false, parent2Tuple._2.to[Array], classOf[Array[ModelPart]])
-
-        println("geneModelInherit: " + (System.nanoTime() - time)/1000000)
 
         SoulHelper.instanceHelper.getIChromosomeInstance(resultAllele1, resultAllele2)
     }

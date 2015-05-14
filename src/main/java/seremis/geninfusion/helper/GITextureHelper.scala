@@ -233,8 +233,6 @@ object GITextureHelper {
      * @return The merged BufferedImage.
      */
     def mergeImages(image1: BufferedImage, image2: BufferedImage): BufferedImage = {
-        val time = System.currentTimeMillis()
-
         val result = new BufferedImage(Math.max(image1.getWidth, image2.getWidth), Math.max(image1.getHeight, image2.getHeight), BufferedImage.TYPE_INT_ARGB)
 
         val graphics = result.createGraphics()
@@ -252,8 +250,6 @@ object GITextureHelper {
         }
 
         graphics.dispose()
-
-        println("mergeImages Time: " + (System.currentTimeMillis() - time))
 
         result
     }

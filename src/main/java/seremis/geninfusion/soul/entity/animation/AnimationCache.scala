@@ -415,8 +415,6 @@ object AnimationCache {
     }
 
     def attachModelPartsToBody(parent1: Array[ModelPart], parent2: Array[ModelPart], model: Array[ModelPart]): Array[ModelPart] = {
-        val time = System.nanoTime()
-
         val legsLeft = if(getModelLeftLegs(parent1).forall(m => model.contains(m))) getModelLeftLegs(parent1) else if(getModelLeftLegs(parent2).forall(m => model.contains(m))) getModelLeftLegs(parent2) else null
         val legsRight = if(getModelRightLegs(parent1).forall(m => model.contains(m))) getModelRightLegs(parent1) else if(getModelRightLegs(parent2).forall(m => model.contains(m))) getModelRightLegs(parent2) else null
         val body = if(model.contains(getModelBody(parent1))) getModelBody(parent1) else if(model.contains(getModelBody(parent2))) getModelBody(parent2) else null
@@ -471,8 +469,6 @@ object AnimationCache {
                 val armBox = getModelPartOuterBox(arm)
                 val armTop = Math.min(armBox._1.yCoord, armBox._2.yCoord).toFloat
 
-                println(armBox)
-
                 if(armTop != highestYBody) {
                     val dy = highestYBody - armTop
 
@@ -482,8 +478,6 @@ object AnimationCache {
         }
 
         modelChanged(model)
-
-        println("attachModelPartsToBodyTime: " + (System.nanoTime() - time)/1000000)
 
         model
     }
