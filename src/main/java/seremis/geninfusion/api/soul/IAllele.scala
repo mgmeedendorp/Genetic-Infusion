@@ -7,5 +7,5 @@ trait IAllele extends INBTTagable {
     def isDominant: Boolean
 
     def getAlleleData: Any
-    def getAlleleType: EnumAlleleType
+    def getAlleleType: IAlleleType
 }

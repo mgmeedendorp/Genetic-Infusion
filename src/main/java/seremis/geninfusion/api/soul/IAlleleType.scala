@@ -2,15 +2,15 @@ package seremis.geninfusion.api.soul
 
 import net.minecraft.nbt.NBTTagCompound
 
-trait IAlleleType[T] {
+trait IAlleleType {
 
     /**
      * Returns the class this allele type provides.
      * @return A class
      */
-    def getAlleleTypeClass: Class[T]
+    def getAlleleTypeClass: Class[_]
 
-    def writeToNBT(compound: NBTTagCompound, value: T)
+    def writeToNBT(compound: NBTTagCompound, name: String, value: Any)
 
-    def readFromNBT(compound: NBTTagCompound): T
+    def readFromNBT(compound: NBTTagCompound, name: String): Any
 }

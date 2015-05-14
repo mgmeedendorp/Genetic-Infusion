@@ -8,6 +8,7 @@ import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import seremis.geninfusion.api.soul.util.Data
 import seremis.geninfusion.helper.GIReflectionHelper
 import seremis.geninfusion.util.INBTTagable
+import scala.collection.JavaConversions._
 
 import scala.collection.mutable.ListBuffer
 
@@ -121,7 +122,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
         }
     }
 
-    def setObject(name: String, variable: Object) {
+    def setObject(name: String, variable: Any) {
         if(fields.contains(name)) {
             GIReflectionHelper.setField(entity, name, variable)
         } else {
@@ -411,7 +412,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
                 var j = 0
                 for(i <- 0 until data.booleanDataMap.size) {
                     if(persistent.contains(stringList.get(i))) {
-                        booleanCompound.setString("boolean" + j + "Name", stringList.get(i).get)
+                        booleanCompound.setString("boolean" + j + "Name", stringList.get(i))
                         booleanCompound.setBoolean("boolean" + j + "Value", data.booleanDataMap.get(stringList.get(i)).get)
                         j += 1
                     }
@@ -429,7 +430,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
                 var j = 0
                 for(i <- 0 until data.byteDataMap.size) {
                     if(persistent.contains(stringList.get(i))) {
-                        byteCompound.setString("byte" + j + "Name", stringList.get(i).get)
+                        byteCompound.setString("byte" + j + "Name", stringList.get(i))
                         byteCompound.setByte("byte" + j + "Value", data.byteDataMap.get(stringList.get(i)).get)
                         j += 1
                     }
@@ -447,7 +448,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
                 var j = 0
                 for(i <- 0 until data.shortDataMap.size) {
                     if(persistent.contains(stringList.get(i))) {
-                        shortCompound.setString("short" + j + "Name", stringList.get(i).get)
+                        shortCompound.setString("short" + j + "Name", stringList.get(i))
                         shortCompound.setShort("short" + j + "Value", data.shortDataMap.get(stringList.get(i)).get)
                         j += 1
                     }
@@ -465,7 +466,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
                 var j = 0
                 for(i <- 0 until data.integerDataMap.size) {
                     if(persistent.contains(stringList.get(i))) {
-                        integerCompound.setString("integer" + j + "Name", stringList.get(i).get)
+                        integerCompound.setString("integer" + j + "Name", stringList.get(i))
                         integerCompound.setInteger("integer" + j + "Value", data.integerDataMap.get(stringList.get(i)).get)
                         j += 1
                     }
@@ -483,7 +484,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
                 var j = 0
                 for(i <- 0 until data.floatDataMap.size) {
                     if(persistent.contains(stringList.get(i))) {
-                        floatCompound.setString("float" + j + "Name", stringList.get(i).get)
+                        floatCompound.setString("float" + j + "Name", stringList.get(i))
                         floatCompound.setFloat("float" + j + "Value", data.floatDataMap.get(stringList.get(i)).get)
                         j += 1
                     }
@@ -501,7 +502,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
                 var j = 0
                 for(i <- 0 until data.doubleDataMap.size) {
                     if(persistent.contains(stringList.get(i))) {
-                        doubleCompound.setString("double" + j + "Name", stringList.get(i).get)
+                        doubleCompound.setString("double" + j + "Name", stringList.get(i))
                         doubleCompound.setDouble("double" + j + "Value", data.doubleDataMap.get(stringList.get(i)).get)
                         j += 1
                     }
@@ -519,7 +520,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
                 var j = 0
                 for(i <- 0 until data.longDataMap.size) {
                     if(persistent.contains(stringList.get(i))) {
-                        longCompound.setString("long" + j + "Name", stringList.get(i).get)
+                        longCompound.setString("long" + j + "Name", stringList.get(i))
                         longCompound.setLong("long" + j + "Value", data.longDataMap.get(stringList.get(i)).get)
                         j += 1
                     }
@@ -537,7 +538,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
                 var j = 0
                 for(i <- 0 until data.stringDataMap.size) {
                     if(persistent.contains(stringList.get(i))) {
-                        stringCompound.setString("string" + j + "Name", stringList.get(i).get)
+                        stringCompound.setString("string" + j + "Name", stringList.get(i))
                         stringCompound.setString("string" + j + "Value", data.stringDataMap.get(stringList.get(i)).get)
                         j += 1
                     }
@@ -555,7 +556,7 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
                 var j = 0
                 for(i <- 0 until data.nbtDataMap.size) {
                     if(persistent.contains(stringList.get(i))) {
-                        nbtCompound.setString("nbt" + j + "Name", stringList.get(i).get)
+                        nbtCompound.setString("nbt" + j + "Name", stringList.get(i))
                         nbtCompound.setTag("nbt" + j + "Value", data.nbtDataMap.get(stringList.get(i)).get)
                         j += 1
                     }
@@ -573,9 +574,9 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
                 var j = 0
                 for(i <- 0 until data.dataDataMap.size) {
                     if(persistent.contains(stringList.get(i))) {
-                        dataCompound.setString("data" + j + "Name", stringList.get(i).get)
+                        dataCompound.setString("data" + j + "Name", stringList.get(i))
                         val cmp = new NBTTagCompound()
-                        data.dataDataMap.get(stringList.get(i).get).writeToNBT(cmp)
+                        data.dataDataMap.get(stringList.get(i)).get.writeToNBT(cmp)
                         dataCompound.setTag("data" + j + "Value", cmp)
                         j += 1
                     }

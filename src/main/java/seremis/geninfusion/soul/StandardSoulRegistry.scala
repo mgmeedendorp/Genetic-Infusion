@@ -20,10 +20,11 @@ object StandardSoulRegistry extends IStandardSoulRegistry {
             val name = SoulHelper.geneRegistry.getGeneName(gene)
 
             chromosomes(i) = getStandardSoulForEntity(entity).getChromosomeFromGene(entity, name)
+
             if(chromosomes(i) == null) {
                 throw new NullPointerException("There seems to be a Gene: (" + name + ") without an associated Chromosome for Entity: (" + entity + ").")
-            } else if(chromosomes(i).getPrimary.getAlleleData != null && !EnumAlleleType.forClass(chromosomes(i).getPrimary.getAlleleData.getClass).equals(SoulHelper.geneRegistry.getGene(i).getAlleleType)) {
-                throw new ClassCastException("Someone associated a Gene: (" + name + ") with an Allele (" + chromosomes(i).getPrimary.getAlleleData.getClass.getName + ") that isn't allowed for this gene. It should be: " + gene.getAlleleType.clzz.getName)
+            } else if(chromosomes(i).getPrimary.getAlleleData != null && !chromosomes(i).getPrimary.getAlleleType.equals(SoulHelper.geneRegistry.getGene(i).getAlleleType)) {
+                throw new ClassCastException("Someone associated a Gene: (" + name + ") with an Allele (" + chromosomes(i).getPrimary.getAlleleData.getClass.getName + ") that isn't allowed for this gene. It should be: " + gene.getAlleleType.getAlleleTypeClass)
             }
         }
         new Soul(chromosomes)

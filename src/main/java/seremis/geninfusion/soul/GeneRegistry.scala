@@ -27,7 +27,7 @@ class GeneRegistry extends IGeneRegistry {
         gene
     }
 
-    override def registerGene(name: String, alleleType: EnumAlleleType): IGene = registerGene(name, new Gene(alleleType))
+    override def registerGene(name: String, clzz: Class[_]): IGene = registerGene(name, new Gene(clzz))
 
     override def registerMasterGene(name: String, gene: IMasterGene): IMasterGene = {
         registerGene(name, gene.asInstanceOf[IGene])

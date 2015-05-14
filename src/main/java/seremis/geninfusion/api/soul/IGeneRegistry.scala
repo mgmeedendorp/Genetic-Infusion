@@ -6,7 +6,7 @@ trait IGeneRegistry {
 
     def registerGene(name: String, gene: IGene): IGene
 
-    def registerGene(name: String, alleleType: EnumAlleleType): IGene
+    def registerGene(name: String, clzz: Class[_]): IGene
 
     def registerMasterGene(name: String, gene: IMasterGene): IMasterGene
 

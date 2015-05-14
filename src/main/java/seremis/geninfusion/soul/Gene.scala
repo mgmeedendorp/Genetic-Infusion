@@ -4,12 +4,12 @@ import seremis.geninfusion.api.soul._
 
 import scala.util.Random
 
-class Gene(alleleType: EnumAlleleType) extends IGene {
+class Gene(clzz: Class[_]) extends IGene {
 
     val rand = new Random()
     var mutate = true
 
-    override def getAlleleType: EnumAlleleType = alleleType
+    override def getAlleleType: IAlleleType = SoulHelper.alleleTypeRegistry.getAlleleTypeForClass(clzz)
 
     override def inherit(chromosome1: IChromosome, chromosome2: IChromosome): IChromosome = {
         val allele1 = if(rand.nextBoolean()) chromosome1.getPrimary else chromosome1.getSecondary
@@ -33,43 +33,43 @@ class Gene(alleleType: EnumAlleleType) extends IGene {
             var allele1Data = chromosome.getPrimary.getAlleleData
             var allele2Data = chromosome.getSecondary.getAlleleData
 
-            alleleType match {
-                case EnumAlleleType.BOOLEAN =>
+            getAlleleType.getAlleleTypeClass match {
+                case a if a == classOf[Boolean] =>
                     if(rand.nextBoolean())
                         allele1Data = !allele1Data.asInstanceOf[Boolean]
                     else
                         allele2Data = !allele2Data.asInstanceOf[Boolean]
-                case EnumAlleleType.BYTE =>
+                case a if a == classOf[Boolean] =>
                     if(rand.nextBoolean())
                         allele1Data = allele1Data.asInstanceOf[Byte] * (rand.nextFloat() * 2)
                     else
                         allele2Data = allele2Data.asInstanceOf[Byte] * (rand.nextFloat() * 2)
-                case EnumAlleleType.SHORT =>
+                case a if a == classOf[Short] =>
                     if(rand.nextBoolean())
                         allele1Data = allele1Data.asInstanceOf[Short] * (rand.nextFloat() * 2)
                     else
                         allele2Data = allele2Data.asInstanceOf[Short] * (rand.nextFloat() * 2)
-                case EnumAlleleType.INTEGER =>
+                case a if a == classOf[Int] =>
                     if(rand.nextBoolean())
                         allele1Data = allele1Data.asInstanceOf[Int] * (rand.nextFloat() * 2)
                     else
                         allele2Data = allele2Data.asInstanceOf[Int] * (rand.nextFloat() * 2)
-                case EnumAlleleType.FLOAT =>
+                case a if a == classOf[Float] =>
                     if(rand.nextBoolean())
                         allele1Data = allele1Data.asInstanceOf[Float] * (rand.nextFloat() * 2)
                     else
                         allele2Data = allele2Data.asInstanceOf[Float] * (rand.nextFloat() * 2)
-                case EnumAlleleType.DOUBLE =>
+                case a if a == classOf[Double] =>
                     if(rand.nextBoolean())
                         allele1Data = allele1Data.asInstanceOf[Double] * (rand.nextFloat() * 2)
                     else
                         allele2Data = allele2Data.asInstanceOf[Double] * (rand.nextFloat() * 2)
-                case EnumAlleleType.LONG =>
+                case a if a == classOf[Long] =>
                     if(rand.nextBoolean())
                         allele1Data = allele1Data.asInstanceOf[Long] * (rand.nextFloat() * 2)
                     else
                         allele2Data = allele2Data.asInstanceOf[Long] * (rand.nextFloat() * 2)
-                case EnumAlleleType.BOOLEAN_ARRAY =>
+                case a if a == classOf[Array[Boolean]] =>
                     if(rand.nextBoolean()) {
                         val index = rand.nextInt(allele1Data.asInstanceOf[Array[Boolean]].length)
                         allele1Data.asInstanceOf[Array[Boolean]](index) != allele1Data.asInstanceOf[Array[Boolean]](index)
@@ -77,7 +77,7 @@ class Gene(alleleType: EnumAlleleType) extends IGene {
                         val index = rand.nextInt(allele2Data.asInstanceOf[Array[Boolean]].length)
                         allele2Data.asInstanceOf[Array[Boolean]](index) != allele2Data.asInstanceOf[Array[Boolean]](index)
                     }
-                case EnumAlleleType.BYTE_ARRAY =>
+                case a if a == classOf[Array[Byte]] =>
                     if(rand.nextBoolean()) {
                         val index = rand.nextInt(allele1Data.asInstanceOf[Array[Byte]].length)
                         allele1Data.asInstanceOf[Array[Byte]](index) = (allele1Data.asInstanceOf[Array[Byte]](index) * (rand.nextFloat() * 2)).toByte
@@ -85,7 +85,7 @@ class Gene(alleleType: EnumAlleleType) extends IGene {
                         val index = rand.nextInt(allele2Data.asInstanceOf[Array[Byte]].length)
                         allele2Data.asInstanceOf[Array[Byte]](index) = (allele2Data.asInstanceOf[Array[Byte]](index) * (rand.nextFloat() * 2)).toByte
                     }
-                case EnumAlleleType.SHORT_ARRAY =>
+                case a if a == classOf[Array[Short]] =>
                     if(rand.nextBoolean()) {
                         val index = rand.nextInt(allele1Data.asInstanceOf[Array[Short]].length)
                         allele1Data.asInstanceOf[Array[Short]](index) = (allele1Data.asInstanceOf[Array[Short]](index) * (rand.nextFloat() * 2)).toShort
@@ -93,7 +93,7 @@ class Gene(alleleType: EnumAlleleType) extends IGene {
                         val index = rand.nextInt(allele2Data.asInstanceOf[Array[Short]].length)
                         allele2Data.asInstanceOf[Array[Short]](index) = (allele2Data.asInstanceOf[Array[Short]](index) * (rand.nextFloat() * 2)).toShort
                     }
-                case EnumAlleleType.INTEGER_ARRAY =>
+                case a if a == classOf[Array[Int]] =>
                     if(rand.nextBoolean()) {
                         val index = rand.nextInt(allele1Data.asInstanceOf[Array[Int]].length)
                         allele1Data.asInstanceOf[Array[Int]](index) = (allele1Data.asInstanceOf[Array[Int]](index) * (rand.nextFloat() * 2)).toInt
@@ -101,7 +101,7 @@ class Gene(alleleType: EnumAlleleType) extends IGene {
                         val index = rand.nextInt(allele2Data.asInstanceOf[Array[Int]].length)
                         allele2Data.asInstanceOf[Array[Int]](index) = (allele2Data.asInstanceOf[Array[Int]](index) * (rand.nextFloat() * 2)).toInt
                     }
-                case EnumAlleleType.FLOAT_ARRAY =>
+                case a if a == classOf[Array[Float]] =>
                     if(rand.nextBoolean()) {
                         val index = rand.nextInt(allele1Data.asInstanceOf[Array[Float]].length)
                         allele1Data.asInstanceOf[Array[Float]](index) = allele1Data.asInstanceOf[Array[Float]](index) * (rand.nextFloat() * 2)
@@ -109,7 +109,7 @@ class Gene(alleleType: EnumAlleleType) extends IGene {
                         val index = rand.nextInt(allele2Data.asInstanceOf[Array[Float]].length)
                         allele2Data.asInstanceOf[Array[Float]](index) = allele2Data.asInstanceOf[Array[Float]](index) * (rand.nextFloat() * 2)
                     }
-                case EnumAlleleType.DOUBLE_ARRAY =>
+                case a if a == classOf[Array[Double]] =>
                     if(rand.nextBoolean()) {
                         val index = rand.nextInt(allele1Data.asInstanceOf[Array[Double]].length)
                         allele1Data.asInstanceOf[Array[Double]](index) = allele1Data.asInstanceOf[Array[Double]](index) * (rand.nextFloat() * 2)
@@ -117,7 +117,7 @@ class Gene(alleleType: EnumAlleleType) extends IGene {
                         val index = rand.nextInt(allele2Data.asInstanceOf[Array[Double]].length)
                         allele2Data.asInstanceOf[Array[Double]](index) = allele2Data.asInstanceOf[Array[Double]](index) * (rand.nextFloat() * 2)
                     }
-                case EnumAlleleType.LONG_ARRAY =>
+                case a if a == classOf[Array[Long]] =>
                     if(rand.nextBoolean()) {
                         val index = rand.nextInt(allele1Data.asInstanceOf[Array[Long]].length)
                         allele1Data.asInstanceOf[Array[Long]](index) = (allele1Data.asInstanceOf[Array[Long]](index) * (rand.nextFloat() * 2)).toLong
@@ -132,7 +132,7 @@ class Gene(alleleType: EnumAlleleType) extends IGene {
         chromosome
     }
 
-    override def noMutations(): IGene = {
+    override def noMutations: IGene = {
         mutate = false
         this
     }

@@ -1,10 +1,10 @@
 package seremis.geninfusion.soul
 
-import seremis.geninfusion.api.soul.{EnumAlleleType, IChromosome, IMasterGene, SoulHelper}
+import seremis.geninfusion.api.soul.{IChromosome, IMasterGene, SoulHelper}
 
 import scala.collection.mutable.ListBuffer
 
-abstract class MasterGene(alleleType: EnumAlleleType) extends Gene(alleleType) with IMasterGene {
+abstract class MasterGene(clzz: Class[_]) extends Gene(clzz) with IMasterGene {
 
     var controlledGenes: ListBuffer[String] = ListBuffer()
 

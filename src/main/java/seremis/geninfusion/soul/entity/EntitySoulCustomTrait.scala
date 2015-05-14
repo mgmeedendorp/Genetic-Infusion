@@ -267,7 +267,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     override def setData(name: String, variable: Data) = syncLogic.setData(name, variable)
 
-    override def setObject(name: String, variable: Object) = syncLogic.setObject(name, variable)
+    override def setObject(name: String, variable: Any) = syncLogic.setObject(name, variable)
 
     override def getBoolean(name: String): Boolean = syncLogic.getBoolean(name)
 
@@ -291,7 +291,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     override def getData(name: String): Data = syncLogic.getData(name)
 
-    override def getObject(name: String): Object = syncLogic.getObject(name)
+    override def getObject(name: String): Any = syncLogic.getObject(name)
 
     override def setBooleanArray(name: String, value: Array[Boolean]) = syncLogic.setBooleanArray(name, value)
 

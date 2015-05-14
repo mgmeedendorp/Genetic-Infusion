@@ -3,8 +3,8 @@ package seremis.geninfusion.api.soul
 trait IGene {
 
     /**
-     * Return the EnumAlleleType this IGene contains.
-     * @return The EnumAlleleType of this IGene.
+     * Return the IAlleleType this IGene contains.
+     * @return The IAlleleType of this IGene.
      */
     def getAlleleType: IAlleleType
 

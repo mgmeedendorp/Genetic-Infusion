@@ -98,7 +98,7 @@ trait IEntitySoulCustom extends IRangedAttackMob {
      * Use this to set an Object. The Object will not persist over saves, write an Object to a Data object if you want
      * it to persist.
      */
-    def setObject(name: String, `object`: AnyRef)
+    def setObject(name: String, `object`: Any)
 
     def getBooleanArray(name: String): Array[Boolean]
 
@@ -128,7 +128,7 @@ trait IEntitySoulCustom extends IRangedAttackMob {
      *
      * @param name The name of the variable
      */
-    def getObject(name: String): AnyRef
+    def getObject(name: String): Any
 
     def getEntityData: NBTTagCompound
 

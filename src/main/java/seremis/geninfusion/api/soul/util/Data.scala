@@ -27,43 +27,43 @@ class Data extends INBTTagable {
     }
 
     def setBoolean(key: String, value: Boolean) {
-        booleanDataMap.put(key, value)
+        booleanDataMap += (key -> value)
     }
 
     def setByte(key: String, value: Byte) {
-        byteDataMap.put(key, value)
+        byteDataMap += (key -> value)
     }
 
     def setShort(key: String, value: Short) {
-        shortDataMap.put(key, value)
+        shortDataMap += (key -> value)
     }
 
     def setInteger(key: String, value: Int) {
-        integerDataMap.put(key, value)
+        integerDataMap += (key -> value)
     }
 
     def setFloat(key: String, value: Float) {
-        floatDataMap.put(key, value)
+        floatDataMap += (key -> value)
     }
 
     def setDouble(key: String, value: Double) {
-        doubleDataMap.put(key, value)
+        doubleDataMap += (key -> value)
     }
 
     def setLong(key: String, value: Long) {
-        longDataMap.put(key, value)
+        longDataMap += (key -> value)
     }
 
     def setString(key: String, value: String) {
-        stringDataMap.put(key, value)
+        stringDataMap += (key -> value)
     }
 
     def setNBT(key: String, value: NBTTagCompound) {
-        nbtDataMap.put(key, value)
+        nbtDataMap += (key -> value)
     }
 
     def setData(key: String, value: Data) {
-        dataDataMap.put(key, value)
+        dataDataMap += (key -> value)
     }
 
     /**
@@ -74,7 +74,7 @@ class Data extends INBTTagable {
      * @param value The object to be stored
      */
     def setObject(key: String, value: Any) {
-        objectDataMap.put(key, value)
+        objectDataMap += (key -> value)
     }
 
     def getBoolean(key: String): Boolean = {
@@ -105,11 +105,11 @@ class Data extends INBTTagable {
         if (!longDataMap.contains(key)) 0 else longDataMap.get(key).get
     }
 
-    def getString(key: String): String = stringDataMap.get(key).get
+    def getString(key: String): String = if(!stringDataMap.contains(key)) null else stringDataMap.get(key).get
 
-    def getNBT(key: String): NBTTagCompound = nbtDataMap.get(key).get
+    def getNBT(key: String): NBTTagCompound = if(!nbtDataMap.contains(key)) null else nbtDataMap.get(key).get
 
-    def getData(key: String): Data = dataDataMap.get(key).get
+    def getData(key: String): Data = if(!dataDataMap.contains(key)) null else dataDataMap.get(key).get
 
     /**
      * This gets an object. Objects will NOT be stored in NBT when the writeToNBT() method is called, so it will not

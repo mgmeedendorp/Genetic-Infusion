@@ -1,5 +1,6 @@
 package seremis.geninfusion.api.soul.util
 
+import java.util
 import java.util.Random
 
 import cpw.mods.fml.relauncher.{Side, SideOnly}
@@ -117,7 +118,7 @@ class ModelPart(boxName: String) extends ModelRenderer(SoulHelper.entityModel, b
         GIReflectionHelper.getField(this, VariableLib.MODELRENDERER_TEXTURE_OFFSET_Y).asInstanceOf[java.lang.Integer]
     }
 
-    def getBoxList: List[ModelBox] = cubeList.asInstanceOf[List[ModelBox]]
+    def getBoxList: util.ArrayList[ModelBox] = cubeList.asInstanceOf[util.ArrayList[ModelBox]]
 
     def getBoxQuads(box: ModelBox): Array[TexturedQuad] = {
         GIReflectionHelper.getField(box, VariableLib.MODELBOX_QUAD_LIST).asInstanceOf[Array[TexturedQuad]]
@@ -257,7 +258,7 @@ class ModelPart(boxName: String) extends ModelRenderer(SoulHelper.entityModel, b
                 vertices(k) = new PositionTextureVertex(vector, vertexCompound.getFloat("texturePositionX"), vertexCompound.getFloat("texturePositionY"))
             }
             GIReflectionHelper.setField(box, VariableLib.MODELBOX_VERTEX_POSITIONS, vertices)
-            cubeList.asInstanceOf[List[ModelBox]].add(box)
+            cubeList.asInstanceOf[util.ArrayList[ModelBox]].add(box)
         }
         compound
     }

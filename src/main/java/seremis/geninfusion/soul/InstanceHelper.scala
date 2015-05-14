@@ -23,6 +23,6 @@ class InstanceHelper extends IInstanceHelper {
 
     override def getIAlleleInstance(args: AnyRef*): IAllele =  {
         //TODO test this
-        new Allele(args(0).asInstanceOf[Boolean], args(1), EnumAlleleType.forClass(args(1).getClass))
+        new Allele(args(0).asInstanceOf[Boolean], args(1), SoulHelper.alleleTypeRegistry.getAlleleTypeForClass(args(1).getClass))
     }
 }

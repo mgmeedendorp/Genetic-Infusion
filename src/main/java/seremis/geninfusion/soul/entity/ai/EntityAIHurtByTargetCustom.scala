@@ -1,8 +1,11 @@
 package seremis.geninfusion.soul.entity.ai
 
+import java.util
+
 import net.minecraft.entity.{Entity, EntityLiving}
 import net.minecraft.util.AxisAlignedBB
 import seremis.geninfusion.api.soul.IEntitySoulCustom
+import scala.collection.JavaConversions._
 
 class EntityAIHurtByTargetCustom(entity: IEntitySoulCustom, callForHelp: Boolean) extends EntityAITargetCustom(entity, false) {
     setMutexBits(1)
@@ -22,9 +25,9 @@ class EntityAIHurtByTargetCustom(entity: IEntitySoulCustom, callForHelp: Boolean
 
         if (this.entityCallsForHelp) {
             val followRange = getFollowRange
-            val list = entity.getWorld.getEntitiesWithinAABB(classOf[EntityLiving], AxisAlignedBB.getBoundingBox(living.posX, living.posY, living.posZ, living.posX + 1.0D, living.posY + 1.0D, living.posZ + 1.0D).expand(followRange, 10.0D, followRange)).asInstanceOf[List[Entity]]
+            val list = collectionAsScalaIterable(entity.getWorld.getEntitiesWithinAABB(classOf[EntityLiving], AxisAlignedBB.getBoundingBox(living.posX, living.posY, living.posZ, living.posX + 1.0D, living.posY + 1.0D, living.posZ + 1.0D).expand(followRange, 10.0D, followRange)).asInstanceOf[util.ArrayList[Entity]])
 
-            for (ent <- list if entity != ent && living.getAttackTarget == null && !living.isOnSameTeam(living.getAITarget)) {
+            for (ent <- list if living != ent && living.getAttackTarget == null && !living.isOnSameTeam(living.getAITarget)) {
                 living.setAttackTarget(living.getAITarget)
             }
         }

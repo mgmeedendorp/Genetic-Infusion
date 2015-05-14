@@ -1,10 +1,9 @@
 package seremis.geninfusion.soul.gene
 
-import seremis.geninfusion.api.soul.EnumAlleleType
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.soul.MasterGene
 
-class GeneUseNewAI extends MasterGene(EnumAlleleType.BOOLEAN) {
+class GeneUseNewAI extends MasterGene(classOf[Boolean]) {
     addControlledGene(Genes.GENE_AI_ARROW_ATTACK)
     addControlledGene(Genes.GENE_AI_ATTACK_ON_COLLIDE)
     addControlledGene(Genes.GENE_AI_AVOID_ENTITY)
