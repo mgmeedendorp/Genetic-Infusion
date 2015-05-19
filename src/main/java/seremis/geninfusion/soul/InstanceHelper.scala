@@ -1,5 +1,7 @@
 package seremis.geninfusion.soul
 
+import net.minecraft.entity.EntityList
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.world.World
 import seremis.geninfusion.api.soul._
 import seremis.geninfusion.api.soul.lib.Genes
@@ -24,5 +26,21 @@ class InstanceHelper extends IInstanceHelper {
     override def getIAlleleInstance(args: AnyRef*): IAllele =  {
         //TODO test this
         new Allele(args(0).asInstanceOf[Boolean], args(1), SoulHelper.alleleTypeRegistry.getAlleleTypeForClass(args(1).getClass))
+    }
+
+    override def getSoulEntityInstance(compound: NBTTagCompound, world: World): IEntitySoulCustom = {
+        EntityList.createEntityFromNBT(compound, world).asInstanceOf[IEntitySoulCustom]
+    }
+
+    override def getIAlleleInstance(compound: NBTTagCompound): IAllele = {
+        new Allele(compound)
+    }
+
+    override def getISoulInstance(compound: NBTTagCompound): ISoul = {
+        new Soul(compound)
+    }
+
+    override def getIChromosomeInstance(compound: NBTTagCompound): IChromosome = {
+        new Chromosome(compound)
     }
 }

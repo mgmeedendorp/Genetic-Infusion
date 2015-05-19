@@ -3,7 +3,8 @@ package seremis.geninfusion.inventory
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.{Container, Slot}
 import net.minecraft.item.ItemStack
-import util.control.Breaks._
+
+import scala.util.control.Breaks._
 
 class GIContainer extends Container {
 

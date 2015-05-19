@@ -66,7 +66,7 @@ trait IAnimation {
      *
      * @return This animation's animation type.
      */
-    def getAnimationType: AnimationType
+    def getAnimationType: EnumAnimationType
 
     /**
      * Reset the animation, gets called when continueAnimation() returns false.

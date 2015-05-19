@@ -4,8 +4,8 @@ import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.network.{NetworkManager, Packet}
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity
+import net.minecraft.network.{NetworkManager, Packet}
 import net.minecraft.tileentity.TileEntity
 import seremis.geninfusion.GeneticInfusion
 import seremis.geninfusion.network.ModPackets

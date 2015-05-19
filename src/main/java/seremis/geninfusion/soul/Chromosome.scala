@@ -57,8 +57,8 @@ class Chromosome(var allele1: IAllele, var allele2: IAllele) extends IChromosome
     override def readFromNBT(compound: NBTTagCompound): NBTTagCompound = {
         val list = compound.getTagList("alleles", Constants.NBT.TAG_COMPOUND)
 
-        allele1 = Allele.fromNBT(list.getCompoundTagAt(0))
-        allele2 = Allele.fromNBT(list.getCompoundTagAt(1))
+        allele1 = new Allele(list.getCompoundTagAt(0))
+        allele2 = new Allele(list.getCompoundTagAt(1))
         compound
     }
 

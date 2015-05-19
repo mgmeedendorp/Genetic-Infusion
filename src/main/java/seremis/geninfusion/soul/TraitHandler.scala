@@ -313,4 +313,26 @@ object TraitHandler {
             trt.setDead(entity)
         }
     }
+
+    def setCustomNameTag(entity: IEntitySoulCustom, nameTag: String) {
+        for(trt <- SoulHelper.traitRegistry.getTraits) {
+            trt.setCustomNameTag(entity, nameTag)
+        }
+    }
+
+    def getCustomNameTag(entity: IEntitySoulCustom): String = {
+        var flag: String = null
+        for(trt <- SoulHelper.traitRegistry.getTraits if trt.getCustomNameTag(entity) != null) {
+            flag = trt.getCustomNameTag(entity)
+        }
+        flag
+    }
+
+    def hasCustomNameTag(entity: IEntitySoulCustom): Boolean = {
+        var flag = false
+        for(trt <- SoulHelper.traitRegistry.getTraits if trt.hasCustomNameTag(entity)) {
+            flag = trt.hasCustomNameTag(entity)
+        }
+        flag
+    }
 }

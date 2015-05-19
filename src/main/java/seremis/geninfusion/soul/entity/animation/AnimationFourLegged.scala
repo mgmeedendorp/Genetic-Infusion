@@ -3,7 +3,7 @@ package seremis.geninfusion.soul.entity.animation
 import net.minecraft.entity.EntityLiving
 import net.minecraft.util.MathHelper
 import seremis.geninfusion.api.soul.util.ModelPart
-import seremis.geninfusion.api.soul.{EnumAnimationType, AnimationType, IEntitySoulCustom}
+import seremis.geninfusion.api.soul.{EnumAnimationType, IEntitySoulCustom}
 
 class AnimationFourLegged extends Animation {
     /**
@@ -20,7 +20,7 @@ class AnimationFourLegged extends Animation {
      *
      * @return This animation's animation type.
      */
-    override def getAnimationType: AnimationType = EnumAnimationType.UNDEFINED
+    override def getAnimationType: EnumAnimationType = EnumAnimationType.UNDEFINED
 
     /**
      * Should this animation be started this tick? This gets called every tick if canAnimateEntity() returns true.

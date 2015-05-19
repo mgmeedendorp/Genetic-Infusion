@@ -46,7 +46,7 @@ class ItemDebugger extends GIItem() {
                 }
             }
             if (stack.getMetadata == 2) {
-                val entity = SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.produceOffspring(SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityCreeper(world)), SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityCreeper(world))), x + 0.5F, y + 1, z + 0.5F).asInstanceOf[EntityLivingBase]
+                val entity = SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.produceOffspring(SoulHelper.standardSoulRegistry.getSoulForEntity(new EntitySkeleton(world)), SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityZombie(world))), x + 0.5F, y + 1, z + 0.5F).asInstanceOf[EntityLivingBase]
                 world.spawnEntityInWorld(entity)
             }
             if (stack.getMetadata == 3) {

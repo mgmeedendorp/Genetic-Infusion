@@ -5,12 +5,12 @@ import seremis.geninfusion.api.soul.SoulHelper._
 import seremis.geninfusion.api.soul.lib.Animations._
 import seremis.geninfusion.api.soul.lib.Genes._
 import seremis.geninfusion.api.soul.lib.Traits._
+import seremis.geninfusion.soul.AlleleType._
 import seremis.geninfusion.soul.entity.animation.{AnimationFourLegged, AnimationHead, AnimationTwoArmed, AnimationTwoLegged}
 import seremis.geninfusion.soul.gene._
 import seremis.geninfusion.soul.gene.newAI._
 import seremis.geninfusion.soul.standardSoul.{StandardSoulCreeper, StandardSoulSkeleton, StandardSoulZombie}
 import seremis.geninfusion.soul.traits._
-import seremis.geninfusion.soul.AlleleType._
 
 object ModSouls {
 
@@ -264,6 +264,7 @@ object ModSouls {
         traitRegistry.registerTrait(TRAIT_NAVIGATE, new TraitNavigate)
         traitRegistry.registerTrait(TRAIT_ANIMATION, new TraitAnimation)
         traitRegistry.registerTrait(TRAIT_EXPLODE, new TraitExplode)
+        traitRegistry.registerTrait(TRAIT_NAME_TAG, new TraitNameTag)
 
         standardSoulRegistry.register(new StandardSoulZombie)
         standardSoulRegistry.register(new StandardSoulSkeleton)

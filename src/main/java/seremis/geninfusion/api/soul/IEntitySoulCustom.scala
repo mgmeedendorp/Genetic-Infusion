@@ -221,4 +221,10 @@ trait IEntitySoulCustom extends IRangedAttackMob {
     def setEntityRender(render: RenderLiving)
 
     def setSize(width: Float, height: Float)
+
+    def getCustomNameTag: String
+
+    def setCustomNameTag(nameTag: String)
+
+    def hasCustomNameTag: Boolean
 }

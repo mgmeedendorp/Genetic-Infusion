@@ -1,11 +1,12 @@
 package seremis.geninfusion.soul.entity.ai
 
-import java.util.{Comparator, Collections}
+import java.util.{Collections, Comparator}
 
 import net.minecraft.command.IEntitySelector
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget
 import net.minecraft.entity.{Entity, EntityLivingBase}
 import seremis.geninfusion.api.soul.IEntitySoulCustom
+
 import scala.collection.JavaConversions._
 
 class EntityAINearestAttackableTargetCustom(entity: IEntitySoulCustom, targetClass: Class[_], targetChance: Int, targetVisible: Boolean, nearbyOnly: Boolean, entitySelector: IEntitySelector) extends EntityAITargetCustom(entity, targetVisible, nearbyOnly) {

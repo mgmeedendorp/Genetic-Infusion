@@ -1,7 +1,7 @@
 package seremis.geninfusion.soul
 
 import net.minecraft.nbt.NBTTagCompound
-import seremis.geninfusion.api.soul.{IAlleleType, SoulHelper, IAllele}
+import seremis.geninfusion.api.soul.{IAllele, IAlleleType, SoulHelper}
 
 class Allele(var dominant: Boolean, var alleleData: Any, var alleleType: IAlleleType) extends IAllele {
 
@@ -12,6 +12,13 @@ class Allele(var dominant: Boolean, var alleleData: Any, var alleleType: IAllele
 
     def this(dominant: Boolean, alleleData: Any, alleleType: Class[_]) {
         this(dominant, alleleData, SoulHelper.alleleTypeRegistry.getAlleleTypeForClass(alleleType))
+    }
+
+    def this(compound: NBTTagCompound) {
+        this(false, false, AlleleType.typeBoolean)
+        dominant = compound.getBoolean("dominant")
+        alleleType = SoulHelper.alleleTypeRegistry.getAlleleTypeFromId(compound.getInteger("alleleType"))
+        alleleData = alleleType.readFromNBT(compound, "alleleData")
     }
 
     override def writeToNBT(compound: NBTTagCompound): NBTTagCompound = {
@@ -32,15 +39,5 @@ class Allele(var dominant: Boolean, var alleleData: Any, var alleleType: IAllele
 
     override def toString: String = {
         "Allele:[isDominant: " + isDominant + ", alleleType: " + alleleType + ", alleleData: " + alleleData + "]"
-    }
-}
-
-object Allele {
-    def fromNBT(compound: NBTTagCompound): Allele = {
-        val dominant = compound.getBoolean("dominant")
-        val alleleType = SoulHelper.alleleTypeRegistry.getAlleleTypeFromId(compound.getInteger("alleleType"))
-        val alleleData = alleleType.readFromNBT(compound, "alleleData")
-
-        new Allele(dominant, alleleData, alleleType)
     }
 }

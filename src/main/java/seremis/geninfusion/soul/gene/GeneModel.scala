@@ -111,8 +111,8 @@ class GeneModel extends Gene(classOf[Array[ModelPart]]) {
         val parent1TextureLocation = toResource(parent1TextureLocationString)
         val parent2TextureLocation = toResource(parent2TextureLocationString)
 
-        parent1Texture = GITextureHelper.mergeImages(parent1Texture, parent2Texture)
-        parent2Texture = GITextureHelper.mergeImages(parent2Texture, parent1Texture)
+//        parent1Texture = GITextureHelper.mergeImages(parent1Texture, parent2Texture)
+//        parent2Texture = GITextureHelper.mergeImages(parent2Texture, parent1Texture)
 
         GITextureHelper.writeBufferedImage(parent1Texture, parent1TextureLocation)
         GITextureHelper.writeBufferedImage(parent2Texture, parent2TextureLocation)

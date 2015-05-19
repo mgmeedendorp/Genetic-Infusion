@@ -95,6 +95,7 @@ object VariableLib {
     final val ENTITY_LIVING_SOUND_TIME = "livingSoundTime"
     final val ENTITY_TALK_INTERVAL = "talkInterval"
     final val ENTITY_PARTIAL_TICK_TIME = "partialTickTime"
+    final val DATAWATCHER_NAME_TAG = "nameTag"
     final val MODELRENDERER_BOX_NAME = "boxName"
     final val MODELRENDERER_TEXTURE_OFFSET_X = "textureOffsetX"
     final val MODELRENDERER_TEXTURE_OFFSET_Y = "textureOffsetY"

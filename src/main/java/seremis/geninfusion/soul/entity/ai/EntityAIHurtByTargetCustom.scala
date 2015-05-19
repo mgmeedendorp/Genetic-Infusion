@@ -5,6 +5,7 @@ import java.util
 import net.minecraft.entity.{Entity, EntityLiving}
 import net.minecraft.util.AxisAlignedBB
 import seremis.geninfusion.api.soul.IEntitySoulCustom
+
 import scala.collection.JavaConversions._
 
 class EntityAIHurtByTargetCustom(entity: IEntitySoulCustom, callForHelp: Boolean) extends EntityAITargetCustom(entity, false) {

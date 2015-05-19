@@ -222,6 +222,12 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     override def setDead = TraitHandler.setDead(this)
 
+    override def getCustomNameTag: String = TraitHandler.getCustomNameTag(this)
+
+    override def setCustomNameTag(nameTag: String) = TraitHandler.setCustomNameTag(this, nameTag)
+
+    override def hasCustomNameTag: Boolean = TraitHandler.hasCustomNameTag(this)
+
     //TODO tamed with DataWatcherHelper
     override def isTamed: Boolean = false
 

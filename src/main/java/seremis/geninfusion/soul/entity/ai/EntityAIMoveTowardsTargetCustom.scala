@@ -1,7 +1,7 @@
 package seremis.geninfusion.soul.entity.ai
 
-import net.minecraft.entity.{EntityLiving, EntityLivingBase}
 import net.minecraft.entity.ai.EntityAIBase
+import net.minecraft.entity.{EntityLiving, EntityLivingBase}
 import net.minecraft.util.Vec3
 import seremis.geninfusion.api.soul.IEntitySoulCustom
 import seremis.geninfusion.api.soul.util.GIRandomPositionGenerator

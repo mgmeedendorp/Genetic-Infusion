@@ -1,15 +1,13 @@
 package seremis.geninfusion.soul.entity.logic
 
-import java.util
-
 import net.minecraft.entity.EntityLiving
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import seremis.geninfusion.api.soul.util.Data
 import seremis.geninfusion.helper.GIReflectionHelper
 import seremis.geninfusion.util.INBTTagable
-import scala.collection.JavaConversions._
 
+import scala.collection.JavaConversions._
 import scala.collection.mutable.ListBuffer
 
 class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {

@@ -1,7 +1,7 @@
 package seremis.geninfusion.soul.entity.animation
 
 import net.minecraft.entity.EntityLiving
-import seremis.geninfusion.api.soul.{AnimationType, EnumAnimationType, IEntitySoulCustom}
+import seremis.geninfusion.api.soul.{EnumAnimationType, IEntitySoulCustom}
 
 class AnimationHead extends Animation {
 
@@ -32,7 +32,7 @@ class AnimationHead extends Animation {
 
     override def canBeInterrupted(entity: IEntitySoulCustom): Boolean = false
 
-    override def getAnimationType: AnimationType = EnumAnimationType.UNDEFINED
+    override def getAnimationType: EnumAnimationType = EnumAnimationType.UNDEFINED
 
     override def stopAnimation(entity: IEntitySoulCustom) {}
 }

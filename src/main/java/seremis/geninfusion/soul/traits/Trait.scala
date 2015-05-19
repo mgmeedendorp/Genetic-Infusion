@@ -12,13 +12,13 @@ class Trait extends ITrait {
 
     override def onUpdate(entity: IEntitySoulCustom) {}
 
-    override def interact(entity: IEntitySoulCustom, player: EntityPlayer): Boolean = true
+    override def interact(entity: IEntitySoulCustom, player: EntityPlayer): Boolean = false
 
     override def onDeath(entity: IEntitySoulCustom, source: DamageSource) {}
 
     override def onKillEntity(entity: IEntitySoulCustom, killed: EntityLivingBase) {}
 
-    override def attackEntityFrom(entity: IEntitySoulCustom, source: DamageSource, damage: Float): Boolean = true
+    override def attackEntityFrom(entity: IEntitySoulCustom, source: DamageSource, damage: Float): Boolean = false
 
     override def onSpawnWithEgg(entity: IEntitySoulCustom, data: IEntityLivingData) {}
 
@@ -30,7 +30,7 @@ class Trait extends ITrait {
 
     override def firstTick(entity: IEntitySoulCustom) {}
 
-    override def attackEntityAsMob(entity: IEntitySoulCustom, entityToAttack: Entity): Boolean = true
+    override def attackEntityAsMob(entity: IEntitySoulCustom, entityToAttack: Entity): Boolean = false
 
     override def attackEntity(entity: IEntitySoulCustom, entityToAttack: Entity, distance: Float) {}
 
@@ -94,4 +94,10 @@ class Trait extends ITrait {
     override def getEntityTexture(entity: IEntitySoulCustom): String = null
 
     override def setDead(entity: IEntitySoulCustom) {}
+
+    override def setCustomNameTag(entity: IEntitySoulCustom, nameTag: String) {}
+
+    override def getCustomNameTag(entity: IEntitySoulCustom): String = null
+
+    override def hasCustomNameTag(entity: IEntitySoulCustom): Boolean = false
 }
