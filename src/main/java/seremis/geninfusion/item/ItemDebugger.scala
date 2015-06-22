@@ -37,13 +37,13 @@ class ItemDebugger extends GIItem() {
                 }
             }
             if (stack.getMetadata == 2) {
-                val entity = SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.produceOffspring(SoulHelper.standardSoulRegistry.getSoulForEntity(new EntitySkeleton(world)), SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityZombie(world))), x + 0.5F, y + 1, z + 0.5F).asInstanceOf[EntityLivingBase]
+                val entity = SoulHelper.instanceHelper.getSoulEntityInstance(world, SoulHelper.produceOffspring(SoulHelper.standardSoulRegistry.getSoulForEntity(new EntitySkeleton(world)), SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityZombie(world))).get, x + 0.5F, y + 1, z + 0.5F).asInstanceOf[EntityLivingBase]
                 world.spawnEntityInWorld(entity)
             }
             if (stack.getMetadata == 3) {
-                val soul1 = SoulHelper.produceOffspring(SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityZombie(world)), SoulHelper.geneRegistry.getSoulFor(new EntitySkeleton(world)))
-                val soul2 = SoulHelper.produceOffspring(soul1, SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityCreeper(world)))
-                val soul3 = SoulHelper.produceOffspring(soul2, SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityCreeper(world)))
+                val soul1 = SoulHelper.produceOffspring(SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityZombie(world)), SoulHelper.geneRegistry.getSoulFor(new EntitySkeleton(world))).get
+                val soul2 = SoulHelper.produceOffspring(soul1, SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityCreeper(world))).get
+                val soul3 = SoulHelper.produceOffspring(soul2, SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityCreeper(world))).get
                 val entity = SoulHelper.instanceHelper.getSoulEntityInstance(world, soul3, x + 0.5F, y + 1,  z + 0.5F).asInstanceOf[EntityLivingBase]
 
                 world.spawnEntityInWorld(entity)

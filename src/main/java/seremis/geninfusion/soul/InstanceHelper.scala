@@ -19,7 +19,7 @@ class InstanceHelper extends IInstanceHelper {
         entity
     }
 
-    override def getISoulInstance(chromosomes: Array[IChromosome]): ISoul = new Soul(chromosomes)
+    override def getISoulInstance(chromosomes: Array[IChromosome]): Option[ISoul] = Some(new Soul(chromosomes))
 
     override def getIChromosomeInstance(allele1: IAllele, allele2: IAllele): IChromosome = new Chromosome(allele1, allele2)
 
@@ -36,8 +36,8 @@ class InstanceHelper extends IInstanceHelper {
         new Allele(compound)
     }
 
-    override def getISoulInstance(compound: NBTTagCompound): ISoul = {
-        new Soul(compound)
+    override def getISoulInstance(compound: NBTTagCompound): Option[ISoul] = {
+        Some(new Soul(compound))
     }
 
     override def getIChromosomeInstance(compound: NBTTagCompound): IChromosome = {

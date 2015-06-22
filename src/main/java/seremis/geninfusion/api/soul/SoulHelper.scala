@@ -36,13 +36,13 @@ object SoulHelper {
      * @param parent2 A parent soul
      * @return The offspring
      */
-    def produceOffspring(parent1: ISoul, parent2: ISoul): ISoul = {
+    def produceOffspring(parent1: ISoul, parent2: ISoul): Option[ISoul] = {
         val chromosomes1 = parent1.getChromosomes
         val chromosomes2 = parent2.getChromosomes
 
         val offspring = Array.ofDim[IChromosome](chromosomes1.length)
 
-        for(i <- 0 until chromosomes1.length) {
+        for(i <- chromosomes1.indices) {
             val gene = geneRegistry.getGene(i)
             if(geneRegistry.useNormalInheritance(gene)) {
                 offspring(i) = gene.inherit(chromosomes1(i), chromosomes2(i))
@@ -52,7 +52,7 @@ object SoulHelper {
             }
         }
 
-        for(i <- 0 until geneRegistry.getCustomInheritanceGenes.size) {
+        for(i <- geneRegistry.getCustomInheritanceGenes.indices) {
             val gene = geneRegistry.getCustomInheritanceGenes(i)
             offspring(geneRegistry.getGeneId(gene)) = gene.advancedInherit(chromosomes1, chromosomes2, offspring)
             if(rand.nextInt(100) < 5) {

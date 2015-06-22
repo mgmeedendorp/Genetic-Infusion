@@ -8,8 +8,8 @@ trait IInstanceHelper {
     def getSoulEntityInstance(world: World, soul: ISoul, x: Double, y: Double, z: Double): IEntitySoulCustom
     def getSoulEntityInstance(compound: NBTTagCompound, world: World): IEntitySoulCustom
 
-    def getISoulInstance(chromosomes: Array[IChromosome]): ISoul
-    def getISoulInstance(compound: NBTTagCompound): ISoul
+    def getISoulInstance(chromosomes: Array[IChromosome]): Option[ISoul]
+    def getISoulInstance(compound: NBTTagCompound): Option[ISoul]
 
     def getIChromosomeInstance(allele1: IAllele, allele2: IAllele): IChromosome
     def getIChromosomeInstance(compound: NBTTagCompound): IChromosome
