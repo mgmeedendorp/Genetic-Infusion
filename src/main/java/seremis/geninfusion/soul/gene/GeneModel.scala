@@ -105,8 +105,8 @@ class GeneModel extends Gene(classOf[Array[ModelPart]]) {
         var parent2Texture = parent2Tuple._1
 
         val textureId = SoulHelper.getNextAvailableTextureID
-        val parent1TextureLocationString = Localizations.LOC_ENTITY_CUSTOM_TEXTURES + textureId + "_texture1.png"
-        val parent2TextureLocationString = Localizations.LOC_ENTITY_CUSTOM_TEXTURES + textureId + "_texture2.png"
+        val parent1TextureLocationString = Localizations.LocEntityCustomTextures + textureId + "_texture1.png"
+        val parent2TextureLocationString = Localizations.LocEntityCustomTextures + textureId + "_texture2.png"
 
         val parent1TextureLocation = toResource(parent1TextureLocationString)
         val parent2TextureLocation = toResource(parent2TextureLocationString)

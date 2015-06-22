@@ -17,7 +17,7 @@ class TraitFluids extends Trait {
         val drownsInWater = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_DROWNS_IN_WATER)
 
         if(drownsInWater) {
-            if(!entity.getBoolean(ENTITY_IS_DEAD) && living.isInsideOfMaterial(Material.water)) {
+            if(!entity.getBoolean(EntityIsDead) && living.isInsideOfMaterial(Material.water)) {
                 if(!living.canBreatheUnderwater && !living.isPotionActive(Potion.waterBreathing.id) && !(entity.isInstanceOf[EntityPlayer] && entity.asInstanceOf[EntityPlayer].capabilities.disableDamage)) {
                     living.setAir(entity.decreaseAirSupply(living.getAir))
 

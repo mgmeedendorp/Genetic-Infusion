@@ -156,7 +156,7 @@ class TraitRender extends Trait {
         val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_AI_CREEPER_SWELL)
 
         if(explodes) {
-            var flashIntensity: Float = entity.getInteger(ENTITY_TIME_SINCE_IGNITED).toFloat + (entity.getInteger(ENTITY_TIME_SINCE_IGNITED) - entity.getInteger(ENTITY_TIME_SINCE_IGNITED).toFloat * partialTickTime) / (entity.getInteger(ENTITY_FUSE_TIME) - 2).toFloat
+            var flashIntensity: Float = entity.getInteger(EntityTimeSinceIgnited).toFloat + (entity.getInteger(EntityTimeSinceIgnited) - entity.getInteger(EntityTimeSinceIgnited).toFloat * partialTickTime) / (entity.getInteger(EntityFuseTime) - 2).toFloat
             val f2: Float = 1.0F + MathHelper.sin(flashIntensity * 100.0F) * flashIntensity * 0.01F
 
             if(flashIntensity < 0.0F) {
@@ -193,7 +193,7 @@ class TraitRender extends Trait {
         val canBeCharged = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_CAN_BE_CHARGED)
 
         if(explodes && canBeCharged) {
-            val isCharged = DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, ENTITY_CHARGED).asInstanceOf[Byte] == 1
+            val isCharged = DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, EntityCharged).asInstanceOf[Byte] == 1
 
             if(isCharged){
                 GL11.glDepthMask(!living.isInvisible)
@@ -235,7 +235,7 @@ class TraitRender extends Trait {
         val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_AI_CREEPER_SWELL)
 
         if(explodes) {
-            val flashIntensity: Float = entity.getInteger(ENTITY_TIME_SINCE_IGNITED).toFloat + (entity.getInteger(ENTITY_TIME_SINCE_IGNITED) - entity.getInteger(ENTITY_TIME_SINCE_IGNITED).toFloat * partialTickTime) / (entity.getInteger(ENTITY_FUSE_TIME) - 2).toFloat
+            val flashIntensity: Float = entity.getInteger(EntityTimeSinceIgnited).toFloat + (entity.getInteger(EntityTimeSinceIgnited) - entity.getInteger(EntityTimeSinceIgnited).toFloat * partialTickTime) / (entity.getInteger(EntityFuseTime) - 2).toFloat
 
             if((flashIntensity * 10.0F).toInt % 2 == 0) {
                 return 0
@@ -265,7 +265,7 @@ class TraitRender extends Trait {
         val distSq = (dX * dX + dZ * dZ).toFloat
         var yawOffset = living.renderYawOffset
         var f2 = 0.0F
-        entity.setFloat(ENTITY_PREV_ON_GROUND_SPEED_FACTOR, entity.getFloat(ENTITY_ON_GROUND_SPEED_FACTOR))
+        entity.setFloat(EntityPrevOnGroundSpeedFactor, entity.getFloat(EntityOnGroundSpeedFactor))
         var f3 = 0.0F
 
         if(distSq > 0.0025000002F) {
@@ -282,7 +282,7 @@ class TraitRender extends Trait {
             f3 = 0.0F
         }
 
-        entity.setFloat(ENTITY_ON_GROUND_SPEED_FACTOR, entity.getFloat(ENTITY_ON_GROUND_SPEED_FACTOR) + (f3 - entity.getFloat(ENTITY_ON_GROUND_SPEED_FACTOR)) * 0.3F)
+        entity.setFloat(EntityOnGroundSpeedFactor, entity.getFloat(EntityOnGroundSpeedFactor) + (f3 - entity.getFloat(EntityOnGroundSpeedFactor)) * 0.3F)
 
         living.worldObj.theProfiler.startSection("headTurn")
 
@@ -326,14 +326,14 @@ class TraitRender extends Trait {
 
         living.worldObj.theProfiler.endSection()
 
-        entity.setFloat(ENTITY_MOVED_DISTANCE, entity.getFloat(ENTITY_MOVED_DISTANCE) + f2)
+        entity.setFloat(EntityMovedDistance, entity.getFloat(EntityMovedDistance) + f2)
 
         entity.updateArmSwingProgress
 
         val burnsInDaylight = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_BURNS_IN_DAYLIGHT)
 
         if(living.getBrightness(1.0F) > 0.5F && burnsInDaylight) {
-            entity.setInteger(ENTITY_ENTITY_AGE, entity.getInteger(ENTITY_ENTITY_AGE) + 2)
+            entity.setInteger(EntityEntityAge, entity.getInteger(EntityEntityAge) + 2)
         }
     }
 }

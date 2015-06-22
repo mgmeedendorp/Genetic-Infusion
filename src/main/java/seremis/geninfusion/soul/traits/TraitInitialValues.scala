@@ -13,7 +13,7 @@ class TraitInitialValues extends Trait {
         val maxHealth: Double = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_MAX_HEALTH)
         attributeMap.getAttributeInstance(SharedMonsterAttributes.maxHealth).setBaseValue(maxHealth)
 
-        entity.setFloat(ENTITY_HEALTH, maxHealth.toFloat)
+        entity.setFloat(EntityHealth, maxHealth.toFloat)
 
         val attackDamage: Double = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_ATTACK_DAMAGE)
         attributeMap.getAttributeInstance(SharedMonsterAttributes.attackDamage).setBaseValue(attackDamage)
@@ -32,11 +32,11 @@ class TraitInitialValues extends Trait {
 
         entity.setSize(width, height)
 
-        entity.setInteger(ENTITY_CREATURE_ATTRIBUTE, SoulHelper.geneRegistry.getValueFromAllele[Integer](entity, Genes.GENE_CREATURE_ATTRIBUTE))
-        entity.setInteger(ENTITY_EXPERIENCE_VALUE, SoulHelper.geneRegistry.getValueFromAllele[Integer](entity, Genes.GENE_EXPERIENCE_VALUE))
+        entity.setInteger(EntityCreatureAttribute, SoulHelper.geneRegistry.getValueFromAllele[Integer](entity, Genes.GENE_CREATURE_ATTRIBUTE))
+        entity.setInteger(EntityExperienceValue, SoulHelper.geneRegistry.getValueFromAllele[Integer](entity, Genes.GENE_EXPERIENCE_VALUE))
 
-        entity.setFloatArray(ENTITY_EQUIPMENT_DROP_CHANCES, SoulHelper.geneRegistry.getValueFromAllele[Array[Float]](entity, Genes.GENE_EQUIPMENT_DROP_CHANCES))
+        entity.setFloatArray(EntityEquipmentDropChances, SoulHelper.geneRegistry.getValueFromAllele[Array[Float]](entity, Genes.GENE_EQUIPMENT_DROP_CHANCES))
 
-        entity.setBoolean(ENTITY_AI_ENABLED, SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_USE_NEW_AI))
+        entity.setBoolean(EntityAIEnabled, SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_USE_NEW_AI))
     }
 }

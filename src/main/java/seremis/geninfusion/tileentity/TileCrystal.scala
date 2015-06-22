@@ -9,8 +9,11 @@ import seremis.geninfusion.api.soul.{ISoul, ISoulReceptor, SoulHelper}
 class TileCrystal extends TileEntity with GITile with ISoulReceptor {
 
     var soul: Option[ISoul] = None
+    //This should always be false on the server
+    var hasSoulClient = false
 
     override def updateEntity() {
+
     }
 
     /**
@@ -28,15 +31,11 @@ class TileCrystal extends TileEntity with GITile with ISoulReceptor {
     /**
      * @return true if this ISoulReceptor has an ISoul.
      */
-    override def hasSoul: Boolean = soul.nonEmpty
+    override def hasSoul: Boolean = soul.nonEmpty || hasSoulClient
 
     override def readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)
 
-        readSoul(compound)
-    }
-
-    def readSoul(compound: NBTTagCompound) {
         if(compound.hasKey("soul"))
             soul = SoulHelper.instanceHelper.getISoulInstance(compound.getCompoundTag("soul"))
         else
@@ -46,20 +45,16 @@ class TileCrystal extends TileEntity with GITile with ISoulReceptor {
     override def writeToNBT(compound: NBTTagCompound) {
         super.writeToNBT(compound)
 
-        writeSoul(compound)
-    }
-
-    def writeSoul(compound: NBTTagCompound) {
         soul.foreach(s => compound.setTag("soul", s.writeToNBT(new NBTTagCompound)))
     }
 
     override def getDescriptionPacket: Packet = {
         val compound = new NBTTagCompound
-        writeSoul(compound)
+        compound.setBoolean("hasSoul", hasSoul)
         new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, compound)
     }
 
     override def onDataPacket(manager: NetworkManager, packet: S35PacketUpdateTileEntity) {
-        readSoul(packet.getNbtCompound)
+        hasSoulClient = packet.getNbtCompound.getBoolean("hasSoul")
     }
 }

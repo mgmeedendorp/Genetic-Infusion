@@ -7,7 +7,7 @@ import seremis.geninfusion.lib.{Blocks, RenderIds}
 import seremis.geninfusion.tileentity.TileCrystal
 
 class BlockCrystal(material: Material) extends GIBlockContainer(material) {
-    setUnlocalizedName(Blocks.CRYSTAL_UNLOCALIZED_NAME)
+    setUnlocalizedName(Blocks.CrystalName)
     setBlockBounds(0.3F, 0.0F, 0.3F, 0.6F, 0.83F, 0.6F)
     setNeedsIcon(false)
 
@@ -15,7 +15,7 @@ class BlockCrystal(material: Material) extends GIBlockContainer(material) {
 
     override def renderAsNormalBlock(): Boolean = false
 
-    override def getRenderType: Int = RenderIds.crystalRenderID
+    override def getRenderType: Int = RenderIds.CrystalRenderID
 
     override def createNewTileEntity(world: World, metadata: Int): TileEntity = new TileCrystal()
 }

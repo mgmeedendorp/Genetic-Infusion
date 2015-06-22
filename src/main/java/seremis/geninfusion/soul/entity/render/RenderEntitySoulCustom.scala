@@ -17,7 +17,7 @@ class RenderEntitySoulCustom extends RenderLiving(SoulHelper.entityModel, 0.3F) 
     }
 
     override def preRenderCallback(entity: EntityLivingBase, partialTickTime: Float) {
-        entity.asInstanceOf[IEntitySoulCustom].setFloat(VariableLib.ENTITY_PARTIAL_TICK_TIME, partialTickTime)
+        entity.asInstanceOf[IEntitySoulCustom].setFloat(VariableLib.EntityPartialTickTime, partialTickTime)
         TraitHandler.preRenderCallback(entity.asInstanceOf[IEntitySoulCustom], partialTickTime)
     }
 

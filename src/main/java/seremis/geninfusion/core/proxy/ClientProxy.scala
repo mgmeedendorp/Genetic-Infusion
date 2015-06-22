@@ -14,7 +14,7 @@ class ClientProxy extends CommonProxy {
 
     @SideOnly(Side.CLIENT)
     override def registerRendering() {
-        RenderingRegistry.registerBlockHandler(RenderIds.crystalRenderID, new RenderCrystal())
+        RenderingRegistry.registerBlockHandler(RenderIds.CrystalRenderID, new RenderCrystal())
 
         RenderingRegistry.registerEntityRenderingHandler(classOf[EntitySoulCustom], new RenderEntitySoulCustom)
         RenderingRegistry.registerEntityRenderingHandler(classOf[EntitySoulCustomCreature], new RenderEntitySoulCustom)

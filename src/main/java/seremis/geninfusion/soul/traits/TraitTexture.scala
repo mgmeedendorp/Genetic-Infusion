@@ -12,7 +12,7 @@ class TraitTexture extends Trait {
         try {
             SoulHelper.geneRegistry.getValueFromAllele[String](entity, Genes.GENE_TEXTURE)
         } catch {
-            case e: NullPointerException => Localizations.LOC_MODEL_TEXTURES + Localizations.BLANK
+            case e: NullPointerException => Localizations.LocModelTextures + Localizations.Blank
         }
     }
 

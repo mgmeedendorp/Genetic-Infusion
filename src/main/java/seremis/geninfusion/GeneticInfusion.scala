@@ -19,7 +19,7 @@ import seremis.geninfusion.network.ModPackets
 import seremis.geninfusion.soul._
 import seremis.geninfusion.soul.entity.render.ModelEntitySoulCustom
 
-@Mod(modid = DefaultProps.ID, name = DefaultProps.name, version = DefaultProps.version, acceptedMinecraftVersions = DefaultProps.acceptedMinecraftVersions, modLanguage = DefaultProps.modLanguage)
+@Mod(modid = DefaultProps.ID, name = DefaultProps.Name, version = DefaultProps.Version, acceptedMinecraftVersions = DefaultProps.AcceptedMinecraftVersions, modLanguage = DefaultProps.ModLanguage)
 object GeneticInfusion {
 
     val creativeTab = new GICreativeTab(DefaultProps.ID)
@@ -29,7 +29,7 @@ object GeneticInfusion {
     @Instance(DefaultProps.ID)
     val instance = this
 
-    @SidedProxy(clientSide = Localizations.LOC_CLIENTPROXY, serverSide = Localizations.LOC_COMMONPROXY)
+    @SidedProxy(clientSide = Localizations.LocClientProxy, serverSide = Localizations.LocCommonProxy)
     var commonProxy: CommonProxy = null
 
     @EventHandler
@@ -65,6 +65,6 @@ object GeneticInfusion {
 
     @EventHandler
     def postInit(event: FMLPostInitializationEvent) {
-        logger.log(Level.INFO, DefaultProps.name + " is loaded successfully.")
+        logger.log(Level.INFO, DefaultProps.Name + " is loaded successfully.")
     }
 }

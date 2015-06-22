@@ -15,9 +15,9 @@ class ItemDebugger extends GIItem() {
     setHasSubtypes(true)
     setMaxDurability(0)
     setNumbersofMetadata(4)
-    setUnlocalizedName(Items.DEBUGGER_UNLOCALIZED_NAME)
+    setUnlocalizedName(Items.DebuggerName)
 
-    private val subNames: Array[String] = Array(Items.DEBUGGER_META_0_UNLOCALIZED_NAME, Items.DEBUGGER_META_1_UNLOCALIZED_NAME, Items.DEBUGGER_META_2_UNLOCALIZED_NAME, Items.DEBUGGER_META_3_UNLOCALIZED_NAME)
+    private val subNames: Array[String] = Array(Items.Debugger0Name, Items.Debugger1Name, Items.Debugger2Name, Items.Debugger3Name)
 
     override def getUnlocalizedName(itemstack: ItemStack): String = {
         getUnlocalizedName() + "." + subNames(itemstack.getMetadata)

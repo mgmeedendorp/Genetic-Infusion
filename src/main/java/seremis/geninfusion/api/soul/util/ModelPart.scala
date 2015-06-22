@@ -30,7 +30,7 @@ object ModelPart {
 
         val fields = GIReflectionHelper.getFields(model)
 
-        for (field <- fields if field.getType == classOf[ModelRenderer] && field.getName != VariableLib.MODELBIPED_CLOAK && field.getName != VariableLib.MODELBIPED_EARS && field.getName != VariableLib.MODELBIPED_HEADWEAR) {
+        for (field <- fields if field.getType == classOf[ModelRenderer] && field.getName != VariableLib.ModelBipedCloak && field.getName != VariableLib.ModelBipedEars && field.getName != VariableLib.ModelBipedHeadwear) {
             val renderer = GIReflectionHelper.getField(model, field.getName).asInstanceOf[ModelRenderer]
 
             parts.add(modelRendererToModelPart(renderer))
@@ -56,7 +56,7 @@ object ModelPart {
         modelPart.offsetX = model.offsetX
         modelPart.offsetY = model.offsetY
         modelPart.offsetZ = model.offsetZ
-        modelPart.setTextureOffset(GIReflectionHelper.getField(model, VariableLib.MODELRENDERER_TEXTURE_OFFSET_X).asInstanceOf[Int], GIReflectionHelper.getField(model, VariableLib.MODELRENDERER_TEXTURE_OFFSET_Y).asInstanceOf[Int])
+        modelPart.setTextureOffset(GIReflectionHelper.getField(model, VariableLib.ModelRendererTextureOffsetX).asInstanceOf[Int], GIReflectionHelper.getField(model, VariableLib.ModelRendererTextureOffsetY).asInstanceOf[Int])
         modelPart
     }
 
@@ -111,17 +111,17 @@ class ModelPart(boxName: String) extends ModelRenderer(SoulHelper.entityModel, b
     }
 
     def getTextureOffsetX: Int = {
-        GIReflectionHelper.getField(this, VariableLib.MODELRENDERER_TEXTURE_OFFSET_X).asInstanceOf[java.lang.Integer]
+        GIReflectionHelper.getField(this, VariableLib.ModelRendererTextureOffsetX).asInstanceOf[java.lang.Integer]
     }
 
     def getTextureOffsetY: Int = {
-        GIReflectionHelper.getField(this, VariableLib.MODELRENDERER_TEXTURE_OFFSET_Y).asInstanceOf[java.lang.Integer]
+        GIReflectionHelper.getField(this, VariableLib.ModelRendererTextureOffsetY).asInstanceOf[java.lang.Integer]
     }
 
     def getBoxList: util.ArrayList[ModelBox] = cubeList.asInstanceOf[util.ArrayList[ModelBox]]
 
     def getBoxQuads(box: ModelBox): Array[TexturedQuad] = {
-        GIReflectionHelper.getField(box, VariableLib.MODELBOX_QUAD_LIST).asInstanceOf[Array[TexturedQuad]]
+        GIReflectionHelper.getField(box, VariableLib.ModelBoxQuadList).asInstanceOf[Array[TexturedQuad]]
     }
 
     override def writeToNBT(compound: NBTTagCompound): NBTTagCompound = {
@@ -162,7 +162,7 @@ class ModelPart(boxName: String) extends ModelRenderer(SoulHelper.entityModel, b
                 boxCompound.setInteger("sizeX", (box.posX2 - box.posX1).toInt)
                 boxCompound.setInteger("sizeY", (box.posY2 - box.posY1).toInt)
                 boxCompound.setInteger("sizeZ", (box.posZ2 - box.posZ1).toInt)
-                val quads = GIReflectionHelper.getField(box, VariableLib.MODELBOX_QUAD_LIST).asInstanceOf[Array[TexturedQuad]]
+                val quads = GIReflectionHelper.getField(box, VariableLib.ModelBoxQuadList).asInstanceOf[Array[TexturedQuad]]
                 val quadList = new NBTTagList()
                 for (quad <- quads) {
                     val vertexList = new NBTTagList()
@@ -182,7 +182,7 @@ class ModelPart(boxName: String) extends ModelRenderer(SoulHelper.entityModel, b
                 }
                 boxCompound.setTag("quadList", quadList)
                 val vertexList = new NBTTagList()
-                val vertices = GIReflectionHelper.getField(box, VariableLib.MODELBOX_VERTEX_POSITIONS).asInstanceOf[Array[PositionTextureVertex]]
+                val vertices = GIReflectionHelper.getField(box, VariableLib.ModelBoxVertexPositions).asInstanceOf[Array[PositionTextureVertex]]
                 for (vertex <- vertices) {
                     val vertexCompound = new NBTTagCompound()
                     vertexCompound.setDouble("vectorX", vertex.vector3D.xCoord)
@@ -201,7 +201,7 @@ class ModelPart(boxName: String) extends ModelRenderer(SoulHelper.entityModel, b
     }
 
     override def readFromNBT(compound: NBTTagCompound): NBTTagCompound = {
-        if (compound.hasKey("boxName")) GIReflectionHelper.setField(this, VariableLib.MODELRENDERER_BOX_NAME,
+        if (compound.hasKey("boxName")) GIReflectionHelper.setField(this, VariableLib.ModelRendererBoxName,
             compound.getString("boxName"))
         textureWidth = compound.getFloat("textureWidth")
         textureHeight = compound.getFloat("textureHeight")
@@ -227,7 +227,7 @@ class ModelPart(boxName: String) extends ModelRenderer(SoulHelper.entityModel, b
         for (i <- 0 until boxList.tagCount()) {
             val boxCompound = boxList.getCompoundTagAt(i)
 
-            val box = new ModelBox(this, GIReflectionHelper.getField(this, VariableLib.MODELRENDERER_TEXTURE_OFFSET_X).asInstanceOf[java.lang.Integer], GIReflectionHelper.getField(this, VariableLib.MODELRENDERER_TEXTURE_OFFSET_Y).asInstanceOf[java.lang.Integer], boxCompound.getFloat("originX"), boxCompound.getFloat("originY"), boxCompound.getFloat("originZ"), boxCompound.getInteger("sizeX"), boxCompound.getInteger("sizeY"), boxCompound.getInteger("sizeZ"), 0.0F)
+            val box = new ModelBox(this, GIReflectionHelper.getField(this, VariableLib.ModelRendererTextureOffsetX).asInstanceOf[java.lang.Integer], GIReflectionHelper.getField(this, VariableLib.ModelRendererTextureOffsetY).asInstanceOf[java.lang.Integer], boxCompound.getFloat("originX"), boxCompound.getFloat("originY"), boxCompound.getFloat("originZ"), boxCompound.getInteger("sizeX"), boxCompound.getInteger("sizeY"), boxCompound.getInteger("sizeZ"), 0.0F)
 
             val quadList = boxCompound.getTag("quadList").asInstanceOf[NBTTagList]
             val quads = Array.ofDim[TexturedQuad](quadList.tagCount())
@@ -246,7 +246,7 @@ class ModelPart(boxName: String) extends ModelRenderer(SoulHelper.entityModel, b
                 }
                 quads(j) = new TexturedQuad(vertices)
             }
-            GIReflectionHelper.setField(box, VariableLib.MODELBOX_QUAD_LIST, quads)
+            GIReflectionHelper.setField(box, VariableLib.ModelBoxQuadList, quads)
 
             val vertexList = boxCompound.getTagList("vertexList", Constants.NBT.TAG_COMPOUND)
             val vertices = Array.ofDim[PositionTextureVertex](vertexList.tagCount())
@@ -257,7 +257,7 @@ class ModelPart(boxName: String) extends ModelRenderer(SoulHelper.entityModel, b
 
                 vertices(k) = new PositionTextureVertex(vector, vertexCompound.getFloat("texturePositionX"), vertexCompound.getFloat("texturePositionY"))
             }
-            GIReflectionHelper.setField(box, VariableLib.MODELBOX_VERTEX_POSITIONS, vertices)
+            GIReflectionHelper.setField(box, VariableLib.ModelBoxVertexPositions, vertices)
             cubeList.asInstanceOf[util.ArrayList[ModelBox]].add(box)
         }
         compound

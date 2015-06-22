@@ -12,13 +12,13 @@ import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 class TraitAttack extends Trait {
 
     override def attackEntity(entity: IEntitySoulCustom, entityToAttack: Entity, distance: Float) {
-        var attackTime = entity.getInteger(ENTITY_ATTACK_TIME)
+        var attackTime = entity.getInteger(EntityAttackTime)
 
         if(attackTime <= 0 && distance < 2.0F && entityToAttack.boundingBox.maxY > entity.getBoundingBox.minY && entityToAttack.boundingBox.minY < entity.getBoundingBox.maxY) {
             attackTime = 20
             entity.attackEntityAsMob(entityToAttack)
         }
-        entity.setInteger(ENTITY_ATTACK_TIME, attackTime)
+        entity.setInteger(EntityAttackTime, attackTime)
     }
 
     override def attackEntityAsMob(entity: IEntitySoulCustom, entityToAttack: Entity): Boolean = {

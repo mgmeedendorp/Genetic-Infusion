@@ -1,7 +1,7 @@
 package seremis.geninfusion.lib
 
 object Blocks {
-    final val ORE_TITANIUM_UNLOCALIZED_NAME = "oreTitanium"
-    final val CRYSTAL_UNLOCALIZED_NAME = "crystal"
-    final val CONNECTED_GLASS_UNLOCALIZED_NAME = "connectedGlass"
+    final val OreTitaniumName = "oreTitanium"
+    final val CrystalName = "crystal"
+    final val ConnectedGlassName = "connectedGlass"
 }

@@ -11,37 +11,37 @@ class TraitNameTag extends Trait {
     override def firstTick(entity: IEntitySoulCustom) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        if(!DataWatcherHelper.isNameRegistered(living.getDataWatcher, DATAWATCHER_NAME_TAG))
-            DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, "", DATAWATCHER_NAME_TAG)
+        if(!DataWatcherHelper.isNameRegistered(living.getDataWatcher, DataWatcherNameTag))
+            DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, "", DataWatcherNameTag)
     }
 
     override def writeToNBT(entity: IEntitySoulCustom, compound: NBTTagCompound) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        if(DataWatcherHelper.isNameRegistered(living.getDataWatcher, DATAWATCHER_NAME_TAG))
-            DataWatcherHelper.writeObjectToNBT(compound, living.getDataWatcher, DATAWATCHER_NAME_TAG)
+        if(DataWatcherHelper.isNameRegistered(living.getDataWatcher, DataWatcherNameTag))
+            DataWatcherHelper.writeObjectToNBT(compound, living.getDataWatcher, DataWatcherNameTag)
     }
 
     override def readFromNBT(entity: IEntitySoulCustom, compound: NBTTagCompound) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        if(!DataWatcherHelper.isNameRegistered(living.getDataWatcher, DATAWATCHER_NAME_TAG))
-            DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, "", DATAWATCHER_NAME_TAG)
+        if(!DataWatcherHelper.isNameRegistered(living.getDataWatcher, DataWatcherNameTag))
+            DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, "", DataWatcherNameTag)
 
-        DataWatcherHelper.readObjectFromNBT(compound, living.getDataWatcher, DATAWATCHER_NAME_TAG)
+        DataWatcherHelper.readObjectFromNBT(compound, living.getDataWatcher, DataWatcherNameTag)
     }
 
     override def setCustomNameTag(entity: IEntitySoulCustom, nameTag: String) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        DataWatcherHelper.updateObject(living.getDataWatcher, DATAWATCHER_NAME_TAG, nameTag)
+        DataWatcherHelper.updateObject(living.getDataWatcher, DataWatcherNameTag, nameTag)
     }
 
     override def getCustomNameTag(entity: IEntitySoulCustom): String = {
         val living = entity.asInstanceOf[EntityLiving]
 
-        if(DataWatcherHelper.isNameRegistered(living.getDataWatcher, DATAWATCHER_NAME_TAG))
-            DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, DATAWATCHER_NAME_TAG).asInstanceOf[String]
+        if(DataWatcherHelper.isNameRegistered(living.getDataWatcher, DataWatcherNameTag))
+            DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, DataWatcherNameTag).asInstanceOf[String]
         else
             ""
     }
@@ -49,6 +49,6 @@ class TraitNameTag extends Trait {
     override def hasCustomNameTag(entity: IEntitySoulCustom): Boolean = {
         val living = entity.asInstanceOf[EntityLiving]
 
-        DataWatcherHelper.isNameRegistered(living.getDataWatcher, DATAWATCHER_NAME_TAG) && DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, DATAWATCHER_NAME_TAG).asInstanceOf[String].length > 0
+        DataWatcherHelper.isNameRegistered(living.getDataWatcher, DataWatcherNameTag) && DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, DataWatcherNameTag).asInstanceOf[String].length > 0
     }
 }

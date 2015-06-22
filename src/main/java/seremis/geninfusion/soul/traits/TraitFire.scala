@@ -10,7 +10,7 @@ import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 class TraitFire extends Trait {
 
     override def firstTick(entity: IEntitySoulCustom) {
-        entity.setBoolean(ENTITY_IS_IMMUNE_TO_FIRE, SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_IMMUNE_TO_FIRE))
+        entity.setBoolean(EntityIsImmuneToFire, SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_IMMUNE_TO_FIRE))
     }
 
     override def onUpdate(entity: IEntitySoulCustom) {
@@ -19,11 +19,11 @@ class TraitFire extends Trait {
         val burnsInDayLight: Boolean = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_BURNS_IN_DAYLIGHT)
         val childrenBurnInDaylight: Boolean = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_CHILDREN_BURN_IN_DAYLIGHT)
 
-        val posX = entity.getDouble(ENTITY_POS_X)
-        val posY = entity.getDouble(ENTITY_POS_Y)
-        val posZ = entity.getDouble(ENTITY_POS_Z)
+        val posX = entity.getDouble(EntityPosX)
+        val posY = entity.getDouble(EntityPosY)
+        val posZ = entity.getDouble(EntityPosZ)
 
-        val isImmuneToFire = entity.getBoolean(ENTITY_IS_IMMUNE_TO_FIRE)
+        val isImmuneToFire = entity.getBoolean(EntityIsImmuneToFire)
 
         if(burnsInDayLight && !isImmuneToFire) {
             if(entity.getWorld.isDaytime && !entity.getWorld.isRemote && (!living.isChild || childrenBurnInDaylight)) {
@@ -53,7 +53,7 @@ class TraitFire extends Trait {
             }
         }
 
-        var fire = entity.getInteger(ENTITY_FIRE)
+        var fire = entity.getInteger(EntityFire)
 
         if(entity.getWorld.isRemote) {
             fire = 0
@@ -72,14 +72,14 @@ class TraitFire extends Trait {
                 fire -= 1
             }
         }
-        entity.setInteger(ENTITY_FIRE, fire)
+        entity.setInteger(EntityFire, fire)
 
         if(entity.asInstanceOf[EntityLiving].handleLavaMovement()) {
             entity.setOnFireFromLava
-            entity.setFloat(ENTITY_FALL_DISTANCE, entity.getFloat(ENTITY_FALL_DISTANCE) * 0.5F)
+            entity.setFloat(EntityFallDistance, entity.getFloat(EntityFallDistance) * 0.5F)
         }
 
-        if(entity.getDouble(ENTITY_POS_Y) < -64.0D) {
+        if(entity.getDouble(EntityPosY) < -64.0D) {
             living.setDead()
         }
 
@@ -104,7 +104,7 @@ class TraitFire extends Trait {
     }
 
     override def setOnFireFromLava(entity: IEntitySoulCustom) {
-        if(!entity.getBoolean(ENTITY_IS_IMMUNE_TO_FIRE)) {
+        if(!entity.getBoolean(EntityIsImmuneToFire)) {
             entity.attackEntityFrom(DamageSource.lava, 4.0F)
             entity.asInstanceOf[EntityLiving].setFire(15)
         }
@@ -113,9 +113,9 @@ class TraitFire extends Trait {
         val living = entity.asInstanceOf[EntityLiving]
 
         entity.dealFireDamage(5)
-        entity.setInteger(ENTITY_FIRE, entity.getInteger(ENTITY_FIRE) + 1)
+        entity.setInteger(EntityFire, entity.getInteger(EntityFire) + 1)
 
-        if(entity.getInteger(ENTITY_FIRE) == 0) {
+        if(entity.getInteger(EntityFire) == 0) {
             living.setFire(8)
         }
     }

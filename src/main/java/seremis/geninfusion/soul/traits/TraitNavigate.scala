@@ -10,9 +10,9 @@ import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 class TraitNavigate extends Trait {
 
     override def updateWanderPath(entity: IEntitySoulCustom) {
-        val posX = entity.getDouble(ENTITY_POS_X)
-        val posY = entity.getDouble(ENTITY_POS_Y)
-        val posZ = entity.getDouble(ENTITY_POS_Z)
+        val posX = entity.getDouble(EntityPosX)
+        val posY = entity.getDouble(EntityPosY)
+        val posZ = entity.getDouble(EntityPosZ)
 
         entity.getWorld.theProfiler.startSection("stroll")
 
@@ -38,7 +38,7 @@ class TraitNavigate extends Trait {
         }
 
         if(pathFound) {
-            entity.setObject(ENTITY_PATH_TO_ENTITY, entity.getWorld.getEntityPathToXYZ(entity.asInstanceOf[Entity], destX, destY, destZ, 10.0F, true, false, false, true))
+            entity.setObject(EntityPathToEntity, entity.getWorld.getEntityPathToXYZ(entity.asInstanceOf[Entity], destX, destY, destZ, 10.0F, true, false, false, true))
         }
         entity.getWorld.theProfiler.endSection()
     }

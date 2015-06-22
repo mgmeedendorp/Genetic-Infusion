@@ -26,7 +26,7 @@ class GuiLine(x: Int, y: Int, w: Int, h: Int, u: Int, v: Int) extends GuiRectang
 
         GL11.glColor3f(red, green, blue)
 
-        GIRenderHelper.bindTexture(Localizations.LOC_MODEL_TEXTURES + Localizations.BLANK)
+        GIRenderHelper.bindTexture(Localizations.LocModelTextures + Localizations.Blank)
 
         GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, 10497.0F)
         GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, 10497.0F)

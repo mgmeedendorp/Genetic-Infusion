@@ -3,5 +3,5 @@ package seremis.geninfusion.lib
 import cpw.mods.fml.client.registry.RenderingRegistry
 
 object RenderIds {
-    final val crystalRenderID = RenderingRegistry.getNextAvailableRenderId
+    final val CrystalRenderID = RenderingRegistry.getNextAvailableRenderId
 }

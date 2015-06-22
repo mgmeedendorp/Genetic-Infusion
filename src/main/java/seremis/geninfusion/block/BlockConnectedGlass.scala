@@ -10,11 +10,11 @@ import seremis.geninfusion.lib.Blocks
 
 class BlockConnectedGlass(material: Material) extends GIBlock(material) {
 
-    setUnlocalizedName(Blocks.CONNECTED_GLASS_UNLOCALIZED_NAME)
+    setUnlocalizedName(Blocks.ConnectedGlassName)
     setHardness(2F)
     setResistance(3F)
 
-    val textureHelper: ConnectedTextureHelper = new ConnectedTextureHelper(this, Blocks.CONNECTED_GLASS_UNLOCALIZED_NAME)
+    val textureHelper: ConnectedTextureHelper = new ConnectedTextureHelper(this, Blocks.ConnectedGlassName)
 
     @SideOnly(Side.CLIENT)
     override def registerIcons(iconRegister: IIconRegister) {

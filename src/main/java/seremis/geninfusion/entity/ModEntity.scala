@@ -8,7 +8,7 @@ import seremis.geninfusion.soul.entity.{EntitySoulCustom, EntitySoulCustomCreatu
 object ModEntity {
 
     def init() {
-        EntityRegistry.registerModEntity(classOf[EntitySoulCustom], Entities.soulEntityName, Entities.soulEntityID, GeneticInfusion.instance, 80, 3, false)
-        EntityRegistry.registerModEntity(classOf[EntitySoulCustomCreature], Entities.soulEntityCreatureName, Entities.soulEntityCreatureID, GeneticInfusion.instance, 80, 3, false)
+        EntityRegistry.registerModEntity(classOf[EntitySoulCustom], Entities.SoulEntityName, Entities.SoulEntityID, GeneticInfusion.instance, 80, 3, false)
+        EntityRegistry.registerModEntity(classOf[EntitySoulCustomCreature], Entities.SoulEntityCreatureName, Entities.SoulEntityCreatureID, GeneticInfusion.instance, 80, 3, false)
     }
 }

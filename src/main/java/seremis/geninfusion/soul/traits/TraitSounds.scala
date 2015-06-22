@@ -15,11 +15,11 @@ class TraitSounds extends Trait {
     override def onUpdate(entity: IEntitySoulCustom) {
         entity.getWorld.theProfiler.startSection("mobBaseTick")
 
-        val livingSoundTime = entity.getInteger(ENTITY_LIVING_SOUND_TIME) + 1
-        entity.setInteger(ENTITY_LIVING_SOUND_TIME, livingSoundTime)
+        val livingSoundTime = entity.getInteger(EntityLivingSoundTime) + 1
+        entity.setInteger(EntityLivingSoundTime, livingSoundTime)
 
-        if (!entity.getBoolean(ENTITY_IS_DEAD) && entity.getRandom.nextInt(1000) < livingSoundTime) {
-            entity.setInteger(ENTITY_LIVING_SOUND_TIME, -entity.getInteger(ENTITY_TALK_INTERVAL))
+        if (!entity.getBoolean(EntityIsDead) && entity.getRandom.nextInt(1000) < livingSoundTime) {
+            entity.setInteger(EntityLivingSoundTime, -entity.getInteger(EntityTalkInterval))
             entity.asInstanceOf[EntityLiving].playLivingSound()
         }
 
@@ -27,6 +27,6 @@ class TraitSounds extends Trait {
     }
 
     override def firstTick(entity: IEntitySoulCustom) {
-        entity.setInteger(ENTITY_TALK_INTERVAL, SoulHelper.geneRegistry.getValueFromAllele[Integer](entity, Genes.GENE_TALK_INTERVAL))
+        entity.setInteger(EntityTalkInterval, SoulHelper.geneRegistry.getValueFromAllele[Integer](entity, Genes.GENE_TALK_INTERVAL))
     }
 }

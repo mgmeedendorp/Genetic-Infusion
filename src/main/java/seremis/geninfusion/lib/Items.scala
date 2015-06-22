@@ -1,12 +1,11 @@
 package seremis.geninfusion.lib
 
 object Items {
-    final val TITANIUM_INGOT_UNLOCALIZED_NAME = "ingotTitanium"
-    final val TITANIUM_INGOT_OREDICTIONARY_NAME = "ingotTitanium"
+    final val TitaniumIngotName = "ingotTitanium"
 
-    final val DEBUGGER_UNLOCALIZED_NAME = "debugger"
-    final val DEBUGGER_META_0_UNLOCALIZED_NAME = "debugger0"
-    final val DEBUGGER_META_1_UNLOCALIZED_NAME = "debugger1"
-    final val DEBUGGER_META_2_UNLOCALIZED_NAME = "debugger2"
-    final val DEBUGGER_META_3_UNLOCALIZED_NAME = "debugger3"
+    final val DebuggerName = "debugger"
+    final val Debugger0Name = "debugger0"
+    final val Debugger1Name = "debugger1"
+    final val Debugger2Name = "debugger2"
+    final val Debugger3Name = "debugger3"
 }

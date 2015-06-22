@@ -9,8 +9,8 @@ import seremis.geninfusion.api.soul.lib.VariableLib._
 class TraitHomeArea extends Trait {
 
     override def firstTick(entity: IEntitySoulCustom) {
-        entity.makePersistent(ENTITY_MAXIMUM_HOME_DISTANCE)
-        entity.setFloat(ENTITY_MAXIMUM_HOME_DISTANCE, -1.0F)
+        entity.makePersistent(EntityMaximumHomeDistance)
+        entity.setFloat(EntityMaximumHomeDistance, -1.0F)
     }
 
     override def isWithinHomeDistanceCurrentPosition(entity: IEntitySoulCustom): Boolean = {
@@ -20,35 +20,35 @@ class TraitHomeArea extends Trait {
     }
 
     override def isWithinHomeDistance(entity: IEntitySoulCustom, x: Int, y: Int, z: Int): Boolean = {
-        val maximumHomeDistance = entity.getFloat(ENTITY_MAXIMUM_HOME_DISTANCE)
-        val homePosition = entity.getObject(ENTITY_HOME_POSITION).asInstanceOf[ChunkCoordinates]
+        val maximumHomeDistance = entity.getFloat(EntityMaximumHomeDistance)
+        val homePosition = entity.getObject(EntityHomePosition).asInstanceOf[ChunkCoordinates]
 
         maximumHomeDistance == -1.0F || homePosition != null || homePosition.getDistanceSquared(x, y, z) < maximumHomeDistance * maximumHomeDistance
     }
 
-    override def getHomePosition(entity: IEntitySoulCustom): ChunkCoordinates = entity.getObject(ENTITY_HOME_POSITION).asInstanceOf[ChunkCoordinates]
+    override def getHomePosition(entity: IEntitySoulCustom): ChunkCoordinates = entity.getObject(EntityHomePosition).asInstanceOf[ChunkCoordinates]
 
 
     override def setHomeArea(entity: IEntitySoulCustom, x: Int, y: Int, z: Int, maxDistance: Int) {
         val coords = new ChunkCoordinates(0, 0, 0)
         coords.set(x, y, z)
 
-        entity.setObject(ENTITY_HOME_POSITION, coords)
-        entity.setFloat(ENTITY_MAXIMUM_HOME_DISTANCE, maxDistance.toFloat)
+        entity.setObject(EntityHomePosition, coords)
+        entity.setFloat(EntityMaximumHomeDistance, maxDistance.toFloat)
     }
 
-    override def getMaxHomeDistance(entity: IEntitySoulCustom): Float = entity.getFloat(ENTITY_MAXIMUM_HOME_DISTANCE)
+    override def getMaxHomeDistance(entity: IEntitySoulCustom): Float = entity.getFloat(EntityMaximumHomeDistance)
 
     override def detachHome(entity: IEntitySoulCustom) {
-        entity.setFloat(ENTITY_MAXIMUM_HOME_DISTANCE, -1.0F)
+        entity.setFloat(EntityMaximumHomeDistance, -1.0F)
     }
 
     override def hasHome(entity: IEntitySoulCustom): Boolean = {
-        entity.getFloat(ENTITY_MAXIMUM_HOME_DISTANCE) != -1.0F
+        entity.getFloat(EntityMaximumHomeDistance) != -1.0F
     }
 
     override def writeToNBT(entity: IEntitySoulCustom, compound: NBTTagCompound) {
-        val coords = entity.getObject(ENTITY_HOME_POSITION).asInstanceOf[ChunkCoordinates]
+        val coords = entity.getObject(EntityHomePosition).asInstanceOf[ChunkCoordinates]
 
         val coordCompound = new NBTTagCompound()
         coordCompound.setInteger("coordX", coords.posX)
@@ -59,7 +59,7 @@ class TraitHomeArea extends Trait {
     }
 
     override def readFromNBT(entity: IEntitySoulCustom, compound: NBTTagCompound) {
-        if(compound.hasKey(ENTITY_HOME_POSITION)) {
+        if(compound.hasKey(EntityHomePosition)) {
             val coords = new ChunkCoordinates(0, 0, 0)
 
             val coordCompound = compound.getCompoundTag("homePosition")
@@ -67,9 +67,9 @@ class TraitHomeArea extends Trait {
             coords.posY = coordCompound.getInteger("coordY")
             coords.posZ = coordCompound.getInteger("coordZ")
 
-            entity.setObject(ENTITY_HOME_POSITION, coords)
+            entity.setObject(EntityHomePosition, coords)
         } else {
-            entity.setObject(ENTITY_HOME_POSITION, new ChunkCoordinates(0, 0, 0))
+            entity.setObject(EntityHomePosition, new ChunkCoordinates(0, 0, 0))
         }
     }
 }

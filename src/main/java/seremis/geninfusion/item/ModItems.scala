@@ -6,13 +6,13 @@ import seremis.geninfusion.lib.Items
 
 object ModItems {
 
-    val titaniumIngot = new GIItem().setUnlocalizedName(Items.TITANIUM_INGOT_UNLOCALIZED_NAME)
+    val titaniumIngot = new GIItem().setUnlocalizedName(Items.TitaniumIngotName)
     val debugger = new ItemDebugger
 
     def init() {
-        registerItem(titaniumIngot, Items.TITANIUM_INGOT_UNLOCALIZED_NAME)
-        registerItem(debugger, Items.DEBUGGER_UNLOCALIZED_NAME)
+        registerItem(titaniumIngot, Items.TitaniumIngotName)
+        registerItem(debugger, Items.DebuggerName)
 
-        registerOre(Items.TITANIUM_INGOT_OREDICTIONARY_NAME, titaniumIngot)
+        registerOre(Items.TitaniumIngotName, titaniumIngot)
     }
 }
