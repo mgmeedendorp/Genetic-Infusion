@@ -1,5 +1,7 @@
 package seremis.geninfusion.tileentity
 
-class TileCrystal extends GITile {
+import net.minecraft.tileentity.TileEntity
+
+class TileCrystal extends TileEntity with GITile {
 
 }

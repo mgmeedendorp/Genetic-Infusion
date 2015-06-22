@@ -1,17 +1,14 @@
 package seremis.geninfusion.item
 
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.effect.EntityLightningBolt
 import net.minecraft.entity.monster.{EntityCreeper, EntitySkeleton, EntityZombie}
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.{Entity, EntityLiving, EntityLivingBase}
 import net.minecraft.item.ItemStack
-import net.minecraft.util.DamageSource
 import net.minecraft.world.World
 import seremis.geninfusion.GeneticInfusion
-import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
+import seremis.geninfusion.api.soul.SoulHelper
 import seremis.geninfusion.lib.Items
-
-import scala.collection.JavaConversions._
 
 class ItemDebugger extends GIItem() {
 
@@ -29,13 +26,7 @@ class ItemDebugger extends GIItem() {
     override def onItemUse(stack: ItemStack, player: EntityPlayer, world: World, x: Int, y: Int, z: Int, side: Int, hitX: Float, hitY: Float, hitZ: Float): Boolean = {
         if (GeneticInfusion.commonProxy.isServerWorld(world)) {
             if (stack.getMetadata == 0) {
-                for (obj <- world.getLoadedEntityList) {
-                    val ent = obj.asInstanceOf[Entity]
-                    if (ent.isInstanceOf[IEntitySoulCustom]) {
-                        ent.setDead()
-                        ent.asInstanceOf[EntityLiving].onDeath(DamageSource.causePlayerDamage(player))
-                    }
-                }
+
             }
             if (stack.getMetadata == 1) {
                 try {

@@ -1,7 +1,6 @@
 package seremis.geninfusion.soul
 
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
-import net.minecraftforge.common.util.Constants
 import seremis.geninfusion.api.soul.{IChromosome, ISoul}
 
 class Soul(var chromosomes: Array[IChromosome]) extends ISoul {
@@ -30,7 +29,7 @@ class Soul(var chromosomes: Array[IChromosome]) extends ISoul {
     override def readFromNBT(compound: NBTTagCompound): NBTTagCompound = {
         chromosomes = Array.ofDim[IChromosome](compound.getInteger("genomeLength"))
 
-        val tagList = compound.getTagList("chromosomes", Constants.NBT.TAG_COMPOUND)
+        val tagList = compound.getTag("chromosomes").asInstanceOf[NBTTagList]
 
         for (i <- 0 until tagList.tagCount()) {
             val compound1 = tagList.getCompoundTagAt(i)

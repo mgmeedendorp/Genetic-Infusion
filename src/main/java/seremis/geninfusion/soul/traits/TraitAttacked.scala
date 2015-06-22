@@ -1,6 +1,7 @@
 package seremis.geninfusion.soul.traits
 
 import net.minecraft.enchantment.EnchantmentHelper
+import net.minecraft.entity.monster.EntityZombie
 import net.minecraft.entity.passive.EntityTameable
 import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
 import net.minecraft.entity.{EntityLiving, EntityLivingBase}
@@ -324,7 +325,7 @@ class TraitAttacked extends Trait {
         }
 
         entity.setBoolean(ENTITY_DEAD, true)
-        living.getCombatTracker().func_94549_h()
+        living.getCombatTracker.func_94549_h()
     }
 
     override def setDead(entity: IEntitySoulCustom) {
