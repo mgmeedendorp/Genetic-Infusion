@@ -57,4 +57,8 @@ class TileCrystal extends TileEntity with GITile with ISoulReceptor {
     override def onDataPacket(manager: NetworkManager, packet: S35PacketUpdateTileEntity) {
         hasSoulClient = packet.getNbtCompound.getBoolean("hasSoul")
     }
+
+    override def shouldRenderInPass(pass: Int): Boolean = {
+        pass == 1
+    }
 }

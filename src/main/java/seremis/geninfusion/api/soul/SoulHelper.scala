@@ -54,9 +54,10 @@ object SoulHelper {
 
         for(i <- geneRegistry.getCustomInheritanceGenes.indices) {
             val gene = geneRegistry.getCustomInheritanceGenes(i)
-            offspring(geneRegistry.getGeneId(gene)) = gene.advancedInherit(chromosomes1, chromosomes2, offspring)
+            val geneId = geneRegistry.getGeneId(gene)
+            offspring(geneId) = gene.advancedInherit(chromosomes1, chromosomes2, offspring)
             if(rand.nextInt(100) < 5) {
-                offspring(geneRegistry.getGeneId(gene)) = gene.mutate(offspring(geneRegistry.getGeneId(gene)))
+                offspring(geneId) = gene.mutate(offspring(geneId))
             }
         }
 

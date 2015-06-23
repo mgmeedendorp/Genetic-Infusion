@@ -20,7 +20,7 @@ class TraitTexture extends Trait {
         //TODO don't delete texture if it spawns soul
         if(entity.getWorld.isRemote) {
             GITextureHelper.deleteTexture(toResource(getEntityTexture(entity)))
-            GITextureHelper.deleteTexture(toResource(SoulHelper.geneRegistry.getChromosomeFor(entity, Genes.GENE_TEXTURE).getRecessive.getAlleleData.asInstanceOf[String]))
+            GITextureHelper.deleteTexture(toResource(SoulHelper.geneRegistry.getChromosomeFor(entity, Genes.GENE_TEXTURE).get.getRecessive.getAlleleData.asInstanceOf[String]))
         }
     }
 

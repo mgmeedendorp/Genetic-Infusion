@@ -2,16 +2,17 @@ package seremis.geninfusion.handler
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent
 import net.minecraft.entity.EntityLiving
+import net.minecraft.tileentity.TileEntity
 import net.minecraftforge.event.entity.EntityJoinWorldEvent
 import net.minecraftforge.event.entity.living.LivingDeathEvent
 import net.minecraftforge.event.world.WorldEvent
-import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoulReceptor}
+import seremis.geninfusion.api.soul.{ISoulReceptor, SoulHelper}
 import seremis.geninfusion.api.util.Coordinate3D
 import seremis.geninfusion.lib.DefaultProps
 import seremis.geninfusion.soul.entity.{EntitySoulCustom, EntitySoulCustomCreature}
 import seremis.geninfusion.world.GIWorldSavedData
 
-import scala.util.control.Breaks._
+import scala.collection.mutable.ListBuffer
 
 class GIEventHandler {
 
@@ -31,13 +32,14 @@ class GIEventHandler {
 
     @SubscribeEvent
     def entityDeath(event: LivingDeathEvent) {
-        if(!event.entityLiving.worldObj.isRemote && event.entityLiving.isInstanceOf[IEntitySoulCustom]) {
-            val entity = event.entityLiving.asInstanceOf[IEntitySoulCustom]
+        if(!event.entityLiving.worldObj.isRemote && event.entityLiving.isInstanceOf[EntityLiving] && SoulHelper.geneRegistry.getSoulFor(event.entityLiving.asInstanceOf[EntityLiving]).nonEmpty) {
             val living = event.entityLiving.asInstanceOf[EntityLiving]
             val world = event.entityLiving.worldObj
             val coords = new Coordinate3D(living)
 
             val radius = 5
+
+            val receptors: ListBuffer[ISoulReceptor] = ListBuffer()
 
             val minX = coords.x.toInt - radius
             val maxX = coords.x.toInt + radius
@@ -46,24 +48,34 @@ class GIEventHandler {
             val minZ = coords.z.toInt - radius
             val maxZ = coords.z.toInt + radius
 
-            breakable {
-                for(x <- minX until maxX; y <- minY until maxY; z <- minZ until maxZ) {
-                    val tile = world.getTileEntity(x, y, z)
+            for(x <- minX until maxX; y <- minY until maxY; z <- minZ until maxZ) {
+                val tile = world.getTileEntity(x, y, z)
 
-                    if(tile.isInstanceOf[ISoulReceptor]) {
-                        val soulReceptor = tile.asInstanceOf[ISoulReceptor]
-
-                        if(!soulReceptor.hasSoul) {
-                            soulReceptor.setSoul(Some(entity.getSoul))
-
-                            world.markBlockForUpdate(x, y, z)
-                            tile.markDirty()
-
-                            break
-                        }
-                    }
+                if(tile.isInstanceOf[ISoulReceptor]) {
+                    receptors += tile.asInstanceOf[ISoulReceptor]
                 }
             }
+
+            var distance = Double.PositiveInfinity
+            var closest: ISoulReceptor = null
+
+            for(receptor <- receptors if !receptor.hasSoul) {
+                val tile = receptor.asInstanceOf[TileEntity]
+                val dist = living.getDistanceSq(tile.xCoord, tile.yCoord, tile.zCoord)
+
+                if(dist < distance) {
+                    distance = dist
+                    closest = receptor
+                }
+            }
+
+            val closestTile = closest.asInstanceOf[TileEntity]
+
+
+            closest.setSoul(SoulHelper.geneRegistry.getSoulFor(living))
+
+            world.markBlockForUpdate(closestTile.xCoord, closestTile.yCoord, closestTile.zCoord)
+            closestTile.markDirty()
         }
     }
 }

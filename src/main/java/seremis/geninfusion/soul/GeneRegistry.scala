@@ -61,33 +61,37 @@ class GeneRegistry extends IGeneRegistry {
 
     override def getGene(id: Int): IGene = idsInv.get(id).get
 
-    override def getSoulFor(entity: EntityLiving): ISoul = {
+    override def getSoulFor(entity: EntityLiving): Option[ISoul] = {
         if (entity.isInstanceOf[IEntitySoulCustom]) {
-            return entity.asInstanceOf[IEntitySoulCustom].getSoul
+            return Some(entity.asInstanceOf[IEntitySoulCustom].getSoul)
         } else if (entity != null) {
             return SoulHelper.standardSoulRegistry.getSoulForEntity(entity)
         }
-        null
+        None
     }
 
-    override def getChromosomeFor(entity: EntityLiving, name: String): IChromosome = {
-        getSoulFor(entity).getChromosomes(getGeneId(name))
+    override def getChromosomeFor(entity: EntityLiving, name: String): Option[IChromosome] = {
+        getSoulFor(entity).foreach(s => return Some(s.getChromosomes(getGeneId(name))))
+        None
     }
 
-    override def getChromosomeFor(entity: IEntitySoulCustom, name: String): IChromosome = {
+    override def getChromosomeFor(entity: IEntitySoulCustom, name: String): Option[IChromosome] = {
         getChromosomeFor(entity.asInstanceOf[EntityLiving], name)
     }
 
-    override def getActiveFor(entity: EntityLiving, name: String): IAllele = {
-        if (getChromosomeFor(entity, name) != null) getChromosomeFor(entity, name).getActive else null
+    override def getActiveFor(entity: EntityLiving, name: String): Option[IAllele] = {
+        getChromosomeFor(entity, name).foreach(c => return Some(c.getActive))
+        None
     }
 
-    override def getActiveFor(entity: IEntitySoulCustom, name: String): IAllele = {
-        if (getChromosomeFor(entity, name) != null) getChromosomeFor(entity, name).getActive else null
+    override def getActiveFor(entity: IEntitySoulCustom, name: String): Option[IAllele] = {
+        getChromosomeFor(entity, name).foreach(c => return Some(c.getActive))
+        None
     }
 
     override def getValueFromAllele[T](entity: IEntitySoulCustom, name: String): T = {
-        getActiveFor(entity, name).getAlleleData.asInstanceOf[T]
+        getActiveFor(entity, name).foreach(a => return a.getAlleleData.asInstanceOf[T])
+        null.asInstanceOf[T]
     }
 
     override def getControlledGenes(masterGeneName: String): List[String] = {

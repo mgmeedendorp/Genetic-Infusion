@@ -6,7 +6,7 @@ trait IStandardSoulRegistry {
 
     def register(standard: IStandardSoul)
 
-    def getStandardSoulForEntity(entity: EntityLiving): IStandardSoul
+    def getStandardSoulForEntity(entity: EntityLiving): Option[IStandardSoul]
 
-    def getSoulForEntity(entity: EntityLiving): ISoul
+    def getSoulForEntity(entity: EntityLiving): Option[ISoul]
 }

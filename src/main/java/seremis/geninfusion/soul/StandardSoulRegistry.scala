@@ -13,25 +13,25 @@ object StandardSoulRegistry extends IStandardSoulRegistry {
         standardSouls += standard
     }
 
-    override def getSoulForEntity(entity: EntityLiving): ISoul = {
-        val chromosomes = new Array[IChromosome](SoulHelper.geneRegistry.getGenes.size)
-        for(i <- 0 until chromosomes.length) {
-            val gene = SoulHelper.geneRegistry.getGene(i)
-            val name = SoulHelper.geneRegistry.getGeneName(gene)
+    override def getSoulForEntity(entity: EntityLiving): Option[ISoul] = {
+            val chromosomes = new Array[IChromosome](SoulHelper.geneRegistry.getGenes.size)
+            for(i <- 0 until chromosomes.length) {
+                val gene = SoulHelper.geneRegistry.getGene(i)
+                val name = SoulHelper.geneRegistry.getGeneName(gene)
 
-            chromosomes(i) = getStandardSoulForEntity(entity).getChromosomeFromGene(entity, name)
+                chromosomes(i) = getStandardSoulForEntity(entity).getOrElse(return None).getChromosomeFromGene(entity, name)
 
-            if(chromosomes(i) == null) {
-                throw new NullPointerException("There seems to be a Gene: (" + name + ") without an associated Chromosome for Entity: (" + entity + ").")
-            } else if(chromosomes(i).getPrimary.getAlleleData != null && !chromosomes(i).getPrimary.getAlleleType.equals(SoulHelper.geneRegistry.getGene(i).getAlleleType)) {
-                throw new ClassCastException("Someone associated a Gene: (" + name + ") with an Allele (" + chromosomes(i).getPrimary.getAlleleData.getClass.getName + ") that isn't allowed for this gene. It should be: " + gene.getAlleleType.getAlleleTypeClass)
+                if(chromosomes(i) == null) {
+                    throw new NullPointerException("There seems to be a Gene: (" + name + ") without an associated Chromosome for Entity: (" + entity + ").")
+                } else if(chromosomes(i).getPrimary.getAlleleData != null && !chromosomes(i).getPrimary.getAlleleType.equals(SoulHelper.geneRegistry.getGene(i).getAlleleType)) {
+                    throw new ClassCastException("Someone associated a Gene: (" + name + ") with an Allele (" + chromosomes(i).getPrimary.getAlleleData.getClass.getName + ") that isn't allowed for this gene. It should be: " + gene.getAlleleType.getAlleleTypeClass)
+                }
             }
-        }
-        new Soul(chromosomes)
+            Some(new Soul(chromosomes))
     }
 
-    override def getStandardSoulForEntity(entity: EntityLiving): IStandardSoul = {
-        standardSouls.foreach(soul => if(soul.isStandardSoulForEntity(entity)) return soul)
-        null
+    override def getStandardSoulForEntity(entity: EntityLiving): Option[IStandardSoul] = {
+        standardSouls.foreach(soul => if(soul.isStandardSoulForEntity(entity)) return Some(soul))
+        None
     }
 }

@@ -32,15 +32,15 @@ trait IGeneRegistry {
 
     def getGene(id: Int): IGene
 
-    def getSoulFor(entity: EntityLiving): ISoul
+    def getSoulFor(entity: EntityLiving): Option[ISoul]
 
-    def getChromosomeFor(entity: EntityLiving, name: String): IChromosome
+    def getChromosomeFor(entity: EntityLiving, name: String): Option[IChromosome]
 
-    def getChromosomeFor(entity: IEntitySoulCustom, name: String): IChromosome
+    def getChromosomeFor(entity: IEntitySoulCustom, name: String): Option[IChromosome]
 
-    def getActiveFor(entity: EntityLiving, name: String): IAllele
+    def getActiveFor(entity: EntityLiving, name: String): Option[IAllele]
 
-    def getActiveFor(entity: IEntitySoulCustom, name: String): IAllele
+    def getActiveFor(entity: IEntitySoulCustom, name: String): Option[IAllele]
 
     def getValueFromAllele[T](entity: IEntitySoulCustom, name: String): T
 

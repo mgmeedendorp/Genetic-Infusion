@@ -4,6 +4,9 @@ import cpw.mods.fml.client.FMLClientHandler
 import cpw.mods.fml.client.registry.{ClientRegistry, RenderingRegistry}
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.entity.Entity
+import net.minecraft.item.Item
+import net.minecraftforge.client.MinecraftForgeClient
+import seremis.geninfusion.block.ModBlocks
 import seremis.geninfusion.client.render.RenderCrystal
 import seremis.geninfusion.lib.RenderIds
 import seremis.geninfusion.soul.entity.render.RenderEntitySoulCustom
@@ -14,12 +17,14 @@ class ClientProxy extends CommonProxy {
 
     @SideOnly(Side.CLIENT)
     override def registerRendering() {
-        RenderingRegistry.registerBlockHandler(RenderIds.CrystalRenderID, new RenderCrystal())
+        RenderingRegistry.registerBlockHandler(RenderIds.CrystalRenderID, new RenderCrystal)
+
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.crystal), new RenderCrystal)
 
         RenderingRegistry.registerEntityRenderingHandler(classOf[EntitySoulCustom], new RenderEntitySoulCustom)
         RenderingRegistry.registerEntityRenderingHandler(classOf[EntitySoulCustomCreature], new RenderEntitySoulCustom)
 
-        ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileCrystal], new RenderCrystal())
+        ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileCrystal], new RenderCrystal)
     }
 
     override def removeEntity(entity: Entity) {
