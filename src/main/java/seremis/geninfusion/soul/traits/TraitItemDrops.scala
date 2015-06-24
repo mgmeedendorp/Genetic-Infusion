@@ -68,11 +68,11 @@ class TraitItemDrops extends Trait {
             }
         }
 
-        val dropsWhenKilledBySpecificEntity = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_DROPS_ITEM_WHEN_KILLED_BY_SPECIFIC_ENTITY)
+        val dropsWhenKilledBySpecificEntity = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneDropsItemWhenKilledBySpecificEntity)
 
         if(dropsWhenKilledBySpecificEntity) {
-            val specificEntityClass = SoulHelper.geneRegistry.getValueFromAllele[Class[_]](entity, Genes.GENE_KILLED_BY_SPECIFIC_ENTITY_ENTITY)
-            val drops = SoulHelper.geneRegistry.getValueFromAllele[Array[ItemStack]](entity, Genes.GENE_KILLED_BY_SPECIFIC_ENTITY_DROPS)
+            val specificEntityClass = SoulHelper.geneRegistry.getValueFromAllele[Class[_]](entity, Genes.GeneKilledBySpecificEntityEntity)
+            val drops = SoulHelper.geneRegistry.getValueFromAllele[Array[ItemStack]](entity, Genes.GeneKilledBySpecificEntityDrops)
 
             if(specificEntityClass != null && drops != null && source.getEntity != null && source.getEntity.getClass == specificEntityClass) {
                 living.entityDropItem(drops(entity.getRandom.nextInt(drops.length)), 0.0F)
@@ -81,7 +81,7 @@ class TraitItemDrops extends Trait {
     }
 
     private def dropFewItems(entity: IEntitySoulCustom, recentlyHit: Boolean, lootingLevel: Int) {
-        val drops = SoulHelper.geneRegistry.getValueFromAllele[Array[ItemStack]](entity, Genes.GENE_ITEM_DROPS)
+        val drops = SoulHelper.geneRegistry.getValueFromAllele[Array[ItemStack]](entity, Genes.GeneItemDrops)
 
         if(drops.length != 0) {
             var amount = entity.getRandom.nextInt(3)
@@ -125,7 +125,7 @@ class TraitItemDrops extends Trait {
     }
 
     private def dropRareDrop(entity: IEntitySoulCustom, reallyRandomThingy: Boolean) {
-        val drops = SoulHelper.geneRegistry.getValueFromAllele[Array[ItemStack]](entity, Genes.GENE_RARE_ITEM_DROPS)
+        val drops = SoulHelper.geneRegistry.getValueFromAllele[Array[ItemStack]](entity, Genes.GeneRareItemDrops)
         val dropChances = entity.getFloatArray(EntityEquipmentDropChances)
 
         if(drops != null && drops.length != 0) {

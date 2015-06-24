@@ -4,8 +4,8 @@ import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.soul.MasterGene
 
 class GeneAIAttackOnCollide extends MasterGene(classOf[Boolean]) {
-    addControlledGene(Genes.GENE_AI_ATTACK_ON_COLLIDE_INDEX)
-    addControlledGene(Genes.GENE_AI_ATTACK_ON_COLLIDE_TARGET)
-    addControlledGene(Genes.GENE_AI_ATTACK_ON_COLLIDE_MOVE_SPEED)
-    addControlledGene(Genes.GENE_AI_ATTACK_ON_COLLIDE_LONG_MEMORY)
+    addControlledGene(Genes.GeneAIAttackOnCollideIndex)
+    addControlledGene(Genes.GeneAIAttackOnCollideTarget)
+    addControlledGene(Genes.GeneAIAttackOnCollideMoveSpeed)
+    addControlledGene(Genes.GeneAIAttackOnCollideLongMemory)
 }

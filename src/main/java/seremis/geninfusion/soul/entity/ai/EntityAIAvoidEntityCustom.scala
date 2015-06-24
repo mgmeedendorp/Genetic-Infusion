@@ -26,7 +26,7 @@ class EntityAIAvoidEntityCustom(var entity: IEntitySoulCustom, avoidClass: Class
 
     override def shouldExecute(): Boolean = {
         if (this.avoidClass == classOf[EntityPlayer]) {
-            if (SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_IS_TAMEABLE) && entity.isTamed) {
+            if (SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneIsTameable) && entity.isTamed) {
                 return false
             }
 

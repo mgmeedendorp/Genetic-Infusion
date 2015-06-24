@@ -10,33 +10,33 @@ class TraitInitialValues extends Trait {
     override def firstTick(entity: IEntitySoulCustom) {
         val attributeMap = entity.asInstanceOf[EntityLiving].getAttributeMap
 
-        val maxHealth: Double = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_MAX_HEALTH)
+        val maxHealth: Double = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneMaxHealth)
         attributeMap.getAttributeInstance(SharedMonsterAttributes.maxHealth).setBaseValue(maxHealth)
 
         entity.setFloat(EntityHealth, maxHealth.toFloat)
 
-        val attackDamage: Double = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_ATTACK_DAMAGE)
+        val attackDamage: Double = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneAttackDamage)
         attributeMap.getAttributeInstance(SharedMonsterAttributes.attackDamage).setBaseValue(attackDamage)
 
-        val movementSpeed: Double = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_MOVEMENT_SPEED)
+        val movementSpeed: Double = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneMovementSpeed)
         attributeMap.getAttributeInstance(SharedMonsterAttributes.movementSpeed).setBaseValue(movementSpeed)
 
-        val knockbackResistance: Double = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_KNOCKBACK_RESISTANCE)
+        val knockbackResistance: Double = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneKnockBackResistance)
         attributeMap.getAttributeInstance(SharedMonsterAttributes.knockbackResistance).setBaseValue(knockbackResistance)
 
-        val followRange: Double = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_FOLLOW_RANGE)
+        val followRange: Double = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneFollowRange)
         attributeMap.getAttributeInstance(SharedMonsterAttributes.followRange).setBaseValue(followRange)
 
-        val width: Float = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_WIDTH)
-        val height: Float = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_HEIGHT)
+        val width: Float = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneWidth)
+        val height: Float = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneHeight)
 
         entity.setSize(width, height)
 
-        entity.setInteger(EntityCreatureAttribute, SoulHelper.geneRegistry.getValueFromAllele[Integer](entity, Genes.GENE_CREATURE_ATTRIBUTE))
-        entity.setInteger(EntityExperienceValue, SoulHelper.geneRegistry.getValueFromAllele[Integer](entity, Genes.GENE_EXPERIENCE_VALUE))
+        entity.setInteger(EntityCreatureAttribute, SoulHelper.geneRegistry.getValueFromAllele[Integer](entity, Genes.GeneCreatureAttribute))
+        entity.setInteger(EntityExperienceValue, SoulHelper.geneRegistry.getValueFromAllele[Integer](entity, Genes.GeneExperienceValue))
 
-        entity.setFloatArray(EntityEquipmentDropChances, SoulHelper.geneRegistry.getValueFromAllele[Array[Float]](entity, Genes.GENE_EQUIPMENT_DROP_CHANCES))
+        entity.setFloatArray(EntityEquipmentDropChances, SoulHelper.geneRegistry.getValueFromAllele[Array[Float]](entity, Genes.GeneEquipmentDropChances))
 
-        entity.setBoolean(EntityAIEnabled, SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_USE_NEW_AI))
+        entity.setBoolean(EntityAIEnabled, SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneUseNewAI))
     }
 }

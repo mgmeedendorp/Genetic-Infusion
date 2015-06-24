@@ -24,7 +24,7 @@ class TraitItemPickup extends Trait {
 
         entity.getWorld.theProfiler.startSection("looting")
 
-        val canPickUpItems = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_PICKS_UP_ITEMS)
+        val canPickUpItems = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GenePicksUpItems)
 
         if(GeneticInfusion.commonProxy.isServerWorld(entity.getWorld) && canPickUpItems && !living.isDead && entity.getWorld.getGameRules.getGameRuleBooleanValue("mobGriefing")) {
             val list = entity.getWorld.getEntitiesWithinAABB(classOf[EntityItem], entity.getBoundingBox.expand(1.0D, 0.0D, 1.0D)).asInstanceOf[util.List[Entity]]
@@ -42,8 +42,8 @@ class TraitItemPickup extends Trait {
 
                         if(currentStack != null) {
                             if(armorSlot == 0) {
-                                val canShootBow = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_AI_ARROW_ATTACK)
-                                val canFightWithSword = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_AI_ATTACK_ON_COLLIDE)
+                                val canShootBow = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAIArrowAttack)
+                                val canFightWithSword = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAIAttackOnCollide)
 
                                 if(((newStack.getItem.isInstanceOf[ItemSword] && canFightWithSword) || (newStack.getItemUseAction == EnumAction.bow && canShootBow)) && (!(currentStack.getItem.isInstanceOf[ItemSword] && canFightWithSword) || !(currentStack.getItemUseAction == EnumAction.bow && canShootBow))) {
                                     dropEquipment = true

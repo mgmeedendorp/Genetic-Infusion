@@ -44,8 +44,8 @@ class TraitNavigate extends Trait {
     }
 
     override def getBlockPathWeight(entity: IEntitySoulCustom, x: Int, y: Int, z: Int): Float = {
-        val burnsInDaylight = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_BURNS_IN_DAYLIGHT)
-        val eatsGrass = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_AI_EAT_GRASS)
+        val burnsInDaylight = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneBurnsInDaylight)
+        val eatsGrass = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAIEatGrass)
 
         if(burnsInDaylight) {
             return 0.5F - entity.getWorld.getLightBrightness(x, y, z)

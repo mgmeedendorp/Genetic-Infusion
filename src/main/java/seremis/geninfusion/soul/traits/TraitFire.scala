@@ -10,14 +10,14 @@ import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 class TraitFire extends Trait {
 
     override def firstTick(entity: IEntitySoulCustom) {
-        entity.setBoolean(EntityIsImmuneToFire, SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_IMMUNE_TO_FIRE))
+        entity.setBoolean(EntityIsImmuneToFire, SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneImmuneToFire))
     }
 
     override def onUpdate(entity: IEntitySoulCustom) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        val burnsInDayLight: Boolean = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_BURNS_IN_DAYLIGHT)
-        val childrenBurnInDaylight: Boolean = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_CHILDREN_BURN_IN_DAYLIGHT)
+        val burnsInDayLight: Boolean = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneBurnsInDaylight)
+        val childrenBurnInDaylight: Boolean = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneChildrenBurnInDaylight)
 
         val posX = entity.getDouble(EntityPosX)
         val posY = entity.getDouble(EntityPosY)
@@ -94,7 +94,7 @@ class TraitFire extends Trait {
 
     override def attackEntityAsMob(entity: IEntitySoulCustom, entityToAttack: Entity): Boolean = {
         val living = entity.asInstanceOf[EntityLiving]
-        val setEntitiesOnFire: Boolean = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_SET_ON_FIRE_FROM_ATTACK)
+        val setEntitiesOnFire: Boolean = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneSetOnFireFromAttack)
         val difficulty = entity.getWorld.difficultySetting.getDifficultyId
 
         if(setEntitiesOnFire && living.getEquipmentInSlot(0) == null && living.isBurning && entity.getRandom.nextFloat() < difficulty.toFloat * 0.3F) {

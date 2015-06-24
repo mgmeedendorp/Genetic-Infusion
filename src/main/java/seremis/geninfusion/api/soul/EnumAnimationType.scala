@@ -6,13 +6,13 @@ package seremis.geninfusion.api.soul
  */
 //TODO replace this with a registry for animationParts
 object EnumAnimationType {
-    final val UNDEFINED = new EnumAnimationType("undefined")
-    final val HEAD = new EnumAnimationType("head")
-    final val LEGS = new EnumAnimationType("legs")
-    final val ARMS = new EnumAnimationType("arms")
-    final val BODY = new EnumAnimationType("body")
-    final val WINGS = new EnumAnimationType("wings")
-    final val OTHER = new EnumAnimationType("other")
+    final val Undefined = new EnumAnimationType("undefined")
+    final val Head = new EnumAnimationType("head")
+    final val Legs = new EnumAnimationType("legs")
+    final val Arms = new EnumAnimationType("arms")
+    final val Body = new EnumAnimationType("body")
+    final val Wings = new EnumAnimationType("wings")
+    final val Other = new EnumAnimationType("other")
 }
 class EnumAnimationType(name: String) {
 

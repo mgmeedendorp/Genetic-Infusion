@@ -129,7 +129,7 @@ class AnimationTwoArmed extends Animation {
 
     override def canBeInterrupted(entity: IEntitySoulCustom): Boolean = false
 
-    override def getAnimationType: EnumAnimationType = EnumAnimationType.UNDEFINED
+    override def getAnimationType: EnumAnimationType = EnumAnimationType.Undefined
 
     override def stopAnimation(entity: IEntitySoulCustom) {}
 }

@@ -5,5 +5,5 @@ import seremis.geninfusion.soul.MasterGene
 
 //If this is true, the entity can explode!
 class GeneAICreeperSwell extends MasterGene(classOf[Boolean]) {
-    addControlledGene(Genes.GENE_AI_CREEPER_SWELL_INDEX)
+    addControlledGene(Genes.GeneAICreeperSwellIndex)
 }

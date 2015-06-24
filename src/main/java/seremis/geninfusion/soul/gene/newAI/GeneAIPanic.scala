@@ -4,6 +4,6 @@ import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.soul.MasterGene
 
 class GeneAIPanic extends MasterGene(classOf[Boolean]) {
-    addControlledGene(Genes.GENE_AI_PANIC_INDEX)
-    addControlledGene(Genes.GENE_AI_PANIC_MOVE_SPEED)
+    addControlledGene(Genes.GeneAIPanicIndex)
+    addControlledGene(Genes.GeneAIPanicMoveSpeed)
 }

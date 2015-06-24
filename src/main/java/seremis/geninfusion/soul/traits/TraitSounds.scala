@@ -27,6 +27,6 @@ class TraitSounds extends Trait {
     }
 
     override def firstTick(entity: IEntitySoulCustom) {
-        entity.setInteger(EntityTalkInterval, SoulHelper.geneRegistry.getValueFromAllele[Integer](entity, Genes.GENE_TALK_INTERVAL))
+        entity.setInteger(EntityTalkInterval, SoulHelper.geneRegistry.getValueFromAllele[Integer](entity, Genes.GeneTalkInterval))
     }
 }

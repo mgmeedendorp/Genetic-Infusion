@@ -12,7 +12,7 @@ class InstanceHelper extends IInstanceHelper {
     override def getSoulEntityInstance(world: World, soul: ISoul, x: Double, y: Double, z: Double): IEntitySoulCustom = {
         var entity: IEntitySoulCustom = new EntitySoulCustom(world, soul, x, y, z)
 
-        if (SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_IS_CREATURE)) {
+        if (SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneIsCreature)) {
             entity = new EntitySoulCustomCreature(world, soul, x, y, z)
         }
 

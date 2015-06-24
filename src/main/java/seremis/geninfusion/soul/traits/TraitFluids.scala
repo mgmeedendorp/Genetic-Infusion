@@ -14,7 +14,7 @@ class TraitFluids extends Trait {
     override def onUpdate(entity: IEntitySoulCustom) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        val drownsInWater = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_DROWNS_IN_WATER)
+        val drownsInWater = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneDrownsInWater)
 
         if(drownsInWater) {
             if(!entity.getBoolean(EntityIsDead) && living.isInsideOfMaterial(Material.water)) {
@@ -46,7 +46,7 @@ class TraitFluids extends Trait {
             living.extinguish()
         }
 
-        val drownsInAir = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_DROWNS_IN_AIR)
+        val drownsInAir = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneDrownsInAir)
 
         if(drownsInAir) {
             var air = living.getAir

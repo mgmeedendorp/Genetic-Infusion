@@ -17,7 +17,7 @@ class TraitExplode extends Trait {
     override def firstTick(entity: IEntitySoulCustom) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_AI_CREEPER_SWELL)
+        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
 
         if(explodes) {
             if(!DataWatcherHelper.isNameRegistered(living.getDataWatcher, EntityFuseState))
@@ -27,8 +27,8 @@ class TraitExplode extends Trait {
             if(!DataWatcherHelper.isNameRegistered(living.getDataWatcher, EntityIgnited))
                 DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, 0.toByte.asInstanceOf[Byte], EntityIgnited)
 
-            entity.setInteger(EntityExplosionRadius, SoulHelper.geneRegistry.getValueFromAllele[Int](entity, Genes.GENE_EXPLOSION_RADIUS))
-            entity.setInteger(EntityFuseTime, SoulHelper.geneRegistry.getValueFromAllele[Int](entity, Genes.GENE_FUSE_TIME))
+            entity.setInteger(EntityExplosionRadius, SoulHelper.geneRegistry.getValueFromAllele[Int](entity, Genes.GeneExplosionRadius))
+            entity.setInteger(EntityFuseTime, SoulHelper.geneRegistry.getValueFromAllele[Int](entity, Genes.GeneFuseTime))
 
             entity.makePersistent(EntityExplosionRadius)
             entity.makePersistent(EntityFuseTime)
@@ -38,7 +38,7 @@ class TraitExplode extends Trait {
     override def writeToNBT(entity: IEntitySoulCustom, compound: NBTTagCompound) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_AI_CREEPER_SWELL)
+        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
 
         if(explodes) {
             if(DataWatcherHelper.isNameRegistered(living.getDataWatcher, EntityFuseState))
@@ -53,7 +53,7 @@ class TraitExplode extends Trait {
     override def readFromNBT(entity: IEntitySoulCustom, compound: NBTTagCompound) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_AI_CREEPER_SWELL)
+        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
 
         if(explodes) {
             if(!DataWatcherHelper.isNameRegistered(living.getDataWatcher, EntityFuseState))
@@ -72,7 +72,7 @@ class TraitExplode extends Trait {
     override def onUpdate(entity: IEntitySoulCustom) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_AI_CREEPER_SWELL)
+        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
 
         if(explodes && living.isEntityAlive) {
             val fuseTime = entity.getInteger(EntityFuseTime)
@@ -116,8 +116,8 @@ class TraitExplode extends Trait {
     }
 
     override def interact(entity: IEntitySoulCustom, player: EntityPlayer): Boolean = {
-        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_AI_CREEPER_SWELL)
-        val flintAndSteelIgnites = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_FLINT_AND_STEEL_IGNITE)
+        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
+        val flintAndSteelIgnites = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneFlintAndSteelIgnite)
 
         if(explodes && flintAndSteelIgnites) {
             val living = entity.asInstanceOf[EntityLiving]
@@ -143,8 +143,8 @@ class TraitExplode extends Trait {
     override def onStruckByLightning(entity: IEntitySoulCustom, lightningBolt: EntityLightningBolt) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_AI_CREEPER_SWELL)
-        val canBeCharged = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_CAN_BE_CHARGED)
+        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
+        val canBeCharged = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneCanBeCharged)
 
 
         if(explodes && canBeCharged && !entity.getWorld.isRemote) {

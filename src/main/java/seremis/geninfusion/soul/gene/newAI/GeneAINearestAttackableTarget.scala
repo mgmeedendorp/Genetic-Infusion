@@ -4,10 +4,10 @@ import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.soul.MasterGene
 
 class GeneAINearestAttackableTarget extends MasterGene(classOf[Boolean]) {
-    addControlledGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_INDEX)
-    addControlledGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_TARGET)
-    addControlledGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_TARGET_CHANCE)
-    addControlledGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_VISIBLE)
-    addControlledGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_NEARBY_ONLY)
-    addControlledGene(Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_ENTITY_SELECTOR)
+    addControlledGene(Genes.GeneAINearestAttackableTargetIndex)
+    addControlledGene(Genes.GeneAINearestAttackableTargetTarget)
+    addControlledGene(Genes.GeneAINearestAttackableTargetTargetChance)
+    addControlledGene(Genes.GeneAINearestAttackableTargetVisible)
+    addControlledGene(Genes.GeneAINearestAttackableTargetNearbyOnly)
+    addControlledGene(Genes.GeneAINearestAttackableTargetEntitySelector)
 }

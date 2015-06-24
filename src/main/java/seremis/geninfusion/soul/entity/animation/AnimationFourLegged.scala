@@ -20,7 +20,7 @@ class AnimationFourLegged extends Animation {
      *
      * @return This animation's animation type.
      */
-    override def getAnimationType: EnumAnimationType = EnumAnimationType.UNDEFINED
+    override def getAnimationType: EnumAnimationType = EnumAnimationType.Undefined
 
     /**
      * Should this animation be started this tick? This gets called every tick if canAnimateEntity() returns true.

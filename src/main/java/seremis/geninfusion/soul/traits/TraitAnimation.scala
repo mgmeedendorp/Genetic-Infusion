@@ -83,7 +83,7 @@ class TraitAnimation extends Trait {
     def getSameTypeAnimationActive(activeAnimations: ListBuffer[String], animation: String): String = {
         val registry = SoulHelper.animationRegistry
 
-        if(registry.getAnimation(animation).getAnimationType != EnumAnimationType.UNDEFINED) {
+        if(registry.getAnimation(animation).getAnimationType != EnumAnimationType.Undefined) {
             for(name <- activeAnimations if registry.getAnimation(name).getAnimationType == registry.getAnimation(animation).getAnimationType) {
                 return name
             }

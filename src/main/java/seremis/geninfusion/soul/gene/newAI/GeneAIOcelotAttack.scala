@@ -4,5 +4,5 @@ import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.soul.MasterGene
 
 class GeneAIOcelotAttack extends MasterGene(classOf[Boolean]) {
-    addControlledGene(Genes.GENE_AI_OCELOT_ATTACK_INDEX)
+    addControlledGene(Genes.GeneAIOcelotAttackIndex)
 }

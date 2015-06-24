@@ -41,8 +41,6 @@ object RenderCrystal {
         GL11.glScalef(0.15F + rand.nextFloat() * 0.075F, 0.5F + rand.nextFloat() * 0.1F, 0.15F + rand.nextFloat() * 0.05F)
         GL11.glScalef(scale, scale, scale)
 
-        GL11.glRotatef(rand.nextFloat(), 0, 1, 0)
-
         model.render()
 
         GL11.glEnable(GL11.GL_CULL_FACE)

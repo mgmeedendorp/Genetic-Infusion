@@ -14,7 +14,7 @@ import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 class TraitAttacked extends Trait {
 
     override def firstTick(entity: IEntitySoulCustom) {
-        entity.setBoolean(EntityInvulnerable, SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_INVULNERABLE))
+        entity.setBoolean(EntityInvulnerable, SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneInvulnerable))
     }
 
     override def onUpdate(entity: IEntitySoulCustom) {
@@ -156,7 +156,7 @@ class TraitAttacked extends Trait {
                             recentlyHit = 100
                             attackingPlayer = null
                         }
-                    } else if(attacker.isInstanceOf[IEntitySoulCustom] && SoulHelper.geneRegistry.getValueFromAllele[Boolean](attacker.asInstanceOf[IEntitySoulCustom], Genes.GENE_IS_TAMEABLE)) {
+                    } else if(attacker.isInstanceOf[IEntitySoulCustom] && SoulHelper.geneRegistry.getValueFromAllele[Boolean](attacker.asInstanceOf[IEntitySoulCustom], Genes.GeneIsTameable)) {
                         val attackerCustom = entity.asInstanceOf[IEntitySoulCustom]
 
                         if(attackerCustom.isTamed) {

@@ -4,6 +4,6 @@ import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.soul.MasterGene
 
 class GeneAIControlledByPlayer extends MasterGene(classOf[Boolean]) {
-    addControlledGene(Genes.GENE_AI_CONTROLLED_BY_PLAYER_INDEX)
-    addControlledGene(Genes.GENE_AI_CONTROLLED_BY_PLAYER_MAX_SPEED)
+    addControlledGene(Genes.GeneAIControlledByPlayerIndex)
+    addControlledGene(Genes.GeneAIControlledByPlayerMaxSpeed)
 }

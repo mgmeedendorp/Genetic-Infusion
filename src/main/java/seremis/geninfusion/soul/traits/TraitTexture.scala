@@ -10,7 +10,7 @@ class TraitTexture extends Trait {
 
     override def getEntityTexture(entity: IEntitySoulCustom): String = {
         try {
-            SoulHelper.geneRegistry.getValueFromAllele[String](entity, Genes.GENE_TEXTURE)
+            SoulHelper.geneRegistry.getValueFromAllele[String](entity, Genes.GeneTexture)
         } catch {
             case e: NullPointerException => Localizations.LocModelTextures + Localizations.Blank
         }
@@ -20,7 +20,7 @@ class TraitTexture extends Trait {
         //TODO make some texture thingy to ensure no infinite textures
         if(!entity.getWorld.isRemote && !entity.getSoulPreserved) {
             GITextureHelper.deleteTexture(toResource(getEntityTexture(entity)))
-            GITextureHelper.deleteTexture(toResource(SoulHelper.geneRegistry.getChromosomeFor(entity, Genes.GENE_TEXTURE).get.getRecessive.getAlleleData.asInstanceOf[String]))
+            GITextureHelper.deleteTexture(toResource(SoulHelper.geneRegistry.getChromosomeFor(entity, Genes.GeneTexture).get.getRecessive.getAlleleData.asInstanceOf[String]))
         }
     }
 

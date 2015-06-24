@@ -24,7 +24,7 @@ class TraitRender extends Trait {
 
     @SideOnly(Side.CLIENT)
     override def render(entity: IEntitySoulCustom, timeModifier: Float, limbSwing: Float, specialRotation: Float, rotationYawHead: Float, rotationPitch: Float, scale: Float) {
-        val model = SoulHelper.geneRegistry.getValueFromAllele[Array[ModelPart]](entity, Genes.GENE_MODEL)
+        val model = SoulHelper.geneRegistry.getValueFromAllele[Array[ModelPart]](entity, Genes.GeneModel)
 
         for(part <- model) {
             part.render(scale)
@@ -153,7 +153,7 @@ class TraitRender extends Trait {
 
     @SideOnly(Side.CLIENT)
     override def preRenderCallback(entity: IEntitySoulCustom, partialTickTime: Float) {
-        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_AI_CREEPER_SWELL)
+        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
 
         if(explodes) {
             var flashIntensity: Float = entity.getInteger(EntityTimeSinceIgnited).toFloat + (entity.getInteger(EntityTimeSinceIgnited) - entity.getInteger(EntityTimeSinceIgnited).toFloat * partialTickTime) / (entity.getInteger(EntityFuseTime) - 2).toFloat
@@ -177,7 +177,7 @@ class TraitRender extends Trait {
 
     @SideOnly(Side.CLIENT)
     override def inheritRenderPass(entity: IEntitySoulCustom, renderPass: Int, partialTickTime: Float): Int = {
-        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_AI_CREEPER_SWELL)
+        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
 
         if(explodes)
             return -1
@@ -189,8 +189,8 @@ class TraitRender extends Trait {
     override def shouldRenderPass(entity: IEntitySoulCustom, renderPass: Int, partialTickTime: Float): Int = {
         val living = entity.asInstanceOf[EntityLiving]
 
-        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_AI_CREEPER_SWELL)
-        val canBeCharged = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_CAN_BE_CHARGED)
+        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
+        val canBeCharged = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneCanBeCharged)
 
         if(explodes && canBeCharged) {
             val isCharged = DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, EntityCharged).asInstanceOf[Byte] == 1
@@ -232,7 +232,7 @@ class TraitRender extends Trait {
 
     @SideOnly(Side.CLIENT)
     override def getColorMultiplier(entity: IEntitySoulCustom, brightness: Float, partialTickTime: Float): Int = {
-        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_AI_CREEPER_SWELL)
+        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
 
         if(explodes) {
             val flashIntensity: Float = entity.getInteger(EntityTimeSinceIgnited).toFloat + (entity.getInteger(EntityTimeSinceIgnited) - entity.getInteger(EntityTimeSinceIgnited).toFloat * partialTickTime) / (entity.getInteger(EntityFuseTime) - 2).toFloat
@@ -330,7 +330,7 @@ class TraitRender extends Trait {
 
         entity.updateArmSwingProgress
 
-        val burnsInDaylight = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_BURNS_IN_DAYLIGHT)
+        val burnsInDaylight = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneBurnsInDaylight)
 
         if(living.getBrightness(1.0F) > 0.5F && burnsInDaylight) {
             entity.setInteger(EntityEntityAge, entity.getInteger(EntityEntityAge) + 2)

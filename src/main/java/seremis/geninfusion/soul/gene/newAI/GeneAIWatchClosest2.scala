@@ -4,8 +4,8 @@ import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.soul.MasterGene
 
 class GeneAIWatchClosest2 extends MasterGene(classOf[Boolean]) {
-    addControlledGene(Genes.GENE_AI_WATCH_CLOSEST_2_INDEX)
-    addControlledGene(Genes.GENE_AI_WATCH_CLOSEST_2_TARGET)
-    addControlledGene(Genes.GENE_AI_WATCH_CLOSEST_2_RANGE)
-    addControlledGene(Genes.GENE_AI_WATCH_CLOSEST_2_CHANCE)
+    addControlledGene(Genes.GeneAIWatchClosest2Index)
+    addControlledGene(Genes.GeneAIWatchClosest2Target)
+    addControlledGene(Genes.GeneAIWatchClosest2Range)
+    addControlledGene(Genes.GeneAIWatchClosest2Chance)
 }

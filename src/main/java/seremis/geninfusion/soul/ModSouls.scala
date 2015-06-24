@@ -15,238 +15,238 @@ import seremis.geninfusion.soul.traits._
 object ModSouls {
 
     def init() {
-        geneRegistry.registerGene(GENE_MAX_HEALTH, classOf[Double])
-        geneRegistry.registerGene(GENE_INVULNERABLE, classOf[Boolean]).noMutations
-        geneRegistry.registerGene(GENE_ATTACK_DAMAGE, classOf[Double])
-        geneRegistry.registerGene(GENE_MOVEMENT_SPEED, classOf[Double])
-        geneRegistry.registerGene(GENE_FOLLOW_RANGE, classOf[Double])
-        geneRegistry.registerGene(GENE_BURNS_IN_DAYLIGHT, classOf[Boolean])
-        geneRegistry.registerGene(GENE_DROWNS_IN_WATER, classOf[Boolean])
-        geneRegistry.registerGene(GENE_DROWNS_IN_AIR, classOf[Boolean])
-        geneRegistry.registerGene(GENE_IMMUNE_TO_FIRE, classOf[Boolean])
-        geneRegistry.registerGene(GENE_MAX_HURT_RESISTANT_TIME, classOf[Int])
-        geneRegistry.registerGene(GENE_PICKS_UP_ITEMS, classOf[Boolean])
-        geneRegistry.registerGene(GENE_ITEM_DROPS, classOf[Array[ItemStack]])
-        geneRegistry.registerGene(GENE_RARE_ITEM_DROPS, classOf[Array[ItemStack]])
-        geneRegistry.registerGene(GENE_RARE_ITEM_DROP_CHANCES, classOf[Array[Float]])
-        geneRegistry.registerGene(GENE_EQUIPMENT_DROP_CHANCES, classOf[Array[Float]])
-        geneRegistry.registerGene(GENE_LIVING_SOUND, classOf[String])
-        geneRegistry.registerGene(GENE_HURT_SOUND, classOf[String])
-        geneRegistry.registerGene(GENE_DEATH_SOUND, classOf[String])
-        geneRegistry.registerGene(GENE_WALK_SOUND, classOf[String])
-        geneRegistry.registerGene(GENE_SPLASH_SOUND, classOf[String])
-        geneRegistry.registerGene(GENE_SWIM_SOUND, classOf[String])
-        geneRegistry.registerGene(GENE_SOUND_VOLUME, classOf[Float])
-        geneRegistry.registerGene(GENE_CREATURE_ATTRIBUTE, classOf[Int])
-        geneRegistry.registerGene(GENE_TELEPORT_TIME_IN_PORTAL, classOf[Int])
-        geneRegistry.registerGene(GENE_PORTAL_COOLDOWN, classOf[Int])
-        geneRegistry.registerGene(GENE_KNOCKBACK_RESISTANCE, classOf[Double])
-        geneRegistry.registerGene(GENE_SHOULD_DESPAWN, classOf[Boolean])
-        geneRegistry.registerGene(GENE_TALK_INTERVAL, classOf[Int])
-        geneRegistry.registerGene(GENE_SET_ON_FIRE_FROM_ATTACK, classOf[Boolean])
-        geneRegistry.registerGene(GENE_EXPERIENCE_VALUE, classOf[Int])
-        geneRegistry.registerGene(GENE_VERTICAL_FACE_SPEED, classOf[Int])
-        geneRegistry.registerGene(GENE_IS_CREATURE, classOf[Boolean]).noMutations
-        geneRegistry.registerGene(GENE_CEASE_AI_MOVEMENT, classOf[Boolean])
-        geneRegistry.registerGene(GENE_CHILDREN_BURN_IN_DAYLIGHT, classOf[Boolean])
-        geneRegistry.registerGene(GENE_IS_TAMEABLE, classOf[Boolean])
-        geneRegistry.registerGene(GENE_WIDTH, classOf[Float]).noMutations
-        geneRegistry.registerGene(GENE_HEIGHT, classOf[Float]).noMutations
+        geneRegistry.registerGene(GeneMaxHealth, classOf[Double])
+        geneRegistry.registerGene(GeneInvulnerable, classOf[Boolean]).noMutations
+        geneRegistry.registerGene(GeneAttackDamage, classOf[Double])
+        geneRegistry.registerGene(GeneMovementSpeed, classOf[Double])
+        geneRegistry.registerGene(GeneFollowRange, classOf[Double])
+        geneRegistry.registerGene(GeneBurnsInDaylight, classOf[Boolean])
+        geneRegistry.registerGene(GeneDrownsInWater, classOf[Boolean])
+        geneRegistry.registerGene(GeneDrownsInAir, classOf[Boolean])
+        geneRegistry.registerGene(GeneImmuneToFire, classOf[Boolean])
+        geneRegistry.registerGene(GeneMaxHurtResistantTime, classOf[Int])
+        geneRegistry.registerGene(GenePicksUpItems, classOf[Boolean])
+        geneRegistry.registerGene(GeneItemDrops, classOf[Array[ItemStack]])
+        geneRegistry.registerGene(GeneRareItemDrops, classOf[Array[ItemStack]])
+        geneRegistry.registerGene(GeneRareItemDropChances, classOf[Array[Float]])
+        geneRegistry.registerGene(GeneEquipmentDropChances, classOf[Array[Float]])
+        geneRegistry.registerGene(GeneLivingSound, classOf[String])
+        geneRegistry.registerGene(GeneHurtSound, classOf[String])
+        geneRegistry.registerGene(GeneDeathSound, classOf[String])
+        geneRegistry.registerGene(GeneWalkSound, classOf[String])
+        geneRegistry.registerGene(GeneSplashSound, classOf[String])
+        geneRegistry.registerGene(GeneSwimSound, classOf[String])
+        geneRegistry.registerGene(GeneSoundVolume, classOf[Float])
+        geneRegistry.registerGene(GeneCreatureAttribute, classOf[Int])
+        geneRegistry.registerGene(GeneTeleportTimeInPortal, classOf[Int])
+        geneRegistry.registerGene(GenePortalCooldown, classOf[Int])
+        geneRegistry.registerGene(GeneKnockBackResistance, classOf[Double])
+        geneRegistry.registerGene(GeneShouldDespawn, classOf[Boolean])
+        geneRegistry.registerGene(GeneTalkInterval, classOf[Int])
+        geneRegistry.registerGene(GeneSetOnFireFromAttack, classOf[Boolean])
+        geneRegistry.registerGene(GeneExperienceValue, classOf[Int])
+        geneRegistry.registerGene(GeneVerticalFaceSpeed, classOf[Int])
+        geneRegistry.registerGene(GeneIsCreature, classOf[Boolean]).noMutations
+        geneRegistry.registerGene(GeneCeaseAIMovement, classOf[Boolean])
+        geneRegistry.registerGene(GeneChildrenBurnInDaylight, classOf[Boolean])
+        geneRegistry.registerGene(GeneIsTameable, classOf[Boolean])
+        geneRegistry.registerGene(GeneWidth, classOf[Float]).noMutations
+        geneRegistry.registerGene(GeneHeight, classOf[Float]).noMutations
 
-        geneRegistry.registerGene(GENE_AI_ARROW_ATTACK_MAX_RANGED_ATTACK_TIME, classOf[Int])
-        geneRegistry.registerGene(GENE_AI_ARROW_ATTACK_MIN_RANGED_ATTACK_TIME, classOf[Int])
-        geneRegistry.registerGene(GENE_AI_ARROW_ATTACK_MOVE_SPEED, new GeneMoveSpeed(classOf[Double]))
-        geneRegistry.registerGene(GENE_AI_ARROW_ATTACK_RANGED_ATTACK_TIME_MODIFIER, classOf[Float])
-        geneRegistry.registerGene(GENE_AI_ARROW_ATTACK_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_ARROW_ATTACK, new GeneAIArrowAttack).setCombinedInherit
+        geneRegistry.registerGene(GeneAIArrowAttackMaxRangedAttackTime, classOf[Int])
+        geneRegistry.registerGene(GeneAIArrowAttackMinRangedAttackTime, classOf[Int])
+        geneRegistry.registerGene(GeneAIArrowAttackMoveSpeed, new GeneMoveSpeed(classOf[Double]))
+        geneRegistry.registerGene(GeneAIArrowAttackRangedAttackTimeModifier, classOf[Float])
+        geneRegistry.registerGene(GeneAIArrowAttackIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIArrowAttack, new GeneAIArrowAttack).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_ATTACK_ON_COLLIDE_TARGET, classOf[Array[Class[_]]])
-        geneRegistry.registerGene(GENE_AI_ATTACK_ON_COLLIDE_MOVE_SPEED, new GeneMoveSpeed(classOf[Array[Double]]))
-        geneRegistry.registerGene(GENE_AI_ATTACK_ON_COLLIDE_LONG_MEMORY, classOf[Array[Boolean]])
-        geneRegistry.registerGene(GENE_AI_ATTACK_ON_COLLIDE_INDEX, classOf[Array[Int]]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_ATTACK_ON_COLLIDE, new GeneAIAttackOnCollide).setCombinedInherit
+        geneRegistry.registerGene(GeneAIAttackOnCollideTarget, classOf[Array[Class[_]]])
+        geneRegistry.registerGene(GeneAIAttackOnCollideMoveSpeed, new GeneMoveSpeed(classOf[Array[Double]]))
+        geneRegistry.registerGene(GeneAIAttackOnCollideLongMemory, classOf[Array[Boolean]])
+        geneRegistry.registerGene(GeneAIAttackOnCollideIndex, classOf[Array[Int]]).noMutations
+        geneRegistry.registerMasterGene(GeneAIAttackOnCollide, new GeneAIAttackOnCollide).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_AVOID_ENTITY_TARGET, classOf[Array[Class[_]]])
-        geneRegistry.registerGene(GENE_AI_AVOID_ENTITY_RANGE, classOf[Array[Float]])
-        geneRegistry.registerGene(GENE_AI_AVOID_ENTITY_NEAR_SPEED, new GeneMoveSpeed(classOf[Array[Double]]))
-        geneRegistry.registerGene(GENE_AI_AVOID_ENTITY_FAR_SPEED, new GeneMoveSpeed(classOf[Array[Double]]))
-        geneRegistry.registerGene(GENE_AI_AVOID_ENTITY_INDEX, classOf[Array[Int]]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_AVOID_ENTITY, new GeneAIAvoidEntity).setCombinedInherit
+        geneRegistry.registerGene(GeneAIAvoidEntityTarget, classOf[Array[Class[_]]])
+        geneRegistry.registerGene(GeneAIAvoidEntityRange, classOf[Array[Float]])
+        geneRegistry.registerGene(GeneAIAvoidEntityNearSpeed, new GeneMoveSpeed(classOf[Array[Double]]))
+        geneRegistry.registerGene(GeneAIAvoidEntityFarSpeed, new GeneMoveSpeed(classOf[Array[Double]]))
+        geneRegistry.registerGene(GeneAIAvoidEntityIndex, classOf[Array[Int]]).noMutations
+        geneRegistry.registerMasterGene(GeneAIAvoidEntity, new GeneAIAvoidEntity).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_BEG_RANGE, classOf[Float])
-        geneRegistry.registerGene(GENE_AI_BEG_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_BEG, new GeneAIBeg).setCombinedInherit
+        geneRegistry.registerGene(GeneAIBegRange, classOf[Float])
+        geneRegistry.registerGene(GeneAIBegIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIBeg, new GeneAIBeg).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_BREAK_DOOR_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_BREAK_DOOR, new GeneAIBreakDoor).setCombinedInherit
+        geneRegistry.registerGene(GeneAIBreakDoorIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIBreakDoor, new GeneAIBreakDoor).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_CONTROLLED_BY_PLAYER_MAX_SPEED, new GeneMoveSpeed(classOf[Double]))
-        geneRegistry.registerGene(GENE_AI_CONTROLLED_BY_PLAYER_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_CONTROLLED_BY_PLAYER, new GeneAIControlledByPlayer).setCombinedInherit
+        geneRegistry.registerGene(GeneAIControlledByPlayerMaxSpeed, new GeneMoveSpeed(classOf[Double]))
+        geneRegistry.registerGene(GeneAIControlledByPlayerIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIControlledByPlayer, new GeneAIControlledByPlayer).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_CREEPER_SWELL_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_CREEPER_SWELL, new GeneAICreeperSwell).setCombinedInherit
+        geneRegistry.registerGene(GeneAICreeperSwellIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAICreeperSwell, new GeneAICreeperSwell).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_DEFEND_VILLAGE_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_DEFEND_VILLAGE, new GeneAIDefendVillage).setCombinedInherit
+        geneRegistry.registerGene(GeneAIDefendVillageIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIDefendVillage, new GeneAIDefendVillage).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_EAT_GRASS_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_EAT_GRASS, new GeneAIEatGrass).setCombinedInherit
+        geneRegistry.registerGene(GeneAIEatGrassIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIEatGrass, new GeneAIEatGrass).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_FLEE_SUN_MOVE_SPEED, new GeneMoveSpeed(classOf[Double]))
-        geneRegistry.registerGene(GENE_AI_FLEE_SUN_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_FLEE_SUN, new GeneAIFleeSun).setCombinedInherit
+        geneRegistry.registerGene(GeneAIFleeSunMoveSpeed, new GeneMoveSpeed(classOf[Double]))
+        geneRegistry.registerGene(GeneAIFleeSunIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIFleeSun, new GeneAIFleeSun).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_FOLLOW_GOLEM_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_FOLLOW_GOLEM, new GeneAIFollowGolem).setCombinedInherit
+        geneRegistry.registerGene(GeneAIFollowGolemIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIFollowGolem, new GeneAIFollowGolem).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_FOLLOW_OWNER_MOVE_SPEED, new GeneMoveSpeed(classOf[Double]))
-        geneRegistry.registerGene(GENE_AI_FOLLOW_OWNER_MIN_DISTANCE, classOf[Float])
-        geneRegistry.registerGene(GENE_AI_FOLLOW_OWNER_MAX_DISTANCE, classOf[Float])
-        geneRegistry.registerGene(GENE_AI_FOLLOW_OWNER_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_FOLLOW_OWNER, new GeneAIFollowOwner).setCombinedInherit
+        geneRegistry.registerGene(GeneAIFollowOwnerMoveSpeed, new GeneMoveSpeed(classOf[Double]))
+        geneRegistry.registerGene(GeneAIFollowOwnerMinDistance, classOf[Float])
+        geneRegistry.registerGene(GeneAIFollowOwnerMaxDistance, classOf[Float])
+        geneRegistry.registerGene(GeneAIFollowOwnerIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIFollowOwner, new GeneAIFollowOwner).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_FOLLOW_PARENT_MOVE_SPEED, new GeneMoveSpeed(classOf[Double]))
-        geneRegistry.registerGene(GENE_AI_FOLLOW_PARENT_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_FOLLOW_PARENT, new GeneAIFollowParent).setCombinedInherit
+        geneRegistry.registerGene(GeneAIFollowParentMoveSpeed, new GeneMoveSpeed(classOf[Double]))
+        geneRegistry.registerGene(GeneAIFollowParentIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIFollowParent, new GeneAIFollowParent).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_HURT_BY_TARGET_CALL_HELP, classOf[Boolean])
-        geneRegistry.registerGene(GENE_AI_HURT_BY_TARGET_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_HURT_BY_TARGET, new GeneAIHurtByTarget).setCombinedInherit
+        geneRegistry.registerGene(GeneAIHurtByTargetCallHelp, classOf[Boolean])
+        geneRegistry.registerGene(GeneAIHurtByTargetIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIHurtByTarget, new GeneAIHurtByTarget).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_LEAP_AT_TARGET_MOTION_Y, classOf[Float])
-        geneRegistry.registerGene(GENE_AI_LEAP_AT_TARGET_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_LEAP_AT_TARGET, new GeneAILeapAtTarget).setCombinedInherit
+        geneRegistry.registerGene(GeneAILeapAtTargetMotionY, classOf[Float])
+        geneRegistry.registerGene(GeneAILeapAtTargetIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAILeapAtTarget, new GeneAILeapAtTarget).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_LOOK_AT_TRADE_PLAYER_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_LOOK_AT_TRADE_PLAYER, new GeneAILookAtTradePlayer).setCombinedInherit
+        geneRegistry.registerGene(GeneAILookAtTradePlayerIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAILookAtTradePlayer, new GeneAILookAtTradePlayer).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_LOOK_AT_VILLAGER_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_LOOK_AT_VILLAGER, new GeneAILookAtVillager).setCombinedInherit
+        geneRegistry.registerGene(GeneAILookAtVillagerIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAILookAtVillager, new GeneAILookAtVillager).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_LOOK_IDLE_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_LOOK_IDLE, new GeneAILookIdle).setCombinedInherit
+        geneRegistry.registerGene(GeneAILookIdleIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAILookIdle, new GeneAILookIdle).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_MATE_MOVE_SPEED, new GeneMoveSpeed(classOf[Double]))
-        geneRegistry.registerGene(GENE_AI_MATE_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_MATE, new GeneAIMate).setCombinedInherit
+        geneRegistry.registerGene(GeneAIMateMoveSpeed, new GeneMoveSpeed(classOf[Double]))
+        geneRegistry.registerGene(GeneAIMateIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIMate, new GeneAIMate).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_MOVE_INDOORS_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_MOVE_INDOORS, new GeneAIMoveIndoors).setCombinedInherit
+        geneRegistry.registerGene(GeneAIMoveIndoorsIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIMoveIndoors, new GeneAIMoveIndoors).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_MOVE_THROUGH_VILLAGE_MOVE_SPEED, new GeneMoveSpeed(classOf[Double]))
-        geneRegistry.registerGene(GENE_AI_MOVE_THROUGH_VILLAGE_IS_NOCTURNAL, classOf[Boolean])
-        geneRegistry.registerGene(GENE_AI_MOVE_THROUGH_VILLAGE_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_MOVE_THROUGH_VILLAGE, new GeneAIMoveThroughVillage).setCombinedInherit
+        geneRegistry.registerGene(GeneAIMoveThroughVillageMoveSpeed, new GeneMoveSpeed(classOf[Double]))
+        geneRegistry.registerGene(GeneAIMoveThroughVillageIsNocturnal, classOf[Boolean])
+        geneRegistry.registerGene(GeneAIMoveThroughVillageIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIMoveThroughVillage, new GeneAIMoveThroughVillage).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_MOVE_TOWARDS_RESTRICTION_MOVE_SPEED, new GeneMoveSpeed(classOf[Double]))
-        geneRegistry.registerGene(GENE_AI_MOVE_TOWARDS_RESTRICTION_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_MOVE_TOWARDS_RESTRICTION, new GeneAIMoveTowardsRestriction).setCombinedInherit
+        geneRegistry.registerGene(GeneAIMoveTowardsRestrictionMoveSpeed, new GeneMoveSpeed(classOf[Double]))
+        geneRegistry.registerGene(GeneAIMoveTowardsRestrictionIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIMoveTowardsRestriction, new GeneAIMoveTowardsRestriction).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_MOVE_TOWARDS_TARGET_MOVE_SPEED, new GeneMoveSpeed(classOf[Double]))
-        geneRegistry.registerGene(GENE_AI_MOVE_TOWARDS_TARGET_MAX_DISTANCE, classOf[Float])
-        geneRegistry.registerGene(GENE_AI_MOVE_TOWARDS_TARGET_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_MOVE_TOWARDS_TARGET, new GeneAIMoveTowardsTarget).setCombinedInherit
+        geneRegistry.registerGene(GeneAIMoveTowardsTargetMoveSpeed, new GeneMoveSpeed(classOf[Double]))
+        geneRegistry.registerGene(GeneAIMoveTowardsTargetMaxDistance, classOf[Float])
+        geneRegistry.registerGene(GeneAIMoveTowardsTargetIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIMoveTowardsTarget, new GeneAIMoveTowardsTarget).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_NEAREST_ATTACKABLE_TARGET_TARGET, classOf[Array[Class[_]]])
-        geneRegistry.registerGene(GENE_AI_NEAREST_ATTACKABLE_TARGET_TARGET_CHANCE, classOf[Array[Int]])
-        geneRegistry.registerGene(GENE_AI_NEAREST_ATTACKABLE_TARGET_VISIBLE, classOf[Array[Boolean]])
-        geneRegistry.registerGene(GENE_AI_NEAREST_ATTACKABLE_TARGET_NEARBY_ONLY, classOf[Array[Boolean]])
-        geneRegistry.registerGene(GENE_AI_NEAREST_ATTACKABLE_TARGET_ENTITY_SELECTOR, classOf[Array[String]])
-        geneRegistry.registerGene(GENE_AI_NEAREST_ATTACKABLE_TARGET_INDEX, classOf[Array[Int]]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_NEAREST_ATTACKABLE_TARGET, new GeneAINearestAttackableTarget).setCombinedInherit
+        geneRegistry.registerGene(GeneAINearestAttackableTargetTarget, classOf[Array[Class[_]]])
+        geneRegistry.registerGene(GeneAINearestAttackableTargetTargetChance, classOf[Array[Int]])
+        geneRegistry.registerGene(GeneAINearestAttackableTargetVisible, classOf[Array[Boolean]])
+        geneRegistry.registerGene(GeneAINearestAttackableTargetNearbyOnly, classOf[Array[Boolean]])
+        geneRegistry.registerGene(GeneAINearestAttackableTargetEntitySelector, classOf[Array[String]])
+        geneRegistry.registerGene(GeneAINearestAttackableTargetIndex, classOf[Array[Int]]).noMutations
+        geneRegistry.registerMasterGene(GeneAINearestAttackableTarget, new GeneAINearestAttackableTarget).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_OCELOT_ATTACK_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_OCELOT_ATTACK, new GeneAIOcelotAttack).setCombinedInherit
+        geneRegistry.registerGene(GeneAIOcelotAttackIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIOcelotAttack, new GeneAIOcelotAttack).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_OCELOT_SIT_MOVE_SPEED, new GeneMoveSpeed(classOf[Double]))
-        geneRegistry.registerGene(GENE_AI_OCELOT_SIT_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_OCELOT_SIT, new GeneAIOcelotSit).setCombinedInherit
+        geneRegistry.registerGene(GeneAIOcelotSitMoveSpeed, new GeneMoveSpeed(classOf[Double]))
+        geneRegistry.registerGene(GeneAIOcelotSitIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIOcelotSit, new GeneAIOcelotSit).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_OPEN_DOOR_CLOSE_DOOR, classOf[Boolean])
-        geneRegistry.registerGene(GENE_AI_OPEN_DOOR_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_OPEN_DOOR, new GeneAIOpenDoor).setCombinedInherit
+        geneRegistry.registerGene(GeneAIOpenDoorCloseDoor, classOf[Boolean])
+        geneRegistry.registerGene(GeneAIOpenDoorIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIOpenDoor, new GeneAIOpenDoor).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_OWNER_HURT_BY_TARGET_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_OWNER_HURT_BY_TARGET, new GeneAIOwnerHurtByTarget).setCombinedInherit
+        geneRegistry.registerGene(GeneAIOwnerHurtByTargetIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIOwnerHurtByTarget, new GeneAIOwnerHurtByTarget).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_OWNER_HURT_TARGET_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_OWNER_HURT_TARGET, new GeneAIOwnerHurtTarget).setCombinedInherit
+        geneRegistry.registerGene(GeneAIOwnerHurtTargetIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIOwnerHurtTarget, new GeneAIOwnerHurtTarget).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_PANIC_MOVE_SPEED, new GeneMoveSpeed(classOf[Double]))
-        geneRegistry.registerGene(GENE_AI_PANIC_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_PANIC, new GeneAIPanic).setCombinedInherit
+        geneRegistry.registerGene(GeneAIPanicMoveSpeed, new GeneMoveSpeed(classOf[Double]))
+        geneRegistry.registerGene(GeneAIPanicIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIPanic, new GeneAIPanic).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_PLAY_MOVE_SPEED, new GeneMoveSpeed(classOf[Double]))
-        geneRegistry.registerGene(GENE_AI_PLAY_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_PLAY, new GeneAIPlay).setCombinedInherit
+        geneRegistry.registerGene(GeneAIPlayMoveSpeed, new GeneMoveSpeed(classOf[Double]))
+        geneRegistry.registerGene(GeneAIPlayIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIPlay, new GeneAIPlay).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_RESTRICT_OPEN_DOOR_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_RESTRICT_OPEN_DOOR, new GeneAIRestrictOpenDoor).setCombinedInherit
+        geneRegistry.registerGene(GeneAIRestrictOpenDoorIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIRestrictOpenDoor, new GeneAIRestrictOpenDoor).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_RESTRICT_SUN_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_RESTRICT_SUN, new GeneAIRestrictSun).setCombinedInherit
+        geneRegistry.registerGene(GeneAIRestrictSunIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIRestrictSun, new GeneAIRestrictSun).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_RUN_AROUND_LIKE_CRAZY_MOVE_SPEED, new GeneMoveSpeed(classOf[Double]))
-        geneRegistry.registerGene(GENE_AI_RUN_AROUND_LIKE_CRAZY_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_RUN_AROUND_LIKE_CRAZY, new GeneAIRunAroundLikeCrazy).setCombinedInherit
+        geneRegistry.registerGene(GeneAIRunAroundLikeCrazyMoveSpeed, new GeneMoveSpeed(classOf[Double]))
+        geneRegistry.registerGene(GeneAIRunAroundLikeCrazyIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIRunAroundLikeCrazy, new GeneAIRunAroundLikeCrazy).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_SIT_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_SIT, new GeneAISit).setCombinedInherit
+        geneRegistry.registerGene(GeneAISitIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAISit, new GeneAISit).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_SWIMMING_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_SWIMMING, new GeneAISwimming).setCombinedInherit
+        geneRegistry.registerGene(GeneAISwimmingIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAISwimming, new GeneAISwimming).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_TARGET_NON_TAMED_VISIBLE, classOf[Array[Boolean]])
-        geneRegistry.registerGene(GENE_AI_TARGET_NON_TAMED_TARGET_CHANCE, classOf[Array[Int]])
-        geneRegistry.registerGene(GENE_AI_TARGET_NON_TAMED_TARGET, classOf[Array[Class[_]]])
-        geneRegistry.registerGene(GENE_AI_TARGET_NON_TAMED_INDEX, classOf[Array[Int]]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_TARGET_NON_TAMED, new GeneAITargetNonTamed).setCombinedInherit
+        geneRegistry.registerGene(GeneAITargetNonTamedVisible, classOf[Array[Boolean]])
+        geneRegistry.registerGene(GeneAITargetNonTamedTargetChance, classOf[Array[Int]])
+        geneRegistry.registerGene(GeneAITargetNonTamedTarget, classOf[Array[Class[_]]])
+        geneRegistry.registerGene(GeneAITargetNonTamedIndex, classOf[Array[Int]]).noMutations
+        geneRegistry.registerMasterGene(GeneAITargetNonTamed, new GeneAITargetNonTamed).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_TEMPT_ITEM, classOf[Array[ItemStack]])
-        geneRegistry.registerGene(GENE_AI_TEMPT_MOVE_SPEED, new GeneMoveSpeed(classOf[Array[Double]]))
-        geneRegistry.registerGene(GENE_AI_TEMPT_SCARED_BY_PLAYER, classOf[Array[Boolean]])
-        geneRegistry.registerGene(GENE_AI_TEMPT_INDEX, classOf[Array[Int]]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_TEMPT, new GeneAITempt).setCombinedInherit
+        geneRegistry.registerGene(GeneAITemptItem, classOf[Array[ItemStack]])
+        geneRegistry.registerGene(GeneAITemptMoveSpeed, new GeneMoveSpeed(classOf[Array[Double]]))
+        geneRegistry.registerGene(GeneAITemptScaredByPlayer, classOf[Array[Boolean]])
+        geneRegistry.registerGene(GeneAITemptIndex, classOf[Array[Int]]).noMutations
+        geneRegistry.registerMasterGene(GeneAITempt, new GeneAITempt).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_TRADE_PLAYER_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_TRADE_PLAYER, new GeneAITradePlayer).setCombinedInherit
+        geneRegistry.registerGene(GeneAITradePlayerIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAITradePlayer, new GeneAITradePlayer).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_VILLAGER_MATE_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_VILLAGER_MATE, new GeneAIVillagerMate).setCombinedInherit
+        geneRegistry.registerGene(GeneAIVillagerMateIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIVillagerMate, new GeneAIVillagerMate).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_WANDER_MOVE_SPEED, new GeneMoveSpeed(classOf[Double]))
-        geneRegistry.registerGene(GENE_AI_WANDER_INDEX, classOf[Int]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_WANDER, new GeneAIWander).setCombinedInherit
+        geneRegistry.registerGene(GeneAIWanderMoveSpeed, new GeneMoveSpeed(classOf[Double]))
+        geneRegistry.registerGene(GeneAIWanderIndex, classOf[Int]).noMutations
+        geneRegistry.registerMasterGene(GeneAIWander, new GeneAIWander).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_WATCH_CLOSEST_TARGET, classOf[Array[Class[_]]])
-        geneRegistry.registerGene(GENE_AI_WATCH_CLOSEST_RANGE, classOf[Array[Float]])
-        geneRegistry.registerGene(GENE_AI_WATCH_CLOSEST_CHANCE, classOf[Array[Float]])
-        geneRegistry.registerGene(GENE_AI_WATCH_CLOSEST_INDEX, classOf[Array[Int]]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_WATCH_CLOSEST, new GeneAIWatchClosest).setCombinedInherit
+        geneRegistry.registerGene(GeneAIWatchClosestTarget, classOf[Array[Class[_]]])
+        geneRegistry.registerGene(GeneAIWatchClosestRange, classOf[Array[Float]])
+        geneRegistry.registerGene(GeneAIWatchClosestChance, classOf[Array[Float]])
+        geneRegistry.registerGene(GeneAIWatchClosestIndex, classOf[Array[Int]]).noMutations
+        geneRegistry.registerMasterGene(GeneAIWatchClosest, new GeneAIWatchClosest).setCombinedInherit
 
-        geneRegistry.registerGene(GENE_AI_WATCH_CLOSEST_2_TARGET, classOf[Array[Class[_]]])
-        geneRegistry.registerGene(GENE_AI_WATCH_CLOSEST_2_RANGE, classOf[Array[Float]])
-        geneRegistry.registerGene(GENE_AI_WATCH_CLOSEST_2_CHANCE, classOf[Array[Float]])
-        geneRegistry.registerGene(GENE_AI_WATCH_CLOSEST_2_INDEX, classOf[Array[Int]]).noMutations
-        geneRegistry.registerMasterGene(GENE_AI_WATCH_CLOSEST_2, new GeneAIWatchClosest2).setCombinedInherit
+        geneRegistry.registerGene(GeneAIWatchClosest2Target, classOf[Array[Class[_]]])
+        geneRegistry.registerGene(GeneAIWatchClosest2Range, classOf[Array[Float]])
+        geneRegistry.registerGene(GeneAIWatchClosest2Chance, classOf[Array[Float]])
+        geneRegistry.registerGene(GeneAIWatchClosest2Index, classOf[Array[Int]]).noMutations
+        geneRegistry.registerMasterGene(GeneAIWatchClosest2, new GeneAIWatchClosest2).setCombinedInherit
 
 
-        geneRegistry.registerMasterGene(GENE_USE_NEW_AI, new GeneUseNewAI)
-        geneRegistry.registerMasterGene(GENE_USE_OLD_AI, new GeneUseOldAI)
+        geneRegistry.registerMasterGene(GeneUseNewAI, new GeneUseNewAI)
+        geneRegistry.registerMasterGene(GeneUseOldAI, new GeneUseOldAI)
 
-        geneRegistry.registerGene(GENE_TEXTURE, classOf[String])
-        geneRegistry.registerGene(GENE_MODEL, new GeneModel)
-        geneRegistry.registerCustomInheritance(GENE_MODEL)
+        geneRegistry.registerGene(GeneTexture, classOf[String])
+        geneRegistry.registerGene(GeneModel, new GeneModel)
+        geneRegistry.registerCustomInheritance(GeneModel)
 
-        geneRegistry.registerGene(GENE_FUSE_TIME, classOf[Int])
-        geneRegistry.registerGene(GENE_EXPLOSION_RADIUS, classOf[Int])
-        geneRegistry.registerGene(GENE_CAN_BE_CHARGED, classOf[Boolean])
-        geneRegistry.registerGene(GENE_FLINT_AND_STEEL_IGNITE, classOf[Boolean])
+        geneRegistry.registerGene(GeneFuseTime, classOf[Int])
+        geneRegistry.registerGene(GeneExplosionRadius, classOf[Int])
+        geneRegistry.registerGene(GeneCanBeCharged, classOf[Boolean])
+        geneRegistry.registerGene(GeneFlintAndSteelIgnite, classOf[Boolean])
 
-        geneRegistry.registerGene(GENE_KILLED_BY_SPECIFIC_ENTITY_DROPS, classOf[Array[ItemStack]])
-        geneRegistry.registerGene(GENE_KILLED_BY_SPECIFIC_ENTITY_ENTITY, classOf[Class[_]])
-        geneRegistry.registerMasterGene(GENE_DROPS_ITEM_WHEN_KILLED_BY_SPECIFIC_ENTITY, new GeneDropsItemWhenKilledBySpecificEntity)
+        geneRegistry.registerGene(GeneKilledBySpecificEntityDrops, classOf[Array[ItemStack]])
+        geneRegistry.registerGene(GeneKilledBySpecificEntityEntity, classOf[Class[_]])
+        geneRegistry.registerMasterGene(GeneDropsItemWhenKilledBySpecificEntity, new GeneDropsItemWhenKilledBySpecificEntity)
 
         traitRegistry.registerTrait(TraitFire, new TraitFire)
         traitRegistry.registerTrait(TraitMovement, new TraitMovement)

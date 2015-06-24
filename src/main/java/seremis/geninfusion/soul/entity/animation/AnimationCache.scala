@@ -50,7 +50,7 @@ object AnimationCache {
     var cachedHeight: Map[Array[ModelPart], Float] = Map()
 
     def getModel(entity: IEntitySoulCustom): Array[ModelPart] = {
-        SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_MODEL)
+        SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneModel)
     }
 
     def getModelLegs(model: Array[ModelPart]): Array[ModelPart] = getModelLeftLegs(model) ++ getModelRightLegs(model)

@@ -40,9 +40,9 @@ class GeneModel extends Gene(classOf[Array[ModelPart]]) {
 
     override def advancedInherit(parent1: Array[IChromosome], parent2: Array[IChromosome], offspring: Array[IChromosome]): IChromosome = {
         val geneIdModel = SoulHelper.geneRegistry.getGeneId(this)
-        val geneIdTexture = SoulHelper.geneRegistry.getGeneId(Genes.GENE_TEXTURE)
-        val geneIdHeight = SoulHelper.geneRegistry.getGeneId(Genes.GENE_HEIGHT)
-        val geneIdWidth = SoulHelper.geneRegistry.getGeneId(Genes.GENE_WIDTH)
+        val geneIdTexture = SoulHelper.geneRegistry.getGeneId(Genes.GeneTexture)
+        val geneIdHeight = SoulHelper.geneRegistry.getGeneId(Genes.GeneHeight)
+        val geneIdWidth = SoulHelper.geneRegistry.getGeneId(Genes.GeneWidth)
 
         val textureChromosome1 = parent1(geneIdTexture)
         val textureChromosome2 = parent2(geneIdTexture)

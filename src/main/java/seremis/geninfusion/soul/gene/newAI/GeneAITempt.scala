@@ -4,8 +4,8 @@ import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.soul.MasterGene
 
 class GeneAITempt extends MasterGene(classOf[Boolean]) {
-    addControlledGene(Genes.GENE_AI_TEMPT_INDEX)
-    addControlledGene(Genes.GENE_AI_TEMPT_MOVE_SPEED)
-    addControlledGene(Genes.GENE_AI_TEMPT_ITEM)
-    addControlledGene(Genes.GENE_AI_TEMPT_SCARED_BY_PLAYER)
+    addControlledGene(Genes.GeneAITemptIndex)
+    addControlledGene(Genes.GeneAITemptMoveSpeed)
+    addControlledGene(Genes.GeneAITemptItem)
+    addControlledGene(Genes.GeneAITemptScaredByPlayer)
 }

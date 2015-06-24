@@ -24,7 +24,7 @@ class TraitAttack extends Trait {
     override def attackEntityAsMob(entity: IEntitySoulCustom, entityToAttack: Entity): Boolean = {
         val living = entity.asInstanceOf[EntityLiving]
 
-        if(SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE)) {
+        if(SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneAIAttackOnCollide)) {
             var attackDamage = living.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue.toFloat
             var knockbackLevel = 0
 

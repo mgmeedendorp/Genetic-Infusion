@@ -15,7 +15,7 @@ import seremis.geninfusion.soul.entity.ai._
 class TraitAI extends Trait {
 
     override def firstTick(entity: IEntitySoulCustom) {
-        val useNewAI = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_USE_NEW_AI)
+        val useNewAI = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneUseNewAI)
         if(useNewAI) {
             val living = entity.asInstanceOf[EntityLiving]
 
@@ -23,18 +23,18 @@ class TraitAI extends Trait {
             val tasks = living.tasks
             val targetTasks = living.targetTasks
 
-            if(gReg.getValueFromAllele(entity, Genes.GENE_AI_SWIMMING)) {
-                val index: Int = gReg.getValueFromAllele(entity, Genes.GENE_AI_SWIMMING_INDEX)
+            if(gReg.getValueFromAllele(entity, Genes.GeneAISwimming)) {
+                val index: Int = gReg.getValueFromAllele(entity, Genes.GeneAISwimmingIndex)
 
                 tasks.addTask(index, new EntityAISwimming(living))
             }
 
-            if(gReg.getValueFromAllele(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE)) {
-                val index: Array[Int] = gReg.getValueFromAllele(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_INDEX)
+            if(gReg.getValueFromAllele(entity, Genes.GeneAIAttackOnCollide)) {
+                val index: Array[Int] = gReg.getValueFromAllele(entity, Genes.GeneAIAttackOnCollideIndex)
 
-                val longMemory: Array[Boolean] = gReg.getValueFromAllele(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_LONG_MEMORY)
-                val moveSpeed: Array[Double] = gReg.getValueFromAllele(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_MOVE_SPEED)
-                val target: Array[Class[_]] = gReg.getValueFromAllele(entity, Genes.GENE_AI_ATTACK_ON_COLLIDE_TARGET)
+                val longMemory: Array[Boolean] = gReg.getValueFromAllele(entity, Genes.GeneAIAttackOnCollideLongMemory)
+                val moveSpeed: Array[Double] = gReg.getValueFromAllele(entity, Genes.GeneAIAttackOnCollideMoveSpeed)
+                val target: Array[Class[_]] = gReg.getValueFromAllele(entity, Genes.GeneAIAttackOnCollideTarget)
 
                 if(index != null && index.length != 0) {
                     for(i <- 0 until index.length) {
@@ -47,59 +47,59 @@ class TraitAI extends Trait {
                 }
             }
 
-            if(gReg.getValueFromAllele(entity, Genes.GENE_AI_MOVE_TOWARDS_RESTRICTION)) {
-                val index: Int = gReg.getValueFromAllele(entity, Genes.GENE_AI_MOVE_TOWARDS_RESTRICTION_INDEX)
-                val moveSpeed: Double = gReg.getValueFromAllele(entity, Genes.GENE_AI_MOVE_TOWARDS_RESTRICTION_MOVE_SPEED)
+            if(gReg.getValueFromAllele(entity, Genes.GeneAIMoveTowardsRestriction)) {
+                val index: Int = gReg.getValueFromAllele(entity, Genes.GeneAIMoveTowardsRestrictionIndex)
+                val moveSpeed: Double = gReg.getValueFromAllele(entity, Genes.GeneAIMoveTowardsRestrictionMoveSpeed)
 
                 tasks.addTask(index, new EntityAIMoveTowardsRestrictionCustom(entity, moveSpeed))
             }
 
-            if(gReg.getValueFromAllele(entity, Genes.GENE_AI_MOVE_THROUGH_VILLAGE)) {
-                val index: Int = gReg.getValueFromAllele(entity, Genes.GENE_AI_MOVE_THROUGH_VILLAGE_INDEX)
-                val isNocturnal: Boolean = gReg.getValueFromAllele(entity, Genes.GENE_AI_MOVE_THROUGH_VILLAGE_IS_NOCTURNAL)
-                val moveSpeed: Double = gReg.getValueFromAllele(entity, Genes.GENE_AI_MOVE_THROUGH_VILLAGE_MOVE_SPEED)
+            if(gReg.getValueFromAllele(entity, Genes.GeneAIMoveThroughVillage)) {
+                val index: Int = gReg.getValueFromAllele(entity, Genes.GeneAIMoveThroughVillageIndex)
+                val isNocturnal: Boolean = gReg.getValueFromAllele(entity, Genes.GeneAIMoveThroughVillageIsNocturnal)
+                val moveSpeed: Double = gReg.getValueFromAllele(entity, Genes.GeneAIMoveThroughVillageMoveSpeed)
 
                 tasks.addTask(index, new EntityAIMoveThroughVillageCustom(entity, moveSpeed, isNocturnal))
             }
 
-            if(gReg.getValueFromAllele(entity, Genes.GENE_AI_WANDER)) {
-                val index: Int = gReg.getValueFromAllele(entity, Genes.GENE_AI_WANDER_INDEX)
-                val moveSpeed: Double = gReg.getValueFromAllele(entity, Genes.GENE_AI_WANDER_MOVE_SPEED)
+            if(gReg.getValueFromAllele(entity, Genes.GeneAIWander)) {
+                val index: Int = gReg.getValueFromAllele(entity, Genes.GeneAIWanderIndex)
+                val moveSpeed: Double = gReg.getValueFromAllele(entity, Genes.GeneAIWanderMoveSpeed)
 
                 tasks.addTask(index, new EntityAIWanderCustom(entity, moveSpeed))
             }
 
-            if(gReg.getValueFromAllele(entity, Genes.GENE_AI_WATCH_CLOSEST)) {
-                val index: Array[Int] = gReg.getValueFromAllele(entity, Genes.GENE_AI_WATCH_CLOSEST_INDEX)
-                val target: Array[Class[_]] = gReg.getValueFromAllele(entity, Genes.GENE_AI_WATCH_CLOSEST_TARGET)
-                val range: Array[Float] = gReg.getValueFromAllele(entity, Genes.GENE_AI_WATCH_CLOSEST_RANGE)
-                val chance: Array[Float] = gReg.getValueFromAllele(entity, Genes.GENE_AI_WATCH_CLOSEST_CHANCE)
+            if(gReg.getValueFromAllele(entity, Genes.GeneAIWatchClosest)) {
+                val index: Array[Int] = gReg.getValueFromAllele(entity, Genes.GeneAIWatchClosestIndex)
+                val target: Array[Class[_]] = gReg.getValueFromAllele(entity, Genes.GeneAIWatchClosestTarget)
+                val range: Array[Float] = gReg.getValueFromAllele(entity, Genes.GeneAIWatchClosestRange)
+                val chance: Array[Float] = gReg.getValueFromAllele(entity, Genes.GeneAIWatchClosestChance)
 
                 if(index != null && index.length != 0)
                     for(i <- 0 until target.length)
                         tasks.addTask(index(i), new EntityAIWatchClosest(living, target(i), range(i), chance(i)))
             }
 
-            if(gReg.getValueFromAllele(entity, Genes.GENE_AI_LOOK_IDLE)) {
-                val index: Int = gReg.getValueFromAllele(entity, Genes.GENE_AI_LOOK_IDLE_INDEX)
+            if(gReg.getValueFromAllele(entity, Genes.GeneAILookIdle)) {
+                val index: Int = gReg.getValueFromAllele(entity, Genes.GeneAILookIdleIndex)
 
                 tasks.addTask(index, new EntityAILookIdle(living))
             }
 
-            if(gReg.getValueFromAllele(entity, Genes.GENE_AI_HURT_BY_TARGET)) {
-                val index: Int = gReg.getValueFromAllele(entity, Genes.GENE_AI_HURT_BY_TARGET_INDEX)
-                val callHelp: Boolean = gReg.getValueFromAllele(entity, Genes.GENE_AI_HURT_BY_TARGET_CALL_HELP)
+            if(gReg.getValueFromAllele(entity, Genes.GeneAIHurtByTarget)) {
+                val index: Int = gReg.getValueFromAllele(entity, Genes.GeneAIHurtByTargetIndex)
+                val callHelp: Boolean = gReg.getValueFromAllele(entity, Genes.GeneAIHurtByTargetCallHelp)
 
                 targetTasks.addTask(index, new EntityAIHurtByTargetCustom(entity, callHelp))
             }
 
-            if(gReg.getValueFromAllele(entity, Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET)) {
-                val index: Array[Int] = gReg.getValueFromAllele(entity, Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_INDEX)
-                val nearbyOnly: Array[Boolean] = gReg.getValueFromAllele(entity, Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_NEARBY_ONLY)
-                val target: Array[Class[_]] = gReg.getValueFromAllele(entity, Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_TARGET)
-                val targetChance: Array[Int] = gReg.getValueFromAllele(entity, Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_TARGET_CHANCE)
-                val visible: Array[Boolean] = gReg.getValueFromAllele(entity, Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_VISIBLE)
-                val entitySelector: Array[String] = gReg.getValueFromAllele(entity, Genes.GENE_AI_NEAREST_ATTACKABLE_TARGET_ENTITY_SELECTOR)
+            if(gReg.getValueFromAllele(entity, Genes.GeneAINearestAttackableTarget)) {
+                val index: Array[Int] = gReg.getValueFromAllele(entity, Genes.GeneAINearestAttackableTargetIndex)
+                val nearbyOnly: Array[Boolean] = gReg.getValueFromAllele(entity, Genes.GeneAINearestAttackableTargetNearbyOnly)
+                val target: Array[Class[_]] = gReg.getValueFromAllele(entity, Genes.GeneAINearestAttackableTargetTarget)
+                val targetChance: Array[Int] = gReg.getValueFromAllele(entity, Genes.GeneAINearestAttackableTargetTargetChance)
+                val visible: Array[Boolean] = gReg.getValueFromAllele(entity, Genes.GeneAINearestAttackableTargetVisible)
+                val entitySelector: Array[String] = gReg.getValueFromAllele(entity, Genes.GeneAINearestAttackableTargetEntitySelector)
                 var selector: IEntitySelector = null
 
                 if(index != null && index.length != 0) {
@@ -112,50 +112,50 @@ class TraitAI extends Trait {
                 }
             }
 
-            if(gReg.getValueFromAllele(entity, Genes.GENE_AI_RESTRICT_SUN)) {
-                val index: Int = gReg.getValueFromAllele(entity, Genes.GENE_AI_RESTRICT_SUN_INDEX)
+            if(gReg.getValueFromAllele(entity, Genes.GeneAIRestrictSun)) {
+                val index: Int = gReg.getValueFromAllele(entity, Genes.GeneAIRestrictSunIndex)
 
                 tasks.addTask(index, new EntityAIRestrictSunCustom(entity))
             }
 
-            if(gReg.getValueFromAllele(entity, Genes.GENE_AI_FLEE_SUN)) {
-                val index: Int = gReg.getValueFromAllele(entity, Genes.GENE_AI_FLEE_SUN_INDEX)
-                val moveSpeed: Double = gReg.getValueFromAllele(entity, Genes.GENE_AI_FLEE_SUN_MOVE_SPEED)
+            if(gReg.getValueFromAllele(entity, Genes.GeneAIFleeSun)) {
+                val index: Int = gReg.getValueFromAllele(entity, Genes.GeneAIFleeSunIndex)
+                val moveSpeed: Double = gReg.getValueFromAllele(entity, Genes.GeneAIFleeSunMoveSpeed)
 
                 tasks.addTask(index, new EntityAIFleeSunCustom(entity, moveSpeed))
             }
 
-            if(gReg.getValueFromAllele(entity, Genes.GENE_AI_BREAK_DOOR)) {
-                val index: Int = gReg.getValueFromAllele(entity, Genes.GENE_AI_BREAK_DOOR_INDEX)
+            if(gReg.getValueFromAllele(entity, Genes.GeneAIBreakDoor)) {
+                val index: Int = gReg.getValueFromAllele(entity, Genes.GeneAIBreakDoorIndex)
 
                 tasks.addTask(index, new EntityAIBreakDoor(living))
                 living.getNavigator.setBreakDoors(true)
             }
 
-            if(gReg.getValueFromAllele(entity, Genes.GENE_AI_ARROW_ATTACK)) {
-                val index: Int = gReg.getValueFromAllele(entity, Genes.GENE_AI_ARROW_ATTACK_INDEX)
-                val maxRangedAttackTime: Int = gReg.getValueFromAllele(entity, Genes.GENE_AI_ARROW_ATTACK_MAX_RANGED_ATTACK_TIME)
-                val minRangedAttackTime: Int = gReg.getValueFromAllele(entity, Genes.GENE_AI_ARROW_ATTACK_MIN_RANGED_ATTACK_TIME)
-                val moveSpeed: Double = gReg.getValueFromAllele(entity, Genes.GENE_AI_ARROW_ATTACK_MOVE_SPEED)
-                val rangedAttackTimeModifier: Float = gReg.getValueFromAllele(entity, Genes.GENE_AI_ARROW_ATTACK_RANGED_ATTACK_TIME_MODIFIER)
+            if(gReg.getValueFromAllele(entity, Genes.GeneAIArrowAttack)) {
+                val index: Int = gReg.getValueFromAllele(entity, Genes.GeneAIArrowAttackIndex)
+                val maxRangedAttackTime: Int = gReg.getValueFromAllele(entity, Genes.GeneAIArrowAttackMaxRangedAttackTime)
+                val minRangedAttackTime: Int = gReg.getValueFromAllele(entity, Genes.GeneAIArrowAttackMinRangedAttackTime)
+                val moveSpeed: Double = gReg.getValueFromAllele(entity, Genes.GeneAIArrowAttackMoveSpeed)
+                val rangedAttackTimeModifier: Float = gReg.getValueFromAllele(entity, Genes.GeneAIArrowAttackRangedAttackTimeModifier)
 
                 tasks.addTask(index, new EntityAIArrowAttack(entity, moveSpeed, minRangedAttackTime, maxRangedAttackTime, rangedAttackTimeModifier))
             }
 
-            if(gReg.getValueFromAllele(entity, Genes.GENE_AI_AVOID_ENTITY)) {
-                val index: Array[Int] = gReg.getValueFromAllele(entity, Genes.GENE_AI_AVOID_ENTITY_INDEX)
-                val farSpeed: Array[Double] = gReg.getValueFromAllele(entity, Genes.GENE_AI_AVOID_ENTITY_FAR_SPEED)
-                val nearSpeed: Array[Double] = gReg.getValueFromAllele(entity, Genes.GENE_AI_AVOID_ENTITY_NEAR_SPEED)
-                val range: Array[Float] = gReg.getValueFromAllele(entity, Genes.GENE_AI_AVOID_ENTITY_RANGE)
-                val target: Array[Class[_]] = gReg.getValueFromAllele(entity, Genes.GENE_AI_AVOID_ENTITY_TARGET)
+            if(gReg.getValueFromAllele(entity, Genes.GeneAIAvoidEntity)) {
+                val index: Array[Int] = gReg.getValueFromAllele(entity, Genes.GeneAIAvoidEntityIndex)
+                val farSpeed: Array[Double] = gReg.getValueFromAllele(entity, Genes.GeneAIAvoidEntityFarSpeed)
+                val nearSpeed: Array[Double] = gReg.getValueFromAllele(entity, Genes.GeneAIAvoidEntityNearSpeed)
+                val range: Array[Float] = gReg.getValueFromAllele(entity, Genes.GeneAIAvoidEntityRange)
+                val target: Array[Class[_]] = gReg.getValueFromAllele(entity, Genes.GeneAIAvoidEntityTarget)
 
                 if(index != null && index.length != 0)
                     for(i <- 0 until index.length)
                         tasks.addTask(index(i), new EntityAIAvoidEntityCustom(entity, target(i), range(i), farSpeed(i), nearSpeed(i)))
             }
 
-            if(gReg.getValueFromAllele(entity, Genes.GENE_AI_CREEPER_SWELL)) {
-                val index: Int = gReg.getValueFromAllele(entity, Genes.GENE_AI_CREEPER_SWELL_INDEX)
+            if(gReg.getValueFromAllele(entity, Genes.GeneAICreeperSwell)) {
+                val index: Int = gReg.getValueFromAllele(entity, Genes.GeneAICreeperSwellIndex)
 
                 tasks.addTask(index, new EntityAICreeperSwellCustom(entity))
             }
@@ -345,8 +345,8 @@ class TraitAI extends Trait {
     }
 
     override def onUpdate(entity: IEntitySoulCustom) {
-        val useNewAI = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_USE_NEW_AI)
-        val useOldAI = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GENE_USE_OLD_AI)
+        val useNewAI = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneUseNewAI)
+        val useOldAI = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneUseOldAI)
 
         entity.getWorld.theProfiler.startSection("ai")
 
@@ -373,7 +373,7 @@ class TraitAI extends Trait {
     override def updateEntityActionState(entity: IEntitySoulCustom) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        if(SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GENE_IS_CREATURE)) {
+        if(SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneIsCreature)) {
             entity.getWorld.theProfiler.startSection("ai")
 
             var fleeingTick = entity.getInteger(EntityFleeingTick)
