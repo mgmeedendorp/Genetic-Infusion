@@ -10,6 +10,11 @@ class PacketEntityData(var data: Array[Byte], var id: Int, var entityId: Int) ex
 
     var length: Int = data.length
 
+    //Because this apparently needs an empty constructor to work..
+    def this() {
+        this(Array(0.toByte), 0, 0)
+    }
+
     override def fromBytes(buf: ByteBuf) {
         entityId = buf.readInt()
         id = buf.readByte()

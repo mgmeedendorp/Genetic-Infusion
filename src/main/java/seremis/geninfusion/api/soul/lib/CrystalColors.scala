@@ -4,6 +4,6 @@ import org.lwjgl.util.Color
 
 object CrystalColors {
 
-    final val ColorEmpty = new Color(0, 100, 255)
-    final val ColorNonEmpty = new Color(240, 64, 0)
+    final def ColorEmpty: Color = new Color(0, 100, 255)
+    final def ColorNonEmpty: Color = new Color(250, 100, 5)
 }

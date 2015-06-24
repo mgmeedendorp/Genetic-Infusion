@@ -1,7 +1,10 @@
 package seremis.geninfusion.soul
 
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
-import seremis.geninfusion.api.soul.{IChromosome, ISoul}
+import net.minecraft.util.ResourceLocation
+import seremis.geninfusion.api.soul.lib.Genes
+import seremis.geninfusion.api.soul.{SoulHelper, IChromosome, ISoul}
+import seremis.geninfusion.helper.GITextureHelper
 
 class Soul(var chromosomes: Array[IChromosome]) extends ISoul {
 

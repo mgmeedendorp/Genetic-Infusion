@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.world.World
+import seremis.geninfusion.api.soul.SoulHelper
 import seremis.geninfusion.lib.{Blocks, RenderIds}
 import seremis.geninfusion.tileentity.TileCrystal
 import seremis.geninfusion.util.UtilBlock
@@ -35,11 +36,10 @@ class BlockCrystal(material: Material) extends GIBlockContainer(material) {
 
         if(stack.hasTagCompound && !world.isRemote) {
             val compound = stack.getTagCompound
-            crystal.readFromNBT(compound)
-        } else if(stack.hasTagCompound) {
-            if(stack.getTagCompound.hasKey("hasSoul")) {
-                crystal.hasSoulClient = true
-            }
+            crystal.setSoul(SoulHelper.instanceHelper.getISoulInstance(compound))
+
+            crystal.colorCounter = 0
+            crystal.sendTileDataToClient(0, Array(0.toByte))
         }
 
         super.onBlockPlacedBy(world, x, y, z, placer, stack)
@@ -55,15 +55,7 @@ class BlockCrystal(material: Material) extends GIBlockContainer(material) {
 
             val compound = new NBTTagCompound()
 
-            crystal.writeToNBT(compound)
-
-            drop.setTagCompound(compound)
-        } else if(tile != null && tile.isInstanceOf[TileCrystal] && tile.asInstanceOf[TileCrystal].hasSoul) {
-            val crystal = tile.asInstanceOf[TileCrystal]
-
-            val compound = new NBTTagCompound()
-
-            compound.setBoolean("hasSoul", crystal.hasSoul)
+            crystal.getSoul.get.writeToNBT(compound)
 
             drop.setTagCompound(compound)
         }

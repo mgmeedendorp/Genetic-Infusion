@@ -227,4 +227,18 @@ trait IEntitySoulCustom extends IRangedAttackMob {
     def setCustomNameTag(nameTag: String)
 
     def hasCustomNameTag: Boolean
+
+    /**
+     * Gets if the soul of this entity be preserved after it's death.
+     * This gets set when an entity dies near an ISoulReceptor.
+     * @return Whether the soul will be preserved.
+     */
+    def getSoulPreserved: Boolean
+
+    /**
+     * Set if the soul of this entity will be preserved after it's death. The caller of this method should be the one to preserve it.
+     * This gets set when an entity dies near an ISoulReceptor.
+     * @param soulPreserved Whether the soul of this entity will be preserved.
+     */
+    def setSoulPreserved(soulPreserved: Boolean)
 }

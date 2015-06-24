@@ -6,7 +6,7 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraftforge.event.entity.EntityJoinWorldEvent
 import net.minecraftforge.event.entity.living.LivingDeathEvent
 import net.minecraftforge.event.world.WorldEvent
-import seremis.geninfusion.api.soul.{ISoulReceptor, SoulHelper}
+import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoulReceptor, SoulHelper}
 import seremis.geninfusion.api.util.Coordinate3D
 import seremis.geninfusion.lib.DefaultProps
 import seremis.geninfusion.soul.entity.{EntitySoulCustom, EntitySoulCustomCreature}
@@ -57,7 +57,7 @@ class GIEventHandler {
             }
 
             var distance = Double.PositiveInfinity
-            var closest: ISoulReceptor = null
+            var closest: Option[ISoulReceptor] = None
 
             for(receptor <- receptors if !receptor.hasSoul) {
                 val tile = receptor.asInstanceOf[TileEntity]
@@ -65,17 +65,21 @@ class GIEventHandler {
 
                 if(dist < distance) {
                     distance = dist
-                    closest = receptor
+                    closest = Some(receptor)
                 }
             }
 
-            val closestTile = closest.asInstanceOf[TileEntity]
+            closest.foreach(closest => {
+                val closestTile = closest.asInstanceOf[TileEntity]
 
+                closest.setSoul(SoulHelper.geneRegistry.getSoulFor(living))
 
-            closest.setSoul(SoulHelper.geneRegistry.getSoulFor(living))
+                world.markBlockForUpdate(closestTile.xCoord, closestTile.yCoord, closestTile.zCoord)
+                closestTile.markDirty()
 
-            world.markBlockForUpdate(closestTile.xCoord, closestTile.yCoord, closestTile.zCoord)
-            closestTile.markDirty()
+                if(living.isInstanceOf[IEntitySoulCustom])
+                    living.asInstanceOf[IEntitySoulCustom].setSoulPreserved(true)
+            })
         }
     }
 }

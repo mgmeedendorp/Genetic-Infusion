@@ -56,10 +56,23 @@ object RenderCrystal {
 class RenderCrystal extends TileEntitySpecialRenderer with ISimpleBlockRenderingHandler with IItemRenderer {
 
     override def renderTileEntityAt(tile: TileEntity, x: Double, y: Double, z: Double, f: Float) {
-        if(tile.asInstanceOf[TileCrystal].hasSoul)
-            RenderCrystal.renderCrystal(x, y, z, 1, CrystalColors.ColorNonEmpty, tile.xCoord+tile.yCoord+tile.zCoord)
-        else
-            RenderCrystal.renderCrystal(x, y, z, 1, CrystalColors.ColorEmpty, tile.xCoord+tile.yCoord+tile.zCoord)
+        val crystal = tile.asInstanceOf[TileCrystal]
+        var color: Color = CrystalColors.ColorEmpty
+
+        if(crystal.hasSoul)
+            color = CrystalColors.ColorNonEmpty
+
+        if(crystal.hasSoul && crystal.colorCounter > 0) {
+            val red = CrystalColors.ColorEmpty.getRed + ((CrystalColors.ColorEmpty.getRed - CrystalColors.ColorNonEmpty.getRed).toFloat/crystal.maxColorCounter.toFloat)*crystal.colorCounter
+            val green = CrystalColors.ColorEmpty.getGreen + ((CrystalColors.ColorEmpty.getGreen - CrystalColors.ColorNonEmpty.getGreen).toFloat/crystal.maxColorCounter.toFloat)*crystal.colorCounter
+            val blue = CrystalColors.ColorEmpty.getBlue + ((CrystalColors.ColorEmpty.getBlue - CrystalColors.ColorNonEmpty.getBlue).toFloat/crystal.maxColorCounter.toFloat)*crystal.colorCounter
+
+            color.setRed(red.toInt)
+            color.setGreen(green.toInt)
+            color.setBlue(blue.toInt)
+        }
+
+        RenderCrystal.renderCrystal(x, y, z, 1, color, tile.xCoord+tile.yCoord+tile.zCoord)
     }
 
     override def renderInventoryBlock(block: Block, metadata: Int, modelID: Int, renderer: RenderBlocks) {

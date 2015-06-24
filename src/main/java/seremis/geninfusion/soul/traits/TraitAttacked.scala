@@ -1,7 +1,6 @@
 package seremis.geninfusion.soul.traits
 
 import net.minecraft.enchantment.EnchantmentHelper
-import net.minecraft.entity.monster.EntityZombie
 import net.minecraft.entity.passive.EntityTameable
 import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
 import net.minecraft.entity.{EntityLiving, EntityLivingBase}
@@ -91,9 +90,6 @@ class TraitAttacked extends Trait {
         val living = entity.asInstanceOf[EntityLiving]
 
         var dealtDamage = damage
-
-        if(ForgeHooks.onLivingAttack(entity.asInstanceOf[EntityLivingBase], source, dealtDamage))
-            return false
 
         if(entity.getBoolean(EntityInvulnerable)) {
             false
@@ -309,9 +305,6 @@ class TraitAttacked extends Trait {
 
     override def onDeath(entity: IEntitySoulCustom, source: DamageSource) {
         val living = entity.asInstanceOf[EntityLiving]
-
-        if(ForgeHooks.onLivingDeath(entity.asInstanceOf[EntityLivingBase], source))
-            return
 
         val attacker = source.getEntity
         val attackTarget = living.func_94060_bK()

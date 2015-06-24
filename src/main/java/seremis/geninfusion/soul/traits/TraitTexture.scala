@@ -1,6 +1,6 @@
 package seremis.geninfusion.soul.traits
 
-import net.minecraft.util.ResourceLocation
+import net.minecraft.util.{DamageSource, ResourceLocation}
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.helper.GITextureHelper
@@ -16,9 +16,9 @@ class TraitTexture extends Trait {
         }
     }
 
-    override def setDead(entity: IEntitySoulCustom) {
-        //TODO don't delete texture if it spawns soul
-        if(entity.getWorld.isRemote) {
+    override def onDeath(entity: IEntitySoulCustom, source: DamageSource) {
+        //TODO make some texture thingy to ensure no infinite textures
+        if(!entity.getWorld.isRemote && !entity.getSoulPreserved) {
             GITextureHelper.deleteTexture(toResource(getEntityTexture(entity)))
             GITextureHelper.deleteTexture(toResource(SoulHelper.geneRegistry.getChromosomeFor(entity, Genes.GENE_TEXTURE).get.getRecessive.getAlleleData.asInstanceOf[String]))
         }

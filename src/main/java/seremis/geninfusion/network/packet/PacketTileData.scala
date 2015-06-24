@@ -10,6 +10,11 @@ class PacketTileData(var data: Array[Byte], var id: Int, var x: Int, var y: Int,
 
     var length: Int = data.length
 
+    //Because this apparently needs an empty constructor to work..
+    def this() {
+        this(Array(0.toByte), 0, 0, 0, 0)
+    }
+
     override def fromBytes(buf: ByteBuf) {
         id = buf.readByte()
         x = buf.readInt()

@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{CompressedStreamTools, NBTSizeTracker, NBTTagCompound}
 import net.minecraft.util.{AxisAlignedBB, ChunkCoordinates, DamageSource}
 import net.minecraft.world.World
+import net.minecraftforge.common.ForgeHooks
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.util.Data
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
@@ -21,6 +22,7 @@ import seremis.geninfusion.soul.entity.logic.VariableSyncLogic
 import seremis.geninfusion.soul.{Soul, TraitHandler}
 
 trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEntityAdditionalSpawnData {
+
     var syncLogic = new VariableSyncLogic(this)
     var soul: ISoul
     val world: World
@@ -103,6 +105,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     private var firstUpdate: Boolean = true
 
     override def onUpdate() {
+        if(ForgeHooks.onLivingUpdate(this)) return
         if(firstUpdate) {
             firstUpdate = false
             TraitHandler.firstTick(this)
@@ -111,6 +114,9 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     }
 
     override def onDeath(source: DamageSource) {
+        if(ForgeHooks.onLivingDeath(this, source))
+            return
+
         TraitHandler.entityDeath(this, source)
     }
 
@@ -119,6 +125,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     }
 
     override def attackEntityFrom(source: DamageSource, damage: Float): Boolean = {
+        if(ForgeHooks.onLivingAttack(this, source, damage)) return false
         TraitHandler.attackEntityFrom(this, source, damage)
     }
 
@@ -232,6 +239,12 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     override def isTamed: Boolean = false
 
     override def setSize(width: Float, height: Float) = super.setSize(width, height)
+
+    var soulPreserved = false
+
+    override def getSoulPreserved: Boolean = soulPreserved
+
+    override def setSoulPreserved(soulPreserved: Boolean) = this.soulPreserved = soulPreserved
 
     override def readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)

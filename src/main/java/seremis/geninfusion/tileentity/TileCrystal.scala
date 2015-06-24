@@ -11,9 +11,12 @@ class TileCrystal extends TileEntity with GITile with ISoulReceptor {
     var soul: Option[ISoul] = None
     //This should always be false on the server
     var hasSoulClient = false
+    var colorCounter = 40
+    val maxColorCounter = 40
 
     override def updateEntity() {
-
+        if(hasSoul && colorCounter > 0)
+            colorCounter -= 1
     }
 
     /**
@@ -40,12 +43,16 @@ class TileCrystal extends TileEntity with GITile with ISoulReceptor {
             soul = SoulHelper.instanceHelper.getISoulInstance(compound.getCompoundTag("soul"))
         else
             soul = None
+
+        colorCounter = compound.getInteger("colorCounter")
     }
 
     override def writeToNBT(compound: NBTTagCompound) {
         super.writeToNBT(compound)
 
         soul.foreach(s => compound.setTag("soul", s.writeToNBT(new NBTTagCompound)))
+
+        compound.setInteger("colorCounter", colorCounter)
     }
 
     override def getDescriptionPacket: Packet = {
@@ -60,5 +67,12 @@ class TileCrystal extends TileEntity with GITile with ISoulReceptor {
 
     override def shouldRenderInPass(pass: Int): Boolean = {
         pass == 1
+    }
+
+    override def setTileDataFromServer(id: Int, data: Array[Byte]) {
+        if(id == 0) {
+            hasSoulClient = true
+            colorCounter = 0
+        }
     }
 }

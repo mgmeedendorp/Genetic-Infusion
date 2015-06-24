@@ -57,7 +57,7 @@ object AlleleType {
 
     val typeClass = new AlleleType(classOf[Class[_]]) {
         override def writeToNBT(compound: NBTTagCompound, name: String, value: Any) = compound.setString(name, value.asInstanceOf[Class[_]].getName)
-        override def readFromNBT(compound: NBTTagCompound, name: String): Any = try{ Class.forName(compound.getString(name)) } catch { case e: Exception => println(compound.getString(name)); return null}
+        override def readFromNBT(compound: NBTTagCompound, name: String): Any = try{ Class.forName(compound.getString(name)) } catch { case e: Exception => return null}
     }
 
     val typeItemStack = new AlleleType(classOf[ItemStack]) {
