@@ -10,5 +10,7 @@ object ModEntity {
     def init() {
         EntityRegistry.registerModEntity(classOf[EntitySoulCustom], Entities.SoulEntityName, Entities.SoulEntityID, GeneticInfusion.instance, 80, 3, false)
         EntityRegistry.registerModEntity(classOf[EntitySoulCustomCreature], Entities.SoulEntityCreatureName, Entities.SoulEntityCreatureID, GeneticInfusion.instance, 80, 3, false)
+
+        EntityRegistry.registerModEntity(classOf[EntityClayGolem], Entities.ClayGolemName, Entities.ClayGolemID, GeneticInfusion.instance, 80, 3, false)
     }
 }

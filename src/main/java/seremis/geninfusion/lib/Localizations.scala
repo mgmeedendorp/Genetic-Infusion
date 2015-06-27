@@ -12,5 +12,5 @@ object Localizations {
     final val Black = "black.png"
     final val Blank = "blank.png"
     final val Crystal = "crystal.png"
-    final val Soul = "soul.png"
+    final val ClayGolem = "clay_golem.png"
 }

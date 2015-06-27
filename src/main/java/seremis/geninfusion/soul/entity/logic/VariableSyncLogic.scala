@@ -3,7 +3,7 @@ package seremis.geninfusion.soul.entity.logic
 import net.minecraft.entity.EntityLiving
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
-import seremis.geninfusion.api.soul.util.Data
+import seremis.geninfusion.api.soul.util.data.Data
 import seremis.geninfusion.helper.GIReflectionHelper
 import seremis.geninfusion.util.INBTTagable
 

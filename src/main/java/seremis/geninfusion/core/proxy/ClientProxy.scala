@@ -7,7 +7,8 @@ import net.minecraft.entity.Entity
 import net.minecraft.item.Item
 import net.minecraftforge.client.MinecraftForgeClient
 import seremis.geninfusion.block.ModBlocks
-import seremis.geninfusion.client.render.RenderCrystal
+import seremis.geninfusion.client.render.{RenderClayGolem, RenderCrystal}
+import seremis.geninfusion.entity.EntityClayGolem
 import seremis.geninfusion.lib.RenderIds
 import seremis.geninfusion.soul.entity.render.RenderEntitySoulCustom
 import seremis.geninfusion.soul.entity.{EntitySoulCustom, EntitySoulCustomCreature}
@@ -23,6 +24,8 @@ class ClientProxy extends CommonProxy {
 
         RenderingRegistry.registerEntityRenderingHandler(classOf[EntitySoulCustom], new RenderEntitySoulCustom)
         RenderingRegistry.registerEntityRenderingHandler(classOf[EntitySoulCustomCreature], new RenderEntitySoulCustom)
+
+        RenderingRegistry.registerEntityRenderingHandler(classOf[EntityClayGolem], new RenderClayGolem)
 
         ClientRegistry.bindTileEntitySpecialRenderer(classOf[TileCrystal], new RenderCrystal)
     }

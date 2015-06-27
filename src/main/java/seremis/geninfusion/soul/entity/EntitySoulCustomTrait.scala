@@ -1,6 +1,5 @@
 package seremis.geninfusion.soul.entity
 
-import java.io.IOException
 import java.util.Random
 
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData
@@ -11,15 +10,16 @@ import net.minecraft.entity._
 import net.minecraft.entity.effect.EntityLightningBolt
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.{CompressedStreamTools, NBTSizeTracker, NBTTagCompound}
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.{AxisAlignedBB, ChunkCoordinates, DamageSource}
 import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
 import seremis.geninfusion.api.soul.lib.Genes
-import seremis.geninfusion.api.soul.util.Data
+import seremis.geninfusion.api.soul.util.data.Data
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
 import seremis.geninfusion.soul.entity.logic.VariableSyncLogic
 import seremis.geninfusion.soul.{Soul, TraitHandler}
+import seremis.geninfusion.util.UtilNBT
 
 trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEntityAdditionalSpawnData {
 
@@ -30,31 +30,20 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     //isDead = true
 
     override def writeSpawnData(data: ByteBuf) {
-        val compound: NBTTagCompound = new NBTTagCompound
+        val compound = new NBTTagCompound
         writeToNBT(compound)
-        var abyte: Array[Byte] = null
-        try {
-            abyte = CompressedStreamTools.compress(compound)
-        } catch {
-            case e: Exception => e.printStackTrace()
-                return
-        }
-        data.writeShort(abyte.length.asInstanceOf[Short])
+        val abyte = UtilNBT.compoundToByteArray(compound).getOrElse(return)
+        data.writeShort(abyte.length.toShort)
         data.writeBytes(abyte)
     }
 
     override def readSpawnData(data: ByteBuf) {
-        val short1: Short = data.readShort
-        val abyte: Array[Byte] = new Array[Byte](short1)
+        val length = data.readShort
+        val abyte = new Array[Byte](length)
+
         data.readBytes(abyte)
-        var compound: NBTTagCompound = null
-        try {
-            compound = CompressedStreamTools.decompress(abyte, NBTSizeTracker.INFINITE)
-        } catch {
-            case e: IOException =>
-                e.printStackTrace()
-                return
-        }
+
+        var compound: NBTTagCompound = UtilNBT.byteArrayToCompound(abyte).getOrElse(return)
         readFromNBT(compound)
     }
 

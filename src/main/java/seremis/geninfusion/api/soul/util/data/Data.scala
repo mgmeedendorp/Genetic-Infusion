@@ -1,4 +1,4 @@
-package seremis.geninfusion.api.soul.util
+package seremis.geninfusion.api.soul.util.data
 
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import seremis.geninfusion.util.INBTTagable
