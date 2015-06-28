@@ -15,10 +15,11 @@ import net.minecraftforge.client.{IItemRenderer, MinecraftForgeClient}
 import org.lwjgl.opengl.GL11
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.lib.VariableLib._
-import seremis.geninfusion.api.soul.util.{DataWatcherHelper, ModelPart}
+import seremis.geninfusion.api.util.DataWatcherHelper
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
+import seremis.geninfusion.api.util.render.animation.AnimationCache
+import seremis.geninfusion.api.util.render.model.ModelPart
 import seremis.geninfusion.helper.GIRenderHelper
-import seremis.geninfusion.soul.entity.animation.AnimationCache
 
 class TraitRender extends Trait {
 

@@ -8,7 +8,7 @@ import net.minecraft.item.{Item, ItemStack}
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.world.World
 import seremis.geninfusion.GeneticInfusion
-import seremis.geninfusion.api.util.Coordinate3D
+import seremis.geninfusion.api.util.vector.Coordinate3D
 
 object UtilBlock {
 

@@ -10,7 +10,7 @@ import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.client.model.TexturedQuad
 import net.minecraft.util.ResourceLocation
 import seremis.geninfusion.GeneticInfusion
-import seremis.geninfusion.api.soul.util.ModelPart
+import seremis.geninfusion.api.util.render.model.ModelPart
 
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ListBuffer

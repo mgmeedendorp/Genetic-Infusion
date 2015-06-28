@@ -7,7 +7,7 @@ import net.minecraft.entity.{Entity, EntityLiving}
 import net.minecraft.pathfinding.PathEntity
 import net.minecraft.util.Vec3
 import seremis.geninfusion.api.soul.lib.Genes
-import seremis.geninfusion.api.soul.util.GIRandomPositionGenerator
+import seremis.geninfusion.api.util.GIRandomPositionGenerator
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
 class EntityAIAvoidEntityCustom(var entity: IEntitySoulCustom, avoidClass: Class[_], avoidDistance: Float,  var farSpeed: Double, var nearSpeed: Double) extends EntityAIBase {

@@ -1,10 +1,11 @@
-package seremis.geninfusion.api.soul.util
+package seremis.geninfusion.api.util.render.model
 
 import java.util
 import java.util.Random
 
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.client.model._
+import net.minecraft.client.renderer.GLAllocation
 import net.minecraft.entity.EntityLiving
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import net.minecraft.util.Vec3
@@ -30,7 +31,7 @@ object ModelPart {
 
         val fields = GIReflectionHelper.getFields(model)
 
-        for (field <- fields if field.getType == classOf[ModelRenderer] && field.getName != VariableLib.ModelBipedCloak && field.getName != VariableLib.ModelBipedEars && field.getName != VariableLib.ModelBipedHeadwear) {
+        for (field <- fields if (field.getType == classOf[ModelRenderer] || field.getType == classOf[ModelPart]) && field.getName != VariableLib.ModelBipedCloak && field.getName != VariableLib.ModelBipedEars && field.getName != VariableLib.ModelBipedHeadwear) {
             val renderer = GIReflectionHelper.getField(model, field.getName).asInstanceOf[ModelRenderer]
 
             parts.add(modelRendererToModelPart(renderer))
@@ -39,7 +40,7 @@ object ModelPart {
     }
 
     def modelRendererToModelPart(model: ModelRenderer): ModelPart = {
-        val modelPart = new ModelPart(model.boxName)
+        val modelPart = new ModelPart(GIReflectionHelper.getField(model, VariableLib.ModelRendererBaseModel).asInstanceOf[ModelBase], model.boxName)
         modelPart.childModels = model.childModels
         modelPart.cubeList = model.cubeList
         modelPart.isHidden = model.isHidden
@@ -67,7 +68,7 @@ object ModelPart {
     }
 }
 
-class ModelPart(boxName: String) extends ModelRenderer(SoulHelper.entityModel, boxName) with INBTTagable {
+class ModelPart(model: ModelBase, boxName: String) extends ModelRenderer(model, boxName) with INBTTagable {
 
     var initialRotationPointX: Float = 0.0F
     var initialRotationPointY: Float = 0.0F
@@ -78,7 +79,15 @@ class ModelPart(boxName: String) extends ModelRenderer(SoulHelper.entityModel, b
     var initialRotateAngleZ: Float = 0.0F
 
     def this() {
-        this("")
+        this(SoulHelper.entityModel, "")
+    }
+
+    def this(model: ModelBase) {
+        this(model, "")
+    }
+
+    def this(boxName: String) {
+        this(SoulHelper.entityModel, boxName)
     }
 
     def this(compound: NBTTagCompound) {
@@ -118,7 +127,7 @@ class ModelPart(boxName: String) extends ModelRenderer(SoulHelper.entityModel, b
         GIReflectionHelper.getField(this, VariableLib.ModelRendererTextureOffsetY).asInstanceOf[java.lang.Integer]
     }
 
-    def getBoxList: util.ArrayList[ModelBox] = cubeList.asInstanceOf[util.ArrayList[ModelBox]]
+    def getBoxList: Array[ModelBox] = cubeList.asInstanceOf[util.ArrayList[ModelBox]].to[Array]
 
     def getBoxQuads(box: ModelBox): Array[TexturedQuad] = {
         GIReflectionHelper.getField(box, VariableLib.ModelBoxQuadList).asInstanceOf[Array[TexturedQuad]]
@@ -293,5 +302,12 @@ class ModelPart(boxName: String) extends ModelRenderer(SoulHelper.entityModel, b
             return compound1.equals(compound2)
         }
         false
+    }
+
+    def resetDisplayList() {
+        if(GIReflectionHelper.getField(this, VariableLib.ModelRendererCompiled).asInstanceOf[Boolean]) {
+            GLAllocation.deleteDisplayLists(GIReflectionHelper.getField(this, VariableLib.ModelRendererDisplayList).asInstanceOf[Int])
+            GIReflectionHelper.setField(this, VariableLib.ModelRendererCompiled, false)
+        }
     }
 }

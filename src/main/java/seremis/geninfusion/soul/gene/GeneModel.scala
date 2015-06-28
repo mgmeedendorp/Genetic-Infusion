@@ -5,11 +5,11 @@ import javafx.geometry.Rectangle2D
 
 import net.minecraft.util.ResourceLocation
 import seremis.geninfusion.api.soul.lib.Genes
-import seremis.geninfusion.api.soul.util.ModelPart
 import seremis.geninfusion.api.soul.{IChromosome, SoulHelper}
+import seremis.geninfusion.api.util.render.animation.AnimationCache
+import seremis.geninfusion.api.util.render.model.ModelPart
 import seremis.geninfusion.helper.GITextureHelper
 import seremis.geninfusion.lib.Localizations
-import seremis.geninfusion.soul.entity.animation.AnimationCache
 import seremis.geninfusion.soul.{Allele, Gene}
 
 import scala.collection.mutable.ListBuffer

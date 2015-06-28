@@ -9,7 +9,7 @@ import net.minecraft.init.Items
 import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.lib.VariableLib._
-import seremis.geninfusion.api.soul.util.DataWatcherHelper
+import seremis.geninfusion.api.util.DataWatcherHelper
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
 class TraitExplode extends Trait {

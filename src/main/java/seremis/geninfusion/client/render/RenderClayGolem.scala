@@ -7,7 +7,6 @@ import net.minecraft.util.ResourceLocation
 import org.lwjgl.opengl.GL11
 import seremis.geninfusion.client.model.ModelClayGolem
 import seremis.geninfusion.entity.EntityClayGolem
-import seremis.geninfusion.helper.GIRenderHelper
 import seremis.geninfusion.lib.Localizations
 
 class RenderClayGolem extends RenderEntity {
@@ -21,8 +20,6 @@ class RenderClayGolem extends RenderEntity {
 
         GL11.glDisable(GL11.GL_CULL_FACE)
 
-        GIRenderHelper.bindTexture(Localizations.LocModelTextures + Localizations.ClayGolem)
-
         GL11.glTranslatef(x.toFloat, y.toFloat + (entity.boundingBox.maxY - entity.boundingBox.minY).toFloat/2.0F, z.toFloat)
         GL11.glRotatef(180F, 1.0F, 0.0F, 0.0F)
 
@@ -33,6 +30,10 @@ class RenderClayGolem extends RenderEntity {
     }
 
     override def getEntityTexture(entity : Entity): ResourceLocation = {
-        new ResourceLocation(Localizations.LocModelTextures + Localizations.ClayGolem)
+        val golem = entity.asInstanceOf[EntityClayGolem]
+        if(golem.isTransformating)
+            new ResourceLocation(Localizations.LocModelTextures + Localizations.Crystal)
+        else
+            new ResourceLocation(Localizations.LocModelTextures + Localizations.ClayGolem)
     }
 }

@@ -7,9 +7,12 @@ import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.IRecipe
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.world.World
+import net.minecraftforge.oredict.RecipeSorter
+import net.minecraftforge.oredict.RecipeSorter.Category
 import seremis.geninfusion.api.soul.SoulHelper
 import seremis.geninfusion.block.{BlockCrystal, ModBlocks}
 import seremis.geninfusion.item.ModItems
+import seremis.geninfusion.lib.DefaultProps
 
 import scala.collection.mutable.ListBuffer
 
@@ -17,6 +20,7 @@ object RecipeHelper {
 
     def initRecipes() {
         addRecipe(RecipeCrystal)
+        RecipeSorter.register(DefaultProps.ID + ".recipe.crystal", classOf[GIRecipe], Category.SHAPELESS, "after:minecraft:shapeless")
     }
 
     def initSmelting() {
@@ -24,7 +28,7 @@ object RecipeHelper {
     }
 
 
-    final val RecipeCrystal = new IRecipe {
+    final val RecipeCrystal = new GIRecipe {
 
         override def matches(inventory : InventoryCrafting, world : World): Boolean = {
             var crystals = 0
@@ -69,4 +73,6 @@ object RecipeHelper {
             resultCrystal
         }
     }
+
+    abstract class GIRecipe extends IRecipe
 }

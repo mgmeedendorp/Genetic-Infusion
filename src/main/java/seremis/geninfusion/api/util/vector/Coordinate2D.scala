@@ -1,4 +1,4 @@
-package seremis.geninfusion.api.util
+package seremis.geninfusion.api.util.vector
 
 class Coordinate2D(var x: Double, var y: Double) {
 

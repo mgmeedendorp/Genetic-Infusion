@@ -7,7 +7,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent
 import net.minecraftforge.event.entity.living.LivingDeathEvent
 import net.minecraftforge.event.world.WorldEvent
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoulReceptor, SoulHelper}
-import seremis.geninfusion.api.util.Coordinate3D
+import seremis.geninfusion.api.util.vector.Coordinate3D
 import seremis.geninfusion.lib.DefaultProps
 import seremis.geninfusion.soul.entity.{EntitySoulCustom, EntitySoulCustomCreature}
 import seremis.geninfusion.world.GIWorldSavedData

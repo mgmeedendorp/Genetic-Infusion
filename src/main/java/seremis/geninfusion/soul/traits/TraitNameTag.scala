@@ -4,7 +4,7 @@ import net.minecraft.entity.EntityLiving
 import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.soul.IEntitySoulCustom
 import seremis.geninfusion.api.soul.lib.VariableLib._
-import seremis.geninfusion.api.soul.util.DataWatcherHelper
+import seremis.geninfusion.api.util.DataWatcherHelper
 
 class TraitNameTag extends Trait {
 

@@ -4,7 +4,7 @@ import net.minecraft.entity.ai.EntityAIBase
 import net.minecraft.entity.{EntityLiving, EntityLivingBase}
 import net.minecraft.util.Vec3
 import seremis.geninfusion.api.soul.IEntitySoulCustom
-import seremis.geninfusion.api.soul.util.GIRandomPositionGenerator
+import seremis.geninfusion.api.util.GIRandomPositionGenerator
 
 class EntityAIMoveTowardsTargetCustom(var entity: IEntitySoulCustom, var moveSpeed: Double, var maxDistance: Float) extends EntityAIBase {
     setMutexBits(1)

@@ -4,8 +4,8 @@ import net.minecraft.entity.EntityLiving
 import net.minecraft.item.EnumAction
 import net.minecraft.util.MathHelper
 import seremis.geninfusion.api.soul.lib.VariableLib
-import seremis.geninfusion.api.soul.util.ModelPart
 import seremis.geninfusion.api.soul.{EnumAnimationType, IEntitySoulCustom}
+import seremis.geninfusion.api.util.render.model.ModelPart
 
 class AnimationTwoArmed extends Animation {
 

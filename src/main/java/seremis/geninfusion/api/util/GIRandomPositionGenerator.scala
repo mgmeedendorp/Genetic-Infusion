@@ -1,4 +1,4 @@
-package seremis.geninfusion.api.soul.util
+package seremis.geninfusion.api.util
 
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.ai.RandomPositionGenerator

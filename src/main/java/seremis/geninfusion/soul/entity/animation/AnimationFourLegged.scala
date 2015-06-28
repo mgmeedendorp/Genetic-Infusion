@@ -2,8 +2,8 @@ package seremis.geninfusion.soul.entity.animation
 
 import net.minecraft.entity.EntityLiving
 import net.minecraft.util.MathHelper
-import seremis.geninfusion.api.soul.util.ModelPart
 import seremis.geninfusion.api.soul.{EnumAnimationType, IEntitySoulCustom}
+import seremis.geninfusion.api.util.render.model.ModelPart
 
 class AnimationFourLegged extends Animation {
     /**

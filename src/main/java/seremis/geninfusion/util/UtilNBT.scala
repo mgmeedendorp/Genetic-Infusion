@@ -5,13 +5,12 @@ import net.minecraft.nbt.{NBTSizeTracker, CompressedStreamTools, NBTTagCompound}
 object UtilNBT {
 
     def compoundToByteArray(compound: NBTTagCompound): Option[Array[Byte]] = {
-        var abyte: Array[Byte] = null
         try {
-            abyte = CompressedStreamTools.compress(compound)
+            Option(CompressedStreamTools.compress(compound)).map(bytes => return Some(bytes))
         } catch {
-            case e: Exception => e.printStackTrace() return None
+            case e: Exception => e.printStackTrace(); return None
         }
-        Some(abyte)
+        None
     }
 
     def byteArrayToCompound(abyte: Array[Byte]): Option[NBTTagCompound] = {

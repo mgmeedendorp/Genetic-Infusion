@@ -1,4 +1,4 @@
-package seremis.geninfusion.api.soul.util
+package seremis.geninfusion.api.util
 
 import net.minecraft.crash.CrashReport
 import net.minecraft.entity.DataWatcher

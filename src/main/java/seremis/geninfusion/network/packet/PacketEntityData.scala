@@ -40,7 +40,7 @@ object PacketEntityData {
                 val ent = Minecraft.getMinecraft.theWorld.getEntityByID(message.entityId)
 
                 if (ent != null && ent.isInstanceOf[GIEntity]) {
-                    ent.asInstanceOf[GIEntity].receivePacketOnServer(message.id, message.data)
+                    ent.asInstanceOf[GIEntity].receivePacketOnClient(message.id, message.data)
                 }
             } else {
                 val ent = ctx.getServerHandler.playerEntity.worldObj.getEntityByID(message.entityId)

@@ -1,47 +1,22 @@
-package seremis.geninfusion.soul.entity.animation
+package seremis.geninfusion.api.util.render.animation
 
 import net.minecraft.client.model.ModelBox
 import net.minecraft.util.{MathHelper, Vec3}
 import seremis.geninfusion.api.soul.lib.Genes
-import seremis.geninfusion.api.soul.util.ModelPart
-import seremis.geninfusion.api.soul.{IAnimation, IEntitySoulCustom, SoulHelper}
+import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
+import seremis.geninfusion.api.util.render.model.ModelPart
 
-import scala.collection.JavaConversions._
 import scala.collection.mutable.ListBuffer
-
-abstract class Animation extends IAnimation {
-
-    final val PI = Math.PI.asInstanceOf[Float]
-
-    def getModel(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModel(entity)
-
-    def getModelLeftLegs(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelLeftLegs(entity)
-    def getModelRightLegs(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelRightLegs(entity)
-    
-    def getModelLegs(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelLegs(entity)
-
-    def getModelLeftArms(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelLeftArms(entity)
-    def getModelRightArms(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelRightArms(entity)
-
-    def getModelArms(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelArms(entity)
-
-    def armsHorizontal(entity: IEntitySoulCustom): Boolean = AnimationCache.armsHorizontal(entity)
-
-    def getModelBody(entity: IEntitySoulCustom): ModelPart = AnimationCache.getModelBody(entity)
-
-    def getModelHead(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelHead(entity)
-
-    def getModelWings(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelWings(entity)
-}
 
 object AnimationCache {
     var cachedLegsLeft: Map[Array[ModelPart], Array[ModelPart]] = Map()
     var cachedLegsRight: Map[Array[ModelPart], Array[ModelPart]] = Map()
     var cachedArmsLeft: Map[Array[ModelPart], Array[ModelPart]] = Map()
     var cachedArmsRight: Map[Array[ModelPart], Array[ModelPart]] = Map()
+    var cachedWingsLeft: Map[Array[ModelPart], Array[ModelPart]] = Map()
+    var cachedWingsRight: Map[Array[ModelPart], Array[ModelPart]] = Map()
     var cachedBody: Map[Array[ModelPart], ModelPart] = Map()
     var cachedHead: Map[Array[ModelPart], Array[ModelPart]] = Map()
-    var cachedWings: Map[Array[ModelPart], Array[ModelPart]] = Map()
 
     var cachedCoords: Map[(ModelPart, ModelBox), (Vec3, Vec3)] = Map()
     var cachedArmsHorizontal: Map[Array[ModelPart], Boolean] = Map()
@@ -105,12 +80,12 @@ object AnimationCache {
 
             for(part <- model) {
                 if(!intersectsPlaneY(part, 23.0F) && !part.equals(getModelBody(model))) {
-                    var minX = 0.0F
-                    var minY = 0.0F
-                    var minZ = 0.0F
-                    var maxX = 0.0F
-                    var maxY = 0.0F
-                    var maxZ = 0.0F
+                    var minX = Float.PositiveInfinity
+                    var minY = Float.PositiveInfinity
+                    var minZ = Float.PositiveInfinity
+                    var maxX = Float.NegativeInfinity
+                    var maxY = Float.NegativeInfinity
+                    var maxZ = Float.NegativeInfinity
 
                     for(box <- part.getBoxList) {
                         if(Math.min(box.posX1, box.posX2) < minX)
@@ -133,7 +108,7 @@ object AnimationCache {
                     val dy = maxY - minY
                     val dz = maxZ - minZ
 
-                    val absoluteX = part.rotationPointX + part.offsetX * MathHelper.cos(part.rotateAngleY)
+                    val absoluteX = part.rotationPointX + minX + part.offsetX * MathHelper.cos(part.rotateAngleY)
 
                     if(dy >= 3 * dx && dy >= 3 * dz && (absoluteX > 0 && leftArm || absoluteX < 0 && !leftArm)) {
                         arms += part
@@ -188,12 +163,12 @@ object AnimationCache {
 
             for(part <- model) {
                 if(getModelBody(model) != part) {
-                    var minX = 0.0F
-                    var minY = 0.0F
-                    var minZ = 0.0F
-                    var maxX = 0.0F
-                    var maxY = 0.0F
-                    var maxZ = 0.0F
+                    var minX = Float.PositiveInfinity
+                    var minY = Float.PositiveInfinity
+                    var minZ = Float.PositiveInfinity
+                    var maxX = Float.NegativeInfinity
+                    var maxY = Float.NegativeInfinity
+                    var maxZ = Float.NegativeInfinity
 
                     for(box <- part.getBoxList) {
                         if((Math.min(box.posX1, box.posX2) + part.offsetX) * MathHelper.cos(part.rotateAngleY) < minX)
@@ -237,20 +212,39 @@ object AnimationCache {
         cachedHead.get(model).get
     }
 
-    def getModelWings(entity: IEntitySoulCustom): Array[ModelPart] = getModelWings(getModel(entity))
+    def getModelWings(entity: IEntitySoulCustom): Array[ModelPart] = getModelLeftWings(entity) ++ getModelRightWings(entity)
+    def getModelWings(model: Array[ModelPart]): Array[ModelPart] = getModelLeftWings(model) ++ getModelRightWings(model)
 
-    def getModelWings(model: Array[ModelPart]): Array[ModelPart] = {
-        if(!cachedWings.contains(model)) {
+    def getModelLeftWings(entity: IEntitySoulCustom): Array[ModelPart] = getModelWings(entity, true)
+    def getModelRightWings(entity: IEntitySoulCustom): Array[ModelPart] = getModelWings(entity, false)
+
+    def getModelLeftWings(model: Array[ModelPart]): Array[ModelPart] = getModelWings(model, true)
+    def getModelRightWings(model: Array[ModelPart]): Array[ModelPart] = getModelWings(model, false)
+
+    def getModelWings(entity: IEntitySoulCustom, leftWings: Boolean): Array[ModelPart] = getModelWings(getModel(entity), leftWings)
+
+    def getModelWings(model: Array[ModelPart], leftWings: Boolean): Array[ModelPart] = {
+        if(!(cachedWingsLeft.contains(model) && leftWings || cachedWingsRight.contains(model) && !leftWings)) {
             var wings: ListBuffer[ModelPart] = ListBuffer()
 
             for(part <- model) {
                 if(getModelHead(model) != null && !getModelHead(model).toList.contains(part) && getModelArms(model) != null && !getModelArms(model).toList.contains(part) && getModelLegs(model) != null && !getModelLegs(model).toList.contains(part) && getModelBody(model) != null && !getModelBody(model).equals(part) && partsTouching(part, getModelBody(model))) {
-                    wings += part
+                    val absoluteX = part.rotationPointX + part.offsetX * MathHelper.cos(part.rotateAngleY)
+
+                    if(absoluteX > 0 && leftWings || absoluteX < 0 && !leftWings)
+                        wings += part
                 }
             }
-            cachedWings += (model -> wings.to[Array])
+            
+            if(leftWings)
+                cachedWingsLeft += (model -> wings.to[Array])
+            else
+                cachedWingsRight += (model -> wings.to[Array])
         }
-        cachedWings.get(model).get
+        if(leftWings)
+            cachedWingsLeft.get(model).get
+        else
+            cachedWingsRight.get(model).get
     }
 
     def armsHorizontal(entity: IEntitySoulCustom): Boolean = armsHorizontal(getModel(entity))
@@ -494,6 +488,7 @@ object AnimationCache {
         if(cachedLegsRight.contains(model)) cachedLegsRight -= model
         model.foreach(p => if(cachedOuterBox.contains(p)) cachedOuterBox -= p)
         if(cachedWidth.contains(model)) cachedWidth -= model
-        if(cachedWings.contains(model)) cachedWings -= model
+        if(cachedWingsRight.contains(model)) cachedWingsRight -= model
+        if(cachedWingsLeft.contains(model)) cachedWingsLeft -= model
     }
 }

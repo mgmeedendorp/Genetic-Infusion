@@ -3,7 +3,7 @@ package seremis.geninfusion.soul
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.soul.IAlleleType
-import seremis.geninfusion.api.soul.util.ModelPart
+import seremis.geninfusion.api.util.render.model.ModelPart
 
 abstract class AlleleType(clzz: Class[_]) extends IAlleleType {
 

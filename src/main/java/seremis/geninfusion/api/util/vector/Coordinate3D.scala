@@ -1,4 +1,4 @@
-package seremis.geninfusion.api.util
+package seremis.geninfusion.api.util.vector
 
 import net.minecraft.entity.Entity
 import net.minecraft.tileentity.TileEntity

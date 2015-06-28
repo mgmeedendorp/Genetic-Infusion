@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.{AxisAlignedBB, ChunkCoordinates, DamageSource}
 import net.minecraft.world.World
-import seremis.geninfusion.api.soul.util.data.Data
+import seremis.geninfusion.api.util.data.Data
 
 trait IEntitySoulCustom extends IRangedAttackMob {
 

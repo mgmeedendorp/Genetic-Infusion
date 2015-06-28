@@ -9,7 +9,7 @@ import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import seremis.geninfusion.api.soul.IChromosome
 import seremis.geninfusion.api.soul.lib.Genes._
-import seremis.geninfusion.api.soul.util.ModelPart
+import seremis.geninfusion.api.util.render.model.ModelPart
 import seremis.geninfusion.soul.{Allele, Chromosome}
 
 class StandardSoulCreeper extends StandardSoul {

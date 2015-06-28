@@ -6,7 +6,7 @@ import net.minecraft.pathfinding.PathEntity
 import net.minecraft.util.{MathHelper, Vec3}
 import net.minecraft.village.{Village, VillageDoorInfo}
 import seremis.geninfusion.api.soul.IEntitySoulCustom
-import seremis.geninfusion.api.soul.util.GIRandomPositionGenerator
+import seremis.geninfusion.api.util.GIRandomPositionGenerator
 //remove if not needed
 import scala.collection.JavaConversions._
 

@@ -1,4 +1,4 @@
-package seremis.geninfusion.api.util
+package seremis.geninfusion.api.util.vector
 
 class Line2D(var head: Coordinate2D, var tail: Coordinate2D) {
 

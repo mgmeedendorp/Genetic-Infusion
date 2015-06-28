@@ -15,7 +15,7 @@ import net.minecraft.util.{AxisAlignedBB, ChunkCoordinates, DamageSource}
 import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
 import seremis.geninfusion.api.soul.lib.Genes
-import seremis.geninfusion.api.soul.util.data.Data
+import seremis.geninfusion.api.util.data.Data
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
 import seremis.geninfusion.soul.entity.logic.VariableSyncLogic
 import seremis.geninfusion.soul.{Soul, TraitHandler}
@@ -32,18 +32,18 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     override def writeSpawnData(data: ByteBuf) {
         val compound = new NBTTagCompound
         writeToNBT(compound)
-        val abyte = UtilNBT.compoundToByteArray(compound).getOrElse(return)
-        data.writeShort(abyte.length.toShort)
-        data.writeBytes(abyte)
+        val bytes = UtilNBT.compoundToByteArray(compound).getOrElse(return)
+        data.writeShort(bytes.length.toShort)
+        data.writeBytes(bytes)
     }
 
     override def readSpawnData(data: ByteBuf) {
         val length = data.readShort
-        val abyte = new Array[Byte](length)
+        val bytes = new Array[Byte](length)
 
-        data.readBytes(abyte)
+        data.readBytes(bytes)
 
-        var compound: NBTTagCompound = UtilNBT.byteArrayToCompound(abyte).getOrElse(return)
+        var compound: NBTTagCompound = UtilNBT.byteArrayToCompound(bytes).getOrElse(return)
         readFromNBT(compound)
     }
 
