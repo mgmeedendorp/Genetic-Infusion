@@ -9,7 +9,7 @@ import seremis.geninfusion.api.util.render.model.ModelPart
 
 class AnimationTwoArmed extends Animation {
 
-    override def canAnimateEntity(entity: IEntitySoulCustom): Boolean = return getModelArms(entity).length == 2 && getModelLeftArms(entity).length == 1 && getModelRightArms(entity).length == 1
+    override def canAnimateEntity(entity: IEntitySoulCustom): Boolean = return getModelArms(entity).exists(arms => arms.length == 2) && getModelLeftArms(entity).exists(arms => arms.length == 1) && getModelRightArms(entity).exists(arms => arms.length == 1)
 
     override def shouldStartAnimation(entity: IEntitySoulCustom): Boolean = true
 
@@ -20,8 +20,8 @@ class AnimationTwoArmed extends Animation {
     override def animate(entity: IEntitySoulCustom, timeModifier: Float, limbSwing: Float, specialRotation: Float, rotationYawHead: Float, rotationPitch: Float, scale: Float) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        val leftArm: ModelPart = getModelLeftArms(entity)(0)
-        val rightArm: ModelPart = getModelRightArms(entity)(0)
+        val leftArm: ModelPart = getModelLeftArms(entity).get(0)
+        val rightArm: ModelPart = getModelRightArms(entity).get(0)
         val body = getModelBody(entity)
         val head = getModelHead(entity)
 

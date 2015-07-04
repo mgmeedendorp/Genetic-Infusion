@@ -16,10 +16,13 @@ import seremis.geninfusion.util.UtilNBT
 
 class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEntityAdditionalSpawnData {
     setSize(1.4F, 2.9F)
+    preventEntitySpawning = true
 
     private var startTransformation = false
     private var transformationTimer = 0
     private val maxTransformationTimer = 100
+    private var waitAfterTransformation = 0
+    private val maxWaitAfterTransformation = 10
 
     private var transformationGoal: Option[IEntitySoulCustom] = None
     private var transformationGoalModel: Option[Model] = None
@@ -79,8 +82,18 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
     override def onUpdate() {
         super.onUpdate()
 
-        if(startTransformation && transformationTimer < maxTransformationTimer) {
+        if(worldObj.isRemote && startTransformation && transformationTimer < maxTransformationTimer) {
             transformationTimer += 1
+        }
+
+        if(worldObj.isRemote && transformationTimer == maxTransformationTimer) {
+            if(waitAfterTransformation < maxWaitAfterTransformation) {
+                startTransformation = false
+                waitAfterTransformation += 1
+            }
+            if(waitAfterTransformation == maxWaitAfterTransformation) {
+                sendEntityDataToServer(0, Array(0.toByte))
+            }
         }
 
         if(!worldObj.isRemote && transformationTimer == maxTransformationTimer) {
@@ -127,6 +140,12 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
         }
     }
 
+    override def receivePacketOnServer(id: Int, value: Array[Byte]) {
+        if(id == 0) {
+            transformationTimer = maxTransformationTimer
+        }
+    }
+
     def setTransformationGoal(entity: Option[IEntitySoulCustom]) {
         transformationGoal = entity
         entity.foreach(goal => transformationGoalModel = Some(new Model(SoulHelper.geneRegistry.getValueFromAllele(goal, Genes.GeneModel))))
@@ -141,5 +160,7 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
 
     def getTransformationTimer: Int = transformationTimer
 
-    def getMaxTranformationTimer: Int = maxTransformationTimer
+    def getMaxTransformationTimer: Int = maxTransformationTimer
+
+    def isWaitingAfterTransformation: Boolean = transformationTimer == maxTransformationTimer && waitAfterTransformation <= maxWaitAfterTransformation
 }

@@ -15,10 +15,10 @@ abstract class Animation extends IAnimation {
     
     def getModelLegs(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelLegs(entity)
 
-    def getModelLeftArms(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelLeftArms(entity)
-    def getModelRightArms(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelRightArms(entity)
+    def getModelLeftArms(entity: IEntitySoulCustom): Option[Array[ModelPart]] = AnimationCache.getModelLeftArms(entity)
+    def getModelRightArms(entity: IEntitySoulCustom): Option[Array[ModelPart]] = AnimationCache.getModelRightArms(entity)
 
-    def getModelArms(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelArms(entity)
+    def getModelArms(entity: IEntitySoulCustom): Option[Array[ModelPart]] = AnimationCache.getModelArms(entity)
 
     def armsHorizontal(entity: IEntitySoulCustom): Boolean = AnimationCache.armsHorizontal(entity)
 

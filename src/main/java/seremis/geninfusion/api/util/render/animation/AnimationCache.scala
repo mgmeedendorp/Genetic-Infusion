@@ -11,8 +11,8 @@ import scala.collection.mutable.ListBuffer
 object AnimationCache {
     var cachedLegsLeft: Map[Array[ModelPart], Array[ModelPart]] = Map()
     var cachedLegsRight: Map[Array[ModelPart], Array[ModelPart]] = Map()
-    var cachedArmsLeft: Map[Array[ModelPart], Array[ModelPart]] = Map()
-    var cachedArmsRight: Map[Array[ModelPart], Array[ModelPart]] = Map()
+    var cachedArmsLeft: Map[Array[ModelPart], Option[Array[ModelPart]]] = Map()
+    var cachedArmsRight: Map[Array[ModelPart], Option[Array[ModelPart]]] = Map()
     var cachedWingsLeft: Map[Array[ModelPart], Array[ModelPart]] = Map()
     var cachedWingsRight: Map[Array[ModelPart], Array[ModelPart]] = Map()
     var cachedBody: Map[Array[ModelPart], ModelPart] = Map()
@@ -63,18 +63,18 @@ object AnimationCache {
             cachedLegsRight.get(model).get
     }
 
-    def getModelArms(entity: IEntitySoulCustom): Array[ModelPart] = getModelLeftArms(entity) ++ getModelRightArms(entity)
-    def getModelArms(model: Array[ModelPart]): Array[ModelPart] = getModelLeftArms(model) ++ getModelRightArms(model)
+    def getModelArms(entity: IEntitySoulCustom): Option[Array[ModelPart]] = if(getModelLeftArms(entity).nonEmpty && getModelRightArms(entity).nonEmpty) Some(getModelLeftArms(entity).get ++ getModelRightArms(entity).get) else if(getModelLeftArms(entity).nonEmpty) getModelLeftArms(entity) else if(getModelRightArms(entity).nonEmpty) getModelRightArms(entity) else None
+    def getModelArms(model: Array[ModelPart]): Option[Array[ModelPart]] = if(getModelLeftArms(model).nonEmpty && getModelRightArms(model).nonEmpty) Some(getModelLeftArms(model).get ++ getModelRightArms(model).get) else if(getModelLeftArms(model).nonEmpty) getModelLeftArms(model) else if(getModelRightArms(model).nonEmpty) getModelRightArms(model) else None
 
-    def getModelLeftArms(entity: IEntitySoulCustom): Array[ModelPart] = getModelArms(entity, true)
-    def getModelRightArms(entity: IEntitySoulCustom): Array[ModelPart] = getModelArms(entity, false)
+    def getModelLeftArms(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModelArms(entity, true)
+    def getModelRightArms(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModelArms(entity, false)
 
-    def getModelLeftArms(model: Array[ModelPart]): Array[ModelPart] = getModelArms(model, true)
-    def getModelRightArms(model: Array[ModelPart]): Array[ModelPart] = getModelArms(model, false)
+    def getModelLeftArms(model: Array[ModelPart]): Option[Array[ModelPart]] = getModelArms(model, true)
+    def getModelRightArms(model: Array[ModelPart]): Option[Array[ModelPart]] = getModelArms(model, false)
 
-    def getModelArms(entity: IEntitySoulCustom, leftArm: Boolean): Array[ModelPart] = getModelArms(getModel(entity), leftArm)
+    def getModelArms(entity: IEntitySoulCustom, leftArm: Boolean): Option[Array[ModelPart]] = getModelArms(getModel(entity), leftArm)
 
-    def getModelArms(model: Array[ModelPart], leftArm: Boolean): Array[ModelPart] = {
+    def getModelArms(model: Array[ModelPart], leftArm: Boolean): Option[Array[ModelPart]] = {
         if(!(cachedArmsLeft.contains(model) && leftArm || cachedArmsRight.contains(model) && !leftArm)) {
             var arms: ListBuffer[ModelPart] = ListBuffer()
 
@@ -116,9 +116,9 @@ object AnimationCache {
                 }
             }
             if(leftArm)
-                cachedArmsLeft += (model -> arms.to[Array])
+                cachedArmsLeft += (model -> (if(arms.nonEmpty) Some(arms.to[Array]) else None))
             else
-                cachedArmsRight += (model -> arms.to[Array])
+                cachedArmsRight += (model -> (if(arms.nonEmpty) Some(arms.to[Array]) else None))
         }
         if(leftArm)
             cachedArmsLeft.get(model).get
@@ -202,7 +202,7 @@ object AnimationCache {
 
             for(part <- model) {
                 val nearY = part.rotationPointY + part.offsetY * MathHelper.cos(part.rotateAngleX + 0.001F)
-                if(!part.equals(head.head) && !getModelArms(model).toList.contains(part) && !part.equals(getModelBody(model)) && nearY <= candidateMaxY && partsTouching(head.head, part)) {
+                if(!part.equals(head.head) && !getModelArms(model).exists(arms => arms.toList.contains(part)) && !part.equals(getModelBody(model)) && nearY <= candidateMaxY && partsTouching(head.head, part)) {
                     head += part
                 }
             }
@@ -228,7 +228,7 @@ object AnimationCache {
             var wings: ListBuffer[ModelPart] = ListBuffer()
 
             for(part <- model) {
-                if(getModelHead(model) != null && !getModelHead(model).toList.contains(part) && getModelArms(model) != null && !getModelArms(model).toList.contains(part) && getModelLegs(model) != null && !getModelLegs(model).toList.contains(part) && getModelBody(model) != null && !getModelBody(model).equals(part) && partsTouching(part, getModelBody(model))) {
+                if(getModelHead(model) != null && !getModelHead(model).toList.contains(part) && getModelArms(model) != null && !getModelArms(model).exists(arms => arms.toList.contains(part)) && getModelLegs(model) != null && !getModelLegs(model).toList.contains(part) && getModelBody(model) != null && !getModelBody(model).equals(part) && partsTouching(part, getModelBody(model))) {
                     val absoluteX = part.rotationPointX + part.offsetX * MathHelper.cos(part.rotateAngleY)
 
                     if(absoluteX > 0 && leftWings || absoluteX < 0 && !leftWings)
@@ -251,14 +251,14 @@ object AnimationCache {
 
     def armsHorizontal(model: Array[ModelPart]): Boolean = {
         if(!cachedArmsHorizontal.contains(model)) {
-            getModelArms(model).foreach(part => {
+            getModelArms(model).foreach(arms => arms.foreach(part => {
                 val box = getModelPartOuterBox(part)
                 val diffX = Math.abs(box._1.xCoord - box._2.xCoord)
                 val diffY = Math.abs(box._1.yCoord - box._2.yCoord)
                 val diffZ = Math.abs(box._1.zCoord - box._2.zCoord)
 
                 cachedArmsHorizontal += (model -> (diffX > diffY * 1.5F || diffZ > diffY * 1.5F))
-            })
+            }))
         }
         cachedArmsHorizontal.get(model).get
     }
@@ -412,8 +412,8 @@ object AnimationCache {
         val legsLeft = if(getModelLeftLegs(parent1).forall(m => model.contains(m))) getModelLeftLegs(parent1) else if(getModelLeftLegs(parent2).forall(m => model.contains(m))) getModelLeftLegs(parent2) else null
         val legsRight = if(getModelRightLegs(parent1).forall(m => model.contains(m))) getModelRightLegs(parent1) else if(getModelRightLegs(parent2).forall(m => model.contains(m))) getModelRightLegs(parent2) else null
         val body = if(model.contains(getModelBody(parent1))) getModelBody(parent1) else if(model.contains(getModelBody(parent2))) getModelBody(parent2) else null
-        val armsLeft = if(getModelLeftArms(parent1).forall(m => model.contains(m))) getModelLeftArms(parent1) else if(getModelLeftArms(parent2).forall(m => model.contains(m))) getModelLeftArms(parent2) else null
-        val armsRight = if(getModelRightArms(parent1).forall(m => model.contains(m))) getModelRightArms(parent1) else if(getModelRightArms(parent2).forall(m => model.contains(m))) getModelRightArms(parent2) else null
+        val armsLeft = if(getModelLeftArms(parent1).exists(arms => arms.forall(m => model.contains(m)))) getModelLeftArms(parent1) else if(getModelLeftArms(parent2).exists(arms => arms.forall(m => model.contains(m)))) getModelLeftArms(parent2) else None
+        val armsRight = if(getModelRightArms(parent1).exists(arms => arms.forall(m => model.contains(m)))) getModelRightArms(parent1) else if(getModelRightArms(parent2).exists(arms => arms.forall(m => model.contains(m)))) getModelRightArms(parent2) else None
         val heads = if(getModelHead(parent1).forall(m => model.contains(m))) getModelHead(parent1) else if(getModelHead(parent2).forall(m => model.contains(m))) getModelHead(parent2) else null
 
         var highestLegY = 23.0F
@@ -441,7 +441,7 @@ object AnimationCache {
             val dY = highestLegY - lowestYBody
 
             body.rotationPointY += dY.toFloat
-            (armsLeft ++ armsRight ++ heads).foreach(m => m.rotationPointY += dY.toFloat)
+            (armsLeft.getOrElse(new Array[ModelPart](0)) ++ armsRight.getOrElse(new Array[ModelPart](0)) ++ heads).foreach(m => m.rotationPointY += dY.toFloat)
         }
 
         var lowestHeadY = Float.NegativeInfinity
@@ -458,8 +458,8 @@ object AnimationCache {
             heads.foreach(head => head.rotationPointY += dy)
         }
 
-        if(armsLeft != null && armsRight != null && armsLeft.length == 1 && armsRight.length == 1) {
-            for(arm <- armsLeft ++ armsRight) {
+        if(armsLeft != null && armsRight != null && armsLeft.exists(arms => arms.length == 1) && armsRight.exists(arms => arms.length == 1)) {
+            for(arm <- armsLeft.getOrElse(new Array[ModelPart](0)) ++ armsRight.getOrElse(new Array[ModelPart](0))) {
                 val armBox = getModelPartOuterBox(arm)
                 val armTop = Math.min(armBox._1.yCoord, armBox._2.yCoord).toFloat
 

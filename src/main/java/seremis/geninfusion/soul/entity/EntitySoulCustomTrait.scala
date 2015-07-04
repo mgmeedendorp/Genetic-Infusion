@@ -235,6 +235,8 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     override def setSoulPreserved(soulPreserved: Boolean) = this.soulPreserved = soulPreserved
 
+    override def getEntityTexture = TraitHandler.getEntityTexture(this)
+
     override def readFromNBT(compound: NBTTagCompound) {
         super.readFromNBT(compound)
         soul = new Soul(compound)

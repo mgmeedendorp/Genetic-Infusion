@@ -33,6 +33,8 @@ class RenderClayGolem extends RenderEntity {
         val golem = entity.asInstanceOf[EntityClayGolem]
         if(golem.isTransformating)
             new ResourceLocation(Localizations.LocModelTextures + Localizations.Crystal)
+        else if(golem.isWaitingAfterTransformation)
+            new ResourceLocation(golem.getTransformationGoal.get.getEntityTexture)
         else
             new ResourceLocation(Localizations.LocModelTextures + Localizations.ClayGolem)
     }

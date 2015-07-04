@@ -51,6 +51,9 @@ class ModelClayGolem extends ModelBase {
             golem.currentRenderModel = Some(modelGolem)
             golem.firstRenderTick = false
         }
+        if(golem.isWaitingAfterTransformation) {
+            golem.currentRenderModel = golem.getTransformationGoalModel
+        }
 
         golem.currentRenderModel.get.render
 
@@ -60,8 +63,9 @@ class ModelClayGolem extends ModelBase {
     }
 
     def animateTransformation(golem: EntityClayGolem) {
-        val modelTo = golem.getTransformationGoalModel.get
+        var modelTo = golem.getTransformationGoalModel.get
+//        modelTo = new Model(ModelPart.getModelPartsFromModel(new ModelZombie(), null))
 
-        golem.currentRenderModel = Some(UtilModel.morphModel(modelGolem, modelTo, golem.getMaxTranformationTimer, golem.getTransformationTimer))
+        golem.currentRenderModel = Some(UtilModel.morphModel(modelGolem, modelTo, golem.getMaxTransformationTimer, golem.getTransformationTimer))
     }
 }

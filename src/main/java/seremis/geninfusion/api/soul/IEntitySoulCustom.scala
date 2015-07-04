@@ -241,4 +241,6 @@ trait IEntitySoulCustom extends IRangedAttackMob {
      * @param soulPreserved Whether the soul of this entity will be preserved.
      */
     def setSoulPreserved(soulPreserved: Boolean)
+
+    def getEntityTexture: String
 }

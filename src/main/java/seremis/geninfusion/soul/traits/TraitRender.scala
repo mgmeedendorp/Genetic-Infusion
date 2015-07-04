@@ -83,9 +83,8 @@ class TraitRender extends Trait {
                 GL11.glRotatef(-20.0F, -1.0F, 0.0F, 0.0F)
                 GL11.glScalef(f1, f1, f1)
             }
-            if(!living.isDead && AnimationCache.getModelArms(entity) != null &&
-                AnimationCache.getModelArms(entity).length > 0) {
-                val rightArm = AnimationCache.getModelArms(entity)(0)
+            if(!living.isDead && AnimationCache.getModelArms(entity) != null && AnimationCache.getModelArms(entity).getOrElse(new Array[ModelPart](0)).length > 0) {
+                val rightArm = AnimationCache.getModelArms(entity).get(0)
                 rightArm.postRender(0.0625F)
                 GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F)
                 val customRenderer = MinecraftForgeClient.getItemRenderer(itemstack, IItemRenderer.ItemRenderType.EQUIPPED)

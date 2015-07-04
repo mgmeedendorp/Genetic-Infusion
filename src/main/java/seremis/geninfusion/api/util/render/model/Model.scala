@@ -8,7 +8,7 @@ class Model(modelParts: Array[ModelPart]) {
 
     lazy val leftArms = AnimationCache.getModelLeftArms(modelParts)
     lazy val rightArms = AnimationCache.getModelRightArms(modelParts)
-    lazy val arms = leftArms ++ rightArms
+    lazy val arms = AnimationCache.getModelArms(modelParts)
 
     lazy val leftLegs = AnimationCache.getModelLeftLegs(modelParts)
     lazy val rightLegs = AnimationCache.getModelRightLegs(modelParts)
@@ -23,12 +23,16 @@ class Model(modelParts: Array[ModelPart]) {
     lazy val body = AnimationCache.getModelBody(modelParts)
 
     private var unrecognizedList: ListBuffer[ModelPart] = ListBuffer()
+    var isUnrecognizedPopulated = false
 
-//    for(part <- modelParts if !arms.contains(part) && !legs.contains(part) && !wings.contains(part) && !head.contains(part) && body != part) {
-//        unrecognizedList += part
-//    }
-
-    lazy val unrecognized: Array[ModelPart] = unrecognizedList.to[Array]
+    def unrecognized: Array[ModelPart] = {
+        if(!isUnrecognizedPopulated) {
+            for(part <- modelParts if !arms.exists(arms => arms.contains(part)) && !legs.contains(part) && !wings.contains(part) && !head.contains(part) && body != part) {
+                unrecognizedList += part
+            }
+        }
+        unrecognizedList.to[Array]
+    }
 
     def render(scale: Float) {
         for(part <- modelParts)

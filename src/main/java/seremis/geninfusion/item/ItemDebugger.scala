@@ -54,6 +54,10 @@ class ItemDebugger extends GIItem() {
         }
         if (stack.getMetadata == 3) {
             world.spawnEntityInWorld(new EntityLightningBolt(world, x, y, z))
+            world.spawnEntityInWorld(new EntityLightningBolt(world, x, y, z))
+            world.spawnEntityInWorld(new EntityLightningBolt(world, x, y, z))
+            world.spawnEntityInWorld(new EntityLightningBolt(world, x, y, z))
+            world.spawnEntityInWorld(new EntityLightningBolt(world, x, y, z))
         }
         true
     }
