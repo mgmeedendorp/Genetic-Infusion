@@ -125,7 +125,6 @@ class GIEventHandler {
                     world.setBlock(x, y - 1, z - 1, Blocks.air)
                 }
 
-
                 world.spawnEntityInWorld(entity)
             }
         }

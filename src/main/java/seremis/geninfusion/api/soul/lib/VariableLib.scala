@@ -7,6 +7,8 @@ package seremis.geninfusion.api.soul.lib
  */
 object VariableLib {
 
+    var obfuscated = false
+
     final val EntityIsJumping = "isJumping"
     final val EntityMoveStrafing = "moveStrafing"
     final val EntityMoveForward = "moveForward"

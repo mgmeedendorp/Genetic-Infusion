@@ -9,7 +9,7 @@ import net.minecraft.entity.{Entity, EntityList, EntityLiving}
 import net.minecraft.init.Blocks
 import net.minecraft.item.{ItemStack, Item}
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.DamageSource
+import net.minecraft.util.{AxisAlignedBB, DamageSource}
 import net.minecraft.world.World
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
@@ -20,6 +20,7 @@ import seremis.geninfusion.util.{UtilBlock, UtilNBT}
 class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEntityAdditionalSpawnData {
     setSize(1.4F, 2.9F)
     preventEntitySpawning = true
+
 
     private var startTransformation = false
     private var transformationTimer = 0
@@ -204,4 +205,8 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
     def getClayBlockAtCreation(position: Int): Block = Block.getBlockFromItem(clayAtCreation(position).getItem)
 
     def getClayMetaAtCreation(position: Int): Int = clayAtCreation(position).getMetadata
+
+    override def getCollisionBox(entity: Entity): AxisAlignedBB = boundingBox
+
+    override def getBoundingBox(): AxisAlignedBB = boundingBox
 }
