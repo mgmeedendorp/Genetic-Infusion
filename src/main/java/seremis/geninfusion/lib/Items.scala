@@ -1,8 +1,6 @@
 package seremis.geninfusion.lib
 
 object Items {
-    final val TitaniumIngotName = "ingotTitanium"
-
     final val DebuggerName = "debugger"
     final val Debugger0Name = "debugger0"
     final val Debugger1Name = "debugger1"

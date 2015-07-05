@@ -2,12 +2,17 @@ package seremis.geninfusion.handler
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent
 import net.minecraft.entity.EntityLiving
+import net.minecraft.init.Blocks
+import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
+import net.minecraft.world.World
 import net.minecraftforge.event.entity.EntityJoinWorldEvent
 import net.minecraftforge.event.entity.living.LivingDeathEvent
+import net.minecraftforge.event.world.BlockEvent.PlaceEvent
 import net.minecraftforge.event.world.WorldEvent
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoulReceptor, SoulHelper}
 import seremis.geninfusion.api.util.vector.Coordinate3D
+import seremis.geninfusion.entity.EntityClayGolem
 import seremis.geninfusion.lib.DefaultProps
 import seremis.geninfusion.soul.entity.{EntitySoulCustom, EntitySoulCustomCreature}
 import seremis.geninfusion.world.GIWorldSavedData
@@ -81,5 +86,56 @@ class GIEventHandler {
                     living.asInstanceOf[IEntitySoulCustom].setSoulPreserved(true)
             })
         }
+    }
+
+    @SubscribeEvent
+    def placeBlockEvent(event: PlaceEvent) {
+        if(!event.player.worldObj.isRemote && event.placedBlock == Blocks.pumpkin) {
+            val world = event.player.worldObj
+
+            val x = event.blockSnapshot.x
+            val y = event.blockSnapshot.y
+            val z = event.blockSnapshot.z
+
+            val clay1 = isBlockHardenedClay(world, x, y - 1, z)
+            val clay2 = isBlockHardenedClay(world, x - 1, y - 1, z)
+            val clay25 = isBlockHardenedClay(world, x, y - 1, z - 1)
+            val clay3 = isBlockHardenedClay(world, x + 1, y - 1, z)
+            val clay35 = isBlockHardenedClay(world, x, y -1, z + 1)
+            val clay4 = isBlockHardenedClay(world, x, y -2, z)
+
+            if(clay1 && ((clay2 && clay3) ^ (clay25 && clay35)) && clay4) {
+                val entity = new EntityClayGolem(world)
+                entity.setPosition(x + 0.5F, y - 2, z + 0.5F)
+                entity.setClayAtCreation(0, getStackAtPosition(world, x, y - 2, z))
+                entity.setClayAtCreation(1, getStackAtPosition(world, x, y - 1, z))
+
+                world.setBlock(x, y, z, Blocks.air)
+                world.setBlock(x, y - 1, z, Blocks.air)
+                world.setBlock(x, y - 2, z, Blocks.air)
+                if(clay2 && clay3) {
+                    entity.setClayAtCreation(2, getStackAtPosition(world, x + 1, y - 1, z))
+                    entity.setClayAtCreation(3, getStackAtPosition(world, x - 1, y - 1, z))
+                    world.setBlock(x - 1, y - 1, z, Blocks.air)
+                    world.setBlock(x + 1, y - 1, z, Blocks.air)
+                } else if(clay25 && clay35) {
+                    entity.setClayAtCreation(2, getStackAtPosition(world, x, y - 1, z + 1))
+                    entity.setClayAtCreation(3, getStackAtPosition(world, x, y - 1, z - 1))
+                    world.setBlock(x, y - 1, z + 1, Blocks.air)
+                    world.setBlock(x, y - 1, z - 1, Blocks.air)
+                }
+
+
+                world.spawnEntityInWorld(entity)
+            }
+        }
+    }
+
+    def isBlockHardenedClay(world: World, x: Int, y: Int, z: Int): Boolean = {
+        world.getBlock(x, y, z) == Blocks.hardened_clay || world.getBlock(x, y, z) == Blocks.stained_hardened_clay
+    }
+
+    def getStackAtPosition(world: World, x: Int, y: Int, z: Int): ItemStack = {
+        new ItemStack(world.getBlock(x, y, z), 1, world.getBlockMetadata(x, y, z))
     }
 }

@@ -24,7 +24,7 @@ object RecipeHelper {
     }
 
     def initSmelting() {
-        addSmelting(ModBlocks.oreTitanium, new ItemStack(ModItems.titaniumIngot), 0.4f)
+
     }
 
 

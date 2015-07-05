@@ -5,8 +5,6 @@ import java.util.Random
 import cpw.mods.fml.common.IWorldGenerator
 import net.minecraft.world.World
 import net.minecraft.world.chunk.IChunkProvider
-import net.minecraft.world.gen.feature.WorldGenMinable
-import seremis.geninfusion.block.ModBlocks
 
 class GIWorldGenerator extends IWorldGenerator {
 
@@ -19,13 +17,7 @@ class GIWorldGenerator extends IWorldGenerator {
     }
 
     private def generateSurface(world: World, random: Random, blockX: Int, blockZ: Int) {
-        for (i <- 0 until 7) {
-            val xCoord = blockX + random.nextInt(1)
-            val yCoord = random.nextInt(60)
-            val zCoord = blockZ + random.nextInt(1)
 
-            new WorldGenMinable(ModBlocks.oreTitanium, 10).generate(world, random, xCoord, yCoord, zCoord)
-        }
     }
 
     private def generateNether(world: World, random: Random, blockX: Int, blockZ: Int) {}

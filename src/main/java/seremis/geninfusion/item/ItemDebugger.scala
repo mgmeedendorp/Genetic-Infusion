@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack
 import net.minecraft.world.World
 import seremis.geninfusion.GeneticInfusion
 import seremis.geninfusion.api.soul.SoulHelper
-import seremis.geninfusion.entity.EntityClayGolem
 import seremis.geninfusion.lib.Items
 
 class ItemDebugger extends GIItem() {
@@ -27,9 +26,7 @@ class ItemDebugger extends GIItem() {
     override def onItemUse(stack: ItemStack, player: EntityPlayer, world: World, x: Int, y: Int, z: Int, side: Int, hitX: Float, hitY: Float, hitZ: Float): Boolean = {
         if (GeneticInfusion.commonProxy.isServerWorld(world)) {
             if (stack.getMetadata == 0) {
-                val entity = new EntityClayGolem(world)
-                entity.setPosition(x + 0.5F, y + 1, z + 0.5F)
-                world.spawnEntityInWorld(entity)
+
             }
             if (stack.getMetadata == 1) {
                 try {

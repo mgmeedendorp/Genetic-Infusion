@@ -6,13 +6,16 @@ import io.netty.buffer.ByteBuf
 import net.minecraft.block.Block
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.{Entity, EntityList, EntityLiving}
+import net.minecraft.init.Blocks
+import net.minecraft.item.{ItemStack, Item}
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.DamageSource
 import net.minecraft.world.World
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.api.util.render.model.Model
 import seremis.geninfusion.block.BlockCrystal
-import seremis.geninfusion.util.UtilNBT
+import seremis.geninfusion.util.{UtilBlock, UtilNBT}
 
 class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEntityAdditionalSpawnData {
     setSize(1.4F, 2.9F)
@@ -29,6 +32,8 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
 
     var firstRenderTick = true
     var currentRenderModel: Option[Model] = None
+
+    var clayAtCreation = new Array[ItemStack](4)
 
     override def canBeCollidedWith: Boolean = true
 
@@ -163,4 +168,40 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
     def getMaxTransformationTimer: Int = maxTransformationTimer
 
     def isWaitingAfterTransformation: Boolean = transformationTimer == maxTransformationTimer && waitAfterTransformation <= maxWaitAfterTransformation
+
+    override def attackEntityFrom(source: DamageSource, amount: Float): Boolean = {
+        if(!world.isRemote && !isDead) {
+            setBeenAttacked()
+
+            val x = (posX - (boundingBox.maxX - boundingBox.minX) / 2).toInt
+            val y = posY.toInt
+            val z = (posZ - (boundingBox.maxZ - boundingBox.minZ) / 2).toInt
+
+            if(blockIsNoTile(x, y, z))
+                world.setBlock(x, y, z, getClayBlockAtCreation(0), getClayMetaAtCreation(0), 3)
+            if(blockIsNoTile(x, y + 1, z))
+                world.setBlock(x, y + 1, z, getClayBlockAtCreation(1), getClayMetaAtCreation(1), 3)
+            if(blockIsNoTile(x + 1, y + 1, z))
+                world.setBlock(x + 1, y + 1, z, getClayBlockAtCreation(2), getClayMetaAtCreation(2), 3)
+            if(blockIsNoTile(x - 1, y + 1, z))
+                world.setBlock(x - 1, y + 1, z, getClayBlockAtCreation(3), getClayMetaAtCreation(3), 3)
+            UtilBlock.dropItemInWorld(x, y + 2, z, world, Item.getItemFromBlock(Blocks.pumpkin), 1)
+
+            setDead()
+        }
+
+        true
+    }
+
+    def blockIsNoTile(x: Int, y: Int, z: Int): Boolean = {
+        !world.getBlock(x, y, z).hasTileEntity(world.getBlockMetadata(x, y, z))
+    }
+
+    def setClayAtCreation(position: Int, stack: ItemStack) {
+        clayAtCreation(position) = stack
+    }
+
+    def getClayBlockAtCreation(position: Int): Block = Block.getBlockFromItem(clayAtCreation(position).getItem)
+
+    def getClayMetaAtCreation(position: Int): Int = clayAtCreation(position).getMetadata
 }
