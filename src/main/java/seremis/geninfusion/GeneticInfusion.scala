@@ -12,7 +12,7 @@ import seremis.geninfusion.core.proxy.CommonProxy
 import seremis.geninfusion.core.{GIConfig, GICreativeTab}
 import seremis.geninfusion.entity.ModEntity
 import seremis.geninfusion.handler.GIEventHandler
-import seremis.geninfusion.helper.RecipeHelper
+import seremis.geninfusion.helper.{MCPNames, RecipeHelper}
 import seremis.geninfusion.item.ModItems
 import seremis.geninfusion.lib.{DefaultProps, Localizations}
 import seremis.geninfusion.network.ModPackets
@@ -36,6 +36,8 @@ object GeneticInfusion {
     def preInit(event: FMLPreInitializationEvent): Unit = {
         logger = event.getModLog
         GIConfig.configure(new Configuration(event.getSuggestedConfigurationFile))
+
+        MCPNames.init()
 
         SoulHelper.geneRegistry = new GeneRegistry
         SoulHelper.traitRegistry = new TraitRegistry

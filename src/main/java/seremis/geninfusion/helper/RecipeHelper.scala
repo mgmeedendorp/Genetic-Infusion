@@ -11,7 +11,6 @@ import net.minecraftforge.oredict.RecipeSorter
 import net.minecraftforge.oredict.RecipeSorter.Category
 import seremis.geninfusion.api.soul.SoulHelper
 import seremis.geninfusion.block.{BlockCrystal, ModBlocks}
-import seremis.geninfusion.item.ModItems
 import seremis.geninfusion.lib.DefaultProps
 
 import scala.collection.mutable.ListBuffer
@@ -29,7 +28,6 @@ object RecipeHelper {
 
 
     final val RecipeCrystal = new GIRecipe {
-
         override def matches(inventory : InventoryCrafting, world : World): Boolean = {
             var crystals = 0
 

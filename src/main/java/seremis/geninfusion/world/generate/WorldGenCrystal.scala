@@ -20,7 +20,6 @@ class WorldGenCrystal extends IWorldGen {
         if(world.getBlock(x, yCoord - 1, z) == Blocks.stone) {
             if(!world.canBlockSeeTheSky(x, yCoord, z)) {
                 world.setBlock(x, yCoord, z, ModBlocks.crystal)
-                println("check! " + x + " " + yCoord + " " + z)
                 return true
             }
         }

@@ -105,8 +105,8 @@ class TraitMovement extends Trait {
 
         living.worldObj.theProfiler.endSection()
 
-        if(entity.getInteger(EntityJumpTick) > 0) {
-            entity.setInteger(EntityJumpTick, entity.getInteger(EntityJumpTick) - 1)
+        if(entity.getInteger(EntityJumpTicks) > 0) {
+            entity.setInteger(EntityJumpTicks, entity.getInteger(EntityJumpTicks) - 1)
         }
 
         var newPosRotationIncrements = entity.getInteger(EntityNewPosRotationIncrements)
@@ -121,7 +121,7 @@ class TraitMovement extends Trait {
             val deltaRotationYaw = MathHelper.wrapAngleTo180_double(entity.getDouble(EntityNewRotationYaw) - living.rotationYaw.toDouble)
 
             living.rotationYaw = (living.rotationYaw.toDouble + deltaRotationYaw / newPosRotationIncrements.toDouble).toFloat
-            living.rotationPitch = (living.rotationPitch.toDouble + (entity.getDouble(EntityNewRotationPitch) - living.rotationPitch.toDouble) / newPosRotationIncrements.toDouble).toFloat
+            living.rotationPitch = (living.rotationPitch.toDouble + (entity.getFloat(EntityNewRotationPitch) - living.rotationPitch.toDouble) / newPosRotationIncrements.toDouble).toFloat
             newPosRotationIncrements -= 1
             living.setPosition(posX, posY, posZ)
             entity.setRotation(living.rotationYaw, living.rotationPitch)
@@ -148,15 +148,15 @@ class TraitMovement extends Trait {
 
         if(entity.getBoolean(EntityIsJumping)) {
             if(!living.isInWater && !living.handleLavaMovement()) {
-                if(living.onGround && entity.getInteger(EntityJumpTick) == 0) {
+                if(living.onGround && entity.getInteger(EntityJumpTicks) == 0) {
                     entity.jump
-                    entity.setInteger(EntityJumpTick, 10)
+                    entity.setInteger(EntityJumpTicks, 10)
                 }
             } else {
                 living.motionY += 0.03999999910593033D
             }
         } else {
-            entity.setInteger(EntityJumpTick, 0)
+            entity.setInteger(EntityJumpTicks, 0)
         }
 
         living.worldObj.theProfiler.endSection()

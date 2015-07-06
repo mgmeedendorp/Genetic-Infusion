@@ -66,6 +66,12 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
         compound.setInteger("transformationTimer", transformationTimer)
         compound.setBoolean("startTransformation", startTransformation)
 
+        if(clayAtCreation.nonEmpty) {
+            for(i <- clayAtCreation.indices) {
+                compound.setTag("clayAtCreation." + i, clayAtCreation(i).writeToNBT(new NBTTagCompound()))
+            }
+        }
+
         val entityCompound = new NBTTagCompound
         transformationGoal.foreach(goal => {
             goal.asInstanceOf[EntityLiving].writeToNBT(entityCompound)
@@ -77,11 +83,10 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
         transformationTimer = compound.getInteger("transformationTimer")
         startTransformation = compound.getBoolean("startTransformation")
 
-        if(compound.hasKey("transformationGoal")) {
-            val entityCompound = compound.getCompoundTag("transformationGoal")
-            setTransformationGoal(Some(EntityList.createEntityFromNBT(entityCompound, worldObj).asInstanceOf[IEntitySoulCustom]))
-        } else {
-            setTransformationGoal(None)
+        if(compound.hasKey("clayAtCreation.0")) {
+            for(i <- clayAtCreation.indices) {
+                clayAtCreation(i) = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("clayAtCreation." + i))
+            }
         }
     }
 
@@ -119,15 +124,17 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
             entity.asInstanceOf[EntityLiving].writeToNBTOptional(entCompound)
 
             sendEntityDataToClient(0, UtilNBT.compoundToByteArray(entCompound).getOrElse(Array(0.toByte)))
-
             setTransformationGoal(Some(entity))
 
-            val stack = player.getCurrentEquippedItem
-            if(stack.stackSize > 1) {
+            var stack = player.getCurrentEquippedItem
+
+            if(stack.stackSize > 1)
                 stack.stackSize -= 1
-            } else {
-                player.setCurrentItemOrArmor(0, null)
-            }
+            else
+                stack = null
+
+            player.setCurrentItemOrArmor(0, stack)
+            player.inventoryContainer.detectAndSendChanges()
 
             return true
         }
@@ -171,7 +178,7 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
     def isWaitingAfterTransformation: Boolean = transformationTimer == maxTransformationTimer && waitAfterTransformation <= maxWaitAfterTransformation
 
     override def attackEntityFrom(source: DamageSource, amount: Float): Boolean = {
-        if(!world.isRemote && !isDead) {
+        if(!world.isRemote && !isDead && !isTransformating) {
             setBeenAttacked()
 
             val x = (posX - (boundingBox.maxX - boundingBox.minX) / 2).toInt

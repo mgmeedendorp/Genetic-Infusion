@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.world.World
 import seremis.geninfusion.GeneticInfusion
 import seremis.geninfusion.api.soul.SoulHelper
+import seremis.geninfusion.helper.MCPNames
 import seremis.geninfusion.lib.Items
 
 class ItemDebugger extends GIItem() {
@@ -26,7 +27,7 @@ class ItemDebugger extends GIItem() {
     override def onItemUse(stack: ItemStack, player: EntityPlayer, world: World, x: Int, y: Int, z: Int, side: Int, hitX: Float, hitY: Float, hitZ: Float): Boolean = {
         if (GeneticInfusion.commonProxy.isServerWorld(world)) {
             if (stack.getMetadata == 0) {
-
+                println(MCPNames.mappingsDir)
             }
             if (stack.getMetadata == 1) {
                 try {
