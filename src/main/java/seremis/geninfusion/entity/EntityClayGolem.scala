@@ -111,6 +111,16 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
             worldObj.spawnEntityInWorld(transformationGoal.get.asInstanceOf[EntityLiving])
             setDead()
         }
+
+        if(!worldObj.isRemote)
+            motionY -= 0.03999999910593033D
+
+
+        motionX *= 0.98D
+        motionY *= 0.98D
+        motionZ *= 0.98D
+
+        moveEntity(motionX, motionY, motionZ)
     }
 
     override def interactFirst(player: EntityPlayer): Boolean = {
@@ -181,9 +191,9 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
         if(!world.isRemote && !isDead && !isTransformating) {
             setBeenAttacked()
 
-            val x = (posX - (boundingBox.maxX - boundingBox.minX) / 2).toInt
+            val x = posX.toInt
             val y = posY.toInt
-            val z = (posZ - (boundingBox.maxZ - boundingBox.minZ) / 2).toInt
+            val z = posZ.toInt
 
             if(blockIsNoTile(x, y, z))
                 world.setBlock(x, y, z, getClayBlockAtCreation(0), getClayMetaAtCreation(0), 3)
@@ -215,5 +225,11 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
 
     override def getCollisionBox(entity: Entity): AxisAlignedBB = boundingBox
 
-    override def getBoundingBox(): AxisAlignedBB = boundingBox
+    override def getBoundingBox: AxisAlignedBB = boundingBox
+
+    @SideOnly(Side.CLIENT)
+    override def setPositionAndRotation2(x: Double, y: Double, z: Double, yaw: Float, pitch: Float, rotationIncrements: Int) {
+        setPosition(x, y, z)
+        setRotation(yaw, pitch)
+    }
 }
