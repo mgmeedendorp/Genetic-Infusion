@@ -2,8 +2,6 @@ package seremis.geninfusion.gui.util
 
 import org.lwjgl.opengl.GL11
 import seremis.geninfusion.gui.GIGui
-import seremis.geninfusion.helper.GIRenderHelper
-import seremis.geninfusion.lib.Localizations
 
 class GuiLine(x: Int, y: Int, w: Int, h: Int, u: Int, v: Int) extends GuiRectangle(x, y, w, h, u, v) {
 
@@ -26,7 +24,7 @@ class GuiLine(x: Int, y: Int, w: Int, h: Int, u: Int, v: Int) extends GuiRectang
 
         GL11.glColor3f(red, green, blue)
 
-        GIRenderHelper.bindTexture(Localizations.LocModelTextures + Localizations.Blank)
+        GL11.glDisable(GL11.GL_TEXTURE_2D)
 
         GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, 10497.0F)
         GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, 10497.0F)
@@ -48,6 +46,8 @@ class GuiLine(x: Int, y: Int, w: Int, h: Int, u: Int, v: Int) extends GuiRectang
         GL11.glVertex2f(w, h)
         GL11.glVertex2f(0, h)
         GL11.glEnd()
+
+        GL11.glEnable(GL11.GL_TEXTURE_2D)
 
         GL11.glDisable(GL11.GL_BLEND)
 

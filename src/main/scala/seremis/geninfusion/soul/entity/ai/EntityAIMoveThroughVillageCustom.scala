@@ -22,8 +22,8 @@ class EntityAIMoveThroughVillageCustom(var entity: IEntitySoulCustom, var moveSp
     override def shouldExecute(): Boolean = {
         resizeDoorList()
 
-        if (!(isNocturnal && entity.getWorld.isDaytime)) {
-            val village = entity.getWorld.villageCollectionObj.findNearestVillage(MathHelper.floor_double(this.living.posX),
+        if (!(isNocturnal && entity.getWorld_I.isDaytime)) {
+            val village = entity.getWorld_I.villageCollectionObj.findNearestVillage(MathHelper.floor_double(this.living.posX),
                 MathHelper.floor_double(this.living.posY), MathHelper.floor_double(this.living.posZ), 0)
             if (village != null) {
                 doorInfo = findNearestDoor(village)

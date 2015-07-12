@@ -26,7 +26,7 @@ class EntityAIHurtByTargetCustom(entity: IEntitySoulCustom, callForHelp: Boolean
 
         if (this.entityCallsForHelp) {
             val followRange = getFollowRange
-            val list = collectionAsScalaIterable(entity.getWorld.getEntitiesWithinAABB(classOf[EntityLiving], AxisAlignedBB.getBoundingBox(living.posX, living.posY, living.posZ, living.posX + 1.0D, living.posY + 1.0D, living.posZ + 1.0D).expand(followRange, 10.0D, followRange)).asInstanceOf[util.ArrayList[Entity]])
+            val list = collectionAsScalaIterable(entity.getWorld_I.getEntitiesWithinAABB(classOf[EntityLiving], AxisAlignedBB.getBoundingBox(living.posX, living.posY, living.posZ, living.posX + 1.0D, living.posY + 1.0D, living.posZ + 1.0D).expand(followRange, 10.0D, followRange)).asInstanceOf[util.ArrayList[Entity]])
 
             for (ent <- list if living != ent && living.getAttackTarget == null && !living.isOnSameTeam(living.getAITarget)) {
                 living.setAttackTarget(living.getAITarget)

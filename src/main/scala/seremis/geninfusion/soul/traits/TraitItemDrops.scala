@@ -32,7 +32,7 @@ class TraitItemDrops extends Trait {
             killer.onKillEntity(living)
         }
 
-        if(GeneticInfusion.commonProxy.isServerWorld(entity.getWorld)) {
+        if(GeneticInfusion.commonProxy.isServerWorld(entity.getWorld_I)) {
             var lootingLevel = 0
 
             if(entity.isInstanceOf[EntityPlayer]) {
@@ -48,11 +48,11 @@ class TraitItemDrops extends Trait {
             var rareDropValue = 0
             val recentlyHit = entity.getInteger(EntityRecentlyHit)
             if(!entity.asInstanceOf[EntityLiving].isChild &&
-                entity.getWorld.getGameRules.getGameRuleBooleanValue("doMobLoot")) {
+                entity.getWorld_I.getGameRules.getGameRuleBooleanValue("doMobLoot")) {
                 this.dropFewItems(entity, recentlyHit > 0, lootingLevel)
                 this.dropEquipment(entity, recentlyHit > 0, lootingLevel)
                 if(recentlyHit > 0) {
-                    rareDropValue = entity.getRandom.nextInt(200) - lootingLevel
+                    rareDropValue = entity.getRandom_I.nextInt(200) - lootingLevel
                     if(rareDropValue < 5) {
                         this.dropRareDrop(entity, rareDropValue <= 0)
                     }
@@ -63,7 +63,7 @@ class TraitItemDrops extends Trait {
 
             if(!ForgeHooks.onLivingDrops(entity.asInstanceOf[EntityLiving], source, capturedDrops, lootingLevel, recentlyHit > 0, rareDropValue)) {
                 for(item <- capturedDrops.toArray(new Array[EntityItem](capturedDrops.size()))) {
-                    entity.getWorld.spawnEntityInWorld(item)
+                    entity.getWorld_I.spawnEntityInWorld(item)
                 }
             }
         }
@@ -75,7 +75,7 @@ class TraitItemDrops extends Trait {
             val drops = SoulHelper.geneRegistry.getValueFromAllele[Array[ItemStack]](entity, Genes.GeneKilledBySpecificEntityDrops)
 
             if(specificEntityClass != null && drops != null && source.getEntity != null && source.getEntity.getClass == specificEntityClass) {
-                living.entityDropItem(drops(entity.getRandom.nextInt(drops.length)), 0.0F)
+                living.entityDropItem(drops(entity.getRandom_I.nextInt(drops.length)), 0.0F)
             }
         }
     }
@@ -84,10 +84,10 @@ class TraitItemDrops extends Trait {
         val drops = SoulHelper.geneRegistry.getValueFromAllele[Array[ItemStack]](entity, Genes.GeneItemDrops)
 
         if(drops.length != 0) {
-            var amount = entity.getRandom.nextInt(3)
+            var amount = entity.getRandom_I.nextInt(3)
 
             if(lootingLevel > 0) {
-                amount += entity.getRandom.nextInt(lootingLevel + 1)
+                amount += entity.getRandom_I.nextInt(lootingLevel + 1)
             }
 
             for(k <- 0 until amount; stack <- drops) {
@@ -105,10 +105,10 @@ class TraitItemDrops extends Trait {
             val dropChance = equipmentDropChances(j)
             val flag1 = dropChance > 1.0F
 
-            if(itemstack != null && itemstack.getItem != null && (recentlyHit || flag1) && entity.getRandom.nextFloat() - lootingLevel.toFloat * 0.01F < dropChance) {
+            if(itemstack != null && itemstack.getItem != null && (recentlyHit || flag1) && entity.getRandom_I.nextFloat() - lootingLevel.toFloat * 0.01F < dropChance) {
                 if(!flag1 && itemstack.isItemStackDamageable) {
                     val maxStackDamage = Math.max(itemstack.getMaxDurability - 25, 1)
-                    var stackDamage = itemstack.getMaxDurability - entity.getRandom.nextInt(entity.getRandom.nextInt(maxStackDamage) + 1)
+                    var stackDamage = itemstack.getMaxDurability - entity.getRandom_I.nextInt(entity.getRandom_I.nextInt(maxStackDamage) + 1)
 
                     if(stackDamage > maxStackDamage) {
                         stackDamage = maxStackDamage
@@ -129,7 +129,7 @@ class TraitItemDrops extends Trait {
         val dropChances = entity.getFloatArray(EntityEquipmentDropChances)
 
         if(drops != null && drops.length != 0) {
-            for(i <- 0 until drops.length if entity.getRandom.nextInt((dropChances(i) * 100F).toInt) == 0) {
+            for(i <- 0 until drops.length if entity.getRandom_I.nextInt((dropChances(i) * 100F).toInt) == 0) {
                 entity.asInstanceOf[EntityLiving].entityDropItem(drops(i), 0.0F)
             }
         }

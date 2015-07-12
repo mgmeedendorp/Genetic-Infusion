@@ -12,13 +12,13 @@ class TraitTexture extends Trait {
         try {
             SoulHelper.geneRegistry.getValueFromAllele[String](entity, Genes.GeneTexture)
         } catch {
-            case e: NullPointerException => Localizations.LocModelTextures + Localizations.Blank
+            case e: NullPointerException => Localizations.LocModelTextures + Localizations.ClayGolemTransformation
         }
     }
 
     override def onDeath(entity: IEntitySoulCustom, source: DamageSource) {
         //TODO make some texture thingy to ensure no infinite textures
-        if(!entity.getWorld.isRemote && !entity.getSoulPreserved) {
+        if(!entity.getWorld_I.isRemote && !entity.getSoulPreserved_I) {
             GITextureHelper.deleteTexture(toResource(getEntityTexture(entity)))
             GITextureHelper.deleteTexture(toResource(SoulHelper.geneRegistry.getChromosomeFor(entity, Genes.GeneTexture).get.getRecessive.getAlleleData.asInstanceOf[String]))
         }

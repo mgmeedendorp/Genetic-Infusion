@@ -15,7 +15,7 @@ class EntityAIFleeSunCustom(var entity: IEntitySoulCustom, var moveSpeed: Double
     var shelterY: Double = 0.0D
     var shelterZ: Double = 0.0D
 
-    var world: World = entity.getWorld
+    var world: World = entity.getWorld_I
 
     override def shouldExecute(): Boolean = {
         if (!this.world.isDaytime) {
@@ -45,14 +45,14 @@ class EntityAIFleeSunCustom(var entity: IEntitySoulCustom, var moveSpeed: Double
     }
 
     private def findPossibleShelter(): Vec3 = {
-        val random = this.entity.getRandom
+        val random = this.entity.getRandom_I
 
         for (i <- 0 until 10) {
             val x = MathHelper.floor_double(living.posX + random.nextInt(20).toDouble - 10.0D)
             val y = MathHelper.floor_double(living.boundingBox.minY + random.nextInt(6).toDouble - 3.0D)
             val z = MathHelper.floor_double(living.posZ + random.nextInt(20).toDouble - 10.0D)
 
-            if (!world.canBlockSeeTheSky(x, y, z) && entity.getBlockPathWeight(x, y, z) < 0.0F) {
+            if (!world.canBlockSeeTheSky(x, y, z) && entity.getBlockPathWeight_I(x, y, z) < 0.0F) {
                 return Vec3.createVectorHelper(x.toDouble, y.toDouble, z.toDouble)
             }
         }

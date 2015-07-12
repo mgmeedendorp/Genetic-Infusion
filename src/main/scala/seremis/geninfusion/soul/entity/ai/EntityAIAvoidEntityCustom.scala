@@ -26,17 +26,17 @@ class EntityAIAvoidEntityCustom(var entity: IEntitySoulCustom, avoidClass: Class
 
     override def shouldExecute(): Boolean = {
         if (this.avoidClass == classOf[EntityPlayer]) {
-            if (SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneIsTameable) && entity.isTamed) {
+            if (SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneIsTameable) && entity.isTamed_I) {
                 return false
             }
 
-            closestAvoidEntity = entity.getWorld.getClosestPlayerToEntity(living, distanceFromEntity)
+            closestAvoidEntity = entity.getWorld_I.getClosestPlayerToEntity(living, distanceFromEntity)
 
             if (closestAvoidEntity == null) {
                 return false
             }
         } else {
-            val entities = entity.getWorld.selectEntitiesWithinAABB(avoidClass, living.boundingBox.expand(distanceFromEntity, 3.0D, distanceFromEntity), entitySelector)
+            val entities = entity.getWorld_I.selectEntitiesWithinAABB(avoidClass, living.boundingBox.expand(distanceFromEntity, 3.0D, distanceFromEntity), entitySelector)
 
             if (entities.isEmpty) {
                 return false

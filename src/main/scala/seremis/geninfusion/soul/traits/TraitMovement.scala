@@ -15,7 +15,7 @@ class TraitMovement extends Trait {
 
         living.prevSwingProgress = living.swingProgress
 
-        entity.getWorld.theProfiler.startSection("entityBaseTick")
+        entity.getWorld_I.theProfiler.startSection("entityBaseTick")
 
         if(living.ridingEntity != null && living.ridingEntity.isDead) {
             living.ridingEntity = null
@@ -71,7 +71,7 @@ class TraitMovement extends Trait {
             val posZ = MathHelper.floor_double(living.posZ)
             val block = living.worldObj.getBlock(posX, posY, posZ)
             if(block.getMaterial != Material.air) {
-                living.worldObj.spawnParticle("blockcrack_" + Block.getIdFromBlock(block) + "_" + living.worldObj.getBlockMetadata(posX, posY, posZ), living.posX + (entity.getRandom.nextFloat().toDouble - 0.5D) * living.width.toDouble, living.boundingBox.minY + 0.1D, living.posZ + (entity.getRandom.nextFloat().toDouble - 0.5D) * living.width.toDouble, -living.motionX * 4.0D, 1.5D, -living.motionZ * 4.0D)
+                living.worldObj.spawnParticle("blockcrack_" + Block.getIdFromBlock(block) + "_" + living.worldObj.getBlockMetadata(posX, posY, posZ), living.posX + (entity.getRandom_I.nextFloat().toDouble - 0.5D) * living.width.toDouble, living.boundingBox.minY + 0.1D, living.posZ + (entity.getRandom_I.nextFloat().toDouble - 0.5D) * living.width.toDouble, -living.motionX * 4.0D, 1.5D, -living.motionZ * 4.0D)
             }
         }
 
@@ -81,21 +81,21 @@ class TraitMovement extends Trait {
             living.setDead()
         }
 
-        entity.getWorld.theProfiler.endSection()
+        entity.getWorld_I.theProfiler.endSection()
 
         living.prevSwingProgress = living.swingProgress
 
         living.worldObj.theProfiler.startSection("livingEntityBaseTick")
 
         if(living.isEntityAlive && living.isEntityInsideOpaqueBlock) {
-            entity.attackEntityFrom(DamageSource.inWall, 1.0F)
+            entity.attackEntityFrom_I(DamageSource.inWall, 1.0F)
         }
 
         if(living.isImmuneToFire || living.worldObj.isRemote) {
             living.extinguish()
         }
 
-        entity.updatePotionEffects
+        entity.updatePotionEffects_I
 
         entity.setFloat(EntityPrevMovedDistance, entity.getFloat(EntityMovedDistance))
         living.prevRenderYawOffset = living.renderYawOffset
@@ -124,7 +124,7 @@ class TraitMovement extends Trait {
             living.rotationPitch = (living.rotationPitch.toDouble + (entity.getFloat(EntityNewRotationPitch) - living.rotationPitch.toDouble) / newPosRotationIncrements.toDouble).toFloat
             newPosRotationIncrements -= 1
             living.setPosition(posX, posY, posZ)
-            entity.setRotation(living.rotationYaw, living.rotationPitch)
+            entity.setRotation_I(living.rotationYaw, living.rotationPitch)
         } else if(living.isServerWorld) {
             living.motionX *= 0.98D
             living.motionY *= 0.98D
@@ -149,7 +149,7 @@ class TraitMovement extends Trait {
         if(entity.getBoolean(EntityIsJumping)) {
             if(!living.isInWater && !living.handleLavaMovement()) {
                 if(living.onGround && entity.getInteger(EntityJumpTicks) == 0) {
-                    entity.jump
+                    entity.jump_I
                     entity.setInteger(EntityJumpTicks, 10)
                 }
             } else {
@@ -174,7 +174,7 @@ class TraitMovement extends Trait {
         living.worldObj.theProfiler.startSection("push")
 
         if(!living.worldObj.isRemote) {
-            entity.collideWithNearbyEntities
+            entity.collideWithNearbyEntities_I
         }
 
         living.worldObj.theProfiler.endSection()

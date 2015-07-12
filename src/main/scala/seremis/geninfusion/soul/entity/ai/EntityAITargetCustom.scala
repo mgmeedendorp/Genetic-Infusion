@@ -58,7 +58,7 @@ abstract class EntityAITargetCustom(var entity: IEntitySoulCustom, checkSight: B
     protected def isSuitableTarget(target: EntityLivingBase, targetInvincible: Boolean): Boolean = {
         if (target != null && target != living && target.isEntityAlive && living.canAttackClass(target.getClass) && !isTargetOwnerOrPet(target)) {
             if (!(target.isInstanceOf[EntityPlayer] && targetInvincible && target.asInstanceOf[EntityPlayer].capabilities.disableDamage)) {
-                if (entity.isWithinHomeDistance(MathHelper.floor_double(target.posX), MathHelper.floor_double(target.posY), MathHelper.floor_double(target.posZ))) {
+                if (entity.isWithinHomeDistance_I(MathHelper.floor_double(target.posX), MathHelper.floor_double(target.posY), MathHelper.floor_double(target.posZ))) {
                     if (checkSight && !living.getEntitySenses.canSee(target)) {
                         return false
                     } else {

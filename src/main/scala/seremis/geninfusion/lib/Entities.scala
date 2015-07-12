@@ -1,7 +1,7 @@
 package seremis.geninfusion.lib
 
 object Entities {
-    final val ClayGolemName = "soul"
+    final val ClayGolemName = "clayGolem"
     final val SoulEntityName = "soulCustom"
     final val SoulEntityCreatureName = "soulCustomCreature"
 

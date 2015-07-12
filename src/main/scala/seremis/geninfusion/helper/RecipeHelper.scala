@@ -19,7 +19,7 @@ object RecipeHelper {
 
     def initRecipes() {
         addRecipe(RecipeCrystal)
-        RecipeSorter.register(DefaultProps.ID + ".recipe.crystal", classOf[GIRecipe], Category.SHAPELESS, "after:minecraft:shapeless")
+        RecipeSorter.register(DefaultProps.ID + ".recipe.crystal", classOf[RecipeCrystal], Category.SHAPELESS, "after:minecraft:shapeless")
     }
 
     def initSmelting() {
@@ -27,7 +27,7 @@ object RecipeHelper {
     }
 
 
-    final val RecipeCrystal = new GIRecipe {
+    final val RecipeCrystal = new RecipeCrystal {
         override def matches(inventory : InventoryCrafting, world : World): Boolean = {
             var crystals = 0
 
@@ -40,7 +40,7 @@ object RecipeHelper {
                     return false
             }
 
-            return crystals == 2
+            crystals == 2
         }
 
         override def getRecipeOutput: ItemStack = new ItemStack(ModBlocks.crystal)
@@ -72,5 +72,5 @@ object RecipeHelper {
         }
     }
 
-    abstract class GIRecipe extends IRecipe
+    abstract class RecipeCrystal extends IRecipe
 }

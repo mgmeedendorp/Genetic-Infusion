@@ -12,7 +12,7 @@ import seremis.geninfusion.soul.TraitHandler
 class RenderEntitySoulCustom extends RenderLiving(SoulHelper.entityModel, 0.3F) {
 
     override def renderLivingAt(entity: EntityLivingBase, x: Double, y: Double, z: Double) {
-        entity.asInstanceOf[IEntitySoulCustom].setEntityRender(this)
+        entity.asInstanceOf[IEntitySoulCustom].setEntityRender_I(this)
         super.renderLivingAt(entity, x, y, z)
     }
 

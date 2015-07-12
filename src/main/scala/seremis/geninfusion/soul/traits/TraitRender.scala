@@ -207,7 +207,7 @@ class TraitRender extends Trait {
                     val f2 = partialTicksExisted * 0.01F
                     val f3 = partialTicksExisted * 0.01F
                     GL11.glTranslatef(f2, f3, 0.0F)
-                    entity.getEntityRender.setRenderPassModel(SoulHelper.entityModel)
+                    entity.getEntityRender_I.setRenderPassModel(SoulHelper.entityModel)
                     GL11.glMatrixMode(GL11.GL_MODELVIEW)
                     GL11.glEnable(GL11.GL_BLEND)
                     val f4 = 0.5F
@@ -286,7 +286,7 @@ class TraitRender extends Trait {
 
         living.worldObj.theProfiler.startSection("headTurn")
 
-        f2 = entity.func_110146_f(yawOffset, f2)
+        f2 = entity.func_110146_f_I(yawOffset, f2)
 
         living.worldObj.theProfiler.endSection()
 
@@ -328,7 +328,7 @@ class TraitRender extends Trait {
 
         entity.setFloat(EntityMovedDistance, entity.getFloat(EntityMovedDistance) + f2)
 
-        entity.updateArmSwingProgress
+        entity.updateArmSwingProgress_I
 
         val burnsInDaylight = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneBurnsInDaylight)
 

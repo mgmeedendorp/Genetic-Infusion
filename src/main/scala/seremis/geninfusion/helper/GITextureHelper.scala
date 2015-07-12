@@ -9,7 +9,6 @@ import javax.imageio.ImageIO
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.client.model.TexturedQuad
 import net.minecraft.util.ResourceLocation
-import seremis.geninfusion.GeneticInfusion
 import seremis.geninfusion.api.util.render.model.ModelPart
 
 import scala.collection.JavaConversions._
@@ -300,7 +299,12 @@ object GITextureHelper {
      * @return A File object with the file at the specified location.
      */
     def getFile(location: ResourceLocation): File = {
-        new File(new File(new File(new File(GeneticInfusion.getClass.getProtectionDomain.getCodeSource.getLocation.toURI.getPath).getParent).getParent).getParent, "/assets/" + location.getResourceDomain + "/" + location.getResourcePath)
+        println(getClass.getResourceAsStream("gita clay_golem.png"))
+        val a = getClass.getResource("assets/" + location.getResourceDomain + "/" + location.getResourcePath).getPath
+        println(a)
+
+        new File(getClass.getResource("assets/" + location.getResourceDomain + "/" + location.getResourcePath).getPath)
+//        new File(new File(new File(new File(GeneticInfusion.getClass.getProtectionDomain.getCodeSource.getLocation.toURI.getPath).getParent).getParent).getParent, "/assets/" + location.getResourceDomain + "/" + location.getResourcePath)
     }
 
     /**

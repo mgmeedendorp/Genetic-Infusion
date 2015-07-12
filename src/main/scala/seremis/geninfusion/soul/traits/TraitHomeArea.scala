@@ -16,7 +16,7 @@ class TraitHomeArea extends Trait {
     override def isWithinHomeDistanceCurrentPosition(entity: IEntitySoulCustom): Boolean = {
         val living = entity.asInstanceOf[EntityLiving]
 
-        entity.isWithinHomeDistance(Math.floor(living.posX).toInt, Math.floor(living.posY).toInt, Math.floor(living.posZ).toInt)
+        entity.isWithinHomeDistance_I(Math.floor(living.posX).toInt, Math.floor(living.posY).toInt, Math.floor(living.posZ).toInt)
     }
 
     override def isWithinHomeDistance(entity: IEntitySoulCustom, x: Int, y: Int, z: Int): Boolean = {

@@ -13,15 +13,15 @@ import seremis.geninfusion.api.util.data.Data
 
 trait IEntitySoulCustom extends IRangedAttackMob {
 
-    def getSoul: ISoul
+    def getSoul_I: ISoul
 
-    def getWorld: World
+    def getWorld_I: World
 
-    def getBoundingBox: AxisAlignedBB
+    def getBoundingBox_I: AxisAlignedBB
 
-    def getEntityId: Int
+    def getEntityId_I: Int
 
-    def getRandom: Random
+    def getRandom_I: Random
 
     def makePersistent(name: String)
 
@@ -130,117 +130,119 @@ trait IEntitySoulCustom extends IRangedAttackMob {
      */
     def getObject(name: String): Any
 
-    def getEntityData: NBTTagCompound
 
-    def playSound(sound: String, volume: Float, pitch: Float)
 
-    def attackEntityFrom(source: DamageSource, damage: Float): Boolean
+    def getEntityData_I: NBTTagCompound
 
-    def attackEntity(entity: Entity, distance: Float)
+    def playSound_I(sound: String, volume: Float, pitch: Float)
 
-    def attackEntityAsMob(entity: Entity): Boolean
+    def attackEntityFrom_I(source: DamageSource, damage: Float): Boolean
 
-    def setFlag(id: Int, value: Boolean)
+    def attackEntity_I(entity: Entity, distance: Float)
 
-    def getFlag(id: Int): Boolean
+    def attackEntityAsMob_I(entity: Entity): Boolean
 
-    def onDeathUpdate
+    def setFlag_I(id: Int, value: Boolean)
 
-    def damageEntity(source: DamageSource, damage: Float)
+    def getFlag_I(id: Int): Boolean
 
-    def updateAITick
+    def onDeathUpdate_I()
 
-    def canDespawn: Boolean
+    def damageEntity_I(source: DamageSource, damage: Float)
 
-    def isMovementCeased: Boolean
+    def updateAITick_I()
 
-    def findPlayerToAttack: Entity
+    def canDespawn_I: Boolean
 
-    def setBeenAttacked
+    def isMovementCeased_I: Boolean
 
-    def getDeathSound: String
+    def findPlayerToAttack_I: Entity
 
-    def getHurtSound: String
+    def setBeenAttacked_I()
 
-    def getSoundVolume: Float
+    def getDeathSound_I: String
 
-    def getSoundPitch: Float
+    def getHurtSound_I: String
 
-    def applyArmorCalculations(source: DamageSource, damage: Float): Float
+    def getSoundVolume_I: Float
 
-    def applyPotionDamageCalculations(source: DamageSource, damage: Float): Float
+    def getSoundPitch_I: Float
 
-    def damageArmor(damage: Float)
+    def applyArmorCalculations_I(source: DamageSource, damage: Float): Float
 
-    def setOnFireFromLava
+    def applyPotionDamageCalculations_I(source: DamageSource, damage: Float): Float
 
-    def getBlockPathWeight(x: Int, y: Int, z: Int): Float
+    def damageArmor_I(damage: Float)
 
-    def updateWanderPath
+    def setOnFireFromLava_I()
 
-    def updateEntityActionState
+    def getBlockPathWeight_I(x: Int, y: Int, z: Int): Float
 
-    def decreaseAirSupply(air: Int): Int
+    def updateWanderPath_I()
 
-    def updatePotionEffects
+    def updateEntityActionState_I()
 
-    def jump
+    def decreaseAirSupply_I(air: Int): Int
 
-    def collideWithNearbyEntities
+    def updatePotionEffects_I()
 
-    def func_110146_f(p_110146_1_ : Float, p_110146_2_ : Float): Float
+    def jump_I()
 
-    def isWithinHomeDistance(x: Int, y: Int, z: Int): Boolean
+    def collideWithNearbyEntities_I()
 
-    def isWithinHomeDistanceCurrentPosition: Boolean
+    def func_110146_f_I(p_110146_1_ : Float, p_110146_2_ : Float): Float
 
-    def getHomePosition: ChunkCoordinates
+    def isWithinHomeDistance_I(x: Int, y: Int, z: Int): Boolean
 
-    def hasHome: Boolean
+    def isWithinHomeDistanceCurrentPosition_I: Boolean
 
-    def getMaxHomeDistance: Float
+    def getHomePosition_I: ChunkCoordinates
 
-    def detachHome
+    def hasHome_I: Boolean
 
-    def setHomeArea(x: Int, y: Int, z: Int, maxDistance: Int)
+    def getMaxHomeDistance_I: Float
 
-    def despawnEntity
+    def detachHome_I()
 
-    def setRotation(rotationYaw: Float, rotationPitch: Float)
+    def setHomeArea_I(x: Int, y: Int, z: Int, maxDistance: Int)
 
-    def updateArmSwingProgress
+    def despawnEntity_I()
 
-    def isTamed: Boolean
+    def setRotation_I(rotationYaw: Float, rotationPitch: Float)
 
-    def dealFireDamage(damage: Int)
+    def updateArmSwingProgress_I()
+
+    def isTamed_I: Boolean
+
+    def dealFireDamage_I(damage: Int)
 
     @SideOnly(Side.CLIENT)
-    def getEntityRender: RenderLiving
+    def getEntityRender_I: RenderLiving
 
     @SideOnly(Side.CLIENT)
-    def setEntityRender(render: RenderLiving)
+    def setEntityRender_I(render: RenderLiving)
 
-    def setSize(width: Float, height: Float)
+    def setSize_I(width: Float, height: Float)
 
-    def getCustomNameTag: String
+    def getCustomNameTag_I: String
 
-    def setCustomNameTag(nameTag: String)
+    def setCustomNameTag_I(nameTag: String)
 
-    def hasCustomNameTag: Boolean
+    def hasCustomNameTag_I: Boolean
 
     /**
      * Gets if the soul of this entity be preserved after it's death.
      * This gets set when an entity dies near an ISoulReceptor.
      * @return Whether the soul will be preserved.
      */
-    def getSoulPreserved: Boolean
+    def getSoulPreserved_I: Boolean
 
     /**
      * Set if the soul of this entity will be preserved after it's death. The caller of this method should be the one to preserve it.
      * This gets set when an entity dies near an ISoulReceptor.
      * @param soulPreserved Whether the soul of this entity will be preserved.
      */
-    def setSoulPreserved(soulPreserved: Boolean)
+    def setSoulPreserved_I(soulPreserved: Boolean)
 
-    def getEntityTexture: String
+    def getEntityTexture_I: String
 }

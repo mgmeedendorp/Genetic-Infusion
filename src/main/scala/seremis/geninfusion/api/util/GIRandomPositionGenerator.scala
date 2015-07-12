@@ -1,11 +1,10 @@
 package seremis.geninfusion.api.util
 
 import net.minecraft.entity.EntityLiving
-import net.minecraft.entity.ai.RandomPositionGenerator
 import net.minecraft.util.{MathHelper, Vec3}
 import seremis.geninfusion.api.soul.IEntitySoulCustom
 
-object GIRandomPositionGenerator extends RandomPositionGenerator {
+object GIRandomPositionGenerator {
     val staticVector = Vec3.createVectorHelper(0.0D, 0.0D, 0.0D)
 
     def findRandomTarget(entity: IEntitySoulCustom, areaWidth: Int, areaHeight: Int): Vec3 = {
@@ -29,9 +28,9 @@ object GIRandomPositionGenerator extends RandomPositionGenerator {
         var i1 = 0
         var f = -99999.0F
         var flag1: Boolean = false
-        if(entity.hasHome) {
-            val d0 = (entity.getHomePosition.getDistanceSquared(MathHelper.floor_double(living.posX), MathHelper.floor_double(living.posY), MathHelper.floor_double(living.posZ)) + 4.0F).toDouble
-            val d1 = (entity.getMaxHomeDistance + areaWidth.toFloat).toDouble
+        if(entity.hasHome_I) {
+            val d0 = (entity.getHomePosition_I.getDistanceSquared(MathHelper.floor_double(living.posX), MathHelper.floor_double(living.posY), MathHelper.floor_double(living.posZ)) + 4.0F).toDouble
+            val d1 = (entity.getMaxHomeDistance_I + areaWidth.toFloat).toDouble
             flag1 = d0 < d1 * d1
         } else {
             flag1 = false
@@ -44,8 +43,8 @@ object GIRandomPositionGenerator extends RandomPositionGenerator {
                 j1 += MathHelper.floor_double(living.posX)
                 i2 += MathHelper.floor_double(living.posY)
                 k1 += MathHelper.floor_double(living.posZ)
-                if(!flag1 || entity.isWithinHomeDistance(j1, i2, k1)) {
-                    val f1 = entity.getBlockPathWeight(j1, i2, k1)
+                if(!flag1 || entity.isWithinHomeDistance_I(j1, i2, k1)) {
+                    val f1 = entity.getBlockPathWeight_I(j1, i2, k1)
                     if(f1 > f) {
                         f = f1
                         k = j1
@@ -70,6 +69,6 @@ object GIRandomPositionGenerator extends RandomPositionGenerator {
         staticVector.xCoord = entity.asInstanceOf[EntityLiving].posX - targetDirection.xCoord
         staticVector.yCoord = entity.asInstanceOf[EntityLiving].posY - targetDirection.yCoord
         staticVector.zCoord = entity.asInstanceOf[EntityLiving].posZ - targetDirection.zCoord
-        return findRandomTargetBlock(entity, areaRadius, areaHeight, staticVector)
+        findRandomTargetBlock(entity, areaRadius, areaHeight, staticVector)
     }
 }

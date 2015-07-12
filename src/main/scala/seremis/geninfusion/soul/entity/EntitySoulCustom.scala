@@ -15,5 +15,5 @@ class EntitySoulCustom(val world: World) extends EntityLiving(world) with Entity
         this.soul = soul
     }
 
-    override def getSoul: ISoul = soul
+    override def getSoul_I: ISoul = soul
 }

@@ -15,5 +15,5 @@ class EntitySoulCustomCreature(val world: World) extends EntityCreature(world) w
         this.soul = soul
     }
 
-    override def getSoul: ISoul = soul
+    override def getSoul_I: ISoul = soul
 }

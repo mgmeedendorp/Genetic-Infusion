@@ -38,7 +38,7 @@ class TraitAttacked extends Trait {
             hurtResistantTime -= 1
         }
         if(entity.asInstanceOf[EntityLiving].getHealth <= 0.0F) {
-            entity.onDeathUpdate
+            entity.onDeathUpdate_I
         }
         if(recentlyHit > 0) {
             recentlyHit -= 1
@@ -66,7 +66,7 @@ class TraitAttacked extends Trait {
         entity.setObject(EntityLastAttacker, lastAttacker)
         entity.setObject(EntityEntityLivingToAttack, entityLivingToAttack)
 
-        if(!entity.getWorld.isRemote) {
+        if(!entity.getWorld_I.isRemote) {
             val arrowCount = living.getArrowCountInEntity
             if(arrowCount > 0) {
                 if(living.arrowHitTimer <= 0) {
@@ -93,7 +93,7 @@ class TraitAttacked extends Trait {
 
         if(entity.getBoolean(EntityInvulnerable)) {
             false
-        } else if(entity.getWorld.isRemote) {
+        } else if(entity.getWorld_I.isRemote) {
             false
         } else {
             entity.setInteger(EntityEntityAge, 0)
@@ -104,7 +104,7 @@ class TraitAttacked extends Trait {
                 false
             } else {
                 if((source == DamageSource.anvil || source == DamageSource.fallingBlock) && entity.asInstanceOf[EntityLiving].getEquipmentInSlot(4) != null) {
-                    entity.asInstanceOf[EntityLiving].getEquipmentInSlot(4).damageItem((dealtDamage * 4.0F + entity.getRandom.nextFloat() * dealtDamage * 2.0F).toInt, entity.asInstanceOf[EntityLivingBase])
+                    entity.asInstanceOf[EntityLiving].getEquipmentInSlot(4).damageItem((dealtDamage * 4.0F + entity.getRandom_I.nextFloat() * dealtDamage * 2.0F).toInt, entity.asInstanceOf[EntityLivingBase])
                     dealtDamage *= 0.75F
                 }
 
@@ -125,14 +125,14 @@ class TraitAttacked extends Trait {
                         return false
                     }
 
-                    entity.damageEntity(source, dealtDamage - lastDamage)
+                    entity.damageEntity_I(source, dealtDamage - lastDamage)
                     lastDamage = dealtDamage
                     flag = false
                 } else {
                     lastDamage = dealtDamage
                     entity.setFloat(EntityPrevHealth, living.getHealth)
                     hurtResistantTime = maxHurtResistantTime
-                    entity.damageEntity(source, dealtDamage)
+                    entity.damageEntity_I(source, dealtDamage)
 
                     hurtTime = 10
                     maxHurtTime = 10
@@ -159,7 +159,7 @@ class TraitAttacked extends Trait {
                     } else if(attacker.isInstanceOf[IEntitySoulCustom] && SoulHelper.geneRegistry.getValueFromAllele[Boolean](attacker.asInstanceOf[IEntitySoulCustom], Genes.GeneIsTameable)) {
                         val attackerCustom = entity.asInstanceOf[IEntitySoulCustom]
 
-                        if(attackerCustom.isTamed) {
+                        if(attackerCustom.isTamed_I) {
                             recentlyHit = 100
                             attackingPlayer = null
                         }
@@ -167,10 +167,10 @@ class TraitAttacked extends Trait {
                 }
 
                 if(flag) {
-                    entity.getWorld.setEntityState(living, 2)
+                    entity.getWorld_I.setEntityState(living, 2)
 
                     if(source != DamageSource.drown) {
-                        entity.setBeenAttacked
+                        entity.setBeenAttacked_I
                     }
 
                     if(attacker != null) {
@@ -201,18 +201,18 @@ class TraitAttacked extends Trait {
                 var sound: String = null
 
                 if(living.getHealth <= 0.0F) {
-                    sound = entity.getDeathSound
+                    sound = entity.getDeathSound_I
 
                     if(flag && sound != null) {
-                        entity.playSound(sound, entity.getSoundVolume, entity.getSoundPitch)
+                        entity.playSound_I(sound, entity.getSoundVolume_I, entity.getSoundPitch_I)
                     }
 
                     living.onDeath(source)
                 } else {
-                    sound = entity.getHurtSound
+                    sound = entity.getHurtSound_I
 
                     if(flag && sound != null) {
-                        entity.playSound(sound, entity.getSoundVolume, entity.getSoundPitch)
+                        entity.playSound_I(sound, entity.getSoundVolume_I, entity.getSoundPitch_I)
                     }
                 }
 
@@ -237,8 +237,8 @@ class TraitAttacked extends Trait {
             if(damageDealt <= 0)
                 return
 
-            damageDealt = entity.applyArmorCalculations(source, damageDealt)
-            damageDealt = entity.applyPotionDamageCalculations(source, damageDealt)
+            damageDealt = entity.applyArmorCalculations_I(source, damageDealt)
+            damageDealt = entity.applyPotionDamageCalculations_I(source, damageDealt)
 
             val f1 = damageDealt
 
@@ -263,7 +263,7 @@ class TraitAttacked extends Trait {
             val armorDamageMultiplier = 25 - entity.asInstanceOf[EntityLiving].getTotalArmorValue
             val armorDamage = damageDealt * armorDamageMultiplier.toFloat
 
-            entity.damageArmor(damageDealt)
+            entity.damageArmor_I(damageDealt)
             damageDealt = armorDamage / 25.0F
         }
         damageDealt

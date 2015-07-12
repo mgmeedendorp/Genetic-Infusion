@@ -13,7 +13,7 @@ class EntityAIAttackOnCollideCustom(var entity: IEntitySoulCustom, moveSpeed: Do
 
     var living: EntityLiving = entity.asInstanceOf[EntityLiving]
 
-    var worldObj: World = entity.getWorld
+    var worldObj: World = entity.getWorld_I
 
     var attackTick = 0
     var speedTowardsTarget = moveSpeed
@@ -51,7 +51,7 @@ class EntityAIAttackOnCollideCustom(var entity: IEntitySoulCustom, moveSpeed: Do
 
     override def continueExecuting(): Boolean = {
         val attackTarget = living.getAttackTarget
-        attackTarget != null && (attackTarget.isEntityAlive && (if(!this.longMemory) !this.living.getNavigator.noPath() else this.entity.isWithinHomeDistance(MathHelper.floor_double(attackTarget.posX), MathHelper.floor_double(attackTarget.posY), MathHelper.floor_double(attackTarget.posZ))))
+        attackTarget != null && (attackTarget.isEntityAlive && (if(!this.longMemory) !this.living.getNavigator.noPath() else this.entity.isWithinHomeDistance_I(MathHelper.floor_double(attackTarget.posX), MathHelper.floor_double(attackTarget.posY), MathHelper.floor_double(attackTarget.posZ))))
     }
 
     override def startExecuting() {

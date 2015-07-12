@@ -8,7 +8,7 @@ class EntityAIRestrictSunCustom(var entity: IEntitySoulCustom) extends EntityAIB
 
     var living: EntityLiving = entity.asInstanceOf[EntityLiving]
 
-    override def shouldExecute(): Boolean = entity.getWorld.isDaytime
+    override def shouldExecute(): Boolean = entity.getWorld_I.isDaytime
 
     override def startExecuting() {
         this.living.getNavigator.setAvoidSun(true)

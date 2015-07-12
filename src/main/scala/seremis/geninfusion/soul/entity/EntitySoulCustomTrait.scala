@@ -27,11 +27,9 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     var soul: ISoul
     val world: World
 
-    //isDead = true
-
     override def writeSpawnData(data: ByteBuf) {
         val compound = new NBTTagCompound
-        writeToNBT(compound)
+        writeToNBT_I(compound)
         val bytes = UtilNBT.compoundToByteArray(compound).getOrElse(return)
         data.writeShort(bytes.length.toShort)
         data.writeBytes(bytes)
@@ -43,44 +41,44 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
         data.readBytes(bytes)
 
-        var compound: NBTTagCompound = UtilNBT.byteArrayToCompound(bytes).getOrElse(return)
-        readFromNBT(compound)
+        val compound: NBTTagCompound = UtilNBT.byteArrayToCompound(bytes).getOrElse(return)
+        readFromNBT_I(compound)
     }
 
-    override def getWorld: World = {
+    override def getWorld_I: World = {
         worldObj
     }
 
-    override def getBoundingBox: AxisAlignedBB = boundingBox
+    override def getBoundingBox_I: AxisAlignedBB = boundingBox
 
-    override def getEntityId: Int = super.getEntityId
+    override def getEntityId_I: Int = super.getEntityId
 
-    override def onDeathUpdate = super.onDeathUpdate()
+    override def onDeathUpdate_I = super.onDeathUpdate()
 
-    override def setFlag(id: Int, value: Boolean) = super.setFlag(id, value)
+    override def setFlag_I(id: Int, value: Boolean) = super.setFlag(id, value)
 
-    override def getFlag(id: Int): Boolean = super.getFlag(id)
+    override def getFlag_I(id: Int): Boolean = super.getFlag(id)
 
-    override def getRandom: Random = new Random()
+    override def getRandom_I: Random = new Random()
 
     //TODO
     //override def isChild: Boolean = getBoolean("isChild")
 
     override def getTalkInterval: Int = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GeneTalkInterval)
 
-    override def getDeathSound: String = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GeneDeathSound)
+    override def getDeathSound_I: String = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GeneDeathSound)
 
     override def getLivingSound: String = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GeneLivingSound)
 
-    override def getHurtSound: String = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GeneHurtSound)
+    override def getHurtSound_I: String = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GeneHurtSound)
 
     override def getSplashSound: String = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GeneSplashSound)
 
     override def getSwimSound: String = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GeneSwimSound)
 
-    override def getSoundVolume: Float = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GeneSoundVolume)
+    override def getSoundVolume_I: Float = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GeneSoundVolume)
 
-    override def getSoundPitch: Float = super.getSoundPitch
+    override def getSoundPitch_I: Float = super.getSoundPitch
 
     override def applyEntityAttributes() {
         this.getAttributeMap.registerAttribute(SharedMonsterAttributes.maxHealth)
@@ -113,16 +111,16 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
         TraitHandler.onKillEntity(this, entity)
     }
 
-    override def attackEntityFrom(source: DamageSource, damage: Float): Boolean = {
+    override def attackEntityFrom_I(source: DamageSource, damage: Float): Boolean = {
         if(ForgeHooks.onLivingAttack(this, source, damage)) return false
         TraitHandler.attackEntityFrom(this, source, damage)
     }
 
-    override def attackEntity(entity: Entity, distance: Float) {
+    override def attackEntity_I(entity: Entity, distance: Float) {
         TraitHandler.attackEntity(this, entity, distance)
     }
 
-    override def damageEntity(source: DamageSource, damage: Float) {
+    override def damageEntity_I(source: DamageSource, damage: Float) {
         TraitHandler.damageEntity(this, source, damage)
     }
 
@@ -130,11 +128,11 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
         TraitHandler.spawnEntityFromEgg(this, data)
     }
 
-    override def playSound(name: String, volume: Float, pitch: Float) {
+    override def playSound_I(name: String, volume: Float, pitch: Float) {
         TraitHandler.playSoundAtEntity(this, name, volume, pitch)
     }
 
-    override def updateAITick {
+    override def updateAITick_I {
         TraitHandler.updateAITick(this)
     }
 
@@ -146,98 +144,102 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
         super.applyEntityCollision(entity)
     }
 
-    override def decreaseAirSupply(amount: Int): Int = super.decreaseAirSupply(amount)
+    override def decreaseAirSupply_I(amount: Int): Int = super.decreaseAirSupply(amount)
 
-    override def func_110146_f(p_110146_1_ : Float, p_110146_2_ : Float): Float = super.func_110146_f(p_110146_1_, p_110146_2_)
+    override def func_110146_f_I(p_110146_1_ : Float, p_110146_2_ : Float): Float = super.func_110146_f(p_110146_1_, p_110146_2_)
 
-    override def attackEntityAsMob(entity: Entity): Boolean = TraitHandler.attackEntityAsMob(this, entity)
+    override def attackEntityAsMob_I(entity: Entity): Boolean = TraitHandler.attackEntityAsMob(this, entity)
 
-    override def isMovementCeased: Boolean = false
+    override def isMovementCeased_I: Boolean = false
 
-    override def findPlayerToAttack: Entity = TraitHandler.findPlayerToAttack(this)
+    override def findPlayerToAttack_I: Entity = TraitHandler.findPlayerToAttack(this)
 
-    override def applyArmorCalculations(source: DamageSource, damage: Float): Float = TraitHandler.applyArmorCalculations(this, source, damage)
+    override def applyArmorCalculations_I(source: DamageSource, damage: Float): Float = TraitHandler.applyArmorCalculations(this, source, damage)
 
-    override def applyPotionDamageCalculations(source: DamageSource, damage: Float): Float = TraitHandler.applyPotionDamageCalculations(this, source, damage)
+    override def applyPotionDamageCalculations_I(source: DamageSource, damage: Float): Float = TraitHandler.applyPotionDamageCalculations(this, source, damage)
 
-    override def damageArmor(damage: Float) = TraitHandler.damageArmor(this, damage)
+    override def damageArmor_I(damage: Float) = TraitHandler.damageArmor(this, damage)
 
-    override def setOnFireFromLava = TraitHandler.setOnFireFromLava(this)
+    override def setOnFireFromLava_I = TraitHandler.setOnFireFromLava(this)
 
-    override def getBlockPathWeight(x: Int, y: Int, z: Int): Float = TraitHandler.getBlockPathWeight(this, x, y, z)
+    override def getBlockPathWeight_I(x: Int, y: Int, z: Int): Float = TraitHandler.getBlockPathWeight(this, x, y, z)
 
-    override def updateEntityActionState = TraitHandler.updateEntityActionState(this)
+    override def updateEntityActionState_I = TraitHandler.updateEntityActionState(this)
 
-    override def updateWanderPath = TraitHandler.updateWanderPath(this)
+    override def updateWanderPath_I = TraitHandler.updateWanderPath(this)
 
-    override def canDespawn = super.canDespawn
+    override def canDespawn_I = super.canDespawn
 
-    override def setBeenAttacked = super.setBeenAttacked()
+    override def setBeenAttacked_I = super.setBeenAttacked()
 
-    override def updatePotionEffects = super.updatePotionEffects()
+    override def updatePotionEffects_I = super.updatePotionEffects()
 
-    override def jump = super.jump()
+    override def jump_I = super.jump()
 
-    override def collideWithNearbyEntities = super.collideWithNearbyEntities()
+    override def collideWithNearbyEntities_I = super.collideWithNearbyEntities()
 
-    override def isWithinHomeDistance(x: Int, y: Int, z: Int): Boolean = TraitHandler.isWithinHomeDistance(this, x, y, z)
+    override def isWithinHomeDistance_I(x: Int, y: Int, z: Int): Boolean = TraitHandler.isWithinHomeDistance(this, x, y, z)
 
-    override def isWithinHomeDistanceCurrentPosition: Boolean = TraitHandler.isWithinHomeDistanceCurrentPosition(this)
+    override def isWithinHomeDistanceCurrentPosition_I: Boolean = TraitHandler.isWithinHomeDistanceCurrentPosition(this)
 
-    override def getHomePosition: ChunkCoordinates = TraitHandler.getHomePosition(this)
+    override def getHomePosition_I: ChunkCoordinates = TraitHandler.getHomePosition(this)
 
-    override def hasHome: Boolean = TraitHandler.hasHome(this)
+    override def hasHome_I: Boolean = TraitHandler.hasHome(this)
 
-    override def getMaxHomeDistance: Float = TraitHandler.getMaxHomeDistance(this)
+    override def getMaxHomeDistance_I: Float = TraitHandler.getMaxHomeDistance(this)
 
-    override def detachHome = TraitHandler.detachHome(this)
+    override def detachHome_I = TraitHandler.detachHome(this)
 
-    override def setHomeArea(x: Int, y: Int, z: Int, maxDistance: Int) = TraitHandler.setHomeArea(this, x, y, z, maxDistance)
+    override def setHomeArea_I(x: Int, y: Int, z: Int, maxDistance: Int) = TraitHandler.setHomeArea(this, x, y, z, maxDistance)
 
     override def attackEntityWithRangedAttack(entity: EntityLivingBase, distanceModified: Float) = TraitHandler.attackEntityWithRangedAttack(this, entity, distanceModified)
 
     override def onStruckByLightning(lightning: EntityLightningBolt) = TraitHandler.onStruckByLightning(this, lightning)
 
-    override def despawnEntity = super.despawnEntity()
+    override def despawnEntity_I = super.despawnEntity()
 
-    override def setRotation(rotationYaw: Float, rotationPitch: Float) = super.setRotation(rotationYaw, rotationPitch)
+    override def setRotation_I(rotationYaw: Float, rotationPitch: Float) = super.setRotation(rotationYaw, rotationPitch)
 
-    override def updateArmSwingProgress = super.updateArmSwingProgress()
+    override def updateArmSwingProgress_I = super.updateArmSwingProgress()
 
     override def isAIEnabled: Boolean = SoulHelper.geneRegistry.getValueFromAllele(this, Genes.GeneUseNewAI)
 
-    override def dealFireDamage(damage: Int) = super.dealFireDamage(damage)
+    override def dealFireDamage_I(damage: Int) = super.dealFireDamage(damage)
 
     var renderer: RenderLiving = null
 
     @SideOnly(Side.CLIENT)
-    override def getEntityRender: RenderLiving = renderer
+    override def getEntityRender_I: RenderLiving = renderer
 
     @SideOnly(Side.CLIENT)
-    override def setEntityRender(render: RenderLiving) = renderer = render
+    override def setEntityRender_I(render: RenderLiving) = renderer = render
 
-    override def setDead = TraitHandler.setDead(this)
+    override def setDead() = TraitHandler.setDead(this)
 
-    override def getCustomNameTag: String = TraitHandler.getCustomNameTag(this)
+    override def getCustomNameTag_I: String = TraitHandler.getCustomNameTag(this)
 
-    override def setCustomNameTag(nameTag: String) = TraitHandler.setCustomNameTag(this, nameTag)
+    override def setCustomNameTag_I(nameTag: String) = TraitHandler.setCustomNameTag(this, nameTag)
 
-    override def hasCustomNameTag: Boolean = TraitHandler.hasCustomNameTag(this)
+    override def hasCustomNameTag_I: Boolean = TraitHandler.hasCustomNameTag(this)
 
     //TODO tamed with DataWatcherHelper
-    override def isTamed: Boolean = false
+    override def isTamed_I: Boolean = false
 
-    override def setSize(width: Float, height: Float) = super.setSize(width, height)
+    override def setSize_I(width: Float, height: Float) = super.setSize(width, height)
 
     var soulPreserved = false
 
-    override def getSoulPreserved: Boolean = soulPreserved
+    override def getSoulPreserved_I: Boolean = soulPreserved
 
-    override def setSoulPreserved(soulPreserved: Boolean) = this.soulPreserved = soulPreserved
+    override def setSoulPreserved_I(soulPreserved: Boolean) = this.soulPreserved = soulPreserved
 
-    override def getEntityTexture = TraitHandler.getEntityTexture(this)
+    override def getEntityTexture_I = TraitHandler.getEntityTexture(this)
 
-    override def readFromNBT(compound: NBTTagCompound) {
+    override def getEntityData_I = super.getEntityData
+
+    override def readFromNBT(compound: NBTTagCompound) = readFromNBT_I(compound)
+
+    def readFromNBT_I(compound: NBTTagCompound) {
         super.readFromNBT(compound)
         soul = new Soul(compound)
         if(compound.hasKey("data")) {
@@ -246,7 +248,9 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
         TraitHandler.readFromNBT(this, compound)
     }
 
-    override def writeToNBT(compound: NBTTagCompound) {
+    override def writeToNBT(compound: NBTTagCompound) = writeToNBT_I(compound)
+
+    def writeToNBT_I(compound: NBTTagCompound) {
         super.writeToNBT(compound)
         soul.writeToNBT(compound)
         syncLogic.writeToNBT(compound)

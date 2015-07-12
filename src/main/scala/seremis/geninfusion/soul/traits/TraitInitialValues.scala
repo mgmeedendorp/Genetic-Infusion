@@ -30,7 +30,7 @@ class TraitInitialValues extends Trait {
         val width: Float = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneWidth)
         val height: Float = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneHeight)
 
-        entity.setSize(width, height)
+        entity.setSize_I(width, height)
 
         entity.setInteger(EntityCreatureAttribute, SoulHelper.geneRegistry.getValueFromAllele[Integer](entity, Genes.GeneCreatureAttribute))
         entity.setInteger(EntityExperienceValue, SoulHelper.geneRegistry.getValueFromAllele[Integer](entity, Genes.GeneExperienceValue))

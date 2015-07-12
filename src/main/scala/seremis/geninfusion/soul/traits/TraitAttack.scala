@@ -14,9 +14,9 @@ class TraitAttack extends Trait {
     override def attackEntity(entity: IEntitySoulCustom, entityToAttack: Entity, distance: Float) {
         var attackTime = entity.getInteger(EntityAttackTime)
 
-        if(attackTime <= 0 && distance < 2.0F && entityToAttack.boundingBox.maxY > entity.getBoundingBox.minY && entityToAttack.boundingBox.minY < entity.getBoundingBox.maxY) {
+        if(attackTime <= 0 && distance < 2.0F && entityToAttack.boundingBox.maxY > entity.getBoundingBox_I.minY && entityToAttack.boundingBox.minY < entity.getBoundingBox_I.maxY) {
             attackTime = 20
-            entity.attackEntityAsMob(entityToAttack)
+            entity.attackEntityAsMob_I(entityToAttack)
         }
         entity.setInteger(EntityAttackTime, attackTime)
     }
@@ -67,7 +67,7 @@ class TraitAttack extends Trait {
             val powerLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, living.getHeldItem)
             val punchLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, living.getHeldItem)
 
-            entityarrow.setDamage((distanceModified * 2.0F).toDouble + entity.getRandom.nextGaussian() * 0.25D + (entity.getWorld.difficultySetting.getDifficultyId.toFloat * 0.11F).toDouble)
+            entityarrow.setDamage((distanceModified * 2.0F).toDouble + entity.getRandom_I.nextGaussian() * 0.25D + (entity.getWorld_I.difficultySetting.getDifficultyId.toFloat * 0.11F).toDouble)
 
             if(powerLevel > 0) {
                 entityarrow.setDamage(entityarrow.getDamage + powerLevel.toDouble * 0.5D + 0.5D)
@@ -81,8 +81,8 @@ class TraitAttack extends Trait {
                 entityarrow.setFire(100)
             }
 
-            entity.playSound("random.bow", 1.0F, 1.0F / (entity.getRandom.nextFloat() * 0.4F + 0.8F))
-            entity.getWorld.spawnEntityInWorld(entityarrow)
+            entity.playSound_I("random.bow", 1.0F, 1.0F / (entity.getRandom_I.nextFloat() * 0.4F + 0.8F))
+            entity.getWorld_I.spawnEntityInWorld(entityarrow)
         }
     }
 }

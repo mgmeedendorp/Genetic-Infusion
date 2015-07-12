@@ -16,8 +16,8 @@ class EntityAIMoveTowardsRestrictionCustom(var entity: IEntitySoulCustom, moveSp
     this.setMutexBits(1)
 
     override def shouldExecute(): Boolean = {
-        if (!entity.isWithinHomeDistanceCurrentPosition) {
-            val chunkcoordinates = this.entity.getHomePosition
+        if (!entity.isWithinHomeDistanceCurrentPosition_I) {
+            val chunkcoordinates = this.entity.getHomePosition_I
             target = GIRandomPositionGenerator.findRandomTargetBlockTowards(entity, 16, 7, Vec3.createVectorHelper(chunkcoordinates.posX.toDouble, chunkcoordinates.posY.toDouble, chunkcoordinates.posZ.toDouble))
             if (target != null) {
                 return true

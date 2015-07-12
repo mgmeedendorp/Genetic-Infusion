@@ -348,33 +348,33 @@ class TraitAI extends Trait {
         val useNewAI = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneUseNewAI)
         val useOldAI = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneUseOldAI)
 
-        entity.getWorld.theProfiler.startSection("ai")
+        entity.getWorld_I.theProfiler.startSection("ai")
 
         if(entity.asInstanceOf[EntityLiving].getHealth <= 0.0F) {
             entity.setBoolean(EntityIsJumping, false)
             entity.setFloat(EntityMoveStrafing, 0.0F)
             entity.setFloat(EntityMoveForward, 0.0F)
             entity.setFloat(EntityRandomYawVelocity, 0.0F)
-        } else if(!entity.getWorld.isRemote) {
+        } else if(!entity.getWorld_I.isRemote) {
             if(useNewAI) {
-                entity.getWorld.theProfiler.startSection("newAi")
+                entity.getWorld_I.theProfiler.startSection("newAi")
                 updateAITasks(entity)
-                entity.getWorld.theProfiler.endSection()
+                entity.getWorld_I.theProfiler.endSection()
             } else if(useOldAI) {
-                entity.getWorld.theProfiler.startSection("oldAi")
-                entity.updateEntityActionState
-                entity.getWorld.theProfiler.endSection()
+                entity.getWorld_I.theProfiler.startSection("oldAi")
+                entity.updateEntityActionState_I
+                entity.getWorld_I.theProfiler.endSection()
                 entity.setFloat(EntityRotationYawHead, entity.getFloat(EntityRotationYaw))
             }
         }
-        entity.getWorld.theProfiler.endSection()
+        entity.getWorld_I.theProfiler.endSection()
     }
 
     override def updateEntityActionState(entity: IEntitySoulCustom) {
         val living = entity.asInstanceOf[EntityLiving]
 
         if(SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneIsCreature)) {
-            entity.getWorld.theProfiler.startSection("ai")
+            entity.getWorld_I.theProfiler.startSection("ai")
 
             var fleeingTick = entity.getInteger(EntityFleeingTick)
 
@@ -385,22 +385,22 @@ class TraitAI extends Trait {
             }
 
             entity.setInteger(EntityFleeingTick, fleeingTick)
-            entity.setBoolean(EntityHasAttacked, entity.isMovementCeased)
+            entity.setBoolean(EntityHasAttacked, entity.isMovementCeased_I)
 
             val f4 = 16.0F
             var entityToAttack = entity.getObject(EntityEntityToAttack).asInstanceOf[Entity]
 
             if(entityToAttack == null) {
-                entityToAttack = entity.findPlayerToAttack
+                entityToAttack = entity.findPlayerToAttack_I
 
                 if(entityToAttack != null) {
-                    entity.setObject(EntityPathToEntity, entity.getWorld.getPathEntityToEntity(entity.asInstanceOf[Entity], entityToAttack, f4, true, false, false, true))
+                    entity.setObject(EntityPathToEntity, entity.getWorld_I.getPathEntityToEntity(entity.asInstanceOf[Entity], entityToAttack, f4, true, false, false, true))
                 }
             } else if(entityToAttack.isEntityAlive) {
                 val distance = entityToAttack.getDistanceToEntity(entity.asInstanceOf[Entity])
 
                 if(entity.asInstanceOf[EntityLiving].canEntityBeSeen(entityToAttack)) {
-                    entity.attackEntity(entityToAttack, distance)
+                    entity.attackEntity_I(entityToAttack, distance)
                 }
             } else {
                 entityToAttack = null
@@ -412,23 +412,23 @@ class TraitAI extends Trait {
 
             entity.setObject(EntityEntityToAttack, entityToAttack)
 
-            entity.getWorld.theProfiler.endSection()
+            entity.getWorld_I.theProfiler.endSection()
 
-            if(!entity.getBoolean(EntityHasAttacked) && entityToAttack != null && (entity.getObject(EntityPathToEntity) == null || entity.getRandom.nextInt(20) == 0)) {
-                entity.setObject(EntityPathToEntity, entity.getWorld.getPathEntityToEntity(entity.asInstanceOf[Entity], entityToAttack, f4, true, false, false, true))
-            } else if(!entity.getBoolean(EntityHasAttacked) && (entity.getObject(EntityPathToEntity) == null && entity.getRandom.nextInt(180) == 0 || entity.getRandom.nextInt(120) == 0 || entity.getInteger(EntityFleeingTick) > 0) && entity.getInteger(EntityEntityAge) < 100) {
-                entity.updateWanderPath
+            if(!entity.getBoolean(EntityHasAttacked) && entityToAttack != null && (entity.getObject(EntityPathToEntity) == null || entity.getRandom_I.nextInt(20) == 0)) {
+                entity.setObject(EntityPathToEntity, entity.getWorld_I.getPathEntityToEntity(entity.asInstanceOf[Entity], entityToAttack, f4, true, false, false, true))
+            } else if(!entity.getBoolean(EntityHasAttacked) && (entity.getObject(EntityPathToEntity) == null && entity.getRandom_I.nextInt(180) == 0 || entity.getRandom_I.nextInt(120) == 0 || entity.getInteger(EntityFleeingTick) > 0) && entity.getInteger(EntityEntityAge) < 100) {
+                entity.updateWanderPath_I
             }
 
-            val i = MathHelper.floor_double(entity.getBoundingBox.minY + 0.5D)
+            val i = MathHelper.floor_double(entity.getBoundingBox_I.minY + 0.5D)
             val flag = entity.getBoolean(EntityInWater)
             val flag1 = entity.asInstanceOf[EntityLiving].handleLavaMovement()
             entity.setFloat(EntityRotationPitch, 0.0F)
 
             var pathToEntity = entity.getObject(EntityPathToEntity).asInstanceOf[PathEntity]
 
-            if(pathToEntity != null && entity.getRandom.nextInt(100) != 0) {
-                entity.getWorld.theProfiler.startSection("followpath")
+            if(pathToEntity != null && entity.getRandom_I.nextInt(100) != 0) {
+                entity.getWorld_I.theProfiler.startSection("followpath")
                 var vec3 = pathToEntity.getPosition(living)
                 val d0 = (entity.getFloat(EntityWidth) * 2.0F).toDouble
 
@@ -492,7 +492,7 @@ class TraitAI extends Trait {
                     entity.setBoolean(EntityIsJumping, true)
                 }
 
-                if(entity.getRandom.nextFloat() < 0.8F && (flag || flag1)) {
+                if(entity.getRandom_I.nextFloat() < 0.8F && (flag || flag1)) {
                     entity.setBoolean(EntityIsJumping, true)
                 }
 
@@ -500,7 +500,7 @@ class TraitAI extends Trait {
                 entity.setFloat(EntityMoveForward, moveForward)
                 entity.setFloat(EntityMoveStrafing, moveStrafing)
 
-                entity.getWorld.theProfiler.endSection()
+                entity.getWorld_I.theProfiler.endSection()
             } else {
                 updateEntityActionStateLiving(entity)
                 pathToEntity = null
@@ -517,17 +517,17 @@ class TraitAI extends Trait {
         entity.setInteger(EntityEntityAge, entity.getInteger(EntityEntityAge) + 1)
         entity.setFloat(EntityMoveForward, 0.0F)
         entity.setFloat(EntityMoveStrafing, 0.0F)
-        entity.despawnEntity
+        entity.despawnEntity_I
         val f = 8.0F
 
-        if(entity.getRandom.nextFloat() < 0.02F) {
-            val entityplayer = entity.getWorld.getClosestPlayerToEntity(entity.asInstanceOf[Entity], f.toDouble)
+        if(entity.getRandom_I.nextFloat() < 0.02F) {
+            val entityplayer = entity.getWorld_I.getClosestPlayerToEntity(entity.asInstanceOf[Entity], f.toDouble)
 
             if(entityplayer != null) {
                 entity.setObject(EntityCurrentTarget, entityplayer)
-                entity.setInteger(EntityNumTicksToChaseTarget, 10 + entity.getRandom.nextInt(20))
+                entity.setInteger(EntityNumTicksToChaseTarget, 10 + entity.getRandom_I.nextInt(20))
             } else {
-                entity.setFloat(EntityRandomYawVelocity, (entity.getRandom.nextFloat() - 0.5F) * 20.0F)
+                entity.setFloat(EntityRandomYawVelocity, (entity.getRandom_I.nextFloat() - 0.5F) * 20.0F)
             }
         }
 
@@ -542,8 +542,8 @@ class TraitAI extends Trait {
                 entity.setObject(EntityCurrentTarget, null)
             }
         } else {
-            if(entity.getRandom.nextFloat() < 0.05F) {
-                entity.setFloat(EntityRandomYawVelocity, (entity.getRandom.nextFloat() - 0.5F) * 20.0F)
+            if(entity.getRandom_I.nextFloat() < 0.05F) {
+                entity.setFloat(EntityRandomYawVelocity, (entity.getRandom_I.nextFloat() - 0.5F) * 20.0F)
             }
 
             entity.setFloat(EntityRotationYaw, entity.getFloat(EntityRotationYaw) + entity.getFloat(EntityRandomYawVelocity))
@@ -557,38 +557,38 @@ class TraitAI extends Trait {
         val flag = living.handleLavaMovement()
 
         if(flag1 || flag) {
-            entity.setBoolean(EntityIsJumping, entity.getRandom.nextFloat() < 0.8F)
+            entity.setBoolean(EntityIsJumping, entity.getRandom_I.nextFloat() < 0.8F)
         }
     }
 
     def updateAITasks(entity: IEntitySoulCustom) {
         entity.setInteger(EntityEntityAge, entity.getInteger(EntityEntityAge) + 1)
-        entity.getWorld.theProfiler.startSection("checkDespawn")
-        entity.despawnEntity
-        entity.getWorld.theProfiler.endSection()
-        entity.getWorld.theProfiler.startSection("sensing")
+        entity.getWorld_I.theProfiler.startSection("checkDespawn")
+        entity.despawnEntity_I
+        entity.getWorld_I.theProfiler.endSection()
+        entity.getWorld_I.theProfiler.startSection("sensing")
         entity.asInstanceOf[EntityLiving].getEntitySenses.clearSensingCache()
-        entity.getWorld.theProfiler.endSection()
-        entity.getWorld.theProfiler.startSection("targetSelector")
+        entity.getWorld_I.theProfiler.endSection()
+        entity.getWorld_I.theProfiler.startSection("targetSelector")
         entity.asInstanceOf[EntityLiving].targetTasks.onUpdateTasks()
-        entity.getWorld.theProfiler.endSection()
-        entity.getWorld.theProfiler.startSection("goalSelector")
+        entity.getWorld_I.theProfiler.endSection()
+        entity.getWorld_I.theProfiler.startSection("goalSelector")
         entity.asInstanceOf[EntityLiving].tasks.onUpdateTasks()
-        entity.getWorld.theProfiler.endSection()
-        entity.getWorld.theProfiler.startSection("navigation")
+        entity.getWorld_I.theProfiler.endSection()
+        entity.getWorld_I.theProfiler.startSection("navigation")
         entity.asInstanceOf[EntityLiving].getNavigator.onUpdateNavigation()
-        entity.getWorld.theProfiler.endSection()
-        entity.getWorld.theProfiler.startSection("mob tick")
-        entity.updateAITick
-        entity.getWorld.theProfiler.endSection()
-        entity.getWorld.theProfiler.startSection("controls")
-        entity.getWorld.theProfiler.startSection("move")
+        entity.getWorld_I.theProfiler.endSection()
+        entity.getWorld_I.theProfiler.startSection("mob tick")
+        entity.updateAITick_I
+        entity.getWorld_I.theProfiler.endSection()
+        entity.getWorld_I.theProfiler.startSection("controls")
+        entity.getWorld_I.theProfiler.startSection("move")
         entity.asInstanceOf[EntityLiving].getMoveHelper.onUpdateMoveHelper()
-        entity.getWorld.theProfiler.endStartSection("look")
+        entity.getWorld_I.theProfiler.endStartSection("look")
         entity.asInstanceOf[EntityLiving].getLookHelper.onUpdateLook()
-        entity.getWorld.theProfiler.endStartSection("jump")
+        entity.getWorld_I.theProfiler.endStartSection("jump")
         entity.asInstanceOf[EntityLiving].getJumpHelper.doJump()
-        entity.getWorld.theProfiler.endSection()
-        entity.getWorld.theProfiler.endSection()
+        entity.getWorld_I.theProfiler.endSection()
+        entity.getWorld_I.theProfiler.endSection()
     }
 }

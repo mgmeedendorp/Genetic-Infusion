@@ -26,16 +26,16 @@ class TraitFire extends Trait {
         val isImmuneToFire = entity.getBoolean(EntityIsImmuneToFire)
 
         if(burnsInDayLight && !isImmuneToFire) {
-            if(entity.getWorld.isDaytime && !entity.getWorld.isRemote && (!living.isChild || childrenBurnInDaylight)) {
+            if(entity.getWorld_I.isDaytime && !entity.getWorld_I.isRemote && (!living.isChild || childrenBurnInDaylight)) {
                 val brightness = living.getBrightness(1.0F)
 
-                if(brightness > 0.5F && entity.getRandom.nextFloat() * 30.0F < (brightness - 0.4F) * 2.0F && entity.getWorld.canBlockSeeTheSky(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ))) {
+                if(brightness > 0.5F && entity.getRandom_I.nextFloat() * 30.0F < (brightness - 0.4F) * 2.0F && entity.getWorld_I.canBlockSeeTheSky(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ))) {
                     var flag = true
                     val helmet = living.getEquipmentInSlot(4)
 
                     if(helmet != null) {
                         if(helmet.isItemStackDamageable) {
-                            helmet.setMetadata(helmet.getCurrentDurability + entity.getRandom.nextInt(2))
+                            helmet.setMetadata(helmet.getCurrentDurability + entity.getRandom_I.nextInt(2))
 
                             if(helmet.getCurrentDurability >= helmet.getMaxDurability) {
                                 living.renderBrokenItemStack(helmet)
@@ -55,7 +55,7 @@ class TraitFire extends Trait {
 
         var fire = entity.getInteger(EntityFire)
 
-        if(entity.getWorld.isRemote) {
+        if(entity.getWorld_I.isRemote) {
             fire = 0
         } else if(fire > 0) {
             if(isImmuneToFire) {
@@ -66,7 +66,7 @@ class TraitFire extends Trait {
                 }
             } else {
                 if(fire % 20 == 0) {
-                    entity.attackEntityFrom(DamageSource.onFire, 1.0F)
+                    entity.attackEntityFrom_I(DamageSource.onFire, 1.0F)
                 }
 
                 fire -= 1
@@ -75,7 +75,7 @@ class TraitFire extends Trait {
         entity.setInteger(EntityFire, fire)
 
         if(entity.asInstanceOf[EntityLiving].handleLavaMovement()) {
-            entity.setOnFireFromLava
+            entity.setOnFireFromLava_I
             entity.setFloat(EntityFallDistance, entity.getFloat(EntityFallDistance) * 0.5F)
         }
 
@@ -83,8 +83,8 @@ class TraitFire extends Trait {
             living.setDead()
         }
 
-        if(!entity.getWorld.isRemote) {
-            entity.setFlag(0, fire > 0)
+        if(!entity.getWorld_I.isRemote) {
+            entity.setFlag_I(0, fire > 0)
         }
 
         if(living.isEntityAlive && living.isWet) {
@@ -95,9 +95,9 @@ class TraitFire extends Trait {
     override def attackEntityAsMob(entity: IEntitySoulCustom, entityToAttack: Entity): Boolean = {
         val living = entity.asInstanceOf[EntityLiving]
         val setEntitiesOnFire: Boolean = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneSetOnFireFromAttack)
-        val difficulty = entity.getWorld.difficultySetting.getDifficultyId
+        val difficulty = entity.getWorld_I.difficultySetting.getDifficultyId
 
-        if(setEntitiesOnFire && living.getEquipmentInSlot(0) == null && living.isBurning && entity.getRandom.nextFloat() < difficulty.toFloat * 0.3F) {
+        if(setEntitiesOnFire && living.getEquipmentInSlot(0) == null && living.isBurning && entity.getRandom_I.nextFloat() < difficulty.toFloat * 0.3F) {
             entityToAttack.setFire(2 * difficulty)
         }
         true
@@ -105,14 +105,14 @@ class TraitFire extends Trait {
 
     override def setOnFireFromLava(entity: IEntitySoulCustom) {
         if(!entity.getBoolean(EntityIsImmuneToFire)) {
-            entity.attackEntityFrom(DamageSource.lava, 4.0F)
+            entity.attackEntityFrom_I(DamageSource.lava, 4.0F)
             entity.asInstanceOf[EntityLiving].setFire(15)
         }
     }
     override def onStruckByLightning(entity: IEntitySoulCustom, lightningBolt: EntityLightningBolt) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        entity.dealFireDamage(5)
+        entity.dealFireDamage_I(5)
         entity.setInteger(EntityFire, entity.getInteger(EntityFire) + 1)
 
         if(entity.getInteger(EntityFire) == 0) {

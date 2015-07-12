@@ -9,21 +9,21 @@ class TraitSounds extends Trait {
 
     override def playSound(entity: IEntitySoulCustom, name: String, volume: Float, pitch: Float) {
         if(name != null && !name.equals(""))
-            entity.getWorld.playSoundAtEntity(entity.asInstanceOf[Entity], name, volume, pitch)
+            entity.getWorld_I.playSoundAtEntity(entity.asInstanceOf[Entity], name, volume, pitch)
     }
 
     override def onUpdate(entity: IEntitySoulCustom) {
-        entity.getWorld.theProfiler.startSection("mobBaseTick")
+        entity.getWorld_I.theProfiler.startSection("mobBaseTick")
 
         val livingSoundTime = entity.getInteger(EntityLivingSoundTime) + 1
         entity.setInteger(EntityLivingSoundTime, livingSoundTime)
 
-        if (!entity.getBoolean(EntityIsDead) && entity.getRandom.nextInt(1000) < livingSoundTime) {
+        if (!entity.getBoolean(EntityIsDead) && entity.getRandom_I.nextInt(1000) < livingSoundTime) {
             entity.setInteger(EntityLivingSoundTime, -entity.getInteger(EntityTalkInterval))
             entity.asInstanceOf[EntityLiving].playLivingSound()
         }
 
-        entity.getWorld.theProfiler.endSection()
+        entity.getWorld_I.theProfiler.endSection()
     }
 
     override def firstTick(entity: IEntitySoulCustom) {

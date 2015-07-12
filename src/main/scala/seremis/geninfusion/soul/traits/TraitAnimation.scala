@@ -10,7 +10,7 @@ import scala.collection.mutable.ListBuffer
 class TraitAnimation extends Trait {
 
     override def firstTick(entity: IEntitySoulCustom) {
-        if(entity.getWorld.isRemote) {
+        if(entity.getWorld_I.isRemote) {
             val registry = SoulHelper.animationRegistry
 
             val animations = registry.getAnimations

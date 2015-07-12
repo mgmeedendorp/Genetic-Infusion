@@ -85,7 +85,7 @@ class TraitExplode extends Trait {
             val fuseState = DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, EntityFuseState).asInstanceOf[Byte].toInt
 
             if(fuseState > 0 && timeSinceIgnited == 0) {
-                entity.playSound("creeper.primed", 1.0F, 0.5F)
+                entity.playSound_I("creeper.primed", 1.0F, 0.5F)
             }
 
             timeSinceIgnited += fuseState
@@ -97,15 +97,15 @@ class TraitExplode extends Trait {
             if(timeSinceIgnited >= fuseTime) {
                 timeSinceIgnited = fuseTime
 
-                if(!entity.getWorld.isRemote) {
-                    val mobGriefing = entity.getWorld.getGameRules.getGameRuleBooleanValue("mobGriefing")
+                if(!entity.getWorld_I.isRemote) {
+                    val mobGriefing = entity.getWorld_I.getGameRules.getGameRuleBooleanValue("mobGriefing")
 
                     val explosionRadius = entity.getInteger(EntityExplosionRadius)
 
                     if(living.getDataWatcher.getWatchableObjectByte(DataWatcherHelper.getObjectId(living.getDataWatcher, EntityCharged)) == 1) {
-                        entity.getWorld.createExplosion(living, living.posX, living.posY, living.posZ, explosionRadius*2, mobGriefing)
+                        entity.getWorld_I.createExplosion(living, living.posX, living.posY, living.posZ, explosionRadius*2, mobGriefing)
                     } else {
-                        entity.getWorld.createExplosion(living, living.posX, living.posY, living.posZ, explosionRadius, mobGriefing)
+                        entity.getWorld_I.createExplosion(living, living.posX, living.posY, living.posZ, explosionRadius, mobGriefing)
                     }
                     living.setDead()
                 }
@@ -125,11 +125,11 @@ class TraitExplode extends Trait {
             val stack = player.getCurrentEquippedItem
 
             if(stack != null && stack.getItem == Items.flint_and_steel) {
-                entity.getWorld.playSoundEffect(living.posX + 0.5D, living.posY + 0.5D, living.posZ + 0.5D, "fire.ignite", 1.0F, entity.getRandom.nextFloat() * 0.4F + 0.8F)
+                entity.getWorld_I.playSoundEffect(living.posX + 0.5D, living.posY + 0.5D, living.posZ + 0.5D, "fire.ignite", 1.0F, entity.getRandom_I.nextFloat() * 0.4F + 0.8F)
 
                 player.swingItem()
 
-                if(!entity.getWorld.isRemote) {
+                if(!entity.getWorld_I.isRemote) {
                     DataWatcherHelper.updateObject(living.getDataWatcher, EntityIgnited, 1.toByte.asInstanceOf[Byte])
 
                     stack.damageItem(1, player)
@@ -147,7 +147,7 @@ class TraitExplode extends Trait {
         val canBeCharged = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneCanBeCharged)
 
 
-        if(explodes && canBeCharged && !entity.getWorld.isRemote) {
+        if(explodes && canBeCharged && !entity.getWorld_I.isRemote) {
             DataWatcherHelper.updateObject(living.getDataWatcher, EntityCharged, 1.toByte.asInstanceOf[Byte])
         }
     }

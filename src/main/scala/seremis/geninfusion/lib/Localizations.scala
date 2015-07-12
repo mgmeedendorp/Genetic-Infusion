@@ -12,4 +12,5 @@ object Localizations {
 
     final val Crystal = "crystal.png"
     final val ClayGolem = "clay_golem.png"
+    final val ClayGolemTransformation = "golem_transformation.png"
 }

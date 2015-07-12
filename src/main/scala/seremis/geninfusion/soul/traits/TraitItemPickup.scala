@@ -22,12 +22,12 @@ class TraitItemPickup extends Trait {
     override def onUpdate(entity: IEntitySoulCustom) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        entity.getWorld.theProfiler.startSection("looting")
+        entity.getWorld_I.theProfiler.startSection("looting")
 
         val canPickUpItems = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GenePicksUpItems)
 
-        if(GeneticInfusion.commonProxy.isServerWorld(entity.getWorld) && canPickUpItems && !living.isDead && entity.getWorld.getGameRules.getGameRuleBooleanValue("mobGriefing")) {
-            val list = entity.getWorld.getEntitiesWithinAABB(classOf[EntityItem], entity.getBoundingBox.expand(1.0D, 0.0D, 1.0D)).asInstanceOf[util.List[Entity]]
+        if(GeneticInfusion.commonProxy.isServerWorld(entity.getWorld_I) && canPickUpItems && !living.isDead && entity.getWorld_I.getGameRules.getGameRuleBooleanValue("mobGriefing")) {
+            val list = entity.getWorld_I.getEntitiesWithinAABB(classOf[EntityItem], entity.getBoundingBox_I.expand(1.0D, 0.0D, 1.0D)).asInstanceOf[util.List[Entity]]
 
             for(value <- list) {
                 val item = value.asInstanceOf[EntityItem]
@@ -73,7 +73,7 @@ class TraitItemPickup extends Trait {
                             }
 
                             if(newStack.getItem == Items.diamond && item.getThrower != null) {
-                                val player = entity.getWorld.getPlayerEntityByName(item.getThrower)
+                                val player = entity.getWorld_I.getPlayerEntityByName(item.getThrower)
                                 if(player != null) {
                                     player.triggerAchievement(AchievementList.field_150966_x)
                                 }
@@ -90,7 +90,7 @@ class TraitItemPickup extends Trait {
             }
         }
 
-        if(GeneticInfusion.commonProxy.isServerWorld(entity.getWorld)) {
+        if(GeneticInfusion.commonProxy.isServerWorld(entity.getWorld_I)) {
             val living = entity.asInstanceOf[EntityLiving]
             val arrowCount = living.getArrowCountInEntity
 
@@ -110,7 +110,7 @@ class TraitItemPickup extends Trait {
                 val currStack = living.getEquipmentInSlot(j)
 
                 if(!ItemStack.areItemStacksEqual(currStack, prevStack)) {
-                    entity.getWorld.asInstanceOf[WorldServer].getEntityTracker.sendToAllTrackingEntity(living, new S04PacketEntityEquipment(entity.getEntityId, j, currStack))
+                    entity.getWorld_I.asInstanceOf[WorldServer].getEntityTracker.sendToAllTrackingEntity(living, new S04PacketEntityEquipment(entity.getEntityId_I, j, currStack))
 
                     if(prevStack != null) {
                         living.getAttributeMap.removeAttributeModifiers(prevStack.getAttributeModifiers)
@@ -126,13 +126,13 @@ class TraitItemPickup extends Trait {
                 }
             }
         }
-        entity.getWorld.theProfiler.endSection()
+        entity.getWorld_I.theProfiler.endSection()
     }
 
     def onItemPickup(entity: IEntitySoulCustom, ent: Entity, stackSize: Int) {
-        if(!ent.isDead && GeneticInfusion.commonProxy.isServerWorld(entity.getWorld)) {
-            val entitytracker = entity.getWorld.asInstanceOf[WorldServer].getEntityTracker
-            entitytracker.sendToAllTrackingEntity(ent, new S0DPacketCollectItem(ent.getEntityId, entity.getEntityId))
+        if(!ent.isDead && GeneticInfusion.commonProxy.isServerWorld(entity.getWorld_I)) {
+            val entitytracker = entity.getWorld_I.asInstanceOf[WorldServer].getEntityTracker
+            entitytracker.sendToAllTrackingEntity(ent, new S0DPacketCollectItem(ent.getEntityId, entity.getEntityId_I))
         }
     }
 
