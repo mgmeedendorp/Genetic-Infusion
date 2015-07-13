@@ -1,9 +1,9 @@
 package seremis.geninfusion.helper
 
+import java.awt.geom.Rectangle2D.Double
 import java.awt.image.BufferedImage
 import java.awt.{Graphics, Polygon}
 import java.io._
-import javafx.geometry.Rectangle2D
 import javax.imageio.ImageIO
 
 import cpw.mods.fml.relauncher.{Side, SideOnly}
@@ -34,13 +34,13 @@ object GITextureHelper {
         null
     }
 
-    def stitchImages(rects: ListBuffer[Rectangle2D], images: ListBuffer[BufferedImage]): (BufferedImage, ListBuffer[Rectangle2D]) = {
+    def stitchImages(rects: ListBuffer[Double], images: ListBuffer[BufferedImage]): (BufferedImage, ListBuffer[Double]) = {
         val textureRectsDest = distributeSquaresOnTexture(rects)
 
         val finalImage = new BufferedImage(textureRectsDest._1._1, textureRectsDest._1._2, BufferedImage.TYPE_INT_ARGB)
         val graphics = finalImage.getGraphics
 
-        for(i <- 0 until textureRectsDest._2.size) {
+        for(i <- textureRectsDest._2.indices) {
             val sourceRect = rects.get(i)
             val sourceImage = images.get(i)
             val destRect = textureRectsDest._2.get(i)
@@ -115,7 +115,7 @@ object GITextureHelper {
      * @return A section of the passed BufferedImage with the passed ModelPart's texture.
      */
     def getModelPartTexture(part: ModelPart, image: BufferedImage): BufferedImage = {
-        var textureRectsSource: ListBuffer[Rectangle2D] = ListBuffer()
+        var textureRectsSource: ListBuffer[Double] = ListBuffer()
         var texturedQuadsList: ListBuffer[TexturedQuad] = ListBuffer()
 
 
@@ -132,7 +132,7 @@ object GITextureHelper {
                 val quadCoords = (Math.min(quadCoordsMax._1, quadCoordsMin._1).toInt, Math.min(quadCoordsMax._2, quadCoordsMin._2).toInt)
                 val quadSize = (Math.abs(quadCoordsMax._1 - quadCoordsMin._1).toInt, Math.abs(quadCoordsMax._2 - quadCoordsMin._2).toInt)
 
-                textureRectsSource += new Rectangle2D(quadCoords._1, quadCoords._2, quadSize._1, quadSize._2)
+                textureRectsSource += new Double(quadCoords._1, quadCoords._2, quadSize._1, quadSize._2)
                 texturedQuadsList += quad
             }
         }
@@ -141,7 +141,7 @@ object GITextureHelper {
 
         changeModelPartTextureSize(part, (result._1.getWidth, result._1.getHeight))
 
-        for(i <- 0 until result._2.size) {
+        for(i <- result._2.indices) {
             val rect = result._2.get(i)
             val quad = texturedQuadsList.get(i)
 
@@ -189,15 +189,15 @@ object GITextureHelper {
         part
     }
 
-    def distributeSquaresOnTexture(usedRects: ListBuffer[Rectangle2D]): ((Int, Int), ListBuffer[Rectangle2D]) = {
+    def distributeSquaresOnTexture(usedRects: ListBuffer[Double]): ((Int, Int), ListBuffer[Double]) = {
         var textureSize = (16, 16)
         var position: (Int, Int) = (0, 0)
         var rowMaxY = 0
 
-        var resultList: ListBuffer[Rectangle2D] = ListBuffer()
+        var resultList: ListBuffer[Double] = ListBuffer()
 
         for(rect <- usedRects) {
-            val newRect = new Rectangle2D(position._1, position._2, rect.getWidth, rect.getHeight)
+            val newRect = new Double(position._1, position._2, rect.getWidth, rect.getHeight)
 
             if(newRect.getWidth.toInt > textureSize._1) {
                 textureSize = (textureSize._1 * 2, textureSize._2)
@@ -299,7 +299,7 @@ object GITextureHelper {
      * @return A File object with the file at the specified location.
      */
     def getFile(location: ResourceLocation): File = {
-        new File(getClass.getClassLoader.getResource("assets/" + location.getResourceDomain + "/" + location.getResourcePath).getPath)
+        new File("/assets/" + location.getResourceDomain + "/" + location.getResourcePath)
     }
 
     /**

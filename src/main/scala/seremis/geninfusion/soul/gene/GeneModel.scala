@@ -1,7 +1,7 @@
 package seremis.geninfusion.soul.gene
 
+import java.awt.geom.Rectangle2D.Double
 import java.awt.image.BufferedImage
-import javafx.geometry.Rectangle2D
 
 import net.minecraft.util.ResourceLocation
 import seremis.geninfusion.api.soul.lib.Genes
@@ -23,14 +23,14 @@ class GeneModel extends Gene(classOf[Array[ModelPart]]) {
         if(rand.nextBoolean()) {
             for(part <- allele1Data) {
                 if(rand.nextInt(100) < 20) {
-                    part.mutate
+                    part.mutate()
                 }
             }
         }
         else {
             for(part <- allele2Data) {
                 if(rand.nextInt(100) < 20) {
-                    part.mutate
+                    part.mutate()
                 }
             }
         }
@@ -150,7 +150,7 @@ class GeneModel extends Gene(classOf[Array[ModelPart]]) {
 
     def createParentTexture(inherited: ListBuffer[(Array[ModelPart], BufferedImage)]): (BufferedImage, ListBuffer[ModelPart]) = {
         val modelPartImages: ListBuffer[BufferedImage] = ListBuffer()
-        val textureRects: ListBuffer[Rectangle2D] = ListBuffer()
+        val textureRects: ListBuffer[Double] = ListBuffer()
         val parts: ListBuffer[ModelPart] = ListBuffer()
 
         for (tuple <- inherited) {
@@ -159,7 +159,7 @@ class GeneModel extends Gene(classOf[Array[ModelPart]]) {
 
             for (part <- partArray if part != null) {
                 val image = GITextureHelper.getModelPartTexture(part, wholeTexture)
-                textureRects += new Rectangle2D(0, 0, image.getWidth, image.getHeight)
+                textureRects += new Double(0, 0, image.getWidth, image.getHeight)
                 modelPartImages += image
                 parts += part
             }
@@ -167,7 +167,7 @@ class GeneModel extends Gene(classOf[Array[ModelPart]]) {
 
         val result = GITextureHelper.stitchImages(textureRects, modelPartImages)
 
-        for (i <- 0 until parts.length) {
+        for (i <- parts.indices) {
             val part = parts(i)
             val rect = result._2(i)
             GITextureHelper.changeModelPartTextureSize(part, (result._1.getWidth, result._1.getHeight))
