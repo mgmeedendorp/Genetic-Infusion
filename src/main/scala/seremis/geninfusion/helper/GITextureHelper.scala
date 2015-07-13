@@ -299,12 +299,7 @@ object GITextureHelper {
      * @return A File object with the file at the specified location.
      */
     def getFile(location: ResourceLocation): File = {
-        println(getClass.getResourceAsStream("gita clay_golem.png"))
-        val a = getClass.getResource("assets/" + location.getResourceDomain + "/" + location.getResourcePath).getPath
-        println(a)
-
-        new File(getClass.getResource("assets/" + location.getResourceDomain + "/" + location.getResourcePath).getPath)
-//        new File(new File(new File(new File(GeneticInfusion.getClass.getProtectionDomain.getCodeSource.getLocation.toURI.getPath).getParent).getParent).getParent, "/assets/" + location.getResourceDomain + "/" + location.getResourcePath)
+        new File(getClass.getClassLoader.getResource("assets/" + location.getResourceDomain + "/" + location.getResourcePath).getPath)
     }
 
     /**
