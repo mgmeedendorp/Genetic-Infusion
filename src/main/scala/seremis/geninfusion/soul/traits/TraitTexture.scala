@@ -1,26 +1,50 @@
 package seremis.geninfusion.soul.traits
 
+import java.io.ByteArrayInputStream
+import javax.imageio.ImageIO
+
+import cpw.mods.fml.relauncher.{Side, SideOnly}
+import net.minecraft.client.Minecraft
+import net.minecraft.client.renderer.texture.DynamicTexture
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.{DamageSource, ResourceLocation}
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
-import seremis.geninfusion.helper.GITextureHelper
-import seremis.geninfusion.lib.Localizations
+import seremis.geninfusion.lib.{DefaultProps, Localizations}
 
 class TraitTexture extends Trait {
 
-    override def getEntityTexture(entity: IEntitySoulCustom): String = {
+    override def firstTick(entity: IEntitySoulCustom) {
+        if(entity.getWorld_I.isRemote) {
+            val textureCompound: NBTTagCompound = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneTexture)
+            val textureBytes = textureCompound.getByteArray("textureBytes")
+            val in = new ByteArrayInputStream(textureBytes)
+            val image = ImageIO.read(in)
+
+            entity.setObject("texture", image)
+
+            val dynamicTexture = new DynamicTexture(image)
+
+            entity.setObject("dynamicTexture", dynamicTexture)
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    override def getEntityTexture(entity: IEntitySoulCustom): ResourceLocation = {
         try {
-            SoulHelper.geneRegistry.getValueFromAllele[String](entity, Genes.GeneTexture)
+            val dynamicTexture = entity.getObject("dynamicTexture").asInstanceOf[DynamicTexture]
+
+            Minecraft.getMinecraft.renderEngine.getDynamicTextureLocation(DefaultProps.ID + ":customEntityTexture", dynamicTexture)
         } catch {
-            case e: NullPointerException => Localizations.LocModelTextures + Localizations.ClayGolemTransformation
+            case e: NullPointerException => new ResourceLocation(Localizations.LocModelTextures + Localizations.ClayGolemTransformation)
         }
     }
 
     override def onDeath(entity: IEntitySoulCustom, source: DamageSource) {
-        //TODO make some texture thingy to ensure no infinite textures
-        if(!entity.getWorld_I.isRemote && !entity.getSoulPreserved_I) {
-            GITextureHelper.deleteTexture(toResource(getEntityTexture(entity)))
-            GITextureHelper.deleteTexture(toResource(SoulHelper.geneRegistry.getChromosomeFor(entity, Genes.GeneTexture).get.getRecessive.getAlleleData.asInstanceOf[String]))
+        if(entity.getWorld_I.isRemote) {
+            val dynamicTexture = entity.getObject("dynamicTexture").asInstanceOf[DynamicTexture]
+
+            dynamicTexture.deleteGlTexture()
         }
     }
 

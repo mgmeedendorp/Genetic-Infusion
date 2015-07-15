@@ -7,6 +7,7 @@ import net.minecraft.entity.passive.EntityVillager
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.soul.IChromosome
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.util.render.model.ModelPart
@@ -14,7 +15,7 @@ import seremis.geninfusion.soul.{Allele, Chromosome}
 
 class StandardSoulZombie extends StandardSoul {
 
-    override def isStandardSoulForEntity(entity: EntityLiving): Boolean = entity.isInstanceOf[EntityZombie]
+    override def getStandardSoulEntity: Class[_ <: EntityLiving] = classOf[EntityZombie]
 
     override def getChromosomeFromGene(entity: EntityLiving, gene: String): IChromosome = {
         if(gene.equals(Genes.GeneBurnsInDaylight))
@@ -124,7 +125,7 @@ class StandardSoulZombie extends StandardSoul {
         if(gene.equals(Genes.GeneModel))
             return new Chromosome(new Allele(true, ModelPart.getModelPartsFromModel(new ModelZombie(), entity), classOf[Array[ModelPart]]))
         if(gene.equals(Genes.GeneTexture))
-            return new Chromosome(new Allele(true, "textures/entity/zombie/zombie.png", classOf[String]), new Allele(false, "textures/entity/zombie/zombie.png", classOf[String]))
+            return new Chromosome(new Allele(true, textureStringToNBT("textures/entity/zombie/zombie.png"), classOf[NBTTagCompound]), new Allele(false, textureStringToNBT("textures/entity/zombie/zombie.png"), classOf[NBTTagCompound]))
 
 
         super.getChromosomeFromGene(entity, gene)

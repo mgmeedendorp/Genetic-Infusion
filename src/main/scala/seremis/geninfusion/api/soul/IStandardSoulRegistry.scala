@@ -9,4 +9,6 @@ trait IStandardSoulRegistry {
     def getStandardSoulForEntity(entity: EntityLiving): Option[IStandardSoul]
 
     def getSoulForEntity(entity: EntityLiving): Option[ISoul]
+
+    def getStandardSouls: Array[IStandardSoul]
 }

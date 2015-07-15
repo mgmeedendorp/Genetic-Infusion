@@ -70,9 +70,14 @@ object AlleleType {
         override def readFromNBT(compound: NBTTagCompound, name: String): Any = ModelPart.fromNBT(compound.getCompoundTag(name))
     }
 
+    val typeNBTTagCompound = new AlleleType(classOf[NBTTagCompound]) {
+        override def writeToNBT(compound: NBTTagCompound, name: String, value: Any) = compound.setTag(name, value.asInstanceOf[NBTTagCompound])
+        override def readFromNBT(compound: NBTTagCompound, name: String): Any = compound.getCompoundTag(name)
+    }
+
     val typeBooleanArray = new AlleleType(classOf[Array[Boolean]]) {
         override def writeToNBT(compound: NBTTagCompound, name: String, value: Any) = {
-            for(i <- 0 until value.asInstanceOf[Array[Boolean]].length) {
+            for(i <- value.asInstanceOf[Array[Boolean]].indices) {
                 compound.setBoolean("value." + i, value.asInstanceOf[Array[Boolean]](i))
             }
             compound.setInteger("value.length", value.asInstanceOf[Array[Boolean]].length)
@@ -90,7 +95,7 @@ object AlleleType {
 
     val typeByteArray = new AlleleType(classOf[Array[Byte]]) {
         override def writeToNBT(compound: NBTTagCompound, name: String, value: Any) = {
-            for(i <- 0 until value.asInstanceOf[Array[Byte]].length) {
+            for(i <- value.asInstanceOf[Array[Byte]].indices) {
                 compound.setByte("value." + i, value.asInstanceOf[Array[Byte]](i))
             }
             compound.setInteger("value.length", value.asInstanceOf[Array[Byte]].length)
@@ -108,7 +113,7 @@ object AlleleType {
 
     val typeShortArray = new AlleleType(classOf[Array[Short]]) {
         override def writeToNBT(compound: NBTTagCompound, name: String, value: Any) = {
-            for(i <- 0 until value.asInstanceOf[Array[Short]].length) {
+            for(i <- value.asInstanceOf[Array[Short]].indices) {
                 compound.setShort("value." + i, value.asInstanceOf[Array[Short]](i))
             }
             compound.setInteger("value.length", value.asInstanceOf[Array[Short]].length)
@@ -126,7 +131,7 @@ object AlleleType {
 
     val typeIntArray = new AlleleType(classOf[Array[Int]]) {
         override def writeToNBT(compound: NBTTagCompound, name: String, value: Any) = {
-            for(i <- 0 until value.asInstanceOf[Array[Int]].length) {
+            for(i <- value.asInstanceOf[Array[Int]].indices) {
                 compound.setInteger("value." + i, value.asInstanceOf[Array[Int]](i))
             }
             compound.setInteger("value.length", value.asInstanceOf[Array[Int]].length)
@@ -144,7 +149,7 @@ object AlleleType {
 
     val typeFloatArray = new AlleleType(classOf[Array[Float]]) {
         override def writeToNBT(compound: NBTTagCompound, name: String, value: Any) = {
-            for(i <- 0 until value.asInstanceOf[Array[Float]].length) {
+            for(i <- value.asInstanceOf[Array[Float]].indices) {
                 compound.setFloat("value." + i, value.asInstanceOf[Array[Float]](i))
             }
             compound.setInteger("value.length", value.asInstanceOf[Array[Float]].length)
@@ -162,7 +167,7 @@ object AlleleType {
 
     val typeDoubleArray = new AlleleType(classOf[Array[Double]]) {
         override def writeToNBT(compound: NBTTagCompound, name: String, value: Any) = {
-            for(i <- 0 until value.asInstanceOf[Array[Double]].length) {
+            for(i <- value.asInstanceOf[Array[Double]].indices) {
                 compound.setDouble("value." + i, value.asInstanceOf[Array[Double]](i))
             }
             compound.setInteger("value.length", value.asInstanceOf[Array[Double]].length)
@@ -180,7 +185,7 @@ object AlleleType {
 
     val typeLongArray = new AlleleType(classOf[Array[Long]]) {
         override def writeToNBT(compound: NBTTagCompound, name: String, value: Any) = {
-            for(i <- 0 until value.asInstanceOf[Array[Long]].length) {
+            for(i <- value.asInstanceOf[Array[Long]].indices) {
                 compound.setLong("value." + i, value.asInstanceOf[Array[Long]](i))
             }
             compound.setInteger("value.length", value.asInstanceOf[Array[Long]].length)
@@ -198,7 +203,7 @@ object AlleleType {
 
     val typeStringArray = new AlleleType(classOf[Array[String]]) {
         override def writeToNBT(compound: NBTTagCompound, name: String, value: Any) = {
-            for(i <- 0 until value.asInstanceOf[Array[String]].length) {
+            for(i <- value.asInstanceOf[Array[String]].indices) {
                 compound.setString("value." + i, value.asInstanceOf[Array[String]](i))
             }
             compound.setInteger("value.length", value.asInstanceOf[Array[String]].length)
@@ -216,7 +221,7 @@ object AlleleType {
 
     val typeClassArray = new AlleleType(classOf[Array[Class[_]]]) {
         override def writeToNBT(compound: NBTTagCompound, name: String, value: Any) = {
-            for(i <- 0 until value.asInstanceOf[Array[Class[_]]].length) {
+            for(i <- value.asInstanceOf[Array[Class[_]]].indices) {
                 compound.setString("value." + i, value.asInstanceOf[Array[Class[_]]](i).getName)
             }
             compound.setInteger("value.length", value.asInstanceOf[Array[Class[_]]].length)
@@ -234,7 +239,7 @@ object AlleleType {
 
     val typeItemStackArray = new AlleleType(classOf[Array[ItemStack]]) {
         override def writeToNBT(compound: NBTTagCompound, name: String, value: Any) = {
-            for(i <- 0 until value.asInstanceOf[Array[ItemStack]].length) {
+            for(i <- value.asInstanceOf[Array[ItemStack]].indices) {
                 compound.setTag("value." + i, value.asInstanceOf[Array[ItemStack]](i).writeToNBT(new NBTTagCompound))
             }
             compound.setInteger("value.length", value.asInstanceOf[Array[ItemStack]].length)
@@ -252,7 +257,7 @@ object AlleleType {
 
     val typeModelPartArray = new AlleleType(classOf[Array[ModelPart]]) {
         override def writeToNBT(compound: NBTTagCompound, name: String, value: Any) = {
-            for(i <- 0 until value.asInstanceOf[Array[ModelPart]].length) {
+            for(i <- value.asInstanceOf[Array[ModelPart]].indices) {
                 compound.setTag("value." + i, value.asInstanceOf[Array[ModelPart]](i).writeToNBT(new NBTTagCompound))
             }
             compound.setInteger("value.length", value.asInstanceOf[Array[ModelPart]].length)
@@ -263,6 +268,24 @@ object AlleleType {
             val out = Array.ofDim[ModelPart](length)
             for (i <- 0 until length) {
                 out(i) = ModelPart.fromNBT(compound.getCompoundTag("value." + i))
+            }
+            out
+        }
+    }
+
+    val typeNBTTagCompoundArray = new AlleleType(classOf[Array[NBTTagCompound]]) {
+        override def writeToNBT(compound: NBTTagCompound, name: String, value: Any) = {
+            for(i <- value.asInstanceOf[Array[NBTTagCompound]].indices) {
+                compound.setTag("value." + i, value.asInstanceOf[Array[NBTTagCompound]](i))
+            }
+            compound.setInteger("value.length", value.asInstanceOf[Array[NBTTagCompound]].length)
+        }
+
+        override def readFromNBT(compound: NBTTagCompound, name: String): Any = {
+            val length = compound.getInteger("value.length")
+            val out = Array.ofDim[NBTTagCompound](length)
+            for (i <- 0 until length) {
+                out(i) = compound.getCompoundTag("value." + i)
             }
             out
         }

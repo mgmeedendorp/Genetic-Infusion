@@ -5,7 +5,7 @@ import net.minecraft.entity.effect.EntityLightningBolt
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.{Entity, EntityLivingBase, IEntityLivingData}
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.{ChunkCoordinates, DamageSource}
+import net.minecraft.util.{ResourceLocation, ChunkCoordinates, DamageSource}
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
 object TraitHandler {
@@ -241,11 +241,11 @@ object TraitHandler {
     }
 
     @SideOnly(Side.CLIENT)
-    def getEntityTexture(entity: IEntitySoulCustom): String = {
-        var flag: String = null
+    def getEntityTexture(entity: IEntitySoulCustom): ResourceLocation = {
+        var flag: ResourceLocation = null
         for (trt <- SoulHelper.traitRegistry.getTraits) {
             val tex = trt.getEntityTexture(entity)
-            if (tex != null && tex != "") {
+            if (tex != null) {
                 flag = tex
             }
         }

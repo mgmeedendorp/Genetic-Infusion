@@ -34,7 +34,7 @@ class RenderClayGolem extends RenderEntity {
         if(golem.isTransformating)
             new ResourceLocation(Localizations.LocModelTextures + Localizations.ClayGolemTransformation)
         else if(golem.isWaitingAfterTransformation)
-            new ResourceLocation(golem.getTransformationGoal.get.getEntityTexture_I)
+            golem.getTransformationGoal.get.getEntityTexture_I
         else
             new ResourceLocation(Localizations.LocModelTextures + Localizations.ClayGolem)
     }

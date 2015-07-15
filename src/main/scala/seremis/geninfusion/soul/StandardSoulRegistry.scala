@@ -15,7 +15,7 @@ object StandardSoulRegistry extends IStandardSoulRegistry {
 
     override def getSoulForEntity(entity: EntityLiving): Option[ISoul] = {
             val chromosomes = new Array[IChromosome](SoulHelper.geneRegistry.getGenes.size)
-            for(i <- 0 until chromosomes.length) {
+            for(i <- chromosomes.indices) {
                 val gene = SoulHelper.geneRegistry.getGene(i)
                 val name = SoulHelper.geneRegistry.getGeneName(gene)
 
@@ -24,7 +24,7 @@ object StandardSoulRegistry extends IStandardSoulRegistry {
                 if(chromosomes(i) == null) {
                     throw new NullPointerException("There seems to be a Gene: (" + name + ") without an associated Chromosome for Entity: (" + entity + ").")
                 } else if(chromosomes(i).getPrimary.getAlleleData != null && !chromosomes(i).getPrimary.getAlleleType.equals(SoulHelper.geneRegistry.getGene(i).getAlleleType)) {
-                    throw new ClassCastException("Someone associated a Gene: (" + name + ") with an Allele (" + chromosomes(i).getPrimary.getAlleleData.getClass.getName + ") that isn't allowed for this gene. It should be: " + gene.getAlleleType.getAlleleTypeClass)
+                    throw new ClassCastException("Someone associated a Gene: (" + name + ") with an Allele (" + chromosomes(i).getPrimary.getAlleleData.getClass.getName + ") & AlleleType: " + chromosomes(i).getPrimary.getAlleleType + " that isn't allowed for this gene. It should be: " + gene.getAlleleType.getAlleleTypeClass + " & AlleleType: " + SoulHelper.geneRegistry.getGene(i).getAlleleType)
                 }
             }
             Some(new Soul(chromosomes))
@@ -34,4 +34,6 @@ object StandardSoulRegistry extends IStandardSoulRegistry {
         standardSouls.foreach(soul => if(soul.isStandardSoulForEntity(entity)) return Some(soul))
         None
     }
+
+    override def getStandardSouls = standardSouls.to[Array]
 }

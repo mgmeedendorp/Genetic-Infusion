@@ -2,14 +2,16 @@ package seremis.geninfusion.soul.gene
 
 import java.awt.geom.Rectangle2D.Double
 import java.awt.image.BufferedImage
+import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
+import javax.imageio.ImageIO
 
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ResourceLocation
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.{IChromosome, SoulHelper}
 import seremis.geninfusion.api.util.render.animation.AnimationCache
 import seremis.geninfusion.api.util.render.model.ModelPart
 import seremis.geninfusion.helper.GITextureHelper
-import seremis.geninfusion.lib.Localizations
 import seremis.geninfusion.soul.{Allele, Gene}
 
 import scala.collection.mutable.ListBuffer
@@ -47,10 +49,10 @@ class GeneModel extends Gene(classOf[Array[ModelPart]]) {
         val textureChromosome1 = parent1(geneIdTexture)
         val textureChromosome2 = parent2(geneIdTexture)
 
-        val texture1 = GITextureHelper.getBufferedImage(toResource(textureChromosome1.getPrimary.getAlleleData.asInstanceOf[String]))
-        val texture2 = GITextureHelper.getBufferedImage(toResource(textureChromosome2.getPrimary.getAlleleData.asInstanceOf[String]))
-        val texture3 = GITextureHelper.getBufferedImage(toResource(textureChromosome1.getSecondary.getAlleleData.asInstanceOf[String]))
-        val texture4 = GITextureHelper.getBufferedImage(toResource(textureChromosome2.getSecondary.getAlleleData.asInstanceOf[String]))
+        val texture1 = ImageIO.read(new ByteArrayInputStream(textureChromosome1.getPrimary.getAlleleData.asInstanceOf[NBTTagCompound].getByteArray("textureBytes")))
+        val texture2 = ImageIO.read(new ByteArrayInputStream(textureChromosome2.getPrimary.getAlleleData.asInstanceOf[NBTTagCompound].getByteArray("textureBytes")))
+        val texture3 = ImageIO.read(new ByteArrayInputStream(textureChromosome1.getSecondary.getAlleleData.asInstanceOf[NBTTagCompound].getByteArray("textureBytes")))
+        val texture4 = ImageIO.read(new ByteArrayInputStream(textureChromosome2.getSecondary.getAlleleData.asInstanceOf[NBTTagCompound].getByteArray("textureBytes")))
 
         val chromosome1 = parent1(geneIdModel)
         val chromosome2 = parent2(geneIdModel)
@@ -101,24 +103,26 @@ class GeneModel extends Gene(classOf[Array[ModelPart]]) {
         AnimationCache.attachModelPartsToBody(allele1, allele3, parent1Tuple._2.to[Array])
         AnimationCache.attachModelPartsToBody(allele2, allele4, parent2Tuple._2.to[Array])
 
-        var parent1Texture = parent1Tuple._1
-        var parent2Texture = parent2Tuple._1
+        val parent1Texture = parent1Tuple._1
+        val parent2Texture = parent2Tuple._1
 
-        val textureId = SoulHelper.getNextAvailableTextureID
-        val parent1TextureLocationString = Localizations.LocEntityCustomTextures + textureId + "_texture1.png"
-        val parent2TextureLocationString = Localizations.LocEntityCustomTextures + textureId + "_texture2.png"
-
-        val parent1TextureLocation = toResource(parent1TextureLocationString)
-        val parent2TextureLocation = toResource(parent2TextureLocationString)
+        val parent1Out = new ByteArrayOutputStream()
+        val parent2Out = new ByteArrayOutputStream()
 
 //        parent1Texture = GITextureHelper.mergeImages(parent1Texture, parent2Texture)
 //        parent2Texture = GITextureHelper.mergeImages(parent2Texture, parent1Texture)
 
-        GITextureHelper.writeBufferedImage(parent1Texture, parent1TextureLocation)
-        GITextureHelper.writeBufferedImage(parent2Texture, parent2TextureLocation)
+        ImageIO.write(parent1Texture, "png", parent1Out)
+        ImageIO.write(parent2Texture, "png", parent2Out)
 
-        val textureAllele1 = new Allele(true, parent1TextureLocationString, classOf[String])
-        val textureAllele2 = new Allele(false, parent2TextureLocationString, classOf[String])
+        val parent1NBT = new NBTTagCompound
+        val parent2NBT = new NBTTagCompound
+
+        parent1NBT.setByteArray("textureBytes", parent1Out.toByteArray)
+        parent2NBT.setByteArray("textureBytes", parent2Out.toByteArray)
+
+        val textureAllele1 = new Allele(true, parent1NBT, classOf[NBTTagCompound])
+        val textureAllele2 = new Allele(false, parent2NBT, classOf[NBTTagCompound])
 
         offspring(geneIdTexture) = SoulHelper.instanceHelper.getIChromosomeInstance(textureAllele1, textureAllele2)
 

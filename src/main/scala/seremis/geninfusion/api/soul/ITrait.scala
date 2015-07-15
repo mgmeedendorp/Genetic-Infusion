@@ -5,7 +5,7 @@ import net.minecraft.entity.effect.EntityLightningBolt
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.{Entity, EntityLivingBase, IEntityLivingData}
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.{ChunkCoordinates, DamageSource}
+import net.minecraft.util.{ResourceLocation, ChunkCoordinates, DamageSource}
 
 trait ITrait {
 
@@ -83,7 +83,7 @@ trait ITrait {
 
     @SideOnly(Side.CLIENT) def renderEquippedItems(entity: IEntitySoulCustom, partialTickTime: Float)
 
-    @SideOnly(Side.CLIENT) def getEntityTexture(entity: IEntitySoulCustom): String
+    @SideOnly(Side.CLIENT) def getEntityTexture(entity: IEntitySoulCustom): ResourceLocation
 
     def setDead(entity: IEntitySoulCustom)
 

@@ -5,7 +5,7 @@ import net.minecraft.entity.effect.EntityLightningBolt
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.{Entity, EntityLivingBase, IEntityLivingData}
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.{ChunkCoordinates, DamageSource}
+import net.minecraft.util.{ResourceLocation, ChunkCoordinates, DamageSource}
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, ITrait}
 
 class Trait extends ITrait {
@@ -91,7 +91,7 @@ class Trait extends ITrait {
     override def renderEquippedItems(entity: IEntitySoulCustom, partialTickTime: Float) {}
 
     @SideOnly(Side.CLIENT)
-    override def getEntityTexture(entity: IEntitySoulCustom): String = null
+    override def getEntityTexture(entity: IEntitySoulCustom): ResourceLocation = null
 
     override def setDead(entity: IEntitySoulCustom) {}
 

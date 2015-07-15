@@ -65,17 +65,4 @@ object SoulHelper {
     }
 
     private val rand = new Random
-
-    //Do NOT change this variable
-    var textureID = 0
-
-    /**
-     * Get the next available texture ID, this is used as the name of the texture. This number persists over saves.
-     *
-     * @return The next textureID
-     */
-    def getNextAvailableTextureID: Int = {
-        textureID += 1
-        textureID - 1
-    }
 }

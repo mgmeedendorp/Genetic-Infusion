@@ -7,6 +7,7 @@ import net.minecraft.entity.passive.EntityOcelot
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.soul.IChromosome
 import seremis.geninfusion.api.soul.lib.Genes._
 import seremis.geninfusion.api.util.render.model.ModelPart
@@ -14,9 +15,7 @@ import seremis.geninfusion.soul.{Allele, Chromosome}
 
 class StandardSoulCreeper extends StandardSoul {
 
-    override def isStandardSoulForEntity(entity: EntityLiving): Boolean = {
-        entity.isInstanceOf[EntityCreeper]
-    }
+    override def getStandardSoulEntity: Class[_ <: EntityLiving] = classOf[EntityCreeper]
 
     override def getChromosomeFromGene(entity: EntityLiving, gene: String): IChromosome = {
         if(gene == GeneDeathSound)
@@ -118,7 +117,7 @@ class StandardSoulCreeper extends StandardSoul {
         if(gene == GeneModel)
             return new Chromosome(new Allele(true, ModelPart.getModelPartsFromModel(new ModelCreeper(), entity), classOf[Array[ModelPart]]))
         if(gene == GeneTexture)
-            return new Chromosome(new Allele(true, "textures/entity/creeper/creeper.png", classOf[String]), new Allele(false, "textures/entity/creeper/creeper.png", classOf[String]))
+            return new Chromosome(new Allele(true, textureStringToNBT("textures/entity/creeper/creeper.png"), classOf[NBTTagCompound]), new Allele(false, textureStringToNBT("textures/entity/creeper/creeper.png"), classOf[NBTTagCompound]))
 
         if(gene == GeneDropsItemWhenKilledBySpecificEntity)
             return new Chromosome(new Allele(false, true, classOf[Boolean]))

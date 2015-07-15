@@ -8,21 +8,13 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.world.World
 import net.minecraftforge.event.entity.living.LivingDeathEvent
 import net.minecraftforge.event.world.BlockEvent.PlaceEvent
-import net.minecraftforge.event.world.WorldEvent
-import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoulReceptor, SoulHelper}
+import seremis.geninfusion.api.soul.{ISoulReceptor, SoulHelper}
 import seremis.geninfusion.api.util.vector.Coordinate3D
 import seremis.geninfusion.entity.EntityClayGolem
-import seremis.geninfusion.lib.DefaultProps
-import seremis.geninfusion.world.GIWorldSavedData
 
 import scala.collection.mutable.ListBuffer
 
 class GIEventHandler {
-
-    @SubscribeEvent
-    def loadWorld(event: WorldEvent.Load) {
-        event.world.perWorldStorage.setData(DefaultProps.ID, new GIWorldSavedData())
-    }
 
     @SubscribeEvent
     def entityDeath(event: LivingDeathEvent) {
@@ -70,9 +62,6 @@ class GIEventHandler {
 
                 world.markBlockForUpdate(closestTile.xCoord, closestTile.yCoord, closestTile.zCoord)
                 closestTile.markDirty()
-
-                if(living.isInstanceOf[IEntitySoulCustom])
-                    living.asInstanceOf[IEntitySoulCustom].setSoulPreserved_I(true)
             })
         }
     }

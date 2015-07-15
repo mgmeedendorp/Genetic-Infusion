@@ -18,4 +18,10 @@ trait IStandardSoul {
      * @return If this IStandardSoul is suitable for the entity.
      */
     def isStandardSoulForEntity(entity: EntityLiving): Boolean
+
+    /**
+     * Returns the class of the entity this standardSoul is for.
+     * @return
+     */
+    def getStandardSoulEntity: Class[_ <: EntityLiving]
 }

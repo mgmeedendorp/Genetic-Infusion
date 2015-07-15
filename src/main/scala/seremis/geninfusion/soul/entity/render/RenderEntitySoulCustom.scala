@@ -22,7 +22,7 @@ class RenderEntitySoulCustom extends RenderLiving(SoulHelper.entityModel, 0.3F) 
     }
 
     protected override def getEntityTexture(entity: Entity): ResourceLocation = {
-        new ResourceLocation(TraitHandler.getEntityTexture(entity.asInstanceOf[IEntitySoulCustom]))
+        TraitHandler.getEntityTexture(entity.asInstanceOf[IEntitySoulCustom])
     }
 
     protected override def renderEquippedItems(base: EntityLivingBase, partialTickTime: Float) {

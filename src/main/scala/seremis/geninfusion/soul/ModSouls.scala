@@ -1,6 +1,7 @@
 package seremis.geninfusion.soul
 
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.soul.SoulHelper._
 import seremis.geninfusion.api.soul.lib.Animations._
 import seremis.geninfusion.api.soul.lib.Genes._
@@ -235,7 +236,7 @@ object ModSouls {
         geneRegistry.registerMasterGene(GeneUseNewAI, new GeneUseNewAI)
         geneRegistry.registerMasterGene(GeneUseOldAI, new GeneUseOldAI)
 
-        geneRegistry.registerGene(GeneTexture, classOf[String])
+        geneRegistry.registerGene(GeneTexture, classOf[NBTTagCompound])
         geneRegistry.registerGene(GeneModel, new GeneModel)
         geneRegistry.registerCustomInheritance(GeneModel)
 
@@ -286,6 +287,7 @@ object ModSouls {
         alleleTypeRegistry.registerAlleleType(typeClass)
         alleleTypeRegistry.registerAlleleType(typeItemStack)
         alleleTypeRegistry.registerAlleleType(typeModelPart)
+        alleleTypeRegistry.registerAlleleType(typeNBTTagCompound)
         alleleTypeRegistry.registerAlleleType(typeBooleanArray)
         alleleTypeRegistry.registerAlleleType(typeByteArray)
         alleleTypeRegistry.registerAlleleType(typeShortArray)
@@ -297,5 +299,6 @@ object ModSouls {
         alleleTypeRegistry.registerAlleleType(typeClassArray)
         alleleTypeRegistry.registerAlleleType(typeItemStackArray)
         alleleTypeRegistry.registerAlleleType(typeModelPartArray)
+        alleleTypeRegistry.registerAlleleType(typeNBTTagCompoundArray)
     }
 }

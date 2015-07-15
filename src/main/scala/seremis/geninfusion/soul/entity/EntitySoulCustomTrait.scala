@@ -227,12 +227,6 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     override def setSize_I(width: Float, height: Float) = super.setSize(width, height)
 
-    var soulPreserved = false
-
-    override def getSoulPreserved_I: Boolean = soulPreserved
-
-    override def setSoulPreserved_I(soulPreserved: Boolean) = this.soulPreserved = soulPreserved
-
     override def getEntityTexture_I = TraitHandler.getEntityTexture(this)
 
     override def getEntityData_I = super.getEntityData

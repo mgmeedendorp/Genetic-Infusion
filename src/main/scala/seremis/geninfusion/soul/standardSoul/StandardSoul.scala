@@ -1,5 +1,9 @@
 package seremis.geninfusion.soul.standardSoul
 
+import java.io.ByteArrayOutputStream
+import javax.imageio.ImageIO
+
+import net.minecraft.client.Minecraft
 import net.minecraft.client.model.ModelSkeleton
 import net.minecraft.entity.monster.EntityCreeper
 import net.minecraft.entity.passive.{EntityChicken, EntityTameable}
@@ -7,12 +11,16 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.{EntityCreature, EntityLiving, SharedMonsterAttributes}
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.ResourceLocation
 import seremis.geninfusion.api.soul.lib.Genes._
 import seremis.geninfusion.api.soul.{IChromosome, IStandardSoul}
 import seremis.geninfusion.api.util.render.model.ModelPart
 import seremis.geninfusion.soul.{Allele, Chromosome}
 
 abstract class StandardSoul extends IStandardSoul {
+
+    override def isStandardSoulForEntity(entity: EntityLiving) = getStandardSoulEntity.isInstance(entity)
 
     override def getChromosomeFromGene(entity: EntityLiving, gene: String): IChromosome = {
 
@@ -415,7 +423,7 @@ abstract class StandardSoul extends IStandardSoul {
         if(gene == GeneModel)
             return new Chromosome(new Allele(true, ModelPart.getModelPartsFromModel(new ModelSkeleton(), entity), classOf[Array[ModelPart]]))
         if(gene == GeneTexture)
-            return new Chromosome(new Allele(true, "textures/entity/skeleton/skeleton.png", classOf[String]), new Allele(false, "textures/entity/skeleton/skeleton.png", classOf[String]))
+            return new Chromosome(new Allele(true, textureStringToNBT("textures/entity/skeleton/skeleton.png"), classOf[NBTTagCompound]), new Allele(false, textureStringToNBT("textures/entity/skeleton/skeleton.png"), classOf[NBTTagCompound]))
 
 
         //Explosion related genes
@@ -436,5 +444,17 @@ abstract class StandardSoul extends IStandardSoul {
             return new Chromosome(new Allele(false, null, classOf[Class[_]]))
 
         null
+    }
+
+    def textureStringToNBT(textureName: String): NBTTagCompound = {
+        val in = Minecraft.getMinecraft().getResourceManager().getResource((new ResourceLocation(textureName))).getInputStream()
+        val image = ImageIO.read(in)
+        val out = new ByteArrayOutputStream()
+        val nbt = new NBTTagCompound
+
+        ImageIO.write(image, "png", out)
+        nbt.setByteArray("textureBytes", out.toByteArray)
+
+        nbt
     }
 }
