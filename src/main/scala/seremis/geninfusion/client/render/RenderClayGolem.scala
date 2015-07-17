@@ -22,6 +22,7 @@ class RenderClayGolem extends RenderEntity {
 
         GL11.glTranslatef(x.toFloat, y.toFloat + (entity.boundingBox.maxY - entity.boundingBox.minY).toFloat/2.0F, z.toFloat)
         GL11.glRotatef(180F, 1.0F, 0.0F, 0.0F)
+        GL11.glRotatef(entity.rotationYaw, 0.0F, 1.0F, 0.0F)
 
         model.render(entity.asInstanceOf[EntityClayGolem])
 

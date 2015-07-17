@@ -63,8 +63,7 @@ class ModelClayGolem extends ModelBase {
     }
 
     def animateTransformation(golem: EntityClayGolem) {
-        var modelTo = golem.getTransformationGoalModel.get
-//        modelTo = new Model(ModelPart.getModelPartsFromModel(new ModelZombie(), null))
+        val modelTo = golem.getTransformationGoalModel.get
 
         golem.currentRenderModel = Some(UtilModel.morphModel(modelGolem, modelTo, golem.getMaxTransformationTimer, golem.getTransformationTimer))
     }

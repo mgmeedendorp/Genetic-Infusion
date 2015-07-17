@@ -101,6 +101,7 @@ class GIEventHandler {
                     entity.setClayAtCreation(3, getStackAtPosition(world, x, y - 1, z - 1))
                     world.setBlock(x, y - 1, z + 1, Blocks.air)
                     world.setBlock(x, y - 1, z - 1, Blocks.air)
+                    entity.rotationYaw = 90
                 }
 
                 world.spawnEntityInWorld(entity)

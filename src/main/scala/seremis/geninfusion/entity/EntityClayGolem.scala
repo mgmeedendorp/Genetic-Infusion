@@ -64,7 +64,6 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
 
     override def writeEntityToNBT(compound: NBTTagCompound) {
         compound.setInteger("transformationTimer", transformationTimer)
-        compound.setBoolean("startTransformation", startTransformation)
 
         if(clayAtCreation.nonEmpty) {
             for(i <- clayAtCreation.indices) {
@@ -81,12 +80,18 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
 
     override def readEntityFromNBT(compound: NBTTagCompound) {
         transformationTimer = compound.getInteger("transformationTimer")
-        startTransformation = compound.getBoolean("startTransformation")
 
         if(compound.hasKey("clayAtCreation.0")) {
             for(i <- clayAtCreation.indices) {
                 clayAtCreation(i) = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("clayAtCreation." + i))
             }
+        }
+
+        if(compound.hasKey("transformationGoal")) {
+            val entityCompound = compound.getCompoundTag("transformationGoal")
+
+            val entity = SoulHelper.instanceHelper.getSoulEntityInstance(entityCompound, worldObj)
+            setTransformationGoal(if(entity != null) Some(entity) else None)
         }
     }
 
@@ -191,18 +196,28 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
         if(!world.isRemote && !isDead && !isTransformating) {
             setBeenAttacked()
 
-            val x = posX.toInt
+            val x = posX.toInt - 1
             val y = posY.toInt
             val z = posZ.toInt
 
+            val rotated = rotationYaw == 90
+
             if(blockIsNoTile(x, y, z))
                 world.setBlock(x, y, z, getClayBlockAtCreation(0), getClayMetaAtCreation(0), 3)
+
             if(blockIsNoTile(x, y + 1, z))
                 world.setBlock(x, y + 1, z, getClayBlockAtCreation(1), getClayMetaAtCreation(1), 3)
-            if(blockIsNoTile(x + 1, y + 1, z))
+
+            if(blockIsNoTile(x + 1, y + 1, z) && !rotated)
                 world.setBlock(x + 1, y + 1, z, getClayBlockAtCreation(2), getClayMetaAtCreation(2), 3)
-            if(blockIsNoTile(x - 1, y + 1, z))
+            else
+                world.setBlock(x, y + 1, z + 1, getClayBlockAtCreation(2), getClayMetaAtCreation(2), 3)
+
+            if(blockIsNoTile(x - 1, y + 1, z) && !rotated)
                 world.setBlock(x - 1, y + 1, z, getClayBlockAtCreation(3), getClayMetaAtCreation(3), 3)
+            else
+                world.setBlock(x, y + 1, z - 1, getClayBlockAtCreation(2), getClayMetaAtCreation(2), 3)
+
             UtilBlock.dropItemInWorld(x, y + 2, z, world, Item.getItemFromBlock(Blocks.pumpkin), 1)
 
             setDead()

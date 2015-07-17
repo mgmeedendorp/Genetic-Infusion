@@ -117,7 +117,7 @@ class Data extends INBTTagable {
      *
      * @param key The name of the object
      */
-    def getObject(key: String): Any = objectDataMap.get(key).get
+    def getObject(key: String): Any = if(!objectDataMap.contains(key)) null else objectDataMap.get(key).get
 
     def setBooleanArray(key: String, value: Array[Boolean]) {
         val arrayData = new Data()

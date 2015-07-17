@@ -34,9 +34,10 @@ class TraitTexture extends Trait {
         try {
             val dynamicTexture = entity.getObject("dynamicTexture").asInstanceOf[DynamicTexture]
 
+
             Minecraft.getMinecraft.renderEngine.getDynamicTextureLocation(DefaultProps.ID + ":customEntityTexture", dynamicTexture)
         } catch {
-            case e: NullPointerException => new ResourceLocation(Localizations.LocModelTextures + Localizations.ClayGolemTransformation)
+            case e: Exception => new ResourceLocation(Localizations.LocModelTextures + Localizations.ClayGolemTransformation)
         }
     }
 
