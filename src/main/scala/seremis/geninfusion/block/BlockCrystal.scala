@@ -23,9 +23,9 @@ import scala.util.Random
 class BlockCrystal(material: Material) extends GIBlockContainer(material) {
     setUnlocalizedName(Blocks.CrystalName)
     setBlockBounds(0.3F, 0.0F, 0.3F, 0.6F, 0.83F, 0.6F)
-//    setNeedsIcon(false)
     setHardness(3.0F)
     setResistance(10.0F)
+    setHarvestLevel("pickaxe", -1)
 
     override def isOpaqueCube: Boolean = false
 
