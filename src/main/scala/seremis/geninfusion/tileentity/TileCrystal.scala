@@ -57,14 +57,12 @@ class TileCrystal extends TileEntity with GITile with ISoulReceptor {
 
     override def getDescriptionPacket: Packet = {
         val compound = new NBTTagCompound
-        compound.setBoolean("hasSoul", hasSoul)
-        compound.setInteger("colorCounter", colorCounter)
+        writeToNBT(compound)
         new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, compound)
     }
 
     override def onDataPacket(manager: NetworkManager, packet: S35PacketUpdateTileEntity) {
-        hasSoulClient = packet.getNbtCompound.getBoolean("hasSoul")
-        colorCounter = packet.getNbtCompound.getInteger("colorCounter")
+        readFromNBT(packet.getNbtCompound)
     }
 
     override def shouldRenderInPass(pass: Int): Boolean = {
