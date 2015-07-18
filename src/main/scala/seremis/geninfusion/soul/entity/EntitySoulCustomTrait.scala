@@ -66,16 +66,19 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     override def getTalkInterval: Int = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GeneTalkInterval)
 
+    override def getDeathSound: String = getDeathSound_I
     override def getDeathSound_I: String = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GeneDeathSound)
 
     override def getLivingSound: String = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GeneLivingSound)
 
+    override def getHurtSound: String = getHurtSound_I
     override def getHurtSound_I: String = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GeneHurtSound)
 
     override def getSplashSound: String = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GeneSplashSound)
 
     override def getSwimSound: String = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GeneSwimSound)
 
+    override def getSoundVolume: Float = getSoundVolume_I
     override def getSoundVolume_I: Float = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GeneSoundVolume)
 
     override def getSoundPitch_I: Float = super.getSoundPitch
@@ -132,7 +135,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
         TraitHandler.playSoundAtEntity(this, name, volume, pitch)
     }
 
-    override def updateAITick_I {
+    override def updateAITick_I() {
         TraitHandler.updateAITick(this)
     }
 

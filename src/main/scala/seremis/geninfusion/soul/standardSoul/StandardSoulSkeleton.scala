@@ -23,7 +23,7 @@ class StandardSoulSkeleton extends StandardSoul {
         if(gene.equals(Genes.GeneDeathSound))
             return new Chromosome(new Allele(true, "mob.skeleton.death", classOf[String]))
         if(gene.equals(Genes.GeneHurtSound))
-            return new Chromosome(new Allele(false, "mob.skeleton.hurt", classOf[String]))
+            return new Chromosome(new Allele(true, "mob.skeleton.hurt", classOf[String]))
         if(gene.equals(Genes.GeneItemDrops))
             return new Chromosome(new Allele(false, Array(new ItemStack(Items.arrow), new ItemStack(Items.bone)), classOf[Array[ItemStack]]))
         if(gene.equals(Genes.GeneLivingSound))

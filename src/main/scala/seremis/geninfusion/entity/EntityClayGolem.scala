@@ -141,15 +141,17 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
             sendEntityDataToClient(0, UtilNBT.compoundToByteArray(entCompound).getOrElse(Array(0.toByte)))
             setTransformationGoal(Some(entity))
 
-            var stack = player.getCurrentEquippedItem
+            if(!player.capabilities.isCreativeMode) {
+                var stack = player.getCurrentEquippedItem
 
-            if(stack.stackSize > 1)
-                stack.stackSize -= 1
-            else
-                stack = null
+                if(stack.stackSize > 1)
+                    stack.stackSize -= 1
+                else
+                    stack = null
 
-            player.setCurrentItemOrArmor(0, stack)
-            player.inventoryContainer.detectAndSendChanges()
+                player.setCurrentItemOrArmor(0, stack)
+                player.inventoryContainer.detectAndSendChanges()
+            }
 
             return true
         }

@@ -7,12 +7,13 @@ import net.minecraft.block.Block
 import net.minecraft.block.material.Material
 import net.minecraft.client.particle.{EntityDiggingFX, EffectRenderer}
 import net.minecraft.entity.EntityLivingBase
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.MovingObjectPosition
 import net.minecraft.world.World
-import seremis.geninfusion.api.soul.SoulHelper
+import seremis.geninfusion.api.soul.{ISoul, SoulHelper}
 import seremis.geninfusion.api.soul.lib.CrystalColors
 import seremis.geninfusion.lib.{Blocks, RenderIds}
 import seremis.geninfusion.tileentity.TileCrystal
@@ -57,15 +58,7 @@ class BlockCrystal(material: Material) extends GIBlockContainer(material) {
 
         val tile = world.getTileEntity(x, y, z)
 
-        if(!world.isRemote && tile != null && tile.isInstanceOf[TileCrystal] && tile.asInstanceOf[TileCrystal].hasSoul) {
-            val crystal = tile.asInstanceOf[TileCrystal]
-
-            val compound = new NBTTagCompound()
-
-            crystal.getSoul.get.writeToNBT(compound)
-
-            drop.setTagCompound(compound)
-        }
+        getCrystalSoulNBT(world, x, y, z, new NBTTagCompound).foreach(compound => drop.setTagCompound(compound))
 
         UtilBlock.dropItemInWorld(x, y, z, world, drop)
         super.breakBlock(world, x, y, z, block, meta)
@@ -112,4 +105,21 @@ class BlockCrystal(material: Material) extends GIBlockContainer(material) {
 
         effectRenderer.addEffect(diggingFX)
     }
+
+    override def getPickBlock(target: MovingObjectPosition, world: World, x: Int, y: Int, z: Int, player: EntityPlayer): ItemStack = {
+        val stack = new ItemStack(this, 1, 0)
+        getCrystalSoulNBT(world, x, y, z, new NBTTagCompound).foreach(compound => stack.setTagCompound(compound))
+        stack
+    }
+
+    def getCrystalSoul(world: World, x: Int, y: Int, z: Int): Option[ISoul] = {
+        val tile = world.getTileEntity(x, y, z)
+
+        if(tile != null && tile.isInstanceOf[TileCrystal]) {
+            return tile.asInstanceOf[TileCrystal].getSoul
+        }
+        None
+    }
+
+    def getCrystalSoulNBT(world: World, x: Int, y: Int, z: Int, compound: NBTTagCompound): Option[NBTTagCompound] = getCrystalSoul(world, x, y, z).map(s => Some(s.writeToNBT(compound))).getOrElse(None)
 }
