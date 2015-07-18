@@ -417,8 +417,6 @@ object AnimationCache {
         val heads = if(getModelHead(parent1).forall(m => model.contains(m))) getModelHead(parent1) else if(getModelHead(parent2).forall(m => model.contains(m))) getModelHead(parent2) else null
 
 
-        println(legsLeft + " " + legsRight + " " + body + " " + armsLeft + " " + armsRight + " " + heads)
-
         var highestLegY = 23.0F
 
         for(leg <- legsLeft ++ legsRight) {

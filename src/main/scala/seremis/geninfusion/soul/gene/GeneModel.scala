@@ -67,16 +67,34 @@ class GeneModel extends Gene(classOf[Array[ModelPart]]) {
         val combinedParent1Tuple = createParentTexture(combinedParent1._1)
         val combinedParent2Tuple = createParentTexture(combinedParent2._1)
 
-        AnimationCache.attachModelPartsToBody(modelParent1Primary, modelParent1Secondary, combinedParent1Tuple._2.to[Array])
-        AnimationCache.attachModelPartsToBody(modelParent2Primary, modelParent2Secondary, combinedParent2Tuple._2.to[Array])
+        try {
+            AnimationCache.attachModelPartsToBody(modelParent1Primary, modelParent1Secondary, combinedParent1Tuple._2.to[Array])
+        } catch {
+            case e: Exception => e.printStackTrace()
+        }
+
+        try {
+            AnimationCache.attachModelPartsToBody(modelParent2Primary, modelParent2Secondary, combinedParent2Tuple._2.to[Array])
+        } catch {
+            case e: Exception => e.printStackTrace()
+        }
 
         val child = randomlyCombineModels(combinedParent1Tuple._2.to[Array], combinedParent1Tuple._1, combinedParent2Tuple._2.to[Array], combinedParent2Tuple._1)
 
         val dominantTuple = createParentTexture(child._1)
         val recessiveTuple = createParentTexture(child._2)
 
-        AnimationCache.attachModelPartsToBody(combinedParent1Tuple._2.to[Array], combinedParent2Tuple._2.to[Array], dominantTuple._2.to[Array])
-        AnimationCache.attachModelPartsToBody(combinedParent1Tuple._2.to[Array], combinedParent2Tuple._2.to[Array], recessiveTuple._2.to[Array])
+        try {
+            AnimationCache.attachModelPartsToBody(combinedParent1Tuple._2.to[Array], combinedParent2Tuple._2.to[Array], dominantTuple._2.to[Array])
+        } catch {
+            case e: Exception => e.printStackTrace()
+        }
+
+        try {
+            AnimationCache.attachModelPartsToBody(combinedParent1Tuple._2.to[Array], combinedParent2Tuple._2.to[Array], recessiveTuple._2.to[Array])
+        } catch {
+            case e: Exception => e.printStackTrace()
+        }
 
         val dominantTexture = dominantTuple._1
         val recessiveTexture = recessiveTuple._1
