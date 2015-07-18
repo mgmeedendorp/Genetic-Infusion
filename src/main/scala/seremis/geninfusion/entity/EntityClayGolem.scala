@@ -113,6 +113,7 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
         }
 
         if(!worldObj.isRemote && transformationTimer == maxTransformationTimer) {
+            transformationGoal.get.setRotation_I(rotationYaw, rotationPitch)
             worldObj.spawnEntityInWorld(transformationGoal.get.asInstanceOf[EntityLiving])
             setDead()
         }

@@ -416,6 +416,9 @@ object AnimationCache {
         val armsRight = if(getModelRightArms(parent1).exists(arms => arms.forall(m => model.contains(m)))) getModelRightArms(parent1) else if(getModelRightArms(parent2).exists(arms => arms.forall(m => model.contains(m)))) getModelRightArms(parent2) else None
         val heads = if(getModelHead(parent1).forall(m => model.contains(m))) getModelHead(parent1) else if(getModelHead(parent2).forall(m => model.contains(m))) getModelHead(parent2) else null
 
+
+        println(legsLeft + " " + legsRight + " " + body + " " + armsLeft + " " + armsRight + " " + heads)
+
         var highestLegY = 23.0F
 
         for(leg <- legsLeft ++ legsRight) {
@@ -428,6 +431,9 @@ object AnimationCache {
 
                 cachedOuterBox -= leg
                 leg.getBoxList.foreach(box => cachedCoords -= (leg -> box))
+
+                modelChanged(model)
+
                 outerBox = getModelPartOuterBox(leg)
 
                 highestLegY = Math.min(highestLegY, Math.min(outerBox._1.yCoord, outerBox._2.yCoord)).toFloat
@@ -441,7 +447,7 @@ object AnimationCache {
             val dY = highestLegY - lowestYBody
 
             body.rotationPointY += dY.toFloat
-            (armsLeft.getOrElse(new Array[ModelPart](0)) ++ armsRight.getOrElse(new Array[ModelPart](0)) ++ heads).foreach(m => m.rotationPointY += dY.toFloat)
+            (armsLeft.getOrElse(new Array[ModelPart](0)) ++ armsRight.getOrElse(new Array[ModelPart](0)) ++ (if(heads != null) heads else new Array[ModelPart](0))).foreach(m => m.rotationPointY += dY.toFloat)
         }
 
         var lowestHeadY = Float.NegativeInfinity

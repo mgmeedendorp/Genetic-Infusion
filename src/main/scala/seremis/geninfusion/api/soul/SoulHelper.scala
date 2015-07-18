@@ -46,7 +46,7 @@ object SoulHelper {
             val gene = geneRegistry.getGene(i)
             if(geneRegistry.useNormalInheritance(gene)) {
                 offspring(i) = gene.inherit(chromosomes1(i), chromosomes2(i))
-                if(rand.nextInt(100) < 5) {
+                if(rand.nextInt(1000) < 5) {
                     offspring(i) = gene.mutate(offspring(i))
                 }
             }
@@ -56,7 +56,7 @@ object SoulHelper {
             val gene = geneRegistry.getCustomInheritanceGenes(i)
             val geneId = geneRegistry.getGeneId(gene)
             offspring(geneId) = gene.advancedInherit(chromosomes1, chromosomes2, offspring)
-            if(rand.nextInt(100) < 5) {
+            if(rand.nextInt(1000) < 5) {
                 offspring(geneId) = gene.mutate(offspring(geneId))
             }
         }

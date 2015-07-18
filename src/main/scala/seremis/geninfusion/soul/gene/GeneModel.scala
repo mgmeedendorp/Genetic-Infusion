@@ -6,7 +6,6 @@ import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
 import javax.imageio.ImageIO
 
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.ResourceLocation
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.{IChromosome, SoulHelper}
 import seremis.geninfusion.api.util.render.animation.AnimationCache
@@ -19,7 +18,7 @@ import scala.collection.mutable.ListBuffer
 class GeneModel extends Gene(classOf[Array[ModelPart]]) {
 
     override def mutate(chromosome: IChromosome): IChromosome = {
-        var allele1Data = chromosome.getPrimary.getAlleleData.asInstanceOf[Array[ModelPart]]
+        val allele1Data = chromosome.getPrimary.getAlleleData.asInstanceOf[Array[ModelPart]]
         val allele2Data = chromosome.getSecondary.getAlleleData.asInstanceOf[Array[ModelPart]]
 
         if(rand.nextBoolean()) {
@@ -46,111 +45,84 @@ class GeneModel extends Gene(classOf[Array[ModelPart]]) {
         val geneIdHeight = SoulHelper.geneRegistry.getGeneId(Genes.GeneHeight)
         val geneIdWidth = SoulHelper.geneRegistry.getGeneId(Genes.GeneWidth)
 
-        val textureChromosome1 = parent1(geneIdTexture)
-        val textureChromosome2 = parent2(geneIdTexture)
+        val textureParent1 = parent1(geneIdTexture)
+        val textureParent2 = parent2(geneIdTexture)
 
-        val texture1 = ImageIO.read(new ByteArrayInputStream(textureChromosome1.getPrimary.getAlleleData.asInstanceOf[NBTTagCompound].getByteArray("textureBytes")))
-        val texture2 = ImageIO.read(new ByteArrayInputStream(textureChromosome2.getPrimary.getAlleleData.asInstanceOf[NBTTagCompound].getByteArray("textureBytes")))
-        val texture3 = ImageIO.read(new ByteArrayInputStream(textureChromosome1.getSecondary.getAlleleData.asInstanceOf[NBTTagCompound].getByteArray("textureBytes")))
-        val texture4 = ImageIO.read(new ByteArrayInputStream(textureChromosome2.getSecondary.getAlleleData.asInstanceOf[NBTTagCompound].getByteArray("textureBytes")))
+        val textureParent1Primary = ImageIO.read(new ByteArrayInputStream(textureParent1.getPrimary.getAlleleData.asInstanceOf[NBTTagCompound].getByteArray("textureBytes")))
+        val textureParent2Primary = ImageIO.read(new ByteArrayInputStream(textureParent2.getPrimary.getAlleleData.asInstanceOf[NBTTagCompound].getByteArray("textureBytes")))
+        val textureParent1Secondary = ImageIO.read(new ByteArrayInputStream(textureParent1.getSecondary.getAlleleData.asInstanceOf[NBTTagCompound].getByteArray("textureBytes")))
+        val textureParent2Secondary = ImageIO.read(new ByteArrayInputStream(textureParent2.getSecondary.getAlleleData.asInstanceOf[NBTTagCompound].getByteArray("textureBytes")))
 
-        val chromosome1 = parent1(geneIdModel)
-        val chromosome2 = parent2(geneIdModel)
+        val modelParent1 = parent1(geneIdModel)
+        val modelParent2 = parent2(geneIdModel)
 
-        val allele1 = chromosome1.getPrimary.getAlleleData.asInstanceOf[Array[ModelPart]]
-        val allele2 = chromosome2.getPrimary.getAlleleData.asInstanceOf[Array[ModelPart]]
-        val allele3 = chromosome1.getSecondary.getAlleleData.asInstanceOf[Array[ModelPart]]
-        val allele4 = chromosome2.getSecondary.getAlleleData.asInstanceOf[Array[ModelPart]]
+        val modelParent1Primary = modelParent1.getPrimary.getAlleleData.asInstanceOf[Array[ModelPart]]
+        val modelParent2Primary = modelParent2.getPrimary.getAlleleData.asInstanceOf[Array[ModelPart]]
+        val modelParent1Secondary = modelParent1.getSecondary.getAlleleData.asInstanceOf[Array[ModelPart]]
+        val modelParent2Secondary = modelParent2.getSecondary.getAlleleData.asInstanceOf[Array[ModelPart]]
 
-        val head1 = AnimationCache.getModelHead(allele1)
-        val head2 = AnimationCache.getModelHead(allele2)
-        val head3 = AnimationCache.getModelHead(allele3)
-        val head4 = AnimationCache.getModelHead(allele4)
-        val arms1 = AnimationCache.getModelArms(allele1)
-        val arms2 = AnimationCache.getModelArms(allele2)
-        val arms3 = AnimationCache.getModelArms(allele3)
-        val arms4 = AnimationCache.getModelArms(allele4)
-        val legs1 = AnimationCache.getModelLegs(allele1)
-        val legs2 = AnimationCache.getModelLegs(allele2)
-        val legs3 = AnimationCache.getModelLegs(allele3)
-        val legs4 = AnimationCache.getModelLegs(allele4)
-        val wings1 = AnimationCache.getModelWings(allele1)
-        val wings2 = AnimationCache.getModelWings(allele2)
-        val wings3 = AnimationCache.getModelWings(allele3)
-        val wings4 = AnimationCache.getModelWings(allele4)
-        val body1 = Array(AnimationCache.getModelBody(allele1))
-        val body2 = Array(AnimationCache.getModelBody(allele2))
-        val body3 = Array(AnimationCache.getModelBody(allele3))
-        val body4 = Array(AnimationCache.getModelBody(allele4))
+        val combinedParent1 = randomlyCombineModels(modelParent1Primary, textureParent1Primary, modelParent1Secondary, textureParent1Secondary)
+        val combinedParent2 = randomlyCombineModels(modelParent2Primary, textureParent2Primary, modelParent2Secondary, textureParent2Secondary)
+        
+        val combinedParent1Tuple = createParentTexture(combinedParent1._1)
+        val combinedParent2Tuple = createParentTexture(combinedParent2._1)
 
-        val inherited1: ListBuffer[(Array[ModelPart], BufferedImage)] = ListBuffer()
-        val inherited2: ListBuffer[(Array[ModelPart], BufferedImage)] = ListBuffer()
+        AnimationCache.attachModelPartsToBody(modelParent1Primary, modelParent1Secondary, combinedParent1Tuple._2.to[Array])
+        AnimationCache.attachModelPartsToBody(modelParent2Primary, modelParent2Secondary, combinedParent2Tuple._2.to[Array])
 
-        randomlyInherit(inherited1, head1, texture1, head3, texture3)
-        randomlyInherit(inherited1, arms1.getOrElse(new Array[ModelPart](0)), texture1, arms3.getOrElse(new Array[ModelPart](0)), texture3)
-        randomlyInherit(inherited1, legs1, texture1, legs3, texture3)
-        randomlyInherit(inherited1, wings1, texture1, wings3, texture3)
-        randomlyInherit(inherited1, body1, texture1, body3, texture3)
-        randomlyInherit(inherited2, head2, texture2, head4, texture4)
-        randomlyInherit(inherited2, arms2.getOrElse(new Array[ModelPart](0)), texture2, arms4.getOrElse(new Array[ModelPart](0)), texture4)
-        randomlyInherit(inherited2, legs2, texture2, legs4, texture4)
-        randomlyInherit(inherited2, wings2, texture2, wings4, texture4)
-        randomlyInherit(inherited2, body2, texture2, body4, texture4)
+        val child = randomlyCombineModels(combinedParent1Tuple._2.to[Array], combinedParent1Tuple._1, combinedParent2Tuple._2.to[Array], combinedParent2Tuple._1)
 
-        val parent1Tuple = createParentTexture(inherited1)
-        val parent2Tuple = createParentTexture(inherited2)
+        val dominantTuple = createParentTexture(child._1)
+        val recessiveTuple = createParentTexture(child._2)
 
-        AnimationCache.attachModelPartsToBody(allele1, allele3, parent1Tuple._2.to[Array])
-        AnimationCache.attachModelPartsToBody(allele2, allele4, parent2Tuple._2.to[Array])
+        AnimationCache.attachModelPartsToBody(combinedParent1Tuple._2.to[Array], combinedParent2Tuple._2.to[Array], dominantTuple._2.to[Array])
+        AnimationCache.attachModelPartsToBody(combinedParent1Tuple._2.to[Array], combinedParent2Tuple._2.to[Array], recessiveTuple._2.to[Array])
 
-        val parent1Texture = parent1Tuple._1
-        val parent2Texture = parent2Tuple._1
+        val dominantTexture = dominantTuple._1
+        val recessiveTexture = recessiveTuple._1
 
-        val parent1Out = new ByteArrayOutputStream()
-        val parent2Out = new ByteArrayOutputStream()
+        val dominantOut = new ByteArrayOutputStream()
+        val recessiveOut = new ByteArrayOutputStream()
 
-//        parent1Texture = GITextureHelper.mergeImages(parent1Texture, parent2Texture)
-//        parent2Texture = GITextureHelper.mergeImages(parent2Texture, parent1Texture)
+        ImageIO.write(dominantTexture, "png", dominantOut)
+        ImageIO.write(recessiveTexture, "png", recessiveOut)
 
-        ImageIO.write(parent1Texture, "png", parent1Out)
-        ImageIO.write(parent2Texture, "png", parent2Out)
+        val dominantNBT = new NBTTagCompound
+        val recessiveNBT = new NBTTagCompound
 
-        val parent1NBT = new NBTTagCompound
-        val parent2NBT = new NBTTagCompound
+        dominantNBT.setByteArray("textureBytes", dominantOut.toByteArray)
+        recessiveNBT.setByteArray("textureBytes", recessiveOut.toByteArray)
 
-        parent1NBT.setByteArray("textureBytes", parent1Out.toByteArray)
-        parent2NBT.setByteArray("textureBytes", parent2Out.toByteArray)
-
-        val textureAllele1 = new Allele(true, parent1NBT, classOf[NBTTagCompound])
-        val textureAllele2 = new Allele(false, parent2NBT, classOf[NBTTagCompound])
+        val textureAllele1 = new Allele(true, dominantNBT, classOf[NBTTagCompound])
+        val textureAllele2 = new Allele(false, recessiveNBT, classOf[NBTTagCompound])
 
         offspring(geneIdTexture) = SoulHelper.instanceHelper.getIChromosomeInstance(textureAllele1, textureAllele2)
 
-        val widthAllele1 = new Allele(true, AnimationCache.getModelWidth(parent1Tuple._2.to[Array]), classOf[Float])
-        val widthAllele2 = new Allele(false, AnimationCache.getModelWidth(parent2Tuple._2.to[Array]), classOf[Float])
+        val widthAllele1 = new Allele(true, AnimationCache.getModelWidth(dominantTuple._2.to[Array]), classOf[Float])
+        val widthAllele2 = new Allele(false, AnimationCache.getModelWidth(recessiveTuple._2.to[Array]), classOf[Float])
 
         offspring(geneIdWidth) = SoulHelper.instanceHelper.getIChromosomeInstance(widthAllele1, widthAllele2)
 
-        val heightAllele1 = new Allele(true, AnimationCache.getModelHeight(parent1Tuple._2.to[Array]), classOf[Float])
-        val heightAllele2 = new Allele(false, AnimationCache.getModelHeight(parent2Tuple._2.to[Array]), classOf[Float])
+        val heightAllele1 = new Allele(true, AnimationCache.getModelHeight(dominantTuple._2.to[Array]), classOf[Float])
+        val heightAllele2 = new Allele(false, AnimationCache.getModelHeight(recessiveTuple._2.to[Array]), classOf[Float])
 
         offspring(geneIdHeight) = SoulHelper.instanceHelper.getIChromosomeInstance(heightAllele1, heightAllele2)
 
-        val resultAllele1 = new Allele(true, parent1Tuple._2.to[Array], classOf[Array[ModelPart]])
-        val resultAllele2 = new Allele(false, parent2Tuple._2.to[Array], classOf[Array[ModelPart]])
+        val resultAllele1 = new Allele(true, dominantTuple._2.to[Array], classOf[Array[ModelPart]])
+        val resultAllele2 = new Allele(false, recessiveTuple._2.to[Array], classOf[Array[ModelPart]])
 
         SoulHelper.instanceHelper.getIChromosomeInstance(resultAllele1, resultAllele2)
     }
 
-    private def randomlyInherit(inherited: ListBuffer[(Array[ModelPart], BufferedImage)], parent1: Array[ModelPart], texture1: BufferedImage, parent2: Array[ModelPart], texture2: BufferedImage) {
+    private def randomlyInherit(inherited1: ListBuffer[(Array[ModelPart], BufferedImage)], inherited2: ListBuffer[(Array[ModelPart], BufferedImage)], parent1: Array[ModelPart], texture1: BufferedImage, parent2: Array[ModelPart], texture2: BufferedImage) {
         if (rand.nextBoolean()) {
-            inherited += (parent1 -> texture1)
+            inherited1 += (parent1 -> texture1)
+            inherited2 += (parent2 -> texture2)
         } else {
-            inherited += (parent2 -> texture2)
+            inherited1 += (parent2 -> texture2)
+            inherited2 += (parent1 -> texture1)
         }
     }
-
-    private def toResource(location: String): ResourceLocation = new ResourceLocation(location)
 
     def createParentTexture(inherited: ListBuffer[(Array[ModelPart], BufferedImage)]): (BufferedImage, ListBuffer[ModelPart]) = {
         val modelPartImages: ListBuffer[BufferedImage] = ListBuffer()
@@ -178,5 +150,29 @@ class GeneModel extends Gene(classOf[Array[ModelPart]]) {
             GITextureHelper.moveModelPartTextureOffset(part, (rect.getMinX.toInt, rect.getMinY.toInt))
         }
         (result._1, parts)
+    }
+
+    def randomlyCombineModels(model1: Array[ModelPart], texture1: BufferedImage, model2: Array[ModelPart], texture2: BufferedImage): (ListBuffer[(Array[ModelPart], BufferedImage)], ListBuffer[(Array[ModelPart], BufferedImage)]) = {
+        val head1 = AnimationCache.getModelHead(model1)
+        val head2 = AnimationCache.getModelHead(model2)
+        val arms1 = AnimationCache.getModelArms(model1).getOrElse(new Array[ModelPart](0))
+        val arms2 = AnimationCache.getModelArms(model2).getOrElse(new Array[ModelPart](0))
+        val legs1 = AnimationCache.getModelLegs(model1)
+        val legs2 = AnimationCache.getModelLegs(model2)
+        val wings1 = AnimationCache.getModelWings(model1)
+        val wings2 = AnimationCache.getModelWings(model2)
+        val body1 = Array(AnimationCache.getModelBody(model1))
+        val body2 = Array(AnimationCache.getModelBody(model2))
+
+        val combined1: ListBuffer[(Array[ModelPart], BufferedImage)] = ListBuffer()
+        val combined2: ListBuffer[(Array[ModelPart], BufferedImage)] = ListBuffer()
+
+        randomlyInherit(combined1, combined2, head1, texture1, head2, texture2)
+        randomlyInherit(combined1, combined2, arms1, texture1, arms2, texture2)
+        randomlyInherit(combined1, combined2, legs1, texture1, legs2, texture2)
+        randomlyInherit(combined1, combined2, wings1, texture1, wings2, texture2)
+        randomlyInherit(combined1, combined2, body1, texture1, body2, texture2)
+
+        (combined1 -> combined2)
     }
 }

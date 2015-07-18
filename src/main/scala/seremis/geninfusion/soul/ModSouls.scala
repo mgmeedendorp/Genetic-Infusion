@@ -48,7 +48,7 @@ object ModSouls {
         geneRegistry.registerGene(GeneExperienceValue, classOf[Int])
         geneRegistry.registerGene(GeneVerticalFaceSpeed, classOf[Int])
         geneRegistry.registerGene(GeneIsCreature, classOf[Boolean]).noMutations
-        geneRegistry.registerGene(GeneCeaseAIMovement, classOf[Boolean])
+        geneRegistry.registerGene(GeneCeaseAIMovement, classOf[Boolean]).noMutations
         geneRegistry.registerGene(GeneChildrenBurnInDaylight, classOf[Boolean])
         geneRegistry.registerGene(GeneIsTameable, classOf[Boolean])
         geneRegistry.registerGene(GeneWidth, classOf[Float]).noMutations
@@ -233,8 +233,8 @@ object ModSouls {
         geneRegistry.registerMasterGene(GeneAIWatchClosest2, new GeneAIWatchClosest2).setCombinedInherit
 
 
-        geneRegistry.registerMasterGene(GeneUseNewAI, new GeneUseNewAI)
-        geneRegistry.registerMasterGene(GeneUseOldAI, new GeneUseOldAI)
+        geneRegistry.registerMasterGene(GeneUseNewAI, new GeneUseNewAI).noMutations
+        geneRegistry.registerMasterGene(GeneUseOldAI, new GeneUseOldAI).noMutations
 
         geneRegistry.registerGene(GeneTexture, classOf[NBTTagCompound])
         geneRegistry.registerGene(GeneModel, new GeneModel)
