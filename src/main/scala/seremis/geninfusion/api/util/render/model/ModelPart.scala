@@ -6,7 +6,7 @@ import java.util.Random
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.client.model._
 import net.minecraft.client.renderer.GLAllocation
-import net.minecraft.entity.EntityLiving
+import net.minecraft.entity.{Entity, EntityLiving}
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import net.minecraft.util.Vec3
 import net.minecraftforge.common.util.Constants
@@ -20,11 +20,13 @@ import scala.collection.mutable.ListBuffer
 
 object ModelPart {
 
-    def getModelPartsFromModel(model: ModelBase, entity: EntityLiving): Array[ModelPart] = {
+    def getModelPartsFromModel(model: ModelBase, entity: EntityLiving, callRotationAngles: Boolean): Array[ModelPart] = {
         val parts: ListBuffer[ModelPart] = ListBuffer()
 
-        if (!model.isInstanceOf[ModelSkeleton]) {
-            model.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, entity)
+        model.swingProgress = 0
+
+        if (callRotationAngles && !model.isInstanceOf[ModelSkeleton]) {
+            model.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, null.asInstanceOf[Entity])
         }
 
         val fields = GIReflectionHelper.getFields(model)

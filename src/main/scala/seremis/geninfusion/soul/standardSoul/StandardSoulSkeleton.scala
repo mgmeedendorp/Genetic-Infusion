@@ -106,7 +106,7 @@ class StandardSoulSkeleton extends StandardSoul {
 
 
         if(gene.equals(Genes.GeneModel))
-            return new Chromosome(new Allele(true, ModelPart.getModelPartsFromModel(new ModelSkeleton(), entity), classOf[Array[ModelPart]]))
+            return new Chromosome(new Allele(true, ModelPart.getModelPartsFromModel(new ModelSkeleton(), entity, true), classOf[Array[ModelPart]]))
         if(gene.equals(Genes.GeneTexture))
             return new Chromosome(new Allele(true, textureStringToNBT("textures/entity/skeleton/skeleton.png"), classOf[NBTTagCompound]), new Allele(false, textureStringToNBT("textures/entity/skeleton/skeleton.png"), classOf[NBTTagCompound]))
 

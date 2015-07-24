@@ -115,7 +115,7 @@ class StandardSoulCreeper extends StandardSoul {
 
         //Rendering related Genes.
         if(gene == GeneModel)
-            return new Chromosome(new Allele(true, ModelPart.getModelPartsFromModel(new ModelCreeper(), entity), classOf[Array[ModelPart]]))
+            return new Chromosome(new Allele(true, ModelPart.getModelPartsFromModel(new ModelCreeper(), entity, true), classOf[Array[ModelPart]]))
         if(gene == GeneTexture)
             return new Chromosome(new Allele(true, textureStringToNBT("textures/entity/creeper/creeper.png"), classOf[NBTTagCompound]), new Allele(false, textureStringToNBT("textures/entity/creeper/creeper.png"), classOf[NBTTagCompound]))
 

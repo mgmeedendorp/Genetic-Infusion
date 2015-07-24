@@ -19,6 +19,7 @@ object AnimationCache {
     var cachedHead: Map[Array[ModelPart], Array[ModelPart]] = Map()
 
     var cachedCoords: Map[(ModelPart, ModelBox), (Vec3, Vec3)] = Map()
+    var cachedCoordsWithoutRotation: Map[(ModelPart, ModelBox), (Vec3, Vec3)] = Map()
     var cachedArmsHorizontal: Map[Array[ModelPart], Boolean] = Map()
     var cachedOuterBox: Map[ModelPart, (Vec3, Vec3)] = Map()
     var cachedWidth: Map[Array[ModelPart], Float] = Map()
@@ -351,6 +352,26 @@ object AnimationCache {
             cachedCoords += ((part, box) ->(Vec3.createVectorHelper(nearX, nearY, nearZ), Vec3.createVectorHelper(farX, farY, farZ)))
         }
         cachedCoords.get((part, box)).get
+    }
+
+    def getPartBoxCoordinatesWithoutRotation(part: ModelPart, box: ModelBox): (Vec3, Vec3) = {
+        if(!cachedCoordsWithoutRotation.contains(part -> box)) {
+            var pos1 = Vec3.createVectorHelper(part.offsetX + Math.min(box.posX2, box.posX1), part.offsetY + Math.min(box.posY2, box.posY1), part.offsetZ + Math.min(box.posZ2, box.posZ1))
+            var pos2 = Vec3.createVectorHelper(part.offsetX + Math.max(box.posX2, box.posX1), part.offsetY + Math.max(box.posY2, box.posY1), part.offsetZ + Math.max(box.posZ2, box.posZ1))
+
+            pos1 = pos1.addVector(part.rotationPointX, part.rotationPointY, part.rotationPointZ)
+            pos2 = pos2.addVector(part.rotationPointX, part.rotationPointY, part.rotationPointZ)
+
+            val nearX = Math.min(pos1.xCoord, pos2.xCoord)
+            val nearY = Math.min(pos1.yCoord, pos2.yCoord)
+            val nearZ = Math.min(pos1.zCoord, pos2.zCoord)
+            val farX = Math.max(pos1.xCoord, pos2.xCoord)
+            val farY = Math.max(pos1.yCoord, pos2.yCoord)
+            val farZ = Math.max(pos1.zCoord, pos2.zCoord)
+
+           cachedCoordsWithoutRotation += ((part, box) -> (Vec3.createVectorHelper(nearX, nearY, nearZ), Vec3.createVectorHelper(farX, farY, farZ)))
+        }
+        cachedCoordsWithoutRotation.get((part, box)).get
     }
 
     def getModelWidth(entity: IEntitySoulCustom): Float = getModelWidth(getModel(entity))

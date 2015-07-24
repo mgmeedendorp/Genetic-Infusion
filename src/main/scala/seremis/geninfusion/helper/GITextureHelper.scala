@@ -168,7 +168,7 @@ object GITextureHelper {
         if(!(oldSize._1 == newSize._1 && oldSize._2 == newSize._2)) {
             for(box <- part.getBoxList) {
                 val texturedQuads = part.getBoxQuads(box)
-gi
+
                 for(quad <- texturedQuads) {
                     var quadPositionsMin = (Math.min(Math.min(quad.vertexPositions(0).texturePositionX, quad.vertexPositions(1).texturePositionX), Math.min(quad.vertexPositions(2).texturePositionX, quad.vertexPositions(3).texturePositionX)), Math.min(Math.min(quad.vertexPositions(1).texturePositionY, quad.vertexPositions(2).texturePositionY), Math.min(quad.vertexPositions(2).texturePositionY, quad.vertexPositions(3).texturePositionY)))
                     var quadPositionsMax = (Math.max(Math.max(quad.vertexPositions(0).texturePositionX, quad.vertexPositions(1).texturePositionX), Math.max(quad.vertexPositions(2).texturePositionX, quad.vertexPositions(3).texturePositionX)), Math.max(Math.max(quad.vertexPositions(1).texturePositionY, quad.vertexPositions(2).texturePositionY), Math.max(quad.vertexPositions(2).texturePositionY, quad.vertexPositions(3).texturePositionY)))

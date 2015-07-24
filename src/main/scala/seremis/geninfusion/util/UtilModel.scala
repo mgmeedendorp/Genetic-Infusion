@@ -1,6 +1,7 @@
 package seremis.geninfusion.util
 
-import net.minecraft.util.Vec3
+import net.minecraft.client.renderer.entity.Render
+import net.minecraft.util.{AxisAlignedBB, Vec3}
 import seremis.geninfusion.api.util.render.animation.AnimationCache
 import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 
@@ -57,8 +58,8 @@ object UtilModel {
 
         if(partFrom.nonEmpty && partTo.nonEmpty) {
             for((from, to) <- partFrom.get.getBoxList zip partTo.get.getBoxList) {
-                val boxFrom = AnimationCache.getPartBoxCoordinates(partFrom.get, from)
-                val boxTo = AnimationCache.getPartBoxCoordinates(partTo.get, to)
+                val boxFrom = AnimationCache.getPartBoxCoordinatesWithoutRotation(partFrom.get, from)
+                val boxTo = AnimationCache.getPartBoxCoordinatesWithoutRotation(partTo.get, to)
 
                 val x1 = boxFrom._1.xCoord + ((boxTo._1.xCoord - boxFrom._1.xCoord) / maxIndex) * index
                 val x2 = boxFrom._2.xCoord + ((boxTo._2.xCoord - boxFrom._2.xCoord) / maxIndex) * index
@@ -72,7 +73,7 @@ object UtilModel {
 
             if(partFrom.get.getBoxList.length > partTo.get.getBoxList.length) {
                 for(from <- partFrom.get.getBoxList.drop(partTo.get.getBoxList.length - 1)) {
-                    val boxFrom = AnimationCache.getPartBoxCoordinates(partFrom.get, from)
+                    val boxFrom = AnimationCache.getPartBoxCoordinatesWithoutRotation(partFrom.get, from)
                     val boxTo = (Vec3.createVectorHelper(0, 0, 0), Vec3.createVectorHelper(0, 0, 0))
 
                     val x1 = boxFrom._1.xCoord + ((boxTo._1.xCoord - boxFrom._1.xCoord) / maxIndex) * index
@@ -87,7 +88,7 @@ object UtilModel {
             } else if(partTo.get.getBoxList.length > partFrom.get.getBoxList.length) {
                 for(to <- partTo.get.getBoxList.drop(partFrom.get.getBoxList.length - 1)) {
                     val boxFrom = (Vec3.createVectorHelper(0, 0, 0), Vec3.createVectorHelper(0, 0, 0))
-                    val boxTo = AnimationCache.getPartBoxCoordinates(partTo.get, to)
+                    val boxTo = AnimationCache.getPartBoxCoordinatesWithoutRotation(partTo.get, to)
 
                     val x1 = boxFrom._1.xCoord + ((boxTo._1.xCoord - boxFrom._1.xCoord) / maxIndex) * index
                     val x2 = boxFrom._2.xCoord + ((boxTo._2.xCoord - boxFrom._2.xCoord) / maxIndex) * index
@@ -108,7 +109,7 @@ object UtilModel {
         if(partFrom.nonEmpty) {
             if(partTo.isEmpty) {
                 for(from <- partFrom.get.getBoxList) {
-                    val boxFrom = AnimationCache.getPartBoxCoordinates(partFrom.get, from)
+                    val boxFrom = AnimationCache.getPartBoxCoordinatesWithoutRotation(partFrom.get, from)
                     val boxTo = (Vec3.createVectorHelper(0, 0, 0), Vec3.createVectorHelper(0, 0, 0))
 
                     val x1 = boxFrom._1.xCoord + ((boxTo._1.xCoord - boxFrom._1.xCoord) / maxIndex) * index
@@ -127,7 +128,7 @@ object UtilModel {
         } else {
             if(partTo.nonEmpty) {
                 for(to <- partTo.get.getBoxList) {
-                    val boxTo = AnimationCache.getPartBoxCoordinates(partTo.get, to)
+                    val boxTo = AnimationCache.getPartBoxCoordinatesWithoutRotation(partTo.get, to)
                     val boxFrom = (Vec3.createVectorHelper(0, 0, 0), Vec3.createVectorHelper(0, 0, 0))
 
                     val x1 = boxFrom._1.xCoord + ((boxTo._1.xCoord - boxFrom._1.xCoord) / maxIndex) * index

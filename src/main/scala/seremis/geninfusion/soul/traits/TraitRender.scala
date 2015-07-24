@@ -344,7 +344,7 @@ class TraitRender extends Trait {
 
         entity.setFloat(EntityMovedDistance, entity.getFloat(EntityMovedDistance) + f2)
 
-        entity.updateArmSwingProgress_I
+        entity.updateArmSwingProgress_I()
 
         val burnsInDaylight = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneBurnsInDaylight)
 
