@@ -14,7 +14,7 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.{AxisAlignedBB, ChunkCoordinates, DamageSource}
 import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
-import seremis.geninfusion.api.soul.lib.Genes
+import seremis.geninfusion.api.soul.lib.{VariableLib, Genes}
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
 import seremis.geninfusion.api.util.data.Data
 import seremis.geninfusion.soul.entity.logic.VariableSyncLogic
@@ -54,7 +54,8 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     override def getEntityId_I: Int = super.getEntityId
 
-    override def onDeathUpdate_I = super.onDeathUpdate()
+    override def onDeathUpdate = onDeathUpdate_I
+    override def onDeathUpdate_I = TraitHandler.onDeathUpdate(this)
 
     override def setFlag(id: Int, value: Boolean) = setFlag_I(id, value)
     override def setFlag_I(id: Int, value: Boolean) = super.setFlag(id, value)
@@ -64,8 +65,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     override def getRandom_I: Random = new Random()
 
-    //TODO
-    //override def isChild: Boolean = getBoolean("isChild")
+    override def isChild: Boolean = TraitHandler.isChild(this)
 
     override def getTalkInterval: Int = SoulHelper.geneRegistry.getValueFromAllele(this.asInstanceOf[IEntitySoulCustom], Genes.GeneTalkInterval)
 
@@ -95,13 +95,11 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
         getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(20.0D)
     }
 
-    private var firstUpdate: Boolean = true
-
     override def onUpdate() {
         if(ForgeHooks.onLivingUpdate(this)) return
-        if(firstUpdate) {
-            firstUpdate = false
+        if(getBoolean(VariableLib.EntityFirstUpdate)) {
             TraitHandler.firstTick(this)
+            setBoolean(VariableLib.EntityFirstUpdate, false)
         }
         TraitHandler.entityUpdate(this)
     }
@@ -246,14 +244,33 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     override def hasCustomNameTag = hasCustomNameTag_I
     override def hasCustomNameTag_I: Boolean = TraitHandler.hasCustomNameTag(this)
 
-    //TODO tamed with DataWatcherHelper
+    //TODO tamed
     override def isTamed_I: Boolean = false
 
-    override def setSize_I(width: Float, height: Float) = super.setSize(width, height)
+    //TODO fix this
+    //override def setSize(width: Float, height: Float) = setSize_I(width, height)
+    override def setSize_I(width: Float, height: Float) = TraitHandler.setSize(this, width, height)
 
     override def getEntityTexture_I = TraitHandler.getEntityTexture(this)
 
     override def getEntityData_I = super.getEntityData
+
+    override def getExperiencePoints(player: EntityPlayer): Int = getExperiencePoints_I(player)
+    override def getExperiencePoints_I(player: EntityPlayer): Int = TraitHandler.getExperiencePoints(this, player)
+
+    override def createChild_I(ageable: EntityAgeable): EntityAgeable = TraitHandler.createChild(this, ageable)
+
+    override def setScale_I(scale: Float) = TraitHandler.setScale(this, scale)
+
+    override def setScaleForAge_I(isChild: Boolean) = TraitHandler.setScaleForAge(this, isChild)
+
+    override def getGrowingAge_I: Int = TraitHandler.getGrowingAge(this)
+
+    override def setGrowingAge_I(growingAge: Int) = TraitHandler.setGrowingAge(this, growingAge)
+
+    override def addGrowth_I(growingAge: Int) = TraitHandler.addGrowth(this, growingAge)
+
+    override def getDataWatcher_I = getDataWatcher
 
     override def readFromNBT(compound: NBTTagCompound) = readFromNBT_I(compound)
 

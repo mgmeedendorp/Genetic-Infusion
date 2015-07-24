@@ -8,6 +8,7 @@ class Allele(var dominant: Boolean, var alleleData: Any, var alleleType: IAllele
     override def isDominant: Boolean = dominant
 
     override def getAlleleData: Any = alleleData
+    override def setAlleleData(data: Any) = alleleData = data
     override def getAlleleType: IAlleleType = alleleType
 
     def this(dominant: Boolean, alleleData: Any, alleleType: Class[_]) {

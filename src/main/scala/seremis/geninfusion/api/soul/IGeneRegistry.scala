@@ -44,5 +44,14 @@ trait IGeneRegistry {
 
     def getValueFromAllele[T](entity: IEntitySoulCustom, name: String): T
 
+    /**
+     * Change the value of an allele of the gene with the specified name. This is only possible for genes with the flag isChangeable true. (see IGene)
+     * @param entity The entity for which to change the allele.
+     * @param name The name of the IGene for which to change the allele.
+     * @param value The new value of the specified IGene.
+     * @param changeActiveGene Whether to change the active or recessive gene.
+     */
+    def changeAlleleValue[T](entity: IEntitySoulCustom, name: String, value: T, changeActiveGene: Boolean)
+
     def getControlledGenes(masterGeneName: String): List[String]
 }

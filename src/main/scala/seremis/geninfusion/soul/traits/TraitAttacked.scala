@@ -1,6 +1,7 @@
 package seremis.geninfusion.soul.traits
 
 import net.minecraft.enchantment.EnchantmentHelper
+import net.minecraft.entity.item.EntityXPOrb
 import net.minecraft.entity.passive.EntityTameable
 import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
 import net.minecraft.entity.{EntityLiving, EntityLivingBase}
@@ -323,5 +324,69 @@ class TraitAttacked extends Trait {
 
     override def setDead(entity: IEntitySoulCustom) {
         entity.setBoolean(EntityIsDead, true)
+    }
+
+    override def onDeathUpdate(entity: IEntitySoulCustom) {
+        val living = entity.asInstanceOf[EntityLiving]
+
+        val deathTime = entity.getInteger(EntityDeathTime) + 1
+
+        if(deathTime >= 20) {
+            var experiencePoints = 0
+
+            if(!entity.getWorld_I.isRemote && (entity.getInteger(EntityRecentlyHit) > 0 || entity.isInstanceOf[EntityPlayer]) && !living.isChild && entity.getWorld_I.getGameRules.getGameRuleBooleanValue("doMobLoot")) {
+                experiencePoints = entity.getExperiencePoints_I(entity.getObject(EntityAttackingPlayer).asInstanceOf[EntityPlayer])
+
+                while(experiencePoints > 0) {
+                    val xpSplit = EntityXPOrb.getXPSplit(experiencePoints)
+                    experiencePoints -= xpSplit
+                    entity.getWorld_I.spawnEntityInWorld(new EntityXPOrb(entity.getWorld_I, living.posX, living.posY, living.posZ, xpSplit))
+                }
+            }
+
+            living.setDead()
+
+            for(i <- 0 until 20) {
+                val posX = living.posX + (entity.getRandom_I.nextFloat * living.width * 2.0F) - living.width
+                val posY = living.posY + entity.getRandom_I.nextFloat * living.height
+                val posZ = living.posZ + (entity.getRandom_I.nextFloat * living.width * 2.0F) - living.width
+
+                val velX = entity.getRandom_I.nextGaussian * 0.02D
+                val velY = entity.getRandom_I.nextGaussian * 0.02D
+                val velZ = entity.getRandom_I.nextGaussian * 0.02D
+
+                entity.getWorld_I.spawnParticle("explode", posX, posY, posZ, velX, velY, velZ)
+            }
+
+        }
+
+        entity.setInteger(EntityDeathTime, deathTime)
+    }
+
+    override def getExperiencePoints(entity: IEntitySoulCustom, player: EntityPlayer): Int = {
+        val living = entity.asInstanceOf[EntityLiving]
+
+        var experienceValue = entity.getInteger(EntityExperienceValue)
+
+        if(living.isChild) {
+            val childXPModifier = SoulHelper.geneRegistry.getValueFromAllele[Float](entity, Genes.GeneChildXPModifier)
+
+            experienceValue = (experienceValue * childXPModifier).toInt
+        }
+
+        if(entity.getInteger(EntityExperienceValue) > 0) {
+            val inventory = living.getInventory
+            val equipmentDropChances = entity.getFloatArray(EntityEquipmentDropChances)
+
+            for(i <- 0 until inventory.length) {
+                if(inventory(i) != null && equipmentDropChances(i) <= 1.0F) {
+                    experienceValue += 1 + entity.getRandom_I.nextInt(3)
+                }
+            }
+
+            experienceValue
+        } else {
+            entity.getInteger(EntityExperienceValue)
+        }
     }
 }

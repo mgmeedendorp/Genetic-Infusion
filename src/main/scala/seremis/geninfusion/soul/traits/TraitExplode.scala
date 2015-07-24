@@ -21,11 +21,11 @@ class TraitExplode extends Trait {
 
         if(explodes) {
             if(!DataWatcherHelper.isNameRegistered(living.getDataWatcher, EntityFuseState))
-                DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, -1.toByte.asInstanceOf[Byte], EntityFuseState)
+                DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, -1.toByte, EntityFuseState)
             if(!DataWatcherHelper.isNameRegistered(living.getDataWatcher, EntityCharged))
-                DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, 0.toByte.asInstanceOf[Byte], EntityCharged)
+                DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, 0.toByte, EntityCharged)
             if(!DataWatcherHelper.isNameRegistered(living.getDataWatcher, EntityIgnited))
-                DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, 0.toByte.asInstanceOf[Byte], EntityIgnited)
+                DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, 0.toByte, EntityIgnited)
 
             entity.setInteger(EntityExplosionRadius, SoulHelper.geneRegistry.getValueFromAllele[Int](entity, Genes.GeneExplosionRadius))
             entity.setInteger(EntityFuseTime, SoulHelper.geneRegistry.getValueFromAllele[Int](entity, Genes.GeneFuseTime))

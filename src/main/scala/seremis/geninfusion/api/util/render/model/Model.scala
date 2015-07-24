@@ -34,6 +34,18 @@ class Model(modelParts: Array[ModelPart]) {
         unrecognizedList.to[Array]
     }
 
+    def modelExcept(parts: Array[ModelPart]): Model = {
+        val list: ListBuffer[ModelPart] = ListBuffer()
+
+        for(part <- modelParts) {
+            if(!parts.contains(part)) {
+                list += part
+            }
+        }
+
+        new Model(list.to[Array])
+    }
+
     def render(scale: Float) {
         for(part <- modelParts)
             part.render(scale)

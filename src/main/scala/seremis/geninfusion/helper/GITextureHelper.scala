@@ -82,6 +82,10 @@ object GITextureHelper {
         quad.vertexPositions(2) = quad.vertexPositions(2).setTexturePosition(quadPositionsMin._1, quadPositionsMax._2)
         quad.vertexPositions(3) = quad.vertexPositions(3).setTexturePosition(quadPositionsMax._1, quadPositionsMax._2)
 
+        if(part.mirror) {
+            quad.flipFace()
+        }
+
         quad
     }
 
@@ -104,6 +108,10 @@ object GITextureHelper {
         quad.vertexPositions(1) = quad.vertexPositions(1).setTexturePosition(quadPositionsMin._1, quadPositionsMin._2)
         quad.vertexPositions(2) = quad.vertexPositions(2).setTexturePosition(quadPositionsMin._1, quadPositionsMax._2)
         quad.vertexPositions(3) = quad.vertexPositions(3).setTexturePosition(quadPositionsMax._1, quadPositionsMax._2)
+
+        if(part.mirror) {
+            quad.flipFace()
+        }
 
         quad
     }
@@ -148,6 +156,8 @@ object GITextureHelper {
             setModelBoxQuadTextureOffset(part, quad, (rect.getMinX.toInt, rect.getMinY.toInt))
         }
 
+        part.resetDisplayList()
+
         result._1
     }
 
@@ -158,7 +168,7 @@ object GITextureHelper {
         if(!(oldSize._1 == newSize._1 && oldSize._2 == newSize._2)) {
             for(box <- part.getBoxList) {
                 val texturedQuads = part.getBoxQuads(box)
-
+gi
                 for(quad <- texturedQuads) {
                     var quadPositionsMin = (Math.min(Math.min(quad.vertexPositions(0).texturePositionX, quad.vertexPositions(1).texturePositionX), Math.min(quad.vertexPositions(2).texturePositionX, quad.vertexPositions(3).texturePositionX)), Math.min(Math.min(quad.vertexPositions(1).texturePositionY, quad.vertexPositions(2).texturePositionY), Math.min(quad.vertexPositions(2).texturePositionY, quad.vertexPositions(3).texturePositionY)))
                     var quadPositionsMax = (Math.max(Math.max(quad.vertexPositions(0).texturePositionX, quad.vertexPositions(1).texturePositionX), Math.max(quad.vertexPositions(2).texturePositionX, quad.vertexPositions(3).texturePositionX)), Math.max(Math.max(quad.vertexPositions(1).texturePositionY, quad.vertexPositions(2).texturePositionY), Math.max(quad.vertexPositions(2).texturePositionY, quad.vertexPositions(3).texturePositionY)))
@@ -172,16 +182,13 @@ object GITextureHelper {
                     quadPositionsMin = (quadCoordsMin._1 / part.textureWidth, quadCoordsMin._2 / part.textureHeight)
                     quadPositionsMax = (quadCoordsMax._1 / part.textureWidth, quadCoordsMax._2 / part.textureHeight)
 
-                    if(!part.mirror) {
-                        quad.vertexPositions(0) = quad.vertexPositions(0).setTexturePosition(quadPositionsMax._1, quadPositionsMin._2)
-                        quad.vertexPositions(1) = quad.vertexPositions(1).setTexturePosition(quadPositionsMin._1, quadPositionsMin._2)
-                        quad.vertexPositions(2) = quad.vertexPositions(2).setTexturePosition(quadPositionsMin._1, quadPositionsMax._2)
-                        quad.vertexPositions(3) = quad.vertexPositions(3).setTexturePosition(quadPositionsMax._1, quadPositionsMax._2)
-                    } else {
-                        quad.vertexPositions(0) = quad.vertexPositions(0).setTexturePosition(quadPositionsMax._1, quadPositionsMin._2)
-                        quad.vertexPositions(1) = quad.vertexPositions(1).setTexturePosition(quadPositionsMax._1, quadPositionsMax._2)
-                        quad.vertexPositions(2) = quad.vertexPositions(2).setTexturePosition(quadPositionsMin._1, quadPositionsMax._2)
-                        quad.vertexPositions(3) = quad.vertexPositions(3).setTexturePosition(quadPositionsMin._1, quadPositionsMin._2)
+                    quad.vertexPositions(0) = quad.vertexPositions(0).setTexturePosition(quadPositionsMax._1, quadPositionsMin._2)
+                    quad.vertexPositions(1) = quad.vertexPositions(1).setTexturePosition(quadPositionsMin._1, quadPositionsMin._2)
+                    quad.vertexPositions(2) = quad.vertexPositions(2).setTexturePosition(quadPositionsMin._1, quadPositionsMax._2)
+                    quad.vertexPositions(3) = quad.vertexPositions(3).setTexturePosition(quadPositionsMax._1, quadPositionsMax._2)
+
+                    if(part.mirror) {
+                        quad.flipFace()
                     }
                 }
             }

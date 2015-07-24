@@ -54,6 +54,11 @@ object ModSouls {
         geneRegistry.registerGene(GeneWidth, classOf[Float]).noMutations
         geneRegistry.registerGene(GeneHeight, classOf[Float]).noMutations
 
+        geneRegistry.registerGene(GeneCanProcreate, classOf[Boolean])
+        geneRegistry.registerGene(GeneChildXPModifier, classOf[Float])
+        geneRegistry.registerGene(GeneIsChild, classOf[Boolean]).noMutations.makeChangable
+        geneRegistry.registerGene(GeneChildSpeedModifier, classOf[Double])
+
         geneRegistry.registerGene(GeneAIArrowAttackMaxRangedAttackTime, classOf[Int])
         geneRegistry.registerGene(GeneAIArrowAttackMinRangedAttackTime, classOf[Int])
         geneRegistry.registerGene(GeneAIArrowAttackMoveSpeed, new GeneMoveSpeed(classOf[Double]))
@@ -266,6 +271,7 @@ object ModSouls {
         traitRegistry.registerTrait(TraitAnimation, new TraitAnimation)
         traitRegistry.registerTrait(TraitExplode, new TraitExplode)
         traitRegistry.registerTrait(TraitNameTag, new TraitNameTag)
+        traitRegistry.registerTrait(TraitChild, new TraitChild)
 
         standardSoulRegistry.register(new StandardSoulZombie)
         standardSoulRegistry.register(new StandardSoulSkeleton)

@@ -1,10 +1,10 @@
 package seremis.geninfusion.soul.entity
 
-import net.minecraft.entity._
+import net.minecraft.entity.EntityAgeable
 import net.minecraft.world.World
 import seremis.geninfusion.api.soul.ISoul
 
-class EntitySoulCustomCreature(val world: World) extends EntityCreature(world) with EntitySoulCustomCreatureTrait {
+class EntitySoulCustomAgeable(val world: World) extends EntityAgeable(world) with EntitySoulCustomAgeableTrait {
 
     override var soul: ISoul = null
 

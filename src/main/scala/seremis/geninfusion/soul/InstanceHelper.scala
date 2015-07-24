@@ -5,15 +5,19 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.world.World
 import seremis.geninfusion.api.soul._
 import seremis.geninfusion.api.soul.lib.Genes
-import seremis.geninfusion.soul.entity.{EntitySoulCustom, EntitySoulCustomCreature}
+import seremis.geninfusion.soul.entity.{EntitySoulCustomAgeable, EntitySoulCustom, EntitySoulCustomCreature}
 
 class InstanceHelper extends IInstanceHelper {
 
     override def getSoulEntityInstance(world: World, soul: ISoul, x: Double, y: Double, z: Double): IEntitySoulCustom = {
         var entity: IEntitySoulCustom = new EntitySoulCustom(world, soul, x, y, z)
 
-        if (SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneIsCreature)) {
+        if(SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneIsCreature)) {
             entity = new EntitySoulCustomCreature(world, soul, x, y, z)
+        }
+
+        if(SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneCanProcreate)) {
+            entity = new EntitySoulCustomAgeable(world, soul, x, y, z)
         }
 
         entity

@@ -18,17 +18,34 @@ import seremis.geninfusion.api.soul.lib.VariableLib._
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.api.util.DataWatcherHelper
 import seremis.geninfusion.api.util.render.animation.AnimationCache
-import seremis.geninfusion.api.util.render.model.ModelPart
+import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 import seremis.geninfusion.helper.GIRenderHelper
 
 class TraitRender extends Trait {
 
     @SideOnly(Side.CLIENT)
     override def render(entity: IEntitySoulCustom, timeModifier: Float, limbSwing: Float, specialRotation: Float, rotationYawHead: Float, rotationPitch: Float, scale: Float) {
-        val model = SoulHelper.geneRegistry.getValueFromAllele[Array[ModelPart]](entity, Genes.GeneModel)
+        val parts = SoulHelper.geneRegistry.getValueFromAllele[Array[ModelPart]](entity, Genes.GeneModel)
 
-        for(part <- model) {
-            part.render(scale)
+        if(entity.asInstanceOf[EntityLiving].isChild) {
+            val model = new Model(parts)
+
+            if(model.head != null) {
+                GL11.glPushMatrix()
+                GL11.glScalef(0.75F, 0.75F, 0.75F)
+                GL11.glTranslatef(0.0F, 16.0F * scale, 0.0F)
+                new Model(model.head).render(scale)
+                GL11.glPopMatrix()
+            }
+            GL11.glPushMatrix()
+            GL11.glScalef(0.5F, 0.5F, 0.5F)
+            GL11.glTranslatef(0.0F, 24.0F * scale, 0.0F)
+            model.modelExcept(model.head).render(scale)
+            GL11.glPopMatrix()
+        } else {
+            for(part <- parts) {
+                part.render(scale)
+            }
         }
     }
 
@@ -128,15 +145,14 @@ class TraitRender extends Trait {
                 var f5: Float = 0.0f
                 if(itemstack.getItem.requiresMultipleRenderPasses()) {
                     i = 0
-                    while(i <
-                        itemstack.getItem.getRenderPasses(itemstack.getMetadata)) {
+                    while(i < itemstack.getItem.getRenderPasses(itemstack.getMetadata)) {
                         val j = itemstack.getItem.getColorFromItemStack(itemstack, i)
                         f5 = (j >> 16 & 255).toFloat / 255.0F
                         f2 = (j >> 8 & 255).toFloat / 255.0F
                         val f3 = (j & 255).toFloat / 255.0F
                         GL11.glColor4f(f5, f2, f3, 1.0F)
                         RenderManager.instance.itemRenderer.renderItem(living, itemstack, i)
-                        i
+                        i += 1
                     }
                 } else {
                     i = itemstack.getItem.getColorFromItemStack(itemstack, 0)

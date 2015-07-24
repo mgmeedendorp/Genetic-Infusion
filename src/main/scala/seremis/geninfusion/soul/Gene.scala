@@ -8,6 +8,7 @@ class Gene(clzz: Class[_]) extends IGene {
 
     val rand = new Random()
     var mutate = true
+    var changeable = false
 
     override def getAlleleType: IAlleleType = SoulHelper.alleleTypeRegistry.getAlleleTypeForClass(clzz)
 
@@ -28,7 +29,6 @@ class Gene(clzz: Class[_]) extends IGene {
     }
 
     override def mutate(chromosome: IChromosome): IChromosome = {
-        mutate = false
         if(mutate) {
             var allele1Data = chromosome.getPrimary.getAlleleData
             var allele2Data = chromosome.getSecondary.getAlleleData
@@ -136,4 +136,11 @@ class Gene(clzz: Class[_]) extends IGene {
         mutate = false
         this
     }
+
+    override def makeChangable: IGene = {
+        changeable = true
+        this
+    }
+
+    override def isChangeable: Boolean = changeable
 }

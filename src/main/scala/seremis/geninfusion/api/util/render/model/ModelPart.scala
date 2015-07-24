@@ -30,9 +30,7 @@ object ModelPart {
         val fields = GIReflectionHelper.getFields(model)
 
         for (field <- fields if (field.getType == classOf[ModelRenderer] || field.getType == classOf[ModelPart]) && field.getName != VariableLib.ModelBipedCloak && field.getName != VariableLib.ModelBipedEars && field.getName != VariableLib.ModelBipedHeadwear) {
-            val renderer = GIReflectionHelper.getField(model, field.getName).asInstanceOf[ModelRenderer]
-
-            parts.add(modelRendererToModelPart(renderer))
+            parts.add(modelRendererToModelPart(GIReflectionHelper.getField(model, field.getName).asInstanceOf[ModelRenderer]))
         }
         parts.to[Array]
     }

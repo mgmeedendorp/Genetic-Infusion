@@ -32,7 +32,7 @@ object DataWatcherHelper {
      * @param name The name of the object.
      * @return The Id of the added object.
      */
-    def addObjectAtUnusedId(dataWatcher: DataWatcher, obj: AnyRef, name: String): Int = {
+    def addObjectAtUnusedId(dataWatcher: DataWatcher, obj: Any, name: String): Int = {
         for(i <- 0 until Byte.MaxValue) {
             breakable {
                 try {
@@ -86,7 +86,7 @@ object DataWatcherHelper {
 
     def isNameRegistered(dataWatcher: DataWatcher, name: String): Boolean = names.contains(dataWatcher) && names.get(dataWatcher).get.contains(name)
 
-    def updateObject(dataWatcher: DataWatcher, name: String, obj: Object) {
+    def updateObject(dataWatcher: DataWatcher, name: String, obj: Any) {
         dataWatcher.updateObject(getObjectId(dataWatcher, name), obj)
     }
 

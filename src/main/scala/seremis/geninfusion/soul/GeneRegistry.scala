@@ -94,6 +94,16 @@ class GeneRegistry extends IGeneRegistry {
         null.asInstanceOf[T]
     }
 
+    override def changeAlleleValue[T](entity: IEntitySoulCustom, name: String, value: T, changeActiveGene: Boolean) {
+        if(getGene(name).isChangeable) {
+            if(changeActiveGene) {
+                getActiveFor(entity, name).foreach(a => a.setAlleleData(value))
+            } else {
+                getChromosomeFor(entity, name).map(c => c.getRecessive).foreach(a => a.setAlleleData(value))
+            }
+        }
+    }
+
     override def getControlledGenes(masterGeneName: String): List[String] = {
         getGene(masterGeneName).asInstanceOf[IMasterGene].getControlledGenes
     }

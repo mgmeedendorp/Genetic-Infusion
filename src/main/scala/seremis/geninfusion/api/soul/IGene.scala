@@ -42,4 +42,16 @@ trait IGene {
      * @return This IGene
      */
     def noMutations: IGene
+
+    /**
+     * Makes this IGene changeable.
+     * @return This IGene
+     */
+    def makeChangable: IGene
+
+    /**
+     * Get whether this IGene is changeable (see IGeneRegistry#changeAlleleValue).
+     * @return If this IGene is changeable
+     */
+    def isChangeable: Boolean
 }

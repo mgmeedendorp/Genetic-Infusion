@@ -3,7 +3,7 @@ package seremis.geninfusion.soul.traits
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.entity.effect.EntityLightningBolt
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.{Entity, EntityLivingBase, IEntityLivingData}
+import net.minecraft.entity.{EntityAgeable, Entity, EntityLivingBase, IEntityLivingData}
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.{ResourceLocation, ChunkCoordinates, DamageSource}
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, ITrait}
@@ -100,4 +100,24 @@ class Trait extends ITrait {
     override def getCustomNameTag(entity: IEntitySoulCustom): String = null
 
     override def hasCustomNameTag(entity: IEntitySoulCustom): Boolean = false
+
+    override def onDeathUpdate(entity: IEntitySoulCustom) {}
+
+    override def getExperiencePoints(entity: IEntitySoulCustom, player: EntityPlayer): Int = 0
+
+    override def createChild(entity: IEntitySoulCustom, ageable: EntityAgeable): Option[EntityAgeable] = None
+
+    override def isChild(entity: IEntitySoulCustom): Boolean = false
+
+    override def setSize(entity: IEntitySoulCustom, width: Float, height: Float) {}
+
+    override def setScale(entity: IEntitySoulCustom, scale: Float) {}
+
+    override def setScaleForAge(entity: IEntitySoulCustom, isChild: Boolean) {}
+
+    override def getGrowingAge(entity: IEntitySoulCustom): Int = {0}
+
+    override def setGrowingAge(entity: IEntitySoulCustom, growingAge: Int) {}
+
+    override def addGrowth(entity: IEntitySoulCustom, growth: Int) {}
 }

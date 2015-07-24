@@ -166,6 +166,8 @@ class GeneModel extends Gene(classOf[Array[ModelPart]]) {
             val rect = result._2(i)
             GITextureHelper.changeModelPartTextureSize(part, (result._1.getWidth, result._1.getHeight))
             GITextureHelper.moveModelPartTextureOffset(part, (rect.getMinX.toInt, rect.getMinY.toInt))
+
+            part.resetDisplayList()
         }
         (result._1, parts)
     }
@@ -191,6 +193,6 @@ class GeneModel extends Gene(classOf[Array[ModelPart]]) {
         randomlyInherit(combined1, combined2, wings1, texture1, wings2, texture2)
         randomlyInherit(combined1, combined2, body1, texture1, body2, texture2)
 
-        (combined1 -> combined2)
+        combined1 -> combined2
     }
 }

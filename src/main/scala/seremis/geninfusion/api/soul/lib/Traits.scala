@@ -21,4 +21,5 @@ object Traits {
     val TraitAnimation = ID + ".trait.animation"
     val TraitExplode = ID + ".trait.explode"
     val TraitNameTag = ID + ".trait.nameTag"
+    val TraitChild = ID + ".trait.child"
 }

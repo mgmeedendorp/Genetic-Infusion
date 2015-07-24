@@ -8,7 +8,7 @@ import net.minecraft.client.model.ModelSkeleton
 import net.minecraft.entity.monster.EntityCreeper
 import net.minecraft.entity.passive.{EntityChicken, EntityTameable}
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.{EntityCreature, EntityLiving, SharedMonsterAttributes}
+import net.minecraft.entity.{EntityAgeable, EntityCreature, EntityLiving, SharedMonsterAttributes}
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -60,6 +60,10 @@ abstract class StandardSoul extends IStandardSoul {
             return new Chromosome(new Allele(true, entity.width, classOf[Float]))
         if(gene == GeneHeight)
             return new Chromosome(new Allele(true, entity.height, classOf[Float]))
+        if(gene == GeneIsChild)
+            return new Chromosome(new Allele(true, entity.isChild, classOf[Boolean]))
+        if(gene == GeneCanProcreate)
+            return new Chromosome(new Allele(true, entity.isInstanceOf[EntityAgeable], classOf[Boolean]))
 
         //Manual genes.
         if(gene == GeneBurnsInDaylight)
@@ -106,6 +110,11 @@ abstract class StandardSoul extends IStandardSoul {
             return new Chromosome(new Allele(true, false, classOf[Boolean]))
         if(gene == GeneUseOldAI)
             return new Chromosome(new Allele(true, true, classOf[Boolean]))
+
+        if(gene == GeneChildXPModifier)
+            return new Chromosome(new Allele(true, 1.0F, classOf[Float]))
+        if(gene == GeneChildSpeedModifier)
+            return new Chromosome(new Allele(true, 0.0D, classOf[Double]))
 
         //AI genes
         if(gene == GeneAIArrowAttack)

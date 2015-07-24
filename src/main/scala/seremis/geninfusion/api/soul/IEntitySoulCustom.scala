@@ -4,7 +4,8 @@ import java.util.Random
 
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.client.renderer.entity.RenderLiving
-import net.minecraft.entity.{Entity, IRangedAttackMob}
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.entity.{DataWatcher, EntityAgeable, Entity, IRangedAttackMob}
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.{ResourceLocation, AxisAlignedBB, ChunkCoordinates, DamageSource}
@@ -231,4 +232,20 @@ trait IEntitySoulCustom extends IRangedAttackMob {
     def hasCustomNameTag_I: Boolean
 
     def getEntityTexture_I: ResourceLocation
+
+    def getExperiencePoints_I(player: EntityPlayer): Int
+
+    def createChild_I(ageable: EntityAgeable): EntityAgeable
+
+    def setScale_I(scale: Float)
+
+    def setScaleForAge_I(isChild: Boolean)
+
+    def getGrowingAge_I: Int
+
+    def setGrowingAge_I(growingAge: Int)
+
+    def addGrowth_I(growingAge: Int)
+
+    def getDataWatcher_I: DataWatcher
 }

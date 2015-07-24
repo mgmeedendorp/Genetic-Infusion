@@ -5,6 +5,7 @@ import java.io.File
 import com.google.common.base.{Charsets, Splitter}
 import com.google.common.io.{Files, LineProcessor}
 import net.minecraft.launchwrapper.Launch
+import net.minecraftforge.common.ForgeVersion
 import seremis.geninfusion.GeneticInfusion
 
 import scala.collection.mutable.HashMap
@@ -15,7 +16,7 @@ object MCPNames {
     var fields: HashMap[String, String] = _
     var methods: HashMap[String, String] = _
 
-    val mappingsDir = System.getProperty("user.home").replace("\\", "/") + "/.gradle/caches/minecraft/net/minecraftforge/forge/1.7.10-10.13.4.1481-1.7.10/unpacked/conf/"
+    val mappingsDir = System.getProperty("user.home").replace("\\", "/") + "/.gradle/caches/minecraft/net/minecraftforge/forge/1.7.10-" + ForgeVersion.getVersion + "-1.7.10/unpacked/conf/"
 
     val DEV_ENV = Launch.blackboard.get("fml.deobfuscatedEnvironment").asInstanceOf[Boolean]
 

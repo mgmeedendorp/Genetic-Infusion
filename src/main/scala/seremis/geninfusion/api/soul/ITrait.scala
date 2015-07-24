@@ -3,7 +3,7 @@ package seremis.geninfusion.api.soul
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.entity.effect.EntityLightningBolt
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.{Entity, EntityLivingBase, IEntityLivingData}
+import net.minecraft.entity.{EntityAgeable, Entity, EntityLivingBase, IEntityLivingData}
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.{ResourceLocation, ChunkCoordinates, DamageSource}
 
@@ -92,4 +92,24 @@ trait ITrait {
     def getCustomNameTag(entity: IEntitySoulCustom): String
 
     def hasCustomNameTag(entity: IEntitySoulCustom): Boolean
+
+    def onDeathUpdate(entity: IEntitySoulCustom)
+
+    def getExperiencePoints(entity: IEntitySoulCustom, player: EntityPlayer): Int
+
+    def createChild(entity: IEntitySoulCustom, ageable: EntityAgeable): Option[EntityAgeable]
+
+    def isChild(entity: IEntitySoulCustom): Boolean
+
+    def setSize(entity: IEntitySoulCustom, width: Float, height: Float)
+
+    def setScale(entity: IEntitySoulCustom, scale: Float)
+
+    def setScaleForAge(entity: IEntitySoulCustom, isChild: Boolean)
+
+    def getGrowingAge(entity: IEntitySoulCustom): Int
+
+    def setGrowingAge(entity: IEntitySoulCustom, growingAge: Int)
+
+    def addGrowth(entity: IEntitySoulCustom, growth: Int)
 }

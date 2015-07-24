@@ -1,6 +1,8 @@
 package seremis.geninfusion.client.model
 
 import net.minecraft.client.model.ModelBase
+import net.minecraft.entity.EntityLiving
+import org.lwjgl.opengl.GL11
 import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 import seremis.geninfusion.entity.EntityClayGolem
 import seremis.geninfusion.util.UtilModel
@@ -55,7 +57,34 @@ class ModelClayGolem extends ModelBase {
             golem.currentRenderModel = golem.getTransformationGoalModel
         }
 
-        golem.currentRenderModel.get.render
+        if((golem.isTransformating || golem.isWaitingAfterTransformation) && golem.getTransformationGoal.get.asInstanceOf[EntityLiving].isChild) {
+            GL11.glPushMatrix()
+
+            if(golem.currentRenderModel.get.head != null) {
+                GL11.glPushMatrix()
+
+                val headScale = 1.0F + ((0.75F - 1.0F) / golem.getMaxTransformationTimer) * golem.getTransformationTimer
+                GL11.glScalef(headScale, headScale, headScale)
+
+                val headTranslateModifier = 16.0F / golem.getMaxTransformationTimer * golem.getTransformationTimer
+                GL11.glTranslatef(0.0F, 0.0625F * headTranslateModifier, 0.0F)
+
+                new Model(golem.currentRenderModel.get.head).render()
+                GL11.glPopMatrix()
+            }
+
+            val scale = 1.0F + ((0.5F - 1.0F) / golem.getMaxTransformationTimer) * golem.getTransformationTimer
+            GL11.glScalef(scale, scale, scale)
+
+            val translateModifier = 24.0F / golem.getMaxTransformationTimer * golem.getTransformationTimer
+            GL11.glTranslatef(0.0F, 0.0625F * translateModifier, 0.0F)
+
+            golem.currentRenderModel.get.modelExcept(golem.currentRenderModel.get.head).render()
+
+            GL11.glPopMatrix()
+        } else {
+            golem.currentRenderModel.get.render()
+        }
 
         if(golem.isTransformating) {
             animateTransformation(golem)
