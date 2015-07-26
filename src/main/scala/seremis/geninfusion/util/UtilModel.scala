@@ -1,7 +1,6 @@
 package seremis.geninfusion.util
 
-import net.minecraft.client.renderer.entity.Render
-import net.minecraft.util.{AxisAlignedBB, Vec3}
+import net.minecraft.util.Vec3
 import seremis.geninfusion.api.util.render.animation.AnimationCache
 import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 
@@ -68,7 +67,7 @@ object UtilModel {
                 val z1 = boxFrom._1.zCoord + ((boxTo._1.zCoord - boxFrom._1.zCoord) / maxIndex) * index
                 val z2 = boxFrom._2.zCoord + ((boxTo._2.zCoord - boxFrom._2.zCoord) / maxIndex) * index
 
-                part.addBox(x1.toFloat, y1.toFloat, z1.toFloat, (x2 - x1).toInt, (y2 - y1).toInt, (z2 - z1).toInt)
+                part.addGIBox(x1.toFloat, y1.toFloat, z1.toFloat, (x2 - x1).toFloat, (y2 - y1).toFloat, (z2 - z1).toFloat)
             }
 
             if(partFrom.get.getBoxList.length > partTo.get.getBoxList.length) {
@@ -83,7 +82,7 @@ object UtilModel {
                     val z1 = boxFrom._1.zCoord + ((boxTo._1.zCoord - boxFrom._1.zCoord) / maxIndex) * index
                     val z2 = boxFrom._2.zCoord + ((boxTo._2.zCoord - boxFrom._2.zCoord) / maxIndex) * index
 
-                    part.addBox(x1.toFloat, y1.toFloat, z1.toFloat, (x2 - x1).toInt, (y2 - y1).toInt, (z2 - z1).toInt)
+                    part.addGIBox(x1.toFloat, y1.toFloat, z1.toFloat, (x2 - x1).toFloat, (y2 - y1).toFloat, (z2 - z1).toFloat)
                 }
             } else if(partTo.get.getBoxList.length > partFrom.get.getBoxList.length) {
                 for(to <- partTo.get.getBoxList.drop(partFrom.get.getBoxList.length - 1)) {
@@ -97,7 +96,7 @@ object UtilModel {
                     val z1 = boxFrom._1.zCoord + ((boxTo._1.zCoord - boxFrom._1.zCoord) / maxIndex) * index
                     val z2 = boxFrom._2.zCoord + ((boxTo._2.zCoord - boxFrom._2.zCoord) / maxIndex) * index
 
-                    part.addBox(x1.toFloat, y1.toFloat, z1.toFloat, (x2 - x1).toInt, (y2 - y1).toInt, (z2 - z1).toInt)
+                    part.addGIBox(x1.toFloat, y1.toFloat, z1.toFloat, (x2 - x1).toFloat, (y2 - y1).toFloat, (z2 - z1).toFloat)
                 }
             }
 
@@ -119,13 +118,13 @@ object UtilModel {
                     val z1 = boxFrom._1.zCoord + ((boxTo._1.zCoord - boxFrom._1.zCoord) / maxIndex) * index
                     val z2 = boxFrom._2.zCoord + ((boxTo._2.zCoord - boxFrom._2.zCoord) / maxIndex) * index
 
-                    part.addBox(x1.toFloat, y1.toFloat, z1.toFloat, (x2 - x1).toInt, (y2 - y1).toInt, (z2 - z1).toInt)
+                    part.addGIBox(x1.toFloat, y1.toFloat, z1.toFloat, (x2 - x1).toFloat, (y2 - y1).toFloat, (z2 - z1).toFloat)
                 }
+                part.rotateAngleX = partFrom.get.rotateAngleX + (partFrom.get.rotateAngleX / maxIndex) * index
+                part.rotateAngleY = partFrom.get.rotateAngleY + (partFrom.get.rotateAngleY / maxIndex) * index
+                part.rotateAngleZ = partFrom.get.rotateAngleZ + (partFrom.get.rotateAngleZ / maxIndex) * index
             }
-            part.rotateAngleX = partFrom.get.rotateAngleX + (partFrom.get.rotateAngleX / maxIndex) * index
-            part.rotateAngleY = partFrom.get.rotateAngleY + (partFrom.get.rotateAngleY / maxIndex) * index
-            part.rotateAngleZ = partFrom.get.rotateAngleZ + (partFrom.get.rotateAngleZ / maxIndex) * index
-        } else {
+        } else if(partFrom.isEmpty) {
             if(partTo.nonEmpty) {
                 for(to <- partTo.get.getBoxList) {
                     val boxTo = AnimationCache.getPartBoxCoordinatesWithoutRotation(partTo.get, to)
@@ -138,12 +137,12 @@ object UtilModel {
                     val z1 = boxFrom._1.zCoord + ((boxTo._1.zCoord - boxFrom._1.zCoord) / maxIndex) * index
                     val z2 = boxFrom._2.zCoord + ((boxTo._2.zCoord - boxFrom._2.zCoord) / maxIndex) * index
 
-                    part.addBox(x1.toFloat, y1.toFloat, z1.toFloat, (x2 - x1).toInt, (y2 - y1).toInt, (z2 - z1).toInt)
+                    part.addGIBox(x1.toFloat, y1.toFloat, z1.toFloat, (x2 - x1).toFloat, (y2 - y1).toFloat, (z2 - z1).toFloat)
                 }
+                part.rotateAngleX = (partTo.get.rotateAngleX / maxIndex) * index
+                part.rotateAngleY = (partTo.get.rotateAngleY / maxIndex) * index
+                part.rotateAngleZ = (partTo.get.rotateAngleZ / maxIndex) * index
             }
-            part.rotateAngleX = (partTo.get.rotateAngleX / maxIndex) * index
-            part.rotateAngleY = (partTo.get.rotateAngleY / maxIndex) * index
-            part.rotateAngleZ = (partTo.get.rotateAngleZ / maxIndex) * index
         }
         part
     }

@@ -13,7 +13,7 @@ import net.minecraftforge.common.util.Constants
 import seremis.geninfusion.api.soul.SoulHelper
 import seremis.geninfusion.api.soul.lib.VariableLib
 import seremis.geninfusion.helper.GIReflectionHelper
-import seremis.geninfusion.util.INBTTagable
+import seremis.geninfusion.util.{GIModelBox, INBTTagable}
 
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ListBuffer
@@ -129,6 +129,10 @@ class ModelPart(model: ModelBase, boxName: String) extends ModelRenderer(model, 
 
     def getBoxQuads(box: ModelBox): Array[TexturedQuad] = {
         GIReflectionHelper.getField(box, VariableLib.ModelBoxQuadList).asInstanceOf[Array[TexturedQuad]]
+    }
+
+    def addGIBox(x: Float, y: Float, z: Float, sizeX: Float, sizeY: Float, sizeZ: Float) {
+        cubeList.asInstanceOf[util.List[ModelBox]].add(new GIModelBox(this, getTextureOffsetX, getTextureOffsetY, x, y, z, sizeX, sizeY, sizeZ, 0.0F))
     }
 
     override def writeToNBT(compound: NBTTagCompound): NBTTagCompound = {
@@ -287,6 +291,7 @@ class ModelPart(model: ModelBase, boxName: String) extends ModelRenderer(model, 
         this
     }
 
+    //noinspection ComparingUnrelatedTypes
     override def equals(obj: Any): Boolean = {
         if (obj.isInstanceOf[ModelPart]) {
             val part = obj.asInstanceOf[ModelPart]

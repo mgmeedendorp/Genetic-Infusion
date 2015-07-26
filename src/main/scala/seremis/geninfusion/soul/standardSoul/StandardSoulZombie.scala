@@ -128,7 +128,7 @@ class StandardSoulZombie extends StandardSoul {
             return new Chromosome(new Allele(true, Array(true, false), classOf[Array[Boolean]]))
 
         if(gene.equals(GeneModel))
-            return new Chromosome(new Allele(true, ModelPart.getModelPartsFromModel(model, entity, false), classOf[Array[ModelPart]]))
+            return new Chromosome(new Allele(true, ModelPart.getModelPartsFromModel(model , entity, false), classOf[Array[ModelPart]]))
         if(gene.equals(GeneTexture))
             return new Chromosome(new Allele(true, textureStringToNBT("textures/entity/zombie/zombie.png"), classOf[NBTTagCompound]), new Allele(false, textureStringToNBT("textures/entity/zombie/zombie.png"), classOf[NBTTagCompound]))
 
