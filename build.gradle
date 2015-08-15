@@ -18,7 +18,7 @@ buildscript {
 apply plugin: 'scala'
 apply plugin: 'forge'
 
-version = "1.7.10-0.1.0"
+version = "1.7.10-0.1.1"
 group = "seremis.geninfusion"
 archivesBaseName = "geninfusion"
 

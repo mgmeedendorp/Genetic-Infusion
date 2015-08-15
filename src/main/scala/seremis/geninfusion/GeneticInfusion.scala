@@ -63,6 +63,7 @@ object GeneticInfusion {
         RecipeHelper.initSmelting()
         FMLCommonHandler.instance.bus.register(new GIEventHandler)
         MinecraftForge.EVENT_BUS.register(new GIEventHandler)
+        ModSouls.postInit()
     }
 
     @EventHandler

@@ -28,7 +28,7 @@ class GIItem extends Item() {
             itemIcon = iconRegister.registerIcon(DefaultProps.ID + ":" + this.getUnlocalizedName.substring(5))
         } else {
             iconBuffer = Array.ofDim[IIcon](metadata)
-            for (x <- 0 until iconBuffer.length) {
+            for (x <- iconBuffer.indices) {
                 iconBuffer(x) = iconRegister.registerIcon(DefaultProps.ID + ":" + this.getUnlocalizedName.substring(5) +
                     (x + 1))
             }

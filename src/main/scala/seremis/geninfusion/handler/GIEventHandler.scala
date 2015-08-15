@@ -68,7 +68,7 @@ class GIEventHandler {
 
     @SubscribeEvent
     def placeBlockEvent(event: PlaceEvent) {
-        if(!event.player.worldObj.isRemote && event.placedBlock == Blocks.pumpkin) {
+        if(!event.player.worldObj.isRemote && event.placedBlock == Blocks.pumpkin || event.placedBlock == Blocks.lit_pumpkin) {
             val world = event.player.worldObj
 
             val x = event.blockSnapshot.x

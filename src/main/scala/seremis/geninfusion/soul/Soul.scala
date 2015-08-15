@@ -2,15 +2,22 @@ package seremis.geninfusion.soul
 
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import seremis.geninfusion.api.soul.{IChromosome, ISoul}
+import seremis.geninfusion.api.util.AncestryNode
 
-class Soul(var chromosomes: Array[IChromosome]) extends ISoul {
+class Soul(var chromosomes: Array[IChromosome], var name: Option[String] = None, var ancestry: AncestryNode) extends ISoul {
 
+    def this(chromosomes: Array[IChromosome], ancestry: AncestryNode) {
+        this(chromosomes, None, ancestry)
+    }
+    
     def this(compound: NBTTagCompound) {
-        this(null.asInstanceOf[Array[IChromosome]])
+        this(null.asInstanceOf[Array[IChromosome]], None, null.asInstanceOf[AncestryNode])
         readFromNBT(compound)
     }
 
     override def getChromosomes: Array[IChromosome] = chromosomes
+    override def getName: Option[String] = name
+    override def getAncestryNode: AncestryNode = ancestry
 
     override def writeToNBT(compound: NBTTagCompound): NBTTagCompound = {
         compound.setInteger("genomeLength", chromosomes.length)
@@ -23,6 +30,11 @@ class Soul(var chromosomes: Array[IChromosome]) extends ISoul {
             tagList.appendTag(compound1)
         }
         compound.setTag("chromosomes", tagList)
+
+        name.foreach(n => compound.setString("soulName", n))
+        
+        compound.setTag("soulAncestry", ancestry.writeToNBT(new NBTTagCompound))
+
         compound
     }
 
@@ -35,10 +47,17 @@ class Soul(var chromosomes: Array[IChromosome]) extends ISoul {
             val compound1 = tagList.getCompoundTagAt(i)
             chromosomes(i) = new Chromosome(compound1)
         }
+
+        if(compound.hasKey("soulName")) {
+            name = Some(compound.getString("soulName"))
+        }
+
+        ancestry = AncestryNode.fromNBT(compound.getCompoundTag("soulAncestry"))
+        
         compound
     }
 
     override def toString: String = {
-        "Soul:[chromosomes:" + chromosomes.mkString(", ") + "]"
+        "Soul:[name: " + name + ", " + ancestry.toString + ", chromosomes:" + chromosomes.mkString(", ") + "]"
     }
 }

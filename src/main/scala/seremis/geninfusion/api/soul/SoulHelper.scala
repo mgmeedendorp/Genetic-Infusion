@@ -3,6 +3,7 @@ package seremis.geninfusion.api.soul
 import java.util.Random
 
 import net.minecraft.client.model.ModelBase
+import seremis.geninfusion.api.util.AncestryNodeBranch
 
 /**
  * The access point for several registries needed for souls.
@@ -61,7 +62,7 @@ object SoulHelper {
             }
         }
 
-        instanceHelper.getISoulInstance(offspring)
+        instanceHelper.getISoulInstance(offspring, None, AncestryNodeBranch(parent1.getAncestryNode, parent2.getAncestryNode))
     }
 
     private val rand = new Random

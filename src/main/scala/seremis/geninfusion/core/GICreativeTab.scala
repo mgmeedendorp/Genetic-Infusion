@@ -2,28 +2,38 @@ package seremis.geninfusion.core
 
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.creativetab.CreativeTabs
-import net.minecraft.entity.monster.{EntitySkeleton, EntityCreeper, EntityZombie}
-import net.minecraft.item.{ItemStack, Item}
-import seremis.geninfusion.api.soul.SoulHelper
+import net.minecraft.entity.EntityList
+import net.minecraft.entity.monster.{EntityCreeper, EntitySkeleton, EntityZombie}
+import net.minecraft.item.{Item, ItemStack}
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.StatCollector
 import seremis.geninfusion.block.ModBlocks
+import seremis.geninfusion.soul.ModSouls
 
-class GICreativeTab(name: String) extends CreativeTabs(name) {
+class 
+GICreativeTab(name: String) extends CreativeTabs(name) {
 
     @SideOnly(Side.CLIENT)
     override def getTabIconItem: Item = Item.getItemFromBlock(ModBlocks.crystal)
 
     @SideOnly(Side.CLIENT)
-    override def displayAllReleventItems(list: java.util.List[_]) {
-        super.displayAllReleventItems(list)
+    override def displayAllReleventItems(lst: java.util.List[_]) {
+        super.displayAllReleventItems(lst)
 
-        val entities = Array(new EntityZombie(null), new EntitySkeleton(null), new EntityCreeper(null))
+        val list = lst.asInstanceOf[java.util.List[ItemStack]]
+        val prevSize = list.size
 
-        for(entity <- entities) {
+        val souls = Array(ModSouls.SoulCreeper, ModSouls.SoulSkeleton, ModSouls.SoulZombie)
+
+        for(soul <- souls) {
             val stack = new ItemStack(ModBlocks.crystal)
-            val soul = SoulHelper.standardSoulRegistry.getSoulForEntity(entity)
 
-//            soul.get.writeToNBT(stack.getTagCompound)
-//            list.asInstanceOf[java.util.List[ItemStack]].add(stack)
+            if(!stack.hasTagCompound) {
+                stack.setTagCompound(new NBTTagCompound)
+            }
+
+            soul.writeToNBT(stack.getTagCompound)
+            list.add(stack)
         }
     }
 }

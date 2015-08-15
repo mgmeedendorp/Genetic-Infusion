@@ -1,7 +1,9 @@
 package seremis.geninfusion.soul
 
+import net.minecraft.entity.monster.{EntityCreeper, EntitySkeleton, EntityZombie}
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import seremis.geninfusion.api.soul.{SoulHelper, ISoul}
 import seremis.geninfusion.api.soul.SoulHelper._
 import seremis.geninfusion.api.soul.lib.Animations._
 import seremis.geninfusion.api.soul.lib.Genes._
@@ -14,6 +16,14 @@ import seremis.geninfusion.soul.standardSoul.{StandardSoulCreeper, StandardSoulS
 import seremis.geninfusion.soul.traits._
 
 object ModSouls {
+
+    final val StandardSoulCreeper = new StandardSoulCreeper
+    final val StandardSoulSkeleton = new StandardSoulSkeleton
+    final val StandardSoulZombie = new StandardSoulZombie
+
+    var SoulCreeper: ISoul = _
+    var SoulSkeleton: ISoul = _
+    var SoulZombie: ISoul = _
 
     def init() {
         geneRegistry.registerGene(GeneMaxHealth, classOf[Double])
@@ -273,9 +283,9 @@ object ModSouls {
         traitRegistry.registerTrait(TraitNameTag, new TraitNameTag)
         traitRegistry.registerTrait(TraitChild, new TraitChild)
 
-        standardSoulRegistry.register(new StandardSoulZombie)
-        standardSoulRegistry.register(new StandardSoulSkeleton)
-        standardSoulRegistry.register(new StandardSoulCreeper)
+        standardSoulRegistry.register(StandardSoulZombie)
+        standardSoulRegistry.register(StandardSoulSkeleton)
+        standardSoulRegistry.register(StandardSoulCreeper)
 
         animationRegistry.register(AnimationWalkTwoLegged, new AnimationTwoLegged)
         animationRegistry.register(AnimationWalkTwoArmed, new AnimationTwoArmed)
@@ -306,5 +316,11 @@ object ModSouls {
         alleleTypeRegistry.registerAlleleType(typeItemStackArray)
         alleleTypeRegistry.registerAlleleType(typeModelPartArray)
         alleleTypeRegistry.registerAlleleType(typeNBTTagCompoundArray)
+    }
+
+    def postInit() {
+        SoulCreeper = SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityCreeper(null)).get
+        SoulSkeleton = SoulHelper.standardSoulRegistry.getSoulForEntity(new EntitySkeleton(null)).get
+        SoulZombie = SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityZombie(null)).get
     }
 }
