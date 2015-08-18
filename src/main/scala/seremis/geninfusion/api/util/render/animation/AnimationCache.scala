@@ -404,6 +404,9 @@ object AnimationCache {
             } else {
                 width = Math.max(dX, dZ)
             }
+
+            width *= 0.7F
+
             cachedWidth += (model -> width / 16)
         }
         cachedWidth.get(model).get

@@ -15,7 +15,7 @@ class ItemBlockCrystal(block: Block) extends ItemBlock(block) {
                 list.asInstanceOf[java.util.List[String]].add(soul.getName.getOrElse("Mutated Entity"))
                 if(soul.getName.isEmpty && (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))) {
                     list.asInstanceOf[java.util.List[String]].add("")
-                    for(ancestor <- soul.getAncestryNode.getUniqueAncestors) {
+                    for(ancestor <- soul.getAncestryNode.getUniqueAncestorRoots) {
                         list.asInstanceOf[java.util.List[String]].add("* " + ancestor.name)
                     }
                 } else if(soul.getName.isEmpty) {

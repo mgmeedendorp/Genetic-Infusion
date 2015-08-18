@@ -26,7 +26,7 @@ class InstanceHelper extends IInstanceHelper {
 
     override def getISoulInstance(chromosomes: Array[IChromosome], name: Option[String], ancestry: AncestryNode): Option[ISoul] = Some(new Soul(chromosomes, name, ancestry))
 
-    override def getIChromosomeInstance(allele1: IAllele, allele2: IAllele): IChromosome = new Chromosome(allele1, allele2)
+    override def getIChromosomeInstance(geneName: String, allele1: IAllele, allele2: IAllele): IChromosome = new Chromosome(geneName, allele1, allele2)
 
     override def getIAlleleInstance(args: AnyRef*): IAllele =  {
         //TODO test this

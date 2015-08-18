@@ -16,16 +16,16 @@ class Gene(clzz: Class[_]) extends IGene {
         val allele1 = if(rand.nextBoolean()) chromosome1.getPrimary else chromosome1.getSecondary
         val allele2 = if(rand.nextBoolean()) chromosome2.getPrimary else chromosome2.getSecondary
 
-        SoulHelper.instanceHelper.getIChromosomeInstance(allele1, allele2)
+        SoulHelper.instanceHelper.getIChromosomeInstance(SoulHelper.geneRegistry.getGeneName(this).get, allele1, allele2)
     }
 
     override def advancedInherit(parent1: Array[IChromosome], parent2: Array[IChromosome], offspring: Array[IChromosome]): IChromosome = {
-        val geneId = SoulHelper.geneRegistry.getGeneId(this)
+        val geneId = SoulHelper.geneRegistry.getGeneId(this).get
 
         val allele1 = if(rand.nextBoolean()) parent1(geneId).getPrimary else parent1(geneId).getSecondary
         val allele2 = if(rand.nextBoolean()) parent2(geneId).getPrimary else parent2(geneId).getSecondary
 
-        SoulHelper.instanceHelper.getIChromosomeInstance(allele1, allele2)
+        SoulHelper.instanceHelper.getIChromosomeInstance(SoulHelper.geneRegistry.getGeneName(this).get, allele1, allele2)
     }
 
     override def mutate(chromosome: IChromosome): IChromosome = {

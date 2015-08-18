@@ -12,7 +12,7 @@ trait IInstanceHelper {
     def getISoulInstance(chromosomes: Array[IChromosome], name: Option[String], ancestry: AncestryNode): Option[ISoul]
     def getISoulInstance(compound: NBTTagCompound): Option[ISoul]
 
-    def getIChromosomeInstance(allele1: IAllele, allele2: IAllele): IChromosome
+    def getIChromosomeInstance(geneName: String, allele1: IAllele, allele2: IAllele): IChromosome
     def getIChromosomeInstance(compound: NBTTagCompound): IChromosome
 
     def getIAlleleInstance(args: AnyRef*): IAllele

@@ -11,4 +11,6 @@ trait IChromosome extends INBTTagable {
     def getPrimary: IAllele
 
     def getSecondary: IAllele
+
+    def getGeneName: String
 }

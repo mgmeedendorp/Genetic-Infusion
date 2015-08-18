@@ -4,16 +4,17 @@ import net.minecraft.entity.EntityLiving
 import seremis.geninfusion.api.soul._
 
 import scala.collection.immutable.HashMap
+import scala.collection.mutable.LinkedHashMap
 import scala.collection.mutable.ListBuffer
 
 class GeneRegistry extends IGeneRegistry {
 
-    var genes: HashMap[String, IGene] = HashMap()
-    var genesInv: HashMap[IGene, String] = HashMap()
-    var ids: HashMap[IGene, Int] = HashMap()
-    var idsInv: HashMap[Int, IGene] = HashMap()
+    var genes: LinkedHashMap[String, IGene] = LinkedHashMap()
+    var genesInv: LinkedHashMap[IGene, String] = LinkedHashMap()
+    var ids: LinkedHashMap[IGene, Int] = LinkedHashMap()
+    var idsInv: LinkedHashMap[Int, IGene] = LinkedHashMap()
 
-    var masterGenes: HashMap[String, IMasterGene] = HashMap()
+    var masterGenes: LinkedHashMap[String, IMasterGene] = LinkedHashMap()
 
     var customInheritance: ListBuffer[IGene] = ListBuffer()
 
@@ -36,7 +37,7 @@ class GeneRegistry extends IGeneRegistry {
     }
 
     override def registerCustomInheritance(name: String) {
-        customInheritance += getGene(name)
+        getGene(name).foreach(g => customInheritance += g)
     }
 
     override def registerCustomInheritance(gene: IGene) {
@@ -45,21 +46,21 @@ class GeneRegistry extends IGeneRegistry {
 
     override def useNormalInheritance(gene: IGene): Boolean = !customInheritance.contains(gene)
 
-    override def useNormalInheritance(name: String): Boolean = useNormalInheritance(getGene(name))
+    override def useNormalInheritance(name: String): Boolean = getGene(name).exists(g => useNormalInheritance(g))
 
     override def getCustomInheritanceGenes: List[IGene] = customInheritance.toList
 
-    override def getGene(name: String): IGene = genes.get(name).get
+    override def getGene(name: String): Option[IGene] = genes.get(name)
 
-    override def getGeneName(gene: IGene): String = genesInv.get(gene).get
+    override def getGeneName(gene: IGene): Option[String] = genesInv.get(gene)
 
-    override def getGeneId(name: String): Int = getGeneId(getGene(name))
+    override def getGeneId(name: String): Option[Int] = if(getGene(name).nonEmpty) getGeneId(getGene(name).get) else None
 
-    override def getGeneId(gene: IGene): Int = ids.get(gene).get
+    override def getGeneId(gene: IGene): Option[Int] = ids.get(gene)
 
     override def getGenes: List[IGene] = genes.values.toList
 
-    override def getGene(id: Int): IGene = idsInv.get(id).get
+    override def getGene(id: Int): Option[IGene] = idsInv.get(id)
 
     override def getSoulFor(entity: EntityLiving): Option[ISoul] = {
         if (entity.isInstanceOf[IEntitySoulCustom]) {
@@ -71,7 +72,7 @@ class GeneRegistry extends IGeneRegistry {
     }
 
     override def getChromosomeFor(entity: EntityLiving, name: String): Option[IChromosome] = {
-        getSoulFor(entity).foreach(s => return Some(s.getChromosomes(getGeneId(name))))
+        getSoulFor(entity).foreach(s => getGeneId(name).foreach(g => return Some(s.getChromosomes(g))))
         None
     }
 
@@ -95,7 +96,7 @@ class GeneRegistry extends IGeneRegistry {
     }
 
     override def changeAlleleValue[T](entity: IEntitySoulCustom, name: String, value: T, changeActiveGene: Boolean) {
-        if(getGene(name).isChangeable) {
+        if(getGene(name).exists(g => g.isChangeable)) {
             if(changeActiveGene) {
                 getActiveFor(entity, name).foreach(a => a.setAlleleData(value))
             } else {

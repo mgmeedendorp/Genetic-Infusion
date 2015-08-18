@@ -20,17 +20,17 @@ trait IGeneRegistry {
 
     def getCustomInheritanceGenes: List[IGene]
 
-    def getGene(name: String): IGene
+    def getGene(name: String): Option[IGene]
 
-    def getGeneName(gene: IGene): String
+    def getGene(id: Int): Option[IGene]
 
-    def getGeneId(name: String): Int
+    def getGeneName(gene: IGene): Option[String]
 
-    def getGeneId(gene: IGene): Int
+    def getGeneId(name: String): Option[Int]
+
+    def getGeneId(gene: IGene): Option[Int]
 
     def getGenes: List[IGene]
-
-    def getGene(id: Int): IGene
 
     def getSoulFor(entity: EntityLiving): Option[ISoul]
 

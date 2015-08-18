@@ -4,10 +4,10 @@ import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import net.minecraftforge.common.util.Constants
 import seremis.geninfusion.api.soul.{IAllele, IChromosome}
 
-class Chromosome(var allele1: IAllele, var allele2: IAllele) extends IChromosome {
+class Chromosome(var geneName: String, var allele1: IAllele, var allele2: IAllele) extends IChromosome {
 
-    def this(allele: IAllele) {
-        this(allele, allele)
+    def this(geneName: String, allele: IAllele) {
+        this(geneName, allele, allele)
     }
 
     def this(compound: NBTTagCompound) {
@@ -39,6 +39,8 @@ class Chromosome(var allele1: IAllele, var allele2: IAllele) extends IChromosome
 
     override def getSecondary: IAllele = allele2
 
+    override def getGeneName: String = geneName
+
     override def writeToNBT(compound: NBTTagCompound): NBTTagCompound = {
         val list = new NBTTagList()
 
@@ -51,6 +53,7 @@ class Chromosome(var allele1: IAllele, var allele2: IAllele) extends IChromosome
         list.appendTag(compound2)
 
         compound.setTag("alleles", list)
+        compound.setString("geneName", geneName)
         compound
     }
 
@@ -59,10 +62,13 @@ class Chromosome(var allele1: IAllele, var allele2: IAllele) extends IChromosome
 
         allele1 = new Allele(list.getCompoundTagAt(0))
         allele2 = new Allele(list.getCompoundTagAt(1))
+
+        geneName = compound.getString("geneName")
+
         compound
     }
 
     override def toString: String = {
-        "Chromosome:[allele1: " + allele1 + ", allele2: " + allele2 + "]"
+        "Chromosome:[geneName: " + geneName + ", allele1: " + allele1 + ", allele2: " + allele2 + "]"
     }
 }

@@ -37,6 +37,7 @@ object SoulHelper {
      * @param parent2 A parent soul
      * @return The offspring
      */
+    //TODO move this to a non-api class
     def produceOffspring(parent1: ISoul, parent2: ISoul): Option[ISoul] = {
         val chromosomes1 = parent1.getChromosomes
         val chromosomes2 = parent2.getChromosomes
@@ -45,10 +46,10 @@ object SoulHelper {
 
         for(i <- chromosomes1.indices) {
             val gene = geneRegistry.getGene(i)
-            if(geneRegistry.useNormalInheritance(gene)) {
-                offspring(i) = gene.inherit(chromosomes1(i), chromosomes2(i))
-                if(rand.nextInt(1000) < 5) {
-                    offspring(i) = gene.mutate(offspring(i))
+            if(gene.exists(g => geneRegistry.useNormalInheritance(g))) {
+                offspring(i) = gene.get.inherit(chromosomes1(i), chromosomes2(i))
+                if(rand.nextInt(200) == 0) {
+                    offspring(i) = gene.get.mutate(offspring(i))
                 }
             }
         }
@@ -56,9 +57,9 @@ object SoulHelper {
         for(i <- geneRegistry.getCustomInheritanceGenes.indices) {
             val gene = geneRegistry.getCustomInheritanceGenes(i)
             val geneId = geneRegistry.getGeneId(gene)
-            offspring(geneId) = gene.advancedInherit(chromosomes1, chromosomes2, offspring)
-            if(rand.nextInt(1000) < 5) {
-                offspring(geneId) = gene.mutate(offspring(geneId))
+            geneId.foreach(g => offspring(g) = gene.advancedInherit(chromosomes1, chromosomes2, offspring))
+            if(rand.nextInt(200) == 0) {
+                geneId.foreach(g => offspring(g) = gene.mutate(offspring(g)))
             }
         }
 

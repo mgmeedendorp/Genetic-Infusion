@@ -23,22 +23,22 @@ abstract class MasterGene(clzz: Class[_]) extends Gene(clzz) with IMasterGene {
     override def hasCombinedInherit: Boolean = combinedInherit
 
     override def advancedInherit(parent1: Array[IChromosome], parent2: Array[IChromosome], offspring: Array[IChromosome]): IChromosome = {
-        val geneId = SoulHelper.geneRegistry.getGeneId(this)
+        val geneId = SoulHelper.geneRegistry.getGeneId(this).get
 
         val primary = rand.nextBoolean()
 
         for(name <- getControlledGenes) {
-            val geneId = SoulHelper.geneRegistry.getGeneId(name)
+            val geneId = SoulHelper.geneRegistry.getGeneId(name).get
 
             val allele1 = if(primary) parent1(geneId).getPrimary else parent1(geneId).getSecondary
             val allele2 = if(primary) parent2(geneId).getPrimary else parent2(geneId).getSecondary
 
-            offspring(geneId) = SoulHelper.instanceHelper.getIChromosomeInstance(allele1, allele2)
+            offspring(geneId) = SoulHelper.instanceHelper.getIChromosomeInstance(name, allele1, allele2)
         }
 
         val allele1 = if(primary) parent1(geneId).getPrimary else parent1(geneId).getSecondary
         val allele2 = if(primary) parent2(geneId).getPrimary else parent2(geneId).getSecondary
 
-        SoulHelper.instanceHelper.getIChromosomeInstance(allele1, allele2)
+        SoulHelper.instanceHelper.getIChromosomeInstance(SoulHelper.geneRegistry.getGeneName(this).get, allele1, allele2)
     }
 }

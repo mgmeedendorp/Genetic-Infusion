@@ -40,10 +40,10 @@ class GeneModel extends Gene(classOf[Array[ModelPart]]) {
     }
 
     override def advancedInherit(parent1: Array[IChromosome], parent2: Array[IChromosome], offspring: Array[IChromosome]): IChromosome = {
-        val geneIdModel = SoulHelper.geneRegistry.getGeneId(this)
-        val geneIdTexture = SoulHelper.geneRegistry.getGeneId(Genes.GeneTexture)
-        val geneIdHeight = SoulHelper.geneRegistry.getGeneId(Genes.GeneHeight)
-        val geneIdWidth = SoulHelper.geneRegistry.getGeneId(Genes.GeneWidth)
+        val geneIdModel = SoulHelper.geneRegistry.getGeneId(this).get
+        val geneIdTexture = SoulHelper.geneRegistry.getGeneId(Genes.GeneTexture).get
+        val geneIdHeight = SoulHelper.geneRegistry.getGeneId(Genes.GeneHeight).get
+        val geneIdWidth = SoulHelper.geneRegistry.getGeneId(Genes.GeneWidth).get
 
         val textureParent1 = parent1(geneIdTexture)
         val textureParent2 = parent2(geneIdTexture)
@@ -114,22 +114,22 @@ class GeneModel extends Gene(classOf[Array[ModelPart]]) {
         val textureAllele1 = new Allele(true, dominantNBT, classOf[NBTTagCompound])
         val textureAllele2 = new Allele(false, recessiveNBT, classOf[NBTTagCompound])
 
-        offspring(geneIdTexture) = SoulHelper.instanceHelper.getIChromosomeInstance(textureAllele1, textureAllele2)
+        offspring(geneIdTexture) = SoulHelper.instanceHelper.getIChromosomeInstance(Genes.GeneTexture, textureAllele1, textureAllele2)
 
         val widthAllele1 = new Allele(true, AnimationCache.getModelWidth(dominantTuple._2.to[Array]), classOf[Float])
         val widthAllele2 = new Allele(false, AnimationCache.getModelWidth(recessiveTuple._2.to[Array]), classOf[Float])
 
-        offspring(geneIdWidth) = SoulHelper.instanceHelper.getIChromosomeInstance(widthAllele1, widthAllele2)
+        offspring(geneIdWidth) = SoulHelper.instanceHelper.getIChromosomeInstance(Genes.GeneWidth, widthAllele1, widthAllele2)
 
         val heightAllele1 = new Allele(true, AnimationCache.getModelHeight(dominantTuple._2.to[Array]), classOf[Float])
         val heightAllele2 = new Allele(false, AnimationCache.getModelHeight(recessiveTuple._2.to[Array]), classOf[Float])
 
-        offspring(geneIdHeight) = SoulHelper.instanceHelper.getIChromosomeInstance(heightAllele1, heightAllele2)
+        offspring(geneIdHeight) = SoulHelper.instanceHelper.getIChromosomeInstance(Genes.GeneHeight, heightAllele1, heightAllele2)
 
         val resultAllele1 = new Allele(true, dominantTuple._2.to[Array], classOf[Array[ModelPart]])
         val resultAllele2 = new Allele(false, recessiveTuple._2.to[Array], classOf[Array[ModelPart]])
 
-        SoulHelper.instanceHelper.getIChromosomeInstance(resultAllele1, resultAllele2)
+        SoulHelper.instanceHelper.getIChromosomeInstance(Genes.GeneModel, resultAllele1, resultAllele2)
     }
 
     private def randomlyInherit(inherited1: ListBuffer[(Array[ModelPart], BufferedImage)], inherited2: ListBuffer[(Array[ModelPart], BufferedImage)], parent1: Array[ModelPart], texture1: BufferedImage, parent2: Array[ModelPart], texture2: BufferedImage) {
