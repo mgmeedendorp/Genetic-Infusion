@@ -58,7 +58,8 @@ class Soul(var chromosomes: Array[IChromosome], var name: Option[String] = None,
 
         fixGenomeErrors()
 
-        compound
+        //Write this to nbt to prevent infinitely fixing genome errors.
+        writeToNBT(compound)
     }
 
     override def toString: String = {
@@ -69,11 +70,16 @@ class Soul(var chromosomes: Array[IChromosome], var name: Option[String] = None,
         if(!isGenomeFixed(chromosomes)) {
             val genes = SoulHelper.geneRegistry.getGenes
 
-            var index = 0
+            val fixedChromosomes = new Array[IChromosome](Math.max(genes.length, chromosomes.length))
+            Array.copy(chromosomes, 0, fixedChromosomes, 0, chromosomes.length)
 
-            val fixedChromosomes = new Array[IChromosome](genes.length)
+            val geneNames = genes.map(g => SoulHelper.geneRegistry.getGeneName(g).get)
 
-            for((current, loaded) <- genes.map(g => SoulHelper.geneRegistry.getGeneName(g).get) zip chromosomes.map(c => c.getGeneName)) {
+            for(index <- geneNames.indices) {
+                val current = geneNames(index)
+                val loadedNames = fixedChromosomes.map(c => if(c != null) c.getGeneName else "")
+                val loaded = loadedNames(index)
+
                 if(current != loaded) {
                     var foundIndex: Option[Int] = None
 
@@ -89,16 +95,8 @@ class Soul(var chromosomes: Array[IChromosome], var name: Option[String] = None,
                 } else {
                     fixedChromosomes(index) = chromosomes(index)
                 }
-                index += 1
             }
-
-            if(fixedChromosomes.length > chromosomes.length) {
-                for(i <- chromosomes.length - 1 until fixedChromosomes.length) {
-                    fixedChromosomes(chromosomes.length - 1 + i) = getNewInheritedChromosome(genes(chromosomes.length - 1 + i))
-                }
-            }
-
-            chromosomes = fixedChromosomes
+            chromosomes = fixedChromosomes.dropRight(fixedChromosomes.length - genes.length)
         }
     }
 
@@ -114,7 +112,6 @@ class Soul(var chromosomes: Array[IChromosome], var name: Option[String] = None,
                 }
             }
         }
-
         true
     }
 

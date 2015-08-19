@@ -63,6 +63,7 @@ object ModSouls {
         geneRegistry.registerGene(GeneIsTameable, classOf[Boolean])
         geneRegistry.registerGene(GeneWidth, classOf[Float]).noMutations
         geneRegistry.registerGene(GeneHeight, classOf[Float]).noMutations
+//        geneRegistry.registerGene("rubbish", classOf[Boolean])
 
         geneRegistry.registerGene(GeneCanProcreate, classOf[Boolean])
         geneRegistry.registerGene(GeneChildXPModifier, classOf[Float])

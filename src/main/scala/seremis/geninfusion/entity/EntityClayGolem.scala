@@ -18,7 +18,7 @@ import seremis.geninfusion.block.BlockCrystal
 import seremis.geninfusion.util.{UtilBlock, UtilNBT}
 
 class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEntityAdditionalSpawnData {
-    setSize(1.4F, 2.9F)
+    setSize(1.3F, 2.9F)
     preventEntitySpawning = true
 
 
