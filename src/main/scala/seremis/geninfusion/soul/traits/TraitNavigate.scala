@@ -58,6 +58,6 @@ class TraitNavigate extends Trait {
     }
 
     override def findPlayerToAttack(entity: IEntitySoulCustom): Entity = {
-        entity.getWorld_I.getClosestPlayerToEntity(entity.asInstanceOf[Entity], 50)
+        entity.getWorld_I.getClosestVulnerablePlayerToEntity(entity.asInstanceOf[Entity], 50)
     }
 }

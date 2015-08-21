@@ -4,12 +4,16 @@ import net.minecraft.entity.{EntityLiving, EntityList}
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import seremis.geninfusion.api.soul.{IGene, SoulHelper, IChromosome, ISoul}
 import seremis.geninfusion.api.util.{AncestryNodeBranch, AncestryNodeRoot, AncestryNode}
+import seremis.geninfusion.util.GenomeHelper
 
 import scala.collection.immutable.HashMap
 import scala.collection.mutable.ListBuffer
 import scala.util.Random
 
 class Soul(var chromosomes: Array[IChromosome], var name: Option[String] = None, var ancestry: AncestryNode) extends ISoul {
+
+    if(ancestry != null)
+        ancestry.chromosomes = chromosomes
 
     def this(chromosomes: Array[IChromosome], ancestry: AncestryNode) {
         this(chromosomes, None, ancestry)
@@ -18,6 +22,7 @@ class Soul(var chromosomes: Array[IChromosome], var name: Option[String] = None,
     def this(compound: NBTTagCompound) {
         this(null.asInstanceOf[Array[IChromosome]], None, null.asInstanceOf[AncestryNode])
         readFromNBT(compound)
+        ancestry.chromosomes = chromosomes
     }
 
     override def getChromosomes: Array[IChromosome] = chromosomes
@@ -56,7 +61,7 @@ class Soul(var chromosomes: Array[IChromosome], var name: Option[String] = None,
 
         ancestry = AncestryNode.fromNBT(compound.getCompoundTag("soulAncestry"))
 
-        fixGenomeErrors()
+        chromosomes = GenomeHelper.fixGenomeErrors(this)
 
         //Write this to nbt to prevent infinitely fixing genome errors.
         writeToNBT(compound)
@@ -65,55 +70,4 @@ class Soul(var chromosomes: Array[IChromosome], var name: Option[String] = None,
     override def toString: String = {
         "Soul:[name: " + name + ", " + ancestry.toString + ", chromosomes:" + chromosomes.mkString(", ") + "]"
     }
-
-    def fixGenomeErrors() {
-        if(!isGenomeFixed(chromosomes)) {
-            val genes = SoulHelper.geneRegistry.getGenes
-
-            val fixedChromosomes = new Array[IChromosome](Math.max(genes.length, chromosomes.length))
-            Array.copy(chromosomes, 0, fixedChromosomes, 0, chromosomes.length)
-
-            val geneNames = genes.map(g => SoulHelper.geneRegistry.getGeneName(g).get)
-
-            for(index <- geneNames.indices) {
-                val current = geneNames(index)
-                val loadedNames = fixedChromosomes.map(c => if(c != null) c.getGeneName else "")
-                val loaded = loadedNames(index)
-
-                if(current != loaded) {
-                    var foundIndex: Option[Int] = None
-
-                    for(i <- index until chromosomes.length if current == chromosomes(i).getGeneName) {
-                        foundIndex = Some(i)
-                    }
-
-                    if(foundIndex.nonEmpty) {
-                        fixedChromosomes(index) = chromosomes(foundIndex.get)
-                    } else {
-                        fixedChromosomes(index) = getNewInheritedChromosome(genes(index))
-                    }
-                } else {
-                    fixedChromosomes(index) = chromosomes(index)
-                }
-            }
-            chromosomes = fixedChromosomes.dropRight(fixedChromosomes.length - genes.length)
-        }
-    }
-
-    def isGenomeFixed(genome: Array[IChromosome]): Boolean = {
-        val genes = SoulHelper.geneRegistry.getGenes
-
-        if(genes.length != genome.length) {
-            return false
-        } else if(genes.length == genome.length) {
-            for((current, loaded) <- genes.map(g => SoulHelper.geneRegistry.getGeneName(g).get) zip chromosomes.map(c => c.getGeneName)) {
-                if(current != loaded) {
-                    return false
-                }
-            }
-        }
-        true
-    }
-
-    def getNewInheritedChromosome(gene: IGene): IChromosome = ancestry.getIChromosomeFromGene(gene)
 }

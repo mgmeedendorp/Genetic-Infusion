@@ -31,12 +31,12 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
         val compound = new NBTTagCompound
         writeToNBT_I(compound)
         val bytes = UtilNBT.compoundToByteArray(compound).getOrElse(return)
-        data.writeShort(bytes.length.toShort)
+        data.writeInt(bytes.length)
         data.writeBytes(bytes)
     }
 
     override def readSpawnData(data: ByteBuf) {
-        val length = data.readShort
+        val length = data.readInt
         val bytes = new Array[Byte](length)
 
         data.readBytes(bytes)
@@ -45,9 +45,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
         readFromNBT_I(compound)
     }
 
-    override def getWorld_I: World = {
-        worldObj
-    }
+    override def getWorld_I: World = worldObj
 
     override def getBoundingBox = boundingBox
     override def getBoundingBox_I: AxisAlignedBB = boundingBox
