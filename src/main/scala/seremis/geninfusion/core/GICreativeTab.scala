@@ -2,11 +2,8 @@ package seremis.geninfusion.core
 
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.creativetab.CreativeTabs
-import net.minecraft.entity.EntityList
-import net.minecraft.entity.monster.{EntityCreeper, EntitySkeleton, EntityZombie}
 import net.minecraft.item.{Item, ItemStack}
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.StatCollector
 import seremis.geninfusion.block.ModBlocks
 import seremis.geninfusion.soul.ModSouls
 

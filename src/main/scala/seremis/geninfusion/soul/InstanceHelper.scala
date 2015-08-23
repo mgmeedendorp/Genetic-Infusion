@@ -6,7 +6,7 @@ import net.minecraft.world.World
 import seremis.geninfusion.api.soul._
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.util.AncestryNode
-import seremis.geninfusion.soul.entity.{EntitySoulCustomAgeable, EntitySoulCustom, EntitySoulCustomCreature}
+import seremis.geninfusion.soul.entity.{EntitySoulCustom, EntitySoulCustomAgeable, EntitySoulCustomCreature}
 
 class InstanceHelper extends IInstanceHelper {
 

@@ -5,7 +5,7 @@ import java.util
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
-import net.minecraft.client.particle.{EntityDiggingFX, EffectRenderer}
+import net.minecraft.client.particle.{EffectRenderer, EntityDiggingFX}
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
@@ -13,8 +13,8 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.MovingObjectPosition
 import net.minecraft.world.World
-import seremis.geninfusion.api.soul.{ISoul, SoulHelper}
 import seremis.geninfusion.api.soul.lib.CrystalColors
+import seremis.geninfusion.api.soul.{ISoul, SoulHelper}
 import seremis.geninfusion.lib.{Blocks, RenderIds}
 import seremis.geninfusion.tileentity.TileCrystal
 import seremis.geninfusion.util.UtilBlock
@@ -27,6 +27,7 @@ class BlockCrystal(material: Material) extends GIBlockContainer(material) {
     setHardness(3.0F)
     setResistance(10.0F)
     setHarvestLevel("pickaxe", -1)
+    setLightLevel(0.125F)
 
     override def isOpaqueCube: Boolean = false
 

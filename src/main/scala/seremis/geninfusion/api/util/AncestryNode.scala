@@ -1,8 +1,8 @@
 package seremis.geninfusion.api.util
 
-import net.minecraft.entity.{EntityLiving, EntityList}
-import net.minecraft.nbt.{NBTTagList, NBTTagCompound}
-import seremis.geninfusion.api.soul.{ISoul, SoulHelper, IChromosome, IGene}
+import net.minecraft.entity.{EntityList, EntityLiving}
+import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
+import seremis.geninfusion.api.soul.{IChromosome, IGene, SoulHelper}
 import seremis.geninfusion.soul.Chromosome
 import seremis.geninfusion.util.{GenomeHelper, INBTTagable}
 

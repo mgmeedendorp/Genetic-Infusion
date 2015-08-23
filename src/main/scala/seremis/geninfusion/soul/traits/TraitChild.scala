@@ -1,7 +1,7 @@
 package seremis.geninfusion.soul.traits
 
 import net.minecraft.entity.ai.attributes.AttributeModifier
-import net.minecraft.entity.{SharedMonsterAttributes, EntityAgeable, Entity, EntityLiving}
+import net.minecraft.entity.{Entity, EntityAgeable, EntityLiving, SharedMonsterAttributes}
 import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.lib.VariableLib._

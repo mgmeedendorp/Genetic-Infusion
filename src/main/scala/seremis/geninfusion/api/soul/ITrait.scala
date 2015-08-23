@@ -3,9 +3,9 @@ package seremis.geninfusion.api.soul
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.entity.effect.EntityLightningBolt
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.{EntityAgeable, Entity, EntityLivingBase, IEntityLivingData}
+import net.minecraft.entity.{Entity, EntityAgeable, EntityLivingBase, IEntityLivingData}
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.{ResourceLocation, ChunkCoordinates, DamageSource}
+import net.minecraft.util.{ChunkCoordinates, DamageSource, ResourceLocation}
 
 trait ITrait {
 

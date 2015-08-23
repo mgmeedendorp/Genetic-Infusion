@@ -14,7 +14,7 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.{AxisAlignedBB, ChunkCoordinates, DamageSource}
 import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
-import seremis.geninfusion.api.soul.lib.{VariableLib, Genes}
+import seremis.geninfusion.api.soul.lib.{Genes, VariableLib}
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
 import seremis.geninfusion.api.util.data.Data
 import seremis.geninfusion.soul.entity.logic.VariableSyncLogic

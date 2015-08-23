@@ -5,10 +5,10 @@ import java.util.Random
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.client.renderer.entity.RenderLiving
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.{DataWatcher, EntityAgeable, Entity, IRangedAttackMob}
+import net.minecraft.entity.{DataWatcher, Entity, EntityAgeable, IRangedAttackMob}
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.{ResourceLocation, AxisAlignedBB, ChunkCoordinates, DamageSource}
+import net.minecraft.util.{AxisAlignedBB, ChunkCoordinates, DamageSource, ResourceLocation}
 import net.minecraft.world.World
 import seremis.geninfusion.api.util.data.Data
 

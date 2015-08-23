@@ -1,6 +1,6 @@
 package seremis.geninfusion.soul.traits
 
-import java.io.{File, ByteArrayInputStream}
+import java.io.ByteArrayInputStream
 import javax.imageio.ImageIO
 
 import cpw.mods.fml.relauncher.{Side, SideOnly}
@@ -20,8 +20,6 @@ class TraitTexture extends Trait {
             val textureBytes = textureCompound.getByteArray("textureBytes")
             val in = new ByteArrayInputStream(textureBytes)
             val image = ImageIO.read(in)
-
-            ImageIO.write(image, "png", new File(System.getProperty("user.home").replace("\\", "/") + "/Desktop/image.png"))
 
             entity.setObject("texture", image)
 

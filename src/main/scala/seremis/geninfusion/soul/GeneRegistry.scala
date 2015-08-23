@@ -3,9 +3,7 @@ package seremis.geninfusion.soul
 import net.minecraft.entity.EntityLiving
 import seremis.geninfusion.api.soul._
 
-import scala.collection.immutable.HashMap
-import scala.collection.mutable.LinkedHashMap
-import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.{LinkedHashMap, ListBuffer}
 
 class GeneRegistry extends IGeneRegistry {
 

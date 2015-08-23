@@ -1,8 +1,6 @@
 package seremis.geninfusion.soul
 
-import net.minecraft.entity.monster.EntityCreeper
 import net.minecraft.entity.{EntityList, EntityLiving}
-import net.minecraft.util.{EnumChatFormatting, StatCollector}
 import seremis.geninfusion.api.soul._
 import seremis.geninfusion.api.util.AncestryNodeRoot
 

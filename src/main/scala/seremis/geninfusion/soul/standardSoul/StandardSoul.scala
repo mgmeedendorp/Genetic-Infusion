@@ -24,9 +24,6 @@ abstract class StandardSoul extends IStandardSoul {
 
     override def getChromosomeFromGene(entity: EntityLiving, gene: String): IChromosome = {
 
-        if(gene == "rubbish")
-            return new Chromosome(gene, new Allele(true, true, classOf[Boolean]))
-
         //Automatically detected genes.
         if(gene == GeneAttackDamage)
             return new Chromosome(gene, new Allele(true, entity.getAttributeMap.getAttributeInstance(SharedMonsterAttributes.attackDamage).getBaseValue, classOf[Double]))
@@ -459,7 +456,7 @@ abstract class StandardSoul extends IStandardSoul {
     }
 
     def textureStringToNBT(textureName: String): NBTTagCompound = {
-        val in = Minecraft.getMinecraft().getResourceManager().getResource((new ResourceLocation(textureName))).getInputStream()
+        val in = Minecraft.getMinecraft.getResourceManager.getResource(new ResourceLocation(textureName)).getInputStream
         val image = ImageIO.read(in)
         val out = new ByteArrayOutputStream()
         val nbt = new NBTTagCompound

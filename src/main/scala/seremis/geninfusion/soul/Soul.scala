@@ -1,14 +1,9 @@
 package seremis.geninfusion.soul
 
-import net.minecraft.entity.{EntityLiving, EntityList}
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
-import seremis.geninfusion.api.soul.{IGene, SoulHelper, IChromosome, ISoul}
-import seremis.geninfusion.api.util.{AncestryNodeBranch, AncestryNodeRoot, AncestryNode}
+import seremis.geninfusion.api.soul.{IChromosome, ISoul}
+import seremis.geninfusion.api.util.AncestryNode
 import seremis.geninfusion.util.GenomeHelper
-
-import scala.collection.immutable.HashMap
-import scala.collection.mutable.ListBuffer
-import scala.util.Random
 
 class Soul(var chromosomes: Array[IChromosome], var name: Option[String] = None, var ancestry: AncestryNode) extends ISoul {
 

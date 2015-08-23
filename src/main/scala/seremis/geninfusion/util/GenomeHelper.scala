@@ -1,7 +1,7 @@
 package seremis.geninfusion.util
 
 import seremis.geninfusion.api.soul.lib.Genes
-import seremis.geninfusion.api.soul.{ISoul, IGene, IChromosome, SoulHelper}
+import seremis.geninfusion.api.soul.{IChromosome, IGene, ISoul, SoulHelper}
 import seremis.geninfusion.api.util.AncestryNode
 
 object GenomeHelper {
@@ -9,9 +9,9 @@ object GenomeHelper {
     def fixGenomeErrors(soul: ISoul): Array[IChromosome] = fixGenomeErrors(soul.getAncestryNode, soul.getChromosomes)
 
     def fixGenomeErrors(ancestry: AncestryNode, chromosomes: Array[IChromosome]): Array[IChromosome] = {
-        chromosomes.foreach(c => if(c.getGeneName == Genes.GeneTexture) println("before: " + c))
-
         if(!isGenomeFixed(chromosomes)) {
+            chromosomes.foreach(c => if(c.getGeneName == Genes.GeneTexture) println("before: " + c))
+
             val genes = SoulHelper.geneRegistry.getGenes
 
             val fixedChromosomes = new Array[IChromosome](Math.max(genes.length, chromosomes.length))
@@ -23,11 +23,11 @@ object GenomeHelper {
                 val current = geneNames(index)
                 val loadedNames = fixedChromosomes.map(c => if(c != null) c.getGeneName else "")
                 val loaded = loadedNames(index)
-                //everything is overwritten when adding new gene in middle
+
                 if(current != loaded) {
                     var foundIndex: Option[Int] = None
 
-                    for(i <- index until chromosomes.length if current == chromosomes(i).getGeneName) {
+                    for(i <- chromosomes.indices if current == chromosomes(i).getGeneName) {
                         foundIndex = Some(i)
                     }
 

@@ -3,11 +3,11 @@ package seremis.geninfusion.soul
 import net.minecraft.entity.monster.{EntityCreeper, EntitySkeleton, EntityZombie}
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
-import seremis.geninfusion.api.soul.{SoulHelper, ISoul}
 import seremis.geninfusion.api.soul.SoulHelper._
 import seremis.geninfusion.api.soul.lib.Animations._
 import seremis.geninfusion.api.soul.lib.Genes._
 import seremis.geninfusion.api.soul.lib.Traits._
+import seremis.geninfusion.api.soul.{ISoul, SoulHelper}
 import seremis.geninfusion.soul.AlleleType._
 import seremis.geninfusion.soul.entity.animation.{AnimationFourLegged, AnimationHead, AnimationTwoArmed, AnimationTwoLegged}
 import seremis.geninfusion.soul.gene._
@@ -63,9 +63,6 @@ object ModSouls {
         geneRegistry.registerGene(GeneIsTameable, classOf[Boolean])
         geneRegistry.registerGene(GeneWidth, classOf[Float]).noMutations
         geneRegistry.registerGene(GeneHeight, classOf[Float]).noMutations
-        //TEST GENE
-        geneRegistry.registerGene("rubbish", new GeneRubbish)
-        geneRegistry.registerCustomInheritance("rubbish")
 
         geneRegistry.registerGene(GeneCanProcreate, classOf[Boolean])
         geneRegistry.registerGene(GeneChildXPModifier, classOf[Float])

@@ -2,7 +2,7 @@ package seremis.geninfusion.item
 
 import net.minecraft.block.Block
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.item.{ItemStack, ItemBlock}
+import net.minecraft.item.{ItemBlock, ItemStack}
 import net.minecraft.util.EnumChatFormatting
 import org.lwjgl.input.Keyboard
 import seremis.geninfusion.api.soul.SoulHelper
