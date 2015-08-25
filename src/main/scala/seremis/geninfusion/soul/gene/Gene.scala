@@ -1,4 +1,4 @@
-package seremis.geninfusion.soul
+package seremis.geninfusion.soul.gene
 
 import seremis.geninfusion.api.soul._
 

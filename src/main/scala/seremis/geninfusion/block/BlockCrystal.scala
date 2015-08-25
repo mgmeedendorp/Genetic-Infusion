@@ -27,7 +27,7 @@ class BlockCrystal(material: Material) extends GIBlockContainer(material) {
     setHardness(3.0F)
     setResistance(10.0F)
     setHarvestLevel("pickaxe", -1)
-    setLightLevel(0.125F)
+    setLightLevel(0.3F)
 
     override def isOpaqueCube: Boolean = false
 

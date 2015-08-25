@@ -3,6 +3,7 @@ package seremis.geninfusion.client.model
 import net.minecraft.client.model.ModelBase
 import net.minecraft.entity.EntityLiving
 import org.lwjgl.opengl.GL11
+import seremis.geninfusion.api.soul.lib.ModelPartTypes
 import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 import seremis.geninfusion.entity.EntityClayGolem
 import seremis.geninfusion.util.UtilModel
@@ -13,34 +14,34 @@ class ModelClayGolem extends ModelBase {
     textureWidth = textureSize
     textureHeight = textureSize
 
-    val head = new ModelPart(this)
+    val head = new ModelPart(this, ModelPartTypes.Head)
     head.setTextureSize(textureWidth, textureHeight)
     head.setRotationPoint(0.0F, -7.0F, -2.0F)
     head.setTextureOffset(0, 0).addBox(-4.0F, -12.0F, -5.5F, 8, 10, 8, 0.0F)
     head.setTextureOffset(24, 0).addBox(-1.0F, -5.0F, -7.5F, 2, 4, 2, 0.0F)
 
-    val body = new ModelPart(this)
+    val body = new ModelPart(this, ModelPartTypes.Body)
     body.setTextureSize(textureWidth, textureHeight)
     body.setRotationPoint(0.0F, -7.0F, 0.0F)
     body.setTextureOffset(0, 40).addBox(-9.0F, -2.0F, -6.0F, 18, 12, 11, 0.0F)
     body.setTextureOffset(0, 70).addBox(-4.5F, 10.0F, -3.0F, 9, 5, 6, 0.5F)
 
-    val rightArm = new ModelPart(this)
+    val rightArm = new ModelPart(this, ModelPartTypes.ArmsRight)
     rightArm.setTextureSize(textureWidth, textureHeight)
     rightArm.setRotationPoint(0.0F, -7.0F, 0.0F)
     rightArm.setTextureOffset(60, 21).addBox(-13.0F, -2.5F, -3.0F, 4, 30, 6, 0.0F)
 
-    val leftArm = new ModelPart(this)
+    val leftArm = new ModelPart(this, ModelPartTypes.ArmsLeft)
     leftArm.setTextureSize(textureWidth, textureHeight)
     leftArm.setRotationPoint(0.0F, -7.0F, 0.0F)
     leftArm.setTextureOffset(60, 58).addBox(9.0F, -2.5F, -3.0F, 4, 30, 6, 0.0F)
 
-    val leftLeg = new ModelPart(this)
+    val leftLeg = new ModelPart(this, ModelPartTypes.LegsLeft)
     leftLeg.setTextureSize(textureWidth, textureHeight)
     leftLeg.setRotationPoint(-4.0F, 11.0F, 0.0F)
     leftLeg.setTextureOffset(37, 0).addBox(-3.5F, -3.0F, -3.0F, 6, 16, 5, 0.0F)
 
-    val rightLeg = new ModelPart(this)
+    val rightLeg = new ModelPart(this, ModelPartTypes.LegsRight)
     rightLeg.setTextureSize(textureWidth, textureHeight)
     rightLeg.mirror = true
     rightLeg.setRotationPoint(5.0F, 11.0F, 0.0F)
@@ -60,7 +61,7 @@ class ModelClayGolem extends ModelBase {
         if((golem.isTransformating || golem.isWaitingAfterTransformation) && golem.getTransformationGoal.get.asInstanceOf[EntityLiving].isChild) {
             GL11.glPushMatrix()
 
-            if(golem.currentRenderModel.get.head != null) {
+            if(golem.currentRenderModel.get.getParts(ModelPartTypes.Head).nonEmpty) {
                 GL11.glPushMatrix()
 
                 val headScale = 1.0F + ((0.75F - 1.0F) / golem.getMaxTransformationTimer) * golem.getTransformationTimer
@@ -69,7 +70,7 @@ class ModelClayGolem extends ModelBase {
                 val headTranslateModifier = 16.0F / golem.getMaxTransformationTimer * golem.getTransformationTimer
                 GL11.glTranslatef(0.0F, 0.0625F * headTranslateModifier, 0.0F)
 
-                new Model(golem.currentRenderModel.get.head).render()
+                new Model(golem.currentRenderModel.get.getParts(ModelPartTypes.Head).get).render()
                 GL11.glPopMatrix()
             }
 
@@ -79,7 +80,7 @@ class ModelClayGolem extends ModelBase {
             val translateModifier = 24.0F / golem.getMaxTransformationTimer * golem.getTransformationTimer
             GL11.glTranslatef(0.0F, 0.0625F * translateModifier, 0.0F)
 
-            golem.currentRenderModel.get.modelExcept(golem.currentRenderModel.get.head).render()
+            golem.currentRenderModel.get.getParts(ModelPartTypes.Head).foreach(head => golem.currentRenderModel.get.getWholeModelExcept(head).render())
 
             GL11.glPopMatrix()
         } else {

@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.soul.IChromosome
 import seremis.geninfusion.api.soul.lib.Genes._
-import seremis.geninfusion.api.util.render.model.ModelPart
+import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 import seremis.geninfusion.soul.{Allele, Chromosome}
 
 class StandardSoulZombie extends StandardSoul {
@@ -128,7 +128,7 @@ class StandardSoulZombie extends StandardSoul {
             return new Chromosome(gene, new Allele(true, Array(true, false), classOf[Array[Boolean]]))
 
         if(gene.equals(GeneModel))
-            return new Chromosome(gene, new Allele(true, ModelPart.getModelPartsFromModel(model , entity, false), classOf[Array[ModelPart]]))
+            return new Chromosome(gene, new Allele(true, model, classOf[Model]))
         if(gene.equals(GeneTexture))
             return new Chromosome(gene, new Allele(true, textureStringToNBT("textures/entity/zombie/zombie.png"), classOf[NBTTagCompound]), new Allele(false, textureStringToNBT("textures/entity/zombie/zombie.png"), classOf[NBTTagCompound]))
 
@@ -136,12 +136,12 @@ class StandardSoulZombie extends StandardSoul {
         super.getChromosomeFromGene(entity, gene)
     }
 
-    def model: ModelZombie = {
-        val model = new ModelZombie()
+    val model: Model = {
+        val modelZombie = new ModelZombie()
 
-        model.bipedRightArm.rotateAngleX = -1.57F
-        model.bipedLeftArm.rotateAngleX = -1.57F
+        modelZombie.bipedRightArm.rotateAngleX = -1.57F
+        modelZombie.bipedLeftArm.rotateAngleX = -1.57F
 
-        model
+        modelBiped(modelZombie, false)
     }
 }

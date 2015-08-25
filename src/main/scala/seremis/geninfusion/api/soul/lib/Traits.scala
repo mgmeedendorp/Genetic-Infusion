@@ -2,7 +2,7 @@ package seremis.geninfusion.api.soul.lib
 
 object Traits {
 
-    var ID: String = "geninfusion"
+    final val ID: String = Genes.ID
 
     val TraitFire = ID + ".trait.fire"
     val TraitMovement = ID + ".trait.movement"

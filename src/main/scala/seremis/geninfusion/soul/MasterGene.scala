@@ -1,6 +1,7 @@
 package seremis.geninfusion.soul
 
 import seremis.geninfusion.api.soul.{IChromosome, IMasterGene, SoulHelper}
+import seremis.geninfusion.soul.gene.Gene
 
 import scala.collection.mutable.ListBuffer
 

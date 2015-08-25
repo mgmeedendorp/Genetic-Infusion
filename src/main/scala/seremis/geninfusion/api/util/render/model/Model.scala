@@ -1,57 +1,102 @@
 package seremis.geninfusion.api.util.render.model
 
-import seremis.geninfusion.api.util.render.animation.AnimationCache
+import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
+import seremis.geninfusion.api.soul.{IModelPartType, SoulHelper}
+import seremis.geninfusion.util.INBTTagable
 
+import scala.collection.immutable.HashMap
 import scala.collection.mutable.ListBuffer
 
-class Model(modelParts: Array[ModelPart]) {
+object Model {
+    def fromNBT(compound: NBTTagCompound): Model = {
+        val model = new Model
+        model.readFromNBT(compound)
+        model
+    }
+}
 
-    lazy val leftArms = AnimationCache.getModelLeftArms(modelParts)
-    lazy val rightArms = AnimationCache.getModelRightArms(modelParts)
-    lazy val arms = AnimationCache.getModelArms(modelParts)
+class Model extends INBTTagable {
 
-    lazy val leftLegs = AnimationCache.getModelLeftLegs(modelParts)
-    lazy val rightLegs = AnimationCache.getModelRightLegs(modelParts)
-    lazy val legs = leftLegs ++ rightLegs
+    var partsMap: HashMap[IModelPartType, Array[ModelPart]] = HashMap()
 
-    lazy val leftWings = AnimationCache.getModelLeftWings(modelParts)
-    lazy val rightWings = AnimationCache.getModelRightWings(modelParts)
-    lazy val wings = leftWings ++ rightWings
-
-    lazy val head = AnimationCache.getModelHead(modelParts)
-
-    lazy val body = AnimationCache.getModelBody(modelParts)
-
-    private var unrecognizedList: ListBuffer[ModelPart] = ListBuffer()
-    var isUnrecognizedPopulated = false
-
-    def unrecognized: Array[ModelPart] = {
-        if(!isUnrecognizedPopulated) {
-            for(part <- modelParts if !arms.exists(arms => arms.contains(part)) && !legs.contains(part) && !wings.contains(part) && !head.contains(part) && body != part) {
-                unrecognizedList += part
-            }
-        }
-        unrecognizedList.to[Array]
+    def this(modelParts: Array[ModelPart]) {
+        this()
+        addModelParts(modelParts)
     }
 
-    def modelExcept(parts: Array[ModelPart]): Model = {
-        val list: ListBuffer[ModelPart] = ListBuffer()
+    def addPart(modelPart: ModelPart) {
+        addModelParts(Array(modelPart))
+    }
 
+    def addModelParts(modelParts: Array[ModelPart]) {
         for(part <- modelParts) {
-            if(!parts.contains(part)) {
-                list += part
+            if(partsMap.contains(part.modelPartType)) {
+                val parts = partsMap.get(part.modelPartType).get
+
+                val list = parts.to[ListBuffer] += part
+
+                partsMap += (part.modelPartType -> list.to[Array])
+            } else {
+                partsMap += (part.modelPartType -> Array(part))
             }
         }
+    }
+    
+    def getParts(modelPartType: String*): Option[Array[ModelPart]] = {modelPartType.foreach(partType => SoulHelper.modelPartTypeRegistry.getModelPartType(partType).foreach(instance => return partsMap.get(instance))); None}
 
-        new Model(list.to[Array])
+    def getAllParts: Array[ModelPart] = {
+        val parts: ListBuffer[ModelPart] = ListBuffer()
+
+        partsMap.values.foreach(array => array.foreach(part => parts += part))
+
+        parts.to[Array]
+    }
+
+    def getWholeModelExcept(except: Array[ModelPart]): Model = {
+        val parts: Array[ModelPart] = Array()
+
+        partsMap.values.foreach(array => array.foreach(part => if(!except.contains(part)) parts :+ part))
+
+        new Model(parts)
+    }
+
+    def getWholeModelExcept(except: ModelPart): Model = {
+        getWholeModelExcept(Array(except))
     }
 
     def render(scale: Float) {
-        for(part <- modelParts)
-            part.render(scale)
+        getAllParts.foreach(part => part.render(scale))
     }
 
     def render() {
         render(0.0625F)
+    }
+
+    override def writeToNBT(compound: NBTTagCompound): NBTTagCompound = {
+        val list = new NBTTagList
+
+        for(partArray <- partsMap.values) {
+            for(part <- partArray) {
+                list.appendTag(part.writeToNBT(new NBTTagCompound))
+            }
+        }
+        compound.setTag("parts", list)
+
+        compound
+    }
+
+    override def readFromNBT(compound: NBTTagCompound): NBTTagCompound = {
+        val list = compound.getTag("parts").asInstanceOf[NBTTagList]
+        val parts: ListBuffer[ModelPart] = ListBuffer()
+
+        for(i <- 0 until list.tagCount()) {
+            val compound1 = list.getCompoundTagAt(i)
+
+            parts += ModelPart.fromNBT(compound1)
+        }
+
+        addModelParts(parts.to[Array])
+
+        compound
     }
 }

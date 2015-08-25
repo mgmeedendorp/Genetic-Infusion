@@ -1,7 +1,6 @@
 package seremis.geninfusion.soul.gene
 
 import seremis.geninfusion.api.soul.IChromosome
-import seremis.geninfusion.soul.Gene
 
 class GeneMoveSpeed(clzz: Class[_]) extends Gene(clzz) {
 

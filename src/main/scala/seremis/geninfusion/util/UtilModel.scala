@@ -1,6 +1,7 @@
 package seremis.geninfusion.util
 
 import net.minecraft.util.Vec3
+import seremis.geninfusion.api.soul.SoulHelper
 import seremis.geninfusion.api.util.render.animation.AnimationCache
 import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 
@@ -11,17 +12,9 @@ object UtilModel {
     def morphModel(modelFrom: Model, modelTo: Model, maxIndex: Int, index: Int): Model = {
         val result: ListBuffer[ModelPart] = ListBuffer()
 
-        morphModelPartArray(modelFrom.leftArms, modelTo.leftArms, maxIndex, index).foreach(part => result += part)
-        morphModelPartArray(modelFrom.rightArms, modelTo.rightArms, maxIndex, index).foreach(part => result += part)
-        morphModelPartArray(Some(modelFrom.leftLegs), Some(modelTo.leftLegs), maxIndex, index).foreach(part => result += part)
-        morphModelPartArray(Some(modelFrom.rightLegs), Some(modelTo.rightLegs), maxIndex, index).foreach(part => result += part)
-        morphModelPartArray(Some(modelFrom.leftWings), Some(modelTo.leftWings), maxIndex, index).foreach(part => result += part)
-        morphModelPartArray(Some(modelFrom.rightWings), Some(modelTo.rightWings), maxIndex, index).foreach(part => result += part)
-        morphModelPartArray(Some(modelFrom.head), Some(modelTo.head), maxIndex, index).foreach(part => result += part)
-        result += morphModelPart(Some(modelFrom.body), Some(modelTo.body), maxIndex, index)
-
-        morphModelPartArray(Some(modelFrom.unrecognized), None, maxIndex, index).foreach(part => result += part)
-        morphModelPartArray(None, Some(modelTo.unrecognized), maxIndex, index).foreach(part => result += part)
+        SoulHelper.modelPartTypeRegistry.getModelPartTypeNames.foreach(name => {
+            morphModelPartArray(modelFrom.getParts(name), modelTo.getParts(name), maxIndex, index).foreach(part => result += part)
+        })
 
         new Model(result.to[Array])
     }
@@ -53,7 +46,7 @@ object UtilModel {
     }
 
     def morphModelPart(partFrom: Option[ModelPart], partTo: Option[ModelPart], maxIndex: Int, index: Int): ModelPart = {
-        val part = new ModelPart(if(partTo.nonEmpty) partTo.get.boxName else partFrom.get.boxName)
+        val part = new ModelPart(if(partTo.nonEmpty) partTo.get.boxName else partFrom.get.boxName, if(partTo.nonEmpty) partTo.get.modelPartTypeName else partFrom.get.modelPartTypeName)
 
         if(partFrom.nonEmpty && partTo.nonEmpty) {
             for((from, to) <- partFrom.get.getBoxList zip partTo.get.getBoxList) {

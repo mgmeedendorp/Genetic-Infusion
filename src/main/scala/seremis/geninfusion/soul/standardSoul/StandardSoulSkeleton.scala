@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.soul.IChromosome
 import seremis.geninfusion.api.soul.lib.Genes
-import seremis.geninfusion.api.util.render.model.ModelPart
+import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 import seremis.geninfusion.soul.{Allele, Chromosome}
 
 class StandardSoulSkeleton extends StandardSoul {
@@ -106,10 +106,12 @@ class StandardSoulSkeleton extends StandardSoul {
 
 
         if(gene.equals(Genes.GeneModel))
-            return new Chromosome(gene, new Allele(true, ModelPart.getModelPartsFromModel(new ModelSkeleton(), entity, true), classOf[Array[ModelPart]]))
+            return new Chromosome(gene, new Allele(true, model, classOf[Model]))
         if(gene.equals(Genes.GeneTexture))
             return new Chromosome(gene, new Allele(true, textureStringToNBT("textures/entity/skeleton/skeleton.png"), classOf[NBTTagCompound]), new Allele(false, textureStringToNBT("textures/entity/skeleton/skeleton.png"), classOf[NBTTagCompound]))
 
         super.getChromosomeFromGene(entity, gene)
     }
+
+    val model: Model = modelBiped(new ModelSkeleton(), false)
 }

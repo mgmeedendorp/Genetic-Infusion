@@ -9,7 +9,7 @@ import seremis.geninfusion.api.util.render.model.ModelPart
 
 class AnimationTwoArmed extends Animation {
 
-    override def canAnimateEntity(entity: IEntitySoulCustom): Boolean = return getModelArms(entity).exists(arms => arms.length == 2) && getModelLeftArms(entity).exists(arms => arms.length == 1) && getModelRightArms(entity).exists(arms => arms.length == 1)
+    override def canAnimateEntity(entity: IEntitySoulCustom): Boolean = getModelArms(entity).exists(arms => arms.length == 2) && getModelLeftArms(entity).exists(arms => arms.length == 1) && getModelRightArms(entity).exists(arms => arms.length == 1) && getModelHead(entity).exists(head => head.length == 1) && getModelBody(entity).exists(body => body.length == 1)
 
     override def shouldStartAnimation(entity: IEntitySoulCustom): Boolean = true
 
@@ -22,8 +22,8 @@ class AnimationTwoArmed extends Animation {
 
         val leftArm: ModelPart = getModelLeftArms(entity).get(0)
         val rightArm: ModelPart = getModelRightArms(entity).get(0)
-        val body = getModelBody(entity)
-        val head = getModelHead(entity)
+        val body = getModelBody(entity).get(0)
+        val head = getModelHead(entity).get(0)
 
         leftArm.rotationPointX = leftArm.initialRotationPointX
         leftArm.rotationPointY = leftArm.initialRotationPointY
@@ -57,24 +57,22 @@ class AnimationTwoArmed extends Animation {
             if(swingProgress > -9990.0F) {
                 var f6 = swingProgress
 
-                if(body != null) {
-                    leftArm.rotationPointZ = MathHelper.sin(body.rotateAngleY) * 5.0F
-                    leftArm.rotationPointX = -MathHelper.cos(body.rotateAngleY) * 5.0F
-                    rightArm.rotationPointZ = -MathHelper.sin(body.rotateAngleY) * 5.0F
-                    rightArm.rotationPointX = MathHelper.cos(body.rotateAngleY) * 5.0F
-                    leftArm.rotateAngleY += body.rotateAngleY
-                    rightArm.rotateAngleY += body.rotateAngleY
-                    rightArm.rotateAngleX += body.rotateAngleY
-                }
+                leftArm.rotationPointZ = MathHelper.sin(body.rotateAngleY) * 5.0F
+                leftArm.rotationPointX = -MathHelper.cos(body.rotateAngleY) * 5.0F
+                rightArm.rotationPointZ = -MathHelper.sin(body.rotateAngleY) * 5.0F
+                rightArm.rotationPointX = MathHelper.cos(body.rotateAngleY) * 5.0F
+                leftArm.rotateAngleY += body.rotateAngleY
+                rightArm.rotateAngleY += body.rotateAngleY
+                rightArm.rotateAngleX += body.rotateAngleY
+                
                 f6 = 1.0F - swingProgress
                 f6 *= f6
                 f6 *= f6
                 f6 = 1.0F - f6
                 val f7 = MathHelper.sin(f6 * PI)
-                val f8: Float = MathHelper.sin(swingProgress * PI) * -(head(0).rotateAngleX - 0.7F) * 0.75F
+                val f8: Float = MathHelper.sin(swingProgress * PI) * -(head.rotateAngleX - 0.7F) * 0.75F
                 leftArm.rotateAngleX = (leftArm.rotateAngleX.toDouble - (f7.toDouble * 1.2D + f8.toDouble)).toFloat
-                if(body != null)
-                    leftArm.rotateAngleY += body.rotateAngleY * 2.0F
+                leftArm.rotateAngleY += body.rotateAngleY * 2.0F
                 leftArm.rotateAngleZ = MathHelper.sin(swingProgress * PI) * -0.4F
             }
 
@@ -83,10 +81,10 @@ class AnimationTwoArmed extends Animation {
                 val f7 = 0.0F
                 leftArm.rotateAngleZ = leftArm.initialRotateAngleZ
                 rightArm.rotateAngleZ = rightArm.initialRotateAngleZ
-                leftArm.rotateAngleY = -(0.1F - f6 * 0.6F) + head(0).rotateAngleY
-                rightArm.rotateAngleY = 0.1F - f6 * 0.6F + head(0).rotateAngleY + 0.4F
-                leftArm.rotateAngleX = -(PI / 2F) + head(0).rotateAngleX
-                rightArm.rotateAngleX = -(PI / 2F) + head(0).rotateAngleX
+                leftArm.rotateAngleY = -(0.1F - f6 * 0.6F) + head.rotateAngleY
+                rightArm.rotateAngleY = 0.1F - f6 * 0.6F + head.rotateAngleY + 0.4F
+                leftArm.rotateAngleX = -(PI / 2F) + head.rotateAngleX
+                rightArm.rotateAngleX = -(PI / 2F) + head.rotateAngleX
                 leftArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F
                 rightArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F
                 leftArm.rotateAngleZ += MathHelper.cos(limbSwing * 0.09F) * 0.05F + 0.05F

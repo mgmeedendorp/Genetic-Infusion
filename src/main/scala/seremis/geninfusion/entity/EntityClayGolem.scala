@@ -91,7 +91,7 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
             val entityCompound = compound.getCompoundTag("transformationGoal")
 
             val entity = SoulHelper.instanceHelper.getSoulEntityInstance(entityCompound, worldObj)
-            setTransformationGoal(if(entity != null) Some(entity) else None)
+            setTransformationGoal(Option(entity))
         }
     }
 
@@ -163,7 +163,6 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
     override def receivePacketOnClient(id: Int, value: Array[Byte]) {
         if(id == 0) {
             val entity = EntityList.createEntityFromNBT(UtilNBT.byteArrayToCompound(value).getOrElse(return), worldObj).asInstanceOf[IEntitySoulCustom]
-            val nbt = UtilNBT.byteArrayToCompound(value)
             if(entity != null)
                 setTransformationGoal(Some(entity))
             else
@@ -179,7 +178,7 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
 
     def setTransformationGoal(entity: Option[IEntitySoulCustom]) {
         transformationGoal = entity
-        entity.foreach(goal => transformationGoalModel = Some(new Model(SoulHelper.geneRegistry.getValueFromAllele(goal, Genes.GeneModel))))
+        entity.foreach(goal => transformationGoalModel = Some(SoulHelper.geneRegistry.getValueFromAllele(goal, Genes.GeneModel)))
         startTransformation = transformationGoal.nonEmpty
     }
 
@@ -199,9 +198,9 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
         if(!world.isRemote && !isDead && !isTransformating) {
             setBeenAttacked()
 
-            val x = posX.toInt - 1
-            val y = posY.toInt
-            val z = posZ.toInt
+            val x = Math.floor(posX).toInt
+            val y = Math.floor(posY).toInt
+            val z = Math.floor(posZ).toInt
 
             val rotated = rotationYaw == 90
 

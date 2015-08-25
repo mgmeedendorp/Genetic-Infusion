@@ -1,258 +1,28 @@
 package seremis.geninfusion.api.util.render.animation
 
 import net.minecraft.client.model.ModelBox
-import net.minecraft.util.{MathHelper, Vec3}
-import seremis.geninfusion.api.soul.lib.Genes
+import net.minecraft.util.Vec3
+import seremis.geninfusion.api.soul.lib.{Genes, ModelPartTypes}
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
-import seremis.geninfusion.api.util.render.model.ModelPart
-
-import scala.collection.mutable.ListBuffer
+import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 
 object AnimationCache {
-    var cachedLegsLeft: Map[Array[ModelPart], Array[ModelPart]] = Map()
-    var cachedLegsRight: Map[Array[ModelPart], Array[ModelPart]] = Map()
-    var cachedArmsLeft: Map[Array[ModelPart], Option[Array[ModelPart]]] = Map()
-    var cachedArmsRight: Map[Array[ModelPart], Option[Array[ModelPart]]] = Map()
-    var cachedWingsLeft: Map[Array[ModelPart], Array[ModelPart]] = Map()
-    var cachedWingsRight: Map[Array[ModelPart], Array[ModelPart]] = Map()
-    var cachedBody: Map[Array[ModelPart], ModelPart] = Map()
-    var cachedHead: Map[Array[ModelPart], Array[ModelPart]] = Map()
-
     var cachedCoords: Map[(ModelPart, ModelBox), (Vec3, Vec3)] = Map()
     var cachedCoordsWithoutRotation: Map[(ModelPart, ModelBox), (Vec3, Vec3)] = Map()
-    var cachedArmsHorizontal: Map[Array[ModelPart], Boolean] = Map()
+    var cachedArmsHorizontal: Map[Model, Boolean] = Map()
     var cachedOuterBox: Map[ModelPart, (Vec3, Vec3)] = Map()
-    var cachedWidth: Map[Array[ModelPart], Float] = Map()
-    var cachedHeight: Map[Array[ModelPart], Float] = Map()
+    var cachedWidth: Map[Model, Float] = Map()
+    var cachedHeight: Map[Model, Float] = Map()
 
-    def getModel(entity: IEntitySoulCustom): Array[ModelPart] = {
+    def getModel(entity: IEntitySoulCustom): Model = {
         SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneModel)
-    }
-
-    def getModelLegs(model: Array[ModelPart]): Array[ModelPart] = getModelLeftLegs(model) ++ getModelRightLegs(model)
-    def getModelLegs(entity: IEntitySoulCustom): Array[ModelPart] = getModelLeftLegs(entity) ++ getModelRightLegs(entity)
-
-    def getModelRightLegs(model: Array[ModelPart]): Array[ModelPart] = getModelLegs(model, false)
-    def getModelLeftLegs(model: Array[ModelPart]): Array[ModelPart] = getModelLegs(model, true)
-
-    def getModelRightLegs(entity: IEntitySoulCustom): Array[ModelPart] = getModelLegs(entity, false)
-    def getModelLeftLegs(entity: IEntitySoulCustom): Array[ModelPart] = getModelLegs(entity, true)
-
-    def getModelLegs(entity: IEntitySoulCustom, leftLeg: Boolean): Array[ModelPart] = getModelLegs(getModel(entity), leftLeg)
-
-    def getModelLegs(model: Array[ModelPart], leftLeg: Boolean): Array[ModelPart] = {
-        if(!(cachedLegsLeft.contains(model) && leftLeg || cachedLegsRight.contains(model) && !leftLeg)) {
-            var legs: ListBuffer[ModelPart] = ListBuffer()
-
-            for(part <- model) {
-                val outerBox = getModelPartOuterBox(part)
-                val outerX = if(Math.max(Math.abs(outerBox._1.xCoord), Math.abs(outerBox._2.xCoord)) == Math.abs(outerBox._1.xCoord)) outerBox._1.xCoord else outerBox._2.xCoord
-
-                if(intersectsPlaneY(part, 22.0F) && (outerX > 0 && leftLeg || outerX < 0 && !leftLeg)) {
-                    legs += part
-                }
-            }
-
-            if(leftLeg)
-                cachedLegsLeft += (model -> legs.to[Array])
-            else
-                cachedLegsRight += (model -> legs.to[Array])
-        }
-        if(leftLeg)
-            cachedLegsLeft.get(model).get
-        else
-            cachedLegsRight.get(model).get
-    }
-
-    def getModelArms(entity: IEntitySoulCustom): Option[Array[ModelPart]] = if(getModelLeftArms(entity).nonEmpty && getModelRightArms(entity).nonEmpty) Some(getModelLeftArms(entity).get ++ getModelRightArms(entity).get) else if(getModelLeftArms(entity).nonEmpty) getModelLeftArms(entity) else if(getModelRightArms(entity).nonEmpty) getModelRightArms(entity) else None
-    def getModelArms(model: Array[ModelPart]): Option[Array[ModelPart]] = if(getModelLeftArms(model).nonEmpty && getModelRightArms(model).nonEmpty) Some(getModelLeftArms(model).get ++ getModelRightArms(model).get) else if(getModelLeftArms(model).nonEmpty) getModelLeftArms(model) else if(getModelRightArms(model).nonEmpty) getModelRightArms(model) else None
-
-    def getModelLeftArms(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModelArms(entity, true)
-    def getModelRightArms(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModelArms(entity, false)
-
-    def getModelLeftArms(model: Array[ModelPart]): Option[Array[ModelPart]] = getModelArms(model, true)
-    def getModelRightArms(model: Array[ModelPart]): Option[Array[ModelPart]] = getModelArms(model, false)
-
-    def getModelArms(entity: IEntitySoulCustom, leftArm: Boolean): Option[Array[ModelPart]] = getModelArms(getModel(entity), leftArm)
-
-    def getModelArms(model: Array[ModelPart], leftArm: Boolean): Option[Array[ModelPart]] = {
-        if(!(cachedArmsLeft.contains(model) && leftArm || cachedArmsRight.contains(model) && !leftArm)) {
-            var arms: ListBuffer[ModelPart] = ListBuffer()
-
-            for(part <- model) {
-                if(!intersectsPlaneY(part, 23.0F) && !part.equals(getModelBody(model))) {
-                    var minX = Float.PositiveInfinity
-                    var minY = Float.PositiveInfinity
-                    var minZ = Float.PositiveInfinity
-                    var maxX = Float.NegativeInfinity
-                    var maxY = Float.NegativeInfinity
-                    var maxZ = Float.NegativeInfinity
-
-                    for(box <- part.getBoxList) {
-                        if(Math.min(box.posX1, box.posX2) < minX)
-                            minX = Math.min(box.posX1, box.posX2)
-                        if(Math.max(box.posX1, box.posX2) > maxX)
-                            maxX = Math.max(box.posX1, box.posX2)
-
-                        if(Math.min(box.posY1, box.posY2) < minY)
-                            minY = Math.min(box.posY1, box.posY2)
-                        if(Math.max(box.posY1, box.posY2) > maxY)
-                            maxY = Math.max(box.posY1, box.posY2)
-
-                        if(Math.min(box.posZ1, box.posZ2) < minZ)
-                            minZ = Math.min(box.posZ1, box.posZ2)
-                        if(Math.max(box.posZ1, box.posZ2) > maxZ)
-                            maxZ = Math.max(box.posZ1, box.posZ2)
-                    }
-
-                    val dx = maxX - minX
-                    val dy = maxY - minY
-                    val dz = maxZ - minZ
-
-                    val absoluteX = part.rotationPointX + minX + part.offsetX * MathHelper.cos(part.rotateAngleY)
-
-                    if(dy >= 3 * dx && dy >= 3 * dz && (absoluteX > 0 && leftArm || absoluteX < 0 && !leftArm)) {
-                        arms += part
-                    }
-                }
-            }
-            if(leftArm)
-                cachedArmsLeft += (model -> (if(arms.nonEmpty) Some(arms.to[Array]) else None))
-            else
-                cachedArmsRight += (model -> (if(arms.nonEmpty) Some(arms.to[Array]) else None))
-        }
-        if(leftArm)
-            cachedArmsLeft.get(model).get
-        else
-            cachedArmsRight.get(model).get
-    }
-
-    def getModelBody(entity: IEntitySoulCustom): ModelPart = getModelBody(getModel(entity))
-
-    def getModelBody(model: Array[ModelPart]): ModelPart = {
-        if(!cachedBody.contains(model)) {
-            var body: ModelPart = null
-            var volume = 0.0F
-
-            for(part <- model) {
-                val lowestPartY = Math.max(getModelPartOuterBox(part)._1.yCoord, getModelPartOuterBox(part)._2.yCoord).toFloat
-                if(getModelLegs(model) == null || getModelLegs(model).exists(leg => intersectsPlaneY(leg, lowestPartY + 1F))) {
-                    var partVolume = 0.0D
-
-                    part.getBoxList.foreach(box => partVolume += Math.abs(box.posX1 - box.posX2) * Math.abs(box.posY1 - box.posY2) * Math.abs(box.posZ1 - box.posZ2))
-
-                    if(partVolume > volume) {
-                        volume = partVolume.toFloat
-                        body = part
-                    }
-                }
-            }
-            cachedBody += (model -> body)
-        }
-        cachedBody.get(model).get
-    }
-
-    def getModelHead(entity: IEntitySoulCustom): Array[ModelPart] = getModelHead(getModel(entity))
-
-    def getModelHead(model: Array[ModelPart]): Array[ModelPart] = {
-        if(!cachedHead.contains(model)) {
-            var head: ListBuffer[ModelPart] = ListBuffer()
-
-            var headCandidate: ModelPart = null
-            var candidateMaxY = 23.0F
-            var candidateMinY = 23.0F
-
-            for(part <- model) {
-                if(getModelBody(model) != part) {
-                    var minX = Float.PositiveInfinity
-                    var minY = Float.PositiveInfinity
-                    var minZ = Float.PositiveInfinity
-                    var maxX = Float.NegativeInfinity
-                    var maxY = Float.NegativeInfinity
-                    var maxZ = Float.NegativeInfinity
-
-                    for(box <- part.getBoxList) {
-                        if((Math.min(box.posX1, box.posX2) + part.offsetX) * MathHelper.cos(part.rotateAngleY) < minX)
-                            minX = Math.min(box.posX1, box.posX2)
-                        if((Math.max(box.posX1, box.posX2) + part.offsetX) * MathHelper.cos(part.rotateAngleY) > maxX)
-                            maxX = Math.max(box.posX1, box.posX2)
-
-                        if((Math.min(box.posY1, box.posY2) + part.offsetY) * MathHelper.cos(part.rotateAngleX) < minY)
-                            minY = Math.min(box.posY1, box.posY2)
-                        if((Math.max(box.posY1, box.posY2) + part.offsetY) * MathHelper.cos(part.rotateAngleX) > maxY)
-                            maxY = Math.max(box.posY1, box.posY2)
-
-                        if((Math.min(box.posZ1, box.posZ2) + part.offsetZ) * MathHelper.cos(part.rotateAngleY) < minZ)
-                            minZ = Math.min(box.posZ1, box.posZ2)
-                        if((Math.max(box.posZ1, box.posZ2) + part.offsetZ) * MathHelper.cos(part.rotateAngleY) > maxZ)
-                            maxZ = Math.max(box.posZ1, box.posZ2)
-                    }
-
-                    val dx = maxX - minX
-                    val dy = maxY - minY
-                    val dz = maxZ - minZ
-
-                    if(maxY < candidateMaxY && dy < 2 * dx && dz < 2 * dy && dx <= 2 * dy) {
-                        headCandidate = part
-                        candidateMaxY = maxY + part.rotationPointY
-                        candidateMinY = minY + part.rotationPointY
-                    }
-                }
-            }
-            head += headCandidate
-
-            for(part <- model) {
-                val nearY = part.rotationPointY + part.offsetY * MathHelper.cos(part.rotateAngleX + 0.001F)
-                if(!part.equals(head.head) && !getModelArms(model).exists(arms => arms.toList.contains(part)) && !part.equals(getModelBody(model)) && nearY <= candidateMaxY && partsTouching(head.head, part)) {
-                    head += part
-                }
-            }
-
-            cachedHead += (model -> head.to[Array])
-        }
-        cachedHead.get(model).get
-    }
-
-    def getModelWings(entity: IEntitySoulCustom): Array[ModelPart] = getModelLeftWings(entity) ++ getModelRightWings(entity)
-    def getModelWings(model: Array[ModelPart]): Array[ModelPart] = getModelLeftWings(model) ++ getModelRightWings(model)
-
-    def getModelLeftWings(entity: IEntitySoulCustom): Array[ModelPart] = getModelWings(entity, true)
-    def getModelRightWings(entity: IEntitySoulCustom): Array[ModelPart] = getModelWings(entity, false)
-
-    def getModelLeftWings(model: Array[ModelPart]): Array[ModelPart] = getModelWings(model, true)
-    def getModelRightWings(model: Array[ModelPart]): Array[ModelPart] = getModelWings(model, false)
-
-    def getModelWings(entity: IEntitySoulCustom, leftWings: Boolean): Array[ModelPart] = getModelWings(getModel(entity), leftWings)
-
-    def getModelWings(model: Array[ModelPart], leftWings: Boolean): Array[ModelPart] = {
-        if(!(cachedWingsLeft.contains(model) && leftWings || cachedWingsRight.contains(model) && !leftWings)) {
-            var wings: ListBuffer[ModelPart] = ListBuffer()
-
-            for(part <- model) {
-                if(getModelHead(model) != null && !getModelHead(model).toList.contains(part) && getModelArms(model) != null && !getModelArms(model).exists(arms => arms.toList.contains(part)) && getModelLegs(model) != null && !getModelLegs(model).toList.contains(part) && getModelBody(model) != null && !getModelBody(model).equals(part) && partsTouching(part, getModelBody(model))) {
-                    val absoluteX = part.rotationPointX + part.offsetX * MathHelper.cos(part.rotateAngleY)
-
-                    if(absoluteX > 0 && leftWings || absoluteX < 0 && !leftWings)
-                        wings += part
-                }
-            }
-            
-            if(leftWings)
-                cachedWingsLeft += (model -> wings.to[Array])
-            else
-                cachedWingsRight += (model -> wings.to[Array])
-        }
-        if(leftWings)
-            cachedWingsLeft.get(model).get
-        else
-            cachedWingsRight.get(model).get
     }
 
     def armsHorizontal(entity: IEntitySoulCustom): Boolean = armsHorizontal(getModel(entity))
 
-    def armsHorizontal(model: Array[ModelPart]): Boolean = {
+    def armsHorizontal(model: Model): Boolean = {
         if(!cachedArmsHorizontal.contains(model)) {
-            getModelArms(model).foreach(arms => arms.foreach(part => {
+            model.getParts(ModelPartTypes.ArmsLeft, ModelPartTypes.ArmsRight).foreach(arms => arms.foreach(part => {
                 val box = getModelPartOuterBox(part)
                 val diffX = Math.abs(box._1.xCoord - box._2.xCoord)
                 val diffY = Math.abs(box._1.yCoord - box._2.yCoord)
@@ -376,12 +146,12 @@ object AnimationCache {
 
     def getModelWidth(entity: IEntitySoulCustom): Float = getModelWidth(getModel(entity))
 
-    def getModelWidth(model: Array[ModelPart]): Float = {
+    def getModelWidth(model: Model): Float = {
         if(!cachedWidth.contains(model)) {
             var minX, minZ = Float.PositiveInfinity
             var maxX, maxZ = Float.NegativeInfinity
 
-            for(part <- model) {
+            for(part <- model.getAllParts) {
                 val outerBox = getModelPartOuterBox(part)
 
                 if(outerBox._1.xCoord < minX)
@@ -405,8 +175,6 @@ object AnimationCache {
                 width = Math.max(dX, dZ)
             }
 
-            width *= 0.7F
-
             cachedWidth += (model -> width / 16)
         }
         cachedWidth.get(model).get
@@ -414,12 +182,12 @@ object AnimationCache {
 
     def getModelHeight(entity: IEntitySoulCustom): Float = getModelHeight(getModel(entity))
 
-    def getModelHeight(model: Array[ModelPart]): Float = {
+    def getModelHeight(model: Model): Float = {
         if(!cachedHeight.contains(model)) {
             var minY = Float.PositiveInfinity
             var maxY = Float.NegativeInfinity
 
-            for(part <- model) {
+            for(part <- model.getAllParts) {
                 val outerBox = getModelPartOuterBox(part)
 
                 if(outerBox._1.yCoord < minY)
@@ -432,18 +200,23 @@ object AnimationCache {
         cachedHeight.get(model).get
     }
 
-    def attachModelPartsToBody(parent1: Array[ModelPart], parent2: Array[ModelPart], model: Array[ModelPart]): Array[ModelPart] = {
-        val legsLeft = if(getModelLeftLegs(parent1).forall(m => model.contains(m))) getModelLeftLegs(parent1) else if(getModelLeftLegs(parent2).forall(m => model.contains(m))) getModelLeftLegs(parent2) else null
-        val legsRight = if(getModelRightLegs(parent1).forall(m => model.contains(m))) getModelRightLegs(parent1) else if(getModelRightLegs(parent2).forall(m => model.contains(m))) getModelRightLegs(parent2) else null
-        val body = if(model.contains(getModelBody(parent1))) getModelBody(parent1) else if(model.contains(getModelBody(parent2))) getModelBody(parent2) else null
-        val armsLeft = if(getModelLeftArms(parent1).exists(arms => arms.forall(m => model.contains(m)))) getModelLeftArms(parent1) else if(getModelLeftArms(parent2).exists(arms => arms.forall(m => model.contains(m)))) getModelLeftArms(parent2) else None
-        val armsRight = if(getModelRightArms(parent1).exists(arms => arms.forall(m => model.contains(m)))) getModelRightArms(parent1) else if(getModelRightArms(parent2).exists(arms => arms.forall(m => model.contains(m)))) getModelRightArms(parent2) else None
-        val heads = if(getModelHead(parent1).forall(m => model.contains(m))) getModelHead(parent1) else if(getModelHead(parent2).forall(m => model.contains(m))) getModelHead(parent2) else null
+    def getFromParents(parent1: Model, parent2: Model, model: Model, partName: String): Option[Array[ModelPart]] = {
+        if(parent1.getParts(partName).exists(legs => legs.forall(m => model.getAllParts.contains(m)))) parent1.getParts(partName) else if(parent2.getParts(partName).exists(legs => legs.forall(m => model.getAllParts.contains(m)))) parent2.getParts(partName) else None
+    }
 
+    def attachModelPartsToBody(parent1: Model, parent2: Model, model: Model): Model = {
+        val legsLeft = getFromParents(parent1, parent2, model, ModelPartTypes.LegsLeft)
+        val legsRight = getFromParents(parent1, parent2, model, ModelPartTypes.LegsRight)
+        val legs = legsLeft.getOrElse(new Array[ModelPart](0)) ++ legsRight.getOrElse(new Array[ModelPart](0))
+        val body = getFromParents(parent1, parent2, model, ModelPartTypes.Body)
+        val armsLeft = getFromParents(parent1, parent2, model, ModelPartTypes.ArmsLeft)
+        val armsRight = getFromParents(parent1, parent2, model, ModelPartTypes.ArmsRight)
+        val arms = armsLeft.getOrElse(new Array[ModelPart](0)) ++ armsLeft.getOrElse(new Array[ModelPart](0))
+        val head = getFromParents(parent1, parent2, model, ModelPartTypes.Head)
 
         var highestLegY = 23.0F
 
-        for(leg <- legsLeft ++ legsRight) {
+        for(leg <- legs) {
             highestLegY = Math.min(getModelPartOuterBox(leg)._1.yCoord, getModelPartOuterBox(leg)._2.yCoord).toFloat
             if(!intersectsPlaneY(leg, 23.0F)) {
                 var outerBox = getModelPartOuterBox(leg)
@@ -462,61 +235,61 @@ object AnimationCache {
             }
         }
 
-        val bodyBox = getModelPartOuterBox(body)
+        body.foreach(body => body.foreach(body => {
+            val bodyBox = getModelPartOuterBox(body)
 
-        val lowestYBody = Math.max(bodyBox._1.yCoord, bodyBox._2.yCoord)
-        if(highestLegY != lowestYBody) {
-            val dY = highestLegY - lowestYBody
+            val lowestYBody = Math.max(bodyBox._1.yCoord, bodyBox._2.yCoord)
+            if(highestLegY != lowestYBody) {
+                val dY = highestLegY - lowestYBody
 
-            body.rotationPointY += dY.toFloat
-            (armsLeft.getOrElse(new Array[ModelPart](0)) ++ armsRight.getOrElse(new Array[ModelPart](0)) ++ (if(heads != null) heads else new Array[ModelPart](0))).foreach(m => m.rotationPointY += dY.toFloat)
-        }
+                body.rotationPointY += dY.toFloat
+                (armsLeft.getOrElse(new Array[ModelPart](0)) ++ armsRight.getOrElse(new Array[ModelPart](0)) ++ (if(head.nonEmpty) head.get else new Array[ModelPart](0))).foreach(m => m.rotationPointY += dY.toFloat)
+            }
+        }))
 
         var lowestHeadY = Float.NegativeInfinity
 
-        for(head <- heads) {
-            lowestHeadY = Math.max(Math.max(getModelPartOuterBox(head)._1.yCoord, getModelPartOuterBox(head)._2.yCoord), lowestHeadY).toFloat
+        for(head <- head) {
+            head.foreach(head => {
+                lowestHeadY = Math.max(Math.max(getModelPartOuterBox(head)._1.yCoord, getModelPartOuterBox(head)._2.yCoord), lowestHeadY).toFloat
+            })
         }
 
-        val highestYBody = Math.min(bodyBox._1.yCoord, bodyBox._2.yCoord).toFloat
+        body.foreach(body => body.foreach(body => {
+            val bodyBox = getModelPartOuterBox(body)
 
-        if(lowestHeadY != highestYBody) {
-            val dy = Math.min(bodyBox._1.yCoord, bodyBox._2.yCoord).toFloat - lowestHeadY
+            val highestYBody = Math.min(bodyBox._1.yCoord, bodyBox._2.yCoord).toFloat
 
-            heads.foreach(head => head.rotationPointY += dy)
-        }
+            if(lowestHeadY != highestYBody) {
+                val dy = Math.min(bodyBox._1.yCoord, bodyBox._2.yCoord).toFloat - lowestHeadY
 
-        if(armsLeft != null && armsRight != null && armsLeft.exists(arms => arms.length == 1) && armsRight.exists(arms => arms.length == 1)) {
-            for(arm <- armsLeft.getOrElse(new Array[ModelPart](0)) ++ armsRight.getOrElse(new Array[ModelPart](0))) {
-                val armBox = getModelPartOuterBox(arm)
-                val armTop = Math.min(armBox._1.yCoord, armBox._2.yCoord).toFloat
+                head.foreach(head => head.foreach(head => head.rotationPointY += dy))
+            }
 
-                if(armTop != highestYBody) {
-                    val dy = highestYBody - armTop
+            if(armsLeft != null && armsRight != null && armsLeft.exists(arms => arms.length == 1) && armsRight.exists(arms => arms.length == 1)) {
+                for(arm <- armsLeft.getOrElse(new Array[ModelPart](0)) ++ armsRight.getOrElse(new Array[ModelPart](0))) {
+                    val armBox = getModelPartOuterBox(arm)
+                    val armTop = Math.min(armBox._1.yCoord, armBox._2.yCoord).toFloat
 
-                    arm.rotationPointY += dy
+                    if(armTop != highestYBody) {
+                        val dy = highestYBody - armTop
+
+                        arm.rotationPointY += dy
+                    }
                 }
             }
-        }
+        }))
 
         modelChanged(model)
 
         model
     }
 
-    def modelChanged(model: Array[ModelPart]) {
+    def modelChanged(model: Model) {
         if(cachedArmsHorizontal.contains(model)) cachedArmsHorizontal -= model
-        if(cachedArmsLeft.contains(model)) cachedArmsLeft -= model
-        if(cachedArmsRight.contains(model)) cachedArmsRight -= model
-        if(cachedBody.contains(model)) cachedBody -= model
-        model.foreach(p => p.getBoxList.foreach(b => if(cachedCoords.contains(p -> b)) cachedCoords -= (p -> b)))
-        if(cachedHead.contains(model)) cachedHead -= model
+        model.getAllParts.foreach(p => p.getBoxList.foreach(b => if(cachedCoords.contains(p -> b)) cachedCoords -= (p -> b)))
         if(cachedHeight.contains(model)) cachedHeight -= model
-        if(cachedLegsLeft.contains(model)) cachedLegsLeft -= model
-        if(cachedLegsRight.contains(model)) cachedLegsRight -= model
-        model.foreach(p => if(cachedOuterBox.contains(p)) cachedOuterBox -= p)
+        model.getAllParts.foreach(p => if(cachedOuterBox.contains(p)) cachedOuterBox -= p)
         if(cachedWidth.contains(model)) cachedWidth -= model
-        if(cachedWingsRight.contains(model)) cachedWingsRight -= model
-        if(cachedWingsLeft.contains(model)) cachedWingsLeft -= model
     }
 }

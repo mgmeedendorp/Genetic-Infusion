@@ -2,6 +2,7 @@ package seremis.geninfusion.soul
 
 import net.minecraft.entity.EntityLiving
 import seremis.geninfusion.api.soul._
+import seremis.geninfusion.soul.gene.Gene
 
 import scala.collection.mutable.{LinkedHashMap, ListBuffer}
 

@@ -20,7 +20,7 @@ GICreativeTab(name: String) extends CreativeTabs(name) {
         val list = lst.asInstanceOf[java.util.List[ItemStack]]
         val prevSize = list.size
 
-        val souls = Array(ModSouls.SoulCreeper, ModSouls.SoulSkeleton, ModSouls.SoulZombie)
+        val souls = Array(ModSouls.SoulCreeper, ModSouls.SoulSkeleton, ModSouls.SoulSpider, ModSouls.SoulZombie)
 
         for(soul <- souls) {
             val stack = new ItemStack(ModBlocks.crystal)

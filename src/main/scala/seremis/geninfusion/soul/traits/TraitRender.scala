@@ -13,11 +13,10 @@ import net.minecraft.nbt.NBTUtil
 import net.minecraft.util.{MathHelper, StringUtils}
 import net.minecraftforge.client.{IItemRenderer, MinecraftForgeClient}
 import org.lwjgl.opengl.GL11
-import seremis.geninfusion.api.soul.lib.Genes
+import seremis.geninfusion.api.soul.lib.{ModelPartTypes, Genes}
 import seremis.geninfusion.api.soul.lib.VariableLib._
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.api.util.DataWatcherHelper
-import seremis.geninfusion.api.util.render.animation.AnimationCache
 import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 import seremis.geninfusion.helper.GIRenderHelper
 
@@ -25,25 +24,28 @@ class TraitRender extends Trait {
 
     @SideOnly(Side.CLIENT)
     override def render(entity: IEntitySoulCustom, timeModifier: Float, limbSwing: Float, specialRotation: Float, rotationYawHead: Float, rotationPitch: Float, scale: Float) {
-        val parts = SoulHelper.geneRegistry.getValueFromAllele[Array[ModelPart]](entity, Genes.GeneModel)
+        val model = SoulHelper.geneRegistry.getValueFromAllele[Model](entity, Genes.GeneModel)
 
         if(entity.asInstanceOf[EntityLiving].isChild) {
-            val model = new Model(parts)
 
-            if(model.head != null) {
+            if(model.getParts(ModelPartTypes.Head).nonEmpty) {
                 GL11.glPushMatrix()
                 GL11.glScalef(0.75F, 0.75F, 0.75F)
                 GL11.glTranslatef(0.0F, 16.0F * scale, 0.0F)
-                new Model(model.head).render(scale)
+                new Model(model.getParts(ModelPartTypes.Head).get).render(scale)
                 GL11.glPopMatrix()
             }
             GL11.glPushMatrix()
             GL11.glScalef(0.5F, 0.5F, 0.5F)
             GL11.glTranslatef(0.0F, 24.0F * scale, 0.0F)
-            model.modelExcept(model.head).render(scale)
+            if(model.getParts(ModelPartTypes.Head).nonEmpty) {
+                model.getWholeModelExcept(model.getParts(ModelPartTypes.Head).get).render(scale)
+            } else {
+                model.getWholeModelExcept(model.getParts(ModelPartTypes.Head).get).render(scale)
+            }
             GL11.glPopMatrix()
         } else {
-            for(part <- parts) {
+            for(part <- model.getAllParts) {
                 part.render(scale)
             }
         }
@@ -53,6 +55,8 @@ class TraitRender extends Trait {
     override def renderEquippedItems(entity: IEntitySoulCustom, partialTickTime: Float) {
         val living = entity.asInstanceOf[EntityLiving]
 
+        val model: Model = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneModel)
+
         GL11.glColor3f(1.0F, 1.0F, 1.0F)
         val itemstack = living.getHeldItem
         val itemstack1 = living.func_130225_q(3)
@@ -60,8 +64,8 @@ class TraitRender extends Trait {
         var f1: Float = 0.0f
         if (itemstack1 != null) {
             GL11.glPushMatrix()
-            val head = AnimationCache.getModelHead(entity)(0)
-            head.postRender(0.0625F)
+            val head = model.getParts(ModelPartTypes.Head)
+            head.foreach(head => head.foreach(head => head.postRender(0.0625F)))
             item = itemstack1.getItem
             val customRenderer = MinecraftForgeClient.getItemRenderer(itemstack1, IItemRenderer.ItemRenderType.EQUIPPED)
             val is3D = customRenderer != null && customRenderer.shouldUseRenderHelper(IItemRenderer.ItemRenderType.EQUIPPED, itemstack1, IItemRenderer.ItemRendererHelper.BLOCK_3D)
@@ -100,8 +104,8 @@ class TraitRender extends Trait {
                 GL11.glRotatef(-20.0F, -1.0F, 0.0F, 0.0F)
                 GL11.glScalef(f1, f1, f1)
             }
-            if(!living.isDead && AnimationCache.getModelArms(entity) != null && AnimationCache.getModelArms(entity).getOrElse(new Array[ModelPart](0)).length > 0) {
-                val rightArm = AnimationCache.getModelArms(entity).get(0)
+            if(!living.isDead && model.getParts(ModelPartTypes.ArmsLeft, ModelPartTypes.ArmsRight).nonEmpty) {
+                val rightArm = model.getParts(ModelPartTypes.ArmsRight).get(0)
                 rightArm.postRender(0.0625F)
                 GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F)
                 val customRenderer = MinecraftForgeClient.getItemRenderer(itemstack, IItemRenderer.ItemRenderType.EQUIPPED)

@@ -20,7 +20,7 @@ import scala.collection.mutable.ListBuffer
 
 object ModelPart {
 
-    def getModelPartsFromModel(model: ModelBase, entity: EntityLiving, callRotationAngles: Boolean): Array[ModelPart] = {
+    private def getModelPartsFromModel(model: ModelBase, entity: EntityLiving, callRotationAngles: Boolean): Array[ModelPart] = {
         val parts: ListBuffer[ModelPart] = ListBuffer()
 
         model.swingProgress = 0
@@ -32,13 +32,13 @@ object ModelPart {
         val fields = GIReflectionHelper.getFields(model)
 
         for (field <- fields if (field.getType == classOf[ModelRenderer] || field.getType == classOf[ModelPart]) && field.getName != VariableLib.ModelBipedCloak && field.getName != VariableLib.ModelBipedEars && field.getName != VariableLib.ModelBipedHeadwear) {
-            parts.add(modelRendererToModelPart(GIReflectionHelper.getField(model, field.getName).asInstanceOf[ModelRenderer]))
+           // parts.add(modelRendererToModelPart(GIReflectionHelper.getField(model, field.getName).asInstanceOf[ModelRenderer]))
         }
         parts.to[Array]
     }
 
-    def modelRendererToModelPart(model: ModelRenderer): ModelPart = {
-        val modelPart = new ModelPart(GIReflectionHelper.getField(model, VariableLib.ModelRendererBaseModel).asInstanceOf[ModelBase], model.boxName)
+    def rendererToPart(model: ModelRenderer, modelPartType: String): ModelPart = {
+        val modelPart = new ModelPart(GIReflectionHelper.getField(model, VariableLib.ModelRendererBaseModel).asInstanceOf[ModelBase], model.boxName, modelPartType)
         modelPart.childModels = model.childModels
         modelPart.cubeList = model.cubeList
         modelPart.isHidden = model.isHidden
@@ -60,13 +60,15 @@ object ModelPart {
     }
 
     def fromNBT(compound: NBTTagCompound): ModelPart = {
-        val part = new ModelPart()
+        val part = new ModelPart(null.asInstanceOf[String])
         part.readFromNBT(compound)
         part
     }
 }
 
-class ModelPart(model: ModelBase, boxName: String) extends ModelRenderer(model, boxName) with INBTTagable {
+class ModelPart(model: ModelBase, boxName: String, var modelPartTypeName: String) extends ModelRenderer(model, boxName) with INBTTagable {
+
+    var modelPartType = if(modelPartTypeName != null) SoulHelper.modelPartTypeRegistry.getModelPartType(modelPartTypeName).get else null
 
     var initialRotationPointX: Float = 0.0F
     var initialRotationPointY: Float = 0.0F
@@ -76,20 +78,20 @@ class ModelPart(model: ModelBase, boxName: String) extends ModelRenderer(model, 
     var initialRotateAngleY: Float = 0.0F
     var initialRotateAngleZ: Float = 0.0F
 
-    def this() {
-        this(SoulHelper.entityModel, "")
+    def this(modelPartTypeName: String) {
+        this(SoulHelper.entityModel, "", modelPartTypeName)
     }
 
-    def this(model: ModelBase) {
-        this(model, "")
+    def this(boxName: String, modelPartTypeName: String) {
+        this(SoulHelper.entityModel, boxName, modelPartTypeName)
     }
 
-    def this(boxName: String) {
-        this(SoulHelper.entityModel, boxName)
+    def this(model: ModelBase, modelPartTypeName: String) {
+        this(model, "", modelPartTypeName)
     }
 
     def this(compound: NBTTagCompound) {
-        this(compound.getString("boxName"))
+        this(null, compound.getString("boxName"), null)
         readFromNBT(compound)
     }
 
@@ -154,7 +156,7 @@ class ModelPart(model: ModelBase, boxName: String) extends ModelRenderer(model, 
         val childList = new NBTTagList()
         if (childModels != null) {
             for (childModel <- childModels) {
-                val modelPart = ModelPart.modelRendererToModelPart(childModel.asInstanceOf[ModelRenderer])
+                val modelPart = childModel.asInstanceOf[ModelPart]
                 val compound1 = new NBTTagCompound()
                 modelPart.writeToNBT(compound1)
                 childList.appendTag(compound1)
@@ -208,6 +210,9 @@ class ModelPart(model: ModelBase, boxName: String) extends ModelRenderer(model, 
             }
         }
         compound.setTag("cubeList", boxList)
+
+        compound.setString("modelPartType", modelPartTypeName)
+
         compound
     }
 
@@ -271,6 +276,10 @@ class ModelPart(model: ModelBase, boxName: String) extends ModelRenderer(model, 
             GIReflectionHelper.setField(box, VariableLib.ModelBoxVertexPositions, vertices)
             cubeList.asInstanceOf[util.ArrayList[ModelBox]].add(box)
         }
+
+        modelPartTypeName = compound.getString("modelPartType")
+        modelPartType = SoulHelper.modelPartTypeRegistry.getModelPartType(modelPartTypeName).get
+
         compound
     }
 

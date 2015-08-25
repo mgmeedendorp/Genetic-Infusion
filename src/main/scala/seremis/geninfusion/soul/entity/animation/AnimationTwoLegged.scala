@@ -6,7 +6,7 @@ import seremis.geninfusion.api.soul.{EnumAnimationType, IEntitySoulCustom}
 
 class AnimationTwoLegged extends Animation {
 
-    override def canAnimateEntity(entity: IEntitySoulCustom): Boolean = getModelLegs(entity).length == 2 && getModelLeftLegs(entity).length == 1 && getModelRightLegs(entity).length == 1
+    override def canAnimateEntity(entity: IEntitySoulCustom): Boolean = getModelLegs(entity).exists(legs => legs.length == 2) && getModelLeftLegs(entity).exists(legs => legs.length == 1) && getModelRightLegs(entity).exists(legs => legs.length == 1)
 
     override def shouldStartAnimation(entity: IEntitySoulCustom): Boolean = true
 
@@ -17,8 +17,8 @@ class AnimationTwoLegged extends Animation {
     override def animate(entity: IEntitySoulCustom, timeModifier: Float, limbSwing: Float, specialRotation: Float, rotationYawHead: Float, rotationPitch: Float, scale: Float) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        val leftLeg = getModelLeftLegs(entity)(0)
-        val rightLeg = getModelRightLegs(entity)(0)
+        val leftLeg = getModelLeftLegs(entity).get(0)
+        val rightLeg = getModelRightLegs(entity).get(0)
 
         leftLeg.rotateAngleX = MathHelper.cos(timeModifier * 0.6662F) * 1.4F * limbSwing
         rightLeg.rotateAngleX = MathHelper.cos(timeModifier * 0.6662F + PI) * 1.4F * limbSwing

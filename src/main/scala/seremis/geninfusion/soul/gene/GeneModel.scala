@@ -9,17 +9,17 @@ import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.{IChromosome, SoulHelper}
 import seremis.geninfusion.api.util.render.animation.AnimationCache
-import seremis.geninfusion.api.util.render.model.ModelPart
+import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 import seremis.geninfusion.helper.GITextureHelper
-import seremis.geninfusion.soul.{Allele, Gene}
+import seremis.geninfusion.soul.Allele
 
 import scala.collection.mutable.ListBuffer
 
-class GeneModel extends Gene(classOf[Array[ModelPart]]) {
+class GeneModel extends Gene(classOf[Model]) {
 
     override def mutate(chromosome: IChromosome): IChromosome = {
-        val allele1Data = chromosome.getPrimary.getAlleleData.asInstanceOf[Array[ModelPart]]
-        val allele2Data = chromosome.getSecondary.getAlleleData.asInstanceOf[Array[ModelPart]]
+        val allele1Data = chromosome.getPrimary.getAlleleData.asInstanceOf[Model].getAllParts
+        val allele2Data = chromosome.getSecondary.getAlleleData.asInstanceOf[Model].getAllParts
 
         if(rand.nextBoolean()) {
             for(part <- allele1Data) {
@@ -56,42 +56,45 @@ class GeneModel extends Gene(classOf[Array[ModelPart]]) {
         val modelParent1 = parent1(geneIdModel)
         val modelParent2 = parent2(geneIdModel)
 
-        val modelParent1Primary = modelParent1.getPrimary.getAlleleData.asInstanceOf[Array[ModelPart]]
-        val modelParent2Primary = modelParent2.getPrimary.getAlleleData.asInstanceOf[Array[ModelPart]]
-        val modelParent1Secondary = modelParent1.getSecondary.getAlleleData.asInstanceOf[Array[ModelPart]]
-        val modelParent2Secondary = modelParent2.getSecondary.getAlleleData.asInstanceOf[Array[ModelPart]]
+        val modelParent1Primary = modelParent1.getPrimary.getAlleleData.asInstanceOf[Model].getAllParts
+        val modelParent2Primary = modelParent2.getPrimary.getAlleleData.asInstanceOf[Model].getAllParts
+        val modelParent1Secondary = modelParent1.getSecondary.getAlleleData.asInstanceOf[Model].getAllParts
+        val modelParent2Secondary = modelParent2.getSecondary.getAlleleData.asInstanceOf[Model].getAllParts
 
-        val combinedParent1 = randomlyCombineModels(modelParent1Primary, textureParent1Primary, modelParent1Secondary, textureParent1Secondary)
-        val combinedParent2 = randomlyCombineModels(modelParent2Primary, textureParent2Primary, modelParent2Secondary, textureParent2Secondary)
+        val combinedParent1 = randomlyCombineModels(new Model(modelParent1Primary), textureParent1Primary, new Model(modelParent1Secondary), textureParent1Secondary)
+        val combinedParent2 = randomlyCombineModels(new Model(modelParent2Primary), textureParent2Primary, new Model(modelParent2Secondary), textureParent2Secondary)
         
         val combinedParent1Tuple = createParentTexture(combinedParent1._1)
         val combinedParent2Tuple = createParentTexture(combinedParent2._1)
 
         try {
-            AnimationCache.attachModelPartsToBody(modelParent1Primary, modelParent1Secondary, combinedParent1Tuple._2.to[Array])
+            AnimationCache.attachModelPartsToBody(new Model(modelParent1Primary), new Model(modelParent1Secondary), new Model(combinedParent1Tuple._2.to[Array]))
         } catch {
             case e: Exception => e.printStackTrace()
         }
 
         try {
-            AnimationCache.attachModelPartsToBody(modelParent2Primary, modelParent2Secondary, combinedParent2Tuple._2.to[Array])
+            AnimationCache.attachModelPartsToBody(new Model(modelParent2Primary), new Model(modelParent2Secondary), new Model(combinedParent2Tuple._2.to[Array]))
         } catch {
             case e: Exception => e.printStackTrace()
         }
 
-        val child = randomlyCombineModels(combinedParent1Tuple._2.to[Array], combinedParent1Tuple._1, combinedParent2Tuple._2.to[Array], combinedParent2Tuple._1)
+        val child = randomlyCombineModels(new Model(combinedParent1Tuple._2.to[Array]), combinedParent1Tuple._1, new Model(combinedParent2Tuple._2.to[Array]), combinedParent2Tuple._1)
 
         val dominantTuple = createParentTexture(child._1)
         val recessiveTuple = createParentTexture(child._2)
 
+        val dominantModel = new Model(dominantTuple._2.to[Array])
+        val recessiveModel = new Model(recessiveTuple._2.to[Array])
+
         try {
-            AnimationCache.attachModelPartsToBody(combinedParent1Tuple._2.to[Array], combinedParent2Tuple._2.to[Array], dominantTuple._2.to[Array])
+            AnimationCache.attachModelPartsToBody(new Model(combinedParent1Tuple._2.to[Array]), new Model(combinedParent2Tuple._2.to[Array]), new Model(dominantTuple._2.to[Array]))
         } catch {
             case e: Exception => e.printStackTrace()
         }
 
         try {
-            AnimationCache.attachModelPartsToBody(combinedParent1Tuple._2.to[Array], combinedParent2Tuple._2.to[Array], recessiveTuple._2.to[Array])
+            AnimationCache.attachModelPartsToBody(new Model(combinedParent1Tuple._2.to[Array]), new Model(combinedParent2Tuple._2.to[Array]), new Model(recessiveTuple._2.to[Array]))
         } catch {
             case e: Exception => e.printStackTrace()
         }
@@ -116,18 +119,18 @@ class GeneModel extends Gene(classOf[Array[ModelPart]]) {
 
         offspring(geneIdTexture) = SoulHelper.instanceHelper.getIChromosomeInstance(Genes.GeneTexture, textureAllele1, textureAllele2)
 
-        val widthAllele1 = new Allele(true, AnimationCache.getModelWidth(dominantTuple._2.to[Array]), classOf[Float])
-        val widthAllele2 = new Allele(false, AnimationCache.getModelWidth(recessiveTuple._2.to[Array]), classOf[Float])
+        val widthAllele1 = new Allele(true, AnimationCache.getModelWidth(dominantModel) * 0.7F, classOf[Float])
+        val widthAllele2 = new Allele(false, AnimationCache.getModelWidth(recessiveModel) * 0.7F, classOf[Float])
 
         offspring(geneIdWidth) = SoulHelper.instanceHelper.getIChromosomeInstance(Genes.GeneWidth, widthAllele1, widthAllele2)
 
-        val heightAllele1 = new Allele(true, AnimationCache.getModelHeight(dominantTuple._2.to[Array]), classOf[Float])
-        val heightAllele2 = new Allele(false, AnimationCache.getModelHeight(recessiveTuple._2.to[Array]), classOf[Float])
+        val heightAllele1 = new Allele(true, AnimationCache.getModelHeight(dominantModel), classOf[Float])
+        val heightAllele2 = new Allele(false, AnimationCache.getModelHeight(recessiveModel), classOf[Float])
 
         offspring(geneIdHeight) = SoulHelper.instanceHelper.getIChromosomeInstance(Genes.GeneHeight, heightAllele1, heightAllele2)
 
-        val resultAllele1 = new Allele(true, dominantTuple._2.to[Array], classOf[Array[ModelPart]])
-        val resultAllele2 = new Allele(false, recessiveTuple._2.to[Array], classOf[Array[ModelPart]])
+        val resultAllele1 = new Allele(true, dominantModel, classOf[Model])
+        val resultAllele2 = new Allele(false, recessiveModel, classOf[Model])
 
         SoulHelper.instanceHelper.getIChromosomeInstance(Genes.GeneModel, resultAllele1, resultAllele2)
     }
@@ -172,26 +175,16 @@ class GeneModel extends Gene(classOf[Array[ModelPart]]) {
         (result._1, parts)
     }
 
-    def randomlyCombineModels(model1: Array[ModelPart], texture1: BufferedImage, model2: Array[ModelPart], texture2: BufferedImage): (ListBuffer[(Array[ModelPart], BufferedImage)], ListBuffer[(Array[ModelPart], BufferedImage)]) = {
-        val head1 = AnimationCache.getModelHead(model1)
-        val head2 = AnimationCache.getModelHead(model2)
-        val arms1 = AnimationCache.getModelArms(model1).getOrElse(new Array[ModelPart](0))
-        val arms2 = AnimationCache.getModelArms(model2).getOrElse(new Array[ModelPart](0))
-        val legs1 = AnimationCache.getModelLegs(model1)
-        val legs2 = AnimationCache.getModelLegs(model2)
-        val wings1 = AnimationCache.getModelWings(model1)
-        val wings2 = AnimationCache.getModelWings(model2)
-        val body1 = Array(AnimationCache.getModelBody(model1))
-        val body2 = Array(AnimationCache.getModelBody(model2))
-
+    def randomlyCombineModels(model1: Model, texture1: BufferedImage, model2: Model, texture2: BufferedImage): (ListBuffer[(Array[ModelPart], BufferedImage)], ListBuffer[(Array[ModelPart], BufferedImage)]) = {
         val combined1: ListBuffer[(Array[ModelPart], BufferedImage)] = ListBuffer()
         val combined2: ListBuffer[(Array[ModelPart], BufferedImage)] = ListBuffer()
 
-        randomlyInherit(combined1, combined2, head1, texture1, head2, texture2)
-        randomlyInherit(combined1, combined2, arms1, texture1, arms2, texture2)
-        randomlyInherit(combined1, combined2, legs1, texture1, legs2, texture2)
-        randomlyInherit(combined1, combined2, wings1, texture1, wings2, texture2)
-        randomlyInherit(combined1, combined2, body1, texture1, body2, texture2)
+        SoulHelper.modelPartTypeRegistry.getModelPartTypeNames.foreach(name => {
+            val part1 = model1.getParts(name)
+            val part2 = model2.getParts(name)
+
+            part1.foreach(part1 => part2.foreach(part2 => randomlyInherit(combined1, combined2, part1, texture1, part2, texture2)))
+        })
 
         combined1 -> combined2
     }

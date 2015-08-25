@@ -2,10 +2,12 @@ package seremis.geninfusion.api.soul.lib
 
 object Animations {
 
-    final val AnimationWalkTwoLegged = Traits.ID + ".animation.walk.twoLegged"
-    final val AnimationWalkFourLegged = Traits.ID + ".animation.walk.fourLegged"
+    final val ID = Genes.ID
 
-    final val AnimationWalkTwoArmed = Traits.ID + ".animation.walk.twoArmed"
+    final val AnimationWalkTwoLegged = ID + ".animation.walk.twoLegged"
+    final val AnimationWalkFourLegged = ID + ".animation.walk.fourLegged"
 
-    final val AnimationHead = Traits.ID + ".animation.head"
+    final val AnimationWalkTwoArmed = ID + ".animation.walk.twoArmed"
+
+    final val AnimationHead = ID + ".animation.head"
 }

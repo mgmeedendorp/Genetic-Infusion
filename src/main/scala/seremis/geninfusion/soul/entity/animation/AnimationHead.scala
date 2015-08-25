@@ -5,7 +5,7 @@ import seremis.geninfusion.api.soul.{EnumAnimationType, IEntitySoulCustom}
 
 class AnimationHead extends Animation {
 
-    override def canAnimateEntity(entity: IEntitySoulCustom): Boolean = getModelHead(entity) != null
+    override def canAnimateEntity(entity: IEntitySoulCustom): Boolean = getModelHead(entity).nonEmpty
 
     override def shouldStartAnimation(entity: IEntitySoulCustom): Boolean = true
 
@@ -16,7 +16,7 @@ class AnimationHead extends Animation {
     override def animate(entity: IEntitySoulCustom, timeModifier: Float, limbSwing: Float, specialRotation: Float, rotationYawHead: Float, rotationPitch: Float, scale: Float): Unit = {
         val living = entity.asInstanceOf[EntityLiving]
 
-        val headParts = getModelHead(entity)
+        val headParts = getModelHead(entity).get
 
         for(head <- headParts) {
             head.rotateAngleY = rotationYawHead / (180F / PI)

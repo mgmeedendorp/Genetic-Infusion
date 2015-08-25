@@ -38,7 +38,6 @@ object Genes {
     val GeneUseOldAI = ID + ".gene.useOldAI"
     val GeneVerticalFaceSpeed = ID + ".gene.verticalFaceSpeed"
     val GeneIsCreature = ID + ".gene.isCreature"
-    val GeneCeaseAIMovement = ID + ".gene.ceaseAIMovement"
     val GeneChildrenBurnInDaylight = ID + ".gene.childrenBurn"
     val GeneIsTameable = ID + ".gene.isTameable"
     val GeneWidth = ID + ".gene.width"

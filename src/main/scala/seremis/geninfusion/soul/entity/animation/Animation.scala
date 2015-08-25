@@ -1,32 +1,36 @@
 package seremis.geninfusion.soul.entity.animation
 
+import seremis.geninfusion.api.soul.lib.ModelPartTypes
 import seremis.geninfusion.api.soul.{IAnimation, IEntitySoulCustom}
 import seremis.geninfusion.api.util.render.animation.AnimationCache
-import seremis.geninfusion.api.util.render.model.ModelPart
+import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 
 abstract class Animation extends IAnimation {
 
     final val PI = Math.PI.asInstanceOf[Float]
 
-    def getModel(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModel(entity)
+    def getModel(entity: IEntitySoulCustom): Model = AnimationCache.getModel(entity)
 
-    def getModelLeftLegs(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelLeftLegs(entity)
-    def getModelRightLegs(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelRightLegs(entity)
-    
-    def getModelLegs(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelLegs(entity)
+    def getModelLeftLegs(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.LegsLeft)
+    def getModelRightLegs(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.LegsRight)
 
-    def getModelLeftArms(entity: IEntitySoulCustom): Option[Array[ModelPart]] = AnimationCache.getModelLeftArms(entity)
-    def getModelRightArms(entity: IEntitySoulCustom): Option[Array[ModelPart]] = AnimationCache.getModelRightArms(entity)
+    def getModelLegs(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.LegsLeft, ModelPartTypes.LegsRight)
 
-    def getModelArms(entity: IEntitySoulCustom): Option[Array[ModelPart]] = AnimationCache.getModelArms(entity)
+    def getModelLeftArms(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.ArmsLeft)
+    def getModelRightArms(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.ArmsRight)
+
+    def getModelArms(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.ArmsLeft, ModelPartTypes.ArmsRight)
 
     def armsHorizontal(entity: IEntitySoulCustom): Boolean = AnimationCache.armsHorizontal(entity)
 
-    def getModelBody(entity: IEntitySoulCustom): ModelPart = AnimationCache.getModelBody(entity)
+    def getModelBody(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.Body)
 
-    def getModelHead(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelHead(entity)
+    def getModelHead(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.Head)
 
-    def getModelWings(entity: IEntitySoulCustom): Array[ModelPart] = AnimationCache.getModelWings(entity)
+    def getModelLeftWings(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.WingsLeft)
+    def getModelRightWings(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.WingsRight)
+
+    def getModelWings(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.WingsLeft, ModelPartTypes.WingsRight)
 }
 
 

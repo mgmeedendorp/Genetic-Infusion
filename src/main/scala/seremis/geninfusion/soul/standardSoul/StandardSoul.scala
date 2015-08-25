@@ -4,18 +4,19 @@ import java.io.ByteArrayOutputStream
 import javax.imageio.ImageIO
 
 import net.minecraft.client.Minecraft
-import net.minecraft.client.model.ModelSkeleton
+import net.minecraft.client.model.ModelBiped
+import net.minecraft.entity._
 import net.minecraft.entity.monster.EntityCreeper
 import net.minecraft.entity.passive.{EntityChicken, EntityTameable}
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.{EntityAgeable, EntityCreature, EntityLiving, SharedMonsterAttributes}
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ResourceLocation
 import seremis.geninfusion.api.soul.lib.Genes._
+import seremis.geninfusion.api.soul.lib.ModelPartTypes
 import seremis.geninfusion.api.soul.{IChromosome, IStandardSoul}
-import seremis.geninfusion.api.util.render.model.ModelPart
+import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 import seremis.geninfusion.soul.{Allele, Chromosome}
 
 abstract class StandardSoul extends IStandardSoul {
@@ -67,8 +68,6 @@ abstract class StandardSoul extends IStandardSoul {
 
         //Manual genes.
         if(gene == GeneBurnsInDaylight)
-            return new Chromosome(gene, new Allele(true, false, classOf[Boolean]))
-        if(gene == GeneCeaseAIMovement)
             return new Chromosome(gene, new Allele(true, false, classOf[Boolean]))
         if(gene == GeneChildrenBurnInDaylight)
             return new Chromosome(gene, new Allele(true, false, classOf[Boolean]))
@@ -430,7 +429,7 @@ abstract class StandardSoul extends IStandardSoul {
 
         //Rendering related Genes.
         if(gene == GeneModel)
-            return new Chromosome(gene, new Allele(true, ModelPart.getModelPartsFromModel(new ModelSkeleton(), entity, true), classOf[Array[ModelPart]]))
+            return new Chromosome(gene, new Allele(true, null, classOf[Model]))
         if(gene == GeneTexture)
             return new Chromosome(gene, new Allele(true, textureStringToNBT("textures/entity/skeleton/skeleton.png"), classOf[NBTTagCompound]), new Allele(false, textureStringToNBT("textures/entity/skeleton/skeleton.png"), classOf[NBTTagCompound]))
 
@@ -465,5 +464,23 @@ abstract class StandardSoul extends IStandardSoul {
         nbt.setByteArray("textureBytes", out.toByteArray)
 
         nbt
+    }
+
+    def modelBiped(biped: ModelBiped, setRotation: Boolean = true): Model = {
+        val model = new Model
+
+        if(setRotation) {
+            biped.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, null.asInstanceOf[Entity])
+        }
+
+        model.addPart(ModelPart.rendererToPart(biped.bipedBody, ModelPartTypes.Body))
+        model.addPart(ModelPart.rendererToPart(biped.bipedHead, ModelPartTypes.Head))
+        model.addPart(ModelPart.rendererToPart(biped.bipedHeadwear, ModelPartTypes.Headwear))
+        model.addPart(ModelPart.rendererToPart(biped.bipedLeftArm, ModelPartTypes.ArmsLeft))
+        model.addPart(ModelPart.rendererToPart(biped.bipedRightArm, ModelPartTypes.ArmsRight))
+        model.addPart(ModelPart.rendererToPart(biped.bipedLeftLeg, ModelPartTypes.LegsLeft))
+        model.addPart(ModelPart.rendererToPart(biped.bipedRightLeg, ModelPartTypes.LegsRight))
+
+        model
     }
 }

@@ -1,6 +1,5 @@
 package seremis.geninfusion.util
 
-import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.{IChromosome, IGene, ISoul, SoulHelper}
 import seremis.geninfusion.api.util.AncestryNode
 
@@ -10,8 +9,6 @@ object GenomeHelper {
 
     def fixGenomeErrors(ancestry: AncestryNode, chromosomes: Array[IChromosome]): Array[IChromosome] = {
         if(!isGenomeFixed(chromosomes)) {
-            chromosomes.foreach(c => if(c.getGeneName == Genes.GeneTexture) println("before: " + c))
-
             val genes = SoulHelper.geneRegistry.getGenes
 
             val fixedChromosomes = new Array[IChromosome](Math.max(genes.length, chromosomes.length))

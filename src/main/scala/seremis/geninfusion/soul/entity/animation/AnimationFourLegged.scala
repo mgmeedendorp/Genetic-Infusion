@@ -12,7 +12,7 @@ class AnimationFourLegged extends Animation {
      * @param entity The entity to be animated.
      * @return Whether this animation applies to the passed entity.
      */
-    override def canAnimateEntity(entity: IEntitySoulCustom): Boolean = getModelLegs(entity).length == 4 && getModelLeftLegs(entity).length == 2 && getModelRightLegs(entity).length == 2
+    override def canAnimateEntity(entity: IEntitySoulCustom): Boolean = getModelLegs(entity).nonEmpty && getModelLegs(entity).get.length == 4 && getModelLeftLegs(entity).get.length == 2 && getModelRightLegs(entity).get.length == 2
 
     /**
      * Returns the animation type of this animation. Animations with the same animation types cannot run concurrently,
@@ -66,10 +66,10 @@ class AnimationFourLegged extends Animation {
     override def animate(entity: IEntitySoulCustom, timeModifier: Float, walkSpeed: Float, specialRotation: Float, rotationYawHead: Float, rotationPitch: Float, scale: Float) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        val leftLeg1: ModelPart = getModelLeftLegs(entity)(0)
-        val rightLeg1: ModelPart = getModelRightLegs(entity)(0)
-        val leftLeg2: ModelPart = getModelLeftLegs(entity)(1)
-        val rightLeg2: ModelPart = getModelRightLegs(entity)(1)
+        val leftLeg1: ModelPart = getModelLeftLegs(entity).get(0)
+        val rightLeg1: ModelPart = getModelRightLegs(entity).get(0)
+        val leftLeg2: ModelPart = getModelLeftLegs(entity).get(1)
+        val rightLeg2: ModelPart = getModelRightLegs(entity).get(1)
 
         leftLeg1.rotateAngleX = MathHelper.cos(timeModifier * 0.6662F) * 1.4F * walkSpeed
         leftLeg2.rotateAngleX = MathHelper.cos(timeModifier * 0.6662F + PI) * 1.4F * walkSpeed

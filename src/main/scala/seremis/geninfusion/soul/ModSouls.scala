@@ -1,29 +1,32 @@
 package seremis.geninfusion.soul
 
-import net.minecraft.entity.monster.{EntityCreeper, EntitySkeleton, EntityZombie}
+import net.minecraft.entity.monster.{EntityCreeper, EntitySkeleton, EntitySpider, EntityZombie}
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.soul.SoulHelper._
 import seremis.geninfusion.api.soul.lib.Animations._
 import seremis.geninfusion.api.soul.lib.Genes._
 import seremis.geninfusion.api.soul.lib.Traits._
-import seremis.geninfusion.api.soul.{ISoul, SoulHelper}
+import seremis.geninfusion.api.soul.lib.ModelPartTypes._
+import seremis.geninfusion.api.soul.{IModelPartType, ISoul, SoulHelper}
 import seremis.geninfusion.soul.AlleleType._
 import seremis.geninfusion.soul.entity.animation.{AnimationFourLegged, AnimationHead, AnimationTwoArmed, AnimationTwoLegged}
 import seremis.geninfusion.soul.gene._
 import seremis.geninfusion.soul.gene.newAI._
-import seremis.geninfusion.soul.standardSoul.{StandardSoulCreeper, StandardSoulSkeleton, StandardSoulZombie}
+import seremis.geninfusion.soul.standardSoul.{StandardSoulCreeper, StandardSoulSkeleton, StandardSoulSpider, StandardSoulZombie}
 import seremis.geninfusion.soul.traits._
 
 object ModSouls {
 
-    final val StandardSoulCreeper = new StandardSoulCreeper
-    final val StandardSoulSkeleton = new StandardSoulSkeleton
-    final val StandardSoulZombie = new StandardSoulZombie
+    lazy final val StandardSoulCreeper = new StandardSoulCreeper
+    lazy final val StandardSoulSkeleton = new StandardSoulSkeleton
+    lazy final val StandardSoulZombie = new StandardSoulZombie
+    lazy final val StandardSoulSpider = new StandardSoulSpider
 
     var SoulCreeper: ISoul = _
     var SoulSkeleton: ISoul = _
     var SoulZombie: ISoul = _
+    var SoulSpider: ISoul = _
 
     def init() {
         geneRegistry.registerGene(GeneMaxHealth, classOf[Double])
@@ -58,7 +61,6 @@ object ModSouls {
         geneRegistry.registerGene(GeneExperienceValue, classOf[Int])
         geneRegistry.registerGene(GeneVerticalFaceSpeed, classOf[Int])
         geneRegistry.registerGene(GeneIsCreature, classOf[Boolean]).noMutations
-        geneRegistry.registerGene(GeneCeaseAIMovement, classOf[Boolean]).noMutations
         geneRegistry.registerGene(GeneChildrenBurnInDaylight, classOf[Boolean])
         geneRegistry.registerGene(GeneIsTameable, classOf[Boolean])
         geneRegistry.registerGene(GeneWidth, classOf[Float]).noMutations
@@ -249,7 +251,7 @@ object ModSouls {
 
 
         geneRegistry.registerMasterGene(GeneUseNewAI, new GeneUseNewAI).noMutations
-        geneRegistry.registerMasterGene(GeneUseOldAI, new GeneUseOldAI).noMutations
+        geneRegistry.registerGene(GeneUseOldAI, classOf[Boolean]).noMutations
 
         geneRegistry.registerGene(GeneTexture, classOf[NBTTagCompound])
         geneRegistry.registerGene(GeneModel, new GeneModel)
@@ -283,9 +285,23 @@ object ModSouls {
         traitRegistry.registerTrait(TraitNameTag, new TraitNameTag)
         traitRegistry.registerTrait(TraitChild, new TraitChild)
 
+        modelPartTypeRegistry.register(Head, new ModelPartType)
+        modelPartTypeRegistry.register(Body, new ModelPartType)
+        modelPartTypeRegistry.register(Cloak, new ModelPartType)
+        modelPartTypeRegistry.register(Ears, new ModelPartType)
+        modelPartTypeRegistry.register(Headwear, new ModelPartType)
+        modelPartTypeRegistry.register(Neck, new ModelPartType)
+        modelPartTypeRegistry.register(LegsRight, new ModelPartType)
+        modelPartTypeRegistry.register(LegsLeft, new ModelPartType)
+        modelPartTypeRegistry.register(ArmsRight, new ModelPartType)
+        modelPartTypeRegistry.register(ArmsLeft, new ModelPartType)
+        modelPartTypeRegistry.register(WingsRight, new ModelPartType)
+        modelPartTypeRegistry.register(WingsLeft, new ModelPartType)
+
         standardSoulRegistry.register(StandardSoulZombie)
         standardSoulRegistry.register(StandardSoulSkeleton)
         standardSoulRegistry.register(StandardSoulCreeper)
+        standardSoulRegistry.register(StandardSoulSpider)
 
         animationRegistry.register(AnimationWalkTwoLegged, new AnimationTwoLegged)
         animationRegistry.register(AnimationWalkTwoArmed, new AnimationTwoArmed)
@@ -302,7 +318,7 @@ object ModSouls {
         alleleTypeRegistry.registerAlleleType(typeString)
         alleleTypeRegistry.registerAlleleType(typeClass)
         alleleTypeRegistry.registerAlleleType(typeItemStack)
-        alleleTypeRegistry.registerAlleleType(typeModelPart)
+        alleleTypeRegistry.registerAlleleType(typeModel)
         alleleTypeRegistry.registerAlleleType(typeNBTTagCompound)
         alleleTypeRegistry.registerAlleleType(typeBooleanArray)
         alleleTypeRegistry.registerAlleleType(typeByteArray)
@@ -314,7 +330,6 @@ object ModSouls {
         alleleTypeRegistry.registerAlleleType(typeStringArray)
         alleleTypeRegistry.registerAlleleType(typeClassArray)
         alleleTypeRegistry.registerAlleleType(typeItemStackArray)
-        alleleTypeRegistry.registerAlleleType(typeModelPartArray)
         alleleTypeRegistry.registerAlleleType(typeNBTTagCompoundArray)
     }
 
@@ -322,5 +337,8 @@ object ModSouls {
         SoulCreeper = SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityCreeper(null)).get
         SoulSkeleton = SoulHelper.standardSoulRegistry.getSoulForEntity(new EntitySkeleton(null)).get
         SoulZombie = SoulHelper.standardSoulRegistry.getSoulForEntity(new EntityZombie(null)).get
+        SoulSpider = SoulHelper.standardSoulRegistry.getSoulForEntity(new EntitySpider(null)).get
     }
 }
+
+class ModelPartType extends IModelPartType

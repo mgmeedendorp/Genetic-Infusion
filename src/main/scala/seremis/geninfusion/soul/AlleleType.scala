@@ -3,7 +3,7 @@ package seremis.geninfusion.soul
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.soul.IAlleleType
-import seremis.geninfusion.api.util.render.model.ModelPart
+import seremis.geninfusion.api.util.render.model.Model
 
 abstract class AlleleType(clzz: Class[_]) extends IAlleleType {
 
@@ -61,13 +61,13 @@ object AlleleType {
     }
 
     val typeItemStack = new AlleleType(classOf[ItemStack]) {
-        override def writeToNBT(compound: NBTTagCompound, name: String, value: Any) = compound.setTag(name, value.asInstanceOf[ItemStack].writeToNBT(compound))
+        override def writeToNBT(compound: NBTTagCompound, name: String, value: Any) = compound.setTag(name, value.asInstanceOf[ItemStack].writeToNBT(new NBTTagCompound))
         override def readFromNBT(compound: NBTTagCompound, name: String): Any = ItemStack.loadItemStackFromNBT(compound.getCompoundTag(name))
     }
 
-    val typeModelPart = new AlleleType(classOf[ModelPart]) {
-        override def writeToNBT(compound: NBTTagCompound, name: String, value: Any) = compound.setTag(name, value.asInstanceOf[ModelPart].writeToNBT(compound))
-        override def readFromNBT(compound: NBTTagCompound, name: String): Any = ModelPart.fromNBT(compound.getCompoundTag(name))
+    val typeModel = new AlleleType(classOf[Model]) {
+        override def writeToNBT(compound: NBTTagCompound, name: String, value: Any) = compound.setTag(name, value.asInstanceOf[Model].writeToNBT(new NBTTagCompound))
+        override def readFromNBT(compound: NBTTagCompound, name: String): Any = Model.fromNBT(compound.getCompoundTag(name))
     }
 
     val typeNBTTagCompound = new AlleleType(classOf[NBTTagCompound]) {
@@ -250,24 +250,6 @@ object AlleleType {
             val out = Array.ofDim[ItemStack](length)
             for (i <- 0 until length) {
                 out(i) = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("value." + i))
-            }
-            out
-        }
-    }
-
-    val typeModelPartArray = new AlleleType(classOf[Array[ModelPart]]) {
-        override def writeToNBT(compound: NBTTagCompound, name: String, value: Any) = {
-            for(i <- value.asInstanceOf[Array[ModelPart]].indices) {
-                compound.setTag("value." + i, value.asInstanceOf[Array[ModelPart]](i).writeToNBT(new NBTTagCompound))
-            }
-            compound.setInteger("value.length", value.asInstanceOf[Array[ModelPart]].length)
-        }
-
-        override def readFromNBT(compound: NBTTagCompound, name: String): Any = {
-            val length = compound.getInteger("value.length")
-            val out = Array.ofDim[ModelPart](length)
-            for (i <- 0 until length) {
-                out(i) = ModelPart.fromNBT(compound.getCompoundTag("value." + i))
             }
             out
         }
