@@ -11,6 +11,7 @@ import net.minecraft.entity.effect.EntityLightningBolt
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.potion.PotionEffect
 import net.minecraft.util.{AxisAlignedBB, ChunkCoordinates, DamageSource}
 import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
@@ -269,6 +270,9 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     override def addGrowth_I(growingAge: Int) = TraitHandler.addGrowth(this, growingAge)
 
     override def getDataWatcher_I = getDataWatcher
+
+    override def isPotionApplicable(potionEffect: PotionEffect): Boolean = isPotionApplicable_I(potionEffect)
+    override def isPotionApplicable_I(potionEffect: PotionEffect): Boolean = TraitHandler.isPotionApplicable(this, potionEffect)
 
     override def readFromNBT(compound: NBTTagCompound) = readFromNBT_I(compound)
 

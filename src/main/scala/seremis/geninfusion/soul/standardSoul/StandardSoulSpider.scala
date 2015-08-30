@@ -35,6 +35,13 @@ class StandardSoulSpider extends StandardSoul {
             return new Chromosome(gene, new Allele(true, "game.hostile.swim", classOf[String]))
         if(gene == GeneWalkSound)
             return new Chromosome(gene, new Allele(true, "mob.spider.step", classOf[String]))
+        if(gene == GeneImmuneToPoison)
+            return new Chromosome(gene, new Allele(false, true, classOf[Boolean]))
+
+        if(gene == GeneAttackTargetVisible)
+            return new Chromosome(gene, new Allele(false, false, classOf[Boolean]))
+        if(gene == GeneMaxAttackBrightness)
+            return new Chromosome(gene, new Allele(false, 0.5F, classOf[Float]))
 
         //AI genes
         if(gene == GeneAIAttackOnCollide)

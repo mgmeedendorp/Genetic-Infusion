@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.{DataWatcher, Entity, EntityAgeable, IRangedAttackMob}
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.potion.PotionEffect
 import net.minecraft.util.{AxisAlignedBB, ChunkCoordinates, DamageSource, ResourceLocation}
 import net.minecraft.world.World
 import seremis.geninfusion.api.util.data.Data
@@ -248,4 +249,6 @@ trait IEntitySoulCustom extends IRangedAttackMob {
     def addGrowth_I(growingAge: Int)
 
     def getDataWatcher_I: DataWatcher
+
+    def isPotionApplicable_I(potionEffect: PotionEffect): Boolean
 }

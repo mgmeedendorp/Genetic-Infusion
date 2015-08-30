@@ -5,6 +5,7 @@ import net.minecraft.entity.effect.EntityLightningBolt
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.{Entity, EntityAgeable, EntityLivingBase, IEntityLivingData}
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.potion.PotionEffect
 import net.minecraft.util.{ChunkCoordinates, DamageSource, ResourceLocation}
 
 trait ITrait {
@@ -112,4 +113,6 @@ trait ITrait {
     def setGrowingAge(entity: IEntitySoulCustom, growingAge: Int)
 
     def addGrowth(entity: IEntitySoulCustom, growth: Int)
+
+    def isPotionApplicable(entity: IEntitySoulCustom, potionEffect: PotionEffect): Boolean
 }

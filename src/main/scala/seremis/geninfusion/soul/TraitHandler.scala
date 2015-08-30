@@ -5,6 +5,7 @@ import net.minecraft.entity.effect.EntityLightningBolt
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.{Entity, EntityAgeable, EntityLivingBase, IEntityLivingData}
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.potion.PotionEffect
 import net.minecraft.util.{ChunkCoordinates, DamageSource, ResourceLocation}
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
@@ -413,5 +414,13 @@ object TraitHandler {
         for(trt <- SoulHelper.traitRegistry.getTraits) {
             trt.addGrowth(entity, growth)
         }
+    }
+
+    def isPotionApplicable(entity: IEntitySoulCustom, potionEffect: PotionEffect): Boolean = {
+        var flag = false
+        for(trt <- SoulHelper.traitRegistry.getTraits if trt.isPotionApplicable(entity, potionEffect)) {
+            flag = true
+        }
+        flag
     }
 }

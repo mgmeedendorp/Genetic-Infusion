@@ -1,4 +1,4 @@
-package seremis.geninfusion.soul.traits
+package seremis.geninfusion.soul.`trait`
 
 import net.minecraft.command.IEntitySelector
 import net.minecraft.entity.ai._

@@ -109,11 +109,20 @@ abstract class StandardSoul extends IStandardSoul {
             return new Chromosome(gene, new Allele(true, false, classOf[Boolean]))
         if(gene == GeneUseOldAI)
             return new Chromosome(gene, new Allele(true, true, classOf[Boolean]))
+        if(gene == GeneImmuneToPoison)
+            return new Chromosome(gene, new Allele(true, false, classOf[Boolean]))
 
         if(gene == GeneChildXPModifier)
             return new Chromosome(gene, new Allele(true, 1.0F, classOf[Float]))
         if(gene == GeneChildSpeedModifier)
             return new Chromosome(gene, new Allele(true, 0.0D, classOf[Double]))
+
+        if(gene == GeneAttackTargetVisible)
+            return new Chromosome(gene, new Allele(true, true, classOf[Boolean]))
+        if(gene == GeneMinAttackBrightness)
+            return new Chromosome(gene, new Allele(true, 0.0F, classOf[Float]))
+        if(gene == GeneMaxAttackBrightness)
+            return new Chromosome(gene, new Allele(true, 1.0F, classOf[Float]))
 
         //AI genes
         if(gene == GeneAIArrowAttack)

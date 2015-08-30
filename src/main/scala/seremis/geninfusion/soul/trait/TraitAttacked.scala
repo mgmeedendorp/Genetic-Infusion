@@ -1,11 +1,11 @@
-package seremis.geninfusion.soul.traits
+package seremis.geninfusion.soul.`trait`
 
 import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.entity.item.EntityXPOrb
 import net.minecraft.entity.passive.EntityTameable
 import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
-import net.minecraft.entity.{EntityLiving, EntityLivingBase}
-import net.minecraft.potion.Potion
+import net.minecraft.entity.{EnumCreatureAttribute, EntityLiving, EntityLivingBase}
+import net.minecraft.potion.{PotionEffect, Potion}
 import net.minecraft.util.DamageSource
 import net.minecraftforge.common.ForgeHooks
 import seremis.geninfusion.api.soul.lib.Genes
@@ -388,5 +388,17 @@ class TraitAttacked extends Trait {
         } else {
             entity.getInteger(EntityExperienceValue)
         }
+    }
+
+    override def isPotionApplicable(entity: IEntitySoulCustom, potionEffect: PotionEffect): Boolean = {
+        val living = entity.asInstanceOf[EntityLiving]
+        val isImmuneToPoision = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneImmuneToPoison)
+        val isUndead = living.getCreatureAttribute == EnumCreatureAttribute.UNDEAD
+
+        if((isImmuneToPoision && potionEffect.getPotionID == Potion.poison.getId) || (isUndead && (potionEffect.getPotionID == Potion.poison.id || potionEffect.getPotionID == Potion.regeneration.id))) {
+            return false
+        }
+
+        true
     }
 }

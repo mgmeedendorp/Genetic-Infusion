@@ -1,4 +1,4 @@
-package seremis.geninfusion.soul.traits
+package seremis.geninfusion.soul.`trait`
 
 import net.minecraft.enchantment.{Enchantment, EnchantmentHelper}
 import net.minecraft.entity.projectile.EntityArrow

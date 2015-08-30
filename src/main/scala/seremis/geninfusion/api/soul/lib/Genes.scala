@@ -42,12 +42,18 @@ object Genes {
     val GeneIsTameable = ID + ".gene.isTameable"
     val GeneWidth = ID + ".gene.width"
     val GeneHeight = ID + ".gene.height"
+    val GeneImmuneToPoison = ID + "gene.immuneToPoison"
 
     //Entity can mate and children age (makes an EntityAgeable)
     val GeneCanProcreate = ID + ".gene.canProcreate"
     val GeneChildXPModifier = ID + ".gene.childXPModifier"
     val GeneIsChild = ID + ".gene.isChild"
     val GeneChildSpeedModifier = ID + ".gene.childSpeedModifier"
+
+    val GeneMinAttackBrightness = ID + ".gene.minAttackBrightness"
+    val GeneMaxAttackBrightness = ID + ".gene.maxAttackBrightness"
+    val GeneAttackTargetVisible = ID + ".gene.attackTargetVisible"
+
 
     val GeneAIArrowAttack = ID + ".gene.aiArrowAttack"
     val GeneAIArrowAttackIndex = ID + ".gene.aiArrowAttackIndex"

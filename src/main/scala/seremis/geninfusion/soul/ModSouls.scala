@@ -14,7 +14,7 @@ import seremis.geninfusion.soul.entity.animation.{AnimationFourLegged, Animation
 import seremis.geninfusion.soul.gene._
 import seremis.geninfusion.soul.gene.newAI._
 import seremis.geninfusion.soul.standardSoul.{StandardSoulCreeper, StandardSoulSkeleton, StandardSoulSpider, StandardSoulZombie}
-import seremis.geninfusion.soul.traits._
+import seremis.geninfusion.soul.`trait`._
 
 object ModSouls {
 
@@ -65,11 +65,16 @@ object ModSouls {
         geneRegistry.registerGene(GeneIsTameable, classOf[Boolean])
         geneRegistry.registerGene(GeneWidth, classOf[Float]).noMutations
         geneRegistry.registerGene(GeneHeight, classOf[Float]).noMutations
+        geneRegistry.registerGene(GeneImmuneToPoison, classOf[Boolean])
 
         geneRegistry.registerGene(GeneCanProcreate, classOf[Boolean])
         geneRegistry.registerGene(GeneChildXPModifier, classOf[Float])
         geneRegistry.registerGene(GeneIsChild, classOf[Boolean]).noMutations.makeChangable
         geneRegistry.registerGene(GeneChildSpeedModifier, classOf[Double])
+
+        geneRegistry.registerGene(GeneMinAttackBrightness, classOf[Float])
+        geneRegistry.registerGene(GeneMaxAttackBrightness, classOf[Float])
+        geneRegistry.registerGene(GeneAttackTargetVisible, classOf[Boolean])
 
         geneRegistry.registerGene(GeneAIArrowAttackMaxRangedAttackTime, classOf[Int])
         geneRegistry.registerGene(GeneAIArrowAttackMinRangedAttackTime, classOf[Int])

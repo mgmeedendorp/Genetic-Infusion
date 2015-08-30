@@ -1,6 +1,6 @@
-package seremis.geninfusion.soul.traits
+package seremis.geninfusion.soul.`trait`
 
-import net.minecraft.entity.Entity
+import net.minecraft.entity.{EntityLiving, Entity}
 import net.minecraft.init.Blocks
 import net.minecraft.util.MathHelper
 import seremis.geninfusion.api.soul.lib.Genes
@@ -58,6 +58,20 @@ class TraitNavigate extends Trait {
     }
 
     override def findPlayerToAttack(entity: IEntitySoulCustom): Entity = {
-        entity.getWorld_I.getClosestVulnerablePlayerToEntity(entity.asInstanceOf[Entity], 50)
+        val living = entity.asInstanceOf[EntityLiving]
+        val player = entity.getWorld_I.getClosestVulnerablePlayerToEntity(entity.asInstanceOf[Entity], 16)
+
+        val attackTargetVisible = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAttackTargetVisible)
+
+        val minAttackBrightness = SoulHelper.geneRegistry.getValueFromAllele[Float](entity, Genes.GeneMinAttackBrightness)
+        val maxAttackBrightness = SoulHelper.geneRegistry.getValueFromAllele[Float](entity, Genes.GeneMaxAttackBrightness)
+
+        val brightness = living.getBrightness(1.0F)
+
+        if(player != null && (living.canEntityBeSeen(player) || !attackTargetVisible) && brightness >= minAttackBrightness && brightness <= maxAttackBrightness) {
+            player
+        } else {
+            null
+        }
     }
 }
