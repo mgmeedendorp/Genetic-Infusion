@@ -35,7 +35,7 @@ object GeneticInfusion {
     @EventHandler
     def preInit(event: FMLPreInitializationEvent): Unit = {
         logger = event.getModLog
-        GIConfig.configure(new Configuration(event.getSuggestedConfigurationFile))
+//        GIConfig.configure(new Configuration(event.getSuggestedConfigurationFile))
 
         MCPNames.init()
 

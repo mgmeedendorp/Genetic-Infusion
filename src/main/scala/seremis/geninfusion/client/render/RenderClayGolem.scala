@@ -32,7 +32,7 @@ class RenderClayGolem extends RenderEntity {
 
     override def getEntityTexture(entity : Entity): ResourceLocation = {
         val golem = entity.asInstanceOf[EntityClayGolem]
-        if(golem.isTransformating)
+        if(golem.isTransforming)
             new ResourceLocation(Localizations.LocModelTextures + Localizations.ClayGolemTransformation)
         else if(golem.isWaitingAfterTransformation)
             golem.getTransformationGoal.get.getEntityTexture_I

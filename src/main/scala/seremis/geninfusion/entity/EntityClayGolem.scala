@@ -71,10 +71,13 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
             }
         }
 
-        val entityCompound = new NBTTagCompound
         transformationGoal.foreach(goal => {
-            goal.asInstanceOf[EntityLiving].writeToNBT(entityCompound)
+            val entityCompound = new NBTTagCompound
+            goal.asInstanceOf[EntityLiving].writeToNBTOptional(entityCompound)
             compound.setTag("transformationGoal", entityCompound)
+
+            compound.setInteger("transformationTimer", transformationTimer)
+            compound.setInteger("waitAfterTransformation", waitAfterTransformation)
         })
     }
 
@@ -92,6 +95,9 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
 
             val entity = SoulHelper.instanceHelper.getSoulEntityInstance(entityCompound, worldObj)
             setTransformationGoal(Option(entity))
+
+            transformationTimer = compound.getInteger("transformationTimer")
+            waitAfterTransformation = compound.getInteger("waitAfterTransformation")
         }
     }
 
@@ -186,7 +192,7 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
 
     def getTransformationGoalModel: Option[Model] = transformationGoalModel
 
-    def isTransformating: Boolean = startTransformation
+    def isTransforming: Boolean = startTransformation
 
     def getTransformationTimer: Int = transformationTimer
 
@@ -195,7 +201,7 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
     def isWaitingAfterTransformation: Boolean = transformationTimer == maxTransformationTimer && waitAfterTransformation <= maxWaitAfterTransformation
 
     override def attackEntityFrom(source: DamageSource, amount: Float): Boolean = {
-        if(!world.isRemote && !isDead && !isTransformating) {
+        if(!world.isRemote && !isDead && !isTransforming) {
             setBeenAttacked()
 
             val x = Math.floor(posX).toInt

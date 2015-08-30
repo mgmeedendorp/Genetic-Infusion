@@ -36,12 +36,12 @@ class ModelClayGolem extends ModelBase {
     leftArm.setRotationPoint(0.0F, -7.0F, 0.0F)
     leftArm.setTextureOffset(60, 58).addBox(9.0F, -2.5F, -3.0F, 4, 30, 6, 0.0F)
 
-    val leftLeg = new ModelPart(this, ModelPartTypes.LegsLeft)
+    val leftLeg = new ModelPart(this, ModelPartTypes.LegsRight)
     leftLeg.setTextureSize(textureWidth, textureHeight)
     leftLeg.setRotationPoint(-4.0F, 11.0F, 0.0F)
     leftLeg.setTextureOffset(37, 0).addBox(-3.5F, -3.0F, -3.0F, 6, 16, 5, 0.0F)
 
-    val rightLeg = new ModelPart(this, ModelPartTypes.LegsRight)
+    val rightLeg = new ModelPart(this, ModelPartTypes.LegsLeft)
     rightLeg.setTextureSize(textureWidth, textureHeight)
     rightLeg.mirror = true
     rightLeg.setRotationPoint(5.0F, 11.0F, 0.0F)
@@ -58,7 +58,7 @@ class ModelClayGolem extends ModelBase {
             golem.currentRenderModel = golem.getTransformationGoalModel
         }
 
-        if((golem.isTransformating || golem.isWaitingAfterTransformation) && golem.getTransformationGoal.get.asInstanceOf[EntityLiving].isChild) {
+        if((golem.isTransforming || golem.isWaitingAfterTransformation) && golem.getTransformationGoal.get.asInstanceOf[EntityLiving].isChild) {
             GL11.glPushMatrix()
 
             if(golem.currentRenderModel.get.getParts(ModelPartTypes.Head).nonEmpty) {
@@ -87,7 +87,7 @@ class ModelClayGolem extends ModelBase {
             golem.currentRenderModel.get.render()
         }
 
-        if(golem.isTransformating) {
+        if(golem.isTransforming) {
             animateTransformation(golem)
         }
     }

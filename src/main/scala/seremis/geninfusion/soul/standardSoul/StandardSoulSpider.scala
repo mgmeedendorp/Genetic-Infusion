@@ -65,8 +65,6 @@ class StandardSoulSpider extends StandardSoul {
         val model = new Model
         val modelSpider = new ModelSpider
 
-        modelSpider.setRotationAngles(1.0F, 1.0F, 0.0F, 0.0F, 0.0F, 0.0F, null.asInstanceOf[Entity])
-
         model.addPart(ModelPart.rendererToPart(modelSpider.spiderHead, ModelPartTypes.Head))
         model.addPart(ModelPart.rendererToPart(modelSpider.spiderBody, ModelPartTypes.Body))
         model.addPart(ModelPart.rendererToPart(modelSpider.spiderNeck, ModelPartTypes.Neck))

@@ -31,13 +31,12 @@ class TraitTexture extends Trait {
 
     @SideOnly(Side.CLIENT)
     override def getEntityTexture(entity: IEntitySoulCustom): ResourceLocation = {
-        try {
-            val dynamicTexture = entity.getObject("dynamicTexture").asInstanceOf[DynamicTexture]
+        val dynamicTexture = entity.getObject("dynamicTexture").asInstanceOf[DynamicTexture]
 
-
+        if(dynamicTexture != null) {
             Minecraft.getMinecraft.renderEngine.getDynamicTextureLocation(DefaultProps.ID + ":customEntityTexture", dynamicTexture)
-        } catch {
-            case e: Exception => new ResourceLocation(Localizations.LocModelTextures + Localizations.ClayGolemTransformation)
+        } else {
+            new ResourceLocation(Localizations.LocModelTextures + Localizations.ClayGolemTransformation)
         }
     }
 

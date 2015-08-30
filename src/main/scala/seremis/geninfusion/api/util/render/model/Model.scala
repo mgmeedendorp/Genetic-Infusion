@@ -53,11 +53,11 @@ class Model extends INBTTagable {
     }
 
     def getWholeModelExcept(except: Array[ModelPart]): Model = {
-        val parts: Array[ModelPart] = Array()
+        val parts: ListBuffer[ModelPart] = ListBuffer()
 
-        partsMap.values.foreach(array => array.foreach(part => if(!except.contains(part)) parts :+ part))
+        partsMap.values.foreach(array => array.foreach(part => if(!except.contains(part)) parts += part))
 
-        new Model(parts)
+        new Model(parts.to[Array])
     }
 
     def getWholeModelExcept(except: ModelPart): Model = {

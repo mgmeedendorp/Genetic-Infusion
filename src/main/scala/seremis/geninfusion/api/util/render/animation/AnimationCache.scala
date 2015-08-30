@@ -126,11 +126,8 @@ object AnimationCache {
 
     def getPartBoxCoordinatesWithoutRotation(part: ModelPart, box: ModelBox): (Vec3, Vec3) = {
         if(!cachedCoordsWithoutRotation.contains(part -> box)) {
-            var pos1 = Vec3.createVectorHelper(part.offsetX + Math.min(box.posX2, box.posX1), part.offsetY + Math.min(box.posY2, box.posY1), part.offsetZ + Math.min(box.posZ2, box.posZ1))
-            var pos2 = Vec3.createVectorHelper(part.offsetX + Math.max(box.posX2, box.posX1), part.offsetY + Math.max(box.posY2, box.posY1), part.offsetZ + Math.max(box.posZ2, box.posZ1))
-
-            pos1 = pos1.addVector(part.rotationPointX, part.rotationPointY, part.rotationPointZ)
-            pos2 = pos2.addVector(part.rotationPointX, part.rotationPointY, part.rotationPointZ)
+            var pos1 = Vec3.createVectorHelper(Math.min(box.posX2, box.posX1), Math.min(box.posY2, box.posY1), Math.min(box.posZ2, box.posZ1))
+            var pos2 = Vec3.createVectorHelper(Math.max(box.posX2, box.posX1), Math.max(box.posY2, box.posY1), Math.max(box.posZ2, box.posZ1))
 
             val nearX = Math.min(pos1.xCoord, pos2.xCoord)
             val nearY = Math.min(pos1.yCoord, pos2.yCoord)
