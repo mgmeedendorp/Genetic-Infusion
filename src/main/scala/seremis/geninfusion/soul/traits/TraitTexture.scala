@@ -1,4 +1,4 @@
-package seremis.geninfusion.soul.`trait`
+package seremis.geninfusion.soul.traits
 
 import java.io.ByteArrayInputStream
 import javax.imageio.ImageIO

@@ -1,12 +1,16 @@
-package seremis.geninfusion.soul.`trait`
+package seremis.geninfusion.soul.traits
 
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
 import net.minecraft.entity.EntityLiving
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.{DamageSource, MathHelper}
 import net.minecraft.world.WorldServer
-import seremis.geninfusion.api.soul.IEntitySoulCustom
+import net.minecraftforge.common.ForgeHooks
+import seremis.geninfusion.api.soul.lib.{VariableLib, Genes}
+import seremis.geninfusion.api.soul.{SoulHelper, IEntitySoulCustom}
 import seremis.geninfusion.api.soul.lib.VariableLib._
+import seremis.geninfusion.api.util.DataWatcherHelper
 
 class TraitMovement extends Trait {
 
@@ -178,5 +182,63 @@ class TraitMovement extends Trait {
         }
 
         living.worldObj.theProfiler.endSection()
+
+        val canClimbWalls = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneCanClimbWalls)
+
+        if(canClimbWalls && !entity.getWorld_I.isRemote) {
+g            DataWatcherHelper.updateObject(entity.getDataWatcher_I, DataWatcherClimbableWall, living.isCollidedHorizontally)
+        }
+    }
+
+    override def firstTick(entity: IEntitySoulCustom) = {
+        val canClimbWalls = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneCanClimbWalls)
+
+        if(canClimbWalls) {
+            if(!DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, DataWatcherClimbableWall))
+                DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, false, DataWatcherClimbableWall)
+        }
+    }
+
+    override def writeToNBT(entity: IEntitySoulCustom, compound: NBTTagCompound) = {
+        val canClimbWalls = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneCanClimbWalls)
+
+        if(canClimbWalls) {
+            if(DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, DataWatcherClimbableWall))
+                DataWatcherHelper.writeObjectToNBT(compound, entity.getDataWatcher_I, DataWatcherClimbableWall)
+        }
+    }
+
+    override def readFromNBT(entity: IEntitySoulCustom, compound: NBTTagCompound) = {
+        val canClimbWalls = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneCanClimbWalls)
+
+        if(canClimbWalls) {
+            if(DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, DataWatcherClimbableWall))
+                DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, DataWatcherClimbableWall)
+        }
+    }
+
+    override def setInWeb(entity: IEntitySoulCustom) = {
+        val affectedByWeb = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAffectedByWeb)
+
+        if(affectedByWeb) {
+            entity.setBoolean(EntityInWeb, true)
+            entity.setFloat(EntityFallDistance, 0.0F)
+        }
+    }
+
+    override def isOnLadder(entity: IEntitySoulCustom): Boolean = {
+        val living = entity.asInstanceOf[EntityLiving]
+
+        val canClimbWalls = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneCanClimbWalls)
+
+        if(!canClimbWalls || !DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, DataWatcherClimbableWall)) {
+            val x = MathHelper.floor_double(living.posX)
+            val y = MathHelper.floor_double(living.boundingBox.minY)
+            val z = MathHelper.floor_double(living.posZ)
+
+            ForgeHooks.isLivingOnLadder(entity.getWorld_I.getBlock(x, y, z), living.worldObj, x, y, z, living)
+        } else {
+             DataWatcherHelper.getObjectFromDataWatcher(entity.getDataWatcher_I, DataWatcherClimbableWall).asInstanceOf[Boolean]
+        }
     }
 }

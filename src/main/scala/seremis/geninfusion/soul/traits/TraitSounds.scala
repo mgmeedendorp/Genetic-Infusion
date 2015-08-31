@@ -1,4 +1,4 @@
-package seremis.geninfusion.soul.`trait`
+package seremis.geninfusion.soul.traits
 
 import net.minecraft.entity.{Entity, EntityLiving}
 import seremis.geninfusion.api.soul.lib.Genes

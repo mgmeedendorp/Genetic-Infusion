@@ -106,8 +106,10 @@ object VariableLib {
     final val EntityAdultWidth = field("field_98057_e")
     final val EntityPrevIsChild = "prevIsChild"
     final val EntityChildSpeedModifier = "childSpeedModifier"
+    final val EntityInWeb = field("field_70134_J")
     final val DataWatcherNameTag = "nameTag"
     final val DataWatcherGrowingAge = "growingAge"
+    final val DataWatcherClimbableWall = "climbableWall"
     final val ModelRendererBoxName = field("field_78802_n")
     final val ModelRendererTextureOffsetX = field("field_78803_o")
     final val ModelRendererTextureOffsetY = field("field_78813_p")

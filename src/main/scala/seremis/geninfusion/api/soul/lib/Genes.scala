@@ -42,7 +42,9 @@ object Genes {
     val GeneIsTameable = ID + ".gene.isTameable"
     val GeneWidth = ID + ".gene.width"
     val GeneHeight = ID + ".gene.height"
-    val GeneImmuneToPoison = ID + "gene.immuneToPoison"
+    val GeneImmuneToPoison = ID + ".gene.immuneToPoison"
+    val GeneAffectedByWeb = ID + ".gene.affectedByWeb"
+    val GeneCanClimbWalls = ID + ".gene.canClimbWalls"
 
     //Entity can mate and children age (makes an EntityAgeable)
     val GeneCanProcreate = ID + ".gene.canProcreate"

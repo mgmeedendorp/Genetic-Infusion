@@ -1,4 +1,4 @@
-package seremis.geninfusion.soul.`trait`
+package seremis.geninfusion.soul.traits
 
 import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.entity.item.EntityXPOrb

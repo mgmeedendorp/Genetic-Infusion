@@ -1,4 +1,4 @@
-package seremis.geninfusion.soul.`trait`
+package seremis.geninfusion.soul.traits
 
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import seremis.geninfusion.api.soul._

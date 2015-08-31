@@ -251,4 +251,8 @@ trait IEntitySoulCustom extends IRangedAttackMob {
     def getDataWatcher_I: DataWatcher
 
     def isPotionApplicable_I(potionEffect: PotionEffect): Boolean
+
+    def setInWeb_I
+
+    def isOnLadder_I: Boolean
 }

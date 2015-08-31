@@ -1,4 +1,4 @@
-package seremis.geninfusion.soul.`trait`
+package seremis.geninfusion.soul.traits
 
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.entity.effect.EntityLightningBolt
@@ -123,4 +123,8 @@ class Trait extends ITrait {
     override def addGrowth(entity: IEntitySoulCustom, growth: Int) {}
 
     override def isPotionApplicable(entity: IEntitySoulCustom, potionEffect: PotionEffect): Boolean = false
+
+    override def setInWeb(entity: IEntitySoulCustom) {}
+
+    override def isOnLadder(entity: IEntitySoulCustom): Boolean = false
 }

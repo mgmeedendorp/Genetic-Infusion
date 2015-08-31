@@ -64,8 +64,6 @@ class AnimationFourLegged extends Animation {
      *                        the 6th parameter in setRotationAngles.
      */
     override def animate(entity: IEntitySoulCustom, timeModifier: Float, walkSpeed: Float, specialRotation: Float, rotationYawHead: Float, rotationPitch: Float, scale: Float) {
-        val living = entity.asInstanceOf[EntityLiving]
-
         val leftLeg1: ModelPart = getModelLeftLegs(entity).get(0)
         val rightLeg1: ModelPart = getModelRightLegs(entity).get(0)
         val leftLeg2: ModelPart = getModelLeftLegs(entity).get(1)

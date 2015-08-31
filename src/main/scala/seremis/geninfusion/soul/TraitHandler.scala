@@ -423,4 +423,18 @@ object TraitHandler {
         }
         flag
     }
+
+    def setInWeb(entity: IEntitySoulCustom) {
+        for(trt <- SoulHelper.traitRegistry.getTraits) {
+            trt.setInWeb(entity)
+        }
+    }
+
+    def isOnLadder(entity: IEntitySoulCustom): Boolean = {
+        var flag = false
+        for(trt <- SoulHelper.traitRegistry.getTraits if trt.isOnLadder(entity)) {
+            flag = true
+        }
+        flag
+    }
 }

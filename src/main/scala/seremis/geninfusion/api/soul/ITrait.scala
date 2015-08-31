@@ -115,4 +115,8 @@ trait ITrait {
     def addGrowth(entity: IEntitySoulCustom, growth: Int)
 
     def isPotionApplicable(entity: IEntitySoulCustom, potionEffect: PotionEffect): Boolean
+
+    def setInWeb(entity: IEntitySoulCustom)
+
+    def isOnLadder(entity: IEntitySoulCustom): Boolean
 }

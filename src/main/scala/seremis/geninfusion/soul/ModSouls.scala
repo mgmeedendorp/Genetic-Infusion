@@ -10,11 +10,12 @@ import seremis.geninfusion.api.soul.lib.Traits._
 import seremis.geninfusion.api.soul.lib.ModelPartTypes._
 import seremis.geninfusion.api.soul.{IModelPartType, ISoul, SoulHelper}
 import seremis.geninfusion.soul.AlleleType._
-import seremis.geninfusion.soul.entity.animation.{AnimationFourLegged, AnimationHead, AnimationTwoArmed, AnimationTwoLegged}
+import seremis.geninfusion.soul.entity.animation.AnimationHead
+import seremis.geninfusion.soul.entity.animation._
 import seremis.geninfusion.soul.gene._
 import seremis.geninfusion.soul.gene.newAI._
 import seremis.geninfusion.soul.standardSoul.{StandardSoulCreeper, StandardSoulSkeleton, StandardSoulSpider, StandardSoulZombie}
-import seremis.geninfusion.soul.`trait`._
+import seremis.geninfusion.soul.traits._
 
 object ModSouls {
 
@@ -66,6 +67,8 @@ object ModSouls {
         geneRegistry.registerGene(GeneWidth, classOf[Float]).noMutations
         geneRegistry.registerGene(GeneHeight, classOf[Float]).noMutations
         geneRegistry.registerGene(GeneImmuneToPoison, classOf[Boolean])
+        geneRegistry.registerGene(GeneAffectedByWeb, classOf[Boolean])
+        geneRegistry.registerGene(GeneCanClimbWalls, classOf[Boolean])
 
         geneRegistry.registerGene(GeneCanProcreate, classOf[Boolean])
         geneRegistry.registerGene(GeneChildXPModifier, classOf[Float])
@@ -312,6 +315,7 @@ object ModSouls {
         animationRegistry.register(AnimationWalkTwoArmed, new AnimationTwoArmed)
         animationRegistry.register(AnimationHead, new AnimationHead)
         animationRegistry.register(AnimationWalkFourLegged, new AnimationFourLegged)
+        animationRegistry.register(AnimationWalkEightLegged, new AnimationEightLegged)
 
         alleleTypeRegistry.registerAlleleType(typeBoolean)
         alleleTypeRegistry.registerAlleleType(typeByte)

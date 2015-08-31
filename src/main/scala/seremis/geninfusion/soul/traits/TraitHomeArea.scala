@@ -1,4 +1,4 @@
-package seremis.geninfusion.soul.`trait`
+package seremis.geninfusion.soul.traits
 
 import net.minecraft.entity.EntityLiving
 import net.minecraft.nbt.NBTTagCompound

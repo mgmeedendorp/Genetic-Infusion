@@ -37,6 +37,10 @@ class StandardSoulSpider extends StandardSoul {
             return new Chromosome(gene, new Allele(true, "mob.spider.step", classOf[String]))
         if(gene == GeneImmuneToPoison)
             return new Chromosome(gene, new Allele(false, true, classOf[Boolean]))
+        if(gene == GeneAffectedByWeb)
+            return new Chromosome(gene, new Allele(false, false, classOf[Boolean]))
+        if(gene == GeneCanClimbWalls)
+            return new Chromosome(gene, new Allele(false, true, classOf[Boolean]))
 
         if(gene == GeneAttackTargetVisible)
             return new Chromosome(gene, new Allele(false, false, classOf[Boolean]))

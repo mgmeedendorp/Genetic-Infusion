@@ -111,6 +111,10 @@ abstract class StandardSoul extends IStandardSoul {
             return new Chromosome(gene, new Allele(true, true, classOf[Boolean]))
         if(gene == GeneImmuneToPoison)
             return new Chromosome(gene, new Allele(true, false, classOf[Boolean]))
+        if(gene == GeneAffectedByWeb)
+            return new Chromosome(gene, new Allele(true, true, classOf[Boolean]))
+        if(gene == GeneCanClimbWalls)
+            return new Chromosome(gene, new Allele(true, false, classOf[Boolean]))
 
         if(gene == GeneChildXPModifier)
             return new Chromosome(gene, new Allele(true, 1.0F, classOf[Float]))

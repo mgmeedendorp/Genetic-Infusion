@@ -6,6 +6,7 @@ object Animations {
 
     final val AnimationWalkTwoLegged = ID + ".animation.walk.twoLegged"
     final val AnimationWalkFourLegged = ID + ".animation.walk.fourLegged"
+    final val AnimationWalkEightLegged = ID + ".animation.walk.eightLegged"
 
     final val AnimationWalkTwoArmed = ID + ".animation.walk.twoArmed"
 
