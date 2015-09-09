@@ -5,7 +5,7 @@ import net.minecraft.util.MathHelper
 import seremis.geninfusion.api.soul.{EnumAnimationType, IEntitySoulCustom}
 import seremis.geninfusion.api.util.render.model.ModelPart
 
-class AnimationFourLegged extends Animation {
+class AnimationQuadruped extends Animation {
     /**
      * If this animation applies to this entity. This only gets called in the entity's first render tick!
      *

@@ -4,7 +4,7 @@ import net.minecraft.entity.EntityLiving
 import net.minecraft.util.MathHelper
 import seremis.geninfusion.api.soul.{EnumAnimationType, IEntitySoulCustom}
 
-class AnimationTwoLegged extends Animation {
+class AnimationBiped extends Animation {
 
     override def canAnimateEntity(entity: IEntitySoulCustom): Boolean = getModelLegs(entity).exists(legs => legs.length == 2) && getModelLeftLegs(entity).exists(legs => legs.length == 1) && getModelRightLegs(entity).exists(legs => legs.length == 1)
 

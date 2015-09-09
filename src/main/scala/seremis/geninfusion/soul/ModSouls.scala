@@ -311,11 +311,11 @@ object ModSouls {
         standardSoulRegistry.register(StandardSoulCreeper)
         standardSoulRegistry.register(StandardSoulSpider)
 
-        animationRegistry.register(AnimationWalkTwoLegged, new AnimationTwoLegged)
+        animationRegistry.register(AnimationWalkTwoLegged, new AnimationBiped)
         animationRegistry.register(AnimationWalkTwoArmed, new AnimationTwoArmed)
         animationRegistry.register(AnimationHead, new AnimationHead)
-        animationRegistry.register(AnimationWalkFourLegged, new AnimationFourLegged)
-        animationRegistry.register(AnimationWalkEightLegged, new AnimationEightLegged)
+        animationRegistry.register(AnimationWalkFourLegged, new AnimationQuadruped)
+        animationRegistry.register(AnimationWalkEightLegged, new AnimationOctoped)
 
         alleleTypeRegistry.registerAlleleType(typeBoolean)
         alleleTypeRegistry.registerAlleleType(typeByte)

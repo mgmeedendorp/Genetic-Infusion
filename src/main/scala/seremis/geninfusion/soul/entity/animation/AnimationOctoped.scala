@@ -4,7 +4,7 @@ import net.minecraft.util.MathHelper
 import seremis.geninfusion.api.soul.{EnumAnimationType, IEntitySoulCustom}
 import seremis.geninfusion.api.util.render.model.ModelPart
 
-class AnimationEightLegged extends Animation {
+class AnimationOctoped extends Animation {
 
     override def canAnimateEntity(entity: IEntitySoulCustom): Boolean = getModelLegs(entity).nonEmpty && getModelLegs(entity).get.length == 8 && getModelLeftLegs(entity).get.length == 4 && getModelRightLegs(entity).get.length == 4
 

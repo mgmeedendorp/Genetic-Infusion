@@ -7,9 +7,9 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.{DamageSource, MathHelper}
 import net.minecraft.world.WorldServer
 import net.minecraftforge.common.ForgeHooks
-import seremis.geninfusion.api.soul.lib.{VariableLib, Genes}
-import seremis.geninfusion.api.soul.{SoulHelper, IEntitySoulCustom}
+import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.lib.VariableLib._
+import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.api.util.DataWatcherHelper
 
 class TraitMovement extends Trait {
@@ -186,7 +186,7 @@ class TraitMovement extends Trait {
         val canClimbWalls = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneCanClimbWalls)
 
         if(canClimbWalls && !entity.getWorld_I.isRemote) {
-g            DataWatcherHelper.updateObject(entity.getDataWatcher_I, DataWatcherClimbableWall, living.isCollidedHorizontally)
+            DataWatcherHelper.updateObject(entity.getDataWatcher_I, DataWatcherClimbableWall, if(living.isCollidedHorizontally) 1.toByte else 0.toByte)
         }
     }
 
@@ -195,7 +195,7 @@ g            DataWatcherHelper.updateObject(entity.getDataWatcher_I, DataWatcher
 
         if(canClimbWalls) {
             if(!DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, DataWatcherClimbableWall))
-                DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, false, DataWatcherClimbableWall)
+                DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0.toByte, DataWatcherClimbableWall)
         }
     }
 
@@ -231,14 +231,14 @@ g            DataWatcherHelper.updateObject(entity.getDataWatcher_I, DataWatcher
 
         val canClimbWalls = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneCanClimbWalls)
 
-        if(!canClimbWalls || !DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, DataWatcherClimbableWall)) {
+        if(!canClimbWalls) {
             val x = MathHelper.floor_double(living.posX)
             val y = MathHelper.floor_double(living.boundingBox.minY)
             val z = MathHelper.floor_double(living.posZ)
 
             ForgeHooks.isLivingOnLadder(entity.getWorld_I.getBlock(x, y, z), living.worldObj, x, y, z, living)
         } else {
-             DataWatcherHelper.getObjectFromDataWatcher(entity.getDataWatcher_I, DataWatcherClimbableWall).asInstanceOf[Boolean]
+             DataWatcherHelper.getObjectFromDataWatcher(entity.getDataWatcher_I, DataWatcherClimbableWall).asInstanceOf[Byte] == 1.toByte
         }
     }
 }

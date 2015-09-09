@@ -1,14 +1,18 @@
 package seremis.geninfusion.api.util
 
+import java.util
+
 import net.minecraft.crash.CrashReport
 import net.minecraft.entity.DataWatcher
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ChunkCoordinates
+import seremis.geninfusion.api.soul.lib.VariableLib
+import seremis.geninfusion.helper.GIReflectionHelper
+import scala.collection.JavaConverters._
 
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
-import scala.util.control.Breaks._
 
 
 object DataWatcherHelper {
@@ -33,20 +37,24 @@ object DataWatcherHelper {
      * @return The Id of the added object.
      */
     def addObjectAtUnusedId(dataWatcher: DataWatcher, obj: Any, name: String): Int = {
+        val watchedObjects = getWatchedObjects(dataWatcher)
+        val watchedObjectIds = getWatchedObjects(dataWatcher).keys.toList
+
         for(i <- 0 until Byte.MaxValue) {
-            breakable {
-                try {
-                    dataWatcher.addObject(i, obj)
-                } catch {
-                    case e: Exception => break
-                }
+            if(!watchedObjectIds.contains(i)) {
                 addMapping(dataWatcher, i, name)
+                dataWatcher.addObject(i, obj.asInstanceOf[AnyRef])
                 return i
             }
         }
+
         println(CrashReport.makeCrashReport(new ArrayIndexOutOfBoundsException, "The dataWatcher mapping is completely filled. Try combining multiple variables into one to conserve mappings.").getCompleteReport)
         -1
     }
+    
+    def getWatchedObjects(dataWatcher: DataWatcher): Map[Int, DataWatcher.WatchableObject] = mapAsScalaMapConverter(GIReflectionHelper.getField(dataWatcher, VariableLib.DataWatcherWatchedObjects).asInstanceOf[util.HashMap[Int, DataWatcher.WatchableObject]]).asScala.toMap
+    
+    def setWatchedObjects(dataWatcher: DataWatcher, watchedObjects: Map[Int, DataWatcher.WatchableObject]) = GIReflectionHelper.setField(dataWatcher, VariableLib.DataWatcherWatchedObjects, watchedObjects)
 
     protected def addMapping(dataWatcher: DataWatcher, id: Int, name: String) {
         var map: Map[String, Int] = null
@@ -77,7 +85,7 @@ object DataWatcherHelper {
      * @return The object from the specified dataWatcher added with the given name.
      */
     def getObjectFromDataWatcher(dataWatcher: DataWatcher, name: String): AnyRef = {
-        dataWatcher.getAllWatched.get(ids.get(dataWatcher).get.get(name).get).asInstanceOf[DataWatcher.WatchableObject].getObject
+        getWatchedObjects(dataWatcher).get(ids.get(dataWatcher).get.get(name).get).get.asInstanceOf[DataWatcher.WatchableObject].getObject
     }
 
     def getObjectId(dataWatcher: DataWatcher, name: String): Int = {
