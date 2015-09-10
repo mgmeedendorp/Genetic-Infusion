@@ -4,6 +4,7 @@ import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.entity.Entity
 import seremis.geninfusion.GeneticInfusion
+import seremis.geninfusion.api.util.DataWatcherHelper
 import seremis.geninfusion.network.ModPackets
 import seremis.geninfusion.network.packet.PacketEntityData
 
@@ -35,7 +36,11 @@ trait GIEntity extends Entity {
     }
 
     @SideOnly(Side.CLIENT)
-    def receivePacketOnClient(id: Int, value: Array[Byte]) {}
+    def receivePacketOnClient(id: Int, value: Array[Byte]) {
+        if(id == -128) {
+            DataWatcherHelper.receivePacketOnClient(value)
+        }
+    }
 
     def receivePacketOnServer(id: Int, value: Array[Byte]) {}
 }

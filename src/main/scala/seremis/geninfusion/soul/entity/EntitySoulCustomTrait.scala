@@ -18,11 +18,12 @@ import net.minecraftforge.common.ForgeHooks
 import seremis.geninfusion.api.soul.lib.{Genes, VariableLib}
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
 import seremis.geninfusion.api.util.data.Data
+import seremis.geninfusion.entity.GIEntity
 import seremis.geninfusion.soul.entity.logic.VariableSyncLogic
 import seremis.geninfusion.soul.{Soul, TraitHandler}
 import seremis.geninfusion.util.UtilNBT
 
-trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEntityAdditionalSpawnData {
+trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEntityAdditionalSpawnData with GIEntity {
 
     var syncLogic = new VariableSyncLogic(this)
     var soul: ISoul

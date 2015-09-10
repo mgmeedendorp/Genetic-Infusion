@@ -107,6 +107,7 @@ object VariableLib {
     final val EntityPrevIsChild = "prevIsChild"
     final val EntityChildSpeedModifier = "childSpeedModifier"
     final val EntityInWeb = field("field_70134_J")
+    final val DataWatcherWatchedEntity = field("field_151511_a")
     final val DataWatcherWatchedObjects = field("field_75695_b")
     final val DataWatcherNameTag = "nameTag"
     final val DataWatcherGrowingAge = "growingAge"

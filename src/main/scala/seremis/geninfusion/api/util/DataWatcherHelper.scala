@@ -1,5 +1,6 @@
 package seremis.geninfusion.api.util
 
+import java.nio.ByteBuffer
 import java.util
 
 import net.minecraft.crash.CrashReport
@@ -8,8 +9,10 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ChunkCoordinates
 import seremis.geninfusion.api.soul.lib.VariableLib
+import seremis.geninfusion.entity.GIEntity
 import seremis.geninfusion.helper.GIReflectionHelper
 import scala.collection.JavaConverters._
+import scala.collection.immutable.HashMap
 
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
@@ -19,6 +22,9 @@ object DataWatcherHelper {
 
     var ids: mutable.WeakHashMap[DataWatcher, Map[String, Int]] = mutable.WeakHashMap()
     var names: mutable.WeakHashMap[DataWatcher, ListBuffer[String]] = mutable.WeakHashMap()
+
+    var clientSideIds: Map[Int, Map[String, Int]] = Map()
+    var clientSideDataWatchers: Map[Int, DataWatcher] = Map()
 
     /**
      * Adds an object to a dataWatcher at the first empty Id.
@@ -37,15 +43,30 @@ object DataWatcherHelper {
      * @return The Id of the added object.
      */
     def addObjectAtUnusedId(dataWatcher: DataWatcher, obj: Any, name: String): Int = {
-        val watchedObjects = getWatchedObjects(dataWatcher)
-        val watchedObjectIds = getWatchedObjects(dataWatcher).keys.toList
+        if(!getWatchedEntity(dataWatcher).worldObj.isRemote) {
+            val watchedObjects = getWatchedObjects(dataWatcher)
+            val watchedObjectIds = getWatchedObjects(dataWatcher).keys.toList
 
-        for(i <- 0 until Byte.MaxValue) {
-            if(!watchedObjectIds.contains(i)) {
-                addMapping(dataWatcher, i, name)
-                dataWatcher.addObject(i, obj.asInstanceOf[AnyRef])
-                return i
+            for(i <- Byte.MinValue.toInt to Byte.MaxValue.toInt) {
+                if(!watchedObjectIds.contains(i)) {
+                    addMapping(dataWatcher, i, name)
+                    dataWatcher.addObject(i, obj.asInstanceOf[AnyRef])
+                    return i
+                }
             }
+        } else if(!clientSideIds.contains(getWatchedEntity(dataWatcher).getEntityId) || !clientSideIds.get(getWatchedEntity(dataWatcher).getEntityId).get.contains(name)) {
+            clientSideDataWatchers += (getWatchedEntity(dataWatcher).getEntityId -> dataWatcher)
+        } else {
+            val entity = getWatchedEntity(dataWatcher)
+            val mapping = clientSideIds.get(entity.getEntityId).get
+            val id = mapping.get(name).get
+
+            addMapping(dataWatcher, id, name)
+            dataWatcher.addObject(id, obj.asInstanceOf[AnyRef])
+
+//            clientSideIds -= entity.getEntityId
+
+            return id
         }
 
         println(CrashReport.makeCrashReport(new ArrayIndexOutOfBoundsException, "The dataWatcher mapping is completely filled. Try combining multiple variables into one to conserve mappings.").getCompleteReport)
@@ -56,7 +77,17 @@ object DataWatcherHelper {
     
     def setWatchedObjects(dataWatcher: DataWatcher, watchedObjects: Map[Int, DataWatcher.WatchableObject]) = GIReflectionHelper.setField(dataWatcher, VariableLib.DataWatcherWatchedObjects, watchedObjects)
 
+    def getWatchedEntity(dataWatcher: DataWatcher): GIEntity = GIReflectionHelper.getField(dataWatcher, VariableLib.DataWatcherWatchedEntity).asInstanceOf[GIEntity]
+
     protected def addMapping(dataWatcher: DataWatcher, id: Int, name: String) {
+        val entity = getWatchedEntity(dataWatcher)
+
+        val entityIdArray = ByteBuffer.allocate(4).putInt(entity.getEntityId).array()
+        val mappingIdArray = ByteBuffer.allocate(4).putInt(id).array()
+        val mappingNameArray = name.getBytes
+
+        entity.sendEntityDataToClient(-128, entityIdArray ++ mappingIdArray ++ mappingNameArray)
+
         var map: Map[String, Int] = null
 
         if(!ids.contains(dataWatcher))
@@ -154,6 +185,34 @@ object DataWatcherHelper {
             if(dataType == "string") dataWatcher.updateObject(id, compound.getString(name))
             if(dataType == "itemStack") dataWatcher.updateObject(id, ItemStack.loadItemStackFromNBT(compound.getCompoundTag(name)))
             if(dataType == "chunkCoordinates") dataWatcher.updateObject(id, new ChunkCoordinates(compound.getInteger(name + ".x"), compound.getInteger(name + ".y"), compound.getInteger(name + ".z")))
+        }
+    }
+
+    def receivePacketOnClient(value: Array[Byte]) {
+        val entityIdArray = value.splitAt(4)._1
+        val mappingIdArray = value.slice(4, 8)
+        val mappingNameArray = value.splitAt(8)._2
+
+        val entityId = ByteBuffer.wrap(entityIdArray).getInt
+        val mappingId = ByteBuffer.wrap(mappingIdArray).getInt
+        val mappingName = new String(mappingNameArray)
+
+        if(!clientSideDataWatchers.contains(entityId)) {
+            var map: Map[String, Int] = null
+
+            if(clientSideIds.contains(entityId)) {
+                map = clientSideIds.get(entityId).get
+            } else {
+                map = Map()
+            }
+
+            map += (mappingName -> mappingId)
+            clientSideIds += (entityId -> map)
+        } else {
+            val dataWatcher = clientSideDataWatchers.get(entityId).get
+
+            addMapping(dataWatcher, mappingId, mappingName)
+            dataWatcher.addObject(id, git.asInstanceOf[AnyRef])
         }
     }
 }
