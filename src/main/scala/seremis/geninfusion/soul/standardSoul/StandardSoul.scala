@@ -127,6 +127,8 @@ abstract class StandardSoul extends IStandardSoul {
             return new Chromosome(gene, new Allele(true, 0.0F, classOf[Float]))
         if(gene == GeneMaxAttackBrightness)
             return new Chromosome(gene, new Allele(true, 1.0F, classOf[Float]))
+        if(gene == GeneJumpAtAttackTarget)
+            return new Chromosome(gene, new Allele(true, false, classOf[Boolean]))
 
         //AI genes
         if(gene == GeneAIArrowAttack)

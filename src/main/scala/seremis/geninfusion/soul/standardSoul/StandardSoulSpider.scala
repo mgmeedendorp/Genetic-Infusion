@@ -46,10 +46,10 @@ class StandardSoulSpider extends StandardSoul {
             return new Chromosome(gene, new Allele(false, false, classOf[Boolean]))
         if(gene == GeneMaxAttackBrightness)
             return new Chromosome(gene, new Allele(false, 0.5F, classOf[Float]))
+        if(gene == GeneJumpAtAttackTarget)
+            return new Chromosome(gene, new Allele(false, true, classOf[Boolean]))
 
         //AI genes
-        if(gene == GeneAIAttackOnCollide)
-            return new Chromosome(gene, new Allele(false, false, classOf[Boolean]))
         if(gene == GeneAIHurtByTarget)
             return new Chromosome(gene, new Allele(false, false, classOf[Boolean]))
         if(gene == GeneAILookIdle)

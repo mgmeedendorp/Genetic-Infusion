@@ -55,6 +55,7 @@ object Genes {
     val GeneMinAttackBrightness = ID + ".gene.minAttackBrightness"
     val GeneMaxAttackBrightness = ID + ".gene.maxAttackBrightness"
     val GeneAttackTargetVisible = ID + ".gene.attackTargetVisible"
+    val GeneJumpAtAttackTarget = ID + ".gene.jumpAtAttackTarget"
 
 
     val GeneAIArrowAttack = ID + ".gene.aiArrowAttack"

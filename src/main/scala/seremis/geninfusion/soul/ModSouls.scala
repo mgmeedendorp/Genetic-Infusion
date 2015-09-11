@@ -78,6 +78,7 @@ object ModSouls {
         geneRegistry.registerGene(GeneMinAttackBrightness, classOf[Float])
         geneRegistry.registerGene(GeneMaxAttackBrightness, classOf[Float])
         geneRegistry.registerGene(GeneAttackTargetVisible, classOf[Boolean])
+        geneRegistry.registerGene(GeneJumpAtAttackTarget, classOf[Boolean])
 
         geneRegistry.registerGene(GeneAIArrowAttackMaxRangedAttackTime, classOf[Int])
         geneRegistry.registerGene(GeneAIArrowAttackMinRangedAttackTime, classOf[Int])

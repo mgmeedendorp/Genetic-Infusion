@@ -12,13 +12,36 @@ import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 class TraitAttack extends Trait {
 
     override def attackEntity(entity: IEntitySoulCustom, entityToAttack: Entity, distance: Float) {
-        var attackTime = entity.getInteger(EntityAttackTime)
+        val living = entity.asInstanceOf[EntityLiving]
 
-        if(attackTime <= 0 && distance < 2.0F && entityToAttack.boundingBox.maxY > entity.getBoundingBox_I.minY && entityToAttack.boundingBox.minY < entity.getBoundingBox_I.maxY) {
-            attackTime = 20
-            entity.attackEntityAsMob_I(entityToAttack)
+        val jumpAtAttackTarget = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneJumpAtAttackTarget)
+        val minAttackBrightness = SoulHelper.geneRegistry.getValueFromAllele[Float](entity, Genes.GeneMinAttackBrightness)
+        val maxAttackBrightness = SoulHelper.geneRegistry.getValueFromAllele[Float](entity, Genes.GeneMaxAttackBrightness)
+
+        val brightness = living.getBrightness(1.0F)
+
+        if(brightness < minAttackBrightness && brightness > maxAttackBrightness) {
+            entity.setObject(EntityEntityToAttack, null)
+        } else {
+            if(jumpAtAttackTarget && distance > 2.0F && distance < 6.0F && entity.getRandom_I.nextInt(10) == 0) {
+                if(living.onGround) {
+                    val d0 = entityToAttack.posX - living.posX
+                    val d1 = entityToAttack.posZ - living.posZ
+                    val f2 = MathHelper.sqrt_double(d0 * d0 + d1 * d1)
+                    living.motionX = d0 / f2.toDouble * 0.5D * 0.800000011920929D + living.motionX * 0.20000000298023224D
+                    living.motionZ = d1 / f2.toDouble * 0.5D * 0.800000011920929D + living.motionZ * 0.20000000298023224D
+                    living.motionY = 0.4000000059604645D
+                }
+            } else {
+                var attackTime = entity.getInteger(EntityAttackTime)
+
+                if(attackTime <= 0 && distance < 2.0F && entityToAttack.boundingBox.maxY > entity.getBoundingBox_I.minY && entityToAttack.boundingBox.minY < entity.getBoundingBox_I.maxY) {
+                    attackTime = 20
+                    entity.attackEntityAsMob_I(entityToAttack)
+                }
+                entity.setInteger(EntityAttackTime, attackTime)
+            }
         }
-        entity.setInteger(EntityAttackTime, attackTime)
     }
 
     override def attackEntityAsMob(entity: IEntitySoulCustom, entityToAttack: Entity): Boolean = {
