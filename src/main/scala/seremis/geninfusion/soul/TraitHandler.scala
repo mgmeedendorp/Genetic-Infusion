@@ -437,4 +437,10 @@ object TraitHandler {
         }
         flag
     }
+
+    def entityInit(entity: IEntitySoulCustom) = {
+        for(trt <- SoulHelper.traitRegistry.getTraits) {
+            trt.entityInit(entity)
+        }
+    }
 }

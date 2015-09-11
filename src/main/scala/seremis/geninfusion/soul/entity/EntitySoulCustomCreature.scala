@@ -13,6 +13,7 @@ class EntitySoulCustomCreature(val world: World) extends EntityCreature(world) w
         setPosition(x, y, z)
         setSize(0.8F, 1.7F)
         this.soul = soul
+        entityInit_I
     }
 
     override def getSoul_I: ISoul = soul

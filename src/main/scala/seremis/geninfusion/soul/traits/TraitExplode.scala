@@ -14,19 +14,20 @@ import seremis.geninfusion.api.util.DataWatcherHelper
 
 class TraitExplode extends Trait {
 
-    override def firstTick(entity: IEntitySoulCustom) {
-        val living = entity.asInstanceOf[EntityLiving]
+    override def entityInit(entity: IEntitySoulCustom) {
+        val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
 
+        if(explodes && !entity.getWorld_I.isRemote) {
+            DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, -1.toByte, EntityFuseState)
+            DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0.toByte, EntityCharged)
+            DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0.toByte, EntityIgnited)
+        }
+    }
+
+    override def firstTick(entity: IEntitySoulCustom) {
         val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
 
         if(explodes) {
-            if(!DataWatcherHelper.isNameRegistered(living.getDataWatcher, EntityFuseState))
-                DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, -1.toByte, EntityFuseState)
-            if(!DataWatcherHelper.isNameRegistered(living.getDataWatcher, EntityCharged))
-                DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, 0.toByte, EntityCharged)
-            if(!DataWatcherHelper.isNameRegistered(living.getDataWatcher, EntityIgnited))
-                DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, 0.toByte, EntityIgnited)
-
             entity.setInteger(EntityExplosionRadius, SoulHelper.geneRegistry.getValueFromAllele[Int](entity, Genes.GeneExplosionRadius))
             entity.setInteger(EntityFuseTime, SoulHelper.geneRegistry.getValueFromAllele[Int](entity, Genes.GeneFuseTime))
 
@@ -36,36 +37,22 @@ class TraitExplode extends Trait {
     }
 
     override def writeToNBT(entity: IEntitySoulCustom, compound: NBTTagCompound) {
-        val living = entity.asInstanceOf[EntityLiving]
-
         val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
 
         if(explodes) {
-            if(DataWatcherHelper.isNameRegistered(living.getDataWatcher, EntityFuseState))
-                DataWatcherHelper.writeObjectToNBT(compound, living.getDataWatcher, EntityFuseState)
-            if(DataWatcherHelper.isNameRegistered(living.getDataWatcher, EntityCharged))
-                DataWatcherHelper.writeObjectToNBT(compound, living.getDataWatcher, EntityCharged)
-            if(DataWatcherHelper.isNameRegistered(living.getDataWatcher, EntityIgnited))
-                DataWatcherHelper.writeObjectToNBT(compound, living.getDataWatcher, EntityIgnited)
+            DataWatcherHelper.writeObjectToNBT(compound, entity.getDataWatcher_I, EntityFuseState)
+            DataWatcherHelper.writeObjectToNBT(compound, entity.getDataWatcher_I, EntityCharged)
+            DataWatcherHelper.writeObjectToNBT(compound, entity.getDataWatcher_I, EntityIgnited)
         }
     }
 
     override def readFromNBT(entity: IEntitySoulCustom, compound: NBTTagCompound) {
-        val living = entity.asInstanceOf[EntityLiving]
-
         val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
 
         if(explodes) {
-            if(!DataWatcherHelper.isNameRegistered(living.getDataWatcher, EntityFuseState))
-                DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, -1.toByte.asInstanceOf[Byte], EntityFuseState)
-            if(!DataWatcherHelper.isNameRegistered(living.getDataWatcher, EntityCharged))
-                DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, 0.toByte.asInstanceOf[Byte], EntityCharged)
-            if(!DataWatcherHelper.isNameRegistered(living.getDataWatcher, EntityIgnited))
-                DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, 0.toByte.asInstanceOf[Byte], EntityIgnited)
-
-            DataWatcherHelper.readObjectFromNBT(compound, living.getDataWatcher, EntityFuseState)
-            DataWatcherHelper.readObjectFromNBT(compound, living.getDataWatcher, EntityCharged)
-            DataWatcherHelper.readObjectFromNBT(compound, living.getDataWatcher, EntityIgnited)
+            DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, EntityFuseState)
+            DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, EntityCharged)
+            DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, EntityIgnited)
         }
     }
 

@@ -121,7 +121,7 @@ class Data extends INBTTagable {
 
     def setBooleanArray(key: String, value: Array[Boolean]) {
         val arrayData = new Data()
-        for (i <- 0 until value.length) {
+        for (i <- value.indices) {
             arrayData.setBoolean(key + "." + i, value(i))
         }
         arrayData.setInteger("length", value.length)
@@ -130,7 +130,7 @@ class Data extends INBTTagable {
 
     def setByteArray(key: String, value: Array[Byte]) {
         val arrayData = new Data()
-        for (i <- 0 until value.length) {
+        for (i <- value.indices) {
             arrayData.setByte(key + "." + i, value(i))
         }
         arrayData.setInteger("length", value.length)
@@ -139,7 +139,7 @@ class Data extends INBTTagable {
 
     def setShortArray(key: String, value: Array[Short]) {
         val arrayData = new Data()
-        for (i <- 0 until value.length) {
+        for (i <- value.indices) {
             arrayData.setShort(key + "." + i, value(i))
         }
         arrayData.setInteger("length", value.length)
@@ -148,7 +148,7 @@ class Data extends INBTTagable {
 
     def setIntegerArray(key: String, value: Array[Int]) {
         val arrayData = new Data()
-        for (i <- 0 until value.length) {
+        for (i <- value.indices) {
             arrayData.setInteger(key + "." + i, value(i))
         }
         arrayData.setInteger("length", value.length)
@@ -157,7 +157,7 @@ class Data extends INBTTagable {
 
     def setFloatArray(key: String, value: Array[Float]) {
         val arrayData = new Data()
-        for (i <- 0 until value.length) {
+        for (i <- value.indices) {
             arrayData.setFloat(key + "." + i, value(i))
         }
         arrayData.setInteger("length", value.length)
@@ -166,7 +166,7 @@ class Data extends INBTTagable {
 
     def setDoubleArray(key: String, value: Array[Double]) {
         val arrayData = new Data()
-        for (i <- 0 until value.length) {
+        for (i <- value.indices) {
             arrayData.setDouble(key + "." + i, value(i))
         }
         arrayData.setInteger("length", value.length)
@@ -175,7 +175,7 @@ class Data extends INBTTagable {
 
     def setLongArray(key: String, value: Array[Long]) {
         val arrayData = new Data()
-        for (i <- 0 until value.length) {
+        for (i <- value.indices) {
             arrayData.setLong(key + "." + i, value(i))
         }
         arrayData.setInteger("length", value.length)
@@ -184,7 +184,7 @@ class Data extends INBTTagable {
 
     def setStringArray(key: String, value: Array[String]) {
         val arrayData = new Data()
-        for (i <- 0 until value.length) {
+        for (i <- value.indices) {
             arrayData.setString(key + "." + i, value(i))
         }
         arrayData.setInteger("length", value.length)
@@ -193,7 +193,7 @@ class Data extends INBTTagable {
 
     def setNBTArray(key: String, value: Array[NBTTagCompound]) {
         val arrayData = new Data()
-        for (i <- 0 until value.length) {
+        for (i <- value.indices) {
             arrayData.setNBT(key + "." + i, value(i))
         }
         arrayData.setInteger("length", value.length)
@@ -202,7 +202,7 @@ class Data extends INBTTagable {
 
     def setDataArray(key: String, value: Array[Data]) {
         val arrayData = new Data()
-        for (i <- 0 until value.length) {
+        for (i <- value.indices) {
             arrayData.setData(key + "." + i, value(i))
         }
         arrayData.setInteger("length", value.length)
@@ -213,7 +213,7 @@ class Data extends INBTTagable {
         val arrayData = getData(key)
         if (arrayData != null) {
             val array = Array.ofDim[Boolean](arrayData.getInteger("length"))
-            for (i <- 0 until array.length) {
+            for (i <- array.indices) {
                 array(i) = arrayData.getBoolean(key + "." + i)
             }
             return array
@@ -225,7 +225,7 @@ class Data extends INBTTagable {
         val arrayData = getData(key)
         if (arrayData != null) {
             val array = Array.ofDim[Byte](arrayData.getInteger("length"))
-            for (i <- 0 until array.length) {
+            for (i <- array.indices) {
                 array(i) = arrayData.getByte(key + "." + i)
             }
             return array
@@ -237,7 +237,7 @@ class Data extends INBTTagable {
         val arrayData = getData(key)
         if (arrayData != null) {
             val array = Array.ofDim[Short](arrayData.getInteger("length"))
-            for (i <- 0 until array.length) {
+            for (i <- array.indices) {
                 array(i) = arrayData.getShort(key + "." + i)
             }
             return array
@@ -249,7 +249,7 @@ class Data extends INBTTagable {
         val arrayData = getData(key)
         if (arrayData != null) {
             val array = Array.ofDim[Int](arrayData.getInteger("length"))
-            for (i <- 0 until array.length) {
+            for (i <- array.indices) {
                 array(i) = arrayData.getInteger(key + "." + i)
             }
             return array
@@ -261,7 +261,7 @@ class Data extends INBTTagable {
         val arrayData = getData(key)
         if (arrayData != null) {
             val array = Array.ofDim[Float](arrayData.getInteger("length"))
-            for (i <- 0 until array.length) {
+            for (i <- array.indices) {
                 array(i) = arrayData.getFloat(key + "." + i)
             }
             return array
@@ -273,7 +273,7 @@ class Data extends INBTTagable {
         val arrayData = getData(key)
         if (arrayData != null) {
             val array = Array.ofDim[Double](arrayData.getInteger("length"))
-            for (i <- 0 until array.length) {
+            for (i <- array.indices) {
                 array(i) = arrayData.getDouble(key + "." + i)
             }
             return array
@@ -285,7 +285,7 @@ class Data extends INBTTagable {
         val arrayData = getData(key)
         if (arrayData != null) {
             val array = Array.ofDim[Long](arrayData.getInteger("length"))
-            for (i <- 0 until array.length) {
+            for (i <- array.indices) {
                 array(i) = arrayData.getLong(key + "." + i)
             }
             return array
@@ -297,7 +297,7 @@ class Data extends INBTTagable {
         val arrayData = getData(key)
         if (arrayData != null) {
             val array = Array.ofDim[String](arrayData.getInteger("length"))
-            for (i <- 0 until array.length) {
+            for (i <- array.indices) {
                 array(i) = arrayData.getString(key + "." + i)
             }
             return array
@@ -309,7 +309,7 @@ class Data extends INBTTagable {
         val arrayData = getData(key)
         if (arrayData != null) {
             val array = Array.ofDim[NBTTagCompound](arrayData.getInteger("length"))
-            for (i <- 0 until array.length) {
+            for (i <- array.indices) {
                 array(i) = arrayData.getNBT(key + "." + i)
             }
             return array
@@ -321,7 +321,7 @@ class Data extends INBTTagable {
         val arrayData = getData(key)
         if (arrayData != null) {
             val array = Array.ofDim[Data](arrayData.getInteger("length"))
-            for (i <- 0 until array.length) {
+            for (i <- array.indices) {
                 array(i) = arrayData.getData(key + "." + i)
             }
             return array
@@ -501,7 +501,7 @@ class Data extends INBTTagable {
                 for (i <- 0 until size) {
                     val name = compoundBoolean.getString("boolean" + i + "Name")
                     val value = compoundBoolean.getBoolean("boolean" + i + "Value")
-                    booleanDataMap.put(name, value)
+                    booleanDataMap += (name -> value)
                 }
             }
             if (compoundByte != null) {
@@ -509,7 +509,7 @@ class Data extends INBTTagable {
                 for (i <- 0 until size) {
                     val name = compoundByte.getString("byte" + i + "Name")
                     val value = compoundByte.getByte("byte" + i + "Value")
-                    byteDataMap.put(name, value)
+                    byteDataMap += (name -> value)
                 }
             }
             if (compoundShort != null) {
@@ -517,7 +517,7 @@ class Data extends INBTTagable {
                 for (i <- 0 until size) {
                     val name = compoundShort.getString("short" + i + "Name")
                     val value = compoundShort.getShort("short" + i + "Value")
-                    shortDataMap.put(name, value)
+                    shortDataMap += (name -> value)
                 }
             }
             if (compoundInteger != null) {
@@ -525,7 +525,7 @@ class Data extends INBTTagable {
                 for (i <- 0 until size) {
                     val name = compoundInteger.getString("integer" + i + "Name")
                     val value = compoundInteger.getInteger("integer" + i + "Value")
-                    integerDataMap.put(name, value)
+                    integerDataMap += (name -> value)
                 }
             }
             if (compoundFloat != null) {
@@ -533,7 +533,7 @@ class Data extends INBTTagable {
                 for (i <- 0 until size) {
                     val name = compoundFloat.getString("float" + i + "Name")
                     val value = compoundFloat.getFloat("float" + i + "Value")
-                    floatDataMap.put(name, value)
+                    floatDataMap += (name -> value)
                 }
             }
             if (compoundDouble != null) {
@@ -541,7 +541,7 @@ class Data extends INBTTagable {
                 for (i <- 0 until size) {
                     val name = compoundDouble.getString("double" + i + "Name")
                     val value = compoundDouble.getDouble("double" + i + "Value")
-                    doubleDataMap.put(name, value)
+                    doubleDataMap += (name -> value)
                 }
             }
             if (compoundLong != null) {
@@ -549,7 +549,7 @@ class Data extends INBTTagable {
                 for (i <- 0 until size) {
                     val name = compoundLong.getString("long" + i + "Name")
                     val value = compoundLong.getLong("long" + i + "Value")
-                    longDataMap.put(name, value)
+                    longDataMap += (name -> value)
                 }
             }
             if (compoundString != null) {
@@ -557,7 +557,7 @@ class Data extends INBTTagable {
                 for (i <- 0 until size) {
                     val name = compoundString.getString("string" + i + "Name")
                     val value = compoundString.getString("string" + i + "Value")
-                    stringDataMap.put(name, value)
+                    stringDataMap += (name -> value)
                 }
             }
             if (compoundNBT != null) {
@@ -565,7 +565,7 @@ class Data extends INBTTagable {
                 for (i <- 0 until size) {
                     val name = compoundNBT.getString("nbt" + i + "Name")
                     val value = compoundNBT.getCompoundTag("nbt" + i + "Name")
-                    nbtDataMap.put(name, value)
+                    nbtDataMap += (name -> value)
                 }
             }
             if (compoundData != null) {
@@ -573,7 +573,7 @@ class Data extends INBTTagable {
                 for (i <- 0 until size) {
                     val name = compoundData.getString("data" + i + "Name")
                     val value = compoundData.getCompoundTag("data" + i + "Value")
-                    dataDataMap.put(name, new Data(value))
+                    dataDataMap += (name -> new Data(value))
                 }
             }
         }

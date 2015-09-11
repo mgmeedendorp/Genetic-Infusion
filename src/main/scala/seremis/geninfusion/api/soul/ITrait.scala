@@ -119,4 +119,6 @@ trait ITrait {
     def setInWeb(entity: IEntitySoulCustom)
 
     def isOnLadder(entity: IEntitySoulCustom): Boolean
+
+    def entityInit(entity: IEntitySoulCustom)
 }

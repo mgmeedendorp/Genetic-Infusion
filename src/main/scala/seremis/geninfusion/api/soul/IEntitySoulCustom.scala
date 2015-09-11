@@ -255,4 +255,6 @@ trait IEntitySoulCustom extends IRangedAttackMob {
     def setInWeb_I
 
     def isOnLadder_I: Boolean
+
+    def entityInit_I
 }

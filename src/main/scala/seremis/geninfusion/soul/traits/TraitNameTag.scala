@@ -8,33 +8,21 @@ import seremis.geninfusion.api.util.DataWatcherHelper
 
 class TraitNameTag extends Trait {
 
-    override def firstTick(entity: IEntitySoulCustom) {
-        val living = entity.asInstanceOf[EntityLiving]
-
-        if(!DataWatcherHelper.isNameRegistered(living.getDataWatcher, DataWatcherNameTag))
-            DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, "", DataWatcherNameTag)
+    override def entityInit(entity: IEntitySoulCustom) {
+        if(!entity.getWorld_I.isRemote)
+            DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, "", DataWatcherNameTag)
     }
 
     override def writeToNBT(entity: IEntitySoulCustom, compound: NBTTagCompound) {
-        val living = entity.asInstanceOf[EntityLiving]
-
-        if(DataWatcherHelper.isNameRegistered(living.getDataWatcher, DataWatcherNameTag))
-            DataWatcherHelper.writeObjectToNBT(compound, living.getDataWatcher, DataWatcherNameTag)
+        DataWatcherHelper.writeObjectToNBT(compound, entity.getDataWatcher_I, DataWatcherNameTag)
     }
 
     override def readFromNBT(entity: IEntitySoulCustom, compound: NBTTagCompound) {
-        val living = entity.asInstanceOf[EntityLiving]
-
-        if(!DataWatcherHelper.isNameRegistered(living.getDataWatcher, DataWatcherNameTag))
-            DataWatcherHelper.addObjectAtUnusedId(living.getDataWatcher, "", DataWatcherNameTag)
-
-        DataWatcherHelper.readObjectFromNBT(compound, living.getDataWatcher, DataWatcherNameTag)
+        DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, DataWatcherNameTag)
     }
 
     override def setCustomNameTag(entity: IEntitySoulCustom, nameTag: String) {
-        val living = entity.asInstanceOf[EntityLiving]
-
-        DataWatcherHelper.updateObject(living.getDataWatcher, DataWatcherNameTag, nameTag)
+        DataWatcherHelper.updateObject(entity.getDataWatcher_I, DataWatcherNameTag, nameTag)
     }
 
     override def getCustomNameTag(entity: IEntitySoulCustom): String = {

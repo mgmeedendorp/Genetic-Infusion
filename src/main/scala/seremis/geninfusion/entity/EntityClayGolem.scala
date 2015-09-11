@@ -168,7 +168,7 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
     @SideOnly(Side.CLIENT)
     override def receivePacketOnClient(id: Int, value: Array[Byte]) {
         if(id == 0) {
-            val entity = EntityList.createEntityFromNBT(UtilNBT.byteArrayToCompound(value).getOrElse(return), worldObj).asInstanceOf[IEntitySoulCustom]
+            val entity = SoulHelper.instanceHelper.getSoulEntityInstance(UtilNBT.byteArrayToCompound(value).getOrElse(return), worldObj)
             if(entity != null)
                 setTransformationGoal(Some(entity))
             else

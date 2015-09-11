@@ -8,9 +8,10 @@ import seremis.geninfusion.api.soul.lib.VariableLib._
 
 class TraitHomeArea extends Trait {
 
-    override def firstTick(entity: IEntitySoulCustom) {
+    override def entityInit(entity: IEntitySoulCustom) {
         entity.makePersistent(EntityMaximumHomeDistance)
         entity.setFloat(EntityMaximumHomeDistance, -1.0F)
+        entity.setObject(EntityHomePosition, new ChunkCoordinates(0, 0, 0))
     }
 
     override def isWithinHomeDistanceCurrentPosition(entity: IEntitySoulCustom): Boolean = {

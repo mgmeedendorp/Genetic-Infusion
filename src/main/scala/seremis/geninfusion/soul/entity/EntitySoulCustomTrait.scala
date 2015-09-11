@@ -281,6 +281,8 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     override def isOnLadder: Boolean = isOnLadder_I
     override def isOnLadder_I: Boolean = TraitHandler.isOnLadder(this)
 
+    override def entityInit_I = TraitHandler.entityInit(this)
+
     override def readFromNBT(compound: NBTTagCompound) = readFromNBT_I(compound)
 
     def readFromNBT_I(compound: NBTTagCompound) {

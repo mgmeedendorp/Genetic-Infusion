@@ -8,11 +8,14 @@ import net.minecraft.entity.DataWatcher
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ChunkCoordinates
+import net.minecraft.world.World
+import org.apache.logging.log4j.Level
+import seremis.geninfusion.GeneticInfusion
 import seremis.geninfusion.api.soul.lib.VariableLib
 import seremis.geninfusion.entity.GIEntity
 import seremis.geninfusion.helper.GIReflectionHelper
+import seremis.geninfusion.util.UtilNBT
 import scala.collection.JavaConverters._
-import scala.collection.immutable.HashMap
 
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
@@ -23,11 +26,9 @@ object DataWatcherHelper {
     var ids: mutable.WeakHashMap[DataWatcher, Map[String, Int]] = mutable.WeakHashMap()
     var names: mutable.WeakHashMap[DataWatcher, ListBuffer[String]] = mutable.WeakHashMap()
 
-    var clientSideIds: Map[Int, Map[String, Int]] = Map()
-    var clientSideDataWatchers: Map[Int, DataWatcher] = Map()
-
     /**
      * Adds an object to a dataWatcher at the first empty Id.
+     * Only call this on the server side!
      * Allowed Objects:
      * Byte
      * Short
@@ -44,29 +45,17 @@ object DataWatcherHelper {
      */
     def addObjectAtUnusedId(dataWatcher: DataWatcher, obj: Any, name: String): Int = {
         if(!getWatchedEntity(dataWatcher).worldObj.isRemote) {
-            val watchedObjects = getWatchedObjects(dataWatcher)
             val watchedObjectIds = getWatchedObjects(dataWatcher).keys.toList
 
             for(i <- Byte.MinValue.toInt to Byte.MaxValue.toInt) {
                 if(!watchedObjectIds.contains(i)) {
-                    addMapping(dataWatcher, i, name)
                     dataWatcher.addObject(i, obj.asInstanceOf[AnyRef])
+                    addMapping(dataWatcher, i, name)
                     return i
                 }
             }
-        } else if(!clientSideIds.contains(getWatchedEntity(dataWatcher).getEntityId) || !clientSideIds.get(getWatchedEntity(dataWatcher).getEntityId).get.contains(name)) {
-            clientSideDataWatchers += (getWatchedEntity(dataWatcher).getEntityId -> dataWatcher)
         } else {
-            val entity = getWatchedEntity(dataWatcher)
-            val mapping = clientSideIds.get(entity.getEntityId).get
-            val id = mapping.get(name).get
-
-            addMapping(dataWatcher, id, name)
-            dataWatcher.addObject(id, obj.asInstanceOf[AnyRef])
-
-//            clientSideIds -= entity.getEntityId
-
-            return id
+            GeneticInfusion.logger.log(Level.ERROR, "Registered dataWatcher: " + name + " on client. This should not happen!")
         }
 
         println(CrashReport.makeCrashReport(new ArrayIndexOutOfBoundsException, "The dataWatcher mapping is completely filled. Try combining multiple variables into one to conserve mappings.").getCompleteReport)
@@ -80,14 +69,6 @@ object DataWatcherHelper {
     def getWatchedEntity(dataWatcher: DataWatcher): GIEntity = GIReflectionHelper.getField(dataWatcher, VariableLib.DataWatcherWatchedEntity).asInstanceOf[GIEntity]
 
     protected def addMapping(dataWatcher: DataWatcher, id: Int, name: String) {
-        val entity = getWatchedEntity(dataWatcher)
-
-        val entityIdArray = ByteBuffer.allocate(4).putInt(entity.getEntityId).array()
-        val mappingIdArray = ByteBuffer.allocate(4).putInt(id).array()
-        val mappingNameArray = name.getBytes
-
-        entity.sendEntityDataToClient(-128, entityIdArray ++ mappingIdArray ++ mappingNameArray)
-
         var map: Map[String, Int] = null
 
         if(!ids.contains(dataWatcher))
@@ -107,6 +88,21 @@ object DataWatcherHelper {
 
         nameList += name
         names += (dataWatcher -> nameList)
+
+        val entity = getWatchedEntity(dataWatcher)
+
+        if(!entity.worldObj.isRemote) {
+            val entityIdArray = ByteBuffer.allocate(4).putInt(entity.getEntityId).array()
+            val mappingIdArray = ByteBuffer.allocate(4).putInt(id).array()
+            val mappingNameArray = name.getBytes
+            val nbt = writeObjectToNBT(new NBTTagCompound, dataWatcher, name)
+            val nbtArray = UtilNBT.compoundToByteArray(nbt).get
+
+            val lengthArray = ByteBuffer.allocate(4).putInt(mappingNameArray.length).array() ++ ByteBuffer.allocate(4).putInt(nbtArray.length).array()
+
+
+            entity.sendEntityDataToClient(-128, lengthArray ++ entityIdArray ++ mappingIdArray ++ mappingNameArray ++ nbtArray)
+        }
     }
 
     /**
@@ -116,7 +112,7 @@ object DataWatcherHelper {
      * @return The object from the specified dataWatcher added with the given name.
      */
     def getObjectFromDataWatcher(dataWatcher: DataWatcher, name: String): AnyRef = {
-        getWatchedObjects(dataWatcher).get(ids.get(dataWatcher).get.get(name).get).get.asInstanceOf[DataWatcher.WatchableObject].getObject
+        getWatchedObjects(dataWatcher).get(ids.get(dataWatcher).get.get(name).get).get.getObject
     }
 
     def getObjectId(dataWatcher: DataWatcher, name: String): Int = {
@@ -188,31 +184,36 @@ object DataWatcherHelper {
         }
     }
 
-    def receivePacketOnClient(value: Array[Byte]) {
-        val entityIdArray = value.splitAt(4)._1
-        val mappingIdArray = value.slice(4, 8)
-        val mappingNameArray = value.splitAt(8)._2
-
+    def receivePacketOnClient(value: Array[Byte], world: World) {
+        val mappingNameLengthArray = value.slice(0, 4)
+        val mappingNameLength = ByteBuffer.wrap(mappingNameLengthArray).getInt
+        val nbtLengthArray = value.slice(4, 8)
+        val nbtLength = ByteBuffer.wrap(nbtLengthArray).getInt
+        val entityIdArray = value.slice(8, 12)
         val entityId = ByteBuffer.wrap(entityIdArray).getInt
+        val mappingIdArray = value.slice(12, 16)
         val mappingId = ByteBuffer.wrap(mappingIdArray).getInt
+        val mappingNameArray = value.slice(16, 16 + mappingNameLength)
         val mappingName = new String(mappingNameArray)
+        val nbtArray = value.slice(16 + mappingNameLength, 16 + mappingNameLength + nbtLength)
+        val nbt = UtilNBT.byteArrayToCompound(nbtArray).get
 
-        if(!clientSideDataWatchers.contains(entityId)) {
-            var map: Map[String, Int] = null
+        val entity = world.getEntityByID(entityId)
+        val dataWatcher = entity.getDataWatcher
 
-            if(clientSideIds.contains(entityId)) {
-                map = clientSideIds.get(entityId).get
-            } else {
-                map = Map()
-            }
+        addMapping(dataWatcher, mappingId, mappingName)
 
-            map += (mappingName -> mappingId)
-            clientSideIds += (entityId -> map)
-        } else {
-            val dataWatcher = clientSideDataWatchers.get(entityId).get
+        val dataType = nbt.getString(mappingName + ".type")
+        var obj: Any = null
 
-            addMapping(dataWatcher, mappingId, mappingName)
-            dataWatcher.addObject(id, git.asInstanceOf[AnyRef])
-        }
+        if(dataType == "byte") obj = nbt.getByte(mappingName)
+        if(dataType == "short") obj = nbt.getShort(mappingName)
+        if(dataType == "integer") obj = nbt.getInteger(mappingName)
+        if(dataType == "float") obj = nbt.getFloat(mappingName)
+        if(dataType == "string") obj = nbt.getString(mappingName)
+        if(dataType == "itemStack") obj = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag(mappingName))
+        if(dataType == "chunkCoordinates") obj = new ChunkCoordinates(nbt.getInteger(mappingName + ".x"), nbt.getInteger(mappingName + ".y"), nbt.getInteger(mappingName + ".z"))
+
+        entity.getDataWatcher.addObject(mappingId, obj.asInstanceOf[AnyRef])
     }
 }

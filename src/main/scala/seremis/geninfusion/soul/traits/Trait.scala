@@ -127,4 +127,6 @@ class Trait extends ITrait {
     override def setInWeb(entity: IEntitySoulCustom) {}
 
     override def isOnLadder(entity: IEntitySoulCustom): Boolean = false
+
+    override def entityInit(entity: IEntitySoulCustom) {}
 }

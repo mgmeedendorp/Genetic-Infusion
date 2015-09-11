@@ -1,6 +1,6 @@
 package seremis.geninfusion.soul
 
-import net.minecraft.entity.EntityList
+import net.minecraft.entity.{EntityLiving, EntityList}
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.world.World
 import seremis.geninfusion.api.soul._
@@ -11,7 +11,7 @@ import seremis.geninfusion.soul.entity.{EntitySoulCustom, EntitySoulCustomAgeabl
 class InstanceHelper extends IInstanceHelper {
 
     override def getSoulEntityInstance(world: World, soul: ISoul, x: Double, y: Double, z: Double): IEntitySoulCustom = {
-        var entity: IEntitySoulCustom = new EntitySoulCustom(world, soul, x, y, z)
+        var entity: IEntitySoulCustom = null
 
         if(SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneIsCreature)) {
             entity = new EntitySoulCustomCreature(world, soul, x, y, z)
@@ -19,6 +19,10 @@ class InstanceHelper extends IInstanceHelper {
 
         if(SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneCanProcreate)) {
             entity = new EntitySoulCustomAgeable(world, soul, x, y, z)
+        }
+
+        if(entity == null) {
+            entity = new EntitySoulCustom(world, soul, x, y, z)
         }
 
         entity
@@ -34,7 +38,10 @@ class InstanceHelper extends IInstanceHelper {
     }
 
     override def getSoulEntityInstance(compound: NBTTagCompound, world: World): IEntitySoulCustom = {
-        EntityList.createEntityFromNBT(compound, world).asInstanceOf[IEntitySoulCustom]
+        val entity = getSoulEntityInstance(world, new Soul(compound), 0, 0, 0)
+        entity.asInstanceOf[EntityLiving].readFromNBT(compound)
+
+        entity
     }
 
     override def getIAlleleInstance(compound: NBTTagCompound): IAllele = {

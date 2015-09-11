@@ -10,14 +10,14 @@ import seremis.geninfusion.api.util.DataWatcherHelper
 
 class TraitChild extends Trait {
 
-
+    override def entityInit(entity: IEntitySoulCustom) {
+        if(!entity.getWorld_I.isRemote && canProcreate(entity))
+            DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0, DataWatcherGrowingAge)
+    }
 
     override def firstTick(entity: IEntitySoulCustom) {
         val isChild = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneIsChild)
         val childSpeedBoostModifier = SoulHelper.geneRegistry.getValueFromAllele[Double](entity, Genes.GeneChildSpeedModifier)
-
-        if(canProcreate(entity) && !DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, DataWatcherGrowingAge))
-            DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0, DataWatcherGrowingAge)
 
         val width: Float = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneWidth)
         val height: Float = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneHeight)
@@ -144,16 +144,13 @@ class TraitChild extends Trait {
     def canProcreate(entity: IEntitySoulCustom): Boolean = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneCanProcreate)
 
     override def writeToNBT(entity: IEntitySoulCustom, compound: NBTTagCompound) {
-        if(canProcreate(entity) && DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, DataWatcherGrowingAge))
+        if(canProcreate(entity))
             DataWatcherHelper.writeObjectToNBT(compound, entity.getDataWatcher_I, DataWatcherGrowingAge)
     }
 
     override def readFromNBT(entity: IEntitySoulCustom, compound: NBTTagCompound) {
-        if(canProcreate(entity)) {
-            if(!DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, DataWatcherGrowingAge)) DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0, DataWatcherGrowingAge)
-
+        if(canProcreate(entity))
             DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, DataWatcherGrowingAge)
-        }
     }
 
     override def onUpdate(entity: IEntitySoulCustom) {
