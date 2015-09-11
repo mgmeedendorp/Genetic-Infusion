@@ -102,6 +102,20 @@ case class AncestryNodeRoot(var name: String) extends AncestryNode {
         }
         cachedChromosomes.get(gene).get
     }
+
+    def chromosomesEquals(chromosomes: Array[IChromosome]): Boolean = {
+        val entity = EntityList.createEntityByName(name, null).asInstanceOf[EntityLiving]
+        val standardSoul = SoulHelper.standardSoulRegistry.getSoulForEntity(entity).get
+
+        standardSoul.getChromosomes == chromosomes
+    }
+
+    def getChromosomes: Array[IChromosome] = {
+        val entity = EntityList.createEntityByName(name, null).asInstanceOf[EntityLiving]
+        val standardSoul = SoulHelper.standardSoulRegistry.getSoulForEntity(entity).get
+
+        standardSoul.getChromosomes
+    }
 }
 
 case class AncestryNodeBranch(var ancestor1: AncestryNode, var ancestor2: AncestryNode) extends AncestryNode {

@@ -115,6 +115,15 @@ class ModelPart(model: ModelBase, boxName: String, var modelPartTypeName: String
         Vec3.createVectorHelper(initialRotationPointX, initialRotationPointY, initialRotationPointZ)
     }
 
+    def resetOriginalRotations() {
+        rotationPointX = initialRotationPointX
+        rotationPointY = initialRotationPointY
+        rotationPointZ = initialRotationPointZ
+        rotateAngleX = initialRotateAngleX
+        rotateAngleY = initialRotateAngleY
+        rotateAngleZ = initialRotateAngleZ
+    }
+
     def getInitialRotateAngles: Vec3 = {
         Vec3.createVectorHelper(initialRotateAngleX, initialRotateAngleY, initialRotateAngleZ)
     }

@@ -42,7 +42,24 @@ class Model extends INBTTagable {
         }
     }
     
-    def getParts(modelPartType: String*): Option[Array[ModelPart]] = {modelPartType.foreach(partType => SoulHelper.modelPartTypeRegistry.getModelPartType(partType).foreach(instance => return partsMap.get(instance))); None}
+    def getParts(modelPartType: String*): Option[Array[ModelPart]] = {
+        val list: ListBuffer[ModelPart] = ListBuffer()
+
+        modelPartType.foreach(partType => {
+            SoulHelper.modelPartTypeRegistry.getModelPartType(partType).foreach(instance => {
+                partsMap.get(instance).foreach(array => {
+                    array.foreach(element => {
+                        list += element
+                    })
+                })
+            })
+        })
+
+        if(list.nonEmpty)
+            Some(list.to[Array])
+        else
+            None
+    }
 
     def getAllParts: Array[ModelPart] = {
         val parts: ListBuffer[ModelPart] = ListBuffer()

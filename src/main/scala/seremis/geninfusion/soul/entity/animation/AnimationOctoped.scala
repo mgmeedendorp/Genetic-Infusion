@@ -26,27 +26,36 @@ class AnimationOctoped extends Animation {
         val leftLeg4: ModelPart = getModelLeftLegs(entity).get(3)
         val rightLeg4: ModelPart = getModelRightLegs(entity).get(3)
 
-        val f6 = (Math.PI / 4F).toFloat
+        leftLeg1.resetOriginalRotations()
+        rightLeg1.resetOriginalRotations()
+        leftLeg2.resetOriginalRotations()
+        rightLeg2.resetOriginalRotations()
+        leftLeg3.resetOriginalRotations()
+        rightLeg3.resetOriginalRotations()
+        leftLeg4.resetOriginalRotations()
+        rightLeg4.resetOriginalRotations()
 
-        leftLeg1.rotateAngleZ = -f6
-        rightLeg1.rotateAngleZ = f6
-        leftLeg2.rotateAngleZ = -f6 * 0.74F
-        rightLeg2.rotateAngleZ = f6 * 0.74F
-        leftLeg3.rotateAngleZ = -f6 * 0.74F
-        rightLeg3.rotateAngleZ = f6 * 0.74F
-        leftLeg4.rotateAngleZ = -f6
-        rightLeg4.rotateAngleZ = f6
+        val f6 = PI / 4F
+
+        leftLeg1.rotateAngleZ = f6
+        rightLeg1.rotateAngleZ = -f6
+        leftLeg2.rotateAngleZ = f6 * 0.74F
+        rightLeg2.rotateAngleZ = -f6 * 0.74F
+        leftLeg3.rotateAngleZ = f6 * 0.74F
+        rightLeg3.rotateAngleZ = -f6 * 0.74F
+        leftLeg4.rotateAngleZ = f6
+        rightLeg4.rotateAngleZ = -f6
 
         val f7 = 0.3926991F
 
-        leftLeg1.rotateAngleY = f6 * 2.0F
-        rightLeg1.rotateAngleY = -f6 * 2.0F
-        leftLeg2.rotateAngleY = f6
-        rightLeg2.rotateAngleY = -f6
-        leftLeg3.rotateAngleY = f6
-        rightLeg3.rotateAngleY = -f6
-        leftLeg4.rotateAngleY = f6 * 2.0F
-        rightLeg4.rotateAngleY = -f6 * 2.0F
+        leftLeg1.rotateAngleY = -f7 * 2.0F
+        rightLeg1.rotateAngleY = f7 * 2.0F
+        leftLeg2.rotateAngleY = -f7
+        rightLeg2.rotateAngleY = f7
+        leftLeg3.rotateAngleY = f7
+        rightLeg3.rotateAngleY = -f7
+        leftLeg4.rotateAngleY = f7 * 2.0F
+        rightLeg4.rotateAngleY = -f7 * 2.0F
 
         val f9 = -(MathHelper.cos(timeModifier * 0.6662F * 2.0F) * 0.4F) * walkSpeed
         val f10 = -(MathHelper.cos(timeModifier * 0.6662F * 2.0F + PI) * 0.4F) * walkSpeed

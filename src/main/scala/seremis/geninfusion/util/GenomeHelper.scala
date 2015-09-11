@@ -1,13 +1,17 @@
 package seremis.geninfusion.util
 
 import seremis.geninfusion.api.soul.{IChromosome, IGene, ISoul, SoulHelper}
-import seremis.geninfusion.api.util.AncestryNode
+import seremis.geninfusion.api.util.{AncestryNodeRoot, AncestryNode}
 
 object GenomeHelper {
 
     def fixGenomeErrors(soul: ISoul): Array[IChromosome] = fixGenomeErrors(soul.getAncestryNode, soul.getChromosomes)
 
     def fixGenomeErrors(ancestry: AncestryNode, chromosomes: Array[IChromosome]): Array[IChromosome] = {
+        if(ancestry.isInstanceOf[AncestryNodeRoot] && !ancestry.asInstanceOf[AncestryNodeRoot].chromosomesEquals(chromosomes)) {
+            return ancestry.asInstanceOf[AncestryNodeRoot].getChromosomes
+        }
+
         if(!isGenomeFixed(chromosomes)) {
             val genes = SoulHelper.geneRegistry.getGenes
 
