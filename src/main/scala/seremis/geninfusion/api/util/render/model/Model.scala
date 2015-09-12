@@ -116,4 +116,13 @@ class Model extends INBTTagable {
 
         compound
     }
+
+    def copy(): Model = {
+        val model = new Model()
+
+        partsMap.foreach(a => a._2.foreach(part => {
+            model.addPart(part.copy())
+        }))
+        model
+    }
 }

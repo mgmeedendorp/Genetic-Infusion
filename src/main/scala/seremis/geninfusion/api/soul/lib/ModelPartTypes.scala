@@ -9,7 +9,6 @@ object ModelPartTypes {
     final val Body = ID + ".modelPartType.body"
     final val Cloak = ID + ".modelPartType.cloak"
     final val Ears = ID + ".modelPartType.ears"
-    final val Neck = ID + ".modelPartType.neck"
     final val LegsLeft = ID + ".modelPartType.legs.left"
     final val LegsRight = ID + ".modelPartType.legs.right"
     final val ArmsLeft = ID + ".modelPartType.arms.left"

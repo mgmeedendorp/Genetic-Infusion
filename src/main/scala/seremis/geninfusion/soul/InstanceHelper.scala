@@ -1,6 +1,6 @@
 package seremis.geninfusion.soul
 
-import net.minecraft.entity.{EntityLiving, EntityList}
+import net.minecraft.entity.EntityLiving
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.world.World
 import seremis.geninfusion.api.soul._

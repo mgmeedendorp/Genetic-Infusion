@@ -15,8 +15,8 @@ import seremis.geninfusion.api.soul.lib.VariableLib
 import seremis.geninfusion.entity.GIEntity
 import seremis.geninfusion.helper.GIReflectionHelper
 import seremis.geninfusion.util.UtilNBT
-import scala.collection.JavaConverters._
 
+import scala.collection.JavaConverters._
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
 
@@ -56,10 +56,11 @@ object DataWatcherHelper {
             }
         } else {
             GeneticInfusion.logger.log(Level.ERROR, "Registered dataWatcher: " + name + " on client. This should not happen!")
+            return 0
         }
 
         println(CrashReport.makeCrashReport(new ArrayIndexOutOfBoundsException, "The dataWatcher mapping is completely filled. Try combining multiple variables into one to conserve mappings.").getCompleteReport)
-        -1
+        0
     }
     
     def getWatchedObjects(dataWatcher: DataWatcher): Map[Int, DataWatcher.WatchableObject] = mapAsScalaMapConverter(GIReflectionHelper.getField(dataWatcher, VariableLib.DataWatcherWatchedObjects).asInstanceOf[util.HashMap[Int, DataWatcher.WatchableObject]]).asScala.toMap

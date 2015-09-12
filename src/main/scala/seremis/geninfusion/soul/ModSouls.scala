@@ -6,12 +6,11 @@ import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.soul.SoulHelper._
 import seremis.geninfusion.api.soul.lib.Animations._
 import seremis.geninfusion.api.soul.lib.Genes._
-import seremis.geninfusion.api.soul.lib.Traits._
 import seremis.geninfusion.api.soul.lib.ModelPartTypes._
+import seremis.geninfusion.api.soul.lib.Traits._
 import seremis.geninfusion.api.soul.{IModelPartType, ISoul, SoulHelper}
 import seremis.geninfusion.soul.AlleleType._
-import seremis.geninfusion.soul.entity.animation.AnimationHead
-import seremis.geninfusion.soul.entity.animation._
+import seremis.geninfusion.soul.entity.animation.{AnimationHead, _}
 import seremis.geninfusion.soul.gene._
 import seremis.geninfusion.soul.gene.newAI._
 import seremis.geninfusion.soul.standardSoul.{StandardSoulCreeper, StandardSoulSkeleton, StandardSoulSpider, StandardSoulZombie}
@@ -299,7 +298,6 @@ object ModSouls {
         modelPartTypeRegistry.register(Cloak, new ModelPartType)
         modelPartTypeRegistry.register(Ears, new ModelPartType)
         modelPartTypeRegistry.register(Headwear, new ModelPartType)
-        modelPartTypeRegistry.register(Neck, new ModelPartType)
         modelPartTypeRegistry.register(LegsRight, new ModelPartType)
         modelPartTypeRegistry.register(LegsLeft, new ModelPartType)
         modelPartTypeRegistry.register(ArmsRight, new ModelPartType)

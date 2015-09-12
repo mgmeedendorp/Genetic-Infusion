@@ -56,10 +56,10 @@ class GeneModel extends Gene(classOf[Model]) {
         val modelParent1 = parent1(geneIdModel)
         val modelParent2 = parent2(geneIdModel)
 
-        val modelParent1Primary = modelParent1.getPrimary.getAlleleData.asInstanceOf[Model].getAllParts
-        val modelParent2Primary = modelParent2.getPrimary.getAlleleData.asInstanceOf[Model].getAllParts
-        val modelParent1Secondary = modelParent1.getSecondary.getAlleleData.asInstanceOf[Model].getAllParts
-        val modelParent2Secondary = modelParent2.getSecondary.getAlleleData.asInstanceOf[Model].getAllParts
+        val modelParent1Primary = modelParent1.getPrimary.getAlleleData.asInstanceOf[Model].copy().getAllParts
+        val modelParent2Primary = modelParent2.getPrimary.getAlleleData.asInstanceOf[Model].copy().getAllParts
+        val modelParent1Secondary = modelParent1.getSecondary.getAlleleData.asInstanceOf[Model].copy().getAllParts
+        val modelParent2Secondary = modelParent2.getSecondary.getAlleleData.asInstanceOf[Model].copy().getAllParts
 
         val combinedParent1 = randomlyCombineModels(new Model(modelParent1Primary), textureParent1Primary, new Model(modelParent1Secondary), textureParent1Secondary)
         val combinedParent2 = randomlyCombineModels(new Model(modelParent2Primary), textureParent2Primary, new Model(modelParent2Secondary), textureParent2Secondary)

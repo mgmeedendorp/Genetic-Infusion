@@ -13,11 +13,11 @@ import net.minecraft.nbt.NBTUtil
 import net.minecraft.util.{MathHelper, StringUtils}
 import net.minecraftforge.client.{IItemRenderer, MinecraftForgeClient}
 import org.lwjgl.opengl.GL11
-import seremis.geninfusion.api.soul.lib.{ModelPartTypes, Genes}
 import seremis.geninfusion.api.soul.lib.VariableLib._
+import seremis.geninfusion.api.soul.lib.{Genes, ModelPartTypes}
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.api.util.DataWatcherHelper
-import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
+import seremis.geninfusion.api.util.render.model.Model
 import seremis.geninfusion.helper.GIRenderHelper
 
 class TraitRender extends Trait {

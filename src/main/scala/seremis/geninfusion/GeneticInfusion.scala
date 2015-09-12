@@ -4,12 +4,11 @@ import cpw.mods.fml.common.Mod.{EventHandler, Instance}
 import cpw.mods.fml.common.event.{FMLInitializationEvent, FMLPostInitializationEvent, FMLPreInitializationEvent}
 import cpw.mods.fml.common.{FMLCommonHandler, Mod, SidedProxy}
 import net.minecraftforge.common.MinecraftForge
-import net.minecraftforge.common.config.Configuration
 import org.apache.logging.log4j.{Level, Logger}
 import seremis.geninfusion.api.soul.SoulHelper
 import seremis.geninfusion.block.ModBlocks
+import seremis.geninfusion.core.GICreativeTab
 import seremis.geninfusion.core.proxy.CommonProxy
-import seremis.geninfusion.core.{GIConfig, GICreativeTab}
 import seremis.geninfusion.entity.ModEntity
 import seremis.geninfusion.handler.GIEventHandler
 import seremis.geninfusion.helper.{MCPNames, RecipeHelper}

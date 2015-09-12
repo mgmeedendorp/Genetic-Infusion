@@ -5,7 +5,7 @@ import cpw.mods.fml.relauncher.{Side, SideOnly}
 import io.netty.buffer.ByteBuf
 import net.minecraft.block.Block
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.{Entity, EntityList, EntityLiving}
+import net.minecraft.entity.{Entity, EntityLiving}
 import net.minecraft.init.Blocks
 import net.minecraft.item.{Item, ItemStack}
 import net.minecraft.nbt.NBTTagCompound

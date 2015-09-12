@@ -13,6 +13,7 @@ object AnimationCache {
     var cachedOuterBox: Map[ModelPart, (Vec3, Vec3)] = Map()
     var cachedWidth: Map[Model, Float] = Map()
     var cachedHeight: Map[Model, Float] = Map()
+    var cachedHeadVertical: Map[Model, Boolean] = Map()
 
     def getModel(entity: IEntitySoulCustom): Model = {
         SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneModel)
@@ -32,6 +33,36 @@ object AnimationCache {
             }))
         }
         cachedArmsHorizontal.get(model).get
+    }
+
+    def headVertical(model: Model): Boolean = {
+        if(!cachedHeadVertical.contains(model)) {
+            var highestHeadY = Float.NegativeInfinity
+            var highestHeadZ = Float.NegativeInfinity
+            var lowestBodyY = Float.PositiveInfinity
+            var lowestBodyZ = Float.PositiveInfinity
+
+            model.getParts(ModelPartTypes.Head).foreach(head => head.foreach(part => {
+                val box = getModelPartOuterBox(part)
+
+                highestHeadY = Math.max(box._2.yCoord, highestHeadY).toFloat
+                highestHeadZ = Math.max(box._2.zCoord, highestHeadZ).toFloat
+            }))
+
+            model.getParts(ModelPartTypes.Body).foreach(body => body.foreach(part => {
+                val box = getModelPartOuterBox(part)
+
+                lowestBodyY = Math.min(box._1.yCoord, lowestBodyY).toFloat
+                lowestBodyZ = Math.min(box._1.zCoord, lowestBodyZ).toFloat
+            }))
+
+            if(highestHeadY > lowestBodyY && highestHeadZ >= lowestBodyZ) {
+                cachedHeadVertical += (model -> false)
+            } else {
+                cachedHeadVertical += (model -> true)
+            }
+        }
+        cachedHeadVertical.get(model).get
     }
 
     def getModelPartOuterBox(part: ModelPart): (Vec3, Vec3) = {
@@ -214,21 +245,19 @@ object AnimationCache {
         var highestLegY = 23.0F
 
         for(leg <- legs) {
-            highestLegY = Math.min(getModelPartOuterBox(leg)._1.yCoord, getModelPartOuterBox(leg)._2.yCoord).toFloat
             if(!intersectsPlaneY(leg, 23.0F)) {
                 var outerBox = getModelPartOuterBox(leg)
-                val dY = 23.0 - Math.max(outerBox._1.yCoord, outerBox._2.yCoord)
+                val dY = 23.0 - outerBox._2.yCoord
 
                 leg.rotationPointY += dY.toFloat
-
-                cachedOuterBox -= leg
-                leg.getBoxList.foreach(box => cachedCoords -= (leg -> box))
 
                 modelChanged(model)
 
                 outerBox = getModelPartOuterBox(leg)
 
                 highestLegY = Math.min(highestLegY, Math.min(outerBox._1.yCoord, outerBox._2.yCoord)).toFloat
+            } else {
+                highestLegY = Math.min(getModelPartOuterBox(leg)._1.yCoord, getModelPartOuterBox(leg)._2.yCoord).toFloat
             }
         }
 
@@ -244,38 +273,82 @@ object AnimationCache {
             }
         }))
 
-        var lowestHeadY = Float.NegativeInfinity
+        if(headVertical(model)) {
+            var lowestHeadY = Float.NegativeInfinity
 
-        for(head <- head) {
-            head.foreach(head => {
-                lowestHeadY = Math.max(Math.max(getModelPartOuterBox(head)._1.yCoord, getModelPartOuterBox(head)._2.yCoord), lowestHeadY).toFloat
-            })
-        }
-
-        body.foreach(body => body.foreach(body => {
-            val bodyBox = getModelPartOuterBox(body)
-
-            val highestYBody = Math.min(bodyBox._1.yCoord, bodyBox._2.yCoord).toFloat
-
-            if(lowestHeadY != highestYBody) {
-                val dy = Math.min(bodyBox._1.yCoord, bodyBox._2.yCoord).toFloat - lowestHeadY
-
-                head.foreach(head => head.foreach(head => head.rotationPointY += dy))
+            for(head <- head) {
+                head.foreach(head => {
+                    lowestHeadY = Math.max(Math.max(getModelPartOuterBox(head)._1.yCoord, getModelPartOuterBox(head)._2.yCoord), lowestHeadY).toFloat
+                })
             }
 
-            if(armsLeft != null && armsRight != null && armsLeft.exists(arms => arms.length == 1) && armsRight.exists(arms => arms.length == 1)) {
-                for(arm <- armsLeft.getOrElse(new Array[ModelPart](0)) ++ armsRight.getOrElse(new Array[ModelPart](0))) {
-                    val armBox = getModelPartOuterBox(arm)
-                    val armTop = Math.min(armBox._1.yCoord, armBox._2.yCoord).toFloat
+            body.foreach(body => body.foreach(body => {
+                val bodyBox = getModelPartOuterBox(body)
 
-                    if(armTop != highestYBody) {
-                        val dy = highestYBody - armTop
+                val highestYBody = Math.min(bodyBox._1.yCoord, bodyBox._2.yCoord).toFloat
 
-                        arm.rotationPointY += dy
+                if(lowestHeadY != highestYBody) {
+                    val dy = Math.min(bodyBox._1.yCoord, bodyBox._2.yCoord).toFloat - lowestHeadY
+
+                    head.foreach(head => head.foreach(head => head.rotationPointY += dy))
+                }
+
+                if(armsLeft != null && armsRight != null && armsLeft.exists(arms => arms.length == 1) && armsRight.exists(arms => arms.length == 1)) {
+                    for(arm <- armsLeft.getOrElse(new Array[ModelPart](0)) ++ armsRight.getOrElse(new Array[ModelPart](0))) {
+                        val armBox = getModelPartOuterBox(arm)
+                        val armTop = Math.min(armBox._1.yCoord, armBox._2.yCoord).toFloat
+
+                        if(armTop != highestYBody) {
+                            val dy = highestYBody - armTop
+
+                            arm.rotationPointY += dy
+                        }
                     }
                 }
+            }))
+        } else {
+            var highestHeadZ = Float.NegativeInfinity
+            var highestHeadY = Float.NegativeInfinity
+            var lowestHeadY = Float.PositiveInfinity
+
+            head.foreach(head => {
+                head.foreach(head => {
+                    val box = getModelPartOuterBox(head)
+
+                    highestHeadZ = Math.max(box._2.zCoord, highestHeadZ).toFloat
+                    highestHeadY = Math.max(box._2.yCoord, highestHeadY).toFloat
+                    lowestHeadY = Math.min(box._1.yCoord, lowestHeadY).toFloat
+                })
+            })
+
+            val headSizeY = highestHeadY - lowestHeadY
+
+            var lowestBodyZ = Float.PositiveInfinity
+            var lowestBodyY = Float.PositiveInfinity
+            var highestBodyY = Float.NegativeInfinity
+
+            body.foreach(body => body.foreach(body => {
+                val bodyBox = getModelPartOuterBox(body)
+
+                lowestBodyZ = Math.min(bodyBox._1.zCoord, lowestBodyZ).toFloat
+                lowestBodyY = Math.min(bodyBox._1.yCoord, lowestBodyY).toFloat
+                highestBodyY = Math.max(bodyBox._2.yCoord, highestBodyY).toFloat
+            }))
+
+            val bodySizeY = highestBodyY - lowestBodyY
+
+            var dy = highestBodyY - highestHeadY
+
+            if(headSizeY >= bodySizeY) {
+                dy += bodySizeY / 2 - headSizeY / 2
+            } else {
+                val dz = lowestBodyZ - highestHeadZ
+
+                head.foreach(head => head.foreach(head => head.rotationPointZ += dz))
             }
-        }))
+
+            head.foreach(head => head.foreach(head => head.rotationPointY += dy))
+        }
 
         modelChanged(model)
 

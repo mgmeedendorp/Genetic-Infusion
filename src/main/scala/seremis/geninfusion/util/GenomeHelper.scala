@@ -1,7 +1,7 @@
 package seremis.geninfusion.util
 
 import seremis.geninfusion.api.soul.{IChromosome, IGene, ISoul, SoulHelper}
-import seremis.geninfusion.api.util.{AncestryNodeRoot, AncestryNode}
+import seremis.geninfusion.api.util.{AncestryNode, AncestryNodeRoot}
 
 object GenomeHelper {
 

@@ -4,8 +4,8 @@ import net.minecraft.enchantment.EnchantmentHelper
 import net.minecraft.entity.item.EntityXPOrb
 import net.minecraft.entity.passive.EntityTameable
 import net.minecraft.entity.player.{EntityPlayer, EntityPlayerMP}
-import net.minecraft.entity.{EnumCreatureAttribute, EntityLiving, EntityLivingBase}
-import net.minecraft.potion.{PotionEffect, Potion}
+import net.minecraft.entity.{EntityLiving, EntityLivingBase, EnumCreatureAttribute}
+import net.minecraft.potion.{Potion, PotionEffect}
 import net.minecraft.util.DamageSource
 import net.minecraftforge.common.ForgeHooks
 import seremis.geninfusion.api.soul.lib.Genes

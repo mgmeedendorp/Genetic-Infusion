@@ -1,6 +1,6 @@
 package seremis.geninfusion.soul.traits
 
-import net.minecraft.entity.{EntityLiving, Entity}
+import net.minecraft.entity.{Entity, EntityLiving}
 import net.minecraft.init.Blocks
 import net.minecraft.util.MathHelper
 import seremis.geninfusion.api.soul.lib.Genes

@@ -331,4 +331,11 @@ class ModelPart(model: ModelBase, boxName: String, var modelPartTypeName: String
             GIReflectionHelper.setField(this, VariableLib.ModelRendererCompiled, false)
         }
     }
+
+    def copy(): ModelPart = {
+        val compound = new NBTTagCompound
+        this.writeToNBT(compound)
+
+        ModelPart.fromNBT(compound)
+    }
 }

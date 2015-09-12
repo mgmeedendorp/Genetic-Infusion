@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.soul.IChromosome
 import seremis.geninfusion.api.soul.lib.Genes
-import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
+import seremis.geninfusion.api.util.render.model.Model
 import seremis.geninfusion.soul.{Allele, Chromosome}
 
 class StandardSoulSkeleton extends StandardSoul {

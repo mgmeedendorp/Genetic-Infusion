@@ -1,8 +1,8 @@
 package seremis.geninfusion.soul.standardSoul
 
 import net.minecraft.client.model.ModelSpider
+import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.monster.EntitySpider
-import net.minecraft.entity.{Entity, EntityLiving}
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -11,6 +11,7 @@ import seremis.geninfusion.api.soul.lib.Genes._
 import seremis.geninfusion.api.soul.lib.ModelPartTypes
 import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 import seremis.geninfusion.soul.{Allele, Chromosome}
+import seremis.geninfusion.util.GIModelBox
 
 class StandardSoulSpider extends StandardSoul {
 
@@ -80,7 +81,7 @@ class StandardSoulSpider extends StandardSoul {
 
         model.addPart(ModelPart.rendererToPart(modelSpider.spiderHead, ModelPartTypes.Head))
         model.addPart(ModelPart.rendererToPart(modelSpider.spiderBody, ModelPartTypes.Body))
-        model.addPart(ModelPart.rendererToPart(modelSpider.spiderNeck, ModelPartTypes.Neck))
+        model.addPart(ModelPart.rendererToPart(modelSpider.spiderNeck, ModelPartTypes.Body))
         model.addPart(ModelPart.rendererToPart(modelSpider.spiderLeg1, ModelPartTypes.LegsRight))
         model.addPart(ModelPart.rendererToPart(modelSpider.spiderLeg2, ModelPartTypes.LegsLeft))
         model.addPart(ModelPart.rendererToPart(modelSpider.spiderLeg3, ModelPartTypes.LegsRight))

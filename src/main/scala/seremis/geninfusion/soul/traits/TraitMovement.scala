@@ -190,12 +190,11 @@ class TraitMovement extends Trait {
         }
     }
 
-    override def firstTick(entity: IEntitySoulCustom) = {
+    override def entityInit(entity: IEntitySoulCustom) = {
         val canClimbWalls = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneCanClimbWalls)
 
-        if(canClimbWalls) {
-            if(!DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, DataWatcherClimbableWall))
-                DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0.toByte, DataWatcherClimbableWall)
+        if(canClimbWalls && !entity.getWorld_I.isRemote) {
+            DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0.toByte, DataWatcherClimbableWall)
         }
     }
 
@@ -203,8 +202,7 @@ class TraitMovement extends Trait {
         val canClimbWalls = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneCanClimbWalls)
 
         if(canClimbWalls) {
-            if(DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, DataWatcherClimbableWall))
-                DataWatcherHelper.writeObjectToNBT(compound, entity.getDataWatcher_I, DataWatcherClimbableWall)
+            DataWatcherHelper.writeObjectToNBT(compound, entity.getDataWatcher_I, DataWatcherClimbableWall)
         }
     }
 
@@ -212,8 +210,7 @@ class TraitMovement extends Trait {
         val canClimbWalls = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneCanClimbWalls)
 
         if(canClimbWalls) {
-            if(DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, DataWatcherClimbableWall))
-                DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, DataWatcherClimbableWall)
+            DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, DataWatcherClimbableWall)
         }
     }
 
@@ -231,7 +228,7 @@ class TraitMovement extends Trait {
 
         val canClimbWalls = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneCanClimbWalls)
 
-        if(!canClimbWalls) {
+        if(!canClimbWalls || !DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, DataWatcherClimbableWall)) {
             val x = MathHelper.floor_double(living.posX)
             val y = MathHelper.floor_double(living.boundingBox.minY)
             val z = MathHelper.floor_double(living.posZ)

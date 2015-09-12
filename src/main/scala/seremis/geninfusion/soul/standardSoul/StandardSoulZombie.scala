@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.soul.IChromosome
 import seremis.geninfusion.api.soul.lib.Genes._
-import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
+import seremis.geninfusion.api.util.render.model.Model
 import seremis.geninfusion.soul.{Allele, Chromosome}
 
 class StandardSoulZombie extends StandardSoul {
@@ -142,6 +142,6 @@ class StandardSoulZombie extends StandardSoul {
         modelZombie.bipedRightArm.rotateAngleX = -1.57F
         modelZombie.bipedLeftArm.rotateAngleX = -1.57F
 
-        modelBiped(modelZombie, false)
+        modelBiped(modelZombie, true)
     }
 }

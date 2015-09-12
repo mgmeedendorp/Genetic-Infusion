@@ -29,6 +29,8 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     var soul: ISoul
     val world: World
 
+    var shouldCallEntityInit = true
+
     override def writeSpawnData(data: ByteBuf) {
         val compound = new NBTTagCompound
         writeToNBT_I(compound)
@@ -288,6 +290,12 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     def readFromNBT_I(compound: NBTTagCompound) {
         super.readFromNBT(compound)
         soul = new Soul(compound)
+
+        if(shouldCallEntityInit) {
+            entityInit_I
+            shouldCallEntityInit = false
+        }
+
         if(compound.hasKey("data")) {
             syncLogic.readFromNBT(compound)
         }
