@@ -3,7 +3,7 @@ package seremis.geninfusion.network
 import cpw.mods.fml.common.network.NetworkRegistry
 import cpw.mods.fml.relauncher.Side
 import seremis.geninfusion.lib.DefaultProps
-import seremis.geninfusion.network.packet.{PacketEntityData, PacketTileData}
+import seremis.geninfusion.network.packet.{PacketAddDataWatcherHelperMapping, PacketEntityData, PacketTileData}
 
 object ModPackets {
 
@@ -14,5 +14,6 @@ object ModPackets {
         wrapper.registerMessage(classOf[PacketEntityData.Handler], classOf[PacketEntityData], 1, Side.SERVER)
         wrapper.registerMessage(classOf[PacketTileData.Handler], classOf[PacketTileData], 2, Side.CLIENT)
         wrapper.registerMessage(classOf[PacketTileData.Handler], classOf[PacketTileData], 3, Side.SERVER)
+        wrapper.registerMessage(classOf[PacketAddDataWatcherHelperMapping.Handler], classOf[PacketAddDataWatcherHelperMapping], 4, Side.CLIENT)
     }
 }

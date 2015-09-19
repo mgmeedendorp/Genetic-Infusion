@@ -17,8 +17,11 @@ import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
 import seremis.geninfusion.api.soul.lib.{Genes, VariableLib}
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
+import seremis.geninfusion.api.util.DataWatcherHelper
 import seremis.geninfusion.api.util.data.Data
 import seremis.geninfusion.entity.GIEntity
+import seremis.geninfusion.network.ModPackets
+import seremis.geninfusion.network.packet.PacketAddDataWatcherHelperMapping
 import seremis.geninfusion.soul.entity.logic.VariableSyncLogic
 import seremis.geninfusion.soul.{Soul, TraitHandler}
 import seremis.geninfusion.util.UtilNBT
@@ -37,6 +40,17 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
         val bytes = UtilNBT.compoundToByteArray(compound).getOrElse(return)
         data.writeInt(bytes.length)
         data.writeBytes(bytes)
+
+        if(DataWatcherHelper.cachedPackets.contains(getEntityId)) {
+            data.writeInt(DataWatcherHelper.cachedPackets.get(getEntityId).get.size)
+
+            println("sending on server!")
+
+            DataWatcherHelper.cachedPackets.get(getEntityId).get.foreach(packet => {
+                println(data.writerIndex())
+                packet.toBytes(data)
+            })
+        }
     }
 
     override def readSpawnData(data: ByteBuf) {
@@ -47,6 +61,17 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
         val compound: NBTTagCompound = UtilNBT.byteArrayToCompound(bytes).getOrElse(return)
         readFromNBT_I(compound)
+
+        if(data.readerIndex() < data.writerIndex) {
+            val size = data.readInt()
+
+            for(i <- 0 until size) {
+                val packet = new PacketAddDataWatcherHelperMapping()
+
+                packet.fromBytes(data)
+                PacketAddDataWatcherHelperMapping.handleMessage(packet, this)
+            }
+        }
     }
 
     override def getWorld_I: World = worldObj

@@ -213,7 +213,7 @@ class TraitRender extends Trait {
         val canBeCharged = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneCanBeCharged)
 
         if(explodes && canBeCharged) {
-            val isCharged = DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, EntityCharged).asInstanceOf[Byte] == 1
+            val isCharged = DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, EntityCharged) && DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, EntityCharged).asInstanceOf[Byte] == 1
 
             if(isCharged){
                 GL11.glDepthMask(!living.isInvisible)

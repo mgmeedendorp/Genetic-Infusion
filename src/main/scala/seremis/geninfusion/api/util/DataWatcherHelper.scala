@@ -3,6 +3,7 @@ package seremis.geninfusion.api.util
 import java.nio.ByteBuffer
 import java.util
 
+import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint
 import net.minecraft.crash.CrashReport
 import net.minecraft.entity.DataWatcher
 import net.minecraft.item.ItemStack
@@ -14,6 +15,8 @@ import seremis.geninfusion.GeneticInfusion
 import seremis.geninfusion.api.soul.lib.VariableLib
 import seremis.geninfusion.entity.GIEntity
 import seremis.geninfusion.helper.GIReflectionHelper
+import seremis.geninfusion.network.packet.PacketAddDataWatcherHelperMapping
+import seremis.geninfusion.soul.entity.EntitySoulCustomTrait
 import seremis.geninfusion.util.UtilNBT
 
 import scala.collection.JavaConverters._
@@ -25,6 +28,8 @@ object DataWatcherHelper {
 
     var ids: mutable.WeakHashMap[DataWatcher, Map[String, Int]] = mutable.WeakHashMap()
     var names: mutable.WeakHashMap[DataWatcher, ListBuffer[String]] = mutable.WeakHashMap()
+
+    var cachedPackets: Map[Int, ListBuffer[PacketAddDataWatcherHelperMapping]] = Map()
 
     /**
      * Adds an object to a dataWatcher at the first empty Id.
@@ -69,7 +74,7 @@ object DataWatcherHelper {
 
     def getWatchedEntity(dataWatcher: DataWatcher): GIEntity = GIReflectionHelper.getField(dataWatcher, VariableLib.DataWatcherWatchedEntity).asInstanceOf[GIEntity]
 
-    protected def addMapping(dataWatcher: DataWatcher, id: Int, name: String) {
+    def addMapping(dataWatcher: DataWatcher, id: Int, name: String) {
         var map: Map[String, Int] = null
 
         if(!ids.contains(dataWatcher))
@@ -101,8 +106,18 @@ object DataWatcherHelper {
 
             val lengthArray = ByteBuffer.allocate(4).putInt(mappingNameArray.length).array() ++ ByteBuffer.allocate(4).putInt(nbtArray.length).array()
 
+            var list: ListBuffer[PacketAddDataWatcherHelperMapping] = null
 
-            entity.sendEntityDataToClient(-128, lengthArray ++ entityIdArray ++ mappingIdArray ++ mappingNameArray ++ nbtArray)
+            if(!cachedPackets.contains(entity.getEntityId)) {
+                list = ListBuffer()
+            } else {
+                list = cachedPackets.get(entity.getEntityId).get
+            }
+
+            val packet = new PacketAddDataWatcherHelperMapping(entity.getEntityId, id, name, nbt)
+
+            list += packet
+            cachedPackets += (entity.getEntityId -> list)
         }
     }
 
@@ -183,38 +198,5 @@ object DataWatcherHelper {
             if(dataType == "itemStack") dataWatcher.updateObject(id, ItemStack.loadItemStackFromNBT(compound.getCompoundTag(name)))
             if(dataType == "chunkCoordinates") dataWatcher.updateObject(id, new ChunkCoordinates(compound.getInteger(name + ".x"), compound.getInteger(name + ".y"), compound.getInteger(name + ".z")))
         }
-    }
-
-    def receivePacketOnClient(value: Array[Byte], world: World) {
-        val mappingNameLengthArray = value.slice(0, 4)
-        val mappingNameLength = ByteBuffer.wrap(mappingNameLengthArray).getInt
-        val nbtLengthArray = value.slice(4, 8)
-        val nbtLength = ByteBuffer.wrap(nbtLengthArray).getInt
-        val entityIdArray = value.slice(8, 12)
-        val entityId = ByteBuffer.wrap(entityIdArray).getInt
-        val mappingIdArray = value.slice(12, 16)
-        val mappingId = ByteBuffer.wrap(mappingIdArray).getInt
-        val mappingNameArray = value.slice(16, 16 + mappingNameLength)
-        val mappingName = new String(mappingNameArray)
-        val nbtArray = value.slice(16 + mappingNameLength, 16 + mappingNameLength + nbtLength)
-        val nbt = UtilNBT.byteArrayToCompound(nbtArray).get
-
-        val entity = world.getEntityByID(entityId)
-        val dataWatcher = entity.getDataWatcher
-
-        addMapping(dataWatcher, mappingId, mappingName)
-
-        val dataType = nbt.getString(mappingName + ".type")
-        var obj: Any = null
-
-        if(dataType == "byte") obj = nbt.getByte(mappingName)
-        if(dataType == "short") obj = nbt.getShort(mappingName)
-        if(dataType == "integer") obj = nbt.getInteger(mappingName)
-        if(dataType == "float") obj = nbt.getFloat(mappingName)
-        if(dataType == "string") obj = nbt.getString(mappingName)
-        if(dataType == "itemStack") obj = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag(mappingName))
-        if(dataType == "chunkCoordinates") obj = new ChunkCoordinates(nbt.getInteger(mappingName + ".x"), nbt.getInteger(mappingName + ".y"), nbt.getInteger(mappingName + ".z"))
-
-        entity.getDataWatcher.addObject(mappingId, obj.asInstanceOf[AnyRef])
     }
 }

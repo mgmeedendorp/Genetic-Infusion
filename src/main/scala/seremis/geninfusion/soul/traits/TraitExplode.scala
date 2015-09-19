@@ -18,6 +18,7 @@ class TraitExplode extends Trait {
         val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
 
         if(explodes && !entity.getWorld_I.isRemote) {
+            println("registered on server")
             DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, -1.toByte, EntityFuseState)
             DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0.toByte, EntityCharged)
             DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0.toByte, EntityIgnited)
@@ -50,6 +51,7 @@ class TraitExplode extends Trait {
         val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
 
         if(explodes) {
+            println("read from NBT on client")
             DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, EntityFuseState)
             DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, EntityCharged)
             DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, EntityIgnited)
@@ -65,11 +67,11 @@ class TraitExplode extends Trait {
             val fuseTime = entity.getInteger(EntityFuseTime)
             var timeSinceIgnited = entity.getInteger(EntityTimeSinceIgnited)
 
-            if(living.getDataWatcher.getWatchableObjectByte(DataWatcherHelper.getObjectId(living.getDataWatcher, EntityIgnited)) != 0) {
+            if(DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, EntityIgnited) && DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, EntityIgnited).asInstanceOf[Byte] != 0) {
                 DataWatcherHelper.updateObject(living.getDataWatcher, EntityFuseState, 1.toByte.asInstanceOf[Byte])
             }
 
-            val fuseState = DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, EntityFuseState).asInstanceOf[Byte].toInt
+            val fuseState = if(DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, EntityFuseState)) DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, EntityFuseState).asInstanceOf[Byte].toInt else 0
 
             if(fuseState > 0 && timeSinceIgnited == 0) {
                 entity.playSound_I("creeper.primed", 1.0F, 0.5F)

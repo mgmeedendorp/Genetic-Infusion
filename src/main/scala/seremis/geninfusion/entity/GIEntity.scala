@@ -36,11 +36,7 @@ trait GIEntity extends Entity {
     }
 
     @SideOnly(Side.CLIENT)
-    def receivePacketOnClient(id: Int, value: Array[Byte]) {
-        if(id == -128) {
-            DataWatcherHelper.receivePacketOnClient(value, worldObj)
-        }
-    }
+    def receivePacketOnClient(id: Int, value: Array[Byte]) {}
 
     def receivePacketOnServer(id: Int, value: Array[Byte]) {}
 }

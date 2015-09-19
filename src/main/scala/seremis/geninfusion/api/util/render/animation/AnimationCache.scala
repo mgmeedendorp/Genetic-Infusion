@@ -6,14 +6,16 @@ import seremis.geninfusion.api.soul.lib.{Genes, ModelPartTypes}
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 
+import scala.collection.mutable.WeakHashMap
+
 object AnimationCache {
-    var cachedCoords: Map[(ModelPart, ModelBox), (Vec3, Vec3)] = Map()
-    var cachedCoordsWithoutRotation: Map[(ModelPart, ModelBox), (Vec3, Vec3)] = Map()
-    var cachedArmsHorizontal: Map[Model, Boolean] = Map()
-    var cachedOuterBox: Map[ModelPart, (Vec3, Vec3)] = Map()
-    var cachedWidth: Map[Model, Float] = Map()
-    var cachedHeight: Map[Model, Float] = Map()
-    var cachedHeadVertical: Map[Model, Boolean] = Map()
+    var cachedCoords: WeakHashMap[(ModelPart, ModelBox), (Vec3, Vec3)] = WeakHashMap()
+    var cachedCoordsWithoutRotation: WeakHashMap[(ModelPart, ModelBox), (Vec3, Vec3)] = WeakHashMap()
+    var cachedArmsHorizontal: WeakHashMap[Model, Boolean] = WeakHashMap()
+    var cachedOuterBox: WeakHashMap[ModelPart, (Vec3, Vec3)] = WeakHashMap()
+    var cachedWidth: WeakHashMap[Model, Float] = WeakHashMap()
+    var cachedHeight: WeakHashMap[Model, Float] = WeakHashMap()
+    var cachedHeadVertical: WeakHashMap[Model, Boolean] = WeakHashMap()
 
     def getModel(entity: IEntitySoulCustom): Model = {
         SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneModel)
@@ -115,15 +117,11 @@ object AnimationCache {
     def coordsTouch(coords1: (Vec3, Vec3), coords2: (Vec3, Vec3)): Boolean = coords1._2.xCoord >= coords2._1.xCoord && coords1._1.xCoord <= coords2._2.xCoord && coords1._2.yCoord >= coords2._1.yCoord && coords1._1.yCoord <= coords2._2.yCoord && coords1._2.zCoord >= coords2._1.zCoord && coords1._1.zCoord <= coords2._2.zCoord
 
     def intersectsPlaneX(part: ModelPart, x: Float): Boolean = part.getBoxList.exists(box => interX(getPartBoxCoordinates(part, box), x))
-
     def intersectsPlaneY(part: ModelPart, y: Float): Boolean = part.getBoxList.exists(box => interY(getPartBoxCoordinates(part, box), y))
-
     def intersectsPlaneZ(part: ModelPart, z: Float): Boolean = part.getBoxList.exists(box => interZ(getPartBoxCoordinates(part, box), z))
 
     def interX(coords: (Vec3, Vec3), x: Float) = isInBetween(x, coords._1.xCoord, coords._2.xCoord)
-
     def interY(coords: (Vec3, Vec3), y: Float) = isInBetween(y, coords._1.yCoord, coords._2.yCoord)
-
     def interZ(coords: (Vec3, Vec3), z: Float) = isInBetween(z, coords._1.zCoord, coords._2.zCoord)
 
     def isInBetween(value: Double, min: Double, max: Double): Boolean = value <= Math.max(min, max) && value >= Math.min(min, max)
@@ -242,12 +240,12 @@ object AnimationCache {
         val arms = armsLeft.getOrElse(new Array[ModelPart](0)) ++ armsLeft.getOrElse(new Array[ModelPart](0))
         val head = getFromParents(parent1, parent2, model, ModelPartTypes.Head)
 
-        var highestLegY = 23.0F
+        var highestLegY = 24.0F
 
         for(leg <- legs) {
-            if(!intersectsPlaneY(leg, 23.0F)) {
+            if(!intersectsPlaneY(leg, 24.0F)) {
                 var outerBox = getModelPartOuterBox(leg)
-                val dY = 23.0 - outerBox._2.yCoord
+                val dY = 24.0 - outerBox._2.yCoord
 
                 leg.rotationPointY += dY.toFloat
 
@@ -255,9 +253,9 @@ object AnimationCache {
 
                 outerBox = getModelPartOuterBox(leg)
 
-                highestLegY = Math.min(highestLegY, Math.min(outerBox._1.yCoord, outerBox._2.yCoord)).toFloat
+                highestLegY = Math.min(highestLegY, outerBox._1.yCoord).toFloat
             } else {
-                highestLegY = Math.min(getModelPartOuterBox(leg)._1.yCoord, getModelPartOuterBox(leg)._2.yCoord).toFloat
+                highestLegY = Math.min(highestLegY, getModelPartOuterBox(leg)._1.yCoord).toFloat
             }
         }
 
