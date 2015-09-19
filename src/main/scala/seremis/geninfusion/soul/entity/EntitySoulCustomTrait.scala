@@ -44,10 +44,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
         if(DataWatcherHelper.cachedPackets.contains(getEntityId)) {
             data.writeInt(DataWatcherHelper.cachedPackets.get(getEntityId).get.size)
 
-            println("sending on server!")
-
             DataWatcherHelper.cachedPackets.get(getEntityId).get.foreach(packet => {
-                println(data.writerIndex())
                 packet.toBytes(data)
             })
         }

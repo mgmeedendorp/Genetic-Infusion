@@ -131,12 +131,12 @@ object AnimationCache {
             var pos1 = Vec3.createVectorHelper(part.offsetX + Math.min(box.posX2, box.posX1), part.offsetY + Math.min(box.posY2, box.posY1), part.offsetZ + Math.min(box.posZ2, box.posZ1))
             var pos2 = Vec3.createVectorHelper(part.offsetX + Math.max(box.posX2, box.posX1), part.offsetY + Math.max(box.posY2, box.posY1), part.offsetZ + Math.max(box.posZ2, box.posZ1))
 
-            pos1.rotateAroundX(part.rotateAngleX)
-            pos1.rotateAroundY(part.rotateAngleY)
-            pos1.rotateAroundZ(part.rotateAngleZ)
-            pos2.rotateAroundX(part.rotateAngleX)
-            pos2.rotateAroundY(part.rotateAngleY)
-            pos2.rotateAroundZ(part.rotateAngleZ)
+            pos1.rotateAroundX(-part.rotateAngleX)
+            pos1.rotateAroundY(-part.rotateAngleY)
+            pos1.rotateAroundZ(-part.rotateAngleZ)
+            pos2.rotateAroundX(-part.rotateAngleX)
+            pos2.rotateAroundY(-part.rotateAngleY)
+            pos2.rotateAroundZ(-part.rotateAngleZ)
 
             pos1 = pos1.addVector(part.rotationPointX, part.rotationPointY, part.rotationPointZ)
             pos2 = pos2.addVector(part.rotationPointX, part.rotationPointY, part.rotationPointZ)
@@ -243,20 +243,17 @@ object AnimationCache {
         var highestLegY = 24.0F
 
         for(leg <- legs) {
+            var outerBox = getModelPartOuterBox(leg)
             if(!intersectsPlaneY(leg, 24.0F)) {
-                var outerBox = getModelPartOuterBox(leg)
-                val dY = 24.0 - outerBox._2.yCoord
+                val dY = 24.0 - Math.max(outerBox._1.yCoord, outerBox._2.yCoord)
 
                 leg.rotationPointY += dY.toFloat
 
                 modelChanged(model)
 
                 outerBox = getModelPartOuterBox(leg)
-
-                highestLegY = Math.min(highestLegY, outerBox._1.yCoord).toFloat
-            } else {
-                highestLegY = Math.min(highestLegY, getModelPartOuterBox(leg)._1.yCoord).toFloat
             }
+            highestLegY = Math.min(highestLegY, Math.min(outerBox._1.yCoord, outerBox._2.yCoord)).toFloat
         }
 
         body.foreach(body => body.foreach(body => {
@@ -355,9 +352,13 @@ object AnimationCache {
 
     def modelChanged(model: Model) {
         if(cachedArmsHorizontal.contains(model)) cachedArmsHorizontal -= model
-        model.getAllParts.foreach(p => p.getBoxList.foreach(b => if(cachedCoords.contains(p -> b)) cachedCoords -= (p -> b)))
+        model.getAllParts.foreach(p => p.getBoxList.foreach(b => {
+            if(cachedCoords.contains(p -> b)) cachedCoords -= (p -> b)
+            if(cachedCoordsWithoutRotation.contains(p -> b)) cachedCoordsWithoutRotation -= (p -> b)
+        }))
         if(cachedHeight.contains(model)) cachedHeight -= model
         model.getAllParts.foreach(p => if(cachedOuterBox.contains(p)) cachedOuterBox -= p)
         if(cachedWidth.contains(model)) cachedWidth -= model
+        if(cachedHeadVertical.contains(model)) cachedHeadVertical -= model
     }
 }

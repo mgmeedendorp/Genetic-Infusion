@@ -18,7 +18,6 @@ class TraitExplode extends Trait {
         val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
 
         if(explodes && !entity.getWorld_I.isRemote) {
-            println("registered on server")
             DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, -1.toByte, EntityFuseState)
             DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0.toByte, EntityCharged)
             DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0.toByte, EntityIgnited)
@@ -51,7 +50,6 @@ class TraitExplode extends Trait {
         val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
 
         if(explodes) {
-            println("read from NBT on client")
             DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, EntityFuseState)
             DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, EntityCharged)
             DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, EntityIgnited)

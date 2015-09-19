@@ -75,6 +75,5 @@ object PacketAddDataWatcherHelperMapping {
         if(dataType == "chunkCoordinates") obj = new ChunkCoordinates(message.valueNBT.getInteger(message.mappingName + ".x"), message.valueNBT.getInteger(message.mappingName + ".y"), message.valueNBT.getInteger(message.mappingName + ".z"))
 
         entity.getDataWatcher.addObject(message.mappingId, obj.asInstanceOf[AnyRef])
-        println("registered on client")
     }
 }

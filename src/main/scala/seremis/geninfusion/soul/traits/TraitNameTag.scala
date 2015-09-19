@@ -22,7 +22,8 @@ class TraitNameTag extends Trait {
     }
 
     override def setCustomNameTag(entity: IEntitySoulCustom, nameTag: String) {
-        DataWatcherHelper.updateObject(entity.getDataWatcher_I, DataWatcherNameTag, nameTag)
+        if(DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, DataWatcherNameTag))
+            DataWatcherHelper.updateObject(entity.getDataWatcher_I, DataWatcherNameTag, nameTag)
     }
 
     override def getCustomNameTag(entity: IEntitySoulCustom): String = {
