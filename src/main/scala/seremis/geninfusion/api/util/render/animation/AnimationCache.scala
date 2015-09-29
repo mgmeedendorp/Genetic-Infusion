@@ -8,6 +8,7 @@ import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 
 import scala.collection.mutable.WeakHashMap
 
+//noinspection ReferenceMustBePrefixed
 object AnimationCache {
     var cachedCoords: WeakHashMap[(ModelPart, ModelBox), (Vec3, Vec3)] = WeakHashMap()
     var cachedCoordsWithoutRotation: WeakHashMap[(ModelPart, ModelBox), (Vec3, Vec3)] = WeakHashMap()
@@ -240,33 +241,7 @@ object AnimationCache {
         val arms = armsLeft.getOrElse(new Array[ModelPart](0)) ++ armsLeft.getOrElse(new Array[ModelPart](0))
         val head = getFromParents(parent1, parent2, model, ModelPartTypes.Head)
 
-        var highestLegY = 24.0F
-
-        for(leg <- legs) {
-            var outerBox = getModelPartOuterBox(leg)
-            if(!intersectsPlaneY(leg, 24.0F)) {
-                val dY = 24.0 - Math.max(outerBox._1.yCoord, outerBox._2.yCoord)
-
-                leg.rotationPointY += dY.toFloat
-
-                modelChanged(model)
-
-                outerBox = getModelPartOuterBox(leg)
-            }
-            highestLegY = Math.min(highestLegY, Math.min(outerBox._1.yCoord, outerBox._2.yCoord)).toFloat
-        }
-
-        body.foreach(body => body.foreach(body => {
-            val bodyBox = getModelPartOuterBox(body)
-
-            val lowestYBody = Math.max(bodyBox._1.yCoord, bodyBox._2.yCoord)
-            if(highestLegY != lowestYBody) {
-                val dY = highestLegY - lowestYBody
-
-                body.rotationPointY += dY.toFloat
-                (armsLeft.getOrElse(new Array[ModelPart](0)) ++ armsRight.getOrElse(new Array[ModelPart](0)) ++ (if(head.nonEmpty) head.get else new Array[ModelPart](0))).foreach(m => m.rotationPointY += dY.toFloat)
-            }
-        }))
+        fixLegsAndBody(model, legsLeft, legsRight, armsLeft, armsRight, body, head)
 
         if(headVertical(model)) {
             var lowestHeadY = Float.NegativeInfinity
@@ -348,6 +323,93 @@ object AnimationCache {
         modelChanged(model)
 
         model
+    }
+
+    def fixLegsAndBody(model: Model, legsLeft: Option[Array[ModelPart]], legsRight: Option[Array[ModelPart]], armsLeft: Option[Array[ModelPart]], armsRight: Option[Array[ModelPart]], body: Option[Array[ModelPart]], head: Option[Array[ModelPart]]) {
+        var leftLegsMinX = Float.PositiveInfinity
+        var rightLegsMaxX = Float.NegativeInfinity
+        var leftLegsMaxX = Float.NegativeInfinity
+        var rightLegsMinX = Float.PositiveInfinity
+        var legsMinZ = Float.PositiveInfinity
+        var legsMaxZ = Float.NegativeInfinity
+        var leftLegsHighestY = Float.PositiveInfinity
+        var rightLegsHighestY = Float.PositiveInfinity
+        var bodyMinX = Float.PositiveInfinity
+        var bodyMaxX = Float.NegativeInfinity
+        var bodyLowestY = Float.NegativeInfinity
+        var bodyHighestY = Float.PositiveInfinity
+        var bodyAboveLegsLowestY = Float.NegativeInfinity
+
+        legsLeft.foreach(legs => legs.foreach(leg => {
+            val box = getModelPartOuterBox(leg)
+
+            val dY = 24.0F - Math.max(box._1.yCoord, box._2.yCoord).toFloat
+
+            leg.rotationPointY += dY
+
+            box._1.yCoord += dY
+            box._2.yCoord += dY
+
+            legsMinZ = Math.min(legsMinZ, box._1.zCoord).toFloat
+            legsMaxZ = Math.max(legsMaxZ, box._2.zCoord).toFloat
+            leftLegsMinX = Math.min(leftLegsMinX, Math.min(box._1.xCoord, box._2.xCoord)).toFloat
+            leftLegsMaxX = Math.max(leftLegsMaxX, box._2.xCoord).toFloat
+            leftLegsHighestY = Math.min(leftLegsHighestY, box._1.yCoord).toFloat
+        }))
+
+        legsRight.foreach(legs => legs.foreach(leg => {
+            val box = getModelPartOuterBox(leg)
+
+            val dY = 24.0F - Math.max(box._1.yCoord, box._2.yCoord).toFloat
+
+            leg.rotationPointY += dY
+
+            box._1.yCoord += dY
+            box._2.yCoord += dY
+
+            legsMinZ = Math.min(legsMinZ, box._1.zCoord).toFloat
+            legsMaxZ = Math.max(legsMaxZ, box._2.zCoord).toFloat
+            rightLegsMinX = Math.min(rightLegsMinX, box._1.xCoord).toFloat
+            rightLegsMaxX = Math.max(rightLegsMaxX, Math.max(box._1.xCoord, box._2.xCoord)).toFloat
+            rightLegsHighestY = Math.min(rightLegsHighestY, box._1.yCoord).toFloat
+        }))
+
+        body.foreach(body => body.foreach(body => {
+            val box = getModelPartOuterBox(body)
+            val avgX = (box._1.xCoord + box._2.xCoord)/2
+            val avgZ = (box._1.zCoord + box._2.zCoord)/2
+
+            def betweenX(value1: Double, value2: Double): Double = if(Math.min(Math.abs(value1 - avgX), Math.abs(value2 - avgX)) == Math.abs(value1 - avgX)) value1 else value2
+            val betweenX1 = betweenX(leftLegsMinX, leftLegsMaxX)
+            val betweenX2 = betweenX(rightLegsMinX, rightLegsMaxX)
+
+            val zFactor = 0.2
+            val betweenZ1 = legsMinZ + (legsMaxZ - legsMinZ) * zFactor
+            val betweenZ2 = legsMaxZ - (legsMaxZ - legsMinZ) * zFactor
+
+            if(isInBetween(avgX, betweenX1, betweenX2) && isInBetween(avgZ, betweenZ1, betweenZ2)) {
+                bodyAboveLegsLowestY = Math.max(bodyAboveLegsLowestY, box._2.yCoord).toFloat
+                bodyLowestY = Math.max(bodyLowestY, Math.max(box._1.yCoord, box._2.yCoord)).toFloat
+                bodyHighestY = Math.max(bodyHighestY, Math.min(box._1.yCoord, box._2.yCoord)).toFloat
+                bodyMinX = Math.min(bodyMinX, box._1.xCoord).toFloat
+                bodyMaxX = Math.max(bodyMaxX, box._2.xCoord).toFloat
+            }
+        }))
+
+        var dY = 0.0F
+
+        if(rightLegsMaxX.toInt - 1 <= bodyMinX.toInt && leftLegsMinX.toInt + 1 >= bodyMaxX.toInt) {
+            //Legs beside body
+            dY = Math.min(leftLegsHighestY, rightLegsHighestY) - (bodyLowestY - bodyHighestY)/2
+        } else {
+            dY = Math.min(leftLegsHighestY, rightLegsHighestY) - bodyLowestY
+        }
+
+        body.foreach(body => body.foreach(body => {
+            body.rotationPointY += dY
+        }))
+
+        modelChanged(model)
     }
 
     def modelChanged(model: Model) {
