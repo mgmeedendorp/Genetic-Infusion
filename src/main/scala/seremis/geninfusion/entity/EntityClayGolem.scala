@@ -58,9 +58,7 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
         readEntityFromNBT(compound)
     }
 
-    override def entityInit() {
-
-    }
+    override def entityInit() {}
 
     override def writeEntityToNBT(compound: NBTTagCompound) {
         compound.setInteger("transformationTimer", transformationTimer)

@@ -39,27 +39,27 @@ object AnimationCache {
     }
 
     def headVertical(model: Model): Boolean = {
-        if(!cachedHeadVertical.contains(model)) {
-            var highestHeadY = Float.NegativeInfinity
-            var highestHeadZ = Float.NegativeInfinity
-            var lowestBodyY = Float.PositiveInfinity
-            var lowestBodyZ = Float.PositiveInfinity
+        if(true || !cachedHeadVertical.contains(model)) {
+            var lowestHeadY = Float.NegativeInfinity
+            var maxHeadZ = Float.NegativeInfinity
+            var highestBodyY = Float.PositiveInfinity
+            var minBodyZ = Float.PositiveInfinity
 
             model.getParts(ModelPartTypes.Head).foreach(head => head.foreach(part => {
                 val box = getModelPartOuterBox(part)
 
-                highestHeadY = Math.max(box._2.yCoord, highestHeadY).toFloat
-                highestHeadZ = Math.max(box._2.zCoord, highestHeadZ).toFloat
+                lowestHeadY = Math.max(box._2.yCoord, lowestHeadY).toFloat
+                maxHeadZ = Math.max(box._2.zCoord, maxHeadZ).toFloat
             }))
 
             model.getParts(ModelPartTypes.Body).foreach(body => body.foreach(part => {
                 val box = getModelPartOuterBox(part)
 
-                lowestBodyY = Math.min(box._1.yCoord, lowestBodyY).toFloat
-                lowestBodyZ = Math.min(box._1.zCoord, lowestBodyZ).toFloat
+                highestBodyY = Math.min(box._1.yCoord, highestBodyY).toFloat
+                minBodyZ = Math.min(box._1.zCoord, minBodyZ).toFloat
             }))
 
-            if(highestHeadY > lowestBodyY && highestHeadZ >= lowestBodyZ) {
+            if(lowestHeadY.toInt >= highestBodyY.toInt && maxHeadZ.toInt <= minBodyZ.toInt) {
                 cachedHeadVertical += (model -> false)
             } else {
                 cachedHeadVertical += (model -> true)
@@ -334,8 +334,8 @@ object AnimationCache {
         var legsMaxZ = Float.NegativeInfinity
         var leftLegsHighestY = Float.PositiveInfinity
         var rightLegsHighestY = Float.PositiveInfinity
-        var bodyMinX = Float.PositiveInfinity
-        var bodyMaxX = Float.NegativeInfinity
+        var bodyAboveLegsMinX = Float.PositiveInfinity
+        var bodyAboveLegsMaxX = Float.NegativeInfinity
         var bodyLowestY = Float.NegativeInfinity
         var bodyHighestY = Float.PositiveInfinity
         var bodyAboveLegsLowestY = Float.NegativeInfinity
@@ -383,26 +383,27 @@ object AnimationCache {
             val betweenX1 = betweenX(leftLegsMinX, leftLegsMaxX)
             val betweenX2 = betweenX(rightLegsMinX, rightLegsMaxX)
 
-            val zFactor = 0.2
+            val zFactor = 0.0
             val betweenZ1 = legsMinZ + (legsMaxZ - legsMinZ) * zFactor
             val betweenZ2 = legsMaxZ - (legsMaxZ - legsMinZ) * zFactor
 
             if(isInBetween(avgX, betweenX1, betweenX2) && isInBetween(avgZ, betweenZ1, betweenZ2)) {
                 bodyAboveLegsLowestY = Math.max(bodyAboveLegsLowestY, box._2.yCoord).toFloat
-                bodyLowestY = Math.max(bodyLowestY, Math.max(box._1.yCoord, box._2.yCoord)).toFloat
-                bodyHighestY = Math.max(bodyHighestY, Math.min(box._1.yCoord, box._2.yCoord)).toFloat
-                bodyMinX = Math.min(bodyMinX, box._1.xCoord).toFloat
-                bodyMaxX = Math.max(bodyMaxX, box._2.xCoord).toFloat
+                bodyAboveLegsMinX = Math.min(bodyAboveLegsMinX, box._1.xCoord).toFloat
+                bodyAboveLegsMaxX = Math.max(bodyAboveLegsMaxX, box._2.xCoord).toFloat
             }
+
+            bodyLowestY = Math.max(bodyLowestY, Math.max(box._1.yCoord, box._2.yCoord)).toFloat
+            bodyHighestY = Math.max(bodyHighestY, Math.min(box._1.yCoord, box._2.yCoord)).toFloat
         }))
 
         var dY = 0.0F
 
-        if(rightLegsMaxX.toInt - 1 <= bodyMinX.toInt && leftLegsMinX.toInt + 1 >= bodyMaxX.toInt) {
+        if(rightLegsMaxX.toInt - 1 <= bodyAboveLegsMinX.toInt && leftLegsMinX.toInt + 1 >= bodyAboveLegsMaxX.toInt) {
             //Legs beside body
             dY = Math.min(leftLegsHighestY, rightLegsHighestY) - (bodyLowestY - bodyHighestY)/2
         } else {
-            dY = Math.min(leftLegsHighestY, rightLegsHighestY) - bodyLowestY
+            dY = Math.min(leftLegsHighestY, rightLegsHighestY) - bodyAboveLegsLowestY
         }
 
         body.foreach(body => body.foreach(body => {

@@ -17,8 +17,6 @@ class TraitMovement extends Trait {
     override def onUpdate(entity: IEntitySoulCustom) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        println("position: " + living.posX + " " + living.posY + " " + living.posZ)
-
         living.prevSwingProgress = living.swingProgress
 
         entity.getWorld_I.theProfiler.startSection("entityBaseTick")
