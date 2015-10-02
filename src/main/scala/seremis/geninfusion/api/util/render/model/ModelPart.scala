@@ -66,7 +66,7 @@ object ModelPart {
     }
 }
 
-class ModelPart(model: ModelBase, boxName: String, var modelPartType: String) extends ModelRenderer(model, boxName) with INBTTagable {
+class ModelPart(model: ModelBase, boxName: String, var modelPartType: String, var attachmentPoints: Array[(Vec3, String)]) extends ModelRenderer(model, boxName) with INBTTagable {
 
     var initialRotationPointX: Float = 0.0F
     var initialRotationPointY: Float = 0.0F
@@ -121,6 +121,10 @@ class ModelPart(model: ModelBase, boxName: String, var modelPartType: String) ex
         rotateAngleY = initialRotateAngleY
         rotateAngleZ = initialRotateAngleZ
     }
+
+    def setAttachmentPoints(attachmentPoints: Array[(Vec3, String)]) = this.attachmentPoints = attachmentPoints
+
+    def getAttachmentPoints: Array[(Vec3, String)] = attachmentPoints
 
     def getInitialRotateAngles: Vec3 = {
         Vec3.createVectorHelper(initialRotateAngleX, initialRotateAngleY, initialRotateAngleZ)
@@ -220,6 +224,22 @@ class ModelPart(model: ModelBase, boxName: String, var modelPartType: String) ex
 
         compound.setString("modelPartType", modelPartType)
 
+        val list = new NBTTagList
+
+        attachmentPoints.foreach(point => {
+            val nbt = new NBTTagCompound
+
+            nbt.setDouble("vecX", point._1.xCoord)
+            nbt.setDouble("vecY", point._1.yCoord)
+            nbt.setDouble("vecZ", point._1.zCoord)
+
+            nbt.setString("partType", point._2)
+
+            list.appendTag(nbt)
+        })
+
+        compound.setTag("attachmentPoints", list)
+
         compound
     }
 
@@ -285,6 +305,19 @@ class ModelPart(model: ModelBase, boxName: String, var modelPartType: String) ex
         }
 
         modelPartType = compound.getString("modelPartType")
+
+        val list = compound.getTagList("attachmentPoints", Constants.NBT.TAG_COMPOUND)
+
+        attachmentPoints = new Array[(Vec3, String)](list.tagCount())
+
+        for(i <- 0 to list.tagCount) {
+            val nbt = list.getCompoundTagAt(i)
+
+            val vec3 = Vec3.createVectorHelper(nbt.getDouble("vecX"), nbt.getDouble("vecY"), nbt.getDouble("vecZ"))
+            val partType = nbt.getString("partType")
+
+            attachmentPoints(i) = (vec3, partType)
+        }
 
         compound
     }
