@@ -1,7 +1,6 @@
 package seremis.geninfusion.api.util.render.model
 
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
-import seremis.geninfusion.api.soul.{IModelPartType, SoulHelper}
 import seremis.geninfusion.util.INBTTagable
 
 import scala.collection.immutable.HashMap
@@ -17,7 +16,7 @@ object Model {
 
 class Model extends INBTTagable {
 
-    var partsMap: HashMap[IModelPartType, Array[ModelPart]] = HashMap()
+    var partsMap: HashMap[String, Array[ModelPart]] = HashMap()
 
     def this(modelParts: Array[ModelPart]) {
         this()
@@ -46,11 +45,9 @@ class Model extends INBTTagable {
         val list: ListBuffer[ModelPart] = ListBuffer()
 
         modelPartType.foreach(partType => {
-            SoulHelper.modelPartTypeRegistry.getModelPartType(partType).foreach(instance => {
-                partsMap.get(instance).foreach(array => {
-                    array.foreach(element => {
-                        list += element
-                    })
+            partsMap.get(partType).foreach(array => {
+                array.foreach(element => {
+                    list += element
                 })
             })
         })

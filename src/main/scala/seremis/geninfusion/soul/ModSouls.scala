@@ -8,7 +8,7 @@ import seremis.geninfusion.api.soul.lib.Animations._
 import seremis.geninfusion.api.soul.lib.Genes._
 import seremis.geninfusion.api.soul.lib.ModelPartTypes._
 import seremis.geninfusion.api.soul.lib.Traits._
-import seremis.geninfusion.api.soul.{IModelPartType, ISoul, SoulHelper}
+import seremis.geninfusion.api.soul.{ISoul, SoulHelper}
 import seremis.geninfusion.soul.AlleleType._
 import seremis.geninfusion.soul.entity.animation.{AnimationHead, _}
 import seremis.geninfusion.soul.gene._
@@ -293,17 +293,17 @@ object ModSouls {
         traitRegistry.registerTrait(TraitNameTag, new TraitNameTag)
         traitRegistry.registerTrait(TraitChild, new TraitChild)
 
-        modelPartTypeRegistry.register(Head, new ModelPartType)
-        modelPartTypeRegistry.register(Body, new ModelPartType)
-        modelPartTypeRegistry.register(Cloak, new ModelPartType)
-        modelPartTypeRegistry.register(Ears, new ModelPartType)
-        modelPartTypeRegistry.register(Headwear, new ModelPartType)
-        modelPartTypeRegistry.register(LegsRight, new ModelPartType)
-        modelPartTypeRegistry.register(LegsLeft, new ModelPartType)
-        modelPartTypeRegistry.register(ArmsRight, new ModelPartType)
-        modelPartTypeRegistry.register(ArmsLeft, new ModelPartType)
-        modelPartTypeRegistry.register(WingsRight, new ModelPartType)
-        modelPartTypeRegistry.register(WingsLeft, new ModelPartType)
+        modelPartTypeRegistry.register(Head)
+        modelPartTypeRegistry.register(Body)
+        modelPartTypeRegistry.register(Cloak)
+        modelPartTypeRegistry.register(Ears)
+        modelPartTypeRegistry.register(Headwear)
+        modelPartTypeRegistry.register(LegsRight)
+        modelPartTypeRegistry.register(LegsLeft)
+        modelPartTypeRegistry.register(ArmsRight)
+        modelPartTypeRegistry.register(ArmsLeft)
+        modelPartTypeRegistry.register(WingsRight)
+        modelPartTypeRegistry.register(WingsLeft)
 
         standardSoulRegistry.register(StandardSoulZombie)
         standardSoulRegistry.register(StandardSoulSkeleton)
@@ -348,5 +348,3 @@ object ModSouls {
         SoulSpider = SoulHelper.standardSoulRegistry.getSoulForEntity(new EntitySpider(null)).get
     }
 }
-
-class ModelPartType extends IModelPartType

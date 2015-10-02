@@ -1,24 +1,16 @@
 package seremis.geninfusion.soul
 
-import seremis.geninfusion.api.soul.{IModelPartType, IModelPartTypeRegistry}
+import seremis.geninfusion.api.soul.IModelPartTypeRegistry
 
-import scala.collection.immutable.HashMap
+import scala.collection.mutable.ListBuffer
 
 class ModelPartTypeRegistry extends IModelPartTypeRegistry {
 
-    var types: HashMap[String, IModelPartType] = HashMap()
-    var names: HashMap[IModelPartType, String] = HashMap()
+    var types: ListBuffer[String] = ListBuffer()
 
-    override def register(name: String, modelPartType: IModelPartType) {
-        types += (name -> modelPartType)
-        names += (modelPartType -> name)
+    override def register(partType: String) {
+        types += partType
     }
 
-    override def getName(modelPartType: IModelPartType): Option[String] = names.get(modelPartType)
-
-    override def getModelPartType(name: String): Option[IModelPartType] = types.get(name)
-
-    override def getModelPartTypes: Array[IModelPartType] = types.values.to[Array]
-
-    override def getModelPartTypeNames: Array[String] = names.values.to[Array]
+    override def getModelPartTypes: Array[String] = types.to[Array]
 }

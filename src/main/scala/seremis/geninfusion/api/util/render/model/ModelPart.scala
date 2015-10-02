@@ -66,9 +66,7 @@ object ModelPart {
     }
 }
 
-class ModelPart(model: ModelBase, boxName: String, var modelPartTypeName: String) extends ModelRenderer(model, boxName) with INBTTagable {
-
-    var modelPartType = if(modelPartTypeName != null) SoulHelper.modelPartTypeRegistry.getModelPartType(modelPartTypeName).get else null
+class ModelPart(model: ModelBase, boxName: String, var modelPartType: String) extends ModelRenderer(model, boxName) with INBTTagable {
 
     var initialRotationPointX: Float = 0.0F
     var initialRotationPointY: Float = 0.0F
@@ -220,7 +218,7 @@ class ModelPart(model: ModelBase, boxName: String, var modelPartTypeName: String
         }
         compound.setTag("cubeList", boxList)
 
-        compound.setString("modelPartType", modelPartTypeName)
+        compound.setString("modelPartType", modelPartType)
 
         compound
     }
@@ -286,8 +284,7 @@ class ModelPart(model: ModelBase, boxName: String, var modelPartTypeName: String
             cubeList.asInstanceOf[util.ArrayList[ModelBox]].add(box)
         }
 
-        modelPartTypeName = compound.getString("modelPartType")
-        modelPartType = SoulHelper.modelPartTypeRegistry.getModelPartType(modelPartTypeName).get
+        modelPartType = compound.getString("modelPartType")
 
         compound
     }

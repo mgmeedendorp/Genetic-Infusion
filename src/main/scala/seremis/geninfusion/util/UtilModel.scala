@@ -12,7 +12,7 @@ object UtilModel {
     def morphModel(modelFrom: Model, modelTo: Model, maxIndex: Int, index: Int): Model = {
         val result: ListBuffer[ModelPart] = ListBuffer()
 
-        SoulHelper.modelPartTypeRegistry.getModelPartTypeNames.foreach(name => {
+        SoulHelper.modelPartTypeRegistry.getModelPartTypes.foreach(name => {
             morphModelPartArray(modelFrom.getParts(name), modelTo.getParts(name), maxIndex, index).foreach(part => result += part)
         })
 
@@ -46,7 +46,7 @@ object UtilModel {
     }
 
     def morphModelPart(partFrom: Option[ModelPart], partTo: Option[ModelPart], maxIndex: Int, index: Int): ModelPart = {
-        val part = new ModelPart(if(partTo.nonEmpty) partTo.get.boxName else partFrom.get.boxName, if(partTo.nonEmpty) partTo.get.modelPartTypeName else partFrom.get.modelPartTypeName)
+        val part = new ModelPart(if(partTo.nonEmpty) partTo.get.boxName else partFrom.get.boxName, if(partTo.nonEmpty) partTo.get.modelPartType else partFrom.get.modelPartType)
 
         if(partFrom.nonEmpty && partTo.nonEmpty) {
             for((from, to) <- partFrom.get.getBoxList zip partTo.get.getBoxList) {
