@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.soul.IChromosome
 import seremis.geninfusion.api.soul.lib.Genes._
-import seremis.geninfusion.api.soul.lib.ModelPartTypes
+import seremis.geninfusion.api.soul.lib.{AttachmentPoints, ModelPartTypes}
 import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 import seremis.geninfusion.soul.{Allele, Chromosome}
 
@@ -136,13 +136,13 @@ class StandardSoulCreeper extends StandardSoul {
 
         creeperModel.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, null.asInstanceOf[Entity])
         
-        model.addPart(ModelPart.rendererToPart(creeperModel.body, ModelPartTypes.Body))
-        model.addPart(ModelPart.rendererToPart(creeperModel.head, ModelPartTypes.Head))
-        model.addPart(ModelPart.rendererToPart(creeperModel.leg1, ModelPartTypes.LegsRight))
-        model.addPart(ModelPart.rendererToPart(creeperModel.leg2, ModelPartTypes.LegsLeft))
-        model.addPart(ModelPart.rendererToPart(creeperModel.leg3, ModelPartTypes.LegsRight))
-        model.addPart(ModelPart.rendererToPart(creeperModel.leg4, ModelPartTypes.LegsLeft))
-        model.addPart(ModelPart.rendererToPart(creeperModel.field_78133_b, ModelPartTypes.Headwear))
+        model.addPart(ModelPart.rendererToPart(creeperModel.body, ModelPartTypes.Body, AttachmentPoints.Creeper.Body))
+        model.addPart(ModelPart.rendererToPart(creeperModel.head, ModelPartTypes.Head, AttachmentPoints.Creeper.Head))
+        model.addPart(ModelPart.rendererToPart(creeperModel.leg1, ModelPartTypes.LegsRight, AttachmentPoints.Creeper.LegRightBack))
+        model.addPart(ModelPart.rendererToPart(creeperModel.leg2, ModelPartTypes.LegsLeft, AttachmentPoints.Creeper.LegLeftBack))
+        model.addPart(ModelPart.rendererToPart(creeperModel.leg3, ModelPartTypes.LegsRight, AttachmentPoints.Creeper.LegRightFront))
+        model.addPart(ModelPart.rendererToPart(creeperModel.leg4, ModelPartTypes.LegsLeft, AttachmentPoints.Creeper.LegLeftFront))
+        model.addPart(ModelPart.rendererToPart(creeperModel.field_78133_b, ModelPartTypes.Headwear, AttachmentPoints.Creeper.Head))
 
         model
     }

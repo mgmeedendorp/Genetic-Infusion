@@ -5,6 +5,7 @@ object ModelPartTypes {
     private final val ID = Genes.ID
 
     final val Head = ID + ".modelPartType.head"
+    final val Neck = ID + ".modelPartType.neck"
     final val Headwear = ID + ".modelPartType.headwear"
     final val Body = ID + ".modelPartType.body"
     final val Cloak = ID + ".modelPartType.cloak"

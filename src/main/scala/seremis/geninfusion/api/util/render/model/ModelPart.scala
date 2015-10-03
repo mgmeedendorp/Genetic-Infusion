@@ -6,8 +6,7 @@ import java.util.Random
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.client.model._
 import net.minecraft.client.renderer.GLAllocation
-import net.minecraft.entity.{Entity, EntityLiving}
-import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
+import net.minecraft.nbt.{NBTTagString, NBTTagCompound, NBTTagList}
 import net.minecraft.util.Vec3
 import net.minecraftforge.common.util.Constants
 import seremis.geninfusion.api.soul.SoulHelper
@@ -16,29 +15,11 @@ import seremis.geninfusion.helper.GIReflectionHelper
 import seremis.geninfusion.util.{GIModelBox, INBTTagable}
 
 import scala.collection.JavaConversions._
-import scala.collection.mutable.ListBuffer
 
 object ModelPart {
 
-    private def getModelPartsFromModel(model: ModelBase, entity: EntityLiving, callRotationAngles: Boolean): Array[ModelPart] = {
-        val parts: ListBuffer[ModelPart] = ListBuffer()
-
-        model.swingProgress = 0
-
-        if (callRotationAngles && !model.isInstanceOf[ModelSkeleton]) {
-            model.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, null.asInstanceOf[Entity])
-        }
-
-        val fields = GIReflectionHelper.getFields(model)
-
-        for (field <- fields if (field.getType == classOf[ModelRenderer] || field.getType == classOf[ModelPart]) && field.getName != VariableLib.ModelBipedCloak && field.getName != VariableLib.ModelBipedEars && field.getName != VariableLib.ModelBipedHeadwear) {
-           // parts.add(modelRendererToModelPart(GIReflectionHelper.getField(model, field.getName).asInstanceOf[ModelRenderer]))
-        }
-        parts.to[Array]
-    }
-
-    def rendererToPart(model: ModelRenderer, modelPartType: String): ModelPart = {
-        val modelPart = new ModelPart(GIReflectionHelper.getField(model, VariableLib.ModelRendererBaseModel).asInstanceOf[ModelBase], model.boxName, modelPartType)
+    def rendererToPart(model: ModelRenderer, modelPartType: String, attachmentPoints: Array[(Vec3, Array[String])]): ModelPart = {
+        val modelPart = new ModelPart(GIReflectionHelper.getField(model, VariableLib.ModelRendererBaseModel).asInstanceOf[ModelBase], model.boxName, modelPartType, attachmentPoints)
         modelPart.childModels = model.childModels
         modelPart.cubeList = model.cubeList
         modelPart.isHidden = model.isHidden
@@ -59,14 +40,10 @@ object ModelPart {
         modelPart
     }
 
-    def fromNBT(compound: NBTTagCompound): ModelPart = {
-        val part = new ModelPart(null.asInstanceOf[String])
-        part.readFromNBT(compound)
-        part
-    }
+    def fromNBT(compound: NBTTagCompound): ModelPart = new ModelPart(compound)
 }
 
-class ModelPart(model: ModelBase, boxName: String, var modelPartType: String, var attachmentPoints: Array[(Vec3, String)]) extends ModelRenderer(model, boxName) with INBTTagable {
+class ModelPart(model: ModelBase, boxName: String, var modelPartType: String, var attachmentPoints: Array[(Vec3, Array[String])]) extends ModelRenderer(model, boxName) with INBTTagable {
 
     var initialRotationPointX: Float = 0.0F
     var initialRotationPointY: Float = 0.0F
@@ -76,20 +53,20 @@ class ModelPart(model: ModelBase, boxName: String, var modelPartType: String, va
     var initialRotateAngleY: Float = 0.0F
     var initialRotateAngleZ: Float = 0.0F
 
-    def this(modelPartTypeName: String) {
-        this(SoulHelper.entityModel, "", modelPartTypeName)
+    def this(modelPartTypeName: String, attachmentPoints: Array[(Vec3, Array[String])]) {
+        this(SoulHelper.entityModel, "", modelPartTypeName, attachmentPoints)
     }
 
-    def this(boxName: String, modelPartTypeName: String) {
-        this(SoulHelper.entityModel, boxName, modelPartTypeName)
+    def this(boxName: String, modelPartTypeName: String, attachmentPoints: Array[(Vec3, Array[String])]) {
+        this(SoulHelper.entityModel, boxName, modelPartTypeName, attachmentPoints)
     }
 
-    def this(model: ModelBase, modelPartTypeName: String) {
-        this(model, "", modelPartTypeName)
+    def this(model: ModelBase, modelPartTypeName: String, attachmentPoints: Array[(Vec3, Array[String])]) {
+        this(model, "", modelPartTypeName, attachmentPoints)
     }
 
     def this(compound: NBTTagCompound) {
-        this(null, compound.getString("boxName"), null)
+        this(null, compound.getString("boxName"), null, null)
         readFromNBT(compound)
     }
 
@@ -122,20 +99,20 @@ class ModelPart(model: ModelBase, boxName: String, var modelPartType: String, va
         rotateAngleZ = initialRotateAngleZ
     }
 
-    def setAttachmentPoints(attachmentPoints: Array[(Vec3, String)]) = this.attachmentPoints = attachmentPoints
+    def setAttachmentPoints(attachmentPoints: Array[(Vec3, Array[String])]) = this.attachmentPoints = attachmentPoints
 
-    def getAttachmentPoints: Array[(Vec3, String)] = attachmentPoints
+    def getAttachmentPoints: Array[(Vec3, Array[String])] = attachmentPoints
 
     def getInitialRotateAngles: Vec3 = {
         Vec3.createVectorHelper(initialRotateAngleX, initialRotateAngleY, initialRotateAngleZ)
     }
 
     def getTextureOffsetX: Int = {
-        GIReflectionHelper.getField(this, VariableLib.ModelRendererTextureOffsetX).asInstanceOf[java.lang.Integer]
+        GIReflectionHelper.getField(this, VariableLib.ModelRendererTextureOffsetX).asInstanceOf[Int]
     }
 
     def getTextureOffsetY: Int = {
-        GIReflectionHelper.getField(this, VariableLib.ModelRendererTextureOffsetY).asInstanceOf[java.lang.Integer]
+        GIReflectionHelper.getField(this, VariableLib.ModelRendererTextureOffsetY).asInstanceOf[Int]
     }
 
     def getBoxList: Array[ModelBox] = cubeList.asInstanceOf[util.ArrayList[ModelBox]].to[Array]
@@ -233,7 +210,13 @@ class ModelPart(model: ModelBase, boxName: String, var modelPartType: String, va
             nbt.setDouble("vecY", point._1.yCoord)
             nbt.setDouble("vecZ", point._1.zCoord)
 
-            nbt.setString("partType", point._2)
+            val typeList = new NBTTagList
+
+            point._2.foreach(partType => {
+                typeList.appendTag(new NBTTagString(partType))
+            })
+
+            nbt.setTag("partTypes", typeList)
 
             list.appendTag(nbt)
         })
@@ -308,15 +291,21 @@ class ModelPart(model: ModelBase, boxName: String, var modelPartType: String, va
 
         val list = compound.getTagList("attachmentPoints", Constants.NBT.TAG_COMPOUND)
 
-        attachmentPoints = new Array[(Vec3, String)](list.tagCount())
+        attachmentPoints = new Array[(Vec3, Array[String])](list.tagCount())
 
         for(i <- 0 to list.tagCount) {
             val nbt = list.getCompoundTagAt(i)
 
             val vec3 = Vec3.createVectorHelper(nbt.getDouble("vecX"), nbt.getDouble("vecY"), nbt.getDouble("vecZ"))
-            val partType = nbt.getString("partType")
 
-            attachmentPoints(i) = (vec3, partType)
+            val partTypes = nbt.getTagList("partTypes", Constants.NBT.TAG_STRING)
+            val types = new Array[String](partTypes.tagCount)
+
+            for(j <- 0 to partTypes.tagCount) {
+                types(j) = partTypes.getStringTagAt(j)
+            }
+
+            attachmentPoints(i) = (vec3, types)
         }
 
         compound

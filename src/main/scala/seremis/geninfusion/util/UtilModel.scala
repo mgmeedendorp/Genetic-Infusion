@@ -46,7 +46,7 @@ object UtilModel {
     }
 
     def morphModelPart(partFrom: Option[ModelPart], partTo: Option[ModelPart], maxIndex: Int, index: Int): ModelPart = {
-        val part = new ModelPart(if(partTo.nonEmpty) partTo.get.boxName else partFrom.get.boxName, if(partTo.nonEmpty) partTo.get.modelPartType else partFrom.get.modelPartType)
+        val part = new ModelPart(if(partTo.nonEmpty) partTo.get.boxName else partFrom.get.boxName, if(partTo.nonEmpty) partTo.get.modelPartType else partFrom.get.modelPartType,  if(partTo.nonEmpty) partTo.get.attachmentPoints else partFrom.get.attachmentPoints)
 
         if(partFrom.nonEmpty && partTo.nonEmpty) {
             for((from, to) <- partFrom.get.getBoxList zip partTo.get.getBoxList) {
