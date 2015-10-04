@@ -14,13 +14,14 @@ object Model {
     }
 }
 
-class Model extends INBTTagable {
+class Model() extends INBTTagable {
 
     var partsMap: HashMap[String, Array[ModelPart]] = HashMap()
+    var connectedToMap: HashMap[String, Array[ModelPart]] = HashMap()
 
-    def this(modelParts: Array[ModelPart]) {
+    def this(modelParts: Array[ModelPart]*) {
         this()
-        addModelParts(modelParts)
+        modelParts.foreach(parts => addModelParts(parts))
     }
 
     def addPart(modelPart: ModelPart) {
@@ -29,6 +30,18 @@ class Model extends INBTTagable {
 
     def addModelParts(modelParts: Array[ModelPart]) {
         for(part <- modelParts) {
+            part.attachmentPoints.foreach(point => point._2.foreach(partType => {
+                if(connectedToMap.contains(partType)) {
+                    val parts = connectedToMap.get(partType).get
+
+                    val list = parts.to[ListBuffer] += part
+
+                    connectedToMap += (partType -> list.to[Array])
+                } else {
+                    connectedToMap += (partType -> Array(part))
+                }
+            }))
+
             if(partsMap.contains(part.modelPartType)) {
                 val parts = partsMap.get(part.modelPartType).get
 
@@ -57,6 +70,25 @@ class Model extends INBTTagable {
         else
             None
     }
+
+    def getPartsThatConnectTo(modelPartType: String*): Option[Array[ModelPart]] = {
+        val list: ListBuffer[ModelPart] = ListBuffer()
+
+        modelPartType.foreach(partType => {
+            connectedToMap.get(partType).foreach(array => {
+                array.foreach(element => {
+                    list += element
+                })
+            })
+        })
+
+        if(list.nonEmpty)
+            Some(list.to[Array])
+        else
+            None
+    }
+
+    def partsConnect(part1: ModelPart, part2: ModelPart): Boolean = getPartsThatConnectTo(part1.modelPartType).getOrElse(new Array[ModelPart](0)).contains(part2) && getPartsThatConnectTo(part2.modelPartType).getOrElse(new Array[ModelPart](0)).contains(part1)
 
     def getAllParts: Array[ModelPart] = {
         val parts: ListBuffer[ModelPart] = ListBuffer()

@@ -1,13 +1,21 @@
 package seremis.geninfusion.util
 
+import net.minecraft.client.model.ModelBox
 import net.minecraft.util.Vec3
-import seremis.geninfusion.api.soul.SoulHelper
+import seremis.geninfusion.api.soul.lib.{ModelPartTypes, Genes}
+import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.api.util.render.animation.AnimationCache
 import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 
-import scala.collection.mutable.ListBuffer
+import scala.collection.mutable.{HashMap, WeakHashMap, ListBuffer}
 
 object UtilModel {
+
+    var cachedCoords: WeakHashMap[(ModelPart, ModelBox), (Vec3, Vec3)] = WeakHashMap()
+    var cachedCoordsWithoutRotation: WeakHashMap[(ModelPart, ModelBox), (Vec3, Vec3)] = WeakHashMap()
+    var cachedOuterBox: WeakHashMap[ModelPart, (Vec3, Vec3)] = WeakHashMap()
+    var cachedWidth: WeakHashMap[Model, Float] = WeakHashMap()
+    var cachedHeight: WeakHashMap[Model, Float] = WeakHashMap()
 
     def morphModel(modelFrom: Model, modelTo: Model, maxIndex: Int, index: Int): Model = {
         val result: ListBuffer[ModelPart] = ListBuffer()
@@ -165,5 +173,152 @@ object UtilModel {
             }
         }
         part
+    }
+
+    def getPartBoxCoordinates(part: ModelPart, box: ModelBox): (Vec3, Vec3) = {
+        if(!cachedCoords.contains((part, box))) {
+            var pos1 = Vec3.createVectorHelper(part.offsetX + Math.min(box.posX2, box.posX1), part.offsetY + Math.min(box.posY2, box.posY1), part.offsetZ + Math.min(box.posZ2, box.posZ1))
+            var pos2 = Vec3.createVectorHelper(part.offsetX + Math.max(box.posX2, box.posX1), part.offsetY + Math.max(box.posY2, box.posY1), part.offsetZ + Math.max(box.posZ2, box.posZ1))
+
+            pos1.rotateAroundX(-part.rotateAngleX)
+            pos1.rotateAroundY(-part.rotateAngleY)
+            pos1.rotateAroundZ(-part.rotateAngleZ)
+            pos2.rotateAroundX(-part.rotateAngleX)
+            pos2.rotateAroundY(-part.rotateAngleY)
+            pos2.rotateAroundZ(-part.rotateAngleZ)
+
+            pos1 = pos1.addVector(part.rotationPointX, part.rotationPointY, part.rotationPointZ)
+            pos2 = pos2.addVector(part.rotationPointX, part.rotationPointY, part.rotationPointZ)
+
+            val nearX = Math.min(pos1.xCoord, pos2.xCoord)
+            val nearY = Math.min(pos1.yCoord, pos2.yCoord)
+            val nearZ = Math.min(pos1.zCoord, pos2.zCoord)
+            val farX = Math.max(pos1.xCoord, pos2.xCoord)
+            val farY = Math.max(pos1.yCoord, pos2.yCoord)
+            val farZ = Math.max(pos1.zCoord, pos2.zCoord)
+
+            cachedCoords += ((part, box) ->(Vec3.createVectorHelper(nearX, nearY, nearZ), Vec3.createVectorHelper(farX, farY, farZ)))
+        }
+        cachedCoords.get((part, box)).get
+    }
+
+    def getPartBoxCoordinatesWithoutRotation(part: ModelPart, box: ModelBox): (Vec3, Vec3) = {
+        if(!cachedCoordsWithoutRotation.contains(part -> box)) {
+            val pos1 = Vec3.createVectorHelper(Math.min(box.posX2, box.posX1), Math.min(box.posY2, box.posY1), Math.min(box.posZ2, box.posZ1))
+            val pos2 = Vec3.createVectorHelper(Math.max(box.posX2, box.posX1), Math.max(box.posY2, box.posY1), Math.max(box.posZ2, box.posZ1))
+
+            val nearX = Math.min(pos1.xCoord, pos2.xCoord)
+            val nearY = Math.min(pos1.yCoord, pos2.yCoord)
+            val nearZ = Math.min(pos1.zCoord, pos2.zCoord)
+            val farX = Math.max(pos1.xCoord, pos2.xCoord)
+            val farY = Math.max(pos1.yCoord, pos2.yCoord)
+            val farZ = Math.max(pos1.zCoord, pos2.zCoord)
+
+            cachedCoordsWithoutRotation += ((part, box) -> (Vec3.createVectorHelper(nearX, nearY, nearZ), Vec3.createVectorHelper(farX, farY, farZ)))
+        }
+        cachedCoordsWithoutRotation.get((part, box)).get
+    }
+
+    def getModelWidth(entity: IEntitySoulCustom): Float = getModelWidth(getModel(entity))
+
+    def getModelWidth(model: Model): Float = {
+        if(!cachedWidth.contains(model)) {
+            var minX, minZ = Float.PositiveInfinity
+            var maxX, maxZ = Float.NegativeInfinity
+
+            for(part <- model.getAllParts) {
+                val outerBox = getModelPartOuterBox(part)
+
+                if(outerBox._1.xCoord < minX)
+                    minX = outerBox._1.xCoord.toFloat
+                if(outerBox._1.zCoord < minZ)
+                    minZ = outerBox._1.zCoord.toFloat
+                if(outerBox._2.xCoord > maxX)
+                    maxX = outerBox._2.xCoord.toFloat
+                if(outerBox._2.zCoord > maxZ)
+                    maxZ = outerBox._2.zCoord.toFloat
+            }
+
+            val dX = maxX - minX
+            val dZ = maxZ - minZ
+
+            var width = 0.0F
+
+            if(dX > dZ * 1.3F || dZ > dX * 1.3F) {
+                width = (dX + dZ) / 2
+            } else {
+                width = Math.max(dX, dZ)
+            }
+
+            cachedWidth += (model -> width / 16)
+        }
+        cachedWidth.get(model).get
+    }
+
+    def getModelHeight(entity: IEntitySoulCustom): Float = getModelHeight(getModel(entity))
+
+    def getModelHeight(model: Model): Float = {
+        if(!cachedHeight.contains(model)) {
+            var minY = Float.PositiveInfinity
+            var maxY = Float.NegativeInfinity
+
+            for(part <- model.getAllParts) {
+                val outerBox = getModelPartOuterBox(part)
+
+                if(outerBox._1.yCoord < minY)
+                    minY = outerBox._1.yCoord.toFloat
+                if(outerBox._2.yCoord > maxY)
+                    maxY = outerBox._2.yCoord.toFloat
+            }
+            cachedHeight += (model -> (maxY - minY) / 16)
+        }
+        cachedHeight.get(model).get
+    }
+
+    def getModel(entity: IEntitySoulCustom): Model = {
+        SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneModel)
+    }
+
+    def modelChanged(model: Model) {
+        model.getAllParts.foreach(p => p.getBoxList.foreach(b => {
+            if(cachedCoords.contains(p -> b)) cachedCoords -= (p -> b)
+            if(cachedCoordsWithoutRotation.contains(p -> b)) cachedCoordsWithoutRotation -= (p -> b)
+        }))
+        if(cachedHeight.contains(model)) cachedHeight -= model
+        model.getAllParts.foreach(p => if(cachedOuterBox.contains(p)) cachedOuterBox -= p)
+        if(cachedWidth.contains(model)) cachedWidth -= model
+    }
+
+    def getModelPartOuterBox(part: ModelPart): (Vec3, Vec3) = {
+        if(!cachedOuterBox.contains(part)) {
+            val near = Vec3.createVectorHelper(Double.PositiveInfinity, Double.PositiveInfinity, Double.PositiveInfinity)
+            val far = Vec3.createVectorHelper(Double.NegativeInfinity, Double.NegativeInfinity, Double.NegativeInfinity)
+            part.getBoxList.foreach(cube => {
+                val coords = getPartBoxCoordinates(part, cube)
+
+                if(coords._1.xCoord < near.xCoord)
+                    near.xCoord = coords._1.xCoord
+                if(coords._1.yCoord < near.yCoord)
+                    near.yCoord = coords._1.yCoord
+                if(coords._1.zCoord < near.zCoord)
+                    near.zCoord = coords._1.zCoord
+                if(coords._2.xCoord > far.xCoord)
+                    far.xCoord = coords._2.xCoord
+                if(coords._2.yCoord > far.yCoord)
+                    far.yCoord = coords._2.yCoord
+                if(coords._2.zCoord > far.zCoord)
+                    far.zCoord = coords._2.zCoord
+            })
+            cachedOuterBox += (part ->(near, far))
+        }
+        cachedOuterBox.get(part).get
+    }
+
+    def reattachModelParts(model: Model): Model = {
+
+
+
+
+        model
     }
 }

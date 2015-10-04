@@ -1,6 +1,7 @@
 package seremis.geninfusion.soul
 
 import seremis.geninfusion.api.soul.IModelPartTypeRegistry
+import seremis.geninfusion.api.util.render.model.{ModelPart, Model}
 
 import scala.collection.mutable.ListBuffer
 
