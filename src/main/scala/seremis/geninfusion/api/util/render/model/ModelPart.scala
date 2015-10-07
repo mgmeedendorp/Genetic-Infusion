@@ -15,6 +15,7 @@ import seremis.geninfusion.helper.GIReflectionHelper
 import seremis.geninfusion.util.{GIModelBox, INBTTagable}
 
 import scala.collection.JavaConversions._
+import scala.collection.mutable.ListBuffer
 
 object ModelPart {
 
@@ -45,6 +46,8 @@ object ModelPart {
 
 class ModelPart(model: ModelBase, boxName: String, var modelPartType: String, var attachmentPoints: Array[(Vec3, Array[String])]) extends ModelRenderer(model, boxName) with INBTTagable {
 
+    var attachmentPointPartTypes: Array[String] = if(attachmentPoints != null) populateAttachmentPointPartTypes() else null
+
     var initialRotationPointX: Float = 0.0F
     var initialRotationPointY: Float = 0.0F
     var initialRotationPointZ: Float = 0.0F
@@ -54,7 +57,7 @@ class ModelPart(model: ModelBase, boxName: String, var modelPartType: String, va
     var initialRotateAngleZ: Float = 0.0F
 
     def this(modelPartTypeName: String, attachmentPoints: Array[(Vec3, Array[String])]) {
-        this(SoulHelper.entityModel, "", modelPartTypeName, attachmentPoints)
+        this(SoulHelper.entityModel, null, modelPartTypeName, attachmentPoints)
     }
 
     def this(boxName: String, modelPartTypeName: String, attachmentPoints: Array[(Vec3, Array[String])]) {
@@ -71,6 +74,16 @@ class ModelPart(model: ModelBase, boxName: String, var modelPartType: String, va
     }
 
     private var firstTick: Boolean = true
+
+    def populateAttachmentPointPartTypes(): Array[String] = {
+        if(attachmentPoints != null) {
+            val result: ListBuffer[String] = ListBuffer()
+            attachmentPoints.foreach(point => point._2.foreach(str => result += str))
+
+            return result.to[Array]
+        }
+        null
+    }
 
     @SideOnly(Side.CLIENT)
     override def render(scale: Float) {
@@ -306,6 +319,8 @@ class ModelPart(model: ModelBase, boxName: String, var modelPartType: String, va
             }
 
             attachmentPoints(i) = (vec3, types)
+
+            attachmentPointPartTypes = populateAttachmentPointPartTypes()
         }
 
         compound

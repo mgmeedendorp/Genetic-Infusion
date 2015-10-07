@@ -2,12 +2,12 @@ package seremis.geninfusion.util
 
 import net.minecraft.client.model.ModelBox
 import net.minecraft.util.Vec3
-import seremis.geninfusion.api.soul.lib.{ModelPartTypes, Genes}
+import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.api.util.render.animation.AnimationCache
 import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 
-import scala.collection.mutable.{HashMap, WeakHashMap, ListBuffer}
+import scala.collection.mutable.{HashMap, ListBuffer, WeakHashMap}
 
 object UtilModel {
 
@@ -315,10 +315,49 @@ object UtilModel {
     }
 
     def reattachModelParts(model: Model): Model = {
+        //Map[Weight, Tuple(Parts)]
+        val possibleConnections: HashMap[Float, ((ModelPart, (String, Vec3)), (ModelPart, (String, Vec3)))] = HashMap()
+        val connectedModelParts: ListBuffer[(ModelPart, (String, Vec3))] = ListBuffer()
 
+        SoulHelper.modelPartTypeRegistry.getModelPartTypes.foreach(partType => {
+            model.getParts(partType).foreach(array => array.foreach(part1 => {
+                part1.getAttachmentPoints.foreach(point => {
+                    var preferenceIndex1 = 0
+                    point._2.foreach(partType => {
+                        model.getParts().foreach(array => array.foreach(part2 => {
+                            part2.getAttachmentPoints.foreach(point2 => {
+                                var preferenceIndex2 = 0
+                                point2._2.foreach(partType2 => {
+                                    if(part1.modelPartType == partType2 && part2.modelPartType == partType) {
+                                        val weight: Double = (10.0 - preferenceIndex1.toFloat * 2 - preferenceIndex2.toFloat) / 10.0
+                                        possibleConnections += (weight.toFloat -> ((part1, (partType, point._1)), (part2, (partType2, point2._1))))
+                                    }
+                                    preferenceIndex2 += 1
+                                })
+                            })
+                        }))
+                        preferenceIndex1 += 1
+                    })
+                })
+            }))
+        })
 
+        possibleConnections.toSeq.sortBy(_._1)
 
+        for(pair <- possibleConnections.values) {
+            if(connectedModelParts.contains(pair._1) || connectedModelParts.contains(pair._2)) {
+
+                connectParts((pair._1._1, pair._1._2._2), (pair._2._1, pair._2._2._2))
+
+                connectedModelParts += pair._1
+                connectedModelParts += pair._2
+            }
+        }
 
         model
+    }
+
+    def connectParts(pair1: (ModelPart, Vec3), pair2: (ModelPart, Vec3)) = {
+        //TODO Unfinished
     }
 }
