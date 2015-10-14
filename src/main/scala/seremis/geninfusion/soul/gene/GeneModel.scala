@@ -12,6 +12,7 @@ import seremis.geninfusion.api.util.render.animation.AnimationCache
 import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 import seremis.geninfusion.helper.GITextureHelper
 import seremis.geninfusion.soul.Allele
+import seremis.geninfusion.util.UtilModel
 
 import scala.collection.mutable.ListBuffer
 
@@ -67,18 +68,6 @@ class GeneModel extends Gene(classOf[Model]) {
         val combinedParent1Tuple = createParentTexture(combinedParent1._1)
         val combinedParent2Tuple = createParentTexture(combinedParent2._1)
 
-        try {
-            AnimationCache.attachModelPartsToBody(new Model(modelParent1Primary), new Model(modelParent1Secondary), new Model(combinedParent1Tuple._2.to[Array]))
-        } catch {
-            case e: Exception => e.printStackTrace()
-        }
-
-        try {
-            AnimationCache.attachModelPartsToBody(new Model(modelParent2Primary), new Model(modelParent2Secondary), new Model(combinedParent2Tuple._2.to[Array]))
-        } catch {
-            case e: Exception => e.printStackTrace()
-        }
-
         val child = randomlyCombineModels(new Model(combinedParent1Tuple._2.to[Array]), combinedParent1Tuple._1, new Model(combinedParent2Tuple._2.to[Array]), combinedParent2Tuple._1)
 
         val dominantTuple = createParentTexture(child._1)
@@ -88,13 +77,13 @@ class GeneModel extends Gene(classOf[Model]) {
         val recessiveModel = new Model(recessiveTuple._2.to[Array])
 
         try {
-            AnimationCache.attachModelPartsToBody(new Model(combinedParent1Tuple._2.to[Array]), new Model(combinedParent2Tuple._2.to[Array]), new Model(dominantTuple._2.to[Array]))
+            UtilModel.reattachModelParts(new Model(dominantTuple._2.to[Array]))
         } catch {
             case e: Exception => e.printStackTrace()
         }
 
         try {
-            AnimationCache.attachModelPartsToBody(new Model(combinedParent1Tuple._2.to[Array]), new Model(combinedParent2Tuple._2.to[Array]), new Model(recessiveTuple._2.to[Array]))
+            UtilModel.reattachModelParts(new Model(recessiveTuple._2.to[Array]))
         } catch {
             case e: Exception => e.printStackTrace()
         }

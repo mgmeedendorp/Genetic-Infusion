@@ -6,7 +6,7 @@ import java.util.Random
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.client.model._
 import net.minecraft.client.renderer.GLAllocation
-import net.minecraft.nbt.{NBTTagString, NBTTagCompound, NBTTagList}
+import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import net.minecraft.util.Vec3
 import net.minecraftforge.common.util.Constants
 import seremis.geninfusion.api.soul.SoulHelper
@@ -19,7 +19,7 @@ import scala.collection.mutable.ListBuffer
 
 object ModelPart {
 
-    def rendererToPart(model: ModelRenderer, modelPartType: String, attachmentPoints: Array[(Vec3, Array[String])]): ModelPart = {
+    def rendererToPart(model: ModelRenderer, modelPartType: String, attachmentPoints: Array[ModelPartAttachmentPoint]): ModelPart = {
         val modelPart = new ModelPart(GIReflectionHelper.getField(model, VariableLib.ModelRendererBaseModel).asInstanceOf[ModelBase], model.boxName, modelPartType, attachmentPoints)
         modelPart.childModels = model.childModels
         modelPart.cubeList = model.cubeList
@@ -44,7 +44,7 @@ object ModelPart {
     def fromNBT(compound: NBTTagCompound): ModelPart = new ModelPart(compound)
 }
 
-class ModelPart(model: ModelBase, boxName: String, var modelPartType: String, var attachmentPoints: Array[(Vec3, Array[String])]) extends ModelRenderer(model, boxName) with INBTTagable {
+class ModelPart(model: ModelBase, boxName: String, var modelPartType: String, var attachmentPoints: Array[ModelPartAttachmentPoint]) extends ModelRenderer(model, boxName) with INBTTagable {
 
     var attachmentPointPartTypes: Array[String] = if(attachmentPoints != null) populateAttachmentPointPartTypes() else null
 
@@ -56,21 +56,25 @@ class ModelPart(model: ModelBase, boxName: String, var modelPartType: String, va
     var initialRotateAngleY: Float = 0.0F
     var initialRotateAngleZ: Float = 0.0F
 
-    def this(modelPartTypeName: String, attachmentPoints: Array[(Vec3, Array[String])]) {
+    def this(modelPartTypeName: String, attachmentPoints: Array[ModelPartAttachmentPoint]) {
         this(SoulHelper.entityModel, null, modelPartTypeName, attachmentPoints)
     }
 
-    def this(boxName: String, modelPartTypeName: String, attachmentPoints: Array[(Vec3, Array[String])]) {
+    def this(boxName: String, modelPartTypeName: String, attachmentPoints: Array[ModelPartAttachmentPoint]) {
         this(SoulHelper.entityModel, boxName, modelPartTypeName, attachmentPoints)
     }
 
-    def this(model: ModelBase, modelPartTypeName: String, attachmentPoints: Array[(Vec3, Array[String])]) {
+    def this(model: ModelBase, modelPartTypeName: String, attachmentPoints: Array[ModelPartAttachmentPoint]) {
         this(model, "", modelPartTypeName, attachmentPoints)
     }
 
-    def this(compound: NBTTagCompound) {
-        this(null, compound.getString("boxName"), null, null)
+    def this(model: ModelBase, compound: NBTTagCompound) = {
+        this(model, compound.getString("boxName"), null, null)
         readFromNBT(compound)
+    }
+
+    def this(compound: NBTTagCompound) {
+        this(SoulHelper.entityModel, compound)
     }
 
     private var firstTick: Boolean = true
@@ -78,7 +82,7 @@ class ModelPart(model: ModelBase, boxName: String, var modelPartType: String, va
     def populateAttachmentPointPartTypes(): Array[String] = {
         if(attachmentPoints != null) {
             val result: ListBuffer[String] = ListBuffer()
-            attachmentPoints.foreach(point => point._2.foreach(str => result += str))
+            attachmentPoints.foreach(point => point.getConnectedModelPartTypes.foreach(str => result += str))
 
             return result.to[Array]
         }
@@ -112,9 +116,9 @@ class ModelPart(model: ModelBase, boxName: String, var modelPartType: String, va
         rotateAngleZ = initialRotateAngleZ
     }
 
-    def setAttachmentPoints(attachmentPoints: Array[(Vec3, Array[String])]) = this.attachmentPoints = attachmentPoints
+    def setAttachmentPoints(attachmentPoints: Array[ModelPartAttachmentPoint]) = this.attachmentPoints = attachmentPoints
 
-    def getAttachmentPoints: Array[(Vec3, Array[String])] = attachmentPoints
+    def getAttachmentPoints: Array[ModelPartAttachmentPoint] = attachmentPoints
 
     def getInitialRotateAngles: Vec3 = {
         Vec3.createVectorHelper(initialRotateAngleX, initialRotateAngleY, initialRotateAngleZ)
@@ -217,21 +221,7 @@ class ModelPart(model: ModelBase, boxName: String, var modelPartType: String, va
         val list = new NBTTagList
 
         attachmentPoints.foreach(point => {
-            val nbt = new NBTTagCompound
-
-            nbt.setDouble("vecX", point._1.xCoord)
-            nbt.setDouble("vecY", point._1.yCoord)
-            nbt.setDouble("vecZ", point._1.zCoord)
-
-            val typeList = new NBTTagList
-
-            point._2.foreach(partType => {
-                typeList.appendTag(new NBTTagString(partType))
-            })
-
-            nbt.setTag("partTypes", typeList)
-
-            list.appendTag(nbt)
+            list.appendTag(point.writeToNBT(new NBTTagCompound))
         })
 
         compound.setTag("attachmentPoints", list)
@@ -304,24 +294,14 @@ class ModelPart(model: ModelBase, boxName: String, var modelPartType: String, va
 
         val list = compound.getTagList("attachmentPoints", Constants.NBT.TAG_COMPOUND)
 
-        attachmentPoints = new Array[(Vec3, Array[String])](list.tagCount())
+        attachmentPoints = new Array[ModelPartAttachmentPoint](list.tagCount())
 
-        for(i <- 0 to list.tagCount) {
+        for(i <- 0 until list.tagCount) {
             val nbt = list.getCompoundTagAt(i)
 
-            val vec3 = Vec3.createVectorHelper(nbt.getDouble("vecX"), nbt.getDouble("vecY"), nbt.getDouble("vecZ"))
-
-            val partTypes = nbt.getTagList("partTypes", Constants.NBT.TAG_STRING)
-            val types = new Array[String](partTypes.tagCount)
-
-            for(j <- 0 to partTypes.tagCount) {
-                types(j) = partTypes.getStringTagAt(j)
-            }
-
-            attachmentPoints(i) = (vec3, types)
-
-            attachmentPointPartTypes = populateAttachmentPointPartTypes()
+            attachmentPoints(i) = new ModelPartAttachmentPoint(nbt)
         }
+        attachmentPointPartTypes = populateAttachmentPointPartTypes()
 
         compound
     }

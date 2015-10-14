@@ -5,7 +5,7 @@ import net.minecraft.util.Vec3
 import seremis.geninfusion.api.soul.lib.Genes
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.api.util.render.animation.AnimationCache
-import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
+import seremis.geninfusion.api.util.render.model.{ModelPartAttachmentPoint, Model, ModelPart}
 
 import scala.collection.mutable.{HashMap, ListBuffer, WeakHashMap}
 
@@ -314,28 +314,41 @@ object UtilModel {
         cachedOuterBox.get(part).get
     }
 
+    def distSq(part1: ModelPart, part2: ModelPart): Float = {
+        val outer1 = getModelPartOuterBox(part1)
+        val outer2 = getModelPartOuterBox(part2)
+
+        val dx = Math.abs(outer1._1.xCoord - outer2._1.xCoord)
+        val dy = Math.abs(outer1._1.yCoord - outer2._1.yCoord)
+        val dz = Math.abs(outer1._1.zCoord - outer2._1.zCoord)
+
+        (dx * dx + dy * dy + dz * dz).toFloat
+    }
+
     def reattachModelParts(model: Model): Model = {
-        //Map[Weight, Tuple(Parts)]
-        val possibleConnections: HashMap[Float, ((ModelPart, (String, Vec3)), (ModelPart, (String, Vec3)))] = HashMap()
-        val connectedModelParts: ListBuffer[(ModelPart, (String, Vec3))] = ListBuffer()
+        //Map[Weight, Tuple(Parts, (AttachmentPoint)]
+        val possibleConnections: HashMap[Float, ((ModelPart, String, ModelPartAttachmentPoint), (ModelPart, String, ModelPartAttachmentPoint))] = HashMap()
+        val connectedModelParts: ListBuffer[(ModelPart, ModelPartAttachmentPoint)] = ListBuffer()
 
         SoulHelper.modelPartTypeRegistry.getModelPartTypes.foreach(partType => {
             model.getParts(partType).foreach(array => array.foreach(part1 => {
                 part1.getAttachmentPoints.foreach(point => {
                     var preferenceIndex1 = 0
-                    point._2.foreach(partType => {
-                        model.getParts().foreach(array => array.foreach(part2 => {
+                    point.getConnectedModelPartTypes.foreach(partType => {
+                        model.getAllParts.foreach(part2 => {
                             part2.getAttachmentPoints.foreach(point2 => {
                                 var preferenceIndex2 = 0
-                                point2._2.foreach(partType2 => {
+                                point2.getConnectedModelPartTypes.foreach(partType2 => {
                                     if(part1.modelPartType == partType2 && part2.modelPartType == partType) {
-                                        val weight: Double = (10.0 - preferenceIndex1.toFloat * 2 - preferenceIndex2.toFloat) / 10.0
-                                        possibleConnections += (weight.toFloat -> ((part1, (partType, point._1)), (part2, (partType2, point2._1))))
+                                        val distance = distSq(part1, part2)
+
+                                        val weight = (10.0 - preferenceIndex1.toFloat * 2 - preferenceIndex2.toFloat - distance) / 10.0 + possibleConnections.size * 0.000001
+                                        possibleConnections += (weight.toFloat -> ((part1, partType, point), (part2, partType2, point2)))
                                     }
                                     preferenceIndex2 += 1
                                 })
                             })
-                        }))
+                        })
                         preferenceIndex1 += 1
                     })
                 })
@@ -344,20 +357,51 @@ object UtilModel {
 
         possibleConnections.toSeq.sortBy(_._1)
 
-        for(pair <- possibleConnections.values) {
-            if(connectedModelParts.contains(pair._1) || connectedModelParts.contains(pair._2)) {
+        for(tuple <- possibleConnections.values) {
+            if(!connectedModelParts.contains((tuple._1._1, tuple._1._3)) && !connectedModelParts.contains((tuple._2._1, tuple._2._3))) {
 
-                connectParts((pair._1._1, pair._1._2._2), (pair._2._1, pair._2._2._2))
+                connectParts((tuple._1._1, tuple._1._3.getPointLocation), (tuple._2._1, tuple._2._3.getPointLocation))
 
-                connectedModelParts += pair._1
-                connectedModelParts += pair._2
+                connectedModelParts += ((tuple._1._1, tuple._1._3))
+                connectedModelParts += ((tuple._2._1, tuple._2._3))
             }
         }
+
+        //TODO put model on ground
 
         model
     }
 
     def connectParts(pair1: (ModelPart, Vec3), pair2: (ModelPart, Vec3)) = {
-        //TODO Unfinished
+        val outerPart1 = getModelPartOuterBox(pair1._1)
+        val outerPart2 = getModelPartOuterBox(pair2._1)
+
+        val dX1 = ((outerPart2._1.xCoord + pair2._2.xCoord) - (outerPart1._1.xCoord + pair1._2.xCoord)) / 2
+        val dY1 = ((outerPart2._1.yCoord + pair2._2.yCoord) - (outerPart1._1.yCoord + pair1._2.yCoord)) / 2
+        val dZ1 = ((outerPart2._1.zCoord + pair2._2.zCoord) - (outerPart1._1.zCoord + pair1._2.zCoord)) / 2
+
+        val dX2 = ((outerPart1._1.xCoord + pair1._2.xCoord) - (outerPart2._1.xCoord + pair2._2.xCoord)) / 2
+        val dY2 = ((outerPart1._1.yCoord + pair1._2.yCoord) - (outerPart2._1.yCoord + pair2._2.yCoord)) / 2
+        val dZ2 = ((outerPart1._1.zCoord + pair1._2.zCoord) - (outerPart2._1.zCoord + pair2._2.zCoord)) / 2
+
+        pair1._1.rotationPointX += dX1.toFloat
+        pair1._1.rotationPointY += dY1.toFloat
+        pair1._1.rotationPointZ += dZ1.toFloat
+
+        pair2._1.rotationPointX += dX2.toFloat
+        pair2._1.rotationPointY += dY2.toFloat
+        pair2._1.rotationPointZ += dZ2.toFloat
+
+        cachedOuterBox -= pair1._1
+        cachedOuterBox -= pair2._1
+
+        pair1._1.getBoxList.foreach(box => {
+            cachedCoords -= ((pair1._1, box))
+            cachedCoordsWithoutRotation -= ((pair1._1, box))
+        })
+        pair2._1.getBoxList.foreach(box => {
+            cachedCoords -= ((pair2._1, box))
+            cachedCoordsWithoutRotation -= ((pair2._1, box))
+        })
     }
 }

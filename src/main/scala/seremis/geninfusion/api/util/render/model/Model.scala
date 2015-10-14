@@ -30,7 +30,7 @@ class Model() extends INBTTagable {
 
     def addModelParts(modelParts: Array[ModelPart]) {
         for(part <- modelParts) {
-            part.attachmentPoints.foreach(point => point._2.foreach(partType => {
+            part.attachmentPoints.foreach(point => point.getConnectedModelPartTypes.foreach(partType => {
                 if(connectedToMap.contains(partType)) {
                     val parts = connectedToMap.get(partType).get
 
