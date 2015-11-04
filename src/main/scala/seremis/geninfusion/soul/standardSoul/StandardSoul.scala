@@ -489,6 +489,7 @@ abstract class StandardSoul extends IStandardSoul {
         }
 
         biped.bipedHeadwear.rotateAngleY = 0.0F
+        biped.bipedHead.rotateAngleY = 0.0F
 
         model.addPart(ModelPart.rendererToPart(biped.bipedBody, ModelPartTypes.Body, AttachmentPoints.Biped.Body))
         model.addPart(ModelPart.rendererToPart(biped.bipedHead, ModelPartTypes.Head, AttachmentPoints.Biped.Head))
