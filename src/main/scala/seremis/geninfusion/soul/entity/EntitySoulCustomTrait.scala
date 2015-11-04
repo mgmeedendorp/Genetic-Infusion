@@ -15,12 +15,11 @@ import net.minecraft.potion.PotionEffect
 import net.minecraft.util.{AxisAlignedBB, ChunkCoordinates, DamageSource}
 import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
-import seremis.geninfusion.api.soul.lib.{Genes, VariableLib}
+import seremis.geninfusion.api.lib.{Genes, VariableLib}
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
 import seremis.geninfusion.api.util.DataWatcherHelper
 import seremis.geninfusion.api.util.data.Data
 import seremis.geninfusion.entity.GIEntity
-import seremis.geninfusion.network.ModPackets
 import seremis.geninfusion.network.packet.PacketAddDataWatcherHelperMapping
 import seremis.geninfusion.soul.entity.logic.VariableSyncLogic
 import seremis.geninfusion.soul.{Soul, TraitHandler}

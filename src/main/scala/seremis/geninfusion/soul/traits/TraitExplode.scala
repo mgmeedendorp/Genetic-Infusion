@@ -7,8 +7,8 @@ import net.minecraft.entity.effect.EntityLightningBolt
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
 import net.minecraft.nbt.NBTTagCompound
-import seremis.geninfusion.api.soul.lib.Genes
-import seremis.geninfusion.api.soul.lib.VariableLib._
+import seremis.geninfusion.api.lib.Genes
+import seremis.geninfusion.api.lib.VariableLib._
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.api.util.DataWatcherHelper
 

@@ -3,11 +3,10 @@ package seremis.geninfusion.soul
 import net.minecraft.entity.monster.{EntityCreeper, EntitySkeleton, EntitySpider, EntityZombie}
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import seremis.geninfusion.api.lib.Animations._
+import seremis.geninfusion.api.lib.Genes._
+import seremis.geninfusion.api.lib.Traits._
 import seremis.geninfusion.api.soul.SoulHelper._
-import seremis.geninfusion.api.soul.lib.Animations._
-import seremis.geninfusion.api.soul.lib.Genes._
-import seremis.geninfusion.api.soul.lib.ModelPartTypes._
-import seremis.geninfusion.api.soul.lib.Traits._
 import seremis.geninfusion.api.soul.{ISoul, SoulHelper}
 import seremis.geninfusion.soul.AlleleType._
 import seremis.geninfusion.soul.entity.animation.{AnimationHead, _}

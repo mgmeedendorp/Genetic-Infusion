@@ -3,20 +3,17 @@ package seremis.geninfusion.api.util
 import java.nio.ByteBuffer
 import java.util
 
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint
 import net.minecraft.crash.CrashReport
 import net.minecraft.entity.DataWatcher
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ChunkCoordinates
-import net.minecraft.world.World
 import org.apache.logging.log4j.Level
 import seremis.geninfusion.GeneticInfusion
-import seremis.geninfusion.api.soul.lib.VariableLib
+import seremis.geninfusion.api.lib.VariableLib
 import seremis.geninfusion.entity.GIEntity
 import seremis.geninfusion.helper.GIReflectionHelper
 import seremis.geninfusion.network.packet.PacketAddDataWatcherHelperMapping
-import seremis.geninfusion.soul.entity.EntitySoulCustomTrait
 import seremis.geninfusion.util.UtilNBT
 
 import scala.collection.JavaConverters._

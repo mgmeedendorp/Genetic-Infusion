@@ -11,8 +11,8 @@ import net.minecraft.network.play.server.{S04PacketEntityEquipment, S0DPacketCol
 import net.minecraft.stats.AchievementList
 import net.minecraft.world.WorldServer
 import seremis.geninfusion.GeneticInfusion
-import seremis.geninfusion.api.soul.lib.Genes
-import seremis.geninfusion.api.soul.lib.VariableLib._
+import seremis.geninfusion.api.lib.Genes
+import seremis.geninfusion.api.lib.VariableLib._
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
 import scala.collection.JavaConversions._

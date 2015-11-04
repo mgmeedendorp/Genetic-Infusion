@@ -14,7 +14,7 @@ import net.minecraftforge.client.IItemRenderer
 import net.minecraftforge.client.IItemRenderer.{ItemRenderType, ItemRendererHelper}
 import org.lwjgl.opengl.GL11
 import org.lwjgl.util.Color
-import seremis.geninfusion.api.soul.lib.CrystalColors
+import seremis.geninfusion.api.lib.CrystalColors
 import seremis.geninfusion.client.model.ModelCrystal
 import seremis.geninfusion.helper.GIRenderHelper
 import seremis.geninfusion.lib.{Localizations, RenderIds}

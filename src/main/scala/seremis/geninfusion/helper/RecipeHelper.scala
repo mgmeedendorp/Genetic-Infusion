@@ -2,7 +2,7 @@ package seremis.geninfusion.helper
 
 import cpw.mods.fml.common.registry.GameRegistry._
 import net.minecraft.block.Block
-import net.minecraft.inventory.{ContainerWorkbench, Container, InventoryCrafting}
+import net.minecraft.inventory.InventoryCrafting
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.IRecipe
 import net.minecraft.nbt.NBTTagCompound
@@ -10,7 +10,6 @@ import net.minecraft.world.World
 import net.minecraftforge.oredict.RecipeSorter
 import net.minecraftforge.oredict.RecipeSorter.Category
 import seremis.geninfusion.api.soul.SoulHelper
-import seremis.geninfusion.api.soul.lib.VariableLib
 import seremis.geninfusion.block.{BlockCrystal, ModBlocks}
 import seremis.geninfusion.lib.DefaultProps
 

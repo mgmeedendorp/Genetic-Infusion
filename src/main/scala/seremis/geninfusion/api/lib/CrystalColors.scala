@@ -1,4 +1,4 @@
-package seremis.geninfusion.api.soul.lib
+package seremis.geninfusion.api.lib
 
 import org.lwjgl.util.Color
 

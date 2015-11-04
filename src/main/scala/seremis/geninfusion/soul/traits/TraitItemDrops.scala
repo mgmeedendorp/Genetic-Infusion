@@ -10,8 +10,8 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.DamageSource
 import net.minecraftforge.common.ForgeHooks
 import seremis.geninfusion.GeneticInfusion
-import seremis.geninfusion.api.soul.lib.Genes
-import seremis.geninfusion.api.soul.lib.VariableLib._
+import seremis.geninfusion.api.lib.Genes
+import seremis.geninfusion.api.lib.VariableLib._
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
 class TraitItemDrops extends Trait {

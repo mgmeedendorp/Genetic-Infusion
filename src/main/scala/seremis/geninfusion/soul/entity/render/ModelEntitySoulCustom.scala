@@ -1,13 +1,8 @@
 package seremis.geninfusion.soul.entity.render
 
-import net.minecraft.client.model.{ModelSpider, ModelBase}
+import net.minecraft.client.model.ModelBase
 import net.minecraft.entity.Entity
-import org.lwjgl.opengl.GL11
 import seremis.geninfusion.api.soul.IEntitySoulCustom
-import seremis.geninfusion.api.soul.lib.ModelPartTypes
-import seremis.geninfusion.api.util.render.model.{ModelPart, Model}
-import seremis.geninfusion.helper.{GIRenderHelper, GITextureHelper}
-import seremis.geninfusion.lib.Localizations
 import seremis.geninfusion.soul.TraitHandler
 
 class ModelEntitySoulCustom extends ModelBase {

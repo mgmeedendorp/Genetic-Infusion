@@ -1,6 +1,6 @@
 package seremis.geninfusion.soul.entity.animation
 
-import seremis.geninfusion.api.soul.lib.ModelPartTypes
+import seremis.geninfusion.api.lib.ModelPartTypes
 import seremis.geninfusion.api.soul.{IAnimation, IEntitySoulCustom}
 import seremis.geninfusion.api.util.render.animation.AnimationCache
 import seremis.geninfusion.api.util.render.model.{Model, ModelPart}

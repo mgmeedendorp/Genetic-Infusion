@@ -2,10 +2,10 @@ package seremis.geninfusion.util
 
 import net.minecraft.client.model.ModelBox
 import net.minecraft.util.Vec3
-import seremis.geninfusion.api.soul.lib.Genes
+import seremis.geninfusion.api.lib.Genes
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.api.util.render.animation.AnimationCache
-import seremis.geninfusion.api.util.render.model.{ModelPartAttachmentPoint, Model, ModelPart}
+import seremis.geninfusion.api.util.render.model.{Model, ModelPart, ModelPartAttachmentPoint}
 
 import scala.collection.mutable.{HashMap, ListBuffer, WeakHashMap}
 
@@ -334,11 +334,11 @@ object UtilModel {
             model.getParts(partType).foreach(array => array.foreach(part1 => {
                 part1.getAttachmentPoints.foreach(point => {
                     var preferenceIndex1 = 0
-                    point.getConnectedModelPartTypes.foreach(partType => {
+                    point.getConnectableModelPartTypes.foreach(partType => {
                         model.getAllParts.foreach(part2 => {
                             part2.getAttachmentPoints.foreach(point2 => {
                                 var preferenceIndex2 = 0
-                                point2.getConnectedModelPartTypes.foreach(partType2 => {
+                                point2.getConnectableModelPartTypes.foreach(partType2 => {
                                     if(part1.modelPartType == partType2 && part2.modelPartType == partType) {
                                         val distance = distSq(part1, part2)
 

@@ -8,8 +8,8 @@ import net.minecraft.entity.{EntityLiving, EntityLivingBase, EnumCreatureAttribu
 import net.minecraft.potion.{Potion, PotionEffect}
 import net.minecraft.util.DamageSource
 import net.minecraftforge.common.ForgeHooks
-import seremis.geninfusion.api.soul.lib.Genes
-import seremis.geninfusion.api.soul.lib.VariableLib._
+import seremis.geninfusion.api.lib.Genes
+import seremis.geninfusion.api.lib.VariableLib._
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
 class TraitAttacked extends Trait {

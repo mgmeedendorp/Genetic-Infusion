@@ -6,7 +6,7 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.{Entity, EntityLiving}
 import net.minecraft.pathfinding.PathEntity
 import net.minecraft.util.Vec3
-import seremis.geninfusion.api.soul.lib.Genes
+import seremis.geninfusion.api.lib.Genes
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.api.util.GIRandomPositionGenerator
 

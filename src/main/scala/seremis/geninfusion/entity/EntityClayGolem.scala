@@ -11,7 +11,7 @@ import net.minecraft.item.{Item, ItemStack}
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.{AxisAlignedBB, DamageSource}
 import net.minecraft.world.World
-import seremis.geninfusion.api.soul.lib.Genes
+import seremis.geninfusion.api.lib.Genes
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.api.util.render.model.Model
 import seremis.geninfusion.block.BlockCrystal

@@ -1,15 +1,15 @@
 package seremis.geninfusion.soul.standardSoul
 
 import net.minecraft.client.model.ModelSkeleton
-import net.minecraft.entity.{Entity, EntityLiving}
+import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.monster.EntitySkeleton
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import seremis.geninfusion.api.lib.{AttachmentPoints, Genes, ModelPartTypes}
 import seremis.geninfusion.api.soul.IChromosome
-import seremis.geninfusion.api.soul.lib.{AttachmentPoints, ModelPartTypes, Genes}
-import seremis.geninfusion.api.util.render.model.{ModelPart, Model}
+import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 import seremis.geninfusion.soul.{Allele, Chromosome}
 
 class StandardSoulSkeleton extends StandardSoul {

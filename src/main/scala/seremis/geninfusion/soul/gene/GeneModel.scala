@@ -6,7 +6,7 @@ import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
 import javax.imageio.ImageIO
 
 import net.minecraft.nbt.NBTTagCompound
-import seremis.geninfusion.api.soul.lib.Genes
+import seremis.geninfusion.api.lib.Genes
 import seremis.geninfusion.api.soul.{IChromosome, SoulHelper}
 import seremis.geninfusion.api.util.render.animation.AnimationCache
 import seremis.geninfusion.api.util.render.model.{Model, ModelPart}

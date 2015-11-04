@@ -13,7 +13,7 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.MovingObjectPosition
 import net.minecraft.world.World
-import seremis.geninfusion.api.soul.lib.CrystalColors
+import seremis.geninfusion.api.lib.CrystalColors
 import seremis.geninfusion.api.soul.{ISoul, SoulHelper}
 import seremis.geninfusion.lib.{Blocks, RenderIds}
 import seremis.geninfusion.tileentity.TileCrystal

@@ -8,8 +8,8 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import seremis.geninfusion.api.lib.Genes._
 import seremis.geninfusion.api.soul.IChromosome
-import seremis.geninfusion.api.soul.lib.Genes._
 import seremis.geninfusion.api.util.render.model.Model
 import seremis.geninfusion.soul.{Allele, Chromosome}
 

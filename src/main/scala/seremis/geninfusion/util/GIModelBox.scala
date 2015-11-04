@@ -1,7 +1,7 @@
 package seremis.geninfusion.util
 
 import net.minecraft.client.model.{ModelBox, ModelRenderer, PositionTextureVertex, TexturedQuad}
-import seremis.geninfusion.api.soul.lib.VariableLib
+import seremis.geninfusion.api.lib.VariableLib
 import seremis.geninfusion.helper.GIReflectionHelper
 
 class GIModelBox(modelRenderer: ModelRenderer) extends ModelBox(modelRenderer, 0, 0, 0, 0, 0, 0, 0, 0, 0) {

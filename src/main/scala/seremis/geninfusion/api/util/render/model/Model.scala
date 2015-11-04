@@ -16,8 +16,8 @@ object Model {
 
 class Model() extends INBTTagable {
 
-    var partsMap: HashMap[String, Array[ModelPart]] = HashMap()
-    var connectedToMap: HashMap[String, Array[ModelPart]] = HashMap()
+    var partsMap: HashMap[ModelPartType, Array[ModelPart]] = HashMap()
+    var connectedToMap: HashMap[ModelPartType, Array[ModelPart]] = HashMap()
 
     def this(modelParts: Array[ModelPart]*) {
         this()
@@ -30,7 +30,7 @@ class Model() extends INBTTagable {
 
     def addModelParts(modelParts: Array[ModelPart]) {
         for(part <- modelParts) {
-            part.attachmentPoints.foreach(point => point.getConnectedModelPartTypes.foreach(partType => {
+            part.attachmentPoints.foreach(point => point.getConnectableModelPartTypes.foreach(partType => {
                 if(connectedToMap.contains(partType)) {
                     val parts = connectedToMap.get(partType).get
 
@@ -54,10 +54,10 @@ class Model() extends INBTTagable {
         }
     }
     
-    def getParts(modelPartType: String*): Option[Array[ModelPart]] = {
+    def getParts(modelPartTypeName: String*): Option[Array[ModelPart]] = {
         val list: ListBuffer[ModelPart] = ListBuffer()
 
-        modelPartType.foreach(partType => {
+        modelPartTypeName.foreach(partType => {
             partsMap.get(partType).foreach(array => {
                 array.foreach(element => {
                     list += element
@@ -71,10 +71,10 @@ class Model() extends INBTTagable {
             None
     }
 
-    def getPartsThatConnectTo(modelPartType: String*): Option[Array[ModelPart]] = {
+    def getPartsThatConnectTo(modelPartTypeName: String*): Option[Array[ModelPart]] = {
         val list: ListBuffer[ModelPart] = ListBuffer()
 
-        modelPartType.foreach(partType => {
+        modelPartTypeName.foreach(partType => {
             connectedToMap.get(partType).foreach(array => {
                 array.foreach(element => {
                     list += element

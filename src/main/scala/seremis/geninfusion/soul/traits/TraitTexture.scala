@@ -8,7 +8,7 @@ import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.texture.DynamicTexture
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.{DamageSource, ResourceLocation}
-import seremis.geninfusion.api.soul.lib.Genes
+import seremis.geninfusion.api.lib.Genes
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.lib.{DefaultProps, Localizations}
 

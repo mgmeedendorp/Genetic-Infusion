@@ -13,8 +13,9 @@ import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ResourceLocation
-import seremis.geninfusion.api.soul.lib.Genes._
-import seremis.geninfusion.api.soul.lib.{AttachmentPoints, ModelPartTypes}
+import seremis.geninfusion.api.lib.AttachmentPoints
+import seremis.geninfusion.api.lib.Genes._
+import seremis.geninfusion.api.lib.ModelPartTypes.{Biped, General}
 import seremis.geninfusion.api.soul.{IChromosome, IStandardSoul}
 import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 import seremis.geninfusion.soul.{Allele, Chromosome}
@@ -491,13 +492,13 @@ abstract class StandardSoul extends IStandardSoul {
         biped.bipedHeadwear.rotateAngleY = 0.0F
         biped.bipedHead.rotateAngleY = 0.0F
 
-        model.addPart(ModelPart.rendererToPart(biped.bipedBody, ModelPartTypes.Body, AttachmentPoints.Biped.Body))
-        model.addPart(ModelPart.rendererToPart(biped.bipedHead, ModelPartTypes.Head, AttachmentPoints.Biped.Head))
-        model.addPart(ModelPart.rendererToPart(biped.bipedHeadwear, ModelPartTypes.Headwear, AttachmentPoints.Biped.Head))
-        model.addPart(ModelPart.rendererToPart(biped.bipedLeftArm, ModelPartTypes.ArmsLeft, AttachmentPoints.Biped.ArmLeft))
-        model.addPart(ModelPart.rendererToPart(biped.bipedRightArm, ModelPartTypes.ArmsRight, AttachmentPoints.Biped.ArmRight))
-        model.addPart(ModelPart.rendererToPart(biped.bipedLeftLeg, ModelPartTypes.LegsLeft, AttachmentPoints.Biped.LegLeft))
-        model.addPart(ModelPart.rendererToPart(biped.bipedRightLeg, ModelPartTypes.LegsRight, AttachmentPoints.Biped.LegRight))
+        model.addPart(ModelPart.rendererToPart(biped.bipedBody, General.Body, AttachmentPoints.Biped.Body))
+        model.addPart(ModelPart.rendererToPart(biped.bipedHead, General.Head, AttachmentPoints.Biped.Head))
+        model.addPart(ModelPart.rendererToPart(biped.bipedHeadwear, General.Headwear, AttachmentPoints.Biped.Head))
+        model.addPart(ModelPart.rendererToPart(biped.bipedLeftArm, Biped.ArmLeft, AttachmentPoints.Biped.ArmLeft))
+        model.addPart(ModelPart.rendererToPart(biped.bipedRightArm, Biped.ArmRight, AttachmentPoints.Biped.ArmRight))
+        model.addPart(ModelPart.rendererToPart(biped.bipedLeftLeg, Biped.LegLeft, AttachmentPoints.Biped.LegLeft))
+        model.addPart(ModelPart.rendererToPart(biped.bipedRightLeg, Biped.LegRight, AttachmentPoints.Biped.LegRight))
 
         model
     }

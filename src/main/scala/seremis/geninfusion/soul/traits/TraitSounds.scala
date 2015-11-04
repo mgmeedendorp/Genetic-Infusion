@@ -1,8 +1,8 @@
 package seremis.geninfusion.soul.traits
 
 import net.minecraft.entity.{Entity, EntityLiving}
-import seremis.geninfusion.api.soul.lib.Genes
-import seremis.geninfusion.api.soul.lib.VariableLib._
+import seremis.geninfusion.api.lib.Genes
+import seremis.geninfusion.api.lib.VariableLib._
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
 class TraitSounds extends Trait {

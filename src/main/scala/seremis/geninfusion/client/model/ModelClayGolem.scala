@@ -3,8 +3,7 @@ package seremis.geninfusion.client.model
 import net.minecraft.client.model.ModelBase
 import net.minecraft.entity.EntityLiving
 import org.lwjgl.opengl.GL11
-import seremis.geninfusion.api.soul.lib.{AttachmentPoints, ModelPartTypes}
-import seremis.geninfusion.api.util.render.animation.AnimationCache
+import seremis.geninfusion.api.lib.{AttachmentPoints, ModelPartTypes}
 import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 import seremis.geninfusion.entity.EntityClayGolem
 import seremis.geninfusion.util.UtilModel

@@ -2,7 +2,7 @@ package seremis.geninfusion.api.util.render.animation
 
 import net.minecraft.client.model.ModelBox
 import net.minecraft.util.Vec3
-import seremis.geninfusion.api.soul.lib.{Genes, ModelPartTypes}
+import seremis.geninfusion.api.lib.{Genes, ModelPartTypes}
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 
@@ -26,7 +26,7 @@ object AnimationCache {
 
     def armsHorizontal(model: Model): Boolean = {
         if(!cachedArmsHorizontal.contains(model)) {
-            model.getParts(ModelPartTypes.ArmsLeft, ModelPartTypes.ArmsRight).foreach(arms => arms.foreach(part => {
+            model.getParts(ModelPartTypes.General.Arm).foreach(arms => arms.foreach(part => {
                 val box = getModelPartOuterBox(part)
                 val diffX = Math.abs(box._1.xCoord - box._2.xCoord)
                 val diffY = Math.abs(box._1.yCoord - box._2.yCoord)
@@ -45,14 +45,14 @@ object AnimationCache {
             var highestBodyY = Float.PositiveInfinity
             var minBodyZ = Float.PositiveInfinity
 
-            model.getParts(ModelPartTypes.Head).foreach(head => head.foreach(part => {
+            model.getParts(ModelPartTypes.General.Head).foreach(head => head.foreach(part => {
                 val box = getModelPartOuterBox(part)
 
                 lowestHeadY = Math.max(box._2.yCoord, lowestHeadY).toFloat
                 maxHeadZ = Math.max(box._2.zCoord, maxHeadZ).toFloat
             }))
 
-            model.getParts(ModelPartTypes.Body).foreach(body => body.foreach(part => {
+            model.getParts(ModelPartTypes.General.Body).foreach(body => body.foreach(part => {
                 val box = getModelPartOuterBox(part)
 
                 highestBodyY = Math.min(box._1.yCoord, highestBodyY).toFloat

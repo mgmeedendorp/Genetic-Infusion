@@ -1,18 +1,18 @@
 package seremis.geninfusion.api.util.render.model
 
-import net.minecraft.nbt.{NBTTagCompound, NBTTagList, NBTTagString}
+import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import net.minecraft.util.Vec3
 import net.minecraftforge.common.util.Constants
 import seremis.geninfusion.util.INBTTagable
 
-class ModelPartAttachmentPoint(var pointLocation: Vec3, var pointPartTypes: Array[String]) extends INBTTagable {
+class ModelPartAttachmentPoint(var pointLocation: Vec3, var pointPartTypes: Array[ModelPartType]) extends INBTTagable {
 
     def this(compound: NBTTagCompound) {
         this(null, null)
         readFromNBT(compound)
     }
 
-    def getConnectedModelPartTypes: Array[String] = pointPartTypes
+    def getConnectableModelPartTypes: Array[ModelPartType] = pointPartTypes
 
     def getPointLocation: Vec3 = pointLocation
 
@@ -25,7 +25,7 @@ class ModelPartAttachmentPoint(var pointLocation: Vec3, var pointPartTypes: Arra
         val typeList = new NBTTagList
 
         pointPartTypes.foreach(partType => {
-            typeList.appendTag(new NBTTagString(partType))
+            typeList.appendTag(partType.writeToNBT(new NBTTagCompound))
         })
 
         compound.setTag("partTypes", typeList)
@@ -36,10 +36,10 @@ class ModelPartAttachmentPoint(var pointLocation: Vec3, var pointPartTypes: Arra
         pointLocation = Vec3.createVectorHelper(compound.getDouble("vecX"), compound.getDouble("vecY"), compound.getDouble("vecZ"))
 
         val partTypesList = compound.getTagList("partTypes", Constants.NBT.TAG_STRING)
-        pointPartTypes = new Array[String](partTypesList.tagCount)
+        pointPartTypes = new Array[ModelPartType](partTypesList.tagCount)
 
         for(i <- 0 until partTypesList.tagCount) {
-            pointPartTypes(i) = partTypesList.getStringTagAt(i)
+            pointPartTypes(i) = new ModelPartType(partTypesList.getCompoundTagAt(i))
         }
 
         compound
