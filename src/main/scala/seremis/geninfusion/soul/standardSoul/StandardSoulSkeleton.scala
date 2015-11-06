@@ -120,13 +120,13 @@ class StandardSoulSkeleton extends StandardSoul {
 
         biped.bipedHeadwear.rotateAngleY = 0.0F
 
-        model.addPart(ModelPart.rendererToPart(biped.bipedBody, ModelPartTypes.Body, AttachmentPoints.Biped.Body))
-        model.addPart(ModelPart.rendererToPart(biped.bipedHead, ModelPartTypes.Head, AttachmentPoints.Biped.Head))
-        model.addPart(ModelPart.rendererToPart(biped.bipedHeadwear, ModelPartTypes.Headwear, AttachmentPoints.Biped.Head))
-        model.addPart(ModelPart.rendererToPart(biped.bipedLeftArm, ModelPartTypes.ArmsLeft, AttachmentPoints.Skeleton.ArmLeft))
-        model.addPart(ModelPart.rendererToPart(biped.bipedRightArm, ModelPartTypes.ArmsRight, AttachmentPoints.Skeleton.ArmRight))
-        model.addPart(ModelPart.rendererToPart(biped.bipedLeftLeg, ModelPartTypes.LegsLeft, AttachmentPoints.Skeleton.LegLeft))
-        model.addPart(ModelPart.rendererToPart(biped.bipedRightLeg, ModelPartTypes.LegsRight, AttachmentPoints.Skeleton.LegRight))
+        model.addPart(ModelPart.rendererToPart(biped.bipedBody, ModelPartTypes.General.Body, AttachmentPoints.Biped.Body))
+        model.addPart(ModelPart.rendererToPart(biped.bipedHead, ModelPartTypes.General.Head, AttachmentPoints.Biped.Head))
+        model.addPart(ModelPart.rendererToPart(biped.bipedHeadwear, ModelPartTypes.General.Headwear, AttachmentPoints.Biped.Head))
+        model.addPart(ModelPart.rendererToPart(biped.bipedLeftArm, ModelPartTypes.Biped.ArmLeft, AttachmentPoints.Skeleton.ArmLeft))
+        model.addPart(ModelPart.rendererToPart(biped.bipedRightArm, ModelPartTypes.Biped.ArmRight, AttachmentPoints.Skeleton.ArmRight))
+        model.addPart(ModelPart.rendererToPart(biped.bipedLeftLeg, ModelPartTypes.Biped.LegLeft, AttachmentPoints.Skeleton.LegLeft))
+        model.addPart(ModelPart.rendererToPart(biped.bipedRightLeg, ModelPartTypes.Biped.LegRight, AttachmentPoints.Skeleton.LegRight))
 
         model
     }

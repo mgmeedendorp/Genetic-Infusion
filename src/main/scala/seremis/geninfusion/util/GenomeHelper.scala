@@ -41,6 +41,7 @@ object GenomeHelper {
                     fixedChromosomes(index) = chromosomes(index)
                 }
             }
+
             return fixedChromosomes.dropRight(fixedChromosomes.length - genes.length)
         }
         chromosomes

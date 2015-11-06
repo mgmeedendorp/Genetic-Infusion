@@ -292,18 +292,6 @@ object ModSouls {
         traitRegistry.registerTrait(TraitNameTag, new TraitNameTag)
         traitRegistry.registerTrait(TraitChild, new TraitChild)
 
-        modelPartTypeRegistry.register(Head)
-        modelPartTypeRegistry.register(Body)
-        modelPartTypeRegistry.register(Cloak)
-        modelPartTypeRegistry.register(Ears)
-        modelPartTypeRegistry.register(Headwear)
-        modelPartTypeRegistry.register(LegsRight)
-        modelPartTypeRegistry.register(LegsLeft)
-        modelPartTypeRegistry.register(ArmsRight)
-        modelPartTypeRegistry.register(ArmsLeft)
-        modelPartTypeRegistry.register(WingsRight)
-        modelPartTypeRegistry.register(WingsLeft)
-
         standardSoulRegistry.register(StandardSoulZombie)
         standardSoulRegistry.register(StandardSoulSkeleton)
         standardSoulRegistry.register(StandardSoulCreeper)

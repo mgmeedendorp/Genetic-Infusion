@@ -67,26 +67,26 @@ object AttachmentPoints {
 
         final val Body = Array(
             MPAP(Vec3.createVectorHelper(4.0, 0.0, 2.0), Array(General.Neck, General.Head)),
-            MPAP(Vec3.createVectorHelper(0.0, 12.0, 0.0), Array(Crpr.LegFrontRight)),
-            MPAP(Vec3.createVectorHelper(0.0, 12.0, 0.0), Array(Crpr.LegHindRight)),
-            MPAP(Vec3.createVectorHelper(8.0, 12.0, 0.0), Array(Crpr.LegFrontLeft)),
-            MPAP(Vec3.createVectorHelper(8.0, 12.0, 0.0), Array(Crpr.LegHindLeft))
+            MPAP(Vec3.createVectorHelper(2.0, 12.0, 6.0), Array(Crpr.LegFrontRight)),
+            MPAP(Vec3.createVectorHelper(2.0, 12.0, -2.0), Array(Crpr.LegHindRight)),
+            MPAP(Vec3.createVectorHelper(6.0, 12.0, 6.0), Array(Crpr.LegFrontLeft)),
+            MPAP(Vec3.createVectorHelper(6.0, 12.0, -2.0), Array(Crpr.LegHindLeft))
         )
 
         final val LegRightFront = Array(
-            MPAP(Vec3.createVectorHelper(0.0, 0.0, 4.0), Array(General.Body))
+            MPAP(Vec3.createVectorHelper(2.0, 0.0, 2.0), Array(General.Body))
         )
 
         final val LegRightBack = Array(
-            MPAP(Vec3.createVectorHelper(0.0, 0.0, 0.0), Array(General.Body))
+            MPAP(Vec3.createVectorHelper(2.0, 0.0, 2.0), Array(General.Body))
         )
 
         final val LegLeftFront = Array(
-            MPAP(Vec3.createVectorHelper(4.0, 0.0, 4.0), Array(General.Body))
+            MPAP(Vec3.createVectorHelper(2.0, 0.0, 2.0), Array(General.Body))
         )
 
         final val LegLeftBack = Array(
-            MPAP(Vec3.createVectorHelper(4.0, 0.0, 0.0), Array(General.Body))
+            MPAP(Vec3.createVectorHelper(2.0, 0.0, 2.0), Array(General.Body))
         )
     }
 

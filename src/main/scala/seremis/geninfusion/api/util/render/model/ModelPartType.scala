@@ -4,14 +4,19 @@ import net.minecraft.nbt.{NBTTagCompound, NBTTagList, NBTTagString}
 import net.minecraftforge.common.util.Constants
 import seremis.geninfusion.util.INBTTagable
 
+import scala.util.Sorting
+
 class ModelPartType(var name: String, var tags: Option[Array[String]]) extends INBTTagable {
+
+    //All tags are sorted alphabetically
+    if(tags.nonEmpty) Sorting.quickSort(tags.get)
 
     def this(name: String) {
         this(name, None)
     }
 
     def this(compound: NBTTagCompound) {
-        this(null)
+        this(null, None)
         readFromNBT(compound)
     }
 

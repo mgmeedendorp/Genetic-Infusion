@@ -4,24 +4,23 @@ import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import seremis.geninfusion.util.INBTTagable
 
 import scala.collection.immutable.HashMap
+import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
-
-object Model {
-    def fromNBT(compound: NBTTagCompound): Model = {
-        val model = new Model
-        model.readFromNBT(compound)
-        model
-    }
-}
 
 class Model() extends INBTTagable {
 
-    var partsMap: HashMap[ModelPartType, Array[ModelPart]] = HashMap()
-    var connectedToMap: HashMap[ModelPartType, Array[ModelPart]] = HashMap()
+    var partsMap: HashMap[String, Array[ModelPart]] = HashMap()
+
+    var connectedToMap: HashMap[String, Array[ModelPart]] = HashMap()
 
     def this(modelParts: Array[ModelPart]*) {
         this()
         modelParts.foreach(parts => addModelParts(parts))
+    }
+
+    def this(compound: NBTTagCompound) {
+        this()
+        readFromNBT(compound)
     }
 
     def addPart(modelPart: ModelPart) {
@@ -31,25 +30,25 @@ class Model() extends INBTTagable {
     def addModelParts(modelParts: Array[ModelPart]) {
         for(part <- modelParts) {
             part.attachmentPoints.foreach(point => point.getConnectableModelPartTypes.foreach(partType => {
-                if(connectedToMap.contains(partType)) {
-                    val parts = connectedToMap.get(partType).get
+                if(connectedToMap.contains(partType.name)) {
+                    val parts = connectedToMap.get(partType.name).get
 
                     val list = parts.to[ListBuffer] += part
 
-                    connectedToMap += (partType -> list.to[Array])
+                    connectedToMap += (partType.name -> list.to[Array])
                 } else {
-                    connectedToMap += (partType -> Array(part))
+                    connectedToMap += (partType.name -> Array(part))
                 }
             }))
 
-            if(partsMap.contains(part.modelPartType)) {
-                val parts = partsMap.get(part.modelPartType).get
+            if(partsMap.contains(part.modelPartType.name)) {
+                val parts = partsMap.get(part.modelPartType.name).get
 
                 val list = parts.to[ListBuffer] += part
 
-                partsMap += (part.modelPartType -> list.to[Array])
+                partsMap += (part.modelPartType.name -> list.to[Array])
             } else {
-                partsMap += (part.modelPartType -> Array(part))
+                partsMap += (part.modelPartType.name -> Array(part))
             }
         }
     }
@@ -62,6 +61,23 @@ class Model() extends INBTTagable {
                 array.foreach(element => {
                     list += element
                 })
+            })
+        })
+
+        if(list.nonEmpty)
+            Some(list.to[Array])
+        else
+            None
+    }
+
+    def getPartsWithTag(modelPartTypeName: String, tags: String*): Option[Array[ModelPart]] = {
+        val list: ListBuffer[ModelPart] = ListBuffer()
+
+        partsMap.get(modelPartTypeName).foreach(array => {
+            array.foreach(element => {
+                if(element.modelPartType.tags.nonEmpty && tags.forall(tag => element.modelPartType.tags.get.contains(tag))) {
+                    list += element
+                }
             })
         })
 
@@ -88,7 +104,97 @@ class Model() extends INBTTagable {
             None
     }
 
-    def partsConnect(part1: ModelPart, part2: ModelPart): Boolean = getPartsThatConnectTo(part1.modelPartType).getOrElse(new Array[ModelPart](0)).contains(part2) && getPartsThatConnectTo(part2.modelPartType).getOrElse(new Array[ModelPart](0)).contains(part1)
+    def attachmentPointsCanAttach(point1: ModelPartAttachmentPoint, point2: ModelPartAttachmentPoint): Boolean = {
+        point1.pointPartTypes.forall(partType1 => point2.getConnectableModelPartTypeNames.contains(partType1.name)) && point2.pointPartTypes.forall(partType2 => point1.getConnectableModelPartTypeNames.contains(partType2.name))
+    }
+
+    def partsConnectWeight(part1: ModelPart, part2: ModelPart): (Float, Option[ModelPartAttachmentPoint], Option[ModelPartAttachmentPoint]) = {
+        var weight = 0.0F
+        var point1: Option[ModelPartAttachmentPoint] = None
+        var point2: Option[ModelPartAttachmentPoint] = None
+
+        for(p1 <- part1.getAttachmentPoints) {
+            for(p2 <- part2.getAttachmentPoints) {
+                val tmpWeight = attachmentPointsConnectWeight(p1, part1.modelPartType, p2, part2.modelPartType)
+
+                if(tmpWeight > weight) {
+                    weight = tmpWeight
+                    point1 = Some(p1)
+                    point2 = Some(p2)
+                }
+
+                if(weight == 1.0F)
+                    return (weight, point1, point2)
+            }
+        }
+
+
+        (weight, point1, point2)
+    }
+
+    def attachmentPointsConnectWeight(point1: ModelPartAttachmentPoint, pType1: ModelPartType, point2: ModelPartAttachmentPoint, pType2: ModelPartType): Float = {
+        var weight = 0.0F
+
+        if(point2.getConnectableModelPartTypeNames.contains(pType1.name) && point1.getConnectableModelPartTypeNames.contains(pType2.name)) {
+            weight = 0.1F
+
+            if(pType1.tags.isEmpty && pType2.tags.isEmpty) {
+                weight = 1.0F
+            } else if(pType1.tags.nonEmpty && pType2.tags.nonEmpty) {
+                val arr1 = pType1.tags.get
+                val arr2 = pType2.tags.get
+                var i1 = 0
+                var i2 = 0
+                val weightModifier = 1.0F - 0.1F / Math.min(arr1.length, arr2.length).toFloat
+
+                while(i1 != arr1.length && i2 != arr2.length) {
+                    if(arr1(i1) == arr2(i2)) {
+                        weight += weightModifier
+
+                        i1 += 1
+                        i2 += 1
+                    } else if(arr1(i1) < arr2(i2)) {
+                        i1 += 1
+                    } else if(arr1(i1) > arr2(i2)) {
+                        i2 += 1
+                    }
+                }
+            }
+        }
+
+        weight
+    }
+
+    val resemblingPartCache: mutable.HashMap[ModelPart, Option[ModelPart]] = mutable.HashMap()
+
+    def getMostResemblingPart(part: ModelPart): Option[ModelPart] = {
+        if(!resemblingPartCache.contains(part)) {
+            var result: Option[ModelPart] = None
+            var resultTagsSame = -1
+
+            val tags = part.modelPartType.tags.getOrElse(new Array[ModelPart](0))
+            val parts = getParts(part.modelPartType.name).getOrElse(new Array[ModelPart](0))
+
+            for(prt <- parts) {
+                var tagsSame = 0
+
+                if(prt.modelPartType.tags.nonEmpty) {
+                    for(tag <- prt.modelPartType.tags.get) {
+                        if(tags.contains(tag))
+                            tagsSame += 1
+                    }
+                }
+
+                if(tagsSame > resultTagsSame) {
+                    resultTagsSame = tagsSame
+                    result = Some(prt)
+                }
+            }
+
+            resemblingPartCache += (part -> result)
+        }
+        resemblingPartCache.get(part).get
+    }
 
     def getAllParts: Array[ModelPart] = {
         val parts: ListBuffer[ModelPart] = ListBuffer()

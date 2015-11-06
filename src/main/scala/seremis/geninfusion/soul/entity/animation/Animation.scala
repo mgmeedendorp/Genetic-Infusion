@@ -11,26 +11,26 @@ abstract class Animation extends IAnimation {
 
     def getModel(entity: IEntitySoulCustom): Model = AnimationCache.getModel(entity)
 
-    def getModelLeftLegs(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.LegsLeft)
-    def getModelRightLegs(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.LegsRight)
+    def getModelLeftLegs(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getPartsWithTag(ModelPartTypes.Names.Leg, ModelPartTypes.Tags.Left)
+    def getModelRightLegs(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getPartsWithTag(ModelPartTypes.Names.Leg, ModelPartTypes.Tags.Right)
 
-    def getModelLegs(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.LegsLeft, ModelPartTypes.LegsRight)
+    def getModelLegs(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.Names.Leg)
 
-    def getModelLeftArms(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.ArmsLeft)
-    def getModelRightArms(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.ArmsRight)
+    def getModelLeftArms(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getPartsWithTag(ModelPartTypes.Names.Arm, ModelPartTypes.Tags.Left)
+    def getModelRightArms(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getPartsWithTag(ModelPartTypes.Names.Arm, ModelPartTypes.Tags.Right)
 
-    def getModelArms(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.ArmsLeft, ModelPartTypes.ArmsRight)
+    def getModelArms(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.Names.Arm)
 
     def armsHorizontal(entity: IEntitySoulCustom): Boolean = AnimationCache.armsHorizontal(entity)
 
-    def getModelBody(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.Body)
+    def getModelBody(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.Names.Body)
 
-    def getModelHead(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.Head)
+    def getModelHead(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.Names.Head)
 
-    def getModelLeftWings(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.WingsLeft)
-    def getModelRightWings(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.WingsRight)
+    def getModelLeftWings(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getPartsWithTag(ModelPartTypes.Names.Wing, ModelPartTypes.Tags.Left)
+    def getModelRightWings(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getPartsWithTag(ModelPartTypes.Names.Wing, ModelPartTypes.Tags.Right)
 
-    def getModelWings(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.WingsLeft, ModelPartTypes.WingsRight)
+    def getModelWings(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.Names.Wing)
 }
 
 

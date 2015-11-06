@@ -67,7 +67,7 @@ object AlleleType {
 
     val typeModel = new AlleleType(classOf[Model]) {
         override def writeToNBT(compound: NBTTagCompound, name: String, value: Any) = compound.setTag(name, value.asInstanceOf[Model].writeToNBT(new NBTTagCompound))
-        override def readFromNBT(compound: NBTTagCompound, name: String): Any = Model.fromNBT(compound.getCompoundTag(name))
+        override def readFromNBT(compound: NBTTagCompound, name: String): Any = new Model(compound.getCompoundTag(name))
     }
 
     val typeNBTTagCompound = new AlleleType(classOf[NBTTagCompound]) {

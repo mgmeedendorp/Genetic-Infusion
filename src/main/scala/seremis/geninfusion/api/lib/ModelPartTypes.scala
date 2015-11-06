@@ -15,7 +15,7 @@ object ModelPartTypes {
         final val Ears = ID + ".modelPartTypeName.ears"
         final val Leg = ID + ".modelPartTypeName.leg"
         final val Arm = ID + ".modelPartTypeName.arm"
-        final val Wings = ID + ".modelPartTypeName.wing"
+        final val Wing = ID + ".modelPartTypeName.wing"
     }
 
     object Tags {

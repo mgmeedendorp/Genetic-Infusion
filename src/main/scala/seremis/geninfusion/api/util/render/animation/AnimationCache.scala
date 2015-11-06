@@ -26,7 +26,7 @@ object AnimationCache {
 
     def armsHorizontal(model: Model): Boolean = {
         if(!cachedArmsHorizontal.contains(model)) {
-            model.getParts(ModelPartTypes.General.Arm).foreach(arms => arms.foreach(part => {
+            model.getParts(ModelPartTypes.Names.Arm).foreach(arms => arms.foreach(part => {
                 val box = getModelPartOuterBox(part)
                 val diffX = Math.abs(box._1.xCoord - box._2.xCoord)
                 val diffY = Math.abs(box._1.yCoord - box._2.yCoord)
@@ -45,14 +45,14 @@ object AnimationCache {
             var highestBodyY = Float.PositiveInfinity
             var minBodyZ = Float.PositiveInfinity
 
-            model.getParts(ModelPartTypes.General.Head).foreach(head => head.foreach(part => {
+            model.getParts(ModelPartTypes.Names.Head).foreach(head => head.foreach(part => {
                 val box = getModelPartOuterBox(part)
 
                 lowestHeadY = Math.max(box._2.yCoord, lowestHeadY).toFloat
                 maxHeadZ = Math.max(box._2.zCoord, maxHeadZ).toFloat
             }))
 
-            model.getParts(ModelPartTypes.General.Body).foreach(body => body.foreach(part => {
+            model.getParts(ModelPartTypes.Names.Body).foreach(body => body.foreach(part => {
                 val box = getModelPartOuterBox(part)
 
                 highestBodyY = Math.min(box._1.yCoord, highestBodyY).toFloat
@@ -230,7 +230,7 @@ object AnimationCache {
     def getFromParents(parent1: Model, parent2: Model, model: Model, partName: String): Option[Array[ModelPart]] = {
         if(parent1.getParts(partName).exists(legs => legs.forall(m => model.getAllParts.contains(m)))) parent1.getParts(partName) else if(parent2.getParts(partName).exists(legs => legs.forall(m => model.getAllParts.contains(m)))) parent2.getParts(partName) else None
     }
-
+/*
     def attachModelPartsToBody(parent1: Model, parent2: Model, model: Model): Model = {
         val legsLeft = getFromParents(parent1, parent2, model, ModelPartTypes.LegsLeft)
         val legsRight = getFromParents(parent1, parent2, model, ModelPartTypes.LegsRight)
@@ -424,4 +424,5 @@ object AnimationCache {
         if(cachedWidth.contains(model)) cachedWidth -= model
         if(cachedHeadVertical.contains(model)) cachedHeadVertical -= model
     }
+    */
 }

@@ -13,6 +13,7 @@ class ModelPartAttachmentPoint(var pointLocation: Vec3, var pointPartTypes: Arra
     }
 
     def getConnectableModelPartTypes: Array[ModelPartType] = pointPartTypes
+    def getConnectableModelPartTypeNames: Array[String] = pointPartTypes.map(a => a.name)
 
     def getPointLocation: Vec3 = pointLocation
 
@@ -35,7 +36,7 @@ class ModelPartAttachmentPoint(var pointLocation: Vec3, var pointPartTypes: Arra
     override def readFromNBT(compound: NBTTagCompound): NBTTagCompound = {
         pointLocation = Vec3.createVectorHelper(compound.getDouble("vecX"), compound.getDouble("vecY"), compound.getDouble("vecZ"))
 
-        val partTypesList = compound.getTagList("partTypes", Constants.NBT.TAG_STRING)
+        val partTypesList = compound.getTagList("partTypes", Constants.NBT.TAG_COMPOUND)
         pointPartTypes = new Array[ModelPartType](partTypesList.tagCount)
 
         for(i <- 0 until partTypesList.tagCount) {

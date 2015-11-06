@@ -168,7 +168,9 @@ class GeneModel extends Gene(classOf[Model]) {
         val combined1: ListBuffer[(Array[ModelPart], BufferedImage)] = ListBuffer()
         val combined2: ListBuffer[(Array[ModelPart], BufferedImage)] = ListBuffer()
 
-        SoulHelper.modelPartTypeRegistry.getModelPartTypes.foreach(name => {
+        val partTypes: Set[String] = model1.partsMap.keySet ++ model2.partsMap.keySet
+
+        partTypes.foreach(name => {
             val part1 = model1.getParts(name)
             val part2 = model2.getParts(name)
 

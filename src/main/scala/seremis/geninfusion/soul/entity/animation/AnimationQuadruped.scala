@@ -11,7 +11,7 @@ class AnimationQuadruped extends Animation {
      * @param entity The entity to be animated.
      * @return Whether this animation applies to the passed entity.
      */
-    override def canAnimateEntity(entity: IEntitySoulCustom): Boolean = getModelLegs(entity).nonEmpty && getModelLegs(entity).get.length == 4 && getModelLeftLegs(entity).get.length == 2 && getModelRightLegs(entity).get.length == 2
+    override def canAnimateEntity(entity: IEntitySoulCustom): Boolean = getModelLeftLegs(entity).nonEmpty && getModelRightLegs(entity).nonEmpty && getModelLegs(entity).get.length == 4 && getModelLeftLegs(entity).get.length == 2 && getModelRightLegs(entity).get.length == 2
 
     /**
      * Returns the animation type of this animation. Animations with the same animation types cannot run concurrently,

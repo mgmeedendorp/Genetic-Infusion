@@ -28,20 +28,20 @@ class TraitRender extends Trait {
 
         if(entity.asInstanceOf[EntityLiving].isChild) {
 
-            if(model.getParts(ModelPartTypes.Head).nonEmpty) {
+            if(model.getParts(ModelPartTypes.Names.Head).nonEmpty) {
                 GL11.glPushMatrix()
                 GL11.glScalef(0.75F, 0.75F, 0.75F)
                 GL11.glTranslatef(0.0F, 16.0F * scale, 0.0F)
-                new Model(model.getParts(ModelPartTypes.Head).get).render(scale)
+                new Model(model.getParts(ModelPartTypes.Names.Head).get).render(scale)
                 GL11.glPopMatrix()
             }
             GL11.glPushMatrix()
             GL11.glScalef(0.5F, 0.5F, 0.5F)
             GL11.glTranslatef(0.0F, 24.0F * scale, 0.0F)
-            if(model.getParts(ModelPartTypes.Head).nonEmpty) {
-                model.getWholeModelExcept(model.getParts(ModelPartTypes.Head).get).render(scale)
+            if(model.getParts(ModelPartTypes.Names.Head).nonEmpty) {
+                model.getWholeModelExcept(model.getParts(ModelPartTypes.Names.Head).get).render(scale)
             } else {
-                model.getWholeModelExcept(model.getParts(ModelPartTypes.Head).get).render(scale)
+                model.getWholeModelExcept(model.getParts(ModelPartTypes.Names.Head).get).render(scale)
             }
             GL11.glPopMatrix()
         } else {
@@ -64,7 +64,7 @@ class TraitRender extends Trait {
         var f1: Float = 0.0f
         if (itemstack1 != null) {
             GL11.glPushMatrix()
-            val head = model.getParts(ModelPartTypes.Head)
+            val head = model.getParts(ModelPartTypes.Names.Head)
             head.foreach(head => head.foreach(head => head.postRender(0.0625F)))
             item = itemstack1.getItem
             val customRenderer = MinecraftForgeClient.getItemRenderer(itemstack1, IItemRenderer.ItemRenderType.EQUIPPED)
@@ -104,8 +104,10 @@ class TraitRender extends Trait {
                 GL11.glRotatef(-20.0F, -1.0F, 0.0F, 0.0F)
                 GL11.glScalef(f1, f1, f1)
             }
-            if(!living.isDead && model.getParts(ModelPartTypes.ArmsLeft, ModelPartTypes.ArmsRight).nonEmpty) {
-                val rightArm = model.getParts(ModelPartTypes.ArmsRight).get(0)
+            val rightArms = model.getPartsWithTag(ModelPartTypes.Names.Arm, ModelPartTypes.Tags.Right)
+
+            if(!living.isDead && rightArms.nonEmpty) {
+                val rightArm = rightArms.get(0)
                 rightArm.postRender(0.0625F)
                 GL11.glTranslatef(-0.0625F, 0.4375F, 0.0625F)
                 val customRenderer = MinecraftForgeClient.getItemRenderer(itemstack, IItemRenderer.ItemRenderType.EQUIPPED)
