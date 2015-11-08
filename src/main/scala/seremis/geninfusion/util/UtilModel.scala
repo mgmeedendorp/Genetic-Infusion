@@ -189,25 +189,30 @@ object UtilModel {
 
     def getPartBoxCoordinates(part: ModelPart, box: ModelBox): (Vec3, Vec3) = {
         if(!cachedCoords.contains((part, box))) {
-            var pos1 = Vec3.createVectorHelper(part.offsetX + Math.min(box.posX2, box.posX1), part.offsetY + Math.min(box.posY2, box.posY1), part.offsetZ + Math.min(box.posZ2, box.posZ1))
-            var pos2 = Vec3.createVectorHelper(part.offsetX + Math.max(box.posX2, box.posX1), part.offsetY + Math.max(box.posY2, box.posY1), part.offsetZ + Math.max(box.posZ2, box.posZ1))
+            var p1 = Vec3.createVectorHelper(box.posX1, box.posY1, box.posZ1)
+            var p2 = Vec3.createVectorHelper(box.posX1, box.posY1, box.posZ2)
+            var p3 = Vec3.createVectorHelper(box.posX1, box.posY2, box.posZ1)
+            var p4 = Vec3.createVectorHelper(box.posX1, box.posY2, box.posZ2)
+            var p5 = Vec3.createVectorHelper(box.posX2, box.posY1, box.posZ1)
+            var p6 = Vec3.createVectorHelper(box.posX2, box.posY1, box.posZ2)
+            var p7 = Vec3.createVectorHelper(box.posX2, box.posY2, box.posZ1)
+            var p8 = Vec3.createVectorHelper(box.posX2, box.posY2, box.posZ2)
 
-            pos1.rotateAroundX(-part.rotateAngleX)
-            pos1.rotateAroundY(-part.rotateAngleY)
-            pos1.rotateAroundZ(-part.rotateAngleZ)
-            pos2.rotateAroundX(-part.rotateAngleX)
-            pos2.rotateAroundY(-part.rotateAngleY)
-            pos2.rotateAroundZ(-part.rotateAngleZ)
+            p1 = getRotatedAndOffsetVector(part, p1)
+            p2 = getRotatedAndOffsetVector(part, p2)
+            p3 = getRotatedAndOffsetVector(part, p3)
+            p4 = getRotatedAndOffsetVector(part, p4)
+            p5 = getRotatedAndOffsetVector(part, p5)
+            p6 = getRotatedAndOffsetVector(part, p6)
+            p7 = getRotatedAndOffsetVector(part, p7)
+            p8 = getRotatedAndOffsetVector(part, p8)
 
-            pos1 = pos1.addVector(part.rotationPointX, part.rotationPointY, part.rotationPointZ)
-            pos2 = pos2.addVector(part.rotationPointX, part.rotationPointY, part.rotationPointZ)
-
-            val nearX = Math.min(pos1.xCoord, pos2.xCoord)
-            val nearY = Math.min(pos1.yCoord, pos2.yCoord)
-            val nearZ = Math.min(pos1.zCoord, pos2.zCoord)
-            val farX = Math.max(pos1.xCoord, pos2.xCoord)
-            val farY = Math.max(pos1.yCoord, pos2.yCoord)
-            val farZ = Math.max(pos1.zCoord, pos2.zCoord)
+            val nearX = Math.min(p1.xCoord, Math.min(p2.xCoord, Math.min(p3.xCoord, Math.min(p4.xCoord, Math.min(p5.xCoord, Math.min(p6.xCoord, Math.min(p7.xCoord, p8.xCoord)))))))
+            val nearY = Math.min(p1.yCoord, Math.min(p2.yCoord, Math.min(p3.yCoord, Math.min(p4.yCoord, Math.min(p5.yCoord, Math.min(p6.yCoord, Math.min(p7.yCoord, p8.yCoord)))))))
+            val nearZ = Math.min(p1.zCoord, Math.min(p2.zCoord, Math.min(p3.zCoord, Math.min(p4.zCoord, Math.min(p5.zCoord, Math.min(p6.zCoord, Math.min(p7.zCoord, p8.zCoord)))))))
+            val farX = Math.max(p1.xCoord, Math.max(p2.xCoord, Math.max(p3.xCoord, Math.max(p4.xCoord, Math.max(p5.xCoord, Math.max(p6.xCoord, Math.max(p7.xCoord, p8.xCoord)))))))
+            val farY = Math.max(p1.yCoord, Math.max(p2.yCoord, Math.max(p3.yCoord, Math.max(p4.yCoord, Math.max(p5.yCoord, Math.max(p6.yCoord, Math.max(p7.yCoord, p8.yCoord)))))))
+            val farZ = Math.max(p1.zCoord, Math.max(p2.zCoord, Math.max(p3.zCoord, Math.max(p4.zCoord, Math.max(p5.zCoord, Math.max(p6.zCoord, Math.max(p7.zCoord, p8.zCoord)))))))
 
             cachedCoords += ((part, box) ->(Vec3.createVectorHelper(nearX, nearY, nearZ), Vec3.createVectorHelper(farX, farY, farZ)))
         }
@@ -216,15 +221,30 @@ object UtilModel {
 
     def getPartBoxCoordinatesWithoutRotation(part: ModelPart, box: ModelBox): (Vec3, Vec3) = {
         if(!cachedCoordsWithoutRotation.contains(part -> box)) {
-            val pos1 = Vec3.createVectorHelper(Math.min(box.posX2, box.posX1), Math.min(box.posY2, box.posY1), Math.min(box.posZ2, box.posZ1))
-            val pos2 = Vec3.createVectorHelper(Math.max(box.posX2, box.posX1), Math.max(box.posY2, box.posY1), Math.max(box.posZ2, box.posZ1))
+            var p1 = Vec3.createVectorHelper(box.posX1, box.posY1, box.posZ1)
+            var p2 = Vec3.createVectorHelper(box.posX1, box.posY1, box.posZ2)
+            var p3 = Vec3.createVectorHelper(box.posX1, box.posY2, box.posZ1)
+            var p4 = Vec3.createVectorHelper(box.posX1, box.posY2, box.posZ2)
+            var p5 = Vec3.createVectorHelper(box.posX2, box.posY1, box.posZ1)
+            var p6 = Vec3.createVectorHelper(box.posX2, box.posY1, box.posZ2)
+            var p7 = Vec3.createVectorHelper(box.posX2, box.posY2, box.posZ1)
+            var p8 = Vec3.createVectorHelper(box.posX2, box.posY2, box.posZ2)
 
-            val nearX = Math.min(pos1.xCoord, pos2.xCoord)
-            val nearY = Math.min(pos1.yCoord, pos2.yCoord)
-            val nearZ = Math.min(pos1.zCoord, pos2.zCoord)
-            val farX = Math.max(pos1.xCoord, pos2.xCoord)
-            val farY = Math.max(pos1.yCoord, pos2.yCoord)
-            val farZ = Math.max(pos1.zCoord, pos2.zCoord)
+            p1 = p1.addVector(part.offsetX + part.rotationPointX, part.offsetY + part.rotationPointY, part.offsetZ + part.rotationPointZ)
+            p2 = p2.addVector(part.offsetX + part.rotationPointX, part.offsetY + part.rotationPointY, part.offsetZ + part.rotationPointZ)
+            p3 = p3.addVector(part.offsetX + part.rotationPointX, part.offsetY + part.rotationPointY, part.offsetZ + part.rotationPointZ)
+            p4 = p4.addVector(part.offsetX + part.rotationPointX, part.offsetY + part.rotationPointY, part.offsetZ + part.rotationPointZ)
+            p5 = p5.addVector(part.offsetX + part.rotationPointX, part.offsetY + part.rotationPointY, part.offsetZ + part.rotationPointZ)
+            p6 = p6.addVector(part.offsetX + part.rotationPointX, part.offsetY + part.rotationPointY, part.offsetZ + part.rotationPointZ)
+            p7 = p7.addVector(part.offsetX + part.rotationPointX, part.offsetY + part.rotationPointY, part.offsetZ + part.rotationPointZ)
+            p8 = p8.addVector(part.offsetX + part.rotationPointX, part.offsetY + part.rotationPointY, part.offsetZ + part.rotationPointZ)
+
+            val nearX = Math.min(p1.xCoord, Math.min(p2.xCoord, Math.min(p3.xCoord, Math.min(p4.xCoord, Math.min(p5.xCoord, Math.min(p6.xCoord, Math.min(p7.xCoord, p8.xCoord)))))))
+            val nearY = Math.min(p1.yCoord, Math.min(p2.yCoord, Math.min(p3.yCoord, Math.min(p4.yCoord, Math.min(p5.yCoord, Math.min(p6.yCoord, Math.min(p7.yCoord, p8.yCoord)))))))
+            val nearZ = Math.min(p1.zCoord, Math.min(p2.zCoord, Math.min(p3.zCoord, Math.min(p4.zCoord, Math.min(p5.zCoord, Math.min(p6.zCoord, Math.min(p7.zCoord, p8.zCoord)))))))
+            val farX = Math.max(p1.xCoord, Math.max(p2.xCoord, Math.max(p3.xCoord, Math.max(p4.xCoord, Math.max(p5.xCoord, Math.max(p6.xCoord, Math.max(p7.xCoord, p8.xCoord)))))))
+            val farY = Math.max(p1.yCoord, Math.max(p2.yCoord, Math.max(p3.yCoord, Math.max(p4.yCoord, Math.max(p5.yCoord, Math.max(p6.yCoord, Math.max(p7.yCoord, p8.yCoord)))))))
+            val farZ = Math.max(p1.zCoord, Math.max(p2.zCoord, Math.max(p3.zCoord, Math.max(p4.zCoord, Math.max(p5.zCoord, Math.max(p6.zCoord, Math.max(p7.zCoord, p8.zCoord)))))))
 
             cachedCoordsWithoutRotation += ((part, box) -> (Vec3.createVectorHelper(nearX, nearY, nearZ), Vec3.createVectorHelper(farX, farY, farZ)))
         }
@@ -326,6 +346,20 @@ object UtilModel {
         cachedOuterBox.get(part).get
     }
 
+    def getRotatedAndOffsetVector(part: ModelPart, vec: Vec3): Vec3 = {
+        vec.rotateAroundX(-part.rotateAngleX)
+        vec.rotateAroundY(part.rotateAngleY)
+        vec.rotateAroundZ(-part.rotateAngleZ)
+
+        vec.addVector(part.offsetX + part.rotationPointX, part.offsetY + part.rotationPointY, part.offsetZ + part.rotationPointZ)
+    }
+
+    def getModelBoxTopLeftCornerCoord(part: ModelPart, box: ModelBox): Vec3 = {
+        val corner = Vec3.createVectorHelper(box.posX1, box.posY1, box.posZ1)
+
+        getRotatedAndOffsetVector(part, corner)
+    }
+
     def distSq(part1: ModelPart, part2: ModelPart): Float = {
         val outer1 = getModelPartOuterBox(part1)
         val outer2 = getModelPartOuterBox(part2)
@@ -341,11 +375,13 @@ object UtilModel {
         val possibleCombinations: HashMap[Float, PartPointPair] = HashMap()
 
         for(part1 <- model.getAllParts) {
-            for(part2 <- model.getAllParts) {
-                val connectionInfo = model.partsConnectWeight(part1, part2)
+            for(part2 <- model.getPartsThatConnectTo(part1.modelPartType.name).getOrElse(new Array[ModelPart](0))) {
+                if(part1 != part2) {
+                    val connectionInfo = model.partsConnectWeight(part1, part2)
 
-                if(connectionInfo._2.nonEmpty && connectionInfo._3.nonEmpty) {
-                    possibleCombinations += (connectionInfo._1 -> PartPointPair(part1, connectionInfo._2.get, part2, connectionInfo._3.get))
+                    if(connectionInfo._2.nonEmpty && connectionInfo._3.nonEmpty) {
+                        possibleCombinations += (connectionInfo._1 -> PartPointPair(part1, connectionInfo._2.get, part2, connectionInfo._3.get))
+                    }
                 }
             }
         }
@@ -364,20 +400,25 @@ object UtilModel {
             }
         }
 
+        //model.getParts(Names.Body).foreach(part => part.foreach(p => p.rotationPointX += 20))
+
         model
     }
 
     def connectParts(point1: PartPoint, point2: PartPoint, connectedParts: ConnectedParts) = {
-        val outerPart1 = getModelPartOuterBox(point1.part)
-        val outerPart2 = getModelPartOuterBox(point2.part)
+        val p1 = Vec3.createVectorHelper(point1.part.getBoxList(0).posX1, point1.part.getBoxList(0).posY1, point1.part.getBoxList(0).posZ1)
+        val p2 = Vec3.createVectorHelper(point2.part.getBoxList(0).posX1, point2.part.getBoxList(0).posY1, point2.part.getBoxList(0).posZ1)
 
-        val dX1 = ((outerPart2._1.xCoord + point2.point.getPointLocation.xCoord) - (outerPart1._1.xCoord + point1.point.getPointLocation.xCoord)) / 2
-        val dY1 = ((outerPart2._1.yCoord + point2.point.getPointLocation.yCoord) - (outerPart1._1.yCoord + point1.point.getPointLocation.yCoord)) / 2
-        val dZ1 = ((outerPart2._1.zCoord + point2.point.getPointLocation.zCoord) - (outerPart1._1.zCoord + point1.point.getPointLocation.zCoord)) / 2
+        val outerPart1 = getRotatedAndOffsetVector(point1.part, p1.addVector(point1.point.getLocation.xCoord, point1.point.getLocation.yCoord, point1.point.getLocation.zCoord))
+        val outerPart2 = getRotatedAndOffsetVector(point2.part, p2.addVector(point2.point.getLocation.xCoord, point2.point.getLocation.yCoord, point2.point.getLocation.zCoord))
 
-        val dX2 = ((outerPart1._1.xCoord + point1.point.getPointLocation.xCoord) - (outerPart2._1.xCoord + point2.point.getPointLocation.xCoord)) / 2
-        val dY2 = ((outerPart1._1.yCoord + point1.point.getPointLocation.yCoord) - (outerPart2._1.yCoord + point2.point.getPointLocation.yCoord)) / 2
-        val dZ2 = ((outerPart1._1.zCoord + point1.point.getPointLocation.zCoord) - (outerPart2._1.zCoord + point2.point.getPointLocation.zCoord)) / 2
+        val dX1 = (outerPart2.xCoord - outerPart1.xCoord) / 2
+        val dY1 = (outerPart2.yCoord - outerPart1.yCoord) / 2
+        val dZ1 = (outerPart2.zCoord - outerPart1.zCoord) / 2
+
+        val dX2 = (outerPart1.xCoord - outerPart2.xCoord) / 2
+        val dY2 = (outerPart1.yCoord - outerPart2.yCoord) / 2
+        val dZ2 = (outerPart1.zCoord - outerPart2.zCoord) / 2
 
         val connectedTo1 = connectedParts.getAllPartsConnectedTo(point1.part)
         val connectedTo2 = connectedParts.getAllPartsConnectedTo(point2.part)

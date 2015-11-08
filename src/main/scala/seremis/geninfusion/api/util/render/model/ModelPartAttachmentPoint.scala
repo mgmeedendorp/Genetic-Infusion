@@ -15,7 +15,7 @@ class ModelPartAttachmentPoint(var pointLocation: Vec3, var pointPartTypes: Arra
     def getConnectableModelPartTypes: Array[ModelPartType] = pointPartTypes
     def getConnectableModelPartTypeNames: Array[String] = pointPartTypes.map(a => a.name)
 
-    def getPointLocation: Vec3 = pointLocation
+    def getLocation: Vec3 = pointLocation
 
 
     override def writeToNBT(compound: NBTTagCompound): NBTTagCompound = {

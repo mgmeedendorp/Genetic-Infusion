@@ -133,36 +133,48 @@ class Model() extends INBTTagable {
     }
 
     def attachmentPointsConnectWeight(point1: ModelPartAttachmentPoint, pType1: ModelPartType, point2: ModelPartAttachmentPoint, pType2: ModelPartType): Float = {
-        var weight = 0.0F
+        var finalWeight = 0.0F
 
         if(point2.getConnectableModelPartTypeNames.contains(pType1.name) && point1.getConnectableModelPartTypeNames.contains(pType2.name)) {
-            weight = 0.1F
+            finalWeight = 0.1F
 
-            if(pType1.tags.isEmpty && pType2.tags.isEmpty) {
-                weight = 1.0F
-            } else if(pType1.tags.nonEmpty && pType2.tags.nonEmpty) {
-                val arr1 = pType1.tags.get
-                val arr2 = pType2.tags.get
-                var i1 = 0
-                var i2 = 0
-                val weightModifier = 1.0F - 0.1F / Math.min(arr1.length, arr2.length).toFloat
+            var index1 = 0
+            var index2 = 0
+            for(p1 <- point1.getConnectableModelPartTypes) {
+                for(p2 <- point2.getConnectableModelPartTypes) {
+                    var weight = 0.0F
+                    if(pType1.tags.isEmpty && p2.tags.isEmpty && pType2.tags.isEmpty && p1.tags.isEmpty) {
+                        return 1.0F
+                    } else {
+                        val arr1 = pType1.tags.getOrElse(new Array[String](0)) ++ p1.tags.getOrElse(new Array[String](0))
+                        val arr2 = pType2.tags.getOrElse(new Array[String](0)) ++ p2.tags.getOrElse(new Array[String](0))
+                        var i1 = 0
+                        var i2 = 0
+                        var weightModifier = 1.0F / Math.min(arr1.length, arr2.length).toFloat
 
-                while(i1 != arr1.length && i2 != arr2.length) {
-                    if(arr1(i1) == arr2(i2)) {
-                        weight += weightModifier
+                        while(i1 != arr1.length && i2 != arr2.length) {
+                            if(arr1(i1) == arr2(i2)) {
+                                weight += weightModifier
 
-                        i1 += 1
-                        i2 += 1
-                    } else if(arr1(i1) < arr2(i2)) {
-                        i1 += 1
-                    } else if(arr1(i1) > arr2(i2)) {
-                        i2 += 1
+                                i1 += 1
+                                i2 += 1
+                            } else if(arr1(i1) < arr2(i2)) {
+                                i1 += 1
+                            } else if(arr1(i1) > arr2(i2)) {
+                                i2 += 1
+                            }
+                        }
+
+                        finalWeight = Math.max(finalWeight, weight)
                     }
+                    index2 += 1
                 }
+                index1 += 1
+                index2 = 0
             }
         }
 
-        weight
+        finalWeight
     }
 
     val resemblingPartCache: mutable.HashMap[ModelPart, Option[ModelPart]] = mutable.HashMap()

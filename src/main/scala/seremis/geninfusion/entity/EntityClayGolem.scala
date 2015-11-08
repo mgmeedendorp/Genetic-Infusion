@@ -112,7 +112,7 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
                 waitAfterTransformation += 1
             }
             if(waitAfterTransformation == maxWaitAfterTransformation) {
-                sendEntityDataToServer(0, Array(0.toByte))
+                //sendEntityDataToServer(0, Array(0.toByte))
             }
         }
 

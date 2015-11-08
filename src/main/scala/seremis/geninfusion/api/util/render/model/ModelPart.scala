@@ -9,10 +9,12 @@ import net.minecraft.client.renderer.GLAllocation
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import net.minecraft.util.Vec3
 import net.minecraftforge.common.util.Constants
+import org.lwjgl.opengl.GL11._
+import org.lwjgl.util.glu.Sphere
 import seremis.geninfusion.api.lib.VariableLib
 import seremis.geninfusion.api.soul.SoulHelper
 import seremis.geninfusion.helper.GIReflectionHelper
-import seremis.geninfusion.util.{GIModelBox, INBTTagable}
+import seremis.geninfusion.util.{GIModelBox, INBTTagable, UtilModel}
 
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ListBuffer
@@ -100,7 +102,97 @@ class ModelPart(model: ModelBase, boxName: String, var modelPartType: ModelPartT
             initialRotateAngleZ = rotateAngleZ
             firstTick = false
         }
+
         super.render(scale)
+
+        val box = UtilModel.getModelPartOuterBox(this)
+        val b = UtilModel.getRotatedAndOffsetVector(this, Vec3.createVectorHelper(getBoxList(0).posX1, getBoxList(0).posY1, getBoxList(0).posZ1))
+
+//        glPushMatrix()
+//        glTranslated(b.xCoord * scale, b.yCoord * scale, b.zCoord * scale)
+//        val sp = new Sphere()
+//        glColor3f(0, 0, 0)
+//        sp.draw(0.0625f, 16, 16)
+//        glColor3f(1, 1, 1)
+//        glPopMatrix()
+        glPushMatrix()
+
+//        glTranslated(rotationPointX * scale, rotationPointY * scale, rotationPointZ * scale)
+//
+//        if(this.rotateAngleZ != 0.0F) {
+//            glRotatef(this.rotateAngleZ * (180F / Math.PI.toFloat), 0.0F, 0.0F, 1.0F)
+//        }
+//
+//        if(this.rotateAngleY != 0.0F) {
+//            glRotatef(this.rotateAngleY * (180F / Math.PI.toFloat), 0.0F, 1.0F, 0.0F)
+//        }
+//
+//        if(this.rotateAngleX != 0.0F) {
+//            glRotatef(this.rotateAngleX * (180F / Math.PI.toFloat), 1.0F, 0.0F, 0.0F)
+//        }
+//
+//        glTranslated((getBoxList(0).posX1) * scale, (getBoxList(0).posY1) * scale, (getBoxList(0).posZ1) * scale)
+
+        attachmentPoints.foreach(point => {
+//            glTranslated(point.getLocation.xCoord * scale, point.getLocation.yCoord * scale, point.getLocation.zCoord * scale)
+            val b = UtilModel.getRotatedAndOffsetVector(this, Vec3.createVectorHelper(getBoxList(0).posX1 + point.getLocation.xCoord , getBoxList(0).posY1 + point.getLocation.yCoord, getBoxList(0).posZ1 + point.getLocation.zCoord))
+
+            glTranslated(b.xCoord * scale, b.yCoord * scale, b.zCoord * scale)
+
+            val s = new Sphere()
+            val r = new Random(this.hashCode())
+            glColor3f(r.nextInt(10), r.nextInt(10), r.nextInt(10))
+            s.draw(0.1f, 16, 16)
+            glColor3f(1, 1, 1)
+
+            glTranslated(-b.xCoord * scale, -b.yCoord * scale, -b.zCoord * scale)
+        })
+
+//        UtilModel.cachedOuterBox -= this
+//        this.getBoxList.foreach(box => {
+//            UtilModel.cachedCoords -= ((this, box))
+//            UtilModel.cachedCoordsWithoutRotation -= ((this, box))
+//        })
+
+        glPopMatrix()
+
+        glPushMatrix()
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
+
+        glBegin(GL_QUADS)
+        glColor3f(1.0f,1.0f,0.0f)
+        glVertex3d(box._2.xCoord * scale, box._2.yCoord * scale, box._1.zCoord * scale)
+        glVertex3d(box._1.xCoord * scale, box._2.yCoord * scale, box._1.zCoord * scale)
+        glVertex3d(box._1.xCoord * scale, box._2.yCoord * scale, box._2.zCoord * scale)
+        glVertex3d(box._2.xCoord * scale, box._2.yCoord * scale, box._2.zCoord * scale)
+        glColor3f(1.0f,0.5f,0.0f)
+        glVertex3d(box._2.xCoord * scale, box._1.yCoord * scale, box._2.zCoord * scale)
+        glVertex3d(box._1.xCoord * scale, box._1.yCoord * scale, box._2.zCoord * scale)
+        glVertex3d(box._1.xCoord * scale, box._1.yCoord * scale, box._1.zCoord * scale)
+        glVertex3d(box._2.xCoord * scale, box._1.yCoord * scale, box._1.zCoord * scale)
+        glColor3f(1.0f,0.0f,0.0f)
+        glVertex3d(box._2.xCoord * scale, box._2.yCoord * scale, box._2.zCoord * scale)
+        glVertex3d(box._1.xCoord * scale, box._2.yCoord * scale, box._2.zCoord * scale)
+        glVertex3d(box._1.xCoord * scale, box._1.yCoord * scale, box._2.zCoord * scale)
+        glVertex3d(box._2.xCoord * scale, box._1.yCoord * scale, box._2.zCoord * scale)
+        glColor3f(1.0f,1.0f,0.0f)
+        glVertex3d(box._2.xCoord * scale, box._1.yCoord * scale, box._1.zCoord * scale)
+        glVertex3d(box._1.xCoord * scale, box._1.yCoord * scale, box._1.zCoord * scale)
+        glVertex3d(box._1.xCoord * scale, box._2.yCoord * scale, box._1.zCoord * scale)
+        glVertex3d(box._2.xCoord * scale, box._2.yCoord * scale, box._1.zCoord * scale)
+        glColor3f(0.0f,0.0f,1.0f)
+        glVertex3d(box._1.xCoord * scale, box._2.yCoord * scale, box._2.zCoord * scale)
+        glVertex3d(box._1.xCoord * scale, box._2.yCoord * scale, box._1.zCoord * scale)
+        glVertex3d(box._1.xCoord * scale, box._1.yCoord * scale, box._1.zCoord * scale)
+        glVertex3d(box._1.xCoord * scale, box._1.yCoord * scale, box._2.zCoord * scale)
+        glColor3f(1.0f,0.0f,1.0f)
+        glVertex3d(box._2.xCoord * scale, box._2.yCoord * scale, box._1.zCoord * scale)
+        glVertex3d(box._2.xCoord * scale, box._2.yCoord * scale, box._2.zCoord * scale)
+        glVertex3d(box._2.xCoord * scale, box._1.yCoord * scale, box._2.zCoord * scale)
+        glVertex3d(box._2.xCoord * scale, box._1.yCoord * scale, box._1.zCoord * scale)
+        glEnd()
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
+        glPopMatrix()
     }
 
     def getInitialRotationPoints: Vec3 = {
@@ -297,9 +389,7 @@ class ModelPart(model: ModelBase, boxName: String, var modelPartType: ModelPartT
         attachmentPoints = new Array[ModelPartAttachmentPoint](list.tagCount())
 
         for(i <- 0 until list.tagCount) {
-            val nbt = list.getCompoundTagAt(i)
-
-            attachmentPoints(i) = new ModelPartAttachmentPoint(nbt)
+            attachmentPoints(i) = new ModelPartAttachmentPoint(list.getCompoundTagAt(i))
         }
         attachmentPointPartTypes = populateAttachmentPointPartTypes()
 

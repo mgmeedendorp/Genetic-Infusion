@@ -81,7 +81,7 @@ class StandardSoulSpider extends StandardSoul {
 
         model.addPart(ModelPart.rendererToPart(modelSpider.spiderHead, General.Head, AttachmentPoints.Spider.Head))
         model.addPart(ModelPart.rendererToPart(modelSpider.spiderBody, General.Body, AttachmentPoints.Spider.Body))
-        model.addPart(ModelPart.rendererToPart(modelSpider.spiderNeck, General.Neck, AttachmentPoints.Spider.Body))
+        model.addPart(ModelPart.rendererToPart(modelSpider.spiderNeck, General.Neck, AttachmentPoints.Spider.Neck))
         model.addPart(ModelPart.rendererToPart(modelSpider.spiderLeg1, Spider.LegHindRight, AttachmentPoints.Spider.LegRight))
         model.addPart(ModelPart.rendererToPart(modelSpider.spiderLeg2, Spider.LegHindLeft, AttachmentPoints.Spider.LegLeft))
         model.addPart(ModelPart.rendererToPart(modelSpider.spiderLeg3, Spider.LegMiddleHindRight, AttachmentPoints.Spider.LegRight))
