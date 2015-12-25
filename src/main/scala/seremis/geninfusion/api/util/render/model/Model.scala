@@ -113,9 +113,13 @@ class Model() extends INBTTagable {
         var point1: Option[ModelPartAttachmentPoint] = None
         var point2: Option[ModelPartAttachmentPoint] = None
 
+        var index1 = 0
+        var index2 = 0
+        val totalLength = part1.getAttachmentPoints.length + part2.getAttachmentPoints.length
+
         for(p1 <- part1.getAttachmentPoints) {
             for(p2 <- part2.getAttachmentPoints) {
-                val tmpWeight = attachmentPointsConnectWeight(p1, part1.modelPartType, p2, part2.modelPartType)
+                val tmpWeight = attachmentPointsConnectWeight(p1, part1.modelPartType, p2, part2.modelPartType) * (1.0F - Math.max(index1 + index2, 1) / totalLength)
 
                 if(tmpWeight > weight) {
                     weight = tmpWeight
@@ -125,7 +129,11 @@ class Model() extends INBTTagable {
 
                 if(weight == 1.0F)
                     return (weight, point1, point2)
+
+                index2 += 1
             }
+            index1 += 1
+            index2 = 0
         }
 
 

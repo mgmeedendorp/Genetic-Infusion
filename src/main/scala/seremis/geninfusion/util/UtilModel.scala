@@ -1,14 +1,17 @@
 package seremis.geninfusion.util
 
+import java.awt.geom.Rectangle2D.Double
+import java.awt.image.BufferedImage
+
 import net.minecraft.client.model.ModelBox
 import net.minecraft.util.Vec3
 import seremis.geninfusion.api.lib.Genes
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.api.util.render.animation.AnimationCache
-import seremis.geninfusion.api.util.render.model.{Model, ModelPart, ModelPartAttachmentPoint}
+import seremis.geninfusion.api.util.render.model.{Model, ModelPart, ModelPartAttachmentPoint, ModelPartType}
 
-import scala.collection.immutable.TreeMap
-import scala.collection.mutable.{HashMap, ListBuffer, WeakHashMap}
+import scala.collection.immutable.HashMap
+import scala.collection.mutable.{ListBuffer, WeakHashMap}
 
 object UtilModel {
 
@@ -371,113 +374,89 @@ object UtilModel {
         (dx * dx + dy * dy + dz * dz).toFloat
     }
 
-    def reattachModelParts(model: Model): Model = {
-        val possibleCombinations: HashMap[Float, PartPointPair] = HashMap()
+    def randomlyCombineModels(model1: Model, texture1: BufferedImage, model2: Model, texture2: BufferedImage): ((Model, BufferedImage), (Model, BufferedImage)) = {
+        val allParts = model1.getAllParts.map(part => PartTextureCombo(part, texture1)) ++ model2.getAllParts.map(part => PartTextureCombo(part, texture2))
 
-        for(part1 <- model.getAllParts) {
-            for(part2 <- model.getPartsThatConnectTo(part1.modelPartType.name).getOrElse(new Array[ModelPart](0))) {
-                if(part1 != part2) {
-                    val connectionInfo = model.partsConnectWeight(part1, part2)
+        val dominant = new Model
+        var dominantTexture: BufferedImage = null
+        val recessive = new Model
+        var recessiveTexture: BufferedImage = null
 
-                    if(connectionInfo._2.nonEmpty && connectionInfo._3.nonEmpty) {
-                        possibleCombinations += (connectionInfo._1 -> PartPointPair(part1, connectionInfo._2.get, part2, connectionInfo._3.get))
+        while (true) {
+            val allConnections: ListBuffer[ModelPartPointConnection] = ListBuffer()
+
+            val mainPart = allParts(0)
+            var currentLevel = ListBuffer(mainPart)
+            var nextLevel = ListBuffer[PartTextureCombo]()
+            var partsLeft = allParts.to[ListBuffer]
+
+            dominant.addPart(mainPart.part)
+
+            do {
+                nextLevel.clear()
+
+                for(level <- currentLevel) {
+                    val connections = connectAllPoints(level, partsLeft.to[Array])
+
+                    for(connection <- connections) {
+                        dominant.addPart(connection.part2.part)
+                        nextLevel += connection.part2
+                        allConnections += connection
                     }
+                    partsLeft -= level
                 }
-            }
+
+                currentLevel = nextLevel
+            } while(nextLevel.nonEmpty)
+
+
+            
+
         }
 
-        val sortedCombinations = TreeMap(possibleCombinations.toSeq:_*)
-        val usedAttachmentPoints: ListBuffer[PartPoint] = ListBuffer()
-        val connectedParts: ConnectedParts = new ConnectedParts()
-
-        for(combination <- sortedCombinations) {
-            if(!usedAttachmentPoints.contains(combination._2.getPartPoint1) && !usedAttachmentPoints.contains(combination._2.getPartPoint2)) {
-                connectParts(combination._2.getPartPoint1, combination._2.getPartPoint2, connectedParts)
-
-                usedAttachmentPoints += combination._2.getPartPoint1
-                usedAttachmentPoints += combination._2.getPartPoint2
-                connectedParts add combination._2
-            }
-        }
-
-        //model.getParts(Names.Body).foreach(part => part.foreach(p => p.rotationPointX += 20))
-
-        model
+        ((dominant, dominantTexture), (recessive, recessiveTexture))
     }
 
-    def connectParts(point1: PartPoint, point2: PartPoint, connectedParts: ConnectedParts) = {
-        val p1 = Vec3.createVectorHelper(point1.part.getBoxList(0).posX1, point1.part.getBoxList(0).posY1, point1.part.getBoxList(0).posZ1)
-        val p2 = Vec3.createVectorHelper(point2.part.getBoxList(0).posX1, point2.part.getBoxList(0).posY1, point2.part.getBoxList(0).posZ1)
+    /**
+      * Chooses from parts the parts best suited to connect to all the AttachmentPoints. Returns these connections.
+      */
+    def connectAllPoints(combo: PartTextureCombo, parts: Array[PartTextureCombo]): ListBuffer[ModelPartPointConnection] = {
+        val connections: ListBuffer[ModelPartPointConnection] = ListBuffer()
+        var connectedParts: HashMap[PartTextureCombo, ModelPartPointConnection] = HashMap()
 
-        val outerPart1 = getRotatedAndOffsetVector(point1.part, p1.addVector(point1.point.getLocation.xCoord, point1.point.getLocation.yCoord, point1.point.getLocation.zCoord))
-        val outerPart2 = getRotatedAndOffsetVector(point2.part, p2.addVector(point2.point.getLocation.xCoord, point2.point.getLocation.yCoord, point2.point.getLocation.zCoord))
+        for(mainPartPoint <- combo.part.getAttachmentPoints) {
+            val connectionCandidates: ListBuffer[ModelPartPointConnection] = ListBuffer()
 
-        val dX1 = (outerPart2.xCoord - outerPart1.xCoord) / 2
-        val dY1 = (outerPart2.yCoord - outerPart1.yCoord) / 2
-        val dZ1 = (outerPart2.zCoord - outerPart1.zCoord) / 2
+            for(p <- parts) {
+                if(p != combo) {
+                    for(pPoint <- p.part.getAttachmentPoints) {
+                        for(pPointConnectable <- pPoint.getConnectableModelPartTypes) {
+                            if(pPointConnectable.name == combo.part.modelPartType.name) {
+                                for(mainPartPointConnectable <- mainPartPoint.getConnectableModelPartTypes) {
+                                    if(mainPartPointConnectable.name == p.part.modelPartType.name) {
+                                        val connection = ModelPartPointConnection(combo, mainPartPoint, mainPartPointConnectable, p, pPoint, pPointConnectable)
 
-        val dX2 = (outerPart1.xCoord - outerPart2.xCoord) / 2
-        val dY2 = (outerPart1.yCoord - outerPart2.yCoord) / 2
-        val dZ2 = (outerPart1.zCoord - outerPart2.zCoord) / 2
-
-        val connectedTo1 = connectedParts.getAllPartsConnectedTo(point1.part)
-        val connectedTo2 = connectedParts.getAllPartsConnectedTo(point2.part)
-
-        connectedTo1.foreach(part => {
-            part.rotationPointX += dX1.toFloat
-            part.rotationPointY += dY1.toFloat
-            part.rotationPointZ += dZ1.toFloat
-
-            cachedOuterBox -= part
-            part.getBoxList.foreach(box => {
-                cachedCoords -= ((part, box))
-                cachedCoordsWithoutRotation -= ((part, box))
-            })
-        })
-
-        connectedTo2.foreach(part => {
-            part.rotationPointX += dX2.toFloat
-            part.rotationPointY += dY2.toFloat
-            part.rotationPointZ += dZ2.toFloat
-
-            cachedOuterBox -= part
-            part.getBoxList.foreach(box => {
-                cachedCoords -= ((part, box))
-                cachedCoordsWithoutRotation -= ((part, box))
-            })
-        })
-    }
-
-    private case class PartPoint(part: ModelPart, point: ModelPartAttachmentPoint) {}
-    private case class PartPointPair(part1: ModelPart, point1: ModelPartAttachmentPoint, part2: ModelPart, point2: ModelPartAttachmentPoint) {
-        def getPartPoint1 = PartPoint(part1, point1)
-        def getPartPoint2 = PartPoint(part2, point2)
-        def contains(part: ModelPart) = part1.equals(part) || part2.equals(part)
-    }
-
-    private class ConnectedParts(pairs: ListBuffer[PartPointPair] = new ListBuffer[PartPointPair]()) {
-
-        def add(pair: PartPointPair) = {
-            pairs += pair
-        }
-
-        def getAllPartsConnectedTo(start: ModelPart): Array[ModelPart] = {
-            val connected: ListBuffer[ModelPart] = ListBuffer()
-
-            connected += start
-
-            //TODO optimize this
-            for(i <- 0 to pairs.size) {
-                for(pair <- pairs) {
-                    for(part <- connected) {
-                        if(!connected.contains(part) && pair.contains(part)) {
-                            connected += part
+                                        if(!connectedParts.contains(p) || connectedParts(p).weight < connection.weight) {
+                                            connectionCandidates += connection
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
 
-            connected.to[Array]
+            connectionCandidates.sortWith(_.weight < _.weight)
+
+            connections += connectionCandidates(0)
+            connectedParts += (connectionCandidates(0).part2 -> connectionCandidates(0))
         }
+        connections
     }
+
+    private case class ModelPartPointConnection(part1: PartTextureCombo, point1: ModelPartAttachmentPoint, type1: ModelPartType, part2: PartTextureCombo, point2: ModelPartAttachmentPoint, type2: ModelPartType) {
+        val weight = (part1.part.modelPartType.calculateTagSimilarity(type2) + part2.part.modelPartType.calculateTagSimilarity(type1)) / 2.0F
+    }
+    private case class PartTextureCombo(part: ModelPart, texture: BufferedImage) {}
 }

@@ -49,4 +49,35 @@ class ModelPartType(var name: String, var tags: Option[Array[String]]) extends I
 
         compound
     }
+
+    def calculateTagSimilarity(partType: ModelPartType): Float = {
+        if(name == partType.name) {
+            if(tags.nonEmpty && partType.tags.nonEmpty) {
+                val tags1 = tags.get
+                val tags2 = partType.tags.get
+
+                var weight = 0.0F
+                var deltaWeight = 1.0F / (tags1.length + tags2.length).toFloat
+
+                var i1 = 0
+                var i2 = 0
+
+                while(i1 < tags1.length && i2 < tags2.length) {
+                    if(tags1(i1) == tags2(i2)) {
+                        weight += deltaWeight
+                        i1 += 1
+                        i2 += 1
+                    } else if(tags1(i1) > tags2(i2)) {
+                        i2 += 1
+                    } else {
+                        i1 += 1
+                    }
+                }
+                return weight
+            } else if(tags.isEmpty && tags.isEmpty) {
+                return 1.0F
+            }
+        }
+        0.0F
+    }
 }

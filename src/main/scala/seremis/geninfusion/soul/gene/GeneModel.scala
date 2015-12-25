@@ -12,7 +12,6 @@ import seremis.geninfusion.api.util.render.animation.AnimationCache
 import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 import seremis.geninfusion.helper.GITextureHelper
 import seremis.geninfusion.soul.Allele
-import seremis.geninfusion.util.UtilModel
 
 import scala.collection.mutable.ListBuffer
 
@@ -57,36 +56,16 @@ class GeneModel extends Gene(classOf[Model]) {
         val modelParent1 = parent1(geneIdModel)
         val modelParent2 = parent2(geneIdModel)
 
-        val modelParent1Primary = modelParent1.getPrimary.getAlleleData.asInstanceOf[Model].copy().getAllParts
-        val modelParent2Primary = modelParent2.getPrimary.getAlleleData.asInstanceOf[Model].copy().getAllParts
-        val modelParent1Secondary = modelParent1.getSecondary.getAlleleData.asInstanceOf[Model].copy().getAllParts
-        val modelParent2Secondary = modelParent2.getSecondary.getAlleleData.asInstanceOf[Model].copy().getAllParts
+        val alleleParent1 = if(rand.nextBoolean()) (modelParent1.getPrimary.getAlleleData.asInstanceOf[Model].copy(), textureParent1Primary) else (modelParent1.getSecondary.getAlleleData.asInstanceOf[Model].copy(), textureParent1Secondary)
+        val alleleParent2 = if(rand.nextBoolean()) (modelParent2.getPrimary.getAlleleData.asInstanceOf[Model].copy(), textureParent2Primary) else (modelParent2.getSecondary.getAlleleData.asInstanceOf[Model].copy(), textureParent2Secondary)
 
-        val combinedParent1 = randomlyCombineModels(new Model(modelParent1Primary), textureParent1Primary, new Model(modelParent1Secondary), textureParent1Secondary)
-        val combinedParent2 = randomlyCombineModels(new Model(modelParent2Primary), textureParent2Primary, new Model(modelParent2Secondary), textureParent2Secondary)
-        
-        val combinedParent1Tuple = createParentTexture(combinedParent1._1)
-        val combinedParent2Tuple = createParentTexture(combinedParent2._1)
+        val child = randomlyCombineModels(alleleParent1._1, alleleParent1._2, alleleParent2._1, alleleParent2._2)
 
-        val child = randomlyCombineModels(new Model(combinedParent1Tuple._2.to[Array]), combinedParent1Tuple._1, new Model(combinedParent2Tuple._2.to[Array]), combinedParent2Tuple._1)
-
-        val dominantTuple = createParentTexture(child._1)
-        val recessiveTuple = createParentTexture(child._2)
+        val dominantTuple = combineTexture(child._1)
+        val recessiveTuple = combineTexture(child._2)
 
         val dominantModel = new Model(dominantTuple._2.to[Array])
         val recessiveModel = new Model(recessiveTuple._2.to[Array])
-
-        try {
-            UtilModel.reattachModelParts(new Model(dominantTuple._2.to[Array]))
-        } catch {
-            case e: Exception => e.printStackTrace()
-        }
-
-        try {
-            UtilModel.reattachModelParts(new Model(recessiveTuple._2.to[Array]))
-        } catch {
-            case e: Exception => e.printStackTrace()
-        }
 
         val dominantTexture = dominantTuple._1
         val recessiveTexture = recessiveTuple._1
@@ -134,7 +113,7 @@ class GeneModel extends Gene(classOf[Model]) {
         }
     }
 
-    def createParentTexture(inherited: ListBuffer[(Array[ModelPart], BufferedImage)]): (BufferedImage, ListBuffer[ModelPart]) = {
+    def combineTexture(inherited: ListBuffer[(Array[ModelPart], BufferedImage)]): (BufferedImage, ListBuffer[ModelPart]) = {
         val modelPartImages: ListBuffer[BufferedImage] = ListBuffer()
         val textureRects: ListBuffer[Double] = ListBuffer()
         val parts: ListBuffer[ModelPart] = ListBuffer()
