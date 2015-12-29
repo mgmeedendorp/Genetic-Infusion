@@ -9,6 +9,7 @@ import seremis.geninfusion.api.lib.Genes
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.api.util.render.animation.AnimationCache
 import seremis.geninfusion.api.util.render.model.{Model, ModelPart, ModelPartAttachmentPoint, ModelPartType}
+import seremis.geninfusion.helper.GITextureHelper
 
 import scala.collection.immutable.HashMap
 import scala.collection.mutable.{ListBuffer, WeakHashMap}
@@ -326,8 +327,8 @@ object UtilModel {
 
     def getModelPartOuterBox(part: ModelPart): (Vec3, Vec3) = {
         if(!cachedOuterBox.contains(part)) {
-            val near = Vec3.createVectorHelper(Double.PositiveInfinity, Double.PositiveInfinity, Double.PositiveInfinity)
-            val far = Vec3.createVectorHelper(Double.NegativeInfinity, Double.NegativeInfinity, Double.NegativeInfinity)
+            val near = Vec3.createVectorHelper(scala.Double.PositiveInfinity, scala.Double.PositiveInfinity, scala.Double.PositiveInfinity)
+            val far = Vec3.createVectorHelper(scala.Double.NegativeInfinity, scala.Double.NegativeInfinity, scala.Double.NegativeInfinity)
             part.getBoxList.foreach(cube => {
                 val coords = getPartBoxCoordinates(part, cube)
 
@@ -377,44 +378,100 @@ object UtilModel {
     def randomlyCombineModels(model1: Model, texture1: BufferedImage, model2: Model, texture2: BufferedImage): ((Model, BufferedImage), (Model, BufferedImage)) = {
         val allParts = model1.getAllParts.map(part => PartTextureCombo(part, texture1)) ++ model2.getAllParts.map(part => PartTextureCombo(part, texture2))
 
-        val dominant = new Model
+        var dominantModel: Model = null
         var dominantTexture: BufferedImage = null
-        val recessive = new Model
+        var recessiveModel: Model = null
         var recessiveTexture: BufferedImage = null
 
-        while (true) {
-            val allConnections: ListBuffer[ModelPartPointConnection] = ListBuffer()
+        var mainPart = allParts(0)
+        var partsLeft: ListBuffer[PartTextureCombo] = null
 
-            val mainPart = allParts(0)
-            var currentLevel = ListBuffer(mainPart)
-            var nextLevel = ListBuffer[PartTextureCombo]()
-            var partsLeft = allParts.to[ListBuffer]
+        //Determine dominant model and work out the texture
+        val dominant = createModelFromParts(mainPart, partsLeft)
 
-            dominant.addPart(mainPart.part)
+        partsLeft = dominant._1
+        dominantModel = dominant._2
+        dominantTexture = dominant._3
 
-            do {
-                nextLevel.clear()
+        //Work out recessive model and texture.
+        val models: ListBuffer[ModelTextureCombo] = ListBuffer()
 
-                for(level <- currentLevel) {
-                    val connections = connectAllPoints(level, partsLeft.to[Array])
+        mainPart = partsLeft(0)
 
-                    for(connection <- connections) {
-                        dominant.addPart(connection.part2.part)
-                        nextLevel += connection.part2
-                        allConnections += connection
-                    }
-                    partsLeft -= level
-                }
+        while(partsLeft.nonEmpty) {
+            val recessive = createModelFromParts(mainPart, partsLeft)
 
-                currentLevel = nextLevel
-            } while(nextLevel.nonEmpty)
-
-
-            
-
+            models += ModelTextureCombo(recessive._2, recessive._3)
+            partsLeft = recessive._1
+            mainPart = partsLeft(0)
         }
 
-        ((dominant, dominantTexture), (recessive, recessiveTexture))
+        models.sortBy(_.model.getAllParts.length)
+
+        val recessive = models.lastOption
+
+        if(recessive.nonEmpty) {
+            recessiveModel = recessive.get.model
+            recessiveTexture = recessive.get.texture
+        } else {
+            recessiveModel = dominantModel
+            recessiveTexture = dominantTexture
+        }
+
+        ((dominantModel, dominantTexture), (recessiveModel, recessiveTexture))
+    }
+
+    def createModelFromParts(mainPart: PartTextureCombo, parts: ListBuffer[PartTextureCombo]): (ListBuffer[PartTextureCombo], Model, BufferedImage) = {
+        val model = new Model
+        val textureRects: ListBuffer[Double] = ListBuffer()
+        val textureParts: ListBuffer[BufferedImage] = ListBuffer()
+
+        val allConnections: ListBuffer[ModelPartPointConnection] = ListBuffer()
+
+        var currentLevel = ListBuffer(mainPart)
+        var nextLevel = ListBuffer[PartTextureCombo]()
+        val partsLeft = parts
+
+        val img = GITextureHelper.getModelPartTexture(mainPart.part, mainPart.texture)
+        textureRects += new Double(0, 0, img.getWidth, img.getHeight)
+        textureParts += img
+        model.addPart(mainPart.part)
+
+        do {
+            nextLevel.clear()
+
+            for(level <- currentLevel) {
+                val connections = connectAllPoints(level, partsLeft.to[Array])
+
+                for(connection <- connections) {
+                    val image = GITextureHelper.getModelPartTexture(connection.part2.part, connection.part2.texture)
+                    textureRects += new Double(0, 0, image.getWidth, image.getHeight)
+                    textureParts += image
+
+                    model.addPart(connection.part2.part)
+
+                    nextLevel += connection.part2
+                    allConnections += connection
+                }
+                partsLeft -= level
+            }
+
+            currentLevel = nextLevel
+        } while(nextLevel.nonEmpty && partsLeft.nonEmpty)
+
+        val stitched = GITextureHelper.stitchImages(textureRects, textureParts)
+        val modelParts = model.getAllParts
+
+        for(i <- modelParts.indices) {
+            val part = modelParts(i)
+            val rect = stitched._2(i)
+            GITextureHelper.changeModelPartTextureSize(part, (stitched._1.getWidth, stitched._1.getHeight))
+            GITextureHelper.moveModelPartTextureOffset(part, (rect.getMinX.toInt, rect.getMinY.toInt))
+
+            part.resetDisplayList()
+        }
+
+        (partsLeft, model, stitched._1)
     }
 
     /**
@@ -447,10 +504,12 @@ object UtilModel {
                 }
             }
 
-            connectionCandidates.sortWith(_.weight < _.weight)
+            connectionCandidates.sortBy(_.weight)
 
-            connections += connectionCandidates(0)
-            connectedParts += (connectionCandidates(0).part2 -> connectionCandidates(0))
+            if(connectionCandidates.nonEmpty) {
+                connections += connectionCandidates.last
+                connectedParts += (connectionCandidates.last.part2 -> connectionCandidates.last)
+            }
         }
         connections
     }
@@ -459,4 +518,5 @@ object UtilModel {
         val weight = (part1.part.modelPartType.calculateTagSimilarity(type2) + part2.part.modelPartType.calculateTagSimilarity(type1)) / 2.0F
     }
     private case class PartTextureCombo(part: ModelPart, texture: BufferedImage) {}
+    private case class ModelTextureCombo(model: Model, texture: BufferedImage) {}
 }
