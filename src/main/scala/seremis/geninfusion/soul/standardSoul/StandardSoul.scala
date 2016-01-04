@@ -494,7 +494,7 @@ abstract class StandardSoul extends IStandardSoul {
 
         model.addPart(ModelPart.rendererToPart(biped.bipedBody, General.Body, AttachmentPoints.Biped.Body))
         model.addPart(ModelPart.rendererToPart(biped.bipedHead, General.Head, AttachmentPoints.Biped.Head))
-        model.addPart(ModelPart.rendererToPart(biped.bipedHeadwear, General.Headwear, AttachmentPoints.Biped.Head))
+        model.addPart(ModelPart.rendererToPart(biped.bipedHeadwear, General.Headwear, AttachmentPoints.Biped.Headwear))
         model.addPart(ModelPart.rendererToPart(biped.bipedLeftArm, Biped.ArmLeft, AttachmentPoints.Biped.ArmLeft))
         model.addPart(ModelPart.rendererToPart(biped.bipedRightArm, Biped.ArmRight, AttachmentPoints.Biped.ArmRight))
         model.addPart(ModelPart.rendererToPart(biped.bipedLeftLeg, Biped.LegLeft, AttachmentPoints.Biped.LegLeft))

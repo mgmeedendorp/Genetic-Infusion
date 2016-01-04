@@ -12,13 +12,14 @@ import scala.collection.mutable
 
 class ItemBlockCrystal(block: Block) extends ItemBlock(block) {
 
-    override def addInformation(stack: ItemStack, player: EntityPlayer, list: java.util.List[_], advancedToolTips: Boolean) = {
+    override def addInformation(stack: ItemStack, player: EntityPlayer, list: java.util.List[_], advancedToolTips: Boolean): Unit = {
         if(stack.hasTagCompound) {
             if(!ItemBlockCrystal.soulCompoundMap.contains(stack.getTagCompound)) {
                 SoulHelper.instanceHelper.getISoulInstance(stack.getTagCompound).foreach(soul => ItemBlockCrystal.soulCompoundMap += (stack.getTagCompound -> soul))
 
                 if(!ItemBlockCrystal.soulCompoundMap.contains(stack.getTagCompound)) {
                     list.asInstanceOf[java.util.List[String]].add(EnumChatFormatting.RED + " " + EnumChatFormatting.ITALIC + "THIS CRYSTAL HAS A BROKEN NBT TAG, DO NOT USE THIS.")
+                    return
                 }
             }
 

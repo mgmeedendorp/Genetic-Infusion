@@ -12,7 +12,12 @@ object AttachmentPoints {
         final val Bpd = ModelPartTypes.Biped
 
         final val Head = Array(
-            MPAP(Vec3.createVectorHelper(4.0, 8.0, 4.0), Array(General.Neck, General.Body))
+            MPAP(Vec3.createVectorHelper(4.0, 8.0, 4.0), Array(General.Neck, General.Body)),
+            MPAP(Vec3.createVectorHelper(4.0, 0.0, 4.0), Array(General.Headwear))
+        )
+
+        final val Headwear = Array(
+            MPAP(Vec3.createVectorHelper(4.0, 0.0, 4.0), Array(General.Head))
         )
 
         final val Body = Array(
@@ -62,7 +67,12 @@ object AttachmentPoints {
         final val Crpr = ModelPartTypes.Creeper
 
         final val Head = Array(
-            MPAP(Vec3.createVectorHelper(4.0, 8.0, 4.0), Array(General.Neck, General.Body))
+            MPAP(Vec3.createVectorHelper(4.0, 8.0, 4.0), Array(General.Neck, General.Body)),
+            MPAP(Vec3.createVectorHelper(4.0, 0.0, 4.0), Array(General.Headwear))
+        )
+
+        final val Headwear = Array(
+            MPAP(Vec3.createVectorHelper(4.0, 0.0, 4.0), Array(General.Head))
         )
 
         final val Body = Array(

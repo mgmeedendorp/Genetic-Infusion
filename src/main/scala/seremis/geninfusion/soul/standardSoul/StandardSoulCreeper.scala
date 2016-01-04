@@ -143,7 +143,7 @@ class StandardSoulCreeper extends StandardSoul {
         model.addPart(ModelPart.rendererToPart(creeperModel.leg2, Creeper.LegHindLeft, AttachmentPoints.Creeper.LegLeftBack))
         model.addPart(ModelPart.rendererToPart(creeperModel.leg3, Creeper.LegFrontRight, AttachmentPoints.Creeper.LegRightFront))
         model.addPart(ModelPart.rendererToPart(creeperModel.leg4, Creeper.LegFrontLeft, AttachmentPoints.Creeper.LegLeftFront))
-        model.addPart(ModelPart.rendererToPart(creeperModel.field_78133_b, General.Headwear, AttachmentPoints.Creeper.Head))
+        model.addPart(ModelPart.rendererToPart(creeperModel.field_78133_b, General.Headwear, AttachmentPoints.Creeper.Headwear))
 
         model
     }

@@ -2,6 +2,8 @@ package seremis.geninfusion.util
 
 import java.awt.geom.Rectangle2D.Double
 import java.awt.image.BufferedImage
+import java.io.File
+import javax.imageio.ImageIO
 
 import net.minecraft.client.model.ModelBox
 import net.minecraft.util.Vec3
@@ -13,6 +15,7 @@ import seremis.geninfusion.helper.GITextureHelper
 
 import scala.collection.immutable.HashMap
 import scala.collection.mutable.{ListBuffer, WeakHashMap}
+import scala.util.Random
 
 object UtilModel {
 
@@ -376,15 +379,16 @@ object UtilModel {
     }
 
     def randomlyCombineModels(model1: Model, texture1: BufferedImage, model2: Model, texture2: BufferedImage): ((Model, BufferedImage), (Model, BufferedImage)) = {
-        val allParts = model1.getAllParts.map(part => PartTextureCombo(part, texture1)) ++ model2.getAllParts.map(part => PartTextureCombo(part, texture2))
+        val allParts = model1.getAllParts.map(part => PartTextureCombo(ModelPartAttachmentPointData(part), texture1)) ++ model2.getAllParts.map(part => PartTextureCombo(ModelPartAttachmentPointData(part), texture2))
 
         var dominantModel: Model = null
         var dominantTexture: BufferedImage = null
         var recessiveModel: Model = null
         var recessiveTexture: BufferedImage = null
+        val rnd = new Random()
 
-        var mainPart = allParts(0)
-        var partsLeft: ListBuffer[PartTextureCombo] = null
+        var mainPart = allParts(rnd.nextInt(allParts.length))
+        var partsLeft: ListBuffer[PartTextureCombo] = (model1.getAllParts.map(part => PartTextureCombo(ModelPartAttachmentPointData(part), texture1)) ++ model2.getAllParts.map(part => PartTextureCombo(ModelPartAttachmentPointData(part), texture2))).to[ListBuffer]
 
         //Determine dominant model and work out the texture
         val dominant = createModelFromParts(mainPart, partsLeft)
@@ -396,14 +400,16 @@ object UtilModel {
         //Work out recessive model and texture.
         val models: ListBuffer[ModelTextureCombo] = ListBuffer()
 
-        mainPart = partsLeft(0)
+        if(partsLeft.nonEmpty)
+            mainPart = partsLeft(rnd.nextInt(partsLeft.length))
 
         while(partsLeft.nonEmpty) {
             val recessive = createModelFromParts(mainPart, partsLeft)
 
             models += ModelTextureCombo(recessive._2, recessive._3)
             partsLeft = recessive._1
-            mainPart = partsLeft(0)
+            if(partsLeft.nonEmpty)
+                mainPart = partsLeft(0)
         }
 
         models.sortBy(_.model.getAllParts.length)
@@ -418,37 +424,41 @@ object UtilModel {
             recessiveTexture = dominantTexture
         }
 
+
+        val outputfile = new File(System.getProperty("user.home") + "/Desktop/test.png")
+        ImageIO.write(dominantTexture, "png", outputfile)
+
         ((dominantModel, dominantTexture), (recessiveModel, recessiveTexture))
     }
 
-    def createModelFromParts(mainPart: PartTextureCombo, parts: ListBuffer[PartTextureCombo]): (ListBuffer[PartTextureCombo], Model, BufferedImage) = {
+    private def createModelFromParts(mainPart: PartTextureCombo, parts: ListBuffer[PartTextureCombo]): (ListBuffer[PartTextureCombo], Model, BufferedImage) = {
         val model = new Model
         val textureRects: ListBuffer[Double] = ListBuffer()
         val textureParts: ListBuffer[BufferedImage] = ListBuffer()
 
         val allConnections: ListBuffer[ModelPartPointConnection] = ListBuffer()
 
-        var currentLevel = ListBuffer(mainPart)
+        var currentLevel = Array(mainPart)
         var nextLevel = ListBuffer[PartTextureCombo]()
         val partsLeft = parts
 
-        val img = GITextureHelper.getModelPartTexture(mainPart.part, mainPart.texture)
+        val img = GITextureHelper.getModelPartTexture(mainPart.getPart, mainPart.texture)
         textureRects += new Double(0, 0, img.getWidth, img.getHeight)
         textureParts += img
-        model.addPart(mainPart.part)
+        model.addPart(mainPart.part.part)
 
         do {
             nextLevel.clear()
 
-            for(level <- currentLevel) {
+            for(level <- currentLevel if partsLeft.nonEmpty) {
                 val connections = connectAllPoints(level, partsLeft.to[Array])
 
                 for(connection <- connections) {
-                    val image = GITextureHelper.getModelPartTexture(connection.part2.part, connection.part2.texture)
+                    val image = GITextureHelper.getModelPartTexture(connection.part2.getPart, connection.part2.texture)
                     textureRects += new Double(0, 0, image.getWidth, image.getHeight)
                     textureParts += image
 
-                    model.addPart(connection.part2.part)
+                    model.addPart(connection.part2.getPart)
 
                     nextLevel += connection.part2
                     allConnections += connection
@@ -456,7 +466,7 @@ object UtilModel {
                 partsLeft -= level
             }
 
-            currentLevel = nextLevel
+            currentLevel = nextLevel.to[Array]
         } while(nextLevel.nonEmpty && partsLeft.nonEmpty)
 
         val stitched = GITextureHelper.stitchImages(textureRects, textureParts)
@@ -477,24 +487,28 @@ object UtilModel {
     /**
       * Chooses from parts the parts best suited to connect to all the AttachmentPoints. Returns these connections.
       */
-    def connectAllPoints(combo: PartTextureCombo, parts: Array[PartTextureCombo]): ListBuffer[ModelPartPointConnection] = {
+    private def connectAllPoints(combo: PartTextureCombo, parts: Array[PartTextureCombo]): ListBuffer[ModelPartPointConnection] = {
         val connections: ListBuffer[ModelPartPointConnection] = ListBuffer()
         var connectedParts: HashMap[PartTextureCombo, ModelPartPointConnection] = HashMap()
 
-        for(mainPartPoint <- combo.part.getAttachmentPoints) {
-            val connectionCandidates: ListBuffer[ModelPartPointConnection] = ListBuffer()
+        for(mainPartPoint <- combo.getPart.getAttachmentPoints) {
+            if(!combo.part.usedConnections.contains(mainPartPoint)) {
+                val connectionCandidates: ListBuffer[ModelPartPointConnection] = ListBuffer()
 
-            for(p <- parts) {
-                if(p != combo) {
-                    for(pPoint <- p.part.getAttachmentPoints) {
-                        for(pPointConnectable <- pPoint.getConnectableModelPartTypes) {
-                            if(pPointConnectable.name == combo.part.modelPartType.name) {
-                                for(mainPartPointConnectable <- mainPartPoint.getConnectableModelPartTypes) {
-                                    if(mainPartPointConnectable.name == p.part.modelPartType.name) {
-                                        val connection = ModelPartPointConnection(combo, mainPartPoint, mainPartPointConnectable, p, pPoint, pPointConnectable)
+                for(p <- parts) {
+                    if(p != combo) {
+                        for(pPoint <- p.getPart.getAttachmentPoints) {
+                            if(!p.part.usedConnections.contains(pPoint)) {
+                                for(pPointConnectable <- pPoint.getConnectableModelPartTypes) {
+                                    if(pPointConnectable.name == combo.getPart.modelPartType.name) {
+                                        for(mainPartPointConnectable <- mainPartPoint.getConnectableModelPartTypes) {
+                                            if(mainPartPointConnectable.name == p.getPart.modelPartType.name) {
+                                                val connection = ModelPartPointConnection(combo, mainPartPoint, mainPartPointConnectable, p, pPoint, pPointConnectable)
 
-                                        if(!connectedParts.contains(p) || connectedParts(p).weight < connection.weight) {
-                                            connectionCandidates += connection
+                                                if(!connectedParts.contains(p) || connectedParts(p).weight < connection.weight) {
+                                                    connectionCandidates += connection
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -502,21 +516,57 @@ object UtilModel {
                         }
                     }
                 }
-            }
 
-            connectionCandidates.sortBy(_.weight)
+                connectionCandidates.sortBy(_.weight)
 
-            if(connectionCandidates.nonEmpty) {
-                connections += connectionCandidates.last
-                connectedParts += (connectionCandidates.last.part2 -> connectionCandidates.last)
+                if(connectionCandidates.nonEmpty) {
+                    val last = connectionCandidates.last
+
+                    connections += last
+                    connectedParts += (last.part2 -> last)
+                    last.part1.part.usedConnections += last.point1
+                    last.part2.part.usedConnections += last.point2
+
+                    connectPartTo(last.part2.getPart, last.point2, last.part1.getPart, last.point1)
+                }
             }
         }
         connections
     }
 
-    private case class ModelPartPointConnection(part1: PartTextureCombo, point1: ModelPartAttachmentPoint, type1: ModelPartType, part2: PartTextureCombo, point2: ModelPartAttachmentPoint, type2: ModelPartType) {
-        val weight = (part1.part.modelPartType.calculateTagSimilarity(type2) + part2.part.modelPartType.calculateTagSimilarity(type1)) / 2.0F
+    def connectPartTo(partToConnect: ModelPart, pointToConnect: ModelPartAttachmentPoint, partToConnectTo: ModelPart, pointToConnectTo: ModelPartAttachmentPoint) {
+        val p1 = Vec3.createVectorHelper(partToConnect.getBoxList(0).posX1, partToConnect.getBoxList(0).posY1, partToConnect.getBoxList(0).posZ1)
+        val p2 = Vec3.createVectorHelper(partToConnectTo.getBoxList(0).posX1, partToConnectTo.getBoxList(0).posY1, partToConnectTo.getBoxList(0).posZ1)
+
+        val outerPart1 = getRotatedAndOffsetVector(partToConnect, p1.addVector(pointToConnect.getLocation.xCoord, pointToConnect.getLocation.yCoord, pointToConnect.getLocation.zCoord))
+        val outerPart2 = getRotatedAndOffsetVector(partToConnectTo, p2.addVector(pointToConnectTo.getLocation.xCoord, pointToConnectTo.getLocation.yCoord, pointToConnectTo.getLocation.zCoord))
+
+        val dX = outerPart2.xCoord - outerPart1.xCoord
+        val dY = outerPart2.yCoord - outerPart1.yCoord
+        val dZ = outerPart2.zCoord - outerPart1.zCoord
+
+        partToConnect.rotationPointX += dX.toFloat
+        partToConnect.rotationPointY += dY.toFloat
+        partToConnect.rotationPointZ += dZ.toFloat
+
+        cachedOuterBox -= partToConnect
+        partToConnect.getBoxList.foreach(box => {
+            cachedCoords -= ((partToConnect, box))
+            cachedCoordsWithoutRotation -= ((partToConnect, box))
+        })
     }
-    private case class PartTextureCombo(part: ModelPart, texture: BufferedImage) {}
+
+    private case class ModelPartPointConnection(part1: PartTextureCombo, point1: ModelPartAttachmentPoint, type1: ModelPartType, part2: PartTextureCombo, point2: ModelPartAttachmentPoint, type2: ModelPartType) {
+        val weight = (part1.part.part.modelPartType.calculateTagSimilarity(type2) + part2.part.part.modelPartType.calculateTagSimilarity(type1)) / 2.0F
+
+    }
+    private case class ModelPartAttachmentPointData(part: ModelPart) {
+        val usedConnections: ListBuffer[ModelPartAttachmentPoint] = ListBuffer()
+
+        def getPart: ModelPart = part
+    }
+    private case class PartTextureCombo(part: ModelPartAttachmentPointData, texture: BufferedImage) {
+        def getPart: ModelPart = part.part
+    }
     private case class ModelTextureCombo(model: Model, texture: BufferedImage) {}
 }

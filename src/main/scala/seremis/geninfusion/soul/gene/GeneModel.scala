@@ -12,6 +12,7 @@ import seremis.geninfusion.api.util.render.animation.AnimationCache
 import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 import seremis.geninfusion.helper.GITextureHelper
 import seremis.geninfusion.soul.Allele
+import seremis.geninfusion.util.UtilModel
 
 import scala.collection.mutable.ListBuffer
 
@@ -56,19 +57,17 @@ class GeneModel extends Gene(classOf[Model]) {
         val modelParent1 = parent1(geneIdModel)
         val modelParent2 = parent2(geneIdModel)
 
-        val alleleParent1 = if(rand.nextBoolean()) (modelParent1.getPrimary.getAlleleData.asInstanceOf[Model].copy(), textureParent1Primary) else (modelParent1.getSecondary.getAlleleData.asInstanceOf[Model].copy(), textureParent1Secondary)
-        val alleleParent2 = if(rand.nextBoolean()) (modelParent2.getPrimary.getAlleleData.asInstanceOf[Model].copy(), textureParent2Primary) else (modelParent2.getSecondary.getAlleleData.asInstanceOf[Model].copy(), textureParent2Secondary)
+        val parent1Model = if(rand.nextBoolean()) (modelParent1.getPrimary.getAlleleData.asInstanceOf[Model].copy(), textureParent1Primary) else (modelParent1.getSecondary.getAlleleData.asInstanceOf[Model].copy(), textureParent1Secondary)
+        val parent2Model = if(rand.nextBoolean()) (modelParent2.getPrimary.getAlleleData.asInstanceOf[Model].copy(), textureParent2Primary) else (modelParent2.getSecondary.getAlleleData.asInstanceOf[Model].copy(), textureParent2Secondary)
 
-        val child = randomlyCombineModels(alleleParent1._1, alleleParent1._2, alleleParent2._1, alleleParent2._2)
+        val child = UtilModel.randomlyCombineModels(parent1Model._1, parent1Model._2, parent2Model._1, parent2Model._2)
 
-        val dominantTuple = combineTexture(child._1)
-        val recessiveTuple = combineTexture(child._2)
 
-        val dominantModel = new Model(dominantTuple._2.to[Array])
-        val recessiveModel = new Model(recessiveTuple._2.to[Array])
+        val dominantModel = child._1._1
+        val recessiveModel = child._2._1
 
-        val dominantTexture = dominantTuple._1
-        val recessiveTexture = recessiveTuple._1
+        val dominantTexture = child._1._2
+        val recessiveTexture = child._2._2
 
         val dominantOut = new ByteArrayOutputStream()
         val recessiveOut = new ByteArrayOutputStream()
