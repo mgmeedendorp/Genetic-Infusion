@@ -2,8 +2,6 @@ package seremis.geninfusion.util
 
 import java.awt.geom.Rectangle2D.Double
 import java.awt.image.BufferedImage
-import java.io.File
-import javax.imageio.ImageIO
 
 import net.minecraft.client.model.ModelBox
 import net.minecraft.util.Vec3
@@ -388,7 +386,7 @@ object UtilModel {
         val rnd = new Random()
 
         var mainPart = allParts(rnd.nextInt(allParts.length))
-        var partsLeft: ListBuffer[PartTextureCombo] = (model1.getAllParts.map(part => PartTextureCombo(ModelPartAttachmentPointData(part), texture1)) ++ model2.getAllParts.map(part => PartTextureCombo(ModelPartAttachmentPointData(part), texture2))).to[ListBuffer]
+        var partsLeft: ListBuffer[PartTextureCombo] = allParts.to[ListBuffer]
 
         //Determine dominant model and work out the texture
         val dominant = createModelFromParts(mainPart, partsLeft)
@@ -396,6 +394,8 @@ object UtilModel {
         partsLeft = dominant._1
         dominantModel = dominant._2
         dominantTexture = dominant._3
+
+        placeModelInCenterOfBoundingBox(dominantModel)
 
         //Work out recessive model and texture.
         val models: ListBuffer[ModelTextureCombo] = ListBuffer()
@@ -406,10 +406,12 @@ object UtilModel {
         while(partsLeft.nonEmpty) {
             val recessive = createModelFromParts(mainPart, partsLeft)
 
+            placeModelInCenterOfBoundingBox(recessive._2)
+
             models += ModelTextureCombo(recessive._2, recessive._3)
             partsLeft = recessive._1
             if(partsLeft.nonEmpty)
-                mainPart = partsLeft(0)
+                mainPart = partsLeft(rnd.nextInt(partsLeft.length))
         }
 
         models.sortBy(_.model.getAllParts.length)
@@ -424,15 +426,11 @@ object UtilModel {
             recessiveTexture = dominantTexture
         }
 
-
-        val outputfile = new File(System.getProperty("user.home") + "/Desktop/test.png")
-        ImageIO.write(dominantTexture, "png", outputfile)
-
         ((dominantModel, dominantTexture), (recessiveModel, recessiveTexture))
     }
 
     private def createModelFromParts(mainPart: PartTextureCombo, parts: ListBuffer[PartTextureCombo]): (ListBuffer[PartTextureCombo], Model, BufferedImage) = {
-        val model = new Model
+        val modelParts: ListBuffer[ModelPart] = ListBuffer()
         val textureRects: ListBuffer[Double] = ListBuffer()
         val textureParts: ListBuffer[BufferedImage] = ListBuffer()
 
@@ -445,7 +443,7 @@ object UtilModel {
         val img = GITextureHelper.getModelPartTexture(mainPart.getPart, mainPart.texture)
         textureRects += new Double(0, 0, img.getWidth, img.getHeight)
         textureParts += img
-        model.addPart(mainPart.part.part)
+        modelParts += mainPart.getPart
 
         do {
             nextLevel.clear()
@@ -458,7 +456,7 @@ object UtilModel {
                     textureRects += new Double(0, 0, image.getWidth, image.getHeight)
                     textureParts += image
 
-                    model.addPart(connection.part2.getPart)
+                    modelParts += connection.part2.getPart
 
                     nextLevel += connection.part2
                     allConnections += connection
@@ -470,15 +468,18 @@ object UtilModel {
         } while(nextLevel.nonEmpty && partsLeft.nonEmpty)
 
         val stitched = GITextureHelper.stitchImages(textureRects, textureParts)
-        val modelParts = model.getAllParts
+        val model = new Model
 
         for(i <- modelParts.indices) {
             val part = modelParts(i)
             val rect = stitched._2(i)
+
             GITextureHelper.changeModelPartTextureSize(part, (stitched._1.getWidth, stitched._1.getHeight))
             GITextureHelper.moveModelPartTextureOffset(part, (rect.getMinX.toInt, rect.getMinY.toInt))
 
             part.resetDisplayList()
+
+            model.addPart(part)
         }
 
         (partsLeft, model, stitched._1)
@@ -493,7 +494,7 @@ object UtilModel {
 
         for(mainPartPoint <- combo.getPart.getAttachmentPoints) {
             if(!combo.part.usedConnections.contains(mainPartPoint)) {
-                val connectionCandidates: ListBuffer[ModelPartPointConnection] = ListBuffer()
+                var connectionCandidates: ListBuffer[ModelPartPointConnection] = ListBuffer()
 
                 for(p <- parts) {
                     if(p != combo) {
@@ -517,7 +518,7 @@ object UtilModel {
                     }
                 }
 
-                connectionCandidates.sortBy(_.weight)
+                connectionCandidates = connectionCandidates.sortBy(_.weight)
 
                 if(connectionCandidates.nonEmpty) {
                     val last = connectionCandidates.last
@@ -549,10 +550,67 @@ object UtilModel {
         partToConnect.rotationPointY += dY.toFloat
         partToConnect.rotationPointZ += dZ.toFloat
 
-        cachedOuterBox -= partToConnect
-        partToConnect.getBoxList.foreach(box => {
-            cachedCoords -= ((partToConnect, box))
-            cachedCoordsWithoutRotation -= ((partToConnect, box))
+        removePartFromCache(partToConnect)
+    }
+
+    def placeModelInCenterOfBoundingBox(model: Model): Model = {
+        val allParts = model.getAllParts
+
+        val min = Vec3.createVectorHelper(scala.Double.PositiveInfinity, scala.Double.PositiveInfinity, scala.Double.PositiveInfinity)
+        val max = Vec3.createVectorHelper(scala.Double.NegativeInfinity, scala.Double.NegativeInfinity, scala.Double.NegativeInfinity)
+
+        allParts.foreach(part => {
+            val coords = getModelPartOuterBox(part)
+
+            if(coords._1.xCoord < min.xCoord)
+                min.xCoord = coords._1.xCoord
+            if(coords._1.yCoord < min.yCoord)
+                min.yCoord = coords._1.yCoord
+            if(coords._1.zCoord < min.zCoord)
+                min.zCoord = coords._1.zCoord
+            if(coords._2.xCoord > max.xCoord)
+                max.xCoord = coords._2.xCoord
+            if(coords._2.yCoord > max.yCoord)
+                max.yCoord = coords._2.yCoord
+            if(coords._2.zCoord > max.zCoord)
+                max.zCoord = coords._2.zCoord
+        })
+
+        if(max.yCoord != 23.0F) {
+            val dY = 23.0F - max.yCoord
+
+            allParts.foreach(part => {
+                part.rotationPointY += dY.toFloat
+                removePartFromCache(part)
+            })
+        }
+
+        if((max.xCoord + min.xCoord) / 2 != 0) {
+            val dX = 0 - (max.xCoord + min.xCoord) / 2
+
+            allParts.foreach(part => {
+                part.rotationPointX += dX.toFloat
+                removePartFromCache(part)
+            })
+        }
+
+        if((max.zCoord + min.zCoord) / 2 != 0) {
+            val dZ = 0 - (max.zCoord + min.zCoord) / 2
+
+            allParts.foreach(part => {
+                part.rotationPointZ += dZ.toFloat
+                removePartFromCache(part)
+            })
+        }
+
+        model
+    }
+
+    def removePartFromCache(part: ModelPart)  {
+        cachedOuterBox -= part
+        part.getBoxList.foreach(box => {
+            cachedCoords -= ((part, box))
+            cachedCoordsWithoutRotation -= ((part, box))
         })
     }
 

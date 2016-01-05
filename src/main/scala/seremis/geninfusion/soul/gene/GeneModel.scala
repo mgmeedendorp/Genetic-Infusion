@@ -1,7 +1,5 @@
 package seremis.geninfusion.soul.gene
 
-import java.awt.geom.Rectangle2D.Double
-import java.awt.image.BufferedImage
 import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
 import javax.imageio.ImageIO
 
@@ -9,12 +7,9 @@ import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.lib.Genes
 import seremis.geninfusion.api.soul.{IChromosome, SoulHelper}
 import seremis.geninfusion.api.util.render.animation.AnimationCache
-import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
-import seremis.geninfusion.helper.GITextureHelper
+import seremis.geninfusion.api.util.render.model.Model
 import seremis.geninfusion.soul.Allele
 import seremis.geninfusion.util.UtilModel
-
-import scala.collection.mutable.ListBuffer
 
 class GeneModel extends Gene(classOf[Model]) {
 
@@ -86,8 +81,8 @@ class GeneModel extends Gene(classOf[Model]) {
 
         offspring(geneIdTexture) = SoulHelper.instanceHelper.getIChromosomeInstance(Genes.GeneTexture, textureAllele1, textureAllele2)
 
-        val widthAllele1 = new Allele(true, AnimationCache.getModelWidth(dominantModel) * 0.7F, classOf[Float])
-        val widthAllele2 = new Allele(false, AnimationCache.getModelWidth(recessiveModel) * 0.7F, classOf[Float])
+        val widthAllele1 = new Allele(true, AnimationCache.getModelWidth(dominantModel) * 0.8F, classOf[Float])
+        val widthAllele2 = new Allele(false, AnimationCache.getModelWidth(recessiveModel) * 0.8F, classOf[Float])
 
         offspring(geneIdWidth) = SoulHelper.instanceHelper.getIChromosomeInstance(Genes.GeneWidth, widthAllele1, widthAllele2)
 
@@ -100,61 +95,5 @@ class GeneModel extends Gene(classOf[Model]) {
         val resultAllele2 = new Allele(false, recessiveModel, classOf[Model])
 
         SoulHelper.instanceHelper.getIChromosomeInstance(Genes.GeneModel, resultAllele1, resultAllele2)
-    }
-
-    private def randomlyInherit(inherited1: ListBuffer[(Array[ModelPart], BufferedImage)], inherited2: ListBuffer[(Array[ModelPart], BufferedImage)], parent1: Array[ModelPart], texture1: BufferedImage, parent2: Array[ModelPart], texture2: BufferedImage) {
-        if (rand.nextBoolean()) {
-            inherited1 += (parent1 -> texture1)
-            inherited2 += (parent2 -> texture2)
-        } else {
-            inherited1 += (parent2 -> texture2)
-            inherited2 += (parent1 -> texture1)
-        }
-    }
-
-    def combineTexture(inherited: ListBuffer[(Array[ModelPart], BufferedImage)]): (BufferedImage, ListBuffer[ModelPart]) = {
-        val modelPartImages: ListBuffer[BufferedImage] = ListBuffer()
-        val textureRects: ListBuffer[Double] = ListBuffer()
-        val parts: ListBuffer[ModelPart] = ListBuffer()
-
-        for (tuple <- inherited) {
-            val partArray = tuple._1
-            val wholeTexture = tuple._2
-
-            for (part <- partArray if part != null) {
-                val image = GITextureHelper.getModelPartTexture(part, wholeTexture)
-                textureRects += new Double(0, 0, image.getWidth, image.getHeight)
-                modelPartImages += image
-                parts += part
-            }
-        }
-
-        val result = GITextureHelper.stitchImages(textureRects, modelPartImages)
-
-        for (i <- parts.indices) {
-            val part = parts(i)
-            val rect = result._2(i)
-            GITextureHelper.changeModelPartTextureSize(part, (result._1.getWidth, result._1.getHeight))
-            GITextureHelper.moveModelPartTextureOffset(part, (rect.getMinX.toInt, rect.getMinY.toInt))
-
-            part.resetDisplayList()
-        }
-        (result._1, parts)
-    }
-
-    def randomlyCombineModels(model1: Model, texture1: BufferedImage, model2: Model, texture2: BufferedImage): (ListBuffer[(Array[ModelPart], BufferedImage)], ListBuffer[(Array[ModelPart], BufferedImage)]) = {
-        val combined1: ListBuffer[(Array[ModelPart], BufferedImage)] = ListBuffer()
-        val combined2: ListBuffer[(Array[ModelPart], BufferedImage)] = ListBuffer()
-
-        val partTypes: Set[String] = model1.partsMap.keySet ++ model2.partsMap.keySet
-
-        partTypes.foreach(name => {
-            val part1 = model1.getParts(name)
-            val part2 = model2.getParts(name)
-
-            part1.foreach(part1 => part2.foreach(part2 => randomlyInherit(combined1, combined2, part1, texture1, part2, texture2)))
-        })
-
-        combined1 -> combined2
     }
 }

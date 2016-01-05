@@ -71,16 +71,16 @@ object AttachmentPoints {
             MPAP(Vec3.createVectorHelper(4.0, 0.0, 4.0), Array(General.Headwear))
         )
 
-        final val Headwear = Array(
+        final val  Headwear = Array(
             MPAP(Vec3.createVectorHelper(4.0, 0.0, 4.0), Array(General.Head))
         )
 
         final val Body = Array(
             MPAP(Vec3.createVectorHelper(4.0, 0.0, 2.0), Array(General.Neck, General.Head)),
-            MPAP(Vec3.createVectorHelper(2.0, 12.0, 4.0), Array(Crpr.LegFrontRight)),
-            MPAP(Vec3.createVectorHelper(2.0, 12.0, 0.0), Array(Crpr.LegHindRight)),
-            MPAP(Vec3.createVectorHelper(6.0, 12.0, 4.0), Array(Crpr.LegFrontLeft)),
-            MPAP(Vec3.createVectorHelper(6.0, 12.0, 0.0), Array(Crpr.LegHindLeft))
+            MPAP(Vec3.createVectorHelper(2.0, 12.0, 0.0), Array(Crpr.LegFrontRight)),
+            MPAP(Vec3.createVectorHelper(2.0, 12.0, 4.0), Array(Crpr.LegHindRight)),
+            MPAP(Vec3.createVectorHelper(6.0, 12.0, 0.0), Array(Crpr.LegFrontLeft)),
+            MPAP(Vec3.createVectorHelper(6.0, 12.0, 4.0), Array(Crpr.LegHindLeft))
         )
 
         final val LegRightFront = Array(
@@ -121,7 +121,7 @@ object AttachmentPoints {
         )
 
         final val Body = Array(
-            MPAP(Vec3.createVectorHelper(5.0, 4.0, 0.0), Array(General.Neck, General.Body, General.Head))
+            MPAP(Vec3.createVectorHelper(5.0, 4.0, 0.0), Array(General.Neck))
         )
 
         final val LegRight = Array(

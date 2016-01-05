@@ -100,7 +100,6 @@ class ModelPart(model: ModelBase, boxName: String, var modelPartType: ModelPartT
             initialRotateAngleZ = rotateAngleZ
             firstTick = false
         }
-
         super.render(scale)
     }
 

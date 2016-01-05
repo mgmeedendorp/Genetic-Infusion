@@ -210,6 +210,11 @@ object GITextureHelper {
                 textureSize = (textureSize._1 * 2, textureSize._2)
             }
 
+            if(newRect.getMaxX > textureSize._1) {
+                newRect.x = 0
+                newRect.y = rowMaxY
+            }
+
             position = (position._1 + newRect.getWidth.toInt, position._2)
 
             rowMaxY = Math.max(rowMaxY, newRect.getMaxY).toInt

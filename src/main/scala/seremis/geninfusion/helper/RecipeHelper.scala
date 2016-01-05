@@ -1,11 +1,13 @@
 package seremis.geninfusion.helper
 
+import cpw.mods.fml.common.FMLCommonHandler
 import cpw.mods.fml.common.registry.GameRegistry._
+import cpw.mods.fml.relauncher.Side
 import net.minecraft.block.Block
 import net.minecraft.inventory.InventoryCrafting
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.IRecipe
-import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import net.minecraft.world.World
 import net.minecraftforge.oredict.RecipeSorter
 import net.minecraftforge.oredict.RecipeSorter.Category
@@ -49,6 +51,7 @@ object RecipeHelper {
 
         override def getCraftingResult(inventory : InventoryCrafting): ItemStack = {
             val crystals: ListBuffer[ItemStack] = ListBuffer()
+            val resultCrystal = new ItemStack(ModBlocks.crystal)
 
             for(i <- 0 until inventory.getSizeInventory) {
                 val stack = inventory.getStackInSlot(i)
@@ -57,17 +60,48 @@ object RecipeHelper {
                     crystals += stack
             }
 
-            val soul1 = SoulHelper.instanceHelper.getISoulInstance(crystals(0).getTagCompound).orNull
-            val soul2 = SoulHelper.instanceHelper.getISoulInstance(crystals(1).getTagCompound).orNull
+            if(FMLCommonHandler.instance().getEffectiveSide == Side.SERVER) {
+                val soul1 = SoulHelper.instanceHelper.getISoulInstance(crystals(0).getTagCompound).orNull
+                val soul2 = SoulHelper.instanceHelper.getISoulInstance(crystals(1).getTagCompound).orNull
 
-            val newSoul = SoulHelper.produceOffspring(soul1, soul2).get
+                val newSoul = SoulHelper.produceOffspring(soul1, soul2).get
 
-            val resultCrystal = new ItemStack(ModBlocks.crystal)
-            val compound = new NBTTagCompound
+                val compound = new NBTTagCompound
 
-            newSoul.writeToNBT(compound)
+                newSoul.writeToNBT(compound)
 
-            resultCrystal.setTagCompound(compound)
+                resultCrystal.setTagCompound(compound)
+            } else {
+                val soul1 = SoulHelper.instanceHelper.getISoulInstance(crystals(0).getTagCompound).orNull
+                val soul2 = SoulHelper.instanceHelper.getISoulInstance(crystals(1).getTagCompound).orNull
+
+                val ancestors1 = soul1.getAncestryNode.getUniqueAncestorRoots
+                val ancestors2 = soul2.getAncestryNode.getUniqueAncestorRoots
+
+                val ancestors = ancestors1 ++ ancestors2
+
+                val tagList = new NBTTagList
+                val names: ListBuffer[String] = ListBuffer()
+
+                for(ancestry <- ancestors) {
+                    if(!names.contains(ancestry.name)) {
+                        val tag = new NBTTagCompound
+
+                        ancestry.writeToNBT(tag)
+
+                        tagList.appendTag(tag)
+                        names += ancestry.name
+                    }
+                }
+
+                val compound = new NBTTagCompound
+
+                compound.setTag("ancestry", tagList)
+                compound.setString("type", "clientRecipeRender")
+
+                resultCrystal.setTagCompound(compound)
+
+            }
             resultCrystal
         }
     }
