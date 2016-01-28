@@ -6,7 +6,6 @@ import javax.imageio.ImageIO
 import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.lib.Genes
 import seremis.geninfusion.api.soul.{IChromosome, SoulHelper}
-import seremis.geninfusion.api.util.render.animation.AnimationCache
 import seremis.geninfusion.api.util.render.model.Model
 import seremis.geninfusion.soul.Allele
 import seremis.geninfusion.util.UtilModel
@@ -81,13 +80,13 @@ class GeneModel extends Gene(classOf[Model]) {
 
         offspring(geneIdTexture) = SoulHelper.instanceHelper.getIChromosomeInstance(Genes.GeneTexture, textureAllele1, textureAllele2)
 
-        val widthAllele1 = new Allele(true, AnimationCache.getModelWidth(dominantModel) * 0.8F, classOf[Float])
-        val widthAllele2 = new Allele(false, AnimationCache.getModelWidth(recessiveModel) * 0.8F, classOf[Float])
+        val widthAllele1 = new Allele(true, UtilModel.getModelWidth(dominantModel) * 0.8F, classOf[Float])
+        val widthAllele2 = new Allele(false, UtilModel.getModelWidth(recessiveModel) * 0.8F, classOf[Float])
 
         offspring(geneIdWidth) = SoulHelper.instanceHelper.getIChromosomeInstance(Genes.GeneWidth, widthAllele1, widthAllele2)
 
-        val heightAllele1 = new Allele(true, AnimationCache.getModelHeight(dominantModel), classOf[Float])
-        val heightAllele2 = new Allele(false, AnimationCache.getModelHeight(recessiveModel), classOf[Float])
+        val heightAllele1 = new Allele(true, UtilModel.getModelHeight(dominantModel), classOf[Float])
+        val heightAllele2 = new Allele(false, UtilModel.getModelHeight(recessiveModel), classOf[Float])
 
         offspring(geneIdHeight) = SoulHelper.instanceHelper.getIChromosomeInstance(Genes.GeneHeight, heightAllele1, heightAllele2)
 

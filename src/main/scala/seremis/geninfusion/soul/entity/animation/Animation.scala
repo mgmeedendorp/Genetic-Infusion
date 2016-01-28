@@ -2,14 +2,14 @@ package seremis.geninfusion.soul.entity.animation
 
 import seremis.geninfusion.api.lib.ModelPartTypes
 import seremis.geninfusion.api.soul.{IAnimation, IEntitySoulCustom}
-import seremis.geninfusion.api.util.render.animation.AnimationCache
 import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
+import seremis.geninfusion.util.UtilModel
 
 abstract class Animation extends IAnimation {
 
     final val PI = Math.PI.asInstanceOf[Float]
 
-    def getModel(entity: IEntitySoulCustom): Model = AnimationCache.getModel(entity)
+    def getModel(entity: IEntitySoulCustom): Model = UtilModel.getModel(entity)
 
     def getModelLeftLegs(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getPartsWithTag(ModelPartTypes.Names.Leg, ModelPartTypes.Tags.Left)
     def getModelRightLegs(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getPartsWithTag(ModelPartTypes.Names.Leg, ModelPartTypes.Tags.Right)
@@ -21,7 +21,7 @@ abstract class Animation extends IAnimation {
 
     def getModelArms(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.Names.Arm)
 
-    def armsHorizontal(entity: IEntitySoulCustom): Boolean = AnimationCache.armsHorizontal(entity)
+    def armsHorizontal(entity: IEntitySoulCustom): Boolean = UtilModel.armsHorizontal(entity)
 
     def getModelBody(entity: IEntitySoulCustom): Option[Array[ModelPart]] = getModel(entity).getParts(ModelPartTypes.Names.Body)
 
