@@ -1,6 +1,10 @@
-package seremis.geninfusion.api.util.render.model.cuboid
+package seremis.geninfusion.api.util
 
 import net.minecraft.util.Vec3
+import seremis.geninfusion.api.lib.{CuboidTypes, Genes}
+import seremis.geninfusion.api.render.Model
+import seremis.geninfusion.api.render.cuboid.{Cuboid, CuboidAttachmentPoint, CuboidType}
+import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
 import scala.collection.immutable.HashMap
 import scala.collection.mutable.{ListBuffer, WeakHashMap}
@@ -12,17 +16,71 @@ object UtilModel {
     var cachedOuterBoxWithoutRotation: WeakHashMap[Cuboid, (Vec3, Vec3)] = WeakHashMap()
     var cachedHeight: WeakHashMap[Model, Float] = WeakHashMap()
     var cachedWidth: WeakHashMap[Model, Float] = WeakHashMap()
+    var cachedArmsHorizontal: WeakHashMap[Model, Boolean] = WeakHashMap()
+
+    def getModel(entity: IEntitySoulCustom) = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneModelAdult)
 
     def morphModel(modelFrom: Model, modelTo: Model, maxIndex: Int, index: Int): Model = {
         val result: ListBuffer[Cuboid] = ListBuffer()
 
         val cuboidsFrom = modelFrom.getCuboids
-        val cuboidsTo = modelTo.getCuboids
+        val cuboidsTo = modelTo.getCuboids.to[ListBuffer]
 
+        for(cuboidFrom <- cuboidsFrom) {
+            val cuboidTo = modelTo.getMostResemblingCuboid(cuboidFrom)
 
+            if(cuboidTo.nonEmpty)
+                cuboidsTo -= cuboidTo.get
 
+            result += morphCuboid(Some(cuboidFrom), cuboidTo, maxIndex, index)
+        }
+
+        for(cuboidTo <- cuboidsTo) {
+            result += morphCuboid(None, Some(cuboidTo), maxIndex, index)
+        }
 
         new Model(result.to[Array])
+    }
+
+    def morphCuboid(cuboidFrom: Option[Cuboid], cuboidTo: Option[Cuboid], maxIndex: Int, index: Int): Cuboid = {
+        var boxFrom: (Vec3, Vec3) = (Vec3.createVectorHelper(0, 0, 0), Vec3.createVectorHelper(0, 0, 0))
+        var rotateAnglesFrom: (Float, Float, Float) = (0, 0, 0)
+        var rotationPointsFrom: (Float, Float, Float) = (0, 0, 0)
+
+        var boxTo: (Vec3, Vec3) = (Vec3.createVectorHelper(0, 0, 0), Vec3.createVectorHelper(0, 0, 0))
+        var rotateAnglesTo: (Float, Float, Float) = (0, 0, 0)
+        var rotationPointsTo: (Float, Float, Float) = (0, 0, 0)
+
+        if(cuboidFrom.nonEmpty) {
+            boxFrom = getCuboidOuterBox(cuboidFrom.get)
+            rotateAnglesFrom = (cuboidFrom.get.rotateAngleX, cuboidFrom.get.rotateAngleY, cuboidFrom.get.rotateAngleZ)
+            rotationPointsFrom = (cuboidFrom.get.rotationPointX, cuboidFrom.get.rotationPointY, cuboidFrom.get.rotationPointZ)
+        }
+
+        if(cuboidTo.nonEmpty) {
+            boxTo = getCuboidOuterBox(cuboidTo.get)
+            rotateAnglesTo = (cuboidTo.get.rotateAngleX, cuboidTo.get.rotateAngleY, cuboidTo.get.rotateAngleZ)
+            rotationPointsTo = (cuboidTo.get.rotationPointX, cuboidTo.get.rotationPointY, cuboidTo.get.rotationPointZ)
+        }
+
+        val x1 = (boxFrom._1.xCoord + ((boxTo._1.xCoord - boxFrom._1.xCoord) / maxIndex) * index).toFloat
+        val x2 = (boxFrom._2.xCoord + ((boxTo._2.xCoord - boxFrom._2.xCoord) / maxIndex) * index).toFloat
+        val y1 = (boxFrom._1.yCoord + ((boxTo._1.yCoord - boxFrom._1.yCoord) / maxIndex) * index).toFloat
+        val y2 = (boxFrom._2.yCoord + ((boxTo._2.yCoord - boxFrom._2.yCoord) / maxIndex) * index).toFloat
+        val z1 = (boxFrom._1.zCoord + ((boxTo._1.zCoord - boxFrom._1.zCoord) / maxIndex) * index).toFloat
+        val z2 = (boxFrom._2.zCoord + ((boxTo._2.zCoord - boxFrom._2.zCoord) / maxIndex) * index).toFloat
+
+        val cuboid = new Cuboid(x1, y1, z1, (x2 - x1).toInt, (y2 - y1).toInt, (z2 - z1).toInt, null, null)
+
+        cuboid.rotationPointX = rotationPointsFrom._1 + ((rotationPointsTo._1 - rotationPointsFrom._1) / maxIndex) * index
+        cuboid.rotationPointY = rotationPointsFrom._2 + ((rotationPointsTo._2 - rotationPointsFrom._2) / maxIndex) * index
+        cuboid.rotationPointZ = rotationPointsFrom._3 + ((rotationPointsTo._3 - rotationPointsFrom._3) / maxIndex) * index
+
+        cuboid.rotateAngleX = rotateAnglesFrom._1 + ((rotateAnglesTo._1 - rotateAnglesFrom._1) / maxIndex) * index
+        cuboid.rotateAngleY = rotateAnglesFrom._2 + ((rotateAnglesTo._2 - rotateAnglesFrom._2) / maxIndex) * index
+        cuboid.rotateAngleZ = rotateAnglesFrom._3 + ((rotateAnglesTo._3 - rotateAnglesFrom._3) / maxIndex) * index
+
+        cuboid
     }
 
     def getModelWidth(model: Model): Float = {
@@ -139,6 +197,27 @@ object UtilModel {
         cachedOuterBoxWithoutRotation.get(cuboid).get
     }
 
+    def armsHorizontal(model: Model): Boolean = {
+        if(!cachedArmsHorizontal.contains(model)) {
+            val arms = model.getCuboidsWithTag(CuboidTypes.Tags.Arm)
+
+            if(arms.nonEmpty) {
+                for(cuboid <- arms.get) {
+                    val box = getCuboidOuterBox(cuboid)
+
+                    val diffX = Math.abs(box._1.xCoord - box._2.xCoord)
+                    val diffY = Math.abs(box._1.yCoord - box._2.yCoord)
+                    val diffZ = Math.abs(box._1.zCoord - box._2.zCoord)
+
+                    cachedArmsHorizontal += (model -> (diffX > diffY * 1.5F || diffZ > diffY * 1.5F))
+                }
+            } else {
+                cachedArmsHorizontal += (model -> false)
+            }
+        }
+        cachedArmsHorizontal.get(model).get
+    }
+
     def randomlyCombineModels(model1: Model, model2: Model): (Model, Model) = {
         var dominantModel: Model = null
         var recessiveModel: Model = null
@@ -226,7 +305,7 @@ object UtilModel {
     /**
       * Chooses from parts the parts best suited to connect to all the AttachmentPoints. Returns these connections.
       */
-    def connectAllPoints(cuboid: Cuboid, cuboids: Array[Cuboid]): ListBuffer[CuboidConnection] = {
+    private def connectAllPoints(cuboid: Cuboid, cuboids: Array[Cuboid]): ListBuffer[CuboidConnection] = {
         val connections: ListBuffer[CuboidConnection] = ListBuffer()
         var connectedCuboids: HashMap[CuboidAttachmentPointData, CuboidConnection] = HashMap()
 
@@ -348,7 +427,10 @@ object UtilModel {
         model
     }
 
-    def removeCuboidFromCache(cuboid: Cuboid): Cuboid = ???
+    def removeCuboidFromCache(cuboid: Cuboid) {
+        cachedOuterBox -= cuboid
+        cachedOuterBoxWithoutRotation -= cuboid
+    }
 
     private case class CuboidConnection(data1: CuboidAttachmentPointData, point1: CuboidAttachmentPoint, type1: CuboidType, data2: CuboidAttachmentPointData, point2: CuboidAttachmentPoint, type2: CuboidType) {
         val weight = (data1.cuboid.cuboidType.similarity(type2) + data2.cuboid.cuboidType.similarity(type1)) / 2.0F

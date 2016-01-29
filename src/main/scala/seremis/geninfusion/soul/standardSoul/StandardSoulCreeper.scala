@@ -9,10 +9,9 @@ import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.lib.AttachmentPoints
+import seremis.geninfusion.api.lib.CuboidTypes.{Creeper, General}
 import seremis.geninfusion.api.lib.Genes._
-import seremis.geninfusion.api.lib.ModelPartTypes.{Creeper, General}
 import seremis.geninfusion.api.soul.IChromosome
-import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 import seremis.geninfusion.soul.{Allele, Chromosome}
 
 class StandardSoulCreeper extends StandardSoul {
@@ -116,7 +115,7 @@ class StandardSoulCreeper extends StandardSoul {
             return new Chromosome(gene, new Allele(true, false, classOf[Boolean]))
 
         //Rendering related Genes.
-        if(gene == GeneModel)
+        if(gene == GeneModelAdult)
             return new Chromosome(gene, new Allele(true, model, classOf[Model]))
         if(gene == GeneTexture)
             return new Chromosome(gene, new Allele(true, textureStringToNBT("textures/entity/creeper/creeper.png"), classOf[NBTTagCompound]), new Allele(false, textureStringToNBT("textures/entity/creeper/creeper.png"), classOf[NBTTagCompound]))

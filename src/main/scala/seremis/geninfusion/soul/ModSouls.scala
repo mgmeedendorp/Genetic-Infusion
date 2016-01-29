@@ -2,7 +2,6 @@ package seremis.geninfusion.soul
 
 import net.minecraft.entity.monster.{EntityCreeper, EntitySkeleton, EntitySpider, EntityZombie}
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.lib.Animations._
 import seremis.geninfusion.api.lib.Genes._
 import seremis.geninfusion.api.lib.Traits._
@@ -62,8 +61,6 @@ object ModSouls {
         geneRegistry.registerGene(GeneIsCreature, classOf[Boolean]).noMutations
         geneRegistry.registerGene(GeneChildrenBurnInDaylight, classOf[Boolean])
         geneRegistry.registerGene(GeneIsTameable, classOf[Boolean])
-        geneRegistry.registerGene(GeneWidth, classOf[Float]).noMutations
-        geneRegistry.registerGene(GeneHeight, classOf[Float]).noMutations
         geneRegistry.registerGene(GeneImmuneToPoison, classOf[Boolean])
         geneRegistry.registerGene(GeneAffectedByWeb, classOf[Boolean])
         geneRegistry.registerGene(GeneCanClimbWalls, classOf[Boolean])
@@ -260,9 +257,10 @@ object ModSouls {
         geneRegistry.registerMasterGene(GeneUseNewAI, new GeneUseNewAI).noMutations
         geneRegistry.registerGene(GeneUseOldAI, classOf[Boolean]).noMutations
 
-        geneRegistry.registerGene(GeneTexture, classOf[NBTTagCompound])
-        geneRegistry.registerGene(GeneModel, new GeneModel)
-        geneRegistry.registerCustomInheritance(GeneModel)
+        geneRegistry.registerGene(GeneModelAdult, new GeneModel)
+        geneRegistry.registerCustomInheritance(GeneModelAdult)
+        geneRegistry.registerGene(GeneModelChild, new GeneModel)
+        geneRegistry.registerCustomInheritance(GeneModelAdult)
 
         geneRegistry.registerGene(GeneFuseTime, classOf[Int])
         geneRegistry.registerGene(GeneExplosionRadius, classOf[Int])

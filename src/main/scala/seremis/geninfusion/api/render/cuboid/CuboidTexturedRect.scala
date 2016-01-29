@@ -1,9 +1,10 @@
-package seremis.geninfusion.api.util.render.model.cuboid
+package seremis.geninfusion.api.render.cuboid
 
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.client.renderer.Tessellator
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ResourceLocation
+import seremis.geninfusion.api.util.ModelTextureHelper
 import seremis.geninfusion.util.INBTTagable
 
 class CuboidTexturedRect(var textureLocation: String, var x: Int, var y: Int, var sizeX: Int, var sizeY: Int) extends INBTTagable {
@@ -14,7 +15,7 @@ class CuboidTexturedRect(var textureLocation: String, var x: Int, var y: Int, va
     var textureSizeY: Int = 0
 
     def this() {
-        this("", 0, 0, 0, 0)
+        this("", 0, 0, 16, 16)
     }
 
     def this(compound: NBTTagCompound) {
@@ -59,6 +60,10 @@ class CuboidTexturedRect(var textureLocation: String, var x: Int, var y: Int, va
 
     @SideOnly(Side.CLIENT)
     def getTexture = ModelTextureHelper.getBufferedImage(getResourceLocation)
+
+    def setTextureLocation(location: String) {
+        textureLocation = location
+    }
 
     override def writeToNBT(compound: NBTTagCompound): NBTTagCompound = {
         compound.setString("textureLocation", textureLocation)

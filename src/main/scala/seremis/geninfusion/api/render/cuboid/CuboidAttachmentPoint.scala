@@ -1,4 +1,4 @@
-package seremis.geninfusion.api.util.render.model.cuboid
+package seremis.geninfusion.api.render.cuboid
 
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import net.minecraft.util.Vec3

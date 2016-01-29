@@ -1,4 +1,4 @@
-package seremis.geninfusion.api.util.render.model.cuboid
+package seremis.geninfusion.api.render.cuboid
 
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.client.renderer.{GLAllocation, Tessellator}
@@ -9,7 +9,7 @@ import seremis.geninfusion.util.INBTTagable
 
 import scala.collection.mutable.ListBuffer
 
-class Cuboid(var x: Float, var y: Float, var z: Float, var xSize: Float, var ySize: Float, var zSize: Float, var cuboidType: CuboidType, var attachmentPoints: Array[CuboidAttachmentPoint], var texturedRects: Array[CuboidTexturedRect]) extends INBTTagable {
+class Cuboid(var x: Float, var y: Float, var z: Float, var xSize: Int, var ySize: Int, var zSize: Int, var cuboidType: CuboidType, var attachmentPoints: Array[CuboidAttachmentPoint], var texturedRects: Array[CuboidTexturedRect]) extends INBTTagable {
 
     //TODO correctly implement this in Model
     var renderAsChildCuboids: ListBuffer[Cuboid] = ListBuffer()
@@ -23,20 +23,50 @@ class Cuboid(var x: Float, var y: Float, var z: Float, var xSize: Float, var ySi
     var rotateAngleX = 0.0F
     var rotateAngleY = 0.0F
     var rotateAngleZ = 0.0F
+
+    var initialRotationPointX = 0.0F
+    var initialRotationPointY = 0.0F
+    var initialRotationPointZ = 0.0F
+    var initialRotateAngleX = 0.0F
+    var initialRotateAngleY = 0.0F
+    var initialRotateAngleZ = 0.0F
+
     var mirror = false
+    var firstTick = true
+
+    def this(x: Float, y: Float, z: Float, xSize: Int, ySize: Int, zSize: Int, textureOffsetX: Int, textureOffsetY: Int, cuboidType: CuboidType, attachmentPoints: Array[CuboidAttachmentPoint], textureLocation: String) {
+        this(x, y, z, xSize, ySize, zSize, cuboidType, attachmentPoints, null)
+
+        texturedRects = Array(
+            new CuboidTexturedRect(textureLocation, textureOffsetX + zSize + xSize, textureOffsetY + zSize, zSize, ySize),
+            new CuboidTexturedRect(textureLocation, textureOffsetX, textureOffsetY + zSize, zSize, ySize),
+            new CuboidTexturedRect(textureLocation, textureOffsetX + zSize, textureOffsetY, xSize, zSize),
+            new CuboidTexturedRect(textureLocation, textureOffsetX + zSize + xSize, textureOffsetY, xSize, zSize),
+            new CuboidTexturedRect(textureLocation, textureOffsetX + zSize, textureOffsetY + zSize, xSize, ySize),
+            new CuboidTexturedRect(textureLocation, textureOffsetX + zSize + xSize + zSize, textureOffsetY + zSize, xSize, ySize)
+        )
+    }
+
+    def this(x: Float, y: Float, z: Float, xSize: Int, ySize: Int, zSize: Int, textureOffsetX: Int, textureOffsetY: Int, cuboidType: CuboidType, attachmentPoints: Array[CuboidAttachmentPoint]) {
+        this(x, y, z, xSize, ySize, zSize, textureOffsetX, textureOffsetY, cuboidType, attachmentPoints, "")
+    }
+
+    def this(x: Float, y: Float, z: Float, xSize: Int, ySize: Int, zSize: Int, cuboidType: CuboidType, attachmentPoints: Array[CuboidAttachmentPoint]) {
+        this(x, y, z, xSize, ySize, zSize, 0, 0, cuboidType, attachmentPoints)
+    }
 
     def this(compound: NBTTagCompound) {
-        this(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, null, null, null)
+        this(0.0F, 0.0F, 0.0F, 0, 0, 0, null, null)
         readFromNBT(compound)
     }
 
-    def setPosition(x: Float, y: Float, z: Float) {
-        this.x = x
-        this.y = y
-        this.z = z
+    def setRotationPoint(x: Float, y: Float, z: Float) {
+        this.rotationPointX = x
+        this.rotationPointY = y
+        this.rotationPointZ = z
     }
 
-    def setSize(xSize: Float, ySize: Float, zSize: Float) {
+    def setSize(xSize: Int, ySize: Int, zSize: Int) {
         this.xSize = xSize
         this.ySize = ySize
         this.zSize = zSize
@@ -52,6 +82,17 @@ class Cuboid(var x: Float, var y: Float, var z: Float, var xSize: Float, var ySi
 
     @SideOnly(Side.CLIENT)
     def render() {
+        if(firstTick) {
+            initialRotateAngleX = rotateAngleX
+            initialRotateAngleY = rotateAngleY
+            initialRotateAngleZ = rotateAngleZ
+            initialRotationPointX = rotationPointX
+            initialRotationPointY = rotationPointY
+            initialRotationPointZ = rotationPointZ
+
+            firstTick = false
+        }
+
         if(!displayListCompiled) {
             compileDisplayList()
         }
@@ -78,6 +119,33 @@ class Cuboid(var x: Float, var y: Float, var z: Float, var xSize: Float, var ySi
         }
 
         GL11.glPopMatrix()
+    }
+
+    def setTextureLocation(location: String) {
+        for(rect <- texturedRects) {
+            rect.setTextureLocation(location)
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    def applyTranslationAndRotations() {
+        if(!displayListCompiled) {
+            compileDisplayList()
+        }
+
+        GL11.glTranslatef(rotationPointX, rotationPointY, rotationPointZ)
+
+        if(rotateAngleZ != 0.0F) {
+            GL11.glRotatef(rotateAngleZ * (180F / Math.PI.toFloat), 0.0F, 0.0F, 1.0F)
+        }
+
+        if(rotateAngleY != 0.0F) {
+            GL11.glRotatef(this.rotateAngleY * (180F / Math.PI.toFloat), 0.0F, 1.0F, 0.0F)
+        }
+
+        if(rotateAngleX != 0.0F) {
+            GL11.glRotatef(this.rotateAngleX * (180F / Math.PI.toFloat), 1.0F, 0.0F, 0.0F)
+        }
     }
 
     @SideOnly(Side.CLIENT)
@@ -117,9 +185,9 @@ class Cuboid(var x: Float, var y: Float, var z: Float, var xSize: Float, var ySi
         compound.setFloat("x", x)
         compound.setFloat("y", y)
         compound.setFloat("z", z)
-        compound.setFloat("xSize", xSize)
-        compound.setFloat("ySize", ySize)
-        compound.setFloat("zSize", zSize)
+        compound.setInteger("xSize", xSize)
+        compound.setInteger("ySize", ySize)
+        compound.setInteger("zSize", zSize)
 
         compound.setFloat("rotationPointX", rotationPointX)
         compound.setFloat("rotationPointY", rotationPointY)
@@ -151,9 +219,9 @@ class Cuboid(var x: Float, var y: Float, var z: Float, var xSize: Float, var ySi
         x = compound.getFloat("x")
         y = compound.getFloat("y")
         z = compound.getFloat("z")
-        xSize = compound.getFloat("xSize")
-        ySize = compound.getFloat("ySize")
-        zSize = compound.getFloat("zSize")
+        xSize = compound.getInteger("xSize")
+        ySize = compound.getInteger("ySize")
+        zSize = compound.getInteger("zSize")
 
         rotationPointX = compound.getFloat("rotationPointX")
         rotationPointY = compound.getFloat("rotationPointY")

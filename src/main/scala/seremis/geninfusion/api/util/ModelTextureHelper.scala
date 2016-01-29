@@ -1,10 +1,11 @@
-package seremis.geninfusion.api.util.render.model.cuboid
+package seremis.geninfusion.api.util
 
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.util.ResourceLocation
+import seremis.geninfusion.api.render.cuboid.CuboidTexturedRect
 
 object ModelTextureHelper {
 
@@ -53,6 +54,7 @@ object ModelTextureHelper {
 
     /**
       * Wraps
+      *
       * @param i
       * @return
       */

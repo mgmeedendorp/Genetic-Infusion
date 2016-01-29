@@ -1,23 +1,14 @@
 package seremis.geninfusion.soul.standardSoul
 
-import java.io.ByteArrayOutputStream
-import javax.imageio.ImageIO
-
-import net.minecraft.client.Minecraft
-import net.minecraft.client.model.ModelBiped
 import net.minecraft.entity._
 import net.minecraft.entity.monster.EntityCreeper
 import net.minecraft.entity.passive.{EntityChicken, EntityTameable}
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.ResourceLocation
-import seremis.geninfusion.api.lib.AttachmentPoints
 import seremis.geninfusion.api.lib.Genes._
-import seremis.geninfusion.api.lib.ModelPartTypes.{Biped, General}
+import seremis.geninfusion.api.render.Model
 import seremis.geninfusion.api.soul.{IChromosome, IStandardSoul}
-import seremis.geninfusion.api.util.render.model.{Model, ModelPart}
 import seremis.geninfusion.soul.{Allele, Chromosome}
 
 abstract class StandardSoul extends IStandardSoul {
@@ -444,11 +435,8 @@ abstract class StandardSoul extends IStandardSoul {
             return new Chromosome(gene, new Allele(true, Array(classOf[EntityPlayer]), classOf[Array[Class[_]]]))
 
         //Rendering related Genes.
-        if(gene == GeneModel)
+        if(gene == GeneModelAdult)
             return new Chromosome(gene, new Allele(true, null, classOf[Model]))
-        if(gene == GeneTexture)
-            return new Chromosome(gene, new Allele(true, textureStringToNBT("textures/entity/skeleton/skeleton.png"), classOf[NBTTagCompound]), new Allele(false, textureStringToNBT("textures/entity/skeleton/skeleton.png"), classOf[NBTTagCompound]))
-
 
         //Explosion related genes
         if(gene == GeneFuseTime)
@@ -468,38 +456,5 @@ abstract class StandardSoul extends IStandardSoul {
             return new Chromosome(gene, new Allele(false, null, classOf[Class[_]]))
 
         null
-    }
-
-    def textureStringToNBT(textureName: String): NBTTagCompound = {
-        val in = Minecraft.getMinecraft.getResourceManager.getResource(new ResourceLocation(textureName)).getInputStream
-        val image = ImageIO.read(in)
-        val out = new ByteArrayOutputStream()
-        val nbt = new NBTTagCompound
-
-        ImageIO.write(image, "png", out)
-        nbt.setByteArray("textureBytes", out.toByteArray)
-
-        nbt
-    }
-
-    def modelBiped(biped: ModelBiped, setRotation: Boolean = true): Model = {
-        val model = new Model
-
-        if(setRotation) {
-            biped.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, null.asInstanceOf[Entity])
-        }
-
-        biped.bipedHeadwear.rotateAngleY = 0.0F
-        biped.bipedHead.rotateAngleY = 0.0F
-
-        model.addPart(ModelPart.rendererToPart(biped.bipedBody, General.Body, AttachmentPoints.Biped.Body))
-        model.addPart(ModelPart.rendererToPart(biped.bipedHead, General.Head, AttachmentPoints.Biped.Head))
-        model.addPart(ModelPart.rendererToPart(biped.bipedHeadwear, General.Headwear, AttachmentPoints.Biped.Headwear))
-        model.addPart(ModelPart.rendererToPart(biped.bipedLeftArm, Biped.ArmLeft, AttachmentPoints.Biped.ArmLeft))
-        model.addPart(ModelPart.rendererToPart(biped.bipedRightArm, Biped.ArmRight, AttachmentPoints.Biped.ArmRight))
-        model.addPart(ModelPart.rendererToPart(biped.bipedLeftLeg, Biped.LegLeft, AttachmentPoints.Biped.LegLeft))
-        model.addPart(ModelPart.rendererToPart(biped.bipedRightLeg, Biped.LegRight, AttachmentPoints.Biped.LegRight))
-
-        model
     }
 }

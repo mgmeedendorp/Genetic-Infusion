@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.lib.Genes._
 import seremis.geninfusion.api.soul.IChromosome
-import seremis.geninfusion.api.util.render.model.Model
 import seremis.geninfusion.soul.{Allele, Chromosome}
 
 class StandardSoulZombie extends StandardSoul {
@@ -127,7 +126,7 @@ class StandardSoulZombie extends StandardSoul {
         if(gene.equals(GeneAINearestAttackableTargetVisible))
             return new Chromosome(gene, new Allele(true, Array(true, false), classOf[Array[Boolean]]))
 
-        if(gene.equals(GeneModel))
+        if(gene.equals(GeneModelAdult))
             return new Chromosome(gene, new Allele(true, model, classOf[Model]))
         if(gene.equals(GeneTexture))
             return new Chromosome(gene, new Allele(true, textureStringToNBT("textures/entity/zombie/zombie.png"), classOf[NBTTagCompound]), new Allele(false, textureStringToNBT("textures/entity/zombie/zombie.png"), classOf[NBTTagCompound]))

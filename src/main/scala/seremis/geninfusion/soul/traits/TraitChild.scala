@@ -5,8 +5,9 @@ import net.minecraft.entity.{Entity, EntityAgeable, EntityLiving, SharedMonsterA
 import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.lib.Genes
 import seremis.geninfusion.api.lib.VariableLib._
+import seremis.geninfusion.api.render.Model
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
-import seremis.geninfusion.api.util.DataWatcherHelper
+import seremis.geninfusion.api.util.{DataWatcherHelper, UtilModel}
 
 class TraitChild extends Trait {
 
@@ -19,15 +20,17 @@ class TraitChild extends Trait {
         val isChild = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneIsChild)
         val childSpeedBoostModifier = SoulHelper.geneRegistry.getValueFromAllele[Double](entity, Genes.GeneChildSpeedModifier)
 
-        val width: Float = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneWidth)
-        val height: Float = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneHeight)
+        val modelAdult: Model = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneModelAdult)
 
-        entity.setFloat(EntityAdultWidth, width * (if(isChild) 2.0F else 1.0F))
-        entity.setFloat(EntityAdultHeight, height * (if(isChild) 2.0F else 1.0F))
+        val adultWidth = UtilModel.getModelWidth(modelAdult)
+        val adultHeight = UtilModel.getModelHeight(modelAdult)
+
+        entity.setFloat(EntityAdultWidth, adultWidth)
+        entity.setFloat(EntityAdultHeight, adultHeight)
 
         entity.setScale_I(1.0F)
 
-        entity.setSize_I(width, height)
+        entity.setSize_I(adultWidth, adultHeight)
 
         entity.setScaleForAge_I(isChild)
 

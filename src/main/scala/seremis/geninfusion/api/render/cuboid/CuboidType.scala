@@ -1,4 +1,4 @@
-package seremis.geninfusion.api.util.render.model.cuboid
+package seremis.geninfusion.api.render.cuboid
 
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList, NBTTagString}
 import net.minecraftforge.common.util.Constants
@@ -10,8 +10,12 @@ class CuboidType(var tags: Array[String]) extends INBTTagable {
 
     Sorting.quickSort(tags)
 
+    def this(tag: String) {
+        this(Array(tag))
+    }
+
     def this(compound: NBTTagCompound) {
-        this()
+        this(null.asInstanceOf[String])
         readFromNBT(compound)
     }
 

@@ -12,8 +12,8 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.{AxisAlignedBB, DamageSource}
 import net.minecraft.world.World
 import seremis.geninfusion.api.lib.Genes
+import seremis.geninfusion.api.render.Model
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
-import seremis.geninfusion.api.util.render.model.Model
 import seremis.geninfusion.block.BlockCrystal
 import seremis.geninfusion.util.{UtilBlock, UtilNBT}
 
@@ -182,7 +182,7 @@ class EntityClayGolem(world: World) extends Entity(world) with GIEntity with IEn
 
     def setTransformationGoal(entity: Option[IEntitySoulCustom]) {
         transformationGoal = entity
-        entity.foreach(goal => transformationGoalModel = Some(SoulHelper.geneRegistry.getValueFromAllele(goal, Genes.GeneModel)))
+        entity.foreach(goal => transformationGoalModel = Some(SoulHelper.geneRegistry.getValueFromAllele(goal, Genes.GeneModelAdult)))
         startTransformation = transformationGoal.nonEmpty
     }
 

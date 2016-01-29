@@ -40,8 +40,6 @@ object Genes {
     val GeneIsCreature = ID + ".gene.isCreature"
     val GeneChildrenBurnInDaylight = ID + ".gene.childrenBurn"
     val GeneIsTameable = ID + ".gene.isTameable"
-    val GeneWidth = ID + ".gene.width"
-    val GeneHeight = ID + ".gene.height"
     val GeneImmuneToPoison = ID + ".gene.immuneToPoison"
     val GeneAffectedByWeb = ID + ".gene.affectedByWeb"
     val GeneCanClimbWalls = ID + ".gene.canClimbWalls"
@@ -236,8 +234,8 @@ object Genes {
     val GeneAIWatchClosest2Range = ID + ".gene.aiWatchClosest2Range"
     val GeneAIWatchClosest2Chance = ID + ".gene.aiWatchClosest2Chance"
 
-    val GeneModel = ID + ".gene.model"
-    val GeneTexture = ID + ".gene.texture"
+    val GeneModelAdult = ID + ".gene.model"
+    val GeneModelChild = ID + ".gene.modelChild"
 
     val GeneFuseTime = ID + ".gene.fuseTime"
     val GeneExplosionRadius = ID + ".gene.explosionRadius"

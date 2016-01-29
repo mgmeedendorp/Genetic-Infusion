@@ -2,8 +2,8 @@ package seremis.geninfusion.soul
 
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import seremis.geninfusion.api.render.Model
 import seremis.geninfusion.api.soul.IAlleleType
-import seremis.geninfusion.api.util.render.model.Model
 
 abstract class AlleleType(clzz: Class[_]) extends IAlleleType {
 
@@ -57,7 +57,7 @@ object AlleleType {
 
     val typeClass = new AlleleType(classOf[Class[_]]) {
         override def writeToNBT(compound: NBTTagCompound, name: String, value: Any) = compound.setString(name, value.asInstanceOf[Class[_]].getName)
-        override def readFromNBT(compound: NBTTagCompound, name: String): Any = try{ Class.forName(compound.getString(name)) } catch { case e: Exception => return null}
+        override def readFromNBT(compound: NBTTagCompound, name: String): Any = try{ Class.forName(compound.getString(name)) } catch { case e: Exception => null}
     }
 
     val typeItemStack = new AlleleType(classOf[ItemStack]) {

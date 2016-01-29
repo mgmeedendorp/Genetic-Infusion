@@ -4,8 +4,8 @@ import net.minecraft.entity.EntityLiving
 import net.minecraft.item.EnumAction
 import net.minecraft.util.MathHelper
 import seremis.geninfusion.api.lib.VariableLib
+import seremis.geninfusion.api.render.cuboid.Cuboid
 import seremis.geninfusion.api.soul.{EnumAnimationType, IEntitySoulCustom}
-import seremis.geninfusion.api.util.render.model.ModelPart
 
 class AnimationTwoArmed extends Animation {
 
@@ -20,8 +20,8 @@ class AnimationTwoArmed extends Animation {
     override def animate(entity: IEntitySoulCustom, timeModifier: Float, limbSwing: Float, specialRotation: Float, rotationYawHead: Float, rotationPitch: Float, scale: Float) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        val leftArm: ModelPart = getModelLeftArms(entity).get(0)
-        val rightArm: ModelPart = getModelRightArms(entity).get(0)
+        val leftArm: Cuboid = getModelLeftArms(entity).get(0)
+        val rightArm: Cuboid = getModelRightArms(entity).get(0)
         val body = getModelBody(entity).get(0)
         val head = getModelHead(entity).get(0)
 
