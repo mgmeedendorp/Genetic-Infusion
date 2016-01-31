@@ -112,6 +112,8 @@ object VariableLib {
     final val DataWatcherNameTag = "nameTag"
     final val DataWatcherGrowingAge = "growingAge"
     final val DataWatcherClimbableWall = "climbableWall"
+    final val DataWatcherSprinting = "sprinting"
+    final val DataWatcherSneaking = "sneaking"
     final val ModelRendererBoxName = field("field_78802_n")
     final val ModelRendererTextureOffsetX = field("field_78803_o")
     final val ModelRendererTextureOffsetY = field("field_78813_p")

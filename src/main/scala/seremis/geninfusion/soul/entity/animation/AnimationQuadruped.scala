@@ -1,8 +1,8 @@
 package seremis.geninfusion.soul.entity.animation
 
 import net.minecraft.util.MathHelper
+import seremis.geninfusion.api.render.cuboid.Cuboid
 import seremis.geninfusion.api.soul.{EnumAnimationType, IEntitySoulCustom}
-import seremis.geninfusion.api.util.render.model.ModelPart
 
 class AnimationQuadruped extends Animation {
     /**
@@ -63,10 +63,10 @@ class AnimationQuadruped extends Animation {
      *                        the 6th parameter in setRotationAngles.
      */
     override def animate(entity: IEntitySoulCustom, timeModifier: Float, walkSpeed: Float, specialRotation: Float, rotationYawHead: Float, rotationPitch: Float, scale: Float) {
-        val leftLeg1: ModelPart = getModelLeftLegs(entity).get(0)
-        val rightLeg1: ModelPart = getModelRightLegs(entity).get(0)
-        val leftLeg2: ModelPart = getModelLeftLegs(entity).get(1)
-        val rightLeg2: ModelPart = getModelRightLegs(entity).get(1)
+        val leftLeg1: Cuboid = getModelLeftLegs(entity).get(0)
+        val rightLeg1: Cuboid = getModelRightLegs(entity).get(0)
+        val leftLeg2: Cuboid = getModelLeftLegs(entity).get(1)
+        val rightLeg2: Cuboid = getModelRightLegs(entity).get(1)
 
         leftLeg1.rotateAngleX = MathHelper.cos(timeModifier * 0.6662F) * 1.4F * walkSpeed
         rightLeg1.rotateAngleX = MathHelper.cos(timeModifier * 0.6662F + PI) * 1.4F * walkSpeed

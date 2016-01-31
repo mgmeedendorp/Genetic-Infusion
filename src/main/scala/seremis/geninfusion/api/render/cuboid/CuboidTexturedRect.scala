@@ -1,13 +1,13 @@
 package seremis.geninfusion.api.render.cuboid
 
-import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.client.renderer.Tessellator
-import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.ResourceLocation
+import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
+import net.minecraft.util.{ResourceLocation, Vec3}
+import net.minecraftforge.common.util.Constants
 import seremis.geninfusion.api.util.ModelTextureHelper
 import seremis.geninfusion.util.INBTTagable
 
-class CuboidTexturedRect(var textureLocation: String, var x: Int, var y: Int, var sizeX: Int, var sizeY: Int) extends INBTTagable {
+class CuboidTexturedRect(var textureLocation: String, var corners: Array[Vec3], var x: Int, var y: Int, var sizeX: Int, var sizeY: Int, var mirror: Boolean) extends INBTTagable {
 
     var destX: Int = x
     var destY: Int = y
@@ -15,7 +15,7 @@ class CuboidTexturedRect(var textureLocation: String, var x: Int, var y: Int, va
     var textureSizeY: Int = 0
 
     def this() {
-        this("", 0, 0, 16, 16)
+        this("", null, 0, 0, 16, 16, false)
     }
 
     def this(compound: NBTTagCompound) {
@@ -33,32 +33,33 @@ class CuboidTexturedRect(var textureLocation: String, var x: Int, var y: Int, va
         textureSizeY = height
     }
 
-    def draw(tessellator: Tessellator, x1: Double, y1: Double, z1: Double, x2: Double, y2: Double, z2: Double, mirror: Boolean) {
+    def draw(tessellator: Tessellator) {
+        val vec1 = corners(1).subtract(corners(0))
+        val vec2 = corners(1).subtract(corners(2))
+
+        val normalVec = vec2.crossProduct(vec1).normalize()
+
         tessellator.startDrawingQuads()
+
+        tessellator.setNormal(normalVec.xCoord.toFloat, normalVec.yCoord.toFloat, normalVec.zCoord.toFloat)
 
         val u = x.toFloat / textureSizeX.toFloat
         val v = y.toFloat / textureSizeY.toFloat
         val du = sizeX.toFloat / textureSizeX.toFloat
         val dv = sizeY.toFloat / textureSizeY.toFloat
 
-        if(mirror) {
-            tessellator.addVertexWithUV(x2, y2, z2, u     , v     )
-            tessellator.addVertexWithUV(x2, y1, z2, u     , v + dv)
-            tessellator.addVertexWithUV(x1, y1, z1, u + du, v + dv)
-            tessellator.addVertexWithUV(x1, y2, z1, u + du, v     )
-        } else {
-            tessellator.addVertexWithUV(x1, y2, z1, u     , v     )
-            tessellator.addVertexWithUV(x1, y1, z1, u     , v + dv)
-            tessellator.addVertexWithUV(x2, y1, z2, u + du, v + dv)
-            tessellator.addVertexWithUV(x2, y2, z2, u + du, v     )
-        }
+
+        tessellator.addVertexWithUV(corners(0).xCoord, corners(0).yCoord, corners(0).zCoord, u     , v     )
+        tessellator.addVertexWithUV(corners(1).xCoord, corners(1).yCoord, corners(1).zCoord, u     , v + dv)
+        tessellator.addVertexWithUV(corners(2).xCoord, corners(2).yCoord, corners(2).zCoord, u + du, v + dv)
+        tessellator.addVertexWithUV(corners(3).xCoord, corners(3).yCoord, corners(3).zCoord, u + du, v     )
+
 
         tessellator.draw()
     }
 
     def getResourceLocation = new ResourceLocation(textureLocation)
 
-    @SideOnly(Side.CLIENT)
     def getTexture = ModelTextureHelper.getBufferedImage(getResourceLocation)
 
     def setTextureLocation(location: String) {
@@ -74,6 +75,19 @@ class CuboidTexturedRect(var textureLocation: String, var x: Int, var y: Int, va
         compound.setInteger("destX", destX)
         compound.setInteger("destY", destY)
 
+        val cornerList = new NBTTagList
+
+        for(corner <- corners) {
+            val nbt = new NBTTagCompound
+
+            nbt.setFloat("x", corner.xCoord.toFloat)
+            nbt.setFloat("y", corner.yCoord.toFloat)
+            nbt.setFloat("z", corner.zCoord.toFloat)
+
+            cornerList.appendTag(nbt)
+        }
+        compound.setTag("corners", cornerList)
+        
         compound
     }
 
@@ -86,6 +100,14 @@ class CuboidTexturedRect(var textureLocation: String, var x: Int, var y: Int, va
         destX = compound.getInteger("destX")
         destY = compound.getInteger("destY")
 
+        val cornersList = compound.getTagList("corners", Constants.NBT.TAG_COMPOUND)
+        corners = new Array[Vec3](cornersList.tagCount)
+
+        for(i <- 0 until cornersList.tagCount) {
+            val nbt = cornersList.getCompoundTagAt(i)
+
+            corners(i) = Vec3.createVectorHelper(nbt.getFloat("x"), nbt.getFloat("y"), nbt.getFloat("z"))
+        }
         compound
     }
 }

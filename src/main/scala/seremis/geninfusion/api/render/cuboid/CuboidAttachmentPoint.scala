@@ -30,7 +30,7 @@ class CuboidAttachmentPoint(var location: Vec3, var cuboidTypes: Array[CuboidTyp
             typeList.appendTag(nbt)
         }
 
-        compound.setTag("cuboidTypes", typeList);
+        compound.setTag("cuboidTypes", typeList)
 
         compound
     }

@@ -17,6 +17,8 @@ class TraitRender extends Trait {
     override def render(entity: IEntitySoulCustom, timeModifier: Float, limbSwing: Float, specialRotation: Float, rotationYawHead: Float, rotationPitch: Float, scale: Float) {
         val model = SoulHelper.geneRegistry.getValueFromAllele[Model](entity, Genes.GeneModelAdult)
 
+        GL11.glTranslatef(0.0F, -24.0F * scale - 0.0078125F, 0.0F)
+
         if(entity.asInstanceOf[EntityLiving].isChild) {
 
             if(model.getCuboidsWithTag(CuboidTypes.Tags.Head).nonEmpty) {
@@ -226,7 +228,7 @@ class TraitRender extends Trait {
                     val f2 = partialTicksExisted * 0.01F
                     val f3 = partialTicksExisted * 0.01F
                     GL11.glTranslatef(f2, f3, 0.0F)
-                    entity.getEntityRender_I.setRenderPassModel(SoulHelper.entityModel)
+                   // entity.getEntityRender_I.setRenderPassModel(SoulHelper.entityModel)
                     GL11.glMatrixMode(GL11.GL_MODELVIEW)
                     GL11.glEnable(GL11.GL_BLEND)
                     val f4 = 0.5F

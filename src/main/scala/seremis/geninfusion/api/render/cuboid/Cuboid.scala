@@ -1,15 +1,16 @@
 package seremis.geninfusion.api.render.cuboid
 
-import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.client.renderer.{GLAllocation, Tessellator}
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
+import net.minecraft.util.{ResourceLocation, Vec3}
 import net.minecraftforge.common.util.Constants
 import org.lwjgl.opengl.GL11
+import seremis.geninfusion.api.util.ModelTextureHelper
 import seremis.geninfusion.util.INBTTagable
 
 import scala.collection.mutable.ListBuffer
 
-class Cuboid(var x: Float, var y: Float, var z: Float, var xSize: Int, var ySize: Int, var zSize: Int, var cuboidType: CuboidType, var attachmentPoints: Array[CuboidAttachmentPoint], var texturedRects: Array[CuboidTexturedRect]) extends INBTTagable {
+class Cuboid(var x: Float, var y: Float, var z: Float, var xSize: Float, var ySize: Float, var zSize: Float, var textureOffsetX: Int, var textureOffsetY: Int, var mirror: Boolean, var cuboidType: CuboidType, var attachmentPoints: Array[CuboidAttachmentPoint], var texturedRects: Array[CuboidTexturedRect]) extends INBTTagable {
 
     //TODO correctly implement this in Model
     var renderAsChildCuboids: ListBuffer[Cuboid] = ListBuffer()
@@ -31,32 +32,58 @@ class Cuboid(var x: Float, var y: Float, var z: Float, var xSize: Int, var ySize
     var initialRotateAngleY = 0.0F
     var initialRotateAngleZ = 0.0F
 
-    var mirror = false
     var firstTick = true
 
-    def this(x: Float, y: Float, z: Float, xSize: Int, ySize: Int, zSize: Int, textureOffsetX: Int, textureOffsetY: Int, cuboidType: CuboidType, attachmentPoints: Array[CuboidAttachmentPoint], textureLocation: String) {
-        this(x, y, z, xSize, ySize, zSize, cuboidType, attachmentPoints, null)
+    def this(x: Float, y: Float, z: Float, xSize: Float, ySize: Float, zSize: Float, textureOffsetX: Int, textureOffsetY: Int, mirror: Boolean, cuboidType: CuboidType, attachmentPoints: Array[CuboidAttachmentPoint], textureLocation: String) {
+        this(x, y, z, xSize, ySize, zSize, textureOffsetX, textureOffsetY, mirror, cuboidType, attachmentPoints, null.asInstanceOf[Array[CuboidTexturedRect]])
+
+        var x1 = x
+        val y1 = y
+        val z1 = z
+        var x2 = x + xSize
+        val y2 = y + ySize
+        val z2 = z + zSize
+        
+        val dx = xSize.toInt
+        val dy = ySize.toInt
+        val dz = zSize.toInt
+
+        if(mirror) {
+            x1 = x2
+            x2 = x
+        }
+
+        def vec3(x: Double, y: Double, z: Double) = Vec3.createVectorHelper(x, y, z)
+
+        val quadCorners = Array(
+            Array(vec3(x2, y1, z1), vec3(x2, y2, z1), vec3(x2, y2, z2), vec3(x2, y1, z2)),
+            Array(vec3(x1, y1, z2), vec3(x1, y2, z2), vec3(x1, y2, z1), vec3(x1, y1, z1)),
+            Array(vec3(x1, y1, z2), vec3(x1, y1, z1), vec3(x2, y1, z1), vec3(x2, y1, z2)),
+            Array(vec3(x1, y2, z1), vec3(x1, y2, z2), vec3(x2, y2, z2), vec3(x2, y2, z1)),
+            Array(vec3(x1, y1, z1), vec3(x1, y2, z1), vec3(x2, y2, z1), vec3(x2, y1, z1)),
+            Array(vec3(x2, y1, z2), vec3(x2, y2, z2), vec3(x1, y2, z2), vec3(x1, y1, z2))
+        )
 
         texturedRects = Array(
-            new CuboidTexturedRect(textureLocation, textureOffsetX + zSize + xSize, textureOffsetY + zSize, zSize, ySize),
-            new CuboidTexturedRect(textureLocation, textureOffsetX, textureOffsetY + zSize, zSize, ySize),
-            new CuboidTexturedRect(textureLocation, textureOffsetX + zSize, textureOffsetY, xSize, zSize),
-            new CuboidTexturedRect(textureLocation, textureOffsetX + zSize + xSize, textureOffsetY, xSize, zSize),
-            new CuboidTexturedRect(textureLocation, textureOffsetX + zSize, textureOffsetY + zSize, xSize, ySize),
-            new CuboidTexturedRect(textureLocation, textureOffsetX + zSize + xSize + zSize, textureOffsetY + zSize, xSize, ySize)
+            new CuboidTexturedRect(textureLocation, quadCorners(0), textureOffsetX + dz + dx, textureOffsetY + dz, dz, dy, mirror),
+            new CuboidTexturedRect(textureLocation, quadCorners(1), textureOffsetX, textureOffsetY + dz, dz, dy, mirror),
+            new CuboidTexturedRect(textureLocation, quadCorners(2), textureOffsetX + dz, textureOffsetY, dx, dz, mirror),
+            new CuboidTexturedRect(textureLocation, quadCorners(3), textureOffsetX + dz + dx, textureOffsetY, dx, dz, mirror),
+            new CuboidTexturedRect(textureLocation, quadCorners(4), textureOffsetX + dz, textureOffsetY + dz, dx, dy, mirror),
+            new CuboidTexturedRect(textureLocation, quadCorners(5), textureOffsetX + dz + dx + dz, textureOffsetY + dz, dx, dy, mirror)
         )
     }
 
-    def this(x: Float, y: Float, z: Float, xSize: Int, ySize: Int, zSize: Int, textureOffsetX: Int, textureOffsetY: Int, cuboidType: CuboidType, attachmentPoints: Array[CuboidAttachmentPoint]) {
-        this(x, y, z, xSize, ySize, zSize, textureOffsetX, textureOffsetY, cuboidType, attachmentPoints, "")
+    def this(x: Float, y: Float, z: Float, xSize: Float, ySize: Float, zSize: Float, textureOffsetX: Int, textureOffsetY: Int, mirror: Boolean, cuboidType: CuboidType, attachmentPoints: Array[CuboidAttachmentPoint]) {
+        this(x, y, z, xSize, ySize, zSize, textureOffsetX, textureOffsetY, mirror, cuboidType, attachmentPoints, "")
     }
 
-    def this(x: Float, y: Float, z: Float, xSize: Int, ySize: Int, zSize: Int, cuboidType: CuboidType, attachmentPoints: Array[CuboidAttachmentPoint]) {
-        this(x, y, z, xSize, ySize, zSize, 0, 0, cuboidType, attachmentPoints)
+    def this(x: Float, y: Float, z: Float, xSize: Float, ySize: Float, zSize: Float, mirror: Boolean, cuboidType: CuboidType, attachmentPoints: Array[CuboidAttachmentPoint]) {
+        this(x, y, z, xSize, ySize, zSize, 0, 0, mirror, cuboidType, attachmentPoints)
     }
 
     def this(compound: NBTTagCompound) {
-        this(0.0F, 0.0F, 0.0F, 0, 0, 0, null, null)
+        this(0.0F, 0.0F, 0.0F, 0, 0, 0, false, null, null)
         readFromNBT(compound)
     }
 
@@ -66,7 +93,13 @@ class Cuboid(var x: Float, var y: Float, var z: Float, var xSize: Int, var ySize
         this.rotationPointZ = z
     }
 
-    def setSize(xSize: Int, ySize: Int, zSize: Int) {
+    def setRotateAngles(x: Float, y: Float, z: Float) {
+        this.rotateAngleX = x
+        this.rotateAngleY = y
+        this.rotateAngleZ = z
+    }
+
+    def setSize(xSize: Float, ySize: Float, zSize: Float) {
         this.xSize = xSize
         this.ySize = ySize
         this.zSize = zSize
@@ -76,11 +109,26 @@ class Cuboid(var x: Float, var y: Float, var z: Float, var xSize: Int, var ySize
         renderAsChildCuboids += child
     }
 
+    def getScaledCuboid(scale: Float): Cuboid = {
+        val cuboid = new Cuboid(x * scale, y * scale, z * scale, xSize.toFloat * scale, ySize.toFloat * scale, zSize.toFloat * scale, textureOffsetX, textureOffsetY, mirror, cuboidType, attachmentPoints, texturedRects)
+
+        cuboid.setRotationPoint(rotationPointX, rotationPointY, rotationPointZ)
+        cuboid.setRotateAngles(rotateAngleX, rotateAngleY, rotateAngleZ)
+        cuboid.renderAsChildCuboids = renderAsChildCuboids
+
+        cuboid
+    }
+
+    def resetInitialRotateAngles() {
+        rotateAngleX = initialRotateAngleX
+        rotateAngleY = initialRotateAngleY
+        rotateAngleZ = initialRotateAngleZ
+    }
+
     def getAttachmentPoints = attachmentPoints
 
     def getTexturedRects: Array[CuboidTexturedRect] = texturedRects
 
-    @SideOnly(Side.CLIENT)
     def render() {
         if(firstTick) {
             initialRotateAngleX = rotateAngleX
@@ -122,17 +170,14 @@ class Cuboid(var x: Float, var y: Float, var z: Float, var xSize: Int, var ySize
     }
 
     def setTextureLocation(location: String) {
+        val texture = ModelTextureHelper.getBufferedImage(new ResourceLocation(location))
         for(rect <- texturedRects) {
             rect.setTextureLocation(location)
+            rect.setTextureSize(texture.getWidth, texture.getHeight)
         }
     }
 
-    @SideOnly(Side.CLIENT)
     def applyTranslationAndRotations() {
-        if(!displayListCompiled) {
-            compileDisplayList()
-        }
-
         GL11.glTranslatef(rotationPointX, rotationPointY, rotationPointZ)
 
         if(rotateAngleZ != 0.0F) {
@@ -148,46 +193,29 @@ class Cuboid(var x: Float, var y: Float, var z: Float, var xSize: Int, var ySize
         }
     }
 
-    @SideOnly(Side.CLIENT)
     def compileDisplayList() {
         displayList = GLAllocation.generateDisplayLists(1)
         GL11.glNewList(displayList, GL11.GL_COMPILE)
         val tessellator = Tessellator.instance
 
-        drawBox(tessellator)
+        for(rect <- texturedRects) {
+            rect.draw(tessellator)
+        }
 
         GL11.glEndList()
         displayListCompiled = true
-    }
-
-    def drawBox(tessellator: Tessellator) {
-        var x1 = x
-        val y1 = y
-        val z1 = z
-        var x2 = x + xSize
-        val y2 = y + ySize
-        val z2 = z + zSize
-
-        if(mirror) {
-            x1 = x2
-            x2 = x
-        }
-
-        texturedRects(0).draw(tessellator, x2, y1, z1, x2, y2, z2, mirror)
-        texturedRects(1).draw(tessellator, x1, y1, z2, x1, y2, z1, mirror)
-        texturedRects(2).draw(tessellator, x1, y1, z2, x1, y1, z1, mirror)
-        texturedRects(3).draw(tessellator, x1, y2, z1, x2, y2, z2, mirror)
-        texturedRects(4).draw(tessellator, x1, y1, z1, x2, y2, z1, mirror)
-        texturedRects(5).draw(tessellator, x2, y1, z2, x1, y2, z2, mirror)
     }
 
     override def writeToNBT(compound: NBTTagCompound): NBTTagCompound = {
         compound.setFloat("x", x)
         compound.setFloat("y", y)
         compound.setFloat("z", z)
-        compound.setInteger("xSize", xSize)
-        compound.setInteger("ySize", ySize)
-        compound.setInteger("zSize", zSize)
+        compound.setFloat("xSize", xSize)
+        compound.setFloat("ySize", ySize)
+        compound.setFloat("zSize", zSize)
+
+        compound.setInteger("textureOffsetX", textureOffsetX)
+        compound.setInteger("textureOffsetY", textureOffsetY)
 
         compound.setFloat("rotationPointX", rotationPointX)
         compound.setFloat("rotationPointY", rotationPointY)
@@ -219,9 +247,12 @@ class Cuboid(var x: Float, var y: Float, var z: Float, var xSize: Int, var ySize
         x = compound.getFloat("x")
         y = compound.getFloat("y")
         z = compound.getFloat("z")
-        xSize = compound.getInteger("xSize")
-        ySize = compound.getInteger("ySize")
-        zSize = compound.getInteger("zSize")
+        xSize = compound.getFloat("xSize")
+        ySize = compound.getFloat("ySize")
+        zSize = compound.getFloat("zSize")
+
+        textureOffsetX = compound.getInteger("textureOffsetX")
+        textureOffsetY = compound.getInteger("textureOffsetY")
 
         rotationPointX = compound.getFloat("rotationPointX")
         rotationPointY = compound.getFloat("rotationPointY")

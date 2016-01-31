@@ -1,8 +1,8 @@
 package seremis.geninfusion.soul.entity.animation
 
 import net.minecraft.util.MathHelper
+import seremis.geninfusion.api.render.cuboid.Cuboid
 import seremis.geninfusion.api.soul.{EnumAnimationType, IEntitySoulCustom}
-import seremis.geninfusion.api.util.render.model.ModelPart
 
 class AnimationOctoped extends Animation {
 
@@ -17,23 +17,23 @@ class AnimationOctoped extends Animation {
     override def continueAnimation(entity: IEntitySoulCustom): Boolean = true
 
     override def animate(entity: IEntitySoulCustom, timeModifier: Float, walkSpeed: Float, specialRotation: Float, rotationYawHead: Float, rotationPitch: Float, scale: Float) = {
-        val leftLeg1: ModelPart = getModelLeftLegs(entity).get(0)
-        val rightLeg1: ModelPart = getModelRightLegs(entity).get(0)
-        val leftLeg2: ModelPart = getModelLeftLegs(entity).get(1)
-        val rightLeg2: ModelPart = getModelRightLegs(entity).get(1)
-        val leftLeg3: ModelPart = getModelLeftLegs(entity).get(2)
-        val rightLeg3: ModelPart = getModelRightLegs(entity).get(2)
-        val leftLeg4: ModelPart = getModelLeftLegs(entity).get(3)
-        val rightLeg4: ModelPart = getModelRightLegs(entity).get(3)
+        val leftLeg1: Cuboid = getModelLeftLegs(entity).get(0)
+        val rightLeg1: Cuboid = getModelRightLegs(entity).get(0)
+        val leftLeg2: Cuboid = getModelLeftLegs(entity).get(1)
+        val rightLeg2: Cuboid = getModelRightLegs(entity).get(1)
+        val leftLeg3: Cuboid = getModelLeftLegs(entity).get(2)
+        val rightLeg3: Cuboid = getModelRightLegs(entity).get(2)
+        val leftLeg4: Cuboid = getModelLeftLegs(entity).get(3)
+        val rightLeg4: Cuboid = getModelRightLegs(entity).get(3)
 
-        leftLeg1.resetOriginalRotations()
-        rightLeg1.resetOriginalRotations()
-        leftLeg2.resetOriginalRotations()
-        rightLeg2.resetOriginalRotations()
-        leftLeg3.resetOriginalRotations()
-        rightLeg3.resetOriginalRotations()
-        leftLeg4.resetOriginalRotations()
-        rightLeg4.resetOriginalRotations()
+        leftLeg1.resetInitialRotateAngles()
+        rightLeg1.resetInitialRotateAngles()
+        leftLeg2.resetInitialRotateAngles()
+        rightLeg2.resetInitialRotateAngles()
+        leftLeg3.resetInitialRotateAngles()
+        rightLeg3.resetInitialRotateAngles()
+        leftLeg4.resetInitialRotateAngles()
+        rightLeg4.resetInitialRotateAngles()
 
         val f6 = PI / 4F
 

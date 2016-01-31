@@ -1,14 +1,11 @@
 package seremis.geninfusion.soul.traits
 
-import java.io.ByteArrayInputStream
-import javax.imageio.ImageIO
-
 import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.texture.DynamicTexture
-import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.{DamageSource, ResourceLocation}
 import seremis.geninfusion.api.lib.Genes
+import seremis.geninfusion.api.render.Model
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.lib.{DefaultProps, Localizations}
 
@@ -16,10 +13,15 @@ class TraitTexture extends Trait {
 
     override def firstTick(entity: IEntitySoulCustom) {
         if(entity.getWorld_I.isRemote) {
-            val textureCompound: NBTTagCompound = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneTexture)
-            val textureBytes = textureCompound.getByteArray("textureBytes")
-            val in = new ByteArrayInputStream(textureBytes)
-            val image = ImageIO.read(in)
+            var model: Model = null
+
+            if(entity.getBoolean("isChild")) {
+                model = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneModelChild)
+            } else {
+                model = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneModelAdult)
+            }
+
+            val image = model.getTexture
 
             entity.setObject("texture", image)
 

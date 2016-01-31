@@ -443,4 +443,32 @@ object TraitHandler {
             trt.entityInit(entity)
         }
     }
+
+    def setSprinting(entity: IEntitySoulCustom, sprinting: Boolean) {
+        for(trt <- SoulHelper.traitRegistry.getTraits) {
+            trt.setSprinting(entity, sprinting)
+        }
+    }
+
+    def isSprinting(entity: IEntitySoulCustom): Boolean = {
+        var flag = false
+        for(trt <- SoulHelper.traitRegistry.getTraits if trt.isSprinting(entity)) {
+            flag = true
+        }
+        flag
+    }
+
+    def setSneaking(entity: IEntitySoulCustom, sneaking: Boolean) {
+        for(trt <- SoulHelper.traitRegistry.getTraits) {
+            trt.setSneaking(entity, sneaking)
+        }
+    }
+
+    def isSneaking(entity: IEntitySoulCustom): Boolean = {
+        var flag = false
+        for(trt <- SoulHelper.traitRegistry.getTraits if trt.isSneaking(entity)) {
+            flag = true
+        }
+        flag
+    }
 }

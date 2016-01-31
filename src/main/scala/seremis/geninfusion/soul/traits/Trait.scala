@@ -129,4 +129,12 @@ class Trait extends ITrait {
     override def isOnLadder(entity: IEntitySoulCustom): Boolean = false
 
     override def entityInit(entity: IEntitySoulCustom) {}
+
+    override def isSprinting(entity: IEntitySoulCustom): Boolean = false
+
+    override def setSprinting(entity: IEntitySoulCustom, sprinting: Boolean) {}
+
+    override def isSneaking(entity: IEntitySoulCustom): Boolean = false
+
+    override def setSneaking(entity: IEntitySoulCustom, sneaking: Boolean) {}
 }

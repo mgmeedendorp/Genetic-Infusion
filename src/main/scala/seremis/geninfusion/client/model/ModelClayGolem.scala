@@ -8,6 +8,7 @@ import seremis.geninfusion.api.render.Model
 import seremis.geninfusion.api.render.cuboid.Cuboid
 import seremis.geninfusion.api.util.UtilModel
 import seremis.geninfusion.entity.EntityClayGolem
+import seremis.geninfusion.lib.Localizations
 
 class ModelClayGolem extends ModelBase {
 
@@ -15,31 +16,31 @@ class ModelClayGolem extends ModelBase {
     textureWidth = textureSize
     textureHeight = textureSize
 
-    val head = new Cuboid(-4.0F, -12.0F, -5.5F, 8, 10, 8, CuboidTypes.General.Head, Array())
+    val head = new Cuboid(-4.0F, -12.0F, -5.5F, 8, 10, 8, false, CuboidTypes.General.Head, Array())
     head.setRotationPoint(0.0F, -7.0F, -2.0F)
 
-    val nose = new Cuboid(-1.0F, -5.0F, -7.5F, 2, 4, 2, 23, 0, CuboidTypes.General.Head, Array())
+    val nose = new Cuboid(-1.0F, -5.0F, -7.5F, 2, 4, 2, 23, 0, false, CuboidTypes.General.Head, Array())
     nose.setRotationPoint(0.0F, -7.0F, -2.0F)
 
-    val body1 = new Cuboid(-9.0F, -2.0F, -6.0F, 18, 12, 11, 0, 40, CuboidTypes.General.Body, Array())
-    val body2 = new Cuboid(-4.5F, 10.0F, -3.0F, 9, 5, 6, 0, 70, CuboidTypes.General.Body, Array())
+    val body1 = new Cuboid(-9.0F, -2.0F, -6.0F, 18, 12, 11, 0, 40, false, CuboidTypes.General.Body, Array())
+    val body2 = new Cuboid(-4.5F, 10.0F, -3.0F, 9, 5, 6, 0, 70, false, CuboidTypes.General.Body, Array())
     body1.setRotationPoint(0.0F, -7.0F, 0.0F)
     body2.setRotationPoint(0.0F, -7.0F, 0.0F)
 
-    val rightArm = new Cuboid(-13.0F, -2.5F, -3.0F, 4, 30, 6, 60, 21, CuboidTypes.Biped.ArmRight, Array())
+    val rightArm = new Cuboid(-13.0F, -2.5F, -3.0F, 4, 30, 6, 60, 21, false, CuboidTypes.Biped.ArmRight, Array())
     rightArm.setRotationPoint(0.0F, -7.0F, 0.0F)
 
-    val leftArm = new Cuboid(9.0F, -2.5F, -3.0F, 4, 30, 6, 60, 58, CuboidTypes.Biped.ArmLeft, Array())
+    val leftArm = new Cuboid(9.0F, -2.5F, -3.0F, 4, 30, 6, 60, 58, false, CuboidTypes.Biped.ArmLeft, Array())
     leftArm.setRotationPoint(0.0F, -7.0F, 0.0F)
 
-    val rightLeg = new Cuboid(-3.5F, -3.0F, -3.0F, 6, 16, 5, 60, 0, CuboidTypes.Biped.ArmRight, Array())
+    val rightLeg = new Cuboid(-3.5F, -3.0F, -3.0F, 6, 16, 5, 60, 0, false, CuboidTypes.Biped.ArmRight, Array())
     rightLeg.setRotationPoint(5.0F, 11.0F, 0.0F)
     rightLeg.mirror = true
 
-    val leftLeg = new Cuboid(-3.5F, -3.0F, -3.0F, 6, 16, 5, 37, 0, CuboidTypes.Biped.ArmLeft, Array())
+    val leftLeg = new Cuboid(-3.5F, -3.0F, -3.0F, 6, 16, 5, 37, 0, false, CuboidTypes.Biped.ArmLeft, Array())
     leftLeg.setRotationPoint(-4.0F, 11.0F, 0.0F)
 
-    val modelGolem = new Model(Array(head, nose, body1, body2, rightArm, leftArm, leftLeg, rightLeg))
+    val modelGolem = new Model(Array(head, nose, body1, body2, rightArm, leftArm, leftLeg, rightLeg)).setTextureLocation(Localizations.LocModelTextures + Localizations.ClayGolem)
 
     def render(golem: EntityClayGolem) {
         if(golem.firstRenderTick) {

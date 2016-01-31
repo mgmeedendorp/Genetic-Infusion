@@ -1,14 +1,12 @@
 package seremis.geninfusion.soul.standardSoul
 
-import net.minecraft.client.model.ModelSpider
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.monster.EntitySpider
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NBTTagCompound
-import seremis.geninfusion.api.lib.AttachmentPoints
-import seremis.geninfusion.api.lib.CuboidTypes.{General, Spider}
 import seremis.geninfusion.api.lib.Genes._
+import seremis.geninfusion.api.lib.Models
+import seremis.geninfusion.api.render.Model
 import seremis.geninfusion.api.soul.IChromosome
 import seremis.geninfusion.soul.{Allele, Chromosome}
 
@@ -65,31 +63,8 @@ class StandardSoulSpider extends StandardSoul {
 
         //Rendering related Genes.
         if(gene == GeneModelAdult)
-            return new Chromosome(gene, new Allele(true, model, classOf[Model]))
-        if(gene == GeneTexture)
-            return new Chromosome(gene, new Allele(true, textureStringToNBT("textures/entity/spider/spider.png"), classOf[NBTTagCompound]), new Allele(false, textureStringToNBT("textures/entity/spider/spider.png"), classOf[NBTTagCompound]))
+            return new Chromosome(gene, new Allele(true, Models.spider, classOf[Model]))
 
         super.getChromosomeFromGene(entity, gene)
-    }
-
-    val model: Model = {
-        val model = new Model
-        val modelSpider = new ModelSpider
-
-        modelSpider.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, null)
-
-        model.addPart(ModelPart.rendererToPart(modelSpider.spiderHead, General.Head, AttachmentPoints.Spider.Head))
-        model.addPart(ModelPart.rendererToPart(modelSpider.spiderBody, General.Body, AttachmentPoints.Spider.Body))
-        model.addPart(ModelPart.rendererToPart(modelSpider.spiderNeck, General.Neck, AttachmentPoints.Spider.Neck))
-        model.addPart(ModelPart.rendererToPart(modelSpider.spiderLeg1, Spider.LegHindRight, AttachmentPoints.Spider.LegRight))
-        model.addPart(ModelPart.rendererToPart(modelSpider.spiderLeg2, Spider.LegHindLeft, AttachmentPoints.Spider.LegLeft))
-        model.addPart(ModelPart.rendererToPart(modelSpider.spiderLeg3, Spider.LegMiddleHindRight, AttachmentPoints.Spider.LegRight))
-        model.addPart(ModelPart.rendererToPart(modelSpider.spiderLeg4, Spider.LegMiddleHindLeft, AttachmentPoints.Spider.LegLeft))
-        model.addPart(ModelPart.rendererToPart(modelSpider.spiderLeg5, Spider.LegMiddleFrontRight, AttachmentPoints.Spider.LegRight))
-        model.addPart(ModelPart.rendererToPart(modelSpider.spiderLeg6, Spider.LegMiddleFrontLeft, AttachmentPoints.Spider.LegLeft))
-        model.addPart(ModelPart.rendererToPart(modelSpider.spiderLeg7, Spider.LegFrontRight, AttachmentPoints.Spider.LegRight))
-        model.addPart(ModelPart.rendererToPart(modelSpider.spiderLeg8, Spider.LegFrontLeft, AttachmentPoints.Spider.LegLeft))
-
-        model
     }
 }

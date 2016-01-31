@@ -2,9 +2,10 @@ package seremis.geninfusion.api.render
 
 import java.awt.image.BufferedImage
 
-import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
+import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.util.Constants
+import org.lwjgl.opengl.GL11
 import seremis.geninfusion.api.render.cuboid.{Cuboid, CuboidTexturedRect}
 import seremis.geninfusion.api.util.ModelTextureHelper
 import seremis.geninfusion.util.INBTTagable
@@ -13,7 +14,6 @@ import scala.collection.mutable.ListBuffer
 
 class Model(var cuboids: Array[Cuboid]) extends INBTTagable {
 
-    @SideOnly(Side.CLIENT)
     var texture: Option[BufferedImage] = None
     var textureSize: (Int, Int) = (0, 0)
 
@@ -43,27 +43,31 @@ class Model(var cuboids: Array[Cuboid]) extends INBTTagable {
         Some(cuboidList.to[Array])
     }
 
-    def setTextureLocation(location: String) {
+    def setTextureLocation(location: String): Model = {
+        val texture = ModelTextureHelper.getBufferedImage(new ResourceLocation(location))
         for(cuboid <- cuboids) {
             cuboid.setTextureLocation(location)
         }
+        textureSize = (texture.getWidth, texture.getHeight)
+        this
     }
 
-    @SideOnly(Side.CLIENT)
     def render() {
+        val scale = 1F/16F
+
+        GL11.glScalef(scale, scale, scale)
         for(cuboid <- cuboids) {
             cuboid.render()
         }
+
     }
 
-    @SideOnly(Side.CLIENT)
     def generateTexture() {
         if(texture.isEmpty) {
             texture = Some(ModelTextureHelper.stitchTexturedRects(getTexturedRects, textureSize))
         }
     }
 
-    @SideOnly(Side.CLIENT)
     def getTexture: BufferedImage = {
         if(texture.isEmpty) {
             generateTexture()

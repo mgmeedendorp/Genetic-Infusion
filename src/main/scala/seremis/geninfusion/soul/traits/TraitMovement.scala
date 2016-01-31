@@ -196,6 +196,8 @@ class TraitMovement extends Trait {
         if(canClimbWalls && !entity.getWorld_I.isRemote) {
             DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0.toByte, DataWatcherClimbableWall)
         }
+        DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0.toByte, DataWatcherSprinting)
+        DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0.toByte, DataWatcherSneaking)
     }
 
     override def writeToNBT(entity: IEntitySoulCustom, compound: NBTTagCompound) = {
@@ -237,5 +239,21 @@ class TraitMovement extends Trait {
         } else {
              DataWatcherHelper.getObjectFromDataWatcher(entity.getDataWatcher_I, DataWatcherClimbableWall).asInstanceOf[Byte] == 1.toByte
         }
+    }
+
+    override def isSprinting(entity: IEntitySoulCustom): Boolean = {
+        DataWatcherHelper.getObjectFromDataWatcher(entity.getDataWatcher_I, DataWatcherSprinting).asInstanceOf[Byte] == 1.toByte
+    }
+
+    override def setSprinting(entity: IEntitySoulCustom, sprinting: Boolean) {
+        DataWatcherHelper.updateObject(entity.getDataWatcher_I, DataWatcherSprinting, if(sprinting) 1 else 0)
+    }
+
+    override def isSneaking(entity: IEntitySoulCustom): Boolean = {
+        DataWatcherHelper.getObjectFromDataWatcher(entity.getDataWatcher_I, DataWatcherSneaking).asInstanceOf[Byte] == 1.toByte
+    }
+
+    override def setSneaking(entity: IEntitySoulCustom, sneaking: Boolean) {
+        DataWatcherHelper.updateObject(entity.getDataWatcher_I, DataWatcherSneaking, if(sneaking) 1 else 0)
     }
 }

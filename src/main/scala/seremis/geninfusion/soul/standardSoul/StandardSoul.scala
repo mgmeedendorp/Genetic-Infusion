@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
 import seremis.geninfusion.api.lib.Genes._
+import seremis.geninfusion.api.lib.Models
 import seremis.geninfusion.api.render.Model
 import seremis.geninfusion.api.soul.{IChromosome, IStandardSoul}
 import seremis.geninfusion.soul.{Allele, Chromosome}
@@ -49,10 +50,6 @@ abstract class StandardSoul extends IStandardSoul {
             return new Chromosome(gene, new Allele(true, entity.getVerticalFaceSpeed, classOf[Int]))
         if(gene == GeneIsTameable)
             return new Chromosome(gene, new Allele(true, entity.isInstanceOf[EntityTameable], classOf[Boolean]))
-        if(gene == GeneWidth)
-            return new Chromosome(gene, new Allele(true, entity.width, classOf[Float]))
-        if(gene == GeneHeight)
-            return new Chromosome(gene, new Allele(true, entity.height, classOf[Float]))
         if(gene == GeneIsChild)
             return new Chromosome(gene, new Allele(true, entity.isChild, classOf[Boolean]))
         if(gene == GeneCanProcreate)
@@ -454,6 +451,11 @@ abstract class StandardSoul extends IStandardSoul {
             return new Chromosome(gene, new Allele(false, null, classOf[Array[ItemStack]]))
         if(gene == GeneKilledBySpecificEntityEntity)
             return new Chromosome(gene, new Allele(false, null, classOf[Class[_]]))
+
+        if(gene == GeneModelAdult)
+            return new Chromosome(gene, new Allele(false, Models.zombie, classOf[Model]))
+        if(gene == GeneModelChild)
+            return new Chromosome(gene, new Allele(false, Models.zombieChild, classOf[Model]))
 
         null
     }

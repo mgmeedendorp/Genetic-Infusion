@@ -3,13 +3,11 @@ package seremis.geninfusion.api.util
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 
-import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.util.ResourceLocation
 import seremis.geninfusion.api.render.cuboid.CuboidTexturedRect
 
 object ModelTextureHelper {
 
-    @SideOnly(Side.CLIENT)
     def stitchTexturedRects(rects: Array[CuboidTexturedRect], textureSize: (Int, Int)): BufferedImage = {
         val result = new BufferedImage(textureSize._1, textureSize._2, BufferedImage.TYPE_INT_ARGB)
         val graphics = result.getGraphics

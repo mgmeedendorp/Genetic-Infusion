@@ -2,7 +2,6 @@ package seremis.geninfusion.util
 
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
-import seremis.geninfusion.api.util.render.model.ModelPart
 
 import scala.reflect.ClassTag
 import scala.reflect.runtime.universe._
@@ -67,14 +66,6 @@ object Utils {
             compound.setString(name + ".type", typeOf[ItemStack].toString)
         }
         def fromNBT(compound: NBTTagCompound, name: String): ItemStack = ItemStack.loadItemStackFromNBT(compound.getTag(name + ".data").asInstanceOf[NBTTagCompound])
-    }
-
-    implicit class ModelPartUtils(part: ModelPart) {
-        def toNBT(compound: NBTTagCompound, name: String) = {
-            compound.setTag(name + ".data", part.writeToNBT(new NBTTagCompound))
-            compound.setString(name + ".type", typeOf[ModelPart].toString)
-        }
-        def fromNBT(compound: NBTTagCompound, name: String): ModelPart = new ModelPart(compound.getTag(name + ".data").asInstanceOf[NBTTagCompound])
     }
 
     implicit class ClassUtils(clss: Class[_]) {

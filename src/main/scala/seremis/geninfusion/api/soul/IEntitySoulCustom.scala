@@ -2,8 +2,6 @@ package seremis.geninfusion.api.soul
 
 import java.util.Random
 
-import cpw.mods.fml.relauncher.{Side, SideOnly}
-import net.minecraft.client.renderer.entity.RenderLiving
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.{DataWatcher, Entity, EntityAgeable, IRangedAttackMob}
 import net.minecraft.item.ItemStack
@@ -218,12 +216,6 @@ trait IEntitySoulCustom extends IRangedAttackMob {
 
     def dealFireDamage_I(damage: Int)
 
-    @SideOnly(Side.CLIENT)
-    def getEntityRender_I: RenderLiving
-
-    @SideOnly(Side.CLIENT)
-    def setEntityRender_I(render: RenderLiving)
-
     def setSize_I(width: Float, height: Float)
 
     def getCustomNameTag_I: String
@@ -257,4 +249,12 @@ trait IEntitySoulCustom extends IRangedAttackMob {
     def isOnLadder_I: Boolean
 
     def entityInit_I
+
+    def isSprinting_I: Boolean
+
+    def setSprinting_I(sprinting: Boolean)
+
+    def isSneaking_I: Boolean
+
+    def setSneaking_I(sneaking: Boolean)
 }

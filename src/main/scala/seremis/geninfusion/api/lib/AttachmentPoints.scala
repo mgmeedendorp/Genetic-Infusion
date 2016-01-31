@@ -6,14 +6,13 @@ import seremis.geninfusion.api.render.cuboid.{CuboidAttachmentPoint, CuboidType}
 
 object AttachmentPoints {
 
-    def CAP(vec3: Vec3, partTypes: Array[CuboidType]) = new CuboidAttachmentPoint(vec3, partTypes)
+    private def CAP(vec3: Vec3, partTypes: Array[CuboidType]) = new CuboidAttachmentPoint(vec3, partTypes)
 
     object Biped {
-        final val Bpd = CuboidTypes.Biped
+        private final val Bpd = CuboidTypes.Biped
 
         final val Head = Array(
-            CAP(Vec3.createVectorHelper(4.0, 8.0, 4.0), Array(General.Neck, General.Body)),
-            CAP(Vec3.createVectorHelper(4.0, 0.0, 4.0), Array(General.Headwear))
+            CAP(Vec3.createVectorHelper(4.0, 8.0, 4.0), Array(General.Neck, General.Body))
         )
 
         final val Headwear = Array(
@@ -64,11 +63,10 @@ object AttachmentPoints {
     }
 
     object Creeper {
-        final val Crpr = CuboidTypes.Creeper
+        private final val Crpr = CuboidTypes.Creeper
 
         final val Head = Array(
-            CAP(Vec3.createVectorHelper(4.0, 8.0, 4.0), Array(General.Neck, General.Body)),
-            CAP(Vec3.createVectorHelper(4.0, 0.0, 4.0), Array(General.Headwear))
+            CAP(Vec3.createVectorHelper(4.0, 8.0, 4.0), Array(General.Neck, General.Body))
         )
 
         final val  Headwear = Array(
@@ -77,10 +75,10 @@ object AttachmentPoints {
 
         final val Body = Array(
             CAP(Vec3.createVectorHelper(4.0, 0.0, 2.0), Array(General.Neck, General.Head)),
-            CAP(Vec3.createVectorHelper(2.0, 12.0, 0.0), Array(Crpr.LegFrontRight)),
-            CAP(Vec3.createVectorHelper(2.0, 12.0, 4.0), Array(Crpr.LegHindRight)),
-            CAP(Vec3.createVectorHelper(6.0, 12.0, 0.0), Array(Crpr.LegFrontLeft)),
-            CAP(Vec3.createVectorHelper(6.0, 12.0, 4.0), Array(Crpr.LegHindLeft))
+            CAP(Vec3.createVectorHelper(2.0, 12.0, 0.0), Array(Crpr.LegRightFront)),
+            CAP(Vec3.createVectorHelper(2.0, 12.0, 4.0), Array(Crpr.LegRightBack)),
+            CAP(Vec3.createVectorHelper(6.0, 12.0, 0.0), Array(Crpr.LegLeftFront)),
+            CAP(Vec3.createVectorHelper(6.0, 12.0, 4.0), Array(Crpr.LegLeftBack))
         )
 
         final val LegRightFront = Array(
@@ -101,35 +99,35 @@ object AttachmentPoints {
     }
 
     object Spider {
-        final val Spdr = CuboidTypes.Spider
+        private final val Spdr = CuboidTypes.Spider
 
         final val Head = Array(
             CAP(Vec3.createVectorHelper(4.0, 4.0, 8.0), Array(General.Neck, General.Body))
         )
 
-        final val Neck = Array(
+        final val Body = Array(
             CAP(Vec3.createVectorHelper(3.0, 3.0, 0.0), Array(General.Head)),
-            CAP(Vec3.createVectorHelper(3.0, 3.0, 6.0), Array(General.Body)),
+            CAP(Vec3.createVectorHelper(3.0, 3.0, 6.0), Array(Spdr.BodyAttachmentBack)),
             CAP(Vec3.createVectorHelper(0.0, 3.0, 1.0), Array(Spdr.LegFrontRight)),
             CAP(Vec3.createVectorHelper(0.0, 3.0, 2.0), Array(Spdr.LegMiddleFrontRight)),
-            CAP(Vec3.createVectorHelper(0.0, 3.0, 2.0), Array(Spdr.LegMiddleHindRight)),
-            CAP(Vec3.createVectorHelper(0.0, 3.0, 3.0), Array(Spdr.LegHindRight)),
+            CAP(Vec3.createVectorHelper(0.0, 3.0, 2.0), Array(Spdr.LegMiddleBackRight)),
+            CAP(Vec3.createVectorHelper(0.0, 3.0, 3.0), Array(Spdr.LegBackRight)),
             CAP(Vec3.createVectorHelper(6.0, 3.0, 1.0), Array(Spdr.LegFrontLeft)),
             CAP(Vec3.createVectorHelper(6.0, 3.0, 2.0), Array(Spdr.LegMiddleFrontLeft)),
-            CAP(Vec3.createVectorHelper(6.0, 3.0, 2.0), Array(Spdr.LegMiddleHindLeft)),
-            CAP(Vec3.createVectorHelper(6.0, 3.0, 3.0), Array(Spdr.LegHindLeft))
+            CAP(Vec3.createVectorHelper(6.0, 3.0, 2.0), Array(Spdr.LegMiddleBackLeft)),
+            CAP(Vec3.createVectorHelper(6.0, 3.0, 3.0), Array(Spdr.LegBackLeft))
         )
 
-        final val Body = Array(
+        final val BodyAttachmentBack = Array(
             CAP(Vec3.createVectorHelper(5.0, 4.0, 0.0), Array(General.Neck))
         )
 
         final val LegRight = Array(
-            CAP(Vec3.createVectorHelper(15.0, 0.0, 1.0), Array(General.Body, General.Neck))
+            CAP(Vec3.createVectorHelper(15.0, 0.0, 1.0), Array(General.Body))
         )
 
         final val LegLeft = Array(
-            CAP(Vec3.createVectorHelper(0.0, 0.0, 1.0), Array(General.Body, General.Neck))
+            CAP(Vec3.createVectorHelper(0.0, 0.0, 1.0), Array(General.Body))
         )
     }
 }

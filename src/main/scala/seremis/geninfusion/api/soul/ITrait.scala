@@ -121,4 +121,12 @@ trait ITrait {
     def isOnLadder(entity: IEntitySoulCustom): Boolean
 
     def entityInit(entity: IEntitySoulCustom)
+
+    def isSprinting(entity: IEntitySoulCustom): Boolean
+
+    def setSprinting(entity: IEntitySoulCustom, sprinting: Boolean)
+
+    def setSneaking(entity: IEntitySoulCustom, sneaking: Boolean)
+
+    def isSneaking(entity: IEntitySoulCustom): Boolean
 }

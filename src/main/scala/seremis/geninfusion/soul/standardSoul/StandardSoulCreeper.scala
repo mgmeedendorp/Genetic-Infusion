@@ -1,16 +1,14 @@
 package seremis.geninfusion.soul.standardSoul
 
-import net.minecraft.client.model.ModelCreeper
+import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.monster.{EntityCreeper, EntitySkeleton}
 import net.minecraft.entity.passive.EntityOcelot
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.{Entity, EntityLiving}
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NBTTagCompound
-import seremis.geninfusion.api.lib.AttachmentPoints
-import seremis.geninfusion.api.lib.CuboidTypes.{Creeper, General}
 import seremis.geninfusion.api.lib.Genes._
+import seremis.geninfusion.api.lib.Models
+import seremis.geninfusion.api.render.Model
 import seremis.geninfusion.api.soul.IChromosome
 import seremis.geninfusion.soul.{Allele, Chromosome}
 
@@ -116,9 +114,7 @@ class StandardSoulCreeper extends StandardSoul {
 
         //Rendering related Genes.
         if(gene == GeneModelAdult)
-            return new Chromosome(gene, new Allele(true, model, classOf[Model]))
-        if(gene == GeneTexture)
-            return new Chromosome(gene, new Allele(true, textureStringToNBT("textures/entity/creeper/creeper.png"), classOf[NBTTagCompound]), new Allele(false, textureStringToNBT("textures/entity/creeper/creeper.png"), classOf[NBTTagCompound]))
+            return new Chromosome(gene, new Allele(true, Models.creeper, classOf[Model]))
 
         if(gene == GeneDropsItemWhenKilledBySpecificEntity)
             return new Chromosome(gene, new Allele(false, true, classOf[Boolean]))
@@ -128,22 +124,5 @@ class StandardSoulCreeper extends StandardSoul {
             return new Chromosome(gene, new Allele(true, classOf[EntitySkeleton], classOf[Class[_]]))
 
         super.getChromosomeFromGene(entity, gene)
-    }
-
-    val model: Model = {
-        val model = new Model
-        val creeperModel = new ModelCreeper()
-
-        creeperModel.setRotationAngles(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, null.asInstanceOf[Entity])
-        
-        model.addPart(ModelPart.rendererToPart(creeperModel.body, General.Body, AttachmentPoints.Creeper.Body))
-        model.addPart(ModelPart.rendererToPart(creeperModel.head, General.Head, AttachmentPoints.Creeper.Head))
-        model.addPart(ModelPart.rendererToPart(creeperModel.leg1, Creeper.LegHindRight, AttachmentPoints.Creeper.LegRightBack))
-        model.addPart(ModelPart.rendererToPart(creeperModel.leg2, Creeper.LegHindLeft, AttachmentPoints.Creeper.LegLeftBack))
-        model.addPart(ModelPart.rendererToPart(creeperModel.leg3, Creeper.LegFrontRight, AttachmentPoints.Creeper.LegRightFront))
-        model.addPart(ModelPart.rendererToPart(creeperModel.leg4, Creeper.LegFrontLeft, AttachmentPoints.Creeper.LegLeftFront))
-        model.addPart(ModelPart.rendererToPart(creeperModel.field_78133_b, General.Headwear, AttachmentPoints.Creeper.Headwear))
-
-        model
     }
 }

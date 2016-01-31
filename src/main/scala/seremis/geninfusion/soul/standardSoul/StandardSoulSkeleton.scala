@@ -1,13 +1,12 @@
 package seremis.geninfusion.soul.standardSoul
 
-import net.minecraft.client.model.ModelSkeleton
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.monster.EntitySkeleton
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NBTTagCompound
-import seremis.geninfusion.api.lib.{AttachmentPoints, CuboidTypes, Genes}
+import seremis.geninfusion.api.lib.{Genes, Models}
+import seremis.geninfusion.api.render.Model
 import seremis.geninfusion.api.soul.IChromosome
 import seremis.geninfusion.soul.{Allele, Chromosome}
 
@@ -103,30 +102,9 @@ class StandardSoulSkeleton extends StandardSoul {
             return new Chromosome(gene, new Allele(true, Array(true), classOf[Array[Boolean]]))
 
 
-
         if(gene.equals(Genes.GeneModelAdult))
-            return new Chromosome(gene, new Allele(true, model, classOf[Model]))
-        if(gene.equals(Genes.GeneTexture))
-            return new Chromosome(gene, new Allele(true, textureStringToNBT("textures/entity/skeleton/skeleton.png"), classOf[NBTTagCompound]), new Allele(false, textureStringToNBT("textures/entity/skeleton/skeleton.png"), classOf[NBTTagCompound]))
+            return new Chromosome(gene, new Allele(true, Models.skeleton, classOf[Model]))
 
         super.getChromosomeFromGene(entity, gene)
-    }
-
-    val model: Model = {
-        val biped = new ModelSkeleton()
-
-        val model = new Model
-
-        biped.bipedHeadwear.rotateAngleY = 0.0F
-
-        model.addPart(ModelPart.rendererToPart(biped.bipedBody, CuboidTypes.General.Body, AttachmentPoints.Biped.Body))
-        model.addPart(ModelPart.rendererToPart(biped.bipedHead, CuboidTypes.General.Head, AttachmentPoints.Biped.Head))
-        model.addPart(ModelPart.rendererToPart(biped.bipedHeadwear, CuboidTypes.General.Headwear, AttachmentPoints.Biped.Headwear))
-        model.addPart(ModelPart.rendererToPart(biped.bipedLeftArm, CuboidTypes.Biped.ArmLeft, AttachmentPoints.Skeleton.ArmLeft))
-        model.addPart(ModelPart.rendererToPart(biped.bipedRightArm, CuboidTypes.Biped.ArmRight, AttachmentPoints.Skeleton.ArmRight))
-        model.addPart(ModelPart.rendererToPart(biped.bipedLeftLeg, CuboidTypes.Biped.LegLeft, AttachmentPoints.Skeleton.LegLeft))
-        model.addPart(ModelPart.rendererToPart(biped.bipedRightLeg, CuboidTypes.Biped.LegRight, AttachmentPoints.Skeleton.LegRight))
-
-        model
     }
 }

@@ -18,7 +18,7 @@ object UtilModel {
     var cachedWidth: WeakHashMap[Model, Float] = WeakHashMap()
     var cachedArmsHorizontal: WeakHashMap[Model, Boolean] = WeakHashMap()
 
-    def getModel(entity: IEntitySoulCustom) = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneModelAdult)
+    def getModel(entity: IEntitySoulCustom): Model = SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneModelAdult)
 
     def morphModel(modelFrom: Model, modelTo: Model, maxIndex: Int, index: Int): Model = {
         val result: ListBuffer[Cuboid] = ListBuffer()
@@ -70,7 +70,7 @@ object UtilModel {
         val z1 = (boxFrom._1.zCoord + ((boxTo._1.zCoord - boxFrom._1.zCoord) / maxIndex) * index).toFloat
         val z2 = (boxFrom._2.zCoord + ((boxTo._2.zCoord - boxFrom._2.zCoord) / maxIndex) * index).toFloat
 
-        val cuboid = new Cuboid(x1, y1, z1, (x2 - x1).toInt, (y2 - y1).toInt, (z2 - z1).toInt, null, null)
+        val cuboid = new Cuboid(x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, false, null, null)
 
         cuboid.rotationPointX = rotationPointsFrom._1 + ((rotationPointsTo._1 - rotationPointsFrom._1) / maxIndex) * index
         cuboid.rotationPointY = rotationPointsFrom._2 + ((rotationPointsTo._2 - rotationPointsFrom._2) / maxIndex) * index

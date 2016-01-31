@@ -3,9 +3,7 @@ package seremis.geninfusion.soul.entity
 import java.util.Random
 
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData
-import cpw.mods.fml.relauncher.{Side, SideOnly}
 import io.netty.buffer.ByteBuf
-import net.minecraft.client.renderer.entity.RenderLiving
 import net.minecraft.entity._
 import net.minecraft.entity.effect.EntityLightningBolt
 import net.minecraft.entity.player.EntityPlayer
@@ -248,14 +246,6 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     override def dealFireDamage(damage: Int) = dealFireDamage_I(damage)
     override def dealFireDamage_I(damage: Int) = super.dealFireDamage(damage)
 
-    var renderer: RenderLiving = null
-
-    @SideOnly(Side.CLIENT)
-    override def getEntityRender_I: RenderLiving = renderer
-
-    @SideOnly(Side.CLIENT)
-    override def setEntityRender_I(render: RenderLiving) = renderer = render
-
     override def setDead() = TraitHandler.setDead(this)
 
     override def getCustomNameTag = getCustomNameTag_I
@@ -303,6 +293,18 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     override def isOnLadder: Boolean = isOnLadder_I
     override def isOnLadder_I: Boolean = TraitHandler.isOnLadder(this)
+
+    override def isSprinting: Boolean = isSprinting_I
+    override def isSprinting_I: Boolean = TraitHandler.isSprinting(this)
+
+    override def setSprinting(sprinting: Boolean) = setSprinting_I(sprinting)
+    override def setSprinting_I(sprinting: Boolean) = TraitHandler.setSprinting(this, sprinting)
+
+    override def isSneaking: Boolean = isSneaking_I
+    override def isSneaking_I: Boolean = TraitHandler.isSneaking(this)
+
+    override def setSneaking(sneaking: Boolean) = setSneaking_I(sneaking)
+    override def setSneaking_I(sneaking: Boolean) = TraitHandler.setSneaking(this, sneaking)
 
     override def entityInit_I = TraitHandler.entityInit(this)
 

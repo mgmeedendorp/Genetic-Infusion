@@ -20,8 +20,8 @@ import scala.collection.mutable.ListBuffer
 object RecipeHelper {
 
     def initRecipes() {
-        addRecipe(RecipeCrystal)
         RecipeSorter.register(DefaultProps.ID + ".recipe.crystal", classOf[RecipeCrystal], Category.SHAPELESS, "after:minecraft:shapeless")
+        addRecipe(RecipeCrystal)
     }
 
     def initSmelting() {

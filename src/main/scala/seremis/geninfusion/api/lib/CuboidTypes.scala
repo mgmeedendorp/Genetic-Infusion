@@ -7,15 +7,14 @@ object CuboidTypes {
     private final val ID = Genes.ID
 
     object Tags {
-        final val Head = ID + ".cuboidTypeName.head"
-        final val Neck = ID + ".cuboidTypeName.neck"
-        final val Headwear = ID + ".cuboidTypeName.headwear"
-        final val Body = ID + ".cuboidTypeName.body"
-        final val Cloak = ID + ".cuboidTypeName.cloak"
-        final val Ears = ID + ".cuboidTypeName.ears"
-        final val Leg = ID + ".cuboidTypeName.leg"
-        final val Arm = ID + ".cuboidTypeName.arm"
-        final val Wing = ID + ".cuboidTypeName.wing"
+        final val Head = ID + ".cuboidTypeType.head"
+        final val Neck = ID + ".cuboidTypeType.neck"
+        final val Body = ID + ".cuboidTypeType.body"
+        final val Leg = ID + ".cuboidTypeType.leg"
+        final val Arm = ID + ".cuboidTypeType.arm"
+        final val Wing = ID + ".cuboidTypeType.wing"
+        //Any attachment to body that is not a limb and doesn't have any other AttachmentPoints
+        final val BodyAttachment = ID + ".cuboidTypeTag.bodyAttachment"
 
         final val Left = ID + ".cuboidTypeTag.left"
         final val Right = ID + ".cuboidTypeTag.right"
@@ -25,7 +24,6 @@ object CuboidTypes {
     }
 
     object General {
-        final val Headwear = new CuboidType(Tags.Headwear)
         final val Head = new CuboidType(Tags.Head)
         final val Neck = new CuboidType(Tags.Neck)
         final val Body = new CuboidType(Tags.Body)
@@ -39,20 +37,22 @@ object CuboidTypes {
     }
 
     object Creeper {
-        final val LegFrontRight = new CuboidType(Array(CuboidTypes.Tags.Leg, CuboidTypes.Tags.Right, CuboidTypes.Tags.Front))
-        final val LegHindRight = new CuboidType(Array(CuboidTypes.Tags.Leg, CuboidTypes.Tags.Right, CuboidTypes.Tags.Hind))
-        final val LegFrontLeft = new CuboidType(Array(CuboidTypes.Tags.Leg, CuboidTypes.Tags.Left, CuboidTypes.Tags.Front))
-        final val LegHindLeft = new CuboidType(Array(CuboidTypes.Tags.Leg, CuboidTypes.Tags.Left, CuboidTypes.Tags.Hind))
+        final val LegRightFront = new CuboidType(Array(CuboidTypes.Tags.Leg, CuboidTypes.Tags.Right, CuboidTypes.Tags.Front))
+        final val LegRightBack = new CuboidType(Array(CuboidTypes.Tags.Leg, CuboidTypes.Tags.Right, CuboidTypes.Tags.Hind))
+        final val LegLeftFront = new CuboidType(Array(CuboidTypes.Tags.Leg, CuboidTypes.Tags.Left, CuboidTypes.Tags.Front))
+        final val LegLeftBack = new CuboidType(Array(CuboidTypes.Tags.Leg, CuboidTypes.Tags.Left, CuboidTypes.Tags.Hind))
     }
 
     object Spider {
+        final val BodyAttachmentBack = new CuboidType(Array(CuboidTypes.Tags.BodyAttachment, CuboidTypes.Tags.Hind))
+
         final val LegFrontRight = new CuboidType(Array(CuboidTypes.Tags.Leg, CuboidTypes.Tags.Right, CuboidTypes.Tags.Front))
         final val LegMiddleFrontRight = new CuboidType(Array(CuboidTypes.Tags.Leg, CuboidTypes.Tags.Right, CuboidTypes.Tags.Front, CuboidTypes.Tags.Middle))
-        final val LegMiddleHindRight = new CuboidType(Array(CuboidTypes.Tags.Leg, CuboidTypes.Tags.Right, CuboidTypes.Tags.Hind, CuboidTypes.Tags.Middle))
-        final val LegHindRight = new CuboidType(Array(CuboidTypes.Tags.Leg, CuboidTypes.Tags.Right, CuboidTypes.Tags.Hind))
+        final val LegMiddleBackRight = new CuboidType(Array(CuboidTypes.Tags.Leg, CuboidTypes.Tags.Right, CuboidTypes.Tags.Hind, CuboidTypes.Tags.Middle))
+        final val LegBackRight = new CuboidType(Array(CuboidTypes.Tags.Leg, CuboidTypes.Tags.Right, CuboidTypes.Tags.Hind))
         final val LegFrontLeft = new CuboidType(Array(CuboidTypes.Tags.Leg, CuboidTypes.Tags.Left, CuboidTypes.Tags.Front))
         final val LegMiddleFrontLeft = new CuboidType(Array(CuboidTypes.Tags.Leg, CuboidTypes.Tags.Left, CuboidTypes.Tags.Front, CuboidTypes.Tags.Middle))
-        final val LegMiddleHindLeft = new CuboidType(Array(CuboidTypes.Tags.Leg, CuboidTypes.Tags.Left, CuboidTypes.Tags.Hind, CuboidTypes.Tags.Middle))
-        final val LegHindLeft = new CuboidType(Array(CuboidTypes.Tags.Leg, CuboidTypes.Tags.Left, CuboidTypes.Tags.Hind))
+        final val LegMiddleBackLeft = new CuboidType(Array(CuboidTypes.Tags.Leg, CuboidTypes.Tags.Left, CuboidTypes.Tags.Hind, CuboidTypes.Tags.Middle))
+        final val LegBackLeft = new CuboidType(Array(CuboidTypes.Tags.Leg, CuboidTypes.Tags.Left, CuboidTypes.Tags.Hind))
     }
 }

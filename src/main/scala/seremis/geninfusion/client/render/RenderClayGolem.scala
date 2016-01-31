@@ -13,7 +13,7 @@ class RenderClayGolem extends RenderEntity {
 
     val model = new ModelClayGolem()
 
-    override def doRender(entity : Entity, x : Double, y : Double, z : Double, f1 : Float, f2 : Float) {
+    override def doRender(entity: Entity, x: Double, y: Double, z: Double, f1: Float, f2: Float) {
         GL11.glPushMatrix()
 
         FMLClientHandler.instance().getClient.renderEngine.bindTexture(getEntityTexture(entity))
