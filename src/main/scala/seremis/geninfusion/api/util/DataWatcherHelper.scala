@@ -10,7 +10,7 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ChunkCoordinates
 import org.apache.logging.log4j.Level
 import seremis.geninfusion.GeneticInfusion
-import seremis.geninfusion.api.lib.VariableLib
+import seremis.geninfusion.api.lib.reflection.VariableLib
 import seremis.geninfusion.entity.GIEntity
 import seremis.geninfusion.helper.GIReflectionHelper
 import seremis.geninfusion.network.packet.PacketAddDataWatcherHelperMapping
@@ -120,6 +120,7 @@ object DataWatcherHelper {
 
     /**
      * Gets an Object watched by a dataWatcher when it is registered through addObjectAtUnusedId().
+ *
      * @param dataWatcher The dataWatcher watching the requested object.
      * @param name The name of the object.
      * @return The object from the specified dataWatcher added with the given name.
@@ -140,6 +141,7 @@ object DataWatcherHelper {
 
     /**
      * Writes an object from a dataWatcher to NBT.
+ *
      * @param compound The NBTTagCompound to write the object to.
      * @param dataWatcher The dataWatcher containing this object.
      * @param name The name of this object as registered by addObjectAtUnusedId().
@@ -178,6 +180,7 @@ object DataWatcherHelper {
 
     /**
      * Reads an object from NBT and updates it's value in a dataWatcher. The object needs to be registered through addObjectAtUnusedId().
+ *
      * @param compound The NBTTagCompound containing the object.
      * @param dataWatcher The dataWatcher to add the object to.
      * @param name The name of the object.

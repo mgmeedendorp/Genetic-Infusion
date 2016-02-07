@@ -3,7 +3,6 @@ package seremis.geninfusion.soul.traits
 import net.minecraft.entity.EntityLiving
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ChunkCoordinates
-import seremis.geninfusion.api.lib.VariableLib._
 import seremis.geninfusion.api.soul.IEntitySoulCustom
 
 class TraitHomeArea extends Trait {

@@ -2,7 +2,8 @@ package seremis.geninfusion.soul.traits
 
 import net.minecraft.entity.EntityLiving
 import net.minecraft.nbt.NBTTagCompound
-import seremis.geninfusion.api.lib.VariableLib._
+import seremis.geninfusion.api.lib.reflection.VariableLib
+import seremis.geninfusion.api.lib.reflection.VariableLib._
 import seremis.geninfusion.api.soul.IEntitySoulCustom
 import seremis.geninfusion.api.util.DataWatcherHelper
 

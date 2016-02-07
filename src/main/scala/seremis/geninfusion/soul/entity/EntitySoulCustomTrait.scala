@@ -13,7 +13,8 @@ import net.minecraft.potion.PotionEffect
 import net.minecraft.util.{AxisAlignedBB, ChunkCoordinates, DamageSource}
 import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
-import seremis.geninfusion.api.lib.{Genes, VariableLib}
+import seremis.geninfusion.api.lib.Genes
+import seremis.geninfusion.api.lib.reflection.VariableLib
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
 import seremis.geninfusion.api.util.DataWatcherHelper
 import seremis.geninfusion.api.util.data.Data
@@ -306,6 +307,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     override def setSneaking(sneaking: Boolean) = setSneaking_I(sneaking)
     override def setSneaking_I(sneaking: Boolean) = TraitHandler.setSneaking(this, sneaking)
 
+    override def entityInit = {}
     override def entityInit_I = TraitHandler.entityInit(this)
 
     override def readFromNBT(compound: NBTTagCompound) = readFromNBT_I(compound)

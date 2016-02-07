@@ -45,6 +45,7 @@ object GeneticInfusion {
         SoulHelper.entityModel = new ModelEntitySoulCustom
         SoulHelper.animationRegistry = new AnimationRegistry
         SoulHelper.alleleTypeRegistry = new AlleleTypeRegistry
+        SoulHelper.entityMethodRegistry = new EntityMethodRegistry
 
         ModPackets.init()
         ModBlocks.init()

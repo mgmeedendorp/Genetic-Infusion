@@ -2,7 +2,8 @@ package seremis.geninfusion.soul.traits
 
 import net.minecraft.entity.{EntityLiving, SharedMonsterAttributes}
 import seremis.geninfusion.api.lib.Genes
-import seremis.geninfusion.api.lib.VariableLib._
+import seremis.geninfusion.api.lib.reflection.VariableLib
+import seremis.geninfusion.api.lib.reflection.VariableLib._
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
 class TraitInitialValues extends Trait {

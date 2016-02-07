@@ -6,7 +6,8 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.potion.Potion
 import net.minecraft.util.DamageSource
 import seremis.geninfusion.api.lib.Genes
-import seremis.geninfusion.api.lib.VariableLib._
+import seremis.geninfusion.api.lib.reflection.VariableLib
+import seremis.geninfusion.api.lib.reflection.VariableLib._
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
 class TraitFluids extends Trait {

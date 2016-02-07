@@ -8,7 +8,8 @@ import net.minecraft.util.{DamageSource, MathHelper}
 import net.minecraft.world.WorldServer
 import net.minecraftforge.common.ForgeHooks
 import seremis.geninfusion.api.lib.Genes
-import seremis.geninfusion.api.lib.VariableLib._
+import seremis.geninfusion.api.lib.reflection.VariableLib
+import seremis.geninfusion.api.lib.reflection.VariableLib._
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.api.util.DataWatcherHelper
 

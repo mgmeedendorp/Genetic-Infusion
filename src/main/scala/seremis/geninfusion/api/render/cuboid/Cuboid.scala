@@ -110,7 +110,25 @@ class Cuboid(var x: Float, var y: Float, var z: Float, var xSize: Float, var ySi
     }
 
     def getScaledCuboid(scale: Float): Cuboid = {
-        val cuboid = new Cuboid(x * scale, y * scale, z * scale, xSize.toFloat * scale, ySize.toFloat * scale, zSize.toFloat * scale, textureOffsetX, textureOffsetY, mirror, cuboidType, attachmentPoints, texturedRects)
+        val cuboidTexturedRects = new Array[CuboidTexturedRect](6)
+
+        for(i <- 0 until 6) {
+            val rect = texturedRects(i)
+
+            val newCorners = new Array[Vec3](4)
+
+            for(j <- 0 until 4 ) {
+                val corner = rect.corners(j)
+
+                newCorners(j) = Vec3.createVectorHelper(corner.xCoord * scale, corner.yCoord * scale, corner.zCoord * scale)
+            }
+
+            cuboidTexturedRects(i) = new CuboidTexturedRect(rect.textureLocation, newCorners, rect.x, rect.y, rect.sizeX, rect.sizeY, rect.mirror)
+            cuboidTexturedRects(i).setDestination(rect.destX, rect.destY)
+            cuboidTexturedRects(i).setTextureSize(rect.textureSizeX, rect.textureSizeY)
+        }
+
+        val cuboid = new Cuboid(x * scale, y * scale, z * scale, xSize.toFloat * scale, ySize.toFloat * scale, zSize.toFloat * scale, textureOffsetX, textureOffsetY, mirror, cuboidType, attachmentPoints, cuboidTexturedRects)
 
         cuboid.setRotationPoint(rotationPointX, rotationPointY, rotationPointZ)
         cuboid.setRotateAngles(rotateAngleX, rotateAngleY, rotateAngleZ)

@@ -4,7 +4,8 @@ import net.minecraft.entity.{Entity, EntityLiving}
 import net.minecraft.init.Blocks
 import net.minecraft.util.MathHelper
 import seremis.geninfusion.api.lib.Genes
-import seremis.geninfusion.api.lib.VariableLib._
+import seremis.geninfusion.api.lib.reflection.VariableLib
+import seremis.geninfusion.api.lib.reflection.VariableLib._
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
 class TraitNavigate extends Trait {

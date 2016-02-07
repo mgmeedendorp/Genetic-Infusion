@@ -4,7 +4,8 @@ import net.minecraft.entity.ai.attributes.AttributeModifier
 import net.minecraft.entity.{Entity, EntityAgeable, EntityLiving, SharedMonsterAttributes}
 import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.lib.Genes
-import seremis.geninfusion.api.lib.VariableLib._
+import seremis.geninfusion.api.lib.reflection.VariableLib
+import seremis.geninfusion.api.lib.reflection.VariableLib._
 import seremis.geninfusion.api.render.Model
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.api.util.{DataWatcherHelper, UtilModel}

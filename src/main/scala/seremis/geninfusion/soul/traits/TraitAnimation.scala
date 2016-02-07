@@ -1,7 +1,8 @@
 package seremis.geninfusion.soul.traits
 
 import cpw.mods.fml.relauncher.{Side, SideOnly}
-import seremis.geninfusion.api.lib.VariableLib._
+import seremis.geninfusion.api.lib.reflection.VariableLib
+import seremis.geninfusion.api.lib.reflection.VariableLib._
 import seremis.geninfusion.api.soul._
 
 import scala.collection.mutable.ListBuffer
