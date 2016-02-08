@@ -1,7 +1,9 @@
 package seremis.geninfusion.soul.methods
 
 import net.minecraft.entity.{DataWatcher, Entity}
-import seremis.geninfusion.api.lib.reflection.VariableLib
+import net.minecraft.world.World
+import seremis.geninfusion.api.lib.reflection.FunctionLib._
+import seremis.geninfusion.api.lib.reflection.VariableLib._
 import seremis.geninfusion.api.soul.{IEntityMethod, IEntitySoulCustom}
 
 object EntityMethodsEntity {
@@ -10,7 +12,7 @@ object EntityMethodsEntity {
         override def callMethod(entity: IEntitySoulCustom, args: Any*): Int = getEntityId(entity)
 
         def getEntityId(entity: IEntitySoulCustom): Int = {
-            entity.getInteger(VariableLib.EntityEntityId)
+            entity.getInteger(EntityEntityId)
         }
     }
 
@@ -18,39 +20,29 @@ object EntityMethodsEntity {
         override def callMethod(entity: IEntitySoulCustom, args: Any*): Unit = setEntityId(entity, args(0).asInstanceOf[Int])
 
         def setEntityId(entity: IEntitySoulCustom, id: Int): Unit = {
-            entity.setInteger(VariableLib.EntityEntityId, id)
+            entity.setInteger(EntityEntityId, id)
         }
     }
 
     class MethodEntityInit extends IEntityMethod[Unit] {
         override def callMethod(entity: IEntitySoulCustom, args: Any*): Unit = entityInit(entity)
 
-        def entityInit(entity: IEntitySoulCustom): Unit = {
-
-        }
-    }
-
-    class MethodEntityInit extends IEntityMethod[Unit] {
-        override def callMethod(entity: IEntitySoulCustom, args: Any*): Unit = entityInit(entity)
-
-        def entityInit(entity: IEntitySoulCustom): Unit = {
-
-        }
+        def entityInit(entity: IEntitySoulCustom): Unit = {}
     }
 
     class MethodGetDataWatcher extends IEntityMethod[DataWatcher] {
         override def callMethod(entity: IEntitySoulCustom, args: Any*): DataWatcher = getDataWatcher(entity)
 
         def getDataWatcher(entity: IEntitySoulCustom): DataWatcher = {
-
+            entity.getObject(EntityDataWatcher).asInstanceOf[DataWatcher]
         }
     }
 
     class MethodEquals extends IEntityMethod[Boolean] {
-        override def callMethod(entity: IEntitySoulCustom, args: Any*): Boolean = equals(entity)
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): Boolean = equals(entity, args(0).asInstanceOf[Object])
 
-        def equals(entity: IEntitySoulCustom): Boolean = {
-
+        def equals(entity: IEntitySoulCustom, p_equals_1_ : Object): Boolean = {
+            p_equals_1_.isInstanceOf[Entity] && p_equals_1_.asInstanceOf[Entity].getEntityId == entity.callMethod[Int](EntityGetEntityId)
         }
     }
 
@@ -58,7 +50,7 @@ object EntityMethodsEntity {
         override def callMethod(entity: IEntitySoulCustom, args: Any*): Int = hashCode(entity)
 
         def hashCode(entity: IEntitySoulCustom): Int = {
-
+            entity.callMethod(EntityGetEntityId)
         }
     }
 
@@ -66,7 +58,11 @@ object EntityMethodsEntity {
         override def callMethod(entity: IEntitySoulCustom, args: Any*): Unit = preparePlayerToSpawn(entity)
 
         def preparePlayerToSpawn(entity: IEntitySoulCustom): Unit = {
-
+            if(entity.getObject[World](EntityWorldObj) != null) {
+                while(entity.getFloat(EntityPosY) > 0.0D) {
+                    entity.callMethod(EntitySetPosition, entity.getFloat(EntityPosX), entity.getFloat(EntityPosY), entity.getFloat(EntityPosZ))
+                }
+            }
         }
     }
 
@@ -199,9 +195,9 @@ object EntityMethodsEntity {
     }
 
     class MethodPlayStepSound extends IEntityMethod[Unit] {
-        override def callMethod(entity: IEntitySoulCustom, args: Any*): Unit = playStepSound(entity, args(0).asInstanceOf[Int], args(1).asInstanceOf[Int], args(2).asInstanceOf[Int])
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): Unit = playStepSound(entity, args(0).asInstanceOf[Int], args(1).asInstanceOf[Int], args(2).asInstanceOf[Int], args(3).asInstanceOf[Block])
 
-        def playStepSound(entity: IEntitySoulCustom, x: Int, y: Int, z: Int): Unit = {
+        def playStepSound(entity: IEntitySoulCustom, x: Int, y: Int, z: Int, blockIn: Block): Unit = {
 
         }
     }
@@ -295,9 +291,9 @@ object EntityMethodsEntity {
     }
 
     class MethodIsInsideOfMaterial extends IEntityMethod[Boolean] {
-        override def callMethod(entity: IEntitySoulCustom, args: Any*): Boolean = isInsideOfMaterial(entity)
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): Boolean = isInsideOfMaterial(entity, args(0).asInstanceOf[Material])
 
-        def isInsideOfMaterial(entity: IEntitySoulCustom): Boolean = {
+        def isInsideOfMaterial(entity: IEntitySoulCustom, materialIn: Material): Boolean = {
 
         }
     }
@@ -399,9 +395,9 @@ object EntityMethodsEntity {
     }
 
     class MethodOnCollideWithPlayer extends IEntityMethod[Unit] {
-        override def callMethod(entity: IEntitySoulCustom, args: Any*): Unit = onCollideWithPlayer(entity)
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): Unit = onCollideWithPlayer(entity, args(0).asInstanceOf[EntityPlayer])
 
-        def onCollideWithPlayer(entity: IEntitySoulCustom): Unit = {
+        def onCollideWithPlayer(entity: IEntitySoulCustom, entityIn: EntityPlayer): Unit = {
 
         }
     }
@@ -431,9 +427,9 @@ object EntityMethodsEntity {
     }
 
     class MethodAttackEntityFrom extends IEntityMethod[Boolean] {
-        override def callMethod(entity: IEntitySoulCustom, args: Any*): Boolean = attackEntityFrom(entity, args(0).asInstanceOf[Float])
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): Boolean = attackEntityFrom(entity, args(0).asInstanceOf[DamageSource], args(1).asInstanceOf[Float])
 
-        def attackEntityFrom(entity: IEntitySoulCustom, amount: Float): Boolean = {
+        def attackEntityFrom(entity: IEntitySoulCustom, source: DamageSource, amount: Float): Boolean = {
 
         }
     }
@@ -551,41 +547,41 @@ object EntityMethodsEntity {
     }
 
     class MethodNewDoubleNBTList extends IEntityMethod[NBTTagList] {
-        override def callMethod(entity: IEntitySoulCustom, args: Any*): NBTTagList = newDoubleNBTList(entity, args(0).asInstanceOf[Double])
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): NBTTagList = newDoubleNBTList(entity, args(0).asInstanceOf[Double*])
 
-        def newDoubleNBTList(entity: IEntitySoulCustom, numbers: Double): NBTTagList = {
+        def newDoubleNBTList(entity: IEntitySoulCustom, numbers: Double*): NBTTagList = {
 
         }
     }
 
     class MethodNewFloatNBTList extends IEntityMethod[NBTTagList] {
-        override def callMethod(entity: IEntitySoulCustom, args: Any*): NBTTagList = newFloatNBTList(entity, args(0).asInstanceOf[Float])
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): NBTTagList = newFloatNBTList(entity, args(0).asInstanceOf[Float*])
 
-        def newFloatNBTList(entity: IEntitySoulCustom, numbers: Float): NBTTagList = {
+        def newFloatNBTList(entity: IEntitySoulCustom, numbers: Float*): NBTTagList = {
 
         }
     }
 
     class MethodDropItem extends IEntityMethod[EntityItem] {
-        override def callMethod(entity: IEntitySoulCustom, args: Any*): EntityItem = dropItem(entity, args(0).asInstanceOf[Int])
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): EntityItem = dropItem(entity, args(0).asInstanceOf[Item], args(1).asInstanceOf[Int])
 
-        def dropItem(entity: IEntitySoulCustom, size: Int): EntityItem = {
+        def dropItem(entity: IEntitySoulCustom, itemIn: Item, size: Int): EntityItem = {
 
         }
     }
 
     class MethodDropItemWithOffset extends IEntityMethod[EntityItem] {
-        override def callMethod(entity: IEntitySoulCustom, args: Any*): EntityItem = dropItemWithOffset(entity, args(0).asInstanceOf[Int], args(1).asInstanceOf[Float])
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): EntityItem = dropItemWithOffset(entity, args(0).asInstanceOf[Item], args(1).asInstanceOf[Int], args(2).asInstanceOf[Float])
 
-        def dropItemWithOffset(entity: IEntitySoulCustom, size: Int, p_145778_3_: Float): EntityItem = {
+        def dropItemWithOffset(entity: IEntitySoulCustom, itemIn: Item, size: Int, p_145778_3_: Float): EntityItem = {
 
         }
     }
 
     class MethodEntityDropItem extends IEntityMethod[EntityItem] {
-        override def callMethod(entity: IEntitySoulCustom, args: Any*): EntityItem = entityDropItem(entity, args(0).asInstanceOf[Float])
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): EntityItem = entityDropItem(entity, args(0).asInstanceOf[ItemStack], args(1).asInstanceOf[Float])
 
-        def entityDropItem(entity: IEntitySoulCustom, offsetY: Float): EntityItem = {
+        def entityDropItem(entity: IEntitySoulCustom, itemStackIn: ItemStack, offsetY: Float): EntityItem = {
 
         }
     }
@@ -615,9 +611,9 @@ object EntityMethodsEntity {
     }
 
     class MethodInteractFirst extends IEntityMethod[Boolean] {
-        override def callMethod(entity: IEntitySoulCustom, args: Any*): Boolean = interactFirst(entity)
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): Boolean = interactFirst(entity, args(0).asInstanceOf[EntityPlayer])
 
-        def interactFirst(entity: IEntitySoulCustom): Boolean = {
+        def interactFirst(entity: IEntitySoulCustom, player: EntityPlayer): Boolean = {
 
         }
     }
@@ -686,6 +682,14 @@ object EntityMethodsEntity {
         }
     }
 
+    class MethodGetLookVec extends IEntityMethod[Vec3] {
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): Vec3 = getLookVec(entity)
+
+        def getLookVec(entity: IEntitySoulCustom): Vec3 = {
+
+        }
+    }
+
     class MethodSetInPortal extends IEntityMethod[Unit] {
         override def callMethod(entity: IEntitySoulCustom, args: Any*): Unit = setInPortal(entity)
 
@@ -726,10 +730,18 @@ object EntityMethodsEntity {
         }
     }
 
-    class MethodSetCurrentItemOrArmor extends IEntityMethod[Unit] {
-        override def callMethod(entity: IEntitySoulCustom, args: Any*): Unit = setCurrentItemOrArmor(entity, args(0).asInstanceOf[Int])
+    class MethodGetInventory extends IEntityMethod[Array[ItemStack]] {
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): Array[ItemStack] = getInventory(entity)
 
-        def setCurrentItemOrArmor(entity: IEntitySoulCustom, slotIn: Int): Unit = {
+        def getInventory(entity: IEntitySoulCustom): Array[ItemStack] = {
+
+        }
+    }
+
+    class MethodSetCurrentItemOrArmor extends IEntityMethod[Unit] {
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): Unit = setCurrentItemOrArmor(entity, args(0).asInstanceOf[Int], args(1).asInstanceOf[ItemStack])
+
+        def setCurrentItemOrArmor(entity: IEntitySoulCustom, slotIn: Int, itemStackIn: ItemStack): Unit = {
 
         }
     }
@@ -791,9 +803,9 @@ object EntityMethodsEntity {
     }
 
     class MethodIsInvisibleToPlayer extends IEntityMethod[Boolean] {
-        override def callMethod(entity: IEntitySoulCustom, args: Any*): Boolean = isInvisibleToPlayer(entity)
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): Boolean = isInvisibleToPlayer(entity, args(0).asInstanceOf[EntityPlayer])
 
-        def isInvisibleToPlayer(entity: IEntitySoulCustom): Boolean = {
+        def isInvisibleToPlayer(entity: IEntitySoulCustom, player: EntityPlayer): Boolean = {
 
         }
     }
@@ -855,17 +867,17 @@ object EntityMethodsEntity {
     }
 
     class MethodOnStruckByLightning extends IEntityMethod[Unit] {
-        override def callMethod(entity: IEntitySoulCustom, args: Any*): Unit = onStruckByLightning(entity)
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): Unit = onStruckByLightning(entity, args(0).asInstanceOf[EntityLightningBolt])
 
-        def onStruckByLightning(entity: IEntitySoulCustom): Unit = {
+        def onStruckByLightning(entity: IEntitySoulCustom, lightningBolt: EntityLightningBolt): Unit = {
 
         }
     }
 
     class MethodOnKillEntity extends IEntityMethod[Unit] {
-        override def callMethod(entity: IEntitySoulCustom, args: Any*): Unit = onKillEntity(entity)
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): Unit = onKillEntity(entity, args(0).asInstanceOf[EntityLivingBase])
 
-        def onKillEntity(entity: IEntitySoulCustom): Unit = {
+        def onKillEntity(entity: IEntitySoulCustom, entityLivingIn: EntityLivingBase): Unit = {
 
         }
     }
@@ -890,6 +902,14 @@ object EntityMethodsEntity {
         override def callMethod(entity: IEntitySoulCustom, args: Any*): String = getCommandSenderName(entity)
 
         def getCommandSenderName(entity: IEntitySoulCustom): String = {
+
+        }
+    }
+
+    class MethodGetParts extends IEntityMethod[Array[Entity]] {
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): Array[Entity] = getParts(entity)
+
+        def getParts(entity: IEntitySoulCustom): Array[Entity] = {
 
         }
     }
@@ -975,17 +995,17 @@ object EntityMethodsEntity {
     }
 
     class MethodGetExplosionResistance extends IEntityMethod[Float] {
-        override def callMethod(entity: IEntitySoulCustom, args: Any*): Float = getExplosionResistance(entity, args(0).asInstanceOf[World], args(1).asInstanceOf[Int], args(2).asInstanceOf[Int], args(3).asInstanceOf[Int])
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): Float = getExplosionResistance(entity, args(0).asInstanceOf[Explosion], args(1).asInstanceOf[World], args(2).asInstanceOf[Int], args(3).asInstanceOf[Int], args(4).asInstanceOf[Int], args(5).asInstanceOf[Block])
 
-        def getExplosionResistance(entity: IEntitySoulCustom, worldIn: World, x: Int, y: Int, z: Int): Float = {
+        def getExplosionResistance(entity: IEntitySoulCustom, explosionIn: Explosion, worldIn: World, x: Int, y: Int, z: Int, blockIn: Block): Float = {
 
         }
     }
 
     class MethodFunc_145774_a extends IEntityMethod[Boolean] {
-        override def callMethod(entity: IEntitySoulCustom, args: Any*): Boolean = func_145774_a(entity, args(0).asInstanceOf[World], args(1).asInstanceOf[Int], args(2).asInstanceOf[Int], args(3).asInstanceOf[Int], args(4).asInstanceOf[Float])
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): Boolean = func_145774_a(entity, args(0).asInstanceOf[Explosion], args(1).asInstanceOf[World], args(2).asInstanceOf[Int], args(3).asInstanceOf[Int], args(4).asInstanceOf[Int], args(5).asInstanceOf[Block], args(6).asInstanceOf[Float])
 
-        def func_145774_a(entity: IEntitySoulCustom, worldIn: World, x: Int, y: Int, z: Int, unused: Float): Boolean = {
+        def func_145774_a(entity: IEntitySoulCustom, explosionIn: Explosion, worldIn: World, x: Int, y: Int, z: Int, blockIn: Block, unused: Float): Boolean = {
 
         }
     }
@@ -1015,9 +1035,9 @@ object EntityMethodsEntity {
     }
 
     class MethodAddEntityCrashInfo extends IEntityMethod[Unit] {
-        override def callMethod(entity: IEntitySoulCustom, args: Any*): Unit = addEntityCrashInfo(entity)
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): Unit = addEntityCrashInfo(entity, args(0).asInstanceOf[CrashReportCategory])
 
-        def addEntityCrashInfo(entity: IEntitySoulCustom): Unit = {
+        def addEntityCrashInfo(entity: IEntitySoulCustom, category: CrashReportCategory): Unit = {
 
         }
     }
@@ -1046,6 +1066,14 @@ object EntityMethodsEntity {
         }
     }
 
+    class MethodGetFormattedCommandSenderName extends IEntityMethod[IChatComponent] {
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): IChatComponent = getFormattedCommandSenderName(entity)
+
+        def getFormattedCommandSenderName(entity: IEntitySoulCustom): IChatComponent = {
+
+        }
+    }
+
     class MethodFunc_145781_i extends IEntityMethod[Unit] {
         override def callMethod(entity: IEntitySoulCustom, args: Any*): Unit = func_145781_i(entity, args(0).asInstanceOf[Int])
 
@@ -1066,6 +1094,14 @@ object EntityMethodsEntity {
         override def callMethod(entity: IEntitySoulCustom, args: Any*): Boolean = shouldRiderSit(entity)
 
         def shouldRiderSit(entity: IEntitySoulCustom): Boolean = {
+
+        }
+    }
+
+    class MethodGetPickedResult extends IEntityMethod[ItemStack] {
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): ItemStack = getPickedResult(entity, args(0).asInstanceOf[MovingObjectPosition])
+
+        def getPickedResult(entity: IEntitySoulCustom, target: MovingObjectPosition): ItemStack = {
 
         }
     }
@@ -1095,17 +1131,25 @@ object EntityMethodsEntity {
     }
 
     class MethodIsCreatureType extends IEntityMethod[Boolean] {
-        override def callMethod(entity: IEntitySoulCustom, args: Any*): Boolean = isCreatureType(entity, args(0).asInstanceOf[Boolean])
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): Boolean = isCreatureType(entity, args(0).asInstanceOf[EnumCreatureType], args(1).asInstanceOf[Boolean])
 
-        def isCreatureType(entity: IEntitySoulCustom, forSpawnCount: Boolean): Boolean = {
+        def isCreatureType(entity: IEntitySoulCustom, typ: EnumCreatureType, forSpawnCount: Boolean): Boolean = {
 
         }
     }
 
     class MethodRegisterExtendedProperties extends IEntityMethod[String] {
-        override def callMethod(entity: IEntitySoulCustom, args: Any*): String = registerExtendedProperties(entity, args(0).asInstanceOf[String])
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): String = registerExtendedProperties(entity, args(0).asInstanceOf[String], args(1).asInstanceOf[IExtendedEntityProperties])
 
-        def registerExtendedProperties(entity: IEntitySoulCustom, identifier: String): String = {
+        def registerExtendedProperties(entity: IEntitySoulCustom, identifier: String, properties: IExtendedEntityProperties): String = {
+
+        }
+    }
+
+    class MethodGetExtendedProperties extends IEntityMethod[IExtendedEntityProperties] {
+        override def callMethod(entity: IEntitySoulCustom, args: Any*): IExtendedEntityProperties = getExtendedProperties(entity, args(0).asInstanceOf[String])
+
+        def getExtendedProperties(entity: IEntitySoulCustom, identifier: String): IExtendedEntityProperties = {
 
         }
     }

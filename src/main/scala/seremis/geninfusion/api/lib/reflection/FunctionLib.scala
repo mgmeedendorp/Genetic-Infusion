@@ -9,7 +9,6 @@ import seremis.geninfusion.helper.MCPNames._
   * The names that don't call the method() function are not used inside minecraft.
   */
 object FunctionLib {
-
     final val EntityGetEntityId = field("func_145782_y")
     final val EntitySetEntityId = field("func_145769_d")
     final val EntityEntityInit = field("func_70088_a")
@@ -94,11 +93,13 @@ object FunctionLib {
     final val EntityMountEntity = field("func_70078_a")
     final val EntitySetPositionAndRotation2 = field("func_70056_a")
     final val EntityGetCollisionBorderSize = field("func_70111_Y")
+    final val EntityGetLookVec = field("func_70040_Z")
     final val EntitySetInPortal = field("func_70063_aa")
     final val EntityGetPortalCooldown = field("func_82147_ab")
     final val EntitySetVelocity = field("func_70016_h")
     final val EntityHandleHealthUpdate = field("func_70103_a")
     final val EntityPerformHurtAnimation = field("func_70057_ab")
+    final val EntityGetInventory = field("func_75138_a")
     final val EntitySetCurrentItemOrArmor = field("func_70062_b")
     final val EntityIsBurning = field("func_70027_ad")
     final val EntityIsRiding = field("func_70115_ae")
@@ -120,6 +121,7 @@ object FunctionLib {
     final val EntityPushOutOfBlocks = "pushOutOfBlocks"
     final val EntitySetInWeb = field("func_70110_aj")
     final val EntityGetCommandSenderName = field("func_70005_c_")
+    final val EntityGetParts = field("func_70021_al")
     final val EntityIsEntityEqual = field("func_70028_i")
     final val EntityGetRotationYawHead = field("func_70079_am")
     final val EntitySetRotationYawHead = field("func_70034_d")
@@ -139,14 +141,18 @@ object FunctionLib {
     final val EntityCanRenderOnFire = field("func_90999_ad")
     final val EntityGetUniqueID = field("func_80006_f")
     final val EntityIsPushedByWater = field("func_96092_aw")
+    final val EntityGetFormattedCommandSenderName = "getFormattedCommandSenderName"
     final val EntityFunc_145781_i = "func_145781_i"
     final val EntityGetEntityData = "getEntityData"
     final val EntityShouldRiderSit = "shouldRiderSit"
+    final val EntityGetPickedResult = "getPickedResult"
     final val EntityGetPersistentID = "getPersistentID"
     final val EntityResetEntityId = "resetEntityId"
     final val EntityShouldRenderInPass = "shouldRenderInPass"
     final val EntityIsCreatureType = "isCreatureType"
     final val EntityRegisterExtendedProperties = "registerExtendedProperties"
+    final val EntityGetExtendedProperties = "getExtendedProperties"
     final val EntityCanRiderInteract = "canRiderInteract"
     final val EntityShouldDismountInWater = "shouldDismountInWater"
 }
+

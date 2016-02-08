@@ -1,7 +1,6 @@
 package seremis.geninfusion.api.lib
 
 object EntityMethods {
-
     final val GetEntityId = Genes.ID + ".entityMethod.getEntityId"
     final val SetEntityId = Genes.ID + ".entityMethod.setEntityId"
     final val EntityInit = Genes.ID + ".entityMethod.entityInit"
@@ -86,11 +85,13 @@ object EntityMethods {
     final val MountEntity = Genes.ID + ".entityMethod.mountEntity"
     final val SetPositionAndRotation2 = Genes.ID + ".entityMethod.setPositionAndRotation2"
     final val GetCollisionBorderSize = Genes.ID + ".entityMethod.getCollisionBorderSize"
+    final val GetLookVec = Genes.ID + ".entityMethod.getLookVec"
     final val SetInPortal = Genes.ID + ".entityMethod.setInPortal"
     final val GetPortalCooldown = Genes.ID + ".entityMethod.getPortalCooldown"
     final val SetVelocity = Genes.ID + ".entityMethod.setVelocity"
     final val HandleHealthUpdate = Genes.ID + ".entityMethod.handleHealthUpdate"
     final val PerformHurtAnimation = Genes.ID + ".entityMethod.performHurtAnimation"
+    final val GetInventory = Genes.ID + ".entityMethod.getInventory"
     final val SetCurrentItemOrArmor = Genes.ID + ".entityMethod.setCurrentItemOrArmor"
     final val IsBurning = Genes.ID + ".entityMethod.isBurning"
     final val IsRiding = Genes.ID + ".entityMethod.isRiding"
@@ -112,6 +113,7 @@ object EntityMethods {
     final val PushOutOfBlocks = Genes.ID + ".entityMethod.pushOutOfBlocks"
     final val SetInWeb = Genes.ID + ".entityMethod.setInWeb"
     final val GetCommandSenderName = Genes.ID + ".entityMethod.getCommandSenderName"
+    final val GetParts = Genes.ID + ".entityMethod.getParts"
     final val IsEntityEqual = Genes.ID + ".entityMethod.isEntityEqual"
     final val GetRotationYawHead = Genes.ID + ".entityMethod.getRotationYawHead"
     final val SetRotationYawHead = Genes.ID + ".entityMethod.setRotationYawHead"
@@ -131,14 +133,18 @@ object EntityMethods {
     final val CanRenderOnFire = Genes.ID + ".entityMethod.canRenderOnFire"
     final val GetUniqueID = Genes.ID + ".entityMethod.getUniqueID"
     final val IsPushedByWater = Genes.ID + ".entityMethod.isPushedByWater"
+    final val GetFormattedCommandSenderName = Genes.ID + ".entityMethod.getFormattedCommandSenderName"
     final val Func_145781_i = Genes.ID + ".entityMethod.func_145781_i"
     final val GetEntityData = Genes.ID + ".entityMethod.getEntityData"
     final val ShouldRiderSit = Genes.ID + ".entityMethod.shouldRiderSit"
+    final val GetPickedResult = Genes.ID + ".entityMethod.getPickedResult"
     final val GetPersistentID = Genes.ID + ".entityMethod.getPersistentID"
     final val ResetEntityId = Genes.ID + ".entityMethod.resetEntityId"
     final val ShouldRenderInPass = Genes.ID + ".entityMethod.shouldRenderInPass"
     final val IsCreatureType = Genes.ID + ".entityMethod.isCreatureType"
     final val RegisterExtendedProperties = Genes.ID + ".entityMethod.registerExtendedProperties"
+    final val GetExtendedProperties = Genes.ID + ".entityMethod.getExtendedProperties"
     final val CanRiderInteract = Genes.ID + ".entityMethod.canRiderInteract"
     final val ShouldDismountInWater = Genes.ID + ".entityMethod.shouldDismountInWater"
 }
+

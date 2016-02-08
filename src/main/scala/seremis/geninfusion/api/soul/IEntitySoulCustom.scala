@@ -1,27 +1,21 @@
 package seremis.geninfusion.api.soul
 
-import java.util.Random
-
-import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.{DataWatcher, Entity, EntityAgeable, IRangedAttackMob}
+import net.minecraft.entity.IRangedAttackMob
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.potion.PotionEffect
-import net.minecraft.util.{AxisAlignedBB, ChunkCoordinates, DamageSource, ResourceLocation}
-import net.minecraft.world.World
 import seremis.geninfusion.api.util.data.Data
 
 trait IEntitySoulCustom extends IRangedAttackMob {
 
     def getSoul_I: ISoul
-
-    def getWorld_I: World
-
-    def getBoundingBox_I: AxisAlignedBB
-
-    def getEntityId_I: Int
-
-    def getRandom_I: Random
+//
+//    def getWorld_I: World
+//
+//    def getBoundingBox_I: AxisAlignedBB
+//
+////    def getEntityId_I: Int
+//
+//    def getRandom_I: Random
 
     def makePersistent(name: String)
 
@@ -128,133 +122,136 @@ trait IEntitySoulCustom extends IRangedAttackMob {
      *
      * @param name The name of the variable
      */
-    def getObject(name: String): Any
-
-
-
-    def getEntityData_I: NBTTagCompound
-
-    def playSound_I(sound: String, volume: Float, pitch: Float)
-
-    def attackEntityFrom_I(source: DamageSource, damage: Float): Boolean
-
-    def attackEntity_I(entity: Entity, distance: Float)
-
-    def attackEntityAsMob_I(entity: Entity): Boolean
-
-    def setFlag_I(id: Int, value: Boolean)
-
-    def getFlag_I(id: Int): Boolean
-
-    def onDeathUpdate_I()
-
-    def damageEntity_I(source: DamageSource, damage: Float)
-
-    def updateAITick_I()
-
-    def canDespawn_I: Boolean
-
-    def isMovementCeased_I: Boolean
-
-    def findPlayerToAttack_I: Entity
-
-    def setBeenAttacked_I()
-
-    def getDeathSound_I: String
-
-    def getHurtSound_I: String
-
-    def getSoundVolume_I: Float
-
-    def getSoundPitch_I: Float
-
-    def applyArmorCalculations_I(source: DamageSource, damage: Float): Float
-
-    def applyPotionDamageCalculations_I(source: DamageSource, damage: Float): Float
-
-    def damageArmor_I(damage: Float)
-
-    def setOnFireFromLava_I()
-
-    def getBlockPathWeight_I(x: Int, y: Int, z: Int): Float
-
-    def updateWanderPath_I()
-
-    def updateEntityActionState_I()
-
-    def decreaseAirSupply_I(air: Int): Int
-
-    def updatePotionEffects_I()
-
-    def jump_I()
-
-    def collideWithNearbyEntities_I()
-
-    def func_110146_f_I(p_110146_1_ : Float, p_110146_2_ : Float): Float
-
-    def isWithinHomeDistance_I(x: Int, y: Int, z: Int): Boolean
-
-    def isWithinHomeDistanceCurrentPosition_I: Boolean
-
-    def getHomePosition_I: ChunkCoordinates
-
-    def hasHome_I: Boolean
-
-    def getMaxHomeDistance_I: Float
-
-    def detachHome_I()
-
-    def setHomeArea_I(x: Int, y: Int, z: Int, maxDistance: Int)
-
-    def despawnEntity_I()
-
-    def setRotation_I(rotationYaw: Float, rotationPitch: Float)
-
-    def updateArmSwingProgress_I()
-
-    def isTamed_I: Boolean
-
-    def dealFireDamage_I(damage: Int)
-
-    def setSize_I(width: Float, height: Float)
-
-    def getCustomNameTag_I: String
-
-    def setCustomNameTag_I(nameTag: String)
-
-    def hasCustomNameTag_I: Boolean
-
-    def getEntityTexture_I: ResourceLocation
-
-    def getExperiencePoints_I(player: EntityPlayer): Int
-
-    def createChild_I(ageable: EntityAgeable): EntityAgeable
-
-    def setScale_I(scale: Float)
-
-    def setScaleForAge_I(isChild: Boolean)
-
-    def getGrowingAge_I: Int
-
-    def setGrowingAge_I(growingAge: Int)
-
-    def addGrowth_I(growingAge: Int)
-
-    def getDataWatcher_I: DataWatcher
-
-    def isPotionApplicable_I(potionEffect: PotionEffect): Boolean
-
-    def setInWeb_I
-
-    def isOnLadder_I: Boolean
-
-    def entityInit_I
-
-    def isSprinting_I: Boolean
-
-    def setSprinting_I(sprinting: Boolean)
-
-    def isSneaking_I: Boolean
-
-    def setSneaking_I(sneaking: Boolean)
+    def getObject[T](name: String): T
+
+
+    def callMethod[T](srgName: String, args: Any*): T
+
+
+
+//    def getEntityData_I: NBTTagCompound
+//
+//    def playSound_I(sound: String, volume: Float, pitch: Float)
+//
+//    def attackEntityFrom_I(source: DamageSource, damage: Float): Boolean
+//
+//    def attackEntity_I(entity: Entity, distance: Float)
+//
+//    def attackEntityAsMob_I(entity: Entity): Boolean
+//
+//    def setFlag_I(id: Int, value: Boolean)
+//
+//    def getFlag_I(id: Int): Boolean
+//
+//    def onDeathUpdate_I()
+//
+//    def damageEntity_I(source: DamageSource, damage: Float)
+//
+//    def updateAITick_I()
+//
+//    def canDespawn_I: Boolean
+//
+//    def isMovementCeased_I: Boolean
+//
+//    def findPlayerToAttack_I: Entity
+//
+//    def setBeenAttacked_I()
+//
+//    def getDeathSound_I: String
+//
+//    def getHurtSound_I: String
+//
+//    def getSoundVolume_I: Float
+//
+//    def getSoundPitch_I: Float
+//
+//    def applyArmorCalculations_I(source: DamageSource, damage: Float): Float
+//
+//    def applyPotionDamageCalculations_I(source: DamageSource, damage: Float): Float
+//
+//    def damageArmor_I(damage: Float)
+//
+//    def setOnFireFromLava_I()
+//
+//    def getBlockPathWeight_I(x: Int, y: Int, z: Int): Float
+//
+//    def updateWanderPath_I()
+//
+//    def updateEntityActionState_I()
+//
+//    def decreaseAirSupply_I(air: Int): Int
+//
+//    def updatePotionEffects_I()
+//
+//    def jump_I()
+//
+//    def collideWithNearbyEntities_I()
+//
+//    def func_110146_f_I(p_110146_1_ : Float, p_110146_2_ : Float): Float
+//
+//    def isWithinHomeDistance_I(x: Int, y: Int, z: Int): Boolean
+//
+//    def isWithinHomeDistanceCurrentPosition_I: Boolean
+//
+//    def getHomePosition_I: ChunkCoordinates
+//
+//    def hasHome_I: Boolean
+//
+//    def getMaxHomeDistance_I: Float
+//
+//    def detachHome_I()
+//
+//    def setHomeArea_I(x: Int, y: Int, z: Int, maxDistance: Int)
+//
+//    def despawnEntity_I()
+//
+//    def setRotation_I(rotationYaw: Float, rotationPitch: Float)
+//
+//    def updateArmSwingProgress_I()
+//
+//    def isTamed_I: Boolean
+//
+//    def dealFireDamage_I(damage: Int)
+//
+//    def setSize_I(width: Float, height: Float)
+//
+//    def getCustomNameTag_I: String
+//
+//    def setCustomNameTag_I(nameTag: String)
+//
+//    def hasCustomNameTag_I: Boolean
+//
+//    def getEntityTexture_I: ResourceLocation
+//
+//    def getExperiencePoints_I(player: EntityPlayer): Int
+//
+//    def createChild_I(ageable: EntityAgeable): EntityAgeable
+//
+//    def setScale_I(scale: Float)
+//
+//    def setScaleForAge_I(isChild: Boolean)
+//
+//    def getGrowingAge_I: Int
+//
+//    def setGrowingAge_I(growingAge: Int)
+//
+//    def addGrowth_I(growingAge: Int)
+//
+//    def getDataWatcher_I: DataWatcher
+//
+//    def isPotionApplicable_I(potionEffect: PotionEffect): Boolean
+//
+//    def setInWeb_I
+//
+//    def isOnLadder_I: Boolean
+//
+//    def entityInit_I
+//
+//    def isSprinting_I: Boolean
+//
+//    def setSprinting_I(sprinting: Boolean)
+//
+//    def isSneaking_I: Boolean
+//
+//    def setSneaking_I(sneaking: Boolean)
 }
