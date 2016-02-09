@@ -216,11 +216,11 @@ class VariableSyncLogic(entity: EntityLiving) extends INBTTagable {
         }
     }
 
-    def getObject(name: String): Any = {
+    def getObject[T](name: String): T = {
         if(fields.contains(name)) {
-            GIReflectionHelper.getField(entity, name).asInstanceOf[Object]
+            GIReflectionHelper.getField(entity, name).asInstanceOf[T]
         } else {
-            data.getObject(name)
+            data.getObject(name).asInstanceOf[T]
         }
     }
 

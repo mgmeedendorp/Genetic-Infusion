@@ -63,7 +63,7 @@ class GeneRegistry extends IGeneRegistry {
 
     override def getSoulFor(entity: EntityLiving): Option[ISoul] = {
         if (entity.isInstanceOf[IEntitySoulCustom]) {
-            return Some(entity.asInstanceOf[IEntitySoulCustom].getSoul_I)
+            return Some(entity.asInstanceOf[IEntitySoulCustom].getSoul)
         } else if (entity != null) {
             return SoulHelper.standardSoulRegistry.getSoulForEntity(entity)
         }

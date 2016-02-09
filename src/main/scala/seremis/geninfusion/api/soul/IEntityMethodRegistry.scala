@@ -1,12 +1,10 @@
 package seremis.geninfusion.api.soul
 
+import scala.collection.mutable.ListBuffer
+
 trait IEntityMethodRegistry {
 
-    def register(srgName: String, methodName: String, method: IEntityMethod[_])
+    def register(srgName: String, method: IEntityMethod[_])
 
-    def getMethodByName(methodName: String): Option[IEntityMethod[_]]
-    def getMethodBySrgName(srgName: String): Option[IEntityMethod[_]]
-
-    def getMethodName(method: IEntityMethod[_]): Option[String]
-    def getMethodSrgName(method: IEntityMethod[_]): Option[String]
+    def getMethodsForSrgName(srgName: String): Option[ListBuffer[IEntityMethod[_]]]
 }

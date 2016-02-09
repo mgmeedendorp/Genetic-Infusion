@@ -7,16 +7,16 @@ object EntityMethodHandler {
     val registry = SoulHelper.entityMethodRegistry
 
     def handleMethodCall[T](entity: IEntitySoulCustom, srgName: String, args: Any*): T = {
-        val method = registry.getMethodBySrgName(srgName)
+        val methods = registry.getMethodsForSrgName(srgName)
 
-        if(method.nonEmpty) {
+        if(methods.nonEmpty) {
             try {
-                return method.get.callMethod(entity, args).asInstanceOf[T]
+                methods.get.callMethod(entity, args).asInstanceOf[T]
             } catch {
-                case e: ClassCastException => throw new ClassCastException("The IEntityMethod for " + srgName + " with name  " + registry.getMethodName(method.get).get + "  has the wrong return type!")
+                case e: ClassCastException => throw new ClassCastException("The IEntityMethod for " + srgName + "  has the wrong return type!")
             }
         } else {
-            throw new NullPointerException("No IEntityMethod registered for method (" + srgName + ").")
+            throw new IllegalArgumentException("There is no IEntityMethod for method with srgName: " + srgName + ".")
         }
     }
 }

@@ -17,5 +17,5 @@ class EntitySoulCustomAgeable(val world: World) extends EntityAgeable(world) wit
         shouldCallEntityInit = false
     }
 
-    override def getSoul_I: ISoul = soul
+    override def getSoul: ISoul = soul
 }
