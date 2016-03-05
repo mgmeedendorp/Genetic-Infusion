@@ -11,22 +11,22 @@ import seremis.geninfusion.api.util.AncestryNodeBranch
  * @author Seremis
  */
 object SoulHelper {
-    var geneRegistry: IGeneRegistry = null
+    var geneRegistry: IGeneRegistry = _
 
-    var standardSoulRegistry: IStandardSoulRegistry = null
+    var standardSoulRegistry: IStandardSoulRegistry = _
 
-    var traitRegistry: ITraitRegistry = null
+    var traitRegistry: ITraitRegistry = _
 
-    var instanceHelper: IInstanceHelper = null
+    var instanceHelper: IInstanceHelper = _
 
-    var animationRegistry: IAnimationRegistry = null
+    var animationRegistry: IAnimationRegistry = _
 
-    var alleleTypeRegistry: IAlleleTypeRegistry = null
+    var alleleTypeRegistry: IAlleleTypeRegistry = _
 
-    var entityMethodRegistry: IEntityMethodRegistry = null
+    var entityMethodRegistry: IEntityMethodRegistry = _
 
     //TODO remove this
-    var entityModel: ModelBase = null
+    var entityModel: ModelBase = _
 
     /**
      * Creates offspring from two parent souls
