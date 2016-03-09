@@ -1,6 +1,5 @@
 package seremis.geninfusion.soul.traits
 
-import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.client.Minecraft
 import net.minecraft.client.renderer.texture.DynamicTexture
 import net.minecraft.util.{DamageSource, ResourceLocation}

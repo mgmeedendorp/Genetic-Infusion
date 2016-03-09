@@ -1,10 +1,7 @@
 package seremis.geninfusion.entity
 
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint
-import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.entity.Entity
 import seremis.geninfusion.GeneticInfusion
-import seremis.geninfusion.api.util.DataWatcherHelper
 import seremis.geninfusion.network.ModPackets
 import seremis.geninfusion.network.packet.PacketEntityData
 

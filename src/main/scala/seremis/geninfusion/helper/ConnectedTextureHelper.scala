@@ -1,9 +1,6 @@
 package seremis.geninfusion.helper
 
-import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.block.Block
-import net.minecraft.client.renderer.texture.IIconRegister
-import net.minecraft.util.IIcon
 import net.minecraft.world.IBlockAccess
 import seremis.geninfusion.lib.DefaultProps
 

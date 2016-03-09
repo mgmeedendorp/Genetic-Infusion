@@ -1,7 +1,5 @@
 package seremis.geninfusion.soul.traits
 
-import cpw.mods.fml.relauncher.{Side, SideOnly}
-import seremis.geninfusion.api.lib.reflection.VariableLib
 import seremis.geninfusion.api.lib.reflection.VariableLib._
 import seremis.geninfusion.api.soul._
 
@@ -21,7 +19,7 @@ class TraitAnimation extends Trait {
                 possibleAnimations += registry.getName(animation)
             }
 
-            entity.setStringArray(EntityPossibleAnimations, possibleAnimations.to[Array])
+            entity.setStringArray(VarEntityPossibleAnimations, possibleAnimations.to[Array])
         }
     }
 
@@ -29,15 +27,15 @@ class TraitAnimation extends Trait {
     override def render(entity: IEntitySoulCustom, timeModifier: Float, limbSwing: Float, specialRotation: Float, rotationYawHead: Float, rotationPitch: Float, scale: Float) {
         val registry = SoulHelper.animationRegistry
 
-        val possibleAnimationsArray = entity.getStringArray(EntityPossibleAnimations)
+        val possibleAnimationsArray = entity.getStringArray(VarEntityPossibleAnimations)
 
         if(possibleAnimationsArray != null && possibleAnimationsArray.length != 0) {
             val possibleAnimations = possibleAnimationsArray.to[ListBuffer]
 
-            val activeAnimationArray = entity.getStringArray(EntityActiveAnimations)
+            val activeAnimationArray = entity.getStringArray(VarEntityActiveAnimations)
             val activeAnimations = if(activeAnimationArray != null && activeAnimationArray.length != 0) activeAnimationArray.to[ListBuffer] else new ListBuffer[String]()
 
-            val pendingAnimationArray = entity.getStringArray(EntityPendingAnimations)
+            val pendingAnimationArray = entity.getStringArray(VarEntityPendingAnimations)
             val pendingAnimations = if(pendingAnimationArray != null && pendingAnimationArray.length != 0) pendingAnimationArray.to[ListBuffer] else new ListBuffer[String]()
 
             for(name <- possibleAnimations) {
@@ -76,8 +74,8 @@ class TraitAnimation extends Trait {
                     }
                 }
             }
-            entity.setStringArray(EntityActiveAnimations, activeAnimations.to[Array])
-            entity.setStringArray(EntityPendingAnimations, pendingAnimations.to[Array])
+            entity.setStringArray(VarEntityActiveAnimations, activeAnimations.to[Array])
+            entity.setStringArray(VarEntityPendingAnimations, pendingAnimations.to[Array])
         }
     }
 

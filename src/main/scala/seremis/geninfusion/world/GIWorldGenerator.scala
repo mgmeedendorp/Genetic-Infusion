@@ -2,7 +2,6 @@ package seremis.geninfusion.world
 
 import java.util.Random
 
-import cpw.mods.fml.common.IWorldGenerator
 import net.minecraft.world.World
 import net.minecraft.world.chunk.IChunkProvider
 import seremis.geninfusion.world.generate.WorldGenCrystal

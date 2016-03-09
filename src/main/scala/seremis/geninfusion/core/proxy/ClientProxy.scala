@@ -1,8 +1,5 @@
 package seremis.geninfusion.core.proxy
 
-import cpw.mods.fml.client.FMLClientHandler
-import cpw.mods.fml.client.registry.{ClientRegistry, RenderingRegistry}
-import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.entity.Entity
 import net.minecraft.item.Item
 import net.minecraftforge.client.MinecraftForgeClient

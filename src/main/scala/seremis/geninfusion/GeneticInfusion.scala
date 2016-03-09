@@ -1,8 +1,5 @@
 package seremis.geninfusion
 
-import cpw.mods.fml.common.Mod.{EventHandler, Instance}
-import cpw.mods.fml.common.event.{FMLInitializationEvent, FMLPostInitializationEvent, FMLPreInitializationEvent}
-import cpw.mods.fml.common.{FMLCommonHandler, Mod, SidedProxy}
 import net.minecraftforge.common.MinecraftForge
 import org.apache.logging.log4j.{Level, Logger}
 import seremis.geninfusion.api.soul.SoulHelper

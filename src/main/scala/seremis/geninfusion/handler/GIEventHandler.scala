@@ -1,6 +1,5 @@
 package seremis.geninfusion.handler
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent
 import net.minecraft.entity.EntityLiving
 import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack

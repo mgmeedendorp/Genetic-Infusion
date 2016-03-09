@@ -6,7 +6,6 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.potion.Potion
 import net.minecraft.util.DamageSource
 import seremis.geninfusion.api.lib.Genes
-import seremis.geninfusion.api.lib.reflection.VariableLib
 import seremis.geninfusion.api.lib.reflection.VariableLib._
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
@@ -18,7 +17,7 @@ class TraitFluids extends Trait {
         val drownsInWater = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneDrownsInWater)
 
         if(drownsInWater) {
-            if(!entity.getBoolean(EntityIsDead) && living.isInsideOfMaterial(Material.water)) {
+            if(!entity.getBoolean(VarEntityIsDead) && living.isInsideOfMaterial(Material.water)) {
                 if(!living.canBreatheUnderwater && !living.isPotionActive(Potion.waterBreathing.id) && !(entity.isInstanceOf[EntityPlayer] && entity.asInstanceOf[EntityPlayer].capabilities.disableDamage)) {
                     living.setAir(entity.decreaseAirSupply_I(living.getAir))
 

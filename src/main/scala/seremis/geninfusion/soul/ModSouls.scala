@@ -4,7 +4,6 @@ import net.minecraft.entity.monster.{EntityCreeper, EntitySkeleton, EntitySpider
 import net.minecraft.item.ItemStack
 import seremis.geninfusion.api.lib.Animations._
 import seremis.geninfusion.api.lib.Genes._
-import seremis.geninfusion.api.lib.Traits._
 import seremis.geninfusion.api.soul.SoulHelper._
 import seremis.geninfusion.api.soul.{ISoul, SoulHelper}
 import seremis.geninfusion.soul.AlleleType._
@@ -12,7 +11,6 @@ import seremis.geninfusion.soul.entity.animation.{AnimationHead, _}
 import seremis.geninfusion.soul.gene._
 import seremis.geninfusion.soul.gene.newAI._
 import seremis.geninfusion.soul.standardSoul.{StandardSoulCreeper, StandardSoulSkeleton, StandardSoulSpider, StandardSoulZombie}
-import seremis.geninfusion.soul.traits._
 
 object ModSouls {
 
@@ -270,25 +268,6 @@ object ModSouls {
         geneRegistry.registerGene(GeneKilledBySpecificEntityDrops, classOf[Array[ItemStack]])
         geneRegistry.registerGene(GeneKilledBySpecificEntityEntity, classOf[Class[_]])
         geneRegistry.registerMasterGene(GeneDropsItemWhenKilledBySpecificEntity, new GeneDropsItemWhenKilledBySpecificEntity)
-
-        traitRegistry.registerTrait(TraitFire, new TraitFire)
-        traitRegistry.registerTrait(TraitMovement, new TraitMovement)
-        traitRegistry.registerTrait(TraitAttacked, new TraitAttacked)
-        traitRegistry.registerTrait(TraitItemPickup, new TraitItemPickup)
-        traitRegistry.registerTrait(TraitItemDrops, new TraitItemDrops)
-        traitRegistry.registerTrait(TraitFluids, new TraitFluids)
-        traitRegistry.registerTrait(TraitSounds, new TraitSounds)
-        traitRegistry.registerTrait(TraitAttributes, new TraitInitialValues)
-        traitRegistry.registerTrait(TraitAttack, new TraitAttack)
-        traitRegistry.registerTrait(TraitAI, new TraitAI)
-        traitRegistry.registerTrait(TraitRender, new TraitRender)
-        traitRegistry.registerTrait(TraitHomeArea, new TraitHomeArea)
-        traitRegistry.registerTrait(TraitTexture, new TraitTexture)
-        traitRegistry.registerTrait(TraitNavigate, new TraitNavigate)
-        traitRegistry.registerTrait(TraitAnimation, new TraitAnimation)
-        traitRegistry.registerTrait(TraitExplode, new TraitExplode)
-        traitRegistry.registerTrait(TraitNameTag, new TraitNameTag)
-        traitRegistry.registerTrait(TraitChild, new TraitChild)
 
         standardSoulRegistry.register(StandardSoulZombie)
         standardSoulRegistry.register(StandardSoulSkeleton)

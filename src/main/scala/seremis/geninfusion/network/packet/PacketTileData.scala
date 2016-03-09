@@ -1,7 +1,5 @@
 package seremis.geninfusion.network.packet
 
-import cpw.mods.fml.common.network.simpleimpl.{IMessage, IMessageHandler, MessageContext}
-import cpw.mods.fml.relauncher.Side
 import io.netty.buffer.ByteBuf
 import net.minecraft.client.Minecraft
 import seremis.geninfusion.tileentity.GITile

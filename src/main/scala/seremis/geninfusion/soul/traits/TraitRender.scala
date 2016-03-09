@@ -1,10 +1,8 @@
 package seremis.geninfusion.soul.traits
 
-import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.entity.EntityLiving
 import net.minecraft.util.MathHelper
 import org.lwjgl.opengl.GL11
-import seremis.geninfusion.api.lib.reflection.VariableLib
 import seremis.geninfusion.api.lib.reflection.VariableLib._
 import seremis.geninfusion.api.lib.{CuboidTypes, Genes}
 import seremis.geninfusion.api.render.Model
@@ -178,7 +176,7 @@ class TraitRender extends Trait {
         val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
 
         if(explodes) {
-            var flashIntensity: Float = entity.getInteger(EntityTimeSinceIgnited).toFloat + (entity.getInteger(EntityTimeSinceIgnited) - entity.getInteger(EntityTimeSinceIgnited).toFloat * partialTickTime) / (entity.getInteger(EntityFuseTime) - 2).toFloat
+            var flashIntensity: Float = entity.getInteger(VarEntityTimeSinceIgnited).toFloat + (entity.getInteger(VarEntityTimeSinceIgnited) - entity.getInteger(VarEntityTimeSinceIgnited).toFloat * partialTickTime) / (entity.getInteger(VarEntityFuseTime) - 2).toFloat
             val f2: Float = 1.0F + MathHelper.sin(flashIntensity * 100.0F) * flashIntensity * 0.01F
 
             if(flashIntensity < 0.0F) {
@@ -215,7 +213,7 @@ class TraitRender extends Trait {
         val canBeCharged = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneCanBeCharged)
 
         if(explodes && canBeCharged) {
-            val isCharged = DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, EntityCharged) && DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, EntityCharged).asInstanceOf[Byte] == 1
+            val isCharged = DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, VarEntityCharged) && DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, VarEntityCharged).asInstanceOf[Byte] == 1
 
             if(isCharged){
                 GL11.glDepthMask(!living.isInvisible)
@@ -257,7 +255,7 @@ class TraitRender extends Trait {
         val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
 
         if(explodes) {
-            val flashIntensity: Float = entity.getInteger(EntityTimeSinceIgnited).toFloat + (entity.getInteger(EntityTimeSinceIgnited) - entity.getInteger(EntityTimeSinceIgnited).toFloat * partialTickTime) / (entity.getInteger(EntityFuseTime) - 2).toFloat
+            val flashIntensity: Float = entity.getInteger(VarEntityTimeSinceIgnited).toFloat + (entity.getInteger(VarEntityTimeSinceIgnited) - entity.getInteger(VarEntityTimeSinceIgnited).toFloat * partialTickTime) / (entity.getInteger(VarEntityFuseTime) - 2).toFloat
 
             if((flashIntensity * 10.0F).toInt % 2 == 0) {
                 return 0

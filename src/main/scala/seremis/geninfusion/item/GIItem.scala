@@ -2,11 +2,8 @@ package seremis.geninfusion.item
 
 import java.util
 
-import cpw.mods.fml.relauncher.{Side, SideOnly}
-import net.minecraft.client.renderer.texture.IIconRegister
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.{Item, ItemStack}
-import net.minecraft.util.IIcon
 import seremis.geninfusion.GeneticInfusion
 import seremis.geninfusion.lib.DefaultProps
 

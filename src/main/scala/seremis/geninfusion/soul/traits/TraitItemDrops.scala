@@ -11,7 +11,6 @@ import net.minecraft.util.DamageSource
 import net.minecraftforge.common.ForgeHooks
 import seremis.geninfusion.GeneticInfusion
 import seremis.geninfusion.api.lib.Genes
-import seremis.geninfusion.api.lib.reflection.VariableLib
 import seremis.geninfusion.api.lib.reflection.VariableLib._
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
@@ -40,11 +39,11 @@ class TraitItemDrops extends Trait {
                 lootingLevel = EnchantmentHelper.getLootingModifier(killer.asInstanceOf[EntityLivingBase])
             }
 
-            entity.setBoolean(EntityCaptureDrops, true)
+            entity.setBoolean(VarEntityCaptureDrops, true)
 
-            val capturedDrops = entity.getObject(EntityCapturedDrops).asInstanceOf[util.ArrayList[EntityItem]]
+            val capturedDrops = entity.getObject(VarEntityCapturedDrops).asInstanceOf[util.ArrayList[EntityItem]]
             capturedDrops.clear()
-            entity.setObject(EntityCapturedDrops, capturedDrops)
+            entity.setObject(VarEntityCapturedDrops, capturedDrops)
 
             var rareDropValue = 0
             val recentlyHit = entity.getInteger(EntityRecentlyHit)
@@ -60,7 +59,7 @@ class TraitItemDrops extends Trait {
                 }
             }
 
-            entity.setBoolean(EntityCaptureDrops, false)
+            entity.setBoolean(VarEntityCaptureDrops, false)
 
             if(!ForgeHooks.onLivingDrops(entity.asInstanceOf[EntityLiving], source, capturedDrops, lootingLevel, recentlyHit > 0, rareDropValue)) {
                 for(item <- capturedDrops.toArray(new Array[EntityItem](capturedDrops.size()))) {

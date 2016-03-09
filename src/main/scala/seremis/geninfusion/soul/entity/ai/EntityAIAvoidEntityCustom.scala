@@ -1,6 +1,5 @@
 package seremis.geninfusion.soul.entity.ai
 
-import net.minecraft.command.IEntitySelector
 import net.minecraft.entity.ai.EntityAIBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.{Entity, EntityLiving}

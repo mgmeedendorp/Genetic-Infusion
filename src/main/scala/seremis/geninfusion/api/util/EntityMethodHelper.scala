@@ -4,15 +4,43 @@ import net.minecraft.entity.EntityLiving
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.world.World
-import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul}
+import seremis.geninfusion.api.render.Model
+import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
 import seremis.geninfusion.api.util.data.Data
 
 object EntityMethodHelper {
 
-    implicit def entityToLiving(entity: IEntitySoulCustom): EntityLiving = entity.asInstanceOf[EntityLiving]
+    implicit def entityToLiving(entity: IEntitySoulCustom): EntityLiving = entity.asLiving
 
     def soul(implicit entity: IEntitySoulCustom): ISoul = entity.getSoul
     def world(implicit entity: IEntitySoulCustom): World = entity.worldObj
+
+    implicit class GeneValues(str: String)(implicit entity: IEntitySoulCustom) {
+        def booleanGene: Boolean = SoulHelper.geneRegistry.getValueFromAllele(entity, str)
+        def byteGene: Byte = SoulHelper.geneRegistry.getValueFromAllele(entity, str)
+        def shortGene: Short = SoulHelper.geneRegistry.getValueFromAllele(entity, str)
+        def intGene: Int = SoulHelper.geneRegistry.getValueFromAllele(entity, str)
+        def floatGene: Float = SoulHelper.geneRegistry.getValueFromAllele(entity, str)
+        def doubleGene: Double = SoulHelper.geneRegistry.getValueFromAllele(entity, str)
+        def longGene: Long = SoulHelper.geneRegistry.getValueFromAllele(entity, str)
+        def stringGene: String = SoulHelper.geneRegistry.getValueFromAllele(entity, str)
+        def classGene: Class[_] = SoulHelper.geneRegistry.getValueFromAllele(entity, str)
+        def stackGene: ItemStack = SoulHelper.geneRegistry.getValueFromAllele(entity, str)
+        def modelGene: Model = SoulHelper.geneRegistry.getValueFromAllele(entity, str)
+        def nbtGene: NBTTagCompound = SoulHelper.geneRegistry.getValueFromAllele(entity, str)
+
+        def booleanArrGene: Array[Boolean] = SoulHelper.geneRegistry.getValueFromAllele(entity, str)
+        def byteArrGene: Array[Byte] = SoulHelper.geneRegistry.getValueFromAllele(entity, str)
+        def shortArrGene: Array[Short] = SoulHelper.geneRegistry.getValueFromAllele(entity, str)
+        def intArrGene: Array[Int] = SoulHelper.geneRegistry.getValueFromAllele(entity, str)
+        def floatArrGene: Array[Float] = SoulHelper.geneRegistry.getValueFromAllele(entity, str)
+        def doubleArrGene: Array[Double] = SoulHelper.geneRegistry.getValueFromAllele(entity, str)
+        def longArrGene: Array[Long] = SoulHelper.geneRegistry.getValueFromAllele(entity, str)
+        def stringArrGene: Array[String] = SoulHelper.geneRegistry.getValueFromAllele(entity, str)
+        def classArrGene: Array[Class[_]] = SoulHelper.geneRegistry.getValueFromAllele(entity, str)
+        def stackArrGene: Array[ItemStack] = SoulHelper.geneRegistry.getValueFromAllele(entity, str)
+        def nbtArrGene: Array[NBTTagCompound] = SoulHelper.geneRegistry.getValueFromAllele(entity, str)
+    }
 
     implicit class EntityVars(str: String)(implicit entity: IEntitySoulCustom) {
         def byte_++ = entity.setByte(str, (entity.getByte(str) + 1).toByte)

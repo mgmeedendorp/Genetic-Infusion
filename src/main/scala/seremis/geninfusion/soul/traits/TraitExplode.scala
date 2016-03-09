@@ -8,7 +8,6 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.Items
 import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.lib.Genes
-import seremis.geninfusion.api.lib.reflection.VariableLib
 import seremis.geninfusion.api.lib.reflection.VariableLib._
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.api.util.DataWatcherHelper
@@ -19,9 +18,9 @@ class TraitExplode extends Trait {
         val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
 
         if(explodes && !entity.getWorld_I.isRemote) {
-            DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, -1.toByte, EntityFuseState)
-            DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0.toByte, EntityCharged)
-            DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0.toByte, EntityIgnited)
+            DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, -1.toByte, VarEntityFuseState)
+            DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0.toByte, VarEntityCharged)
+            DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0.toByte, VarEntityIgnited)
         }
     }
 
@@ -29,11 +28,11 @@ class TraitExplode extends Trait {
         val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
 
         if(explodes) {
-            entity.setInteger(EntityExplosionRadius, SoulHelper.geneRegistry.getValueFromAllele[Int](entity, Genes.GeneExplosionRadius))
-            entity.setInteger(EntityFuseTime, SoulHelper.geneRegistry.getValueFromAllele[Int](entity, Genes.GeneFuseTime))
+            entity.setInteger(VarEntityExplosionRadius, SoulHelper.geneRegistry.getValueFromAllele[Int](entity, Genes.GeneExplosionRadius))
+            entity.setInteger(VarEntityFuseTime, SoulHelper.geneRegistry.getValueFromAllele[Int](entity, Genes.GeneFuseTime))
 
-            entity.makePersistent(EntityExplosionRadius)
-            entity.makePersistent(EntityFuseTime)
+            entity.makePersistent(VarEntityExplosionRadius)
+            entity.makePersistent(VarEntityFuseTime)
         }
     }
 
@@ -41,9 +40,9 @@ class TraitExplode extends Trait {
         val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
 
         if(explodes) {
-            DataWatcherHelper.writeObjectToNBT(compound, entity.getDataWatcher_I, EntityFuseState)
-            DataWatcherHelper.writeObjectToNBT(compound, entity.getDataWatcher_I, EntityCharged)
-            DataWatcherHelper.writeObjectToNBT(compound, entity.getDataWatcher_I, EntityIgnited)
+            DataWatcherHelper.writeObjectToNBT(compound, entity.getDataWatcher_I, VarEntityFuseState)
+            DataWatcherHelper.writeObjectToNBT(compound, entity.getDataWatcher_I, VarEntityCharged)
+            DataWatcherHelper.writeObjectToNBT(compound, entity.getDataWatcher_I, VarEntityIgnited)
         }
     }
 
@@ -51,9 +50,9 @@ class TraitExplode extends Trait {
         val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
 
         if(explodes) {
-            DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, EntityFuseState)
-            DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, EntityCharged)
-            DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, EntityIgnited)
+            DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, VarEntityFuseState)
+            DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, VarEntityCharged)
+            DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, VarEntityIgnited)
         }
     }
 
@@ -63,14 +62,14 @@ class TraitExplode extends Trait {
         val explodes = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneAICreeperSwell)
 
         if(explodes && living.isEntityAlive) {
-            val fuseTime = entity.getInteger(EntityFuseTime)
-            var timeSinceIgnited = entity.getInteger(EntityTimeSinceIgnited)
+            val fuseTime = entity.getInteger(VarEntityFuseTime)
+            var timeSinceIgnited = entity.getInteger(VarEntityTimeSinceIgnited)
 
-            if(DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, EntityIgnited) && DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, EntityIgnited).asInstanceOf[Byte] != 0) {
-                DataWatcherHelper.updateObject(living.getDataWatcher, EntityFuseState, 1.toByte.asInstanceOf[Byte])
+            if(DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, VarEntityIgnited) && DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, VarEntityIgnited).asInstanceOf[Byte] != 0) {
+                DataWatcherHelper.updateObject(living.getDataWatcher, VarEntityFuseState, 1.toByte.asInstanceOf[Byte])
             }
 
-            val fuseState = if(DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, EntityFuseState)) DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, EntityFuseState).asInstanceOf[Byte].toInt else 0
+            val fuseState = if(DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, VarEntityFuseState)) DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, VarEntityFuseState).asInstanceOf[Byte].toInt else 0
 
             if(fuseState > 0 && timeSinceIgnited == 0) {
                 entity.playSound_I("creeper.primed", 1.0F, 0.5F)
@@ -88,9 +87,9 @@ class TraitExplode extends Trait {
                 if(!entity.getWorld_I.isRemote) {
                     val mobGriefing = entity.getWorld_I.getGameRules.getGameRuleBooleanValue("mobGriefing")
 
-                    val explosionRadius = entity.getInteger(EntityExplosionRadius)
+                    val explosionRadius = entity.getInteger(VarEntityExplosionRadius)
 
-                    if(living.getDataWatcher.getWatchableObjectByte(DataWatcherHelper.getObjectId(living.getDataWatcher, EntityCharged)) == 1) {
+                    if(living.getDataWatcher.getWatchableObjectByte(DataWatcherHelper.getObjectId(living.getDataWatcher, VarEntityCharged)) == 1) {
                         entity.getWorld_I.createExplosion(living, living.posX, living.posY, living.posZ, explosionRadius*2, mobGriefing)
                     } else {
                         entity.getWorld_I.createExplosion(living, living.posX, living.posY, living.posZ, explosionRadius, mobGriefing)
@@ -99,7 +98,7 @@ class TraitExplode extends Trait {
                 }
             }
 
-            entity.setInteger(EntityTimeSinceIgnited, timeSinceIgnited)
+            entity.setInteger(VarEntityTimeSinceIgnited, timeSinceIgnited)
         }
     }
 
@@ -118,7 +117,7 @@ class TraitExplode extends Trait {
                 player.swingItem()
 
                 if(!entity.getWorld_I.isRemote) {
-                    DataWatcherHelper.updateObject(living.getDataWatcher, EntityIgnited, 1.toByte.asInstanceOf[Byte])
+                    DataWatcherHelper.updateObject(living.getDataWatcher, VarEntityIgnited, 1.toByte.asInstanceOf[Byte])
 
                     stack.damageItem(1, player)
                     return true
@@ -136,7 +135,7 @@ class TraitExplode extends Trait {
 
 
         if(explodes && canBeCharged && !entity.getWorld_I.isRemote) {
-            DataWatcherHelper.updateObject(living.getDataWatcher, EntityCharged, 1.toByte.asInstanceOf[Byte])
+            DataWatcherHelper.updateObject(living.getDataWatcher, VarEntityCharged, 1.toByte.asInstanceOf[Byte])
         }
     }
 }

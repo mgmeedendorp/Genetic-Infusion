@@ -1,6 +1,5 @@
 package seremis.geninfusion.soul.traits
 
-import net.minecraft.command.IEntitySelector
 import net.minecraft.entity.ai._
 import net.minecraft.entity.monster.IMob
 import net.minecraft.entity.player.EntityPlayerMP
@@ -8,7 +7,6 @@ import net.minecraft.entity.{Entity, EntityCreature, EntityLiving, SharedMonster
 import net.minecraft.pathfinding.PathEntity
 import net.minecraft.util.MathHelper
 import seremis.geninfusion.api.lib.Genes
-import seremis.geninfusion.api.lib.reflection.VariableLib
 import seremis.geninfusion.api.lib.reflection.VariableLib._
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.soul.entity.ai._
@@ -365,7 +363,7 @@ class TraitAI extends Trait {
                 entity.getWorld_I.theProfiler.startSection("oldAi")
                 entity.updateEntityActionState_I
                 entity.getWorld_I.theProfiler.endSection()
-                entity.setFloat(EntityRotationYawHead, entity.getFloat(EntityRotationYaw))
+                entity.setFloat(EntityRotationYawHead, entity.getFloat(VarEntityRotationYaw))
             }
         }
         entity.getWorld_I.theProfiler.endSection()
@@ -422,20 +420,20 @@ class TraitAI extends Trait {
             }
 
             val i = MathHelper.floor_double(entity.getBoundingBox_I.minY + 0.5D)
-            val flag = entity.getBoolean(EntityInWater)
+            val flag = entity.getBoolean(VarEntityInWater)
             val flag1 = entity.asInstanceOf[EntityLiving].handleLavaMovement()
-            entity.setFloat(EntityRotationPitch, 0.0F)
+            entity.setFloat(VarEntityRotationPitch, 0.0F)
 
             var pathToEntity = entity.getObject(EntityPathToEntity).asInstanceOf[PathEntity]
 
             if(pathToEntity != null && entity.getRandom_I.nextInt(100) != 0) {
                 entity.getWorld_I.theProfiler.startSection("followpath")
                 var vec3 = pathToEntity.getPosition(living)
-                val d0 = (entity.getFloat(EntityWidth) * 2.0F).toDouble
+                val d0 = (entity.getFloat(VarEntityWidth) * 2.0F).toDouble
 
-                val posX = entity.getDouble(EntityPosX)
-                val posZ = entity.getDouble(EntityPosZ)
-                var rotationYaw = entity.getFloat(EntityRotationYaw)
+                val posX = entity.getDouble(VarEntityPosX)
+                val posZ = entity.getDouble(VarEntityPosZ)
+                var rotationYaw = entity.getFloat(VarEntityRotationYaw)
                 var moveForward = entity.getFloat(EntityMoveForward)
                 var moveStrafing = entity.getFloat(EntityMoveStrafing)
 
@@ -489,7 +487,7 @@ class TraitAI extends Trait {
                     entity.asInstanceOf[EntityLiving].faceEntity(entityToAttack, 30.0F, 30.0F)
                 }
 
-                if(entity.getBoolean(EntityIsCollidedHorizontally) && pathToEntity == null) {
+                if(entity.getBoolean(VarEntityIsCollidedHorizontally) && pathToEntity == null) {
                     entity.setBoolean(EntityIsJumping, true)
                 }
 
@@ -497,7 +495,7 @@ class TraitAI extends Trait {
                     entity.setBoolean(EntityIsJumping, true)
                 }
 
-                entity.setFloat(EntityRotationYaw, rotationYaw)
+                entity.setFloat(VarEntityRotationYaw, rotationYaw)
                 entity.setFloat(EntityMoveForward, moveForward)
                 entity.setFloat(EntityMoveStrafing, moveStrafing)
 
@@ -547,14 +545,14 @@ class TraitAI extends Trait {
                 entity.setFloat(EntityRandomYawVelocity, (entity.getRandom_I.nextFloat() - 0.5F) * 20.0F)
             }
 
-            entity.setFloat(EntityRotationYaw, entity.getFloat(EntityRotationYaw) + entity.getFloat(EntityRandomYawVelocity))
-            entity.setFloat(EntityRotationPitch, entity.getFloat(EntityDefaultPitch))
+            entity.setFloat(VarEntityRotationYaw, entity.getFloat(VarEntityRotationYaw) + entity.getFloat(EntityRandomYawVelocity))
+            entity.setFloat(VarEntityRotationPitch, entity.getFloat(EntityDefaultPitch))
         }
 
         entity.setObject(EntityCurrentTarget, currentTarget)
         entity.setInteger(EntityNumTicksToChaseTarget, numTicksToChaseTarget)
 
-        val flag1 = entity.getBoolean(EntityInWater)
+        val flag1 = entity.getBoolean(VarEntityInWater)
         val flag = living.handleLavaMovement()
 
         if(flag1 || flag) {

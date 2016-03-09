@@ -1,7 +1,5 @@
 package seremis.geninfusion.entity
 
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData
-import cpw.mods.fml.relauncher.{Side, SideOnly}
 import io.netty.buffer.ByteBuf
 import net.minecraft.block.Block
 import net.minecraft.entity.player.EntityPlayer

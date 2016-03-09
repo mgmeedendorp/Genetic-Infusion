@@ -13,7 +13,7 @@ class EntitySoulCustom(val world: World) extends EntityLiving(world) with Entity
         setPosition(x, y, z)
         setSize(0.8F, 1.7F)
         this.soul = soul
-        entityInit_I
+        entityInit
         shouldCallEntityInit = false
     }
 

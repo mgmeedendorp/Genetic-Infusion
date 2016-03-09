@@ -2,7 +2,6 @@ package seremis.geninfusion.soul.entity
 
 import java.util.UUID
 
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData
 import io.netty.buffer.ByteBuf
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
@@ -16,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util._
 import net.minecraft.world.{Explosion, World}
 import net.minecraftforge.common.IExtendedEntityProperties
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData
 import seremis.geninfusion.api.lib.Genes
 import seremis.geninfusion.api.lib.reflection.FunctionLib._
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, ISoul, SoulHelper}
@@ -37,7 +37,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
 
     override def writeSpawnData(data: ByteBuf) {
         val compound = new NBTTagCompound
-        writeToNBT_I(compound)
+        writeToNBT(compound)
         val bytes = UtilNBT.compoundToByteArray(compound).getOrElse(return)
         data.writeInt(bytes.length)
         data.writeBytes(bytes)
@@ -58,7 +58,7 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
         data.readBytes(bytes)
 
         val compound: NBTTagCompound = UtilNBT.byteArrayToCompound(bytes).getOrElse(return)
-        readFromNBT_I(compound)
+        readFromNBT(compound)
 
         if(data.readerIndex() < data.writerIndex) {
             val size = data.readInt()
@@ -73,400 +73,447 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     }
 
     override def getEntityId(): Int = {
-        EntityMethodHandler.handleMethodCall(this, EntityGetEntityId, () => super.getEntityId)
+        EntityMethodHandler.handleMethodCall(this, FuncEntityGetEntityId, () => super.getEntityId)
 
         super.getEntityId()
     }
 
     override def setEntityId(id: Int): Unit = {
-        EntityMethodHandler.handleMethodCall(this, EntitySetEntityId, () => super.setEntityId(id), id)
+        EntityMethodHandler.handleMethodCall(this, FuncEntitySetEntityId, () => super.setEntityId(id), id)
 
         super.setEntityId(id)
     }
 
     override def getDataWatcher(): DataWatcher = {
-        EntityMethodHandler.handleMethodCall(this, EntityGetDataWatcher, () => super.getDataWatcher)
+        EntityMethodHandler.handleMethodCall(this, FuncEntityGetDataWatcher, () => super.getDataWatcher)
 
         super.getDataWatcher()
     }
 
     override def hashCode(): Int = {
-        EntityMethodHandler.handleMethodCall(this, EntityHashCode, () => super.hashCode)
+        EntityMethodHandler.handleMethodCall(this, FuncEntityHashCode, () => super.hashCode)
 
         super.hashCode()
     }
 
     override def setDead(): Unit = {
-        EntityMethodHandler.handleMethodCall(this, EntitySetDead, () => super.setDead)
+        EntityMethodHandler.handleMethodCall(this, FuncEntitySetDead, () => super.setDead)
 
         super.setDead()
     }
 
     override def setSize(width: Float, height: Float) = {
-        EntityMethodHandler.handleMethodCall(this, EntitySetSize, () => super.setSize(width, height), width, height)
+        EntityMethodHandler.handleMethodCall(this, FuncEntitySetSize, () => super.setSize(width, height), width, height)
 
         super.setSize(width, height)
     }
 
     override def setRotation(yaw: Float, pitch: Float): Unit = {
-        EntityMethodHandler.handleMethodCall(this, EntitySetRotation, () => super.setRotation(yaw, pitch), yaw, pitch)
+        EntityMethodHandler.handleMethodCall(this, FuncEntitySetRotation, () => super.setRotation(yaw, pitch), yaw, pitch)
 
         super.setRotation(yaw, pitch)
     }
 
     override def setPosition(x: Double, y: Double, z: Double): Unit = {
-        EntityMethodHandler.handleMethodCall(this, EntitySetPosition, () => super.setPosition(x, y, z), x, y, z)
+        EntityMethodHandler.handleMethodCall(this, FuncEntitySetPosition, () => super.setPosition(x, y, z), x, y, z)
 
         super.setPosition(x, y, z)
     }
 
     override def setAngles(yaw: Float, pitch: Float): Unit = {
-        EntityMethodHandler.handleMethodCall(this, EntitySetAngles, () => super.setAngles(yaw, pitch), yaw, pitch)
+        EntityMethodHandler.handleMethodCall(this, FuncEntitySetAngles, () => super.setAngles(yaw, pitch), yaw, pitch)
 
         super.setAngles(yaw, pitch)
     }
 
     override def getMaxInPortalTime(): Int = {
-        EntityMethodHandler.handleMethodCall(this, EntityGetMaxInPortalTime, () => super.getMaxInPortalTime())
+        EntityMethodHandler.handleMethodCall(this, FuncEntityGetMaxInPortalTime, () => super.getMaxInPortalTime())
 
         SoulHelper.geneRegistry.getValueFromAllele(this, Genes.GeneTeleportTimeInPortal)
     }
 
     override def setOnFireFromLava(): Unit = {
-        EntityMethodHandler.handleMethodCall(this, EntitySetOnFireFromLava, () => super.setOnFireFromLava())
+        EntityMethodHandler.handleMethodCall(this, FuncEntitySetOnFireFromLava, () => super.setOnFireFromLava())
 
         super.setOnFireFromLava()
     }
 
     override def setFire(seconds: Int): Unit = {
-        EntityMethodHandler.handleMethodCall(this, EntitySetFire, () => super.setFire(seconds), seconds)
+        EntityMethodHandler.handleMethodCall(this, FuncEntitySetFire, () => super.setFire(seconds), seconds)
 
         super.setFire(seconds)
     }
 
     override def extinguish(): Unit = {
-        EntityMethodHandler.handleMethodCall(this, EntityExtinguish, () => super.extinguish())
+        EntityMethodHandler.handleMethodCall(this, FuncEntityExtinguish, () => super.extinguish())
 
         super.extinguish()
     }
 
     override def getSwimSound(): String = {
-        EntityMethodHandler.handleMethodCall(this, EntityGetSwimSound, () => super.getSwimSound())
+        EntityMethodHandler.handleMethodCall(this, FuncEntityGetSwimSound, () => super.getSwimSound())
 
         super.getSwimSound()
     }
 
-    override def getBoundingBox(): AxisAlignedBB = {
-        EntityMethodHandler.handleMethodCall(this, EntityGetBoundingBox, () => super.getBoundingBox())
+    override def getEntityBoundingBox(): AxisAlignedBB = {
+        EntityMethodHandler.handleMethodCall(this, FuncEntityGetBoundingBox, () => super.getEntityBoundingBox())
 
-        super.getBoundingBox()
+        super.getEntityBoundingBox()
     }
 
     override def isInWater(): Boolean = {
-        EntityMethodHandler.handleMethodCall(this, EntityIsInWater, () => super.isInWater())
+        EntityMethodHandler.handleMethodCall(this, FuncEntityIsInWater, () => super.isInWater())
 
         super.isInWater()
     }
 
     override def getSplashSound(): String = {
-        EntityMethodHandler.handleMethodCall(this, EntityGetSplashSound, () => super.getSplashSound())
+        EntityMethodHandler.handleMethodCall(this, FuncEntityGetSplashSound, () => super.getSplashSound())
 
         SoulHelper.geneRegistry.getValueFromAllele(this, Genes.GeneSplashSound)
     }
 
     override def getEyeHeight(): Float = {
-        EntityMethodHandler.handleMethodCall(this, EntityGetEyeHeight, () => super.getEyeHeight())
+        EntityMethodHandler.handleMethodCall(this, FuncEntityGetEyeHeight, () => super.getEyeHeight())
 
         super.getEyeHeight()
     }
 
     override def setWorld(worldIn: World): Unit = {
-        EntityMethodHandler.handleMethodCall(this, EntitySetWorld, () => super.setWorld(worldIn), worldIn)
+        EntityMethodHandler.handleMethodCall(this, FuncEntitySetWorld, () => super.setWorld(worldIn), worldIn)
 
         super.setWorld(worldIn)
     }
 
     override def setPositionAndRotation(x: Double, y: Double, z: Double, yaw: Float, pitch: Float): Unit = {
-        EntityMethodHandler.handleMethodCall(this, EntitySetPositionAndRotation, () => super.setPositionAndRotation(x, y, z, yaw, pitch), x, y, z, yaw, pitch)
+        EntityMethodHandler.handleMethodCall(this, FuncEntitySetPositionAndRotation, () => super.setPositionAndRotation(x, y, z, yaw, pitch), x, y, z, yaw, pitch)
 
         super.setPositionAndRotation(x, y, z, yaw, pitch)
     }
 
     override def setPositionAndRotation2(x: Double, y: Double, z: Double, yaw: Float, pitch: Float, rotationIncrements: Int): Unit = {
-        EntityMethodHandler.handleMethodCall(this, EntitySetPositionAndRotation2, () => super.setPositionAndRotation2(x, y, z, yaw, pitch, rotationIncrements), x, y, z, yaw, pitch, rotationIncrements)
+        EntityMethodHandler.handleMethodCall(this, FuncEntitySetPositionAndRotation2, () => super.setPositionAndRotation2(x, y, z, yaw, pitch, rotationIncrements), x, y, z, yaw, pitch, rotationIncrements)
 
         super.setPositionAndRotation2(x, y, z, yaw, pitch, rotationIncrements)
     }
 
 
     override def setLocationAndAngles(x: Double, y: Double, z: Double, yaw: Float, pitch: Float): Unit = {
-        EntityMethodHandler.handleMethodCall(this, EntitySetLocationAndAngles, () => super.setLocationAndAngles(x, y, z, yaw, pitch), x, y, z, yaw, pitch)
+        EntityMethodHandler.handleMethodCall(this, FuncEntitySetLocationAndAngles, () => super.setLocationAndAngles(x, y, z, yaw, pitch), x, y, z, yaw, pitch)
 
         super.setLocationAndAngles(x, y, z, yaw, pitch)
     }
 
     override def setBeenAttacked(): Unit = {
-        EntityMethodHandler.handleMethodCall(this, EntitySetBeenAttacked, () => super.setBeenAttacked())
+        EntityMethodHandler.handleMethodCall(this, FuncEntitySetBeenAttacked, () => super.setBeenAttacked())
 
         super.setBeenAttacked()
     }
 
     //TODO fix these
     override def dropItem(itemIn: Item, size: Int): EntityItem = {
-        EntityMethodHandler.handleMethodCall(this, EntityDropItem_, () => super.dropItem(itemIn, size), itemIn, size)
+        EntityMethodHandler.handleMethodCall(this, FuncEntityDropItem, () => super.dropItem(itemIn, size), itemIn, size)
 
         super.dropItem(itemIn, size)
     }
     override def dropItemWithOffset(itemIn: Item, size: Int, p_145778_3_ : Float): EntityItem = {
-        EntityMethodHandler.handleMethodCall(this, EntityDropItemWithOffset, () => super.dropItemWithOffset(itemIn, size, p_145778_3_), itemIn, size, p_145778_3_)
+        EntityMethodHandler.handleMethodCall(this, FuncEntityDropItemWithOffset, () => super.dropItemWithOffset(itemIn, size, p_145778_3_), itemIn, size, p_145778_3_)
 
         super.dropItemWithOffset(itemIn, size, p_145778_3_)
     }
     override def entityDropItem(itemStackIn: ItemStack, offsetY: Float): EntityItem = {
-        EntityMethodHandler.handleMethodCall(this, EntityEntityDropItem, () => super.entityDropItem(itemStackIn, offsetY), itemStackIn, offsetY)
+        EntityMethodHandler.handleMethodCall(this, FuncEntityEntityDropItem, () => super.entityDropItem(itemStackIn, offsetY), itemStackIn, offsetY)
 
         super.entityDropItem(itemStackIn, offsetY)
     }
 
     override def getCollisionBox(entityIn: Entity): AxisAlignedBB = {
-        EntityMethodHandler.handleMethodCall(this, EntityGetCollisionBox, () => super.getCollisionBox(entityIn), entityIn)
+        EntityMethodHandler.handleMethodCall(this, FuncEntityGetCollisionBox, () => super.getCollisionBox(entityIn), entityIn)
 
         super.getCollisionBox(entityIn)
     }
 
     override def getYOffset(): Double = {
-        EntityMethodHandler.handleMethodCall(this, EntityGetYOffset, () => super.getYOffset())
+        EntityMethodHandler.handleMethodCall(this, FuncEntityGetYOffset, () => super.getYOffset())
 
         super.getYOffset()
     }
 
     override def getLookVec(): Vec3 = {
-        EntityMethodHandler.handleMethodCall(this, EntityGetLookVec, () => super.getLookVec())
+        EntityMethodHandler.handleMethodCall(this, FuncEntityGetLookVec, () => super.getLookVec())
 
         super.getLookVec()
     }
 
     override def getPortalCooldown(): Int = {
-        EntityMethodHandler.handleMethodCall(this, EntityGetPortalCooldown, () => super.getPortalCooldown())
+        EntityMethodHandler.handleMethodCall(this, FuncEntityGetPortalCooldown, () => super.getPortalCooldown())
 
         super.getPortalCooldown()
     }
     override def setVelocity(x: Double, y: Double, z: Double): Unit = {
-        EntityMethodHandler.handleMethodCall(this, EntitySetVelocity, () => super.setVelocity(x, y, z), x, y, z)
+        EntityMethodHandler.handleMethodCall(this, FuncEntitySetVelocity, () => super.setVelocity(x, y, z), x, y, z)
 
         super.setVelocity(x, y, z)
     }
 
     override def getInventory(): Array[ItemStack] = {
-        EntityMethodHandler.handleMethodCall(this, EntityGetInventory, () => super.getInventory)
+        EntityMethodHandler.handleMethodCall(this, FuncEntityGetInventory, () => super.getInventory)
 
         super.getInventory()
     }
 
     override def setCurrentItemOrArmor(slotIn: Int, itemStackIn: ItemStack): Unit = {
-        EntityMethodHandler.handleMethodCall(this, EntitySetCurrentItemOrArmor, () => super.setCurrentItemOrArmor(slotIn, itemStackIn), slotIn, itemStackIn)
+        EntityMethodHandler.handleMethodCall(this, FuncEntitySetCurrentItemOrArmor, () => super.setCurrentItemOrArmor(slotIn, itemStackIn), slotIn, itemStackIn)
 
         super.setCurrentItemOrArmor(slotIn, itemStackIn)
     }
 
     override def isBurning(): Boolean = {
-        EntityMethodHandler.handleMethodCall(this, EntityIsBurning, () => super.isBurning())
+        EntityMethodHandler.handleMethodCall(this, FuncEntityIsBurning, () => super.isBurning())
 
         super.isBurning()
     }
 
     override def isRiding(): Boolean = {
-        EntityMethodHandler.handleMethodCall(this, EntityIsRiding, () => super.isRiding())
+        EntityMethodHandler.handleMethodCall(this, FuncEntityIsRiding, () => super.isRiding())
 
         super.isRiding()
     }
 
     override def isSneaking(): Boolean = {
-        EntityMethodHandler.handleMethodCall(this, EntityIsSneaking, () => super.isSneaking())
+        EntityMethodHandler.handleMethodCall(this, FuncEntityIsSneaking, () => super.isSneaking())
 
         super.isSneaking()
     }
 
     override def setSneaking(sneaking: Boolean): Unit = {
-        EntityMethodHandler.handleMethodCall(this, EntitySetSneaking, () => super.setSneaking(sneaking), sneaking)
+        EntityMethodHandler.handleMethodCall(this, FuncEntitySetSneaking, () => super.setSneaking(sneaking), sneaking)
 
         super.setSneaking(sneaking)
     }
 
     override def isSprinting(): Boolean = {
-        EntityMethodHandler.handleMethodCall(this, EntityIsSprinting, () => isSprinting())
+        EntityMethodHandler.handleMethodCall(this, FuncEntityIsSprinting, () => isSprinting())
 
         super.isSprinting()
     }
 
     override def setSprinting(sprinting: Boolean): Unit = {
-        EntityMethodHandler.handleMethodCall(this, EntitySetSprinting, () => super.setSprinting(sprinting), sprinting)
+        EntityMethodHandler.handleMethodCall(this, FuncEntitySetSprinting, () => super.setSprinting(sprinting), sprinting)
 
         super.setSprinting(sprinting)
     }
 
     override def isInvisible(): Boolean = {
-        EntityMethodHandler.handleMethodCall(this, EntityIsInvisible, () => super.isInvisible())
+        EntityMethodHandler.handleMethodCall(this, FuncEntityIsInvisible, () => super.isInvisible())
 
         super.isInvisible()
     }
 
     override def isInvisibleToPlayer(player: EntityPlayer): Boolean = {
-        EntityMethodHandler.handleMethodCall(this, EntityIsInvisibleToPlayer, () => super.isInvisibleToPlayer(player), player)
+        EntityMethodHandler.handleMethodCall(this, FuncEntityIsInvisibleToPlayer, () => super.isInvisibleToPlayer(player), player)
 
         super.isInvisibleToPlayer(player)
     }
 
     override def setInvisible(invisible: Boolean): Unit = {
-        EntityMethodHandler.handleMethodCall(this, EntitySetInvisible, () => super.setInvisible(invisible), invisible)
+        EntityMethodHandler.handleMethodCall(this, FuncEntitySetInvisible, () => super.setInvisible(invisible), invisible)
 
         super.setInvisible(invisible)
     }
 
     override def isEating(): Boolean = {
-        EntityMethodHandler.handleMethodCall(this, EntityIsEating, () => super.isEating())
+        EntityMethodHandler.handleMethodCall(this, FuncEntityIsEating, () => super.isEating())
 
         super.isEating()
     }
 
     override def setEating(eating: Boolean): Unit = {
-        EntityMethodHandler.handleMethodCall(this, EntitySetEating, () => super.setEating(eating), eating)
+        EntityMethodHandler.handleMethodCall(this, FuncEntitySetEating, () => super.setEating(eating), eating)
 
         super.setEating(eating)
     }
 
     override def getFlag(flag: Int): Boolean = {
-        EntityMethodHandler.handleMethodCall(this, EntityGetFlag, () => super.getFlag(flag), flag)
+        EntityMethodHandler.handleMethodCall(this, FuncEntityGetFlag, () => super.getFlag(flag), flag)
 
         super.getFlag(flag)
     }
 
     override def setFlag(flag: Int, set: Boolean): Unit = {
-        EntityMethodHandler.handleMethodCall(this, EntitySetFlag, () => super.setFlag(flag, set), flag, set)
+        EntityMethodHandler.handleMethodCall(this, FuncEntitySetFlag, () => super.setFlag(flag, set), flag, set)
 
         super.setFlag(flag, set)
     }
 
     override def getAir(): Int = {
-        EntityMethodHandler.handleMethodCall(this, EntityGetAir, () => super.getAir())
+        EntityMethodHandler.handleMethodCall(this, FuncEntityGetAir, () => super.getAir())
 
         super.getAir()
     }
 
     override def setAir(air: Int): Unit = {
-        EntityMethodHandler.handleMethodCall(this, EntitySetAir, () => super.setAir(air), air)
+        EntityMethodHandler.handleMethodCall(this, FuncEntitySetAir, () => super.setAir(air), air)
 
         super.setAir(air)
     }
 
     override def setInWeb(): Unit = {
-        EntityMethodHandler.handleMethodCall(this, EntitySetInWeb, () => super.setInWeb())
+        EntityMethodHandler.handleMethodCall(this, FuncEntitySetInWeb, () => super.setInWeb())
 
         super.setInWeb()
     }
 
     override def getCommandSenderName(): String = {
-        EntityMethodHandler.handleMethodCall(this, EntityGetCommandSenderName, () => super.getCommandSenderName())
+        EntityMethodHandler.handleMethodCall(this, FuncEntityGetCommandSenderName, () => super.getCommandSenderName())
 
         super.getCommandSenderName()
+    }
+
+    override def getRotationYawHead(): Float = {
+        EntityMethodHandler.handleMethodCall(this, FuncEntityGetRotationYawHead, () => super.getRotationYawHead())
+
+        super.getRotationYawHead()
+    }
+
+    override def setRotationYawHead(rotation: Float): Unit = {
+        EntityMethodHandler.handleMethodCall(this, FuncEntitySetRotationYawHead, () => super.setRotationYawHead(rotation), rotation)
+
+        super.setRotationYawHead(rotation)
+    }
+
+    override def isEntityInvulnerable(): Boolean = {
+        EntityMethodHandler.handleMethodCall(this, FuncEntityIsEntityInvulnerable, () => super.isEntityInvulnerable())
+
+        super.isEntityInvulnerable()
+    }
+
+    override def getTeleportDirection(): Int = {
+        EntityMethodHandler.handleMethodCall(this, FuncEntityGetTeleportDirection, () => super.getTeleportDirection())
+
+        super.getTeleportDirection()
+    }
+
+    override def canRenderOnFire(): Boolean = {
+        EntityMethodHandler.handleMethodCall(this, FuncEntityCanRenderOnFire, () => super.canRenderOnFire())
+
+        super.canRenderOnFire()
+    }
+
+    override def getUniqueID(): UUID = {
+        EntityMethodHandler.handleMethodCall(this, FuncEntityGetUniqueID, () => super.getUniqueID())
+
+        super.getUniqueID()
+    }
+
+    override def isPushedByWater(): Boolean = {
+        EntityMethodHandler.handleMethodCall(this, FuncEntityIsPushedByWater, () => super.isPushedByWater())
+
+        super.isPushedByWater()
+    }
+
+    override def getFormattedCommandSenderName(): IChatComponent = {
+        EntityMethodHandler.handleMethodCall(this, FuncEntityGetFormattedCommandSenderName, () => super.getFormattedCommandSenderName())
+
+        super.getFormattedCommandSenderName()
+    }
+
+    override def getPersistentID(): UUID = {
+        EntityMethodHandler.handleMethodCall(this, FuncEntityGetPersistentID, () => super.getPersistentID())
+
+        super.getPersistentID()
+    }
+
+    override def getExtendedProperties(identifier: String): IExtendedEntityProperties = {
+        EntityMethodHandler.handleMethodCall(this, FuncEntityGetExtendedProperties, () => super.getExtendedProperties(identifier), identifier)
+
+        super.getExtendedProperties(identifier)
     }
 
 
 
 
 
+    override def entityInit(): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityEntityInit, () => super.entityInit())
+    override def equals(p_equals_1_ : Object): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityEquals, () => super.equals(p_equals_1_), p_equals_1_)
+    override def preparePlayerToSpawn(): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityPreparePlayerToSpawn, () => super.preparePlayerToSpawn())
+    override def onUpdate(): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityOnUpdate, () => super.onUpdate())
+    override def onEntityUpdate(): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityOnEntityUpdate, () => super.onEntityUpdate())
+    override def kill(): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityKill, () => super.kill())
+    override def isOffsetPositionInLiquid(x: Double, y: Double, z: Double): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityIsOffsetPositionInLiquid, () => super.isOffsetPositionInLiquid(x, y, z), x, y, z)
+    override def moveEntity(x: Double, y: Double, z: Double): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityMoveEntity, () => super.moveEntity(x, y, z), x, y, z)
+    override def doBlockCollisions(): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityDoBlockCollisions, () => super.doBlockCollisions())
+    override def playStepSound(x: Int, y: Int, z: Int, blockIn: Block): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityPlayStepSound, () => super.playStepSound(x, y, z, blockIn), x, y, z, blockIn)
+    override def playSound(name: String, volume: Float, pitch: Float): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityPlaySound, () => super.playSound(name, volume, pitch), name, volume, pitch)
+    override def canTriggerWalking(): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityCanTriggerWalking, () => super.canTriggerWalking())
+    override def updateFallState(distanceFallenThisTick: Double, isOnGround: Boolean): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityUpdateFallState, () => super.updateFallState(distanceFallenThisTick, isOnGround), distanceFallenThisTick, isOnGround)
+    override def dealFireDamage(amount: Int): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityDealFireDamage, () => super.dealFireDamage(amount), amount)
+    override def fall(distance: Float): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityFall, () => super.fall(distance), distance)
+    override def isWet(): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityIsWet, () => super.isWet())
+    override def handleWaterMovement(): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityHandleWaterMovement, () => super.handleWaterMovement())
+    override def handleLavaMovement(): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityHandleLavaMovement, () => super.handleLavaMovement())
+    override def isInsideOfMaterial(materialIn: Material): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityIsInsideOfMaterial, () => super.isInsideOfMaterial(materialIn), materialIn)
+    override def moveFlying(strafe: Float, forward: Float, friction: Float): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityMoveFlying, () => super.moveFlying(strafe, forward, friction), strafe, forward, friction)
+    override def getBrightnessForRender(p_70070_1_ : Float): Int = EntityMethodHandler.handleMethodCall(this, FuncEntityGetBrightnessForRender, () => super.getBrightnessForRender(p_70070_1_), p_70070_1_)
+    override def getBrightness(p_70013_1_ : Float): Float = EntityMethodHandler.handleMethodCall(this, FuncEntityGetBrightness, () => super.getBrightness(p_70013_1_), p_70013_1_)
+    override def getDistanceToEntity(entityIn: Entity): Float = EntityMethodHandler.handleMethodCall(this, FuncEntityGetDistanceToEntity, () => super.getDistanceToEntity(entityIn), entityIn)
+    override def getDistanceSq(x: Double, y: Double, z: Double): Double = EntityMethodHandler.handleMethodCall(this, FuncEntityGetDistanceSq, () => super.getDistanceSq(x, y, z), x, y, z)
+    override def getDistance(x: Double, y: Double, z: Double): Double = EntityMethodHandler.handleMethodCall(this, FuncEntityGetDistance, () => super.getDistance(x, y, z), x, y, z)
+    override def getDistanceSqToEntity(entityIn: Entity): Double = EntityMethodHandler.handleMethodCall(this, FuncEntityGetDistanceSqToEntity, () => super.getDistanceSqToEntity(entityIn), entityIn)
+    override def onCollideWithPlayer(entityIn: EntityPlayer): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityOnCollideWithPlayer, () => super.onCollideWithPlayer(entityIn), entityIn)
+    override def applyEntityCollision(entityIn: Entity): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityApplyEntityCollision, () => super.applyEntityCollision(entityIn), entityIn)
+    override def addVelocity(x: Double, y: Double, z: Double): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityAddVelocity, () => super.addVelocity(x, y, z), x, y, z)
+    override def attackEntityFrom(source: DamageSource, amount: Float): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityAttackEntityFrom, () => super.attackEntityFrom(source, amount), source, amount)
+    override def canBeCollidedWith(): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityCanBeCollidedWith, () => super.canBeCollidedWith())
+    override def canBePushed(): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityCanBePushed, () => super.canBePushed())
+    override def addToPlayerScore(entityIn: Entity, amount: Int): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityAddToPlayerScore, () => super.addToPlayerScore(entityIn, amount), entityIn, amount)
+    override def isInRangeToRender3d(x: Double, y: Double, z: Double): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityIsInRangeToRender3d, () => super.isInRangeToRender3d(x, y, z), x, y, z)
+    override def isInRangeToRenderDist(distance: Double): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityIsInRangeToRenderDist, () => super.isInRangeToRenderDist(distance), distance)
+    override def writeMountToNBT(tagCompund: NBTTagCompound): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityWriteMountToNBT, () => super.writeMountToNBT(tagCompund), tagCompund)
+    override def writeToNBTOptional(tagCompund: NBTTagCompound): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityWriteToNBTOptional, () => super.writeToNBTOptional(tagCompund), tagCompund)
+    override def shouldSetPosAfterLoading(): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityShouldSetPosAfterLoading, () => super.shouldSetPosAfterLoading())
+    override def readEntityFromNBT(tagCompund: NBTTagCompound): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityReadEntityFromNBT, () => super.readEntityFromNBT(tagCompund), tagCompund)
+    override def writeEntityToNBT(tagCompound: NBTTagCompound): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityWriteEntityToNBT, () => super.writeEntityToNBT(tagCompound), tagCompound)
+    override def onChunkLoad(): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityOnChunkLoad, () => super.onChunkLoad())
+    override def getShadowSize(): Float = EntityMethodHandler.handleMethodCall(this, FuncEntityGetShadowSize, () => super.getShadowSize())
+    override def isEntityAlive(): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityIsEntityAlive, () => super.isEntityAlive())
+    override def isEntityInsideOpaqueBlock(): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityIsEntityInsideOpaqueBlock, () => super.isEntityInsideOpaqueBlock())
+    override def updateRidden(): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityUpdateRidden, () => updateRidden())
+    override def updateRiderPosition(): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityUpdateRiderPosition, () => updateRiderPosition())
+    override def getMountedYOffset(): Double = EntityMethodHandler.handleMethodCall(this, FuncEntityGetMountedYOffset, () => super.getMountedYOffset())
+    override def mountEntity(entityIn: Entity): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityMountEntity, () => super.mountEntity(entityIn), entityIn)
+    override def getCollisionBorderSize(): Float = EntityMethodHandler.handleMethodCall(this, FuncEntityGetCollisionBorderSize, () => super.getCollisionBorderSize())
+    override def setInPortal(): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntitySetInPortal, () => super.setInPortal())
+    override def handleHealthUpdate(p_70103_1_ : Byte): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityHandleHealthUpdate, () => super.handleHealthUpdate(p_70103_1_), p_70103_1_)
+    override def performHurtAnimation(): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityPerformHurtAnimation, () => super.performHurtAnimation())
+    override def onStruckByLightning(lightningBolt: EntityLightningBolt): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityOnStruckByLightning, () => super.onStruckByLightning(lightningBolt), lightningBolt)
+    override def onKillEntity(entityLivingIn: EntityLivingBase): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityOnKillEntity, () => super.onKillEntity(entityLivingIn), entityLivingIn)
+    override def pushOutOfBlocks(x: Double, y: Double, z: Double): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityPushOutOfBlocks, () => super.pushOutOfBlocks(x, y, z), x, y, z)
+    override def getParts(): Array[Entity] = EntityMethodHandler.handleMethodCall(this, FuncEntityGetParts, () => super.getParts())
+    override def isEntityEqual(entityIn: Entity): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityIsEntityEqual, () => super.isEntityEqual(entityIn), entityIn)
+    override def canAttackWithItem(): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityCanAttackWithItem, () => super.canAttackWithItem())
+    override def hitByEntity(entityIn: Entity): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityHitByEntity, () => super.hitByEntity(entityIn), entityIn)
+    override def toString(): String = EntityMethodHandler.handleMethodCall(this, FuncEntityToString, () => super.toString())
+    override def copyLocationAndAnglesFrom(entityIn: Entity): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityCopyLocationAndAnglesFrom, () => super.copyLocationAndAnglesFrom(entityIn), entityIn)
+    override def copyDataFrom(entityIn: Entity, unused: Boolean): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityCopyDataFrom, () => super.copyDataFrom(entityIn, unused), entityIn, unused)
+    override def travelToDimension(dimensionId: Int): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityTravelToDimension, () => super.travelToDimension(dimensionId), dimensionId)
+    override def getExplosionResistance(explosionIn: Explosion, worldIn: World, x: Int, y: Int, z: Int, blockIn: Block): Float = EntityMethodHandler.handleMethodCall(this, FuncEntityGetExplosionResistance, () => super.getExplosionResistance(explosionIn, worldIn, x, y, z, blockIn), explosionIn, worldIn, x, y, z, blockIn)
+    override def func_145774_a(explosionIn: Explosion, worldIn: World, x: Int, y: Int, z: Int, blockIn: Block, unused: Float): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityFunc_145774_a, () => super.func_145774_a(explosionIn, worldIn, x, y, z, blockIn, unused), explosionIn, worldIn, x, y, z, blockIn, unused)
+    override def getMaxFallHeight(): Int = EntityMethodHandler.handleMethodCall(this, FuncEntityGetMaxFallHeight, () => super.getMaxFallHeight())
+    override def doesEntityNotTriggerPressurePlate(): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityDoesEntityNotTriggerPressurePlate, () => super.doesEntityNotTriggerPressurePlate())
+    override def addEntityCrashInfo(category: CrashReportCategory): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityAddEntityCrashInfo, () => super.addEntityCrashInfo(category), category)
+    override def func_145781_i(p_145781_1_ : Int): Unit = EntityMethodHandler.handleMethodCall(this, FuncEntityFunc_145781_i, () => super.func_145781_i(p_145781_1_), p_145781_1_)
+    override def getEntityData(): NBTTagCompound = EntityMethodHandler.handleMethodCall(this, FuncEntityGetEntityData, () => super.getEntityData())
+    override def shouldRiderSit(): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityShouldRiderSit, () => super.shouldRiderSit())
+    override def getPickedResult(target: MovingObjectPosition): ItemStack = EntityMethodHandler.handleMethodCall(this, FuncEntityGetPickedResult, () => super.getPickedResult(target), target)
+    override def shouldRenderInPass(pass: Int): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityShouldRenderInPass, () => super.shouldRenderInPass(pass), pass)
+    override def isCreatureType(typ: EnumCreatureType, forSpawnCount: Boolean): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityIsCreatureType, () => super.isCreatureType(typ, forSpawnCount), typ, forSpawnCount)
+    override def registerExtendedProperties(identifier: String, properties: IExtendedEntityProperties): String = EntityMethodHandler.handleMethodCall(this, FuncEntityRegisterExtendedProperties, () => super.registerExtendedProperties(identifier, properties), identifier, properties)
+    override def canRiderInteract(): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityCanRiderInteract, () => super.canRiderInteract())
+    override def shouldDismountInWater(rider: Entity): Boolean = EntityMethodHandler.handleMethodCall(this, FuncEntityShouldDismountInWater, () => super.shouldDismountInWater(rider), rider)
 
-
-    override def entityInit(): Unit = EntityMethodHandler.handleMethodCall(this, EntityEntityInit, () => super.entityInit())
-    override def equals(p_equals_1_ : Object): Boolean = EntityMethodHandler.handleMethodCall(this, EntityEquals, () => super.equals(p_equals_1_), p_equals_1_)
-    override def preparePlayerToSpawn(): Unit = EntityMethodHandler.handleMethodCall(this, EntityPreparePlayerToSpawn, () => super.preparePlayerToSpawn())
-    override def onUpdate(): Unit = EntityMethodHandler.handleMethodCall(this, EntityOnUpdate, () => super.onUpdate())
-    override def onEntityUpdate(): Unit = EntityMethodHandler.handleMethodCall(this, EntityOnEntityUpdate, () => super.onEntityUpdate())
-    override def kill(): Unit = EntityMethodHandler.handleMethodCall(this, EntityKill, () => super.kill())
-    override def isOffsetPositionInLiquid(x: Double, y: Double, z: Double): Boolean = EntityMethodHandler.handleMethodCall(this, EntityIsOffsetPositionInLiquid, () => super.isOffsetPositionInLiquid(x, y, z), x, y, z)
-    override def moveEntity(x: Double, y: Double, z: Double): Unit = EntityMethodHandler.handleMethodCall(this, EntityMoveEntity, () => super.moveEntity(x, y, z), x, y, z)
-    override def doBlockCollisions(): Unit = EntityMethodHandler.handleMethodCall(this, EntityDoBlockCollisions, () => super.doBlockCollisions())
-    override def playStepSound(x: Int, y: Int, z: Int, blockIn: Block): Unit = EntityMethodHandler.handleMethodCall(this, EntityPlayStepSound, () => super.playStepSound(x, y, z, blockIn), x, y, z, blockIn)
-    override def playSound(name: String, volume: Float, pitch: Float): Unit = EntityMethodHandler.handleMethodCall(this, EntityPlaySound, () => super.playSound(name, volume, pitch), name, volume, pitch)
-    override def canTriggerWalking(): Boolean = EntityMethodHandler.handleMethodCall(this, EntityCanTriggerWalking, () => super.canTriggerWalking())
-    override def updateFallState(distanceFallenThisTick: Double, isOnGround: Boolean): Unit = EntityMethodHandler.handleMethodCall(this, EntityUpdateFallState, () => super.updateFallState(distanceFallenThisTick, isOnGround), distanceFallenThisTick, isOnGround)
-    override def dealFireDamage(amount: Int): Unit = EntityMethodHandler.handleMethodCall(this, EntityDealFireDamage, () => super.dealFireDamage(amount), amount)
-    override def fall(distance: Float): Unit = EntityMethodHandler.handleMethodCall(this, EntityFall, () => super.fall(distance), distance)
-    override def isWet(): Boolean = EntityMethodHandler.handleMethodCall(this, EntityIsWet, () => super.isWet())
-    override def handleWaterMovement(): Boolean = EntityMethodHandler.handleMethodCall(this, EntityHandleWaterMovement, () => super.handleWaterMovement())
-    override def handleLavaMovement(): Boolean = EntityMethodHandler.handleMethodCall(this, EntityHandleLavaMovement, () => super.handleLavaMovement())
-    override def isInsideOfMaterial(materialIn: Material): Boolean = EntityMethodHandler.handleMethodCall(this, EntityIsInsideOfMaterial, () => super.isInsideOfMaterial(materialIn), materialIn)
-    override def moveFlying(strafe: Float, forward: Float, friction: Float): Unit = EntityMethodHandler.handleMethodCall(this, EntityMoveFlying, () => super.moveFlying(strafe, forward, friction), strafe, forward, friction)
-    override def getBrightnessForRender(p_70070_1_ : Float): Int = EntityMethodHandler.handleMethodCall(this, EntityGetBrightnessForRender, () => super.getBrightnessForRender(p_70070_1_), p_70070_1_)
-    override def getBrightness(p_70013_1_ : Float): Float = EntityMethodHandler.handleMethodCall(this, EntityGetBrightness, () => super.getBrightness(p_70013_1_), p_70013_1_)
-    override def getDistanceToEntity(entityIn: Entity): Float = EntityMethodHandler.handleMethodCall(this, EntityGetDistanceToEntity, () => super.getDistanceToEntity(entityIn), entityIn)
-    override def getDistanceSq(x: Double, y: Double, z: Double): Double = EntityMethodHandler.handleMethodCall(this, EntityGetDistanceSq, () => super.getDistanceSq(x, y, z), x, y, z)
-    override def getDistance(x: Double, y: Double, z: Double): Double = EntityMethodHandler.handleMethodCall(this, EntityGetDistance, () => super.getDistance(x, y, z), x, y, z)
-    override def getDistanceSqToEntity(entityIn: Entity): Double = EntityMethodHandler.handleMethodCall(this, EntityGetDistanceSqToEntity, () => super.getDistanceSqToEntity(entityIn), entityIn)
-    override def onCollideWithPlayer(entityIn: EntityPlayer): Unit = EntityMethodHandler.handleMethodCall(this, EntityOnCollideWithPlayer, () => super.onCollideWithPlayer(entityIn), entityIn)
-    override def applyEntityCollision(entityIn: Entity): Unit = EntityMethodHandler.handleMethodCall(this, EntityApplyEntityCollision, () => super.applyEntityCollision(entityIn), entityIn)
-    override def addVelocity(x: Double, y: Double, z: Double): Unit = EntityMethodHandler.handleMethodCall(this, EntityAddVelocity, () => super.addVelocity(x, y, z), x, y, z)
-    override def attackEntityFrom(source: DamageSource, amount: Float): Boolean = EntityMethodHandler.handleMethodCall(this, EntityAttackEntityFrom, () => super.attackEntityFrom(source, amount), source, amount)
-    override def canBeCollidedWith(): Boolean = EntityMethodHandler.handleMethodCall(this, EntityCanBeCollidedWith, () => super.canBeCollidedWith())
-    override def canBePushed(): Boolean = EntityMethodHandler.handleMethodCall(this, EntityCanBePushed, () => super.canBePushed())
-    override def addToPlayerScore(entityIn: Entity, amount: Int): Unit = EntityMethodHandler.handleMethodCall(this, EntityAddToPlayerScore, () => super.addToPlayerScore(entityIn, amount), entityIn, amount)
-    override def isInRangeToRender3d(x: Double, y: Double, z: Double): Boolean = EntityMethodHandler.handleMethodCall(this, EntityIsInRangeToRender3d, () => super.isInRangeToRender3d(x, y, z), x, y, z)
-    override def isInRangeToRenderDist(distance: Double): Boolean = EntityMethodHandler.handleMethodCall(this, EntityIsInRangeToRenderDist, () => super.isInRangeToRenderDist(distance), distance)
-    override def writeMountToNBT(tagCompund: NBTTagCompound): Boolean = EntityMethodHandler.handleMethodCall(this, EntityWriteMountToNBT, () => super.writeMountToNBT(tagCompund), tagCompund)
-    override def writeToNBTOptional(tagCompund: NBTTagCompound): Boolean = EntityMethodHandler.handleMethodCall(this, EntityWriteToNBTOptional, () => super.writeToNBTOptional(tagCompund), tagCompund)
-    override def shouldSetPosAfterLoading(): Boolean = EntityMethodHandler.handleMethodCall(this, EntityShouldSetPosAfterLoading, () => super.shouldSetPosAfterLoading())
-    override def readEntityFromNBT(tagCompund: NBTTagCompound): Unit = EntityMethodHandler.handleMethodCall(this, EntityReadEntityFromNBT, () => super.readEntityFromNBT(tagCompund), tagCompund)
-    override def writeEntityToNBT(tagCompound: NBTTagCompound): Unit = EntityMethodHandler.handleMethodCall(this, EntityWriteEntityToNBT, () => super.writeEntityToNBT(tagCompound), tagCompound)
-    override def onChunkLoad(): Unit = EntityMethodHandler.handleMethodCall(this, EntityOnChunkLoad, () => super.onChunkLoad())
-    override def getShadowSize(): Float = EntityMethodHandler.handleMethodCall(this, EntityGetShadowSize, () => super.getShadowSize())
-    override def isEntityAlive(): Boolean = EntityMethodHandler.handleMethodCall(this, EntityIsEntityAlive, () => super.isEntityAlive())
-    override def isEntityInsideOpaqueBlock(): Boolean = EntityMethodHandler.handleMethodCall(this, EntityIsEntityInsideOpaqueBlock, () => super.isEntityInsideOpaqueBlock())
-    override def updateRidden(): Unit = EntityMethodHandler.handleMethodCall(this, EntityUpdateRidden, () => updateRidden())
-    override def updateRiderPosition(): Unit = EntityMethodHandler.handleMethodCall(this, EntityUpdateRiderPosition, () => updateRiderPosition())
-    override def getMountedYOffset(): Double = EntityMethodHandler.handleMethodCall(this, EntityGetMountedYOffset, () => super.getMountedYOffset())
-    override def mountEntity(entityIn: Entity): Unit = EntityMethodHandler.handleMethodCall(this, EntityMountEntity, () => super.mountEntity(entityIn), entityIn)
-    override def getCollisionBorderSize(): Float = EntityMethodHandler.handleMethodCall(this, EntityGetCollisionBorderSize, () => super.getCollisionBorderSize())
-    override def setInPortal(): Unit = EntityMethodHandler.handleMethodCall(this, EntitySetInPortal, () => super.setInPortal())
-    override def handleHealthUpdate(p_70103_1_ : Byte): Unit = EntityMethodHandler.handleMethodCall(this, EntityHandleHealthUpdate, () => super.handleHealthUpdate(p_70103_1_), p_70103_1_)
-    override def performHurtAnimation(): Unit = EntityMethodHandler.handleMethodCall(this, EntityPerformHurtAnimation, () => super.performHurtAnimation())
-
-
-    override def onStruckByLightning(lightningBolt: EntityLightningBolt): Unit = EntityMethodHandler.handleMethodCall(this, EntityOnStruckByLightning, () => super.onStruckByLightning(lightningBolt), lightningBolt)
-    override def onKillEntity(entityLivingIn: EntityLivingBase): Unit = EntityMethodHandler.handleMethodCall(this, EntityOnKillEntity, () => super.onKillEntity(entityLivingIn), entityLivingIn)
-    override def pushOutOfBlocks(x: Double, y: Double, z: Double): Boolean = EntityMethodHandler.handleMethodCall(this, EntityPushOutOfBlocks, () => super.pushOutOfBlocks(x, y, z), x, y, z)
-    override def getParts(): Array[Entity] = EntityMethodHandler.handleMethodCall(this, EntityGetParts)
-    override def isEntityEqual(entityIn: Entity): Boolean = EntityMethodHandler.handleMethodCall(this, EntityIsEntityEqual, entityIn)
-    override def getRotationYawHead(): Float = EntityMethodHandler.handleMethodCall(this, EntityGetRotationYawHead)
-    override def setRotationYawHead(rotation: Float): Unit = EntityMethodHandler.handleMethodCall(this, EntitySetRotationYawHead, rotation)
-    override def canAttackWithItem(): Boolean = EntityMethodHandler.handleMethodCall(this, EntityCanAttackWithItem)
-    override def hitByEntity(entityIn: Entity): Boolean = EntityMethodHandler.handleMethodCall(this, EntityHitByEntity, entityIn)
-    override def toString(): String = EntityMethodHandler.handleMethodCall(this, EntityToString)
-    override def isEntityInvulnerable(): Boolean = EntityMethodHandler.handleMethodCall(this, EntityIsEntityInvulnerable)
-    override def copyLocationAndAnglesFrom(entityIn: Entity): Unit = EntityMethodHandler.handleMethodCall(this, EntityCopyLocationAndAnglesFrom, entityIn)
-    override def copyDataFrom(entityIn: Entity, unused: Boolean): Unit = EntityMethodHandler.handleMethodCall(this, EntityCopyDataFrom, entityIn, unused)
-    override def travelToDimension(dimensionId: Int): Unit = EntityMethodHandler.handleMethodCall(this, EntityTravelToDimension, dimensionId)
-    override def getExplosionResistance(explosionIn: Explosion, worldIn: World, x: Int, y: Int, z: Int, blockIn: Block): Float = EntityMethodHandler.handleMethodCall(this, EntityGetExplosionResistance, explosionIn, worldIn, x, y, z, blockIn)
-    override def func_145774_a(explosionIn: Explosion, worldIn: World, x: Int, y: Int, z: Int, blockIn: Block, unused: Float): Boolean = EntityMethodHandler.handleMethodCall(this, EntityFunc_145774_a, explosionIn, worldIn, x, y, z, blockIn, unused)
-    override def getMaxFallHeight(): Int = EntityMethodHandler.handleMethodCall(this, EntityGetMaxFallHeight)
-    override def getTeleportDirection(): Int = EntityMethodHandler.handleMethodCall(this, EntityGetTeleportDirection)
-    override def doesEntityNotTriggerPressurePlate(): Boolean = EntityMethodHandler.handleMethodCall(this, EntityDoesEntityNotTriggerPressurePlate)
-    override def addEntityCrashInfo(category: CrashReportCategory): Unit = EntityMethodHandler.handleMethodCall(this, EntityAddEntityCrashInfo, category)
-    override def canRenderOnFire(): Boolean = EntityMethodHandler.handleMethodCall(this, EntityCanRenderOnFire)
-    override def getUniqueID(): UUID = EntityMethodHandler.handleMethodCall(this, EntityGetUniqueID)
-    override def isPushedByWater(): Boolean = EntityMethodHandler.handleMethodCall(this, EntityIsPushedByWater)
-    override def getFormattedCommandSenderName(): IChatComponent = EntityMethodHandler.handleMethodCall(this, EntityGetFormattedCommandSenderName)
-    override def func_145781_i(p_145781_1_ : Int): Unit = EntityMethodHandler.handleMethodCall(this, EntityFunc_145781_i, p_145781_1_)
-    override def getEntityData(): NBTTagCompound = EntityMethodHandler.handleMethodCall(this, EntityGetEntityData)
-    override def shouldRiderSit(): Boolean = EntityMethodHandler.handleMethodCall(this, EntityShouldRiderSit)
-    override def getPickedResult(target: MovingObjectPosition): ItemStack = EntityMethodHandler.handleMethodCall(this, EntityGetPickedResult, target)
-    override def getPersistentID(): UUID = EntityMethodHandler.handleMethodCall(this, EntityGetPersistentID)
-    override def resetEntityId(): Unit = EntityMethodHandler.handleMethodCall(this, EntityResetEntityId)
-    override def shouldRenderInPass(pass: Int): Boolean = EntityMethodHandler.handleMethodCall(this, EntityShouldRenderInPass, pass)
-    override def isCreatureType(typ: EnumCreatureType, forSpawnCount: Boolean): Boolean = EntityMethodHandler.handleMethodCall(this, EntityIsCreatureType, typ, forSpawnCount)
-    override def registerExtendedProperties(identifier: String, properties: IExtendedEntityProperties): String = EntityMethodHandler.handleMethodCall(this, EntityRegisterExtendedProperties, identifier, properties)
-    override def getExtendedProperties(identifier: String): IExtendedEntityProperties = EntityMethodHandler.handleMethodCall(this, EntityGetExtendedProperties, identifier)
-    override def canRiderInteract(): Boolean = EntityMethodHandler.handleMethodCall(this, EntityCanRiderInteract)
-    override def shouldDismountInWater(rider: Entity): Boolean = EntityMethodHandler.handleMethodCall(this, EntityShouldDismountInWater, rider)
+    override def attackEntityWithRangedAttack(p_82196_1_ : EntityLivingBase, p_82196_2_ : Float): Unit = EntityMethodHandler.handleMethodCall(this, FuncIRangedAttackMobAttackEntityWithRangedAttack, () => ())
 
 
     override def readFromNBT(compound: NBTTagCompound) {
@@ -481,14 +528,14 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
             syncLogic.readFromNBT(compound)
         }
 
-        EntityMethodHandler.handleMethodCall(this, EntityReadFromNBT, () => super.readFromNBT(compound))
+        EntityMethodHandler.handleMethodCall(this, FuncEntityReadFromNBT, () => super.readFromNBT(compound))
     }
 
     override def writeToNBT(compound: NBTTagCompound) {
         soul.writeToNBT(compound)
         syncLogic.writeToNBT(compound)
 
-        EntityMethodHandler.handleMethodCall(this, EntityWriteToNBT, () => super.writeToNBT(compound))
+        EntityMethodHandler.handleMethodCall(this, FuncEntityWriteToNBT, () => super.writeToNBT(compound))
     }
 
     override def makePersistent(name: String) = syncLogic.makePersistent(name)
@@ -544,5 +591,11 @@ trait EntitySoulCustomTrait extends EntityLiving with IEntitySoulCustom with IEn
     override def getDataArray(name: String): Array[Data] = syncLogic.getDataArray(name)
 
 
-    override def callMethod[T](srgName: String, args: Any*): T = EntityMethodHandler.handleMethodCall(this, srgName, superMethod, args)
+    override def callMethod[T](srgName: String, args: Any*): T = {
+        val superJavaMethod = super.getClass.getMethod(srgName, args.map(arg => arg.getClass):_*)
+        val superMethod = () => superJavaMethod.invoke(this, args.map(arg => arg.asInstanceOf[AnyRef]):_*).asInstanceOf[T]
+        //TODO test this
+
+        EntityMethodHandler.handleMethodCall[T](this, srgName, superMethod, args)
+    }
 }

@@ -1,7 +1,5 @@
 package seremis.geninfusion.network
 
-import cpw.mods.fml.common.network.NetworkRegistry
-import cpw.mods.fml.relauncher.Side
 import seremis.geninfusion.lib.DefaultProps
 import seremis.geninfusion.network.packet.{PacketAddDataWatcherHelperMapping, PacketEntityData, PacketTileData}
 

@@ -1,6 +1,5 @@
 package seremis.geninfusion.soul.entity.render
 
-import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.client.renderer.entity.RenderLiving
 import net.minecraft.entity.{Entity, EntityLivingBase}
 import net.minecraft.util.ResourceLocation
@@ -17,7 +16,7 @@ class RenderEntitySoulCustom extends RenderLiving(SoulHelper.entityModel, 0.3F) 
     }
 
     override def preRenderCallback(entity: EntityLivingBase, partialTickTime: Float) {
-        entity.asInstanceOf[IEntitySoulCustom].setFloat(VariableLib.EntityPartialTickTime, partialTickTime)
+        entity.asInstanceOf[IEntitySoulCustom].setFloat(VariableLib.VarEntityPartialTickTime, partialTickTime)
         TraitHandler.preRenderCallback(entity.asInstanceOf[IEntitySoulCustom], partialTickTime)
     }
 

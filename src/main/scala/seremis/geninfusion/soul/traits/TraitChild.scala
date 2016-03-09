@@ -13,7 +13,7 @@ class TraitChild extends Trait {
 
     override def entityInit(entity: IEntitySoulCustom) {
         if(!entity.getWorld_I.isRemote && canProcreate(entity))
-            DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0, DataWatcherGrowingAge)
+            DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0, VarDataWatcherGrowingAge)
     }
 
     override def firstTick(entity: IEntitySoulCustom) {
@@ -35,14 +35,14 @@ class TraitChild extends Trait {
         entity.setScaleForAge_I(isChild)
 
         if(childSpeedBoostModifier != 0.0D) {
-            entity.setObject(EntityChildSpeedModifier, new AttributeModifier("childSpeedBoostModifier", childSpeedBoostModifier, 1))
-            entity.asInstanceOf[EntityLiving].getEntityAttribute(SharedMonsterAttributes.movementSpeed).applyModifier(entity.getObject(EntityChildSpeedModifier).asInstanceOf[AttributeModifier])
+            entity.setObject(VarEntityChildSpeedModifier, new AttributeModifier("childSpeedBoostModifier", childSpeedBoostModifier, 1))
+            entity.asInstanceOf[EntityLiving].getEntityAttribute(SharedMonsterAttributes.movementSpeed).applyModifier(entity.getObject(VarEntityChildSpeedModifier).asInstanceOf[AttributeModifier])
         }
     }
 
     override def isChild(entity: IEntitySoulCustom): Boolean = {
         if(canProcreate(entity)) {
-            setChild(entity, DataWatcherHelper.getObjectFromDataWatcher(entity.getDataWatcher_I, DataWatcherGrowingAge).asInstanceOf[Int] < 0)
+            setChild(entity, DataWatcherHelper.getObjectFromDataWatcher(entity.getDataWatcher_I, VarDataWatcherGrowingAge).asInstanceOf[Int] < 0)
         }
 
         SoulHelper.geneRegistry.getValueFromAllele(entity, Genes.GeneIsChild)
@@ -51,7 +51,7 @@ class TraitChild extends Trait {
     def setChild(entity: IEntitySoulCustom, child: Boolean) {
         val living = entity.asInstanceOf[EntityLiving]
 
-        if(entity.getBoolean(EntityPrevIsChild) != child) {
+        if(entity.getBoolean(VarEntityPrevIsChild) != child) {
             val childSpeedBoostModifier = SoulHelper.geneRegistry.getValueFromAllele[Double](entity, Genes.GeneChildSpeedModifier)
 
             SoulHelper.geneRegistry.changeAlleleValue(entity, Genes.GeneIsChild, child, true)
@@ -59,13 +59,13 @@ class TraitChild extends Trait {
                 SoulHelper.geneRegistry.changeAlleleValue(entity, Genes.GeneIsChild, child, false)
 
             if(childSpeedBoostModifier != 0.0D) {
-                living.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(entity.getObject(EntityChildSpeedModifier).asInstanceOf[AttributeModifier])
+                living.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(entity.getObject(VarEntityChildSpeedModifier).asInstanceOf[AttributeModifier])
                 if(child) {
-                    living.getEntityAttribute(SharedMonsterAttributes.movementSpeed).applyModifier(entity.getObject(EntityChildSpeedModifier).asInstanceOf[AttributeModifier])
+                    living.getEntityAttribute(SharedMonsterAttributes.movementSpeed).applyModifier(entity.getObject(VarEntityChildSpeedModifier).asInstanceOf[AttributeModifier])
                 }
             }
 
-            entity.setBoolean(EntityPrevIsChild, child)
+            entity.setBoolean(VarEntityPrevIsChild, child)
         }
     }
 
@@ -102,7 +102,7 @@ class TraitChild extends Trait {
             living.boundingBox.maxY = living.boundingBox.minY + height
             living.boundingBox.maxZ = living.boundingBox.minZ + width
 
-            if(width > prevWidth && !entity.getBoolean(EntityFirstUpdate) && !living.worldObj.isRemote) {
+            if(width > prevWidth && !entity.getBoolean(VarEntityFirstUpdate) && !living.worldObj.isRemote) {
                 living.moveEntity(prevWidth - width, 0.0D, prevWidth - width)
             }
         }
@@ -110,25 +110,25 @@ class TraitChild extends Trait {
         val widthModified = width % 2.0F
 
         if(widthModified < 0.375D) {
-            entity.setObject(EntityMyEntitySize, Entity.EnumEntitySize.SIZE_1)
+            entity.setObject(VarEntityMyEntitySize, Entity.EnumEntitySize.SIZE_1)
         } else if(widthModified < 0.75D) {
-            entity.setObject(EntityMyEntitySize, Entity.EnumEntitySize.SIZE_2)
+            entity.setObject(VarEntityMyEntitySize, Entity.EnumEntitySize.SIZE_2)
         } else if(widthModified < 1.0D) {
-            entity.setObject(EntityMyEntitySize, Entity.EnumEntitySize.SIZE_3)
+            entity.setObject(VarEntityMyEntitySize, Entity.EnumEntitySize.SIZE_3)
         } else if(widthModified < 1.375D) {
-            entity.setObject(EntityMyEntitySize, Entity.EnumEntitySize.SIZE_4)
+            entity.setObject(VarEntityMyEntitySize, Entity.EnumEntitySize.SIZE_4)
         } else if(widthModified < 1.75D) {
-            entity.setObject(EntityMyEntitySize, Entity.EnumEntitySize.SIZE_5)
+            entity.setObject(VarEntityMyEntitySize, Entity.EnumEntitySize.SIZE_5)
         } else {
-            entity.setObject(EntityMyEntitySize, Entity.EnumEntitySize.SIZE_6)
+            entity.setObject(VarEntityMyEntitySize, Entity.EnumEntitySize.SIZE_6)
         }
     }
 
-    override def getGrowingAge(entity: IEntitySoulCustom): Int = if(canProcreate(entity)) DataWatcherHelper.getObjectFromDataWatcher(entity.getDataWatcher_I, DataWatcherGrowingAge).asInstanceOf[Int] else 0
+    override def getGrowingAge(entity: IEntitySoulCustom): Int = if(canProcreate(entity)) DataWatcherHelper.getObjectFromDataWatcher(entity.getDataWatcher_I, VarDataWatcherGrowingAge).asInstanceOf[Int] else 0
 
     override def setGrowingAge(entity: IEntitySoulCustom, growingAge: Int) = {
         if(canProcreate(entity)) {
-            DataWatcherHelper.updateObject(entity.getDataWatcher_I, DataWatcherGrowingAge, growingAge)
+            DataWatcherHelper.updateObject(entity.getDataWatcher_I, VarDataWatcherGrowingAge, growingAge)
             entity.setScaleForAge_I(entity.asInstanceOf[EntityLiving].isChild)
         }
     }
@@ -148,12 +148,12 @@ class TraitChild extends Trait {
 
     override def writeToNBT(entity: IEntitySoulCustom, compound: NBTTagCompound) {
         if(canProcreate(entity))
-            DataWatcherHelper.writeObjectToNBT(compound, entity.getDataWatcher_I, DataWatcherGrowingAge)
+            DataWatcherHelper.writeObjectToNBT(compound, entity.getDataWatcher_I, VarDataWatcherGrowingAge)
     }
 
     override def readFromNBT(entity: IEntitySoulCustom, compound: NBTTagCompound) {
         if(canProcreate(entity))
-            DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, DataWatcherGrowingAge)
+            DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, VarDataWatcherGrowingAge)
     }
 
     override def onUpdate(entity: IEntitySoulCustom) {

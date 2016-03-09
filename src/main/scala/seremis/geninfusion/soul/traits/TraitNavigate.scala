@@ -4,16 +4,15 @@ import net.minecraft.entity.{Entity, EntityLiving}
 import net.minecraft.init.Blocks
 import net.minecraft.util.MathHelper
 import seremis.geninfusion.api.lib.Genes
-import seremis.geninfusion.api.lib.reflection.VariableLib
 import seremis.geninfusion.api.lib.reflection.VariableLib._
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
 class TraitNavigate extends Trait {
 
     override def updateWanderPath(entity: IEntitySoulCustom) {
-        val posX = entity.getDouble(EntityPosX)
-        val posY = entity.getDouble(EntityPosY)
-        val posZ = entity.getDouble(EntityPosZ)
+        val posX = entity.getDouble(VarEntityPosX)
+        val posY = entity.getDouble(VarEntityPosY)
+        val posZ = entity.getDouble(VarEntityPosZ)
 
         entity.getWorld_I.theProfiler.startSection("stroll")
 

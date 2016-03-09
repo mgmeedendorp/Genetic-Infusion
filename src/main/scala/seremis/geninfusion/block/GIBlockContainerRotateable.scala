@@ -1,12 +1,10 @@
 package seremis.geninfusion.block
 
-import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.block.material.Material
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.ItemStack
-import net.minecraft.util.{IIcon, MathHelper}
+import net.minecraft.util.MathHelper
 import net.minecraft.world.{IBlockAccess, World}
-import net.minecraftforge.common.util.ForgeDirection
 import seremis.geninfusion.GeneticInfusion
 import seremis.geninfusion.tileentity.GITile
 

@@ -1,8 +1,5 @@
 package seremis.geninfusion.helper
 
-import cpw.mods.fml.common.FMLCommonHandler
-import cpw.mods.fml.common.registry.GameRegistry._
-import cpw.mods.fml.relauncher.Side
 import net.minecraft.block.Block
 import net.minecraft.inventory.InventoryCrafting
 import net.minecraft.item.ItemStack

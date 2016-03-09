@@ -75,14 +75,14 @@ class GIModelBox(modelRenderer: ModelRenderer) extends ModelBox(modelRenderer, 0
             }
         }
 
-        GIReflectionHelper.setField(this, VariableLib.ModelBoxQuadList, texturedQuads)
-        GIReflectionHelper.setField(this, VariableLib.ModelBoxVertexPositions, vertices)
-        GIReflectionHelper.setField(this, VariableLib.ModelBoxPosX1, x1)
-        GIReflectionHelper.setField(this, VariableLib.ModelBoxPosY1, y1)
-        GIReflectionHelper.setField(this, VariableLib.ModelBoxPosZ1, z1)
-        GIReflectionHelper.setField(this, VariableLib.ModelBoxPosX2, x2)
-        GIReflectionHelper.setField(this, VariableLib.ModelBoxPosY2, y2)
-        GIReflectionHelper.setField(this, VariableLib.ModelBoxPosZ2, z2)
+        GIReflectionHelper.setField(this, VariableLib.VarModelBoxQuadList, texturedQuads)
+        GIReflectionHelper.setField(this, VariableLib.VarModelBoxVertexPositions, vertices)
+        GIReflectionHelper.setField(this, VariableLib.VarModelBoxPosX1, x1)
+        GIReflectionHelper.setField(this, VariableLib.VarModelBoxPosY1, y1)
+        GIReflectionHelper.setField(this, VariableLib.VarModelBoxPosZ1, z1)
+        GIReflectionHelper.setField(this, VariableLib.VarModelBoxPosX2, x2)
+        GIReflectionHelper.setField(this, VariableLib.VarModelBoxPosY2, y2)
+        GIReflectionHelper.setField(this, VariableLib.VarModelBoxPosZ2, z2)
     }
 
 }

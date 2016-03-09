@@ -39,7 +39,7 @@ class EntityAICreeperSwellCustom(entity: IEntitySoulCustom) extends EntityAIBase
         }
     }
 
-    def setFuseState(state: Int) = DataWatcherHelper.updateObject(living.getDataWatcher, VariableLib.EntityFuseState, state.toByte.asInstanceOf[Byte])
+    def setFuseState(state: Int) = DataWatcherHelper.updateObject(living.getDataWatcher, VariableLib.VarEntityFuseState, state.toByte.asInstanceOf[Byte])
 
-    def getFuseState: Int = DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, VariableLib.EntityFuseState).asInstanceOf[Byte].toInt
+    def getFuseState: Int = DataWatcherHelper.getObjectFromDataWatcher(living.getDataWatcher, VariableLib.VarEntityFuseState).asInstanceOf[Byte].toInt
 }

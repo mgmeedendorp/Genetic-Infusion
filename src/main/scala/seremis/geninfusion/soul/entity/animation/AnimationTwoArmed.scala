@@ -52,7 +52,7 @@ class AnimationTwoArmed extends Animation {
             leftArm.rotateAngleY = leftArm.initialRotateAngleY
             rightArm.rotateAngleY = rightArm.initialRotateAngleY
 
-            val swingProgress = living.getSwingProgress(entity.getFloat(VariableLib.EntityPartialTickTime))
+            val swingProgress = living.getSwingProgress(entity.getFloat(VariableLib.VarEntityPartialTickTime))
 
             if(swingProgress > -9990.0F) {
                 var f6 = swingProgress
@@ -104,7 +104,7 @@ class AnimationTwoArmed extends Animation {
             rightArm.rotateAngleX -= MathHelper.sin(limbSwing * 0.067F) * 0.05F
 
         } else {
-            val swingProgress = living.getSwingProgress(entity.getFloat(VariableLib.EntityPartialTickTime))
+            val swingProgress = living.getSwingProgress(entity.getFloat(VariableLib.VarEntityPartialTickTime))
 
             val f6 = MathHelper.sin(swingProgress * PI)
             val f7 = MathHelper.sin((1.0F - (1.0F - swingProgress) * (1.0F - swingProgress)) * PI)

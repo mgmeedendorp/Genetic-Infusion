@@ -1,6 +1,5 @@
 package seremis.geninfusion.block
 
-import cpw.mods.fml.common.registry.GameRegistry._
 import net.minecraft.block.material.Material
 import seremis.geninfusion.item.ItemBlockCrystal
 import seremis.geninfusion.lib.Blocks

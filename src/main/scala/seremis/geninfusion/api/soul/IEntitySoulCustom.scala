@@ -1,6 +1,6 @@
 package seremis.geninfusion.api.soul
 
-import net.minecraft.entity.IRangedAttackMob
+import net.minecraft.entity.{EntityLiving, IRangedAttackMob}
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import seremis.geninfusion.api.util.data.Data
@@ -9,6 +9,7 @@ trait IEntitySoulCustom extends IRangedAttackMob {
 
     def getSoul: ISoul
 
+    def asLiving = this.asInstanceOf[EntityLiving]
 
     def makePersistent(name: String)
 

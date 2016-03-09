@@ -2,7 +2,6 @@ package seremis.geninfusion.api.util.vector
 
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
-import net.minecraftforge.common.util.ForgeDirection
 class Line3D(var head: Coordinate3D, var tail: Coordinate3D) {
 
     def this(x1: Double, y1: Double, z1: Double, x2: Double, y2: Double, z2: Double) {

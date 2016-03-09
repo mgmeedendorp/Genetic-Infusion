@@ -1,12 +1,10 @@
 package seremis.geninfusion.network.packet
 
-import cpw.mods.fml.common.network.simpleimpl.{IMessage, IMessageHandler, MessageContext}
 import io.netty.buffer.ByteBuf
 import net.minecraft.client.Minecraft
 import net.minecraft.entity.Entity
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.ChunkCoordinates
 import seremis.geninfusion.api.util.DataWatcherHelper
 import seremis.geninfusion.util.UtilNBT
 

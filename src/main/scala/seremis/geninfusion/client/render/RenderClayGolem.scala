@@ -1,6 +1,5 @@
 package seremis.geninfusion.client.render
 
-import cpw.mods.fml.client.FMLClientHandler
 import net.minecraft.client.renderer.entity.RenderEntity
 import net.minecraft.entity.Entity
 import net.minecraft.util.ResourceLocation

@@ -2,7 +2,6 @@ package seremis.geninfusion.block
 
 import java.util
 
-import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.block.Block
 import net.minecraft.block.material.Material
 import net.minecraft.client.particle.{EffectRenderer, EntityDiggingFX}

@@ -7,7 +7,6 @@ import net.minecraft.crash.CrashReport
 import net.minecraft.entity.DataWatcher
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.ChunkCoordinates
 import org.apache.logging.log4j.Level
 import seremis.geninfusion.GeneticInfusion
 import seremis.geninfusion.api.lib.reflection.VariableLib
@@ -65,11 +64,11 @@ object DataWatcherHelper {
         0
     }
     
-    def getWatchedObjects(dataWatcher: DataWatcher): Map[Int, DataWatcher.WatchableObject] = mapAsScalaMapConverter(GIReflectionHelper.getField(dataWatcher, VariableLib.DataWatcherWatchedObjects).asInstanceOf[util.HashMap[Int, DataWatcher.WatchableObject]]).asScala.toMap
+    def getWatchedObjects(dataWatcher: DataWatcher): Map[Int, DataWatcher.WatchableObject] = mapAsScalaMapConverter(GIReflectionHelper.getField(dataWatcher, VariableLib.VarDataWatcherWatchedObjects).asInstanceOf[util.HashMap[Int, DataWatcher.WatchableObject]]).asScala.toMap
     
-    def setWatchedObjects(dataWatcher: DataWatcher, watchedObjects: Map[Int, DataWatcher.WatchableObject]) = GIReflectionHelper.setField(dataWatcher, VariableLib.DataWatcherWatchedObjects, watchedObjects)
+    def setWatchedObjects(dataWatcher: DataWatcher, watchedObjects: Map[Int, DataWatcher.WatchableObject]) = GIReflectionHelper.setField(dataWatcher, VariableLib.VarDataWatcherWatchedObjects, watchedObjects)
 
-    def getWatchedEntity(dataWatcher: DataWatcher): GIEntity = GIReflectionHelper.getField(dataWatcher, VariableLib.DataWatcherWatchedEntity).asInstanceOf[GIEntity]
+    def getWatchedEntity(dataWatcher: DataWatcher): GIEntity = GIReflectionHelper.getField(dataWatcher, VariableLib.VarDataWatcherWatchedEntity).asInstanceOf[GIEntity]
 
     def addMapping(dataWatcher: DataWatcher, id: Int, name: String) {
         var map: Map[String, Int] = null

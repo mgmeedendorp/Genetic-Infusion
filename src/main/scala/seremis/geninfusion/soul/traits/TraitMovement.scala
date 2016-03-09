@@ -8,7 +8,6 @@ import net.minecraft.util.{DamageSource, MathHelper}
 import net.minecraft.world.WorldServer
 import net.minecraftforge.common.ForgeHooks
 import seremis.geninfusion.api.lib.Genes
-import seremis.geninfusion.api.lib.reflection.VariableLib
 import seremis.geninfusion.api.lib.reflection.VariableLib._
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 import seremis.geninfusion.api.util.DataWatcherHelper
@@ -39,9 +38,9 @@ class TraitMovement extends Trait {
             val server = living.worldObj.asInstanceOf[WorldServer].func_73046_m()
             val maxInPortalTime = living.getMaxInPortalTime
 
-            var portalCounter = entity.getInteger(EntityPortalCounter)
+            var portalCounter = entity.getInteger(VarEntityPortalCounter)
 
-            if(entity.getBoolean(EntityInPortal)) {
+            if(entity.getBoolean(VarEntityInPortal)) {
                 if(server.getAllowNether) {
                     portalCounter += 1
 
@@ -50,7 +49,7 @@ class TraitMovement extends Trait {
                         living.timeUntilPortal = living.getPortalCooldown
                         living.travelToDimension(if(living.worldObj.provider.dimensionId == -1) 0 else -1)
                     }
-                    entity.setBoolean(EntityInPortal, false)
+                    entity.setBoolean(VarEntityInPortal, false)
                 }
             } else {
                 if(portalCounter > 0) {
@@ -61,7 +60,7 @@ class TraitMovement extends Trait {
                     portalCounter = 0
                 }
             }
-            entity.setInteger(EntityPortalCounter, portalCounter)
+            entity.setInteger(VarEntityPortalCounter, portalCounter)
 
             if(living.timeUntilPortal > 0) {
                 living.timeUntilPortal -= 1
@@ -187,7 +186,7 @@ class TraitMovement extends Trait {
         val canClimbWalls = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneCanClimbWalls)
 
         if(canClimbWalls && !entity.getWorld_I.isRemote) {
-            DataWatcherHelper.updateObject(entity.getDataWatcher_I, DataWatcherClimbableWall, if(living.isCollidedHorizontally) 1.toByte else 0.toByte)
+            DataWatcherHelper.updateObject(entity.getDataWatcher_I, VarDataWatcherClimbableWall, if(living.isCollidedHorizontally) 1.toByte else 0.toByte)
         }
     }
 
@@ -195,17 +194,17 @@ class TraitMovement extends Trait {
         val canClimbWalls = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneCanClimbWalls)
 
         if(canClimbWalls && !entity.getWorld_I.isRemote) {
-            DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0.toByte, DataWatcherClimbableWall)
+            DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0.toByte, VarDataWatcherClimbableWall)
         }
-        DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0.toByte, DataWatcherSprinting)
-        DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0.toByte, DataWatcherSneaking)
+        DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0.toByte, VarDataWatcherSprinting)
+        DataWatcherHelper.addObjectAtUnusedId(entity.getDataWatcher_I, 0.toByte, VarDataWatcherSneaking)
     }
 
     override def writeToNBT(entity: IEntitySoulCustom, compound: NBTTagCompound) = {
         val canClimbWalls = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneCanClimbWalls)
 
         if(canClimbWalls) {
-            DataWatcherHelper.writeObjectToNBT(compound, entity.getDataWatcher_I, DataWatcherClimbableWall)
+            DataWatcherHelper.writeObjectToNBT(compound, entity.getDataWatcher_I, VarDataWatcherClimbableWall)
         }
     }
 
@@ -213,7 +212,7 @@ class TraitMovement extends Trait {
         val canClimbWalls = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneCanClimbWalls)
 
         if(canClimbWalls) {
-            DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, DataWatcherClimbableWall)
+            DataWatcherHelper.readObjectFromNBT(compound, entity.getDataWatcher_I, VarDataWatcherClimbableWall)
         }
     }
 
@@ -222,7 +221,7 @@ class TraitMovement extends Trait {
 
         if(affectedByWeb) {
             entity.setBoolean(EntityInWeb, true)
-            entity.setFloat(EntityFallDistance, 0.0F)
+            entity.setFloat(VarEntityFallDistance, 0.0F)
         }
     }
 
@@ -231,30 +230,30 @@ class TraitMovement extends Trait {
 
         val canClimbWalls = SoulHelper.geneRegistry.getValueFromAllele[Boolean](entity, Genes.GeneCanClimbWalls)
 
-        if(!canClimbWalls || !DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, DataWatcherClimbableWall)) {
+        if(!canClimbWalls || !DataWatcherHelper.isNameRegistered(entity.getDataWatcher_I, VarDataWatcherClimbableWall)) {
             val x = MathHelper.floor_double(living.posX)
             val y = MathHelper.floor_double(living.boundingBox.minY)
             val z = MathHelper.floor_double(living.posZ)
 
             ForgeHooks.isLivingOnLadder(entity.getWorld_I.getBlock(x, y, z), living.worldObj, x, y, z, living)
         } else {
-             DataWatcherHelper.getObjectFromDataWatcher(entity.getDataWatcher_I, DataWatcherClimbableWall).asInstanceOf[Byte] == 1.toByte
+             DataWatcherHelper.getObjectFromDataWatcher(entity.getDataWatcher_I, VarDataWatcherClimbableWall).asInstanceOf[Byte] == 1.toByte
         }
     }
 
     override def isSprinting(entity: IEntitySoulCustom): Boolean = {
-        DataWatcherHelper.getObjectFromDataWatcher(entity.getDataWatcher_I, DataWatcherSprinting).asInstanceOf[Byte] == 1.toByte
+        DataWatcherHelper.getObjectFromDataWatcher(entity.getDataWatcher_I, VarDataWatcherSprinting).asInstanceOf[Byte] == 1.toByte
     }
 
     override def setSprinting(entity: IEntitySoulCustom, sprinting: Boolean) {
-        DataWatcherHelper.updateObject(entity.getDataWatcher_I, DataWatcherSprinting, if(sprinting) 1 else 0)
+        DataWatcherHelper.updateObject(entity.getDataWatcher_I, VarDataWatcherSprinting, if(sprinting) 1 else 0)
     }
 
     override def isSneaking(entity: IEntitySoulCustom): Boolean = {
-        DataWatcherHelper.getObjectFromDataWatcher(entity.getDataWatcher_I, DataWatcherSneaking).asInstanceOf[Byte] == 1.toByte
+        DataWatcherHelper.getObjectFromDataWatcher(entity.getDataWatcher_I, VarDataWatcherSneaking).asInstanceOf[Byte] == 1.toByte
     }
 
     override def setSneaking(entity: IEntitySoulCustom, sneaking: Boolean) {
-        DataWatcherHelper.updateObject(entity.getDataWatcher_I, DataWatcherSneaking, if(sneaking) 1 else 0)
+        DataWatcherHelper.updateObject(entity.getDataWatcher_I, VarDataWatcherSneaking, if(sneaking) 1 else 0)
     }
 }

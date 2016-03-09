@@ -13,7 +13,7 @@ class EntitySoulCustomAgeable(val world: World) extends EntityAgeable(world) wit
         setPosition(x, y, z)
         setSize(0.8F, 1.7F)
         this.soul = soul
-        entityInit_I
+        entityInit
         shouldCallEntityInit = false
     }
 

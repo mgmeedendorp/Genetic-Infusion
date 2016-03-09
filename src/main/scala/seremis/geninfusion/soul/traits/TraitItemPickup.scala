@@ -14,8 +14,6 @@ import seremis.geninfusion.GeneticInfusion
 import seremis.geninfusion.api.lib.Genes
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
-import scala.collection.JavaConversions._
-
 class TraitItemPickup extends Trait {
 
     override def onUpdate(entity: IEntitySoulCustom) {

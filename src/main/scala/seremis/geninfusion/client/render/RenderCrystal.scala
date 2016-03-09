@@ -2,16 +2,11 @@ package seremis.geninfusion.client.render
 
 import java.util.Random
 
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler
-import cpw.mods.fml.relauncher.{Side, SideOnly}
 import net.minecraft.block.Block
-import net.minecraft.client.renderer.RenderBlocks
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer
 import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.world.IBlockAccess
-import net.minecraftforge.client.IItemRenderer
-import net.minecraftforge.client.IItemRenderer.{ItemRenderType, ItemRendererHelper}
 import org.lwjgl.opengl.GL11
 import org.lwjgl.util.Color
 import seremis.geninfusion.api.lib.CrystalColors

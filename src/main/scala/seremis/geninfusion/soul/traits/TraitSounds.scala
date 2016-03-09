@@ -2,7 +2,6 @@ package seremis.geninfusion.soul.traits
 
 import net.minecraft.entity.{Entity, EntityLiving}
 import seremis.geninfusion.api.lib.Genes
-import seremis.geninfusion.api.lib.reflection.VariableLib
 import seremis.geninfusion.api.lib.reflection.VariableLib._
 import seremis.geninfusion.api.soul.{IEntitySoulCustom, SoulHelper}
 
@@ -19,8 +18,8 @@ class TraitSounds extends Trait {
         val livingSoundTime = entity.getInteger(EntityLivingSoundTime) + 1
         entity.setInteger(EntityLivingSoundTime, livingSoundTime)
 
-        if (!entity.getBoolean(EntityIsDead) && entity.getRandom_I.nextInt(1000) < livingSoundTime) {
-            entity.setInteger(EntityLivingSoundTime, -entity.getInteger(EntityTalkInterval))
+        if (!entity.getBoolean(VarEntityIsDead) && entity.getRandom_I.nextInt(1000) < livingSoundTime) {
+            entity.setInteger(EntityLivingSoundTime, -entity.getInteger(VarEntityTalkInterval))
             entity.asInstanceOf[EntityLiving].playLivingSound()
         }
 
@@ -28,6 +27,6 @@ class TraitSounds extends Trait {
     }
 
     override def firstTick(entity: IEntitySoulCustom) {
-        entity.setInteger(EntityTalkInterval, SoulHelper.geneRegistry.getValueFromAllele[Integer](entity, Genes.GeneTalkInterval))
+        entity.setInteger(VarEntityTalkInterval, SoulHelper.geneRegistry.getValueFromAllele[Integer](entity, Genes.GeneTalkInterval))
     }
 }
