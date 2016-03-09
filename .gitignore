@@ -1,0 +1,11 @@
+*.project
+.gradle
+build
+eclipse
+gradle
+out
+projectFilesBackup
+Genetic-Infusion.*
+gradlew.*
+gradlew
+*.db
