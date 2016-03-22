@@ -4,6 +4,7 @@ build
 eclipse
 gradle
 out
+run
 projectFilesBackup
 Genetic-Infusion.*
 gradlew.*

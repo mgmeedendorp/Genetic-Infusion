@@ -10,4 +10,15 @@ package com.seremis.geninfusion.api.util
   * @param clzz The class of which type the data is.
   * @tparam A The type of the data.
   */
-case class TypedName[A](name: String, clzz: Class[A])
+case class TypedName[A](name: String, clzz: Class[A]) extends Ordered[TypedName[_]] {
+    override def toString: String = "TypedName[name = '" + name + "', clzz: '" + clzz.getName + "']"
+
+    override def compare(that: TypedName[_]): Int = {
+        if(this.name < that.name)
+            -1
+        else if(this.name > that.name)
+            1
+        else
+            0
+    }
+}

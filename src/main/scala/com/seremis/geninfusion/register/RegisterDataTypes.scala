@@ -1,6 +1,6 @@
 package com.seremis.geninfusion.register
 
-import com.seremis.geninfusion.api.registry.GIRegistry._
+import com.seremis.geninfusion.api.GIApiInterface._
 import com.seremis.geninfusion.lib.DataTypes._
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound

@@ -1,60 +1,89 @@
 package com.seremis.geninfusion.genetics
 
-import com.seremis.geninfusion.api.genetics.{IAlleleData, IAncestry, ISoul}
+import com.seremis.geninfusion.api.GIApiInterface
+import com.seremis.geninfusion.api.genetics.{IAncestry, IGeneData, ISoul}
 import com.seremis.geninfusion.api.soulentity.IEntityMethod
 import com.seremis.geninfusion.api.util.TypedName
-import net.minecraft.nbt.NBTTagCompound
 
-class Soul extends ISoul {
+import scala.collection.immutable.TreeMap
+
+class Soul(genome: TreeMap[TypedName[_], IGeneData[_]], ancestry: IAncestry) extends ISoul {
+
+    checkParameters()
+
+    var entityMethods: Array[IEntityMethod[_]] = _
+
+    @throws[IllegalArgumentException]
+    def getValueFromMap[A](name: TypedName[A]): IGeneData[A] = {
+        genome.getOrElse(name, geneNotAvailable(name)).asInstanceOf[IGeneData[A]]
+    }
 
     /**
       * Returns the value of the active IAlleleData for this gene.
       */
-    override def getActiveValueForGene[A](geneName: TypedName[A]): A = ???
+    @throws[IllegalArgumentException]
+    override def getActiveValueForGene[A](name: TypedName[A]): A = getValueFromMap(name).getActiveAllele.getData
 
     /**
-      * Checks whether all registered genes are defined for this soul,
-      * then fixes any errors.
-      * These changes can happen due to updated mods.
-      *
-      * @return Whether the genome needed to be fixed.
+      * Returns the value of the inactive IAlleleData of this gene.
       */
-    override def fixGenome(): Boolean = ???
-
-    /**
-      * Get the active and inactive IAlleleData for a gene name.
-      *
-      * @param geneName The gene's name
-      * @tparam A The type of the gene.
-      * @return The IAlleleData for this gene. First data in the tuple is active, second inactive.
-      */
-    override def getAlleleDataForGene[A](geneName: TypedName[A]): (IAlleleData[A], IAlleleData[A]) = ???
+    @throws[IllegalArgumentException]
+    override def getPassiveValueForGene[A](name: TypedName[A]): A = getValueFromMap(name).getPassiveAllele.getData
 
     /**
       * Get all the IEntityMethods from all registered that are applicable to this soul.
       *
       * @return all applicable IEntityMethods.
       */
-    override def getEntityMethods: Array[IEntityMethod[_]] = ???
-
-    /**
-      * Get a map with all the typed Gene names as keys and the corresponding
-      * IAlleleData, the first element in the tuple being the active data, the second the inactive.
-      * Every key-value pair has the same type parameters.
-      */
-    override def getAllAlleleData: Map[TypedName[_], (IAlleleData[_], IAlleleData[_])] = ???
-
-    /**
-      * Returns the value of the inactive IAlleleData of this gene.
-      */
-    override def getInactiveValueForGene[A](geneName: TypedName[A]): A = ???
+    override def getEntityMethods: Array[IEntityMethod[_]] = {
+        if(entityMethods.isEmpty) {
+            //TODO fill
+        }
+        entityMethods
+    }
 
     /**
       * Returns the IAncestry object for this soul.
       */
-    override def getAncestry: IAncestry = ???
+    override def getAncestry: IAncestry = ancestry
 
-    override def writeToNBT(compound: NBTTagCompound): NBTTagCompound = ???
+    @throws[IllegalArgumentException]
+    def geneNotAvailable(name: TypedName[_]) = throw new IllegalArgumentException("There is no registered gene called '" + name.name + "' available. Is this gene registered?")
 
-    override def readFromNBT(compound: NBTTagCompound): NBTTagCompound = ???
+    @throws[IllegalArgumentException]
+    def genomeMalformed(reason: String) = throw new IllegalArgumentException("The genome for a soul was malformed. " + reason)
+
+    @throws[IllegalArgumentException]
+    def checkParameters() {
+        if(genome.nonEmpty) {
+            val registeredGenes = GIApiInterface.geneRegistry.getAllGenes.sortBy(gene => gene.getGeneName)
+
+            if(registeredGenes.length == genome.size) {
+
+                var reason = ""
+
+                var index = 0
+                for((genomeGene, _) <- genome) {
+                    val registeredGene = registeredGenes(index).getGeneName
+
+                    if(genomeGene != registeredGene) {
+                        reason += System.lineSeparator() + "\t The gene in the genome (" + genomeGene + ") does not match up with the gene that should be in that position (" + registeredGene + ")."
+                    }
+
+                    index += 1
+                }
+
+                if(reason != "") {
+                    genomeMalformed("The genome has one or more errors: " + reason)
+                }
+
+            } else {
+                genomeMalformed("The genome (" + genome.size + " genes) does not contain all registered genes (" + registeredGenes.length + " genes).")
+            }
+        } else {
+            genomeMalformed("The genome map is empty.")
+        }
+    }
+
+    override def toString = "Soul[genome = '" + genome.values.mkString(",") + "', ancestry = '" + ancestry + "]"
 }

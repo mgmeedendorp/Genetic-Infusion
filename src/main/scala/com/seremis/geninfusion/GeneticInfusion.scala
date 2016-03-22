@@ -1,9 +1,11 @@
 package com.seremis.geninfusion
 
-import com.seremis.geninfusion.api.registry.GIRegistry
+import com.seremis.geninfusion.api.GIApiInterface
+import com.seremis.geninfusion.api.lib.Genes
 import com.seremis.geninfusion.proxy.CommonProxy
-import com.seremis.geninfusion.register.{Register, RegisterDataTypes, RegisterPhase}
-import com.seremis.geninfusion.registry.DataTypeRegistry
+import com.seremis.geninfusion.register._
+import com.seremis.geninfusion.registry.{DataTypeRegistry, GeneDefaultsRegistry, GeneRegistry}
+import net.minecraft.entity.monster.EntityZombie
 import net.minecraftforge.fml.common.Mod.EventHandler
 import net.minecraftforge.fml.common.event.{FMLInitializationEvent, FMLPostInitializationEvent, FMLPreInitializationEvent}
 import net.minecraftforge.fml.common.{Mod, SidedProxy}
@@ -29,19 +31,28 @@ object GeneticInfusion {
     var logger: Logger = _
 
     @EventHandler
-    def preInit(event: FMLPreInitializationEvent): Unit = {
+    def preInit(event: FMLPreInitializationEvent) {
         logger = event.getModLog
 
-        GIRegistry.dataTypeRegistry = new DataTypeRegistry
+        GIApiInterface.dataTypeRegistry = new DataTypeRegistry
+        GIApiInterface.geneDefaultsRegistry = new GeneDefaultsRegistry
+        GIApiInterface.geneRegistry = new GeneRegistry
     }
 
     @EventHandler
-    def init(event: FMLInitializationEvent): Unit = {
+    def init(event: FMLInitializationEvent) {
         register(event.getSide, RegisterDataTypes, RegisterPhase.Init)
+        register(event.getSide, RegisterGenes, RegisterPhase.Init)
+        register(event.getSide, RegisterGeneDefaults, RegisterPhase.Init)
     }
 
     @EventHandler
-    def postInit(event: FMLPostInitializationEvent): Unit = {
+    def postInit(event: FMLPostInitializationEvent) {
+        val geneName = Genes.GeneTest
+
+        println(GIApiInterface.geneDefaultsRegistry.getDefaultValueForClass(classOf[EntityZombie], geneName))
+        println(GIApiInterface.geneDefaultsRegistry.getSoulForClass(classOf[EntityZombie]))
+
         logger.log(Level.INFO, ModName + " is loaded successfully.")
     }
 

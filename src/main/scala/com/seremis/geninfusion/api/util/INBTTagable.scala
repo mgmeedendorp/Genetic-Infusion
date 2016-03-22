@@ -1,11 +1,7 @@
 package com.seremis.geninfusion.api.util
 
-import net.minecraft.nbt.NBTTagCompound
-
 /**
-  * A simple trait with methods to read and write from NBT.
+  * This trait indicates that this class can be saved through the data type registry
+  * in GIApiInterface.
   */
-trait INBTTagable {
-    def readFromNBT(compound: NBTTagCompound): NBTTagCompound
-    def writeToNBT(compound: NBTTagCompound): NBTTagCompound
-}
+trait INBTTagable

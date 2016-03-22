@@ -15,13 +15,16 @@ trait ISoul extends INBTTagable {
     /**
       * Returns the value of the active IAlleleData for this gene.
       */
+    @throws[IllegalArgumentException]
     def getActiveValueForGene[A](geneName: TypedName[A]): A
 
     /**
       * Returns the value of the inactive IAlleleData of this gene.
       */
-    def getInactiveValueForGene[A](geneName: TypedName[A]): A
+    @throws[IllegalArgumentException]
+    def getPassiveValueForGene[A](geneName: TypedName[A]): A
 
+    /*
     /**
       * Get the active and inactive IAlleleData for a gene name.
       * @param geneName The gene's name
@@ -29,18 +32,20 @@ trait ISoul extends INBTTagable {
       * @return The IAlleleData for this gene. First data in the tuple is active, second inactive.
       */
     def getAlleleDataForGene[A](geneName: TypedName[A]): (IAlleleData[A], IAlleleData[A])
+    */
 
     /**
       * Returns the IAncestry object for this soul.
       */
     def getAncestry: IAncestry
-
+    /*
     /**
       * Get a map with all the typed Gene names as keys and the corresponding
       * IAlleleData, the first element in the tuple being the active data, the second the inactive.
       * Every key-value pair has the same type parameters.
       */
     def getAllAlleleData: Map[TypedName[_], (IAlleleData[_], IAlleleData[_])]
+    */
 
     /**
       * Get all the IEntityMethods from all registered that are applicable to this soul.
@@ -48,6 +53,7 @@ trait ISoul extends INBTTagable {
       */
     def getEntityMethods: Array[IEntityMethod[_]]
 
+    /* //TODO implement this somewhere else
     /**
       * Checks whether all registered genes are defined for this soul,
       * then fixes any errors.
@@ -55,4 +61,5 @@ trait ISoul extends INBTTagable {
       * @return Whether the genome needed to be fixed.
       */
     def fixGenome(): Boolean
+    */
 }
