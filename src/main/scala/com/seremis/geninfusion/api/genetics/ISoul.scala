@@ -3,6 +3,8 @@ package com.seremis.geninfusion.api.genetics
 import com.seremis.geninfusion.api.soulentity.IEntityMethod
 import com.seremis.geninfusion.api.util.{INBTTagable, TypedName}
 
+import scala.collection.immutable.TreeMap
+
 /**
   * The soul is the data structure that holds all of the data that persists through generations,
   * the genetic data of the entity. Every IEntitySoul has one ISoul of which half of the values will
@@ -38,14 +40,13 @@ trait ISoul extends INBTTagable {
       * Returns the IAncestry object for this soul.
       */
     def getAncestry: IAncestry
-    /*
+
     /**
-      * Get a map with all the typed Gene names as keys and the corresponding
-      * IAlleleData, the first element in the tuple being the active data, the second the inactive.
+      * Get a TreeMap with all the typed Gene names as keys and the corresponding
+      * IGeneData.
       * Every key-value pair has the same type parameters.
       */
-    def getAllAlleleData: Map[TypedName[_], (IAlleleData[_], IAlleleData[_])]
-    */
+    def getGenome: TreeMap[TypedName[_], IChromosome[_]]
 
     /**
       * Get all the IEntityMethods from all registered that are applicable to this soul.

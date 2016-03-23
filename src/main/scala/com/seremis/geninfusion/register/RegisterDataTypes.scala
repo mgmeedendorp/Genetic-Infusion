@@ -1,6 +1,8 @@
 package com.seremis.geninfusion.register
 
 import com.seremis.geninfusion.api.GIApiInterface._
+import com.seremis.geninfusion.api.genetics.{IAncestry, ISoul}
+import com.seremis.geninfusion.api.util.TypedName
 import com.seremis.geninfusion.lib.DataTypes._
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -19,6 +21,9 @@ object RegisterDataTypes extends Register {
         dataTypeRegistry.register(typeClass, classOf[Class[_]])
         dataTypeRegistry.register(typeItemStack, classOf[ItemStack])
         dataTypeRegistry.register(typeCompound, classOf[NBTTagCompound])
+        dataTypeRegistry.register(typeTypedName, classOf[TypedName[_]])
+        dataTypeRegistry.register(typeAncestry, classOf[IAncestry])
+        dataTypeRegistry.register(typeSoul, classOf[ISoul])
 
         dataTypeRegistry.register(typeBooleanArray, classOf[Array[Boolean]])
         dataTypeRegistry.register(typeByteArray, classOf[Array[Byte]])

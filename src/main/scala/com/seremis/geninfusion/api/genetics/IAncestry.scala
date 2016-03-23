@@ -7,5 +7,5 @@ trait IAncestry extends INBTTagable {
 
     def getUniqueAncestors(): Array[Class[_ <: EntityLiving]]
 
-    def determineGeneValueFromAncestry[A](geneName: TypedName[A]): IGeneData[A]
+    def determineGeneValueFromAncestry[A](geneName: TypedName[A]): IChromosome[A]
 }

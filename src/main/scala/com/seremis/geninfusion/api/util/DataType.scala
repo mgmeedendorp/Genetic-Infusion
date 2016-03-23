@@ -12,6 +12,6 @@ import net.minecraft.nbt.NBTTagCompound
   * @tparam A The type of the data to store.
   */
 trait DataType[A] {
-    def writeToNBT(compound: NBTTagCompound, name: TypedName[A], data: A)
-    def readFromNBT(compound: NBTTagCompound, name: TypedName[A]): A
+    def writeToNBT(compound: NBTTagCompound, name: String, data: A)
+    def readFromNBT(compound: NBTTagCompound, name: String): A
 }

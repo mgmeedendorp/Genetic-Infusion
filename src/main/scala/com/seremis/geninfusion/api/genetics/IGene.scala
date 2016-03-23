@@ -6,9 +6,9 @@ trait IGene[A] {
 
     def getGeneName: TypedName[A]
 
-    def getDefaultValue: IGeneData[A]
+    def getDefaultValue: IChromosome[A]
     def noMutations()
 
-    def mutate(data: IGeneData[A]): IGeneData[A]
-    def inherit(parent1: IGeneData[A], parent2: IGeneData[A]): IGeneData[A]
+    def mutate(data: IChromosome[A]): IChromosome[A]
+    def inherit(parent1: IChromosome[A], parent2: IChromosome[A]): IChromosome[A]
 }

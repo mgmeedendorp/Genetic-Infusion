@@ -1,7 +1,7 @@
 package com.seremis.geninfusion.registry
 
 import com.seremis.geninfusion.api.GIApiInterface.IGeneRegistry
-import com.seremis.geninfusion.api.genetics.{IGene, IGeneData}
+import com.seremis.geninfusion.api.genetics.{IChromosome, IGene}
 import com.seremis.geninfusion.api.util.TypedName
 import com.seremis.geninfusion.genetics.Gene
 
@@ -17,7 +17,7 @@ class GeneRegistry extends IGeneRegistry {
         genesListed += gene
     }
 
-    override def register(defaultValue: IGeneData[_]) = register(new Gene(defaultValue))
+    override def register[A](name: TypedName[A], defaultValue: IChromosome[A]) = register(new Gene(name, defaultValue))
 
     override def getAllGenes: Array[IGene[_]] = genesListed.toArray
 

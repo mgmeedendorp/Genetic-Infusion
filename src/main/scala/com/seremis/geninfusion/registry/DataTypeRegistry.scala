@@ -1,8 +1,7 @@
 package com.seremis.geninfusion.registry
 
-import com.seremis.geninfusion.api.GIApiInterface
-import GIApiInterface.IDataTypeRegistry
-import com.seremis.geninfusion.api.util.{DataType, TypedName}
+import com.seremis.geninfusion.api.GIApiInterface.IDataTypeRegistry
+import com.seremis.geninfusion.api.util.DataType
 import net.minecraft.nbt.NBTTagCompound
 
 import scala.collection.mutable.HashMap
@@ -28,9 +27,11 @@ class DataTypeRegistry extends IDataTypeRegistry {
 
     override def hasDataTypeForClass(clzz: Class[_]): Boolean = register.get(clzz).nonEmpty
 
-    override def readValueFromNBT[A](compound: NBTTagCompound, name: TypedName[A]): A = getDataTypeForClass(name.clzz).readFromNBT(compound, name)
+    @throws[IllegalArgumentException]
+    override def readValueFromNBT[A](compound: NBTTagCompound, name: String, dataClass: Class[A]): A = getDataTypeForClass(dataClass).readFromNBT(compound, name)
 
-    override def writeValueToNBT[A](compound: NBTTagCompound, name: TypedName[A], data: A): Unit = getDataTypeForClass(name.clzz).writeToNBT(compound, name, data)
+    @throws[IllegalArgumentException]
+    override def writeValueToNBT[A](compound: NBTTagCompound, name: String, dataClass: Class[A], data: A): Unit = getDataTypeForClass(dataClass).writeToNBT(compound, name, data)
 
     @throws[IllegalArgumentException]
     def noRegisteredDataType(clzz: Class[_]) = throw new IllegalArgumentException("There is no registered DataType for class " + clzz.getName + ". Make sure to register the DataType before using it!.")

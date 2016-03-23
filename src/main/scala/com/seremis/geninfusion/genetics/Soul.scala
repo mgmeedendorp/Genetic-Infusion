@@ -1,21 +1,21 @@
 package com.seremis.geninfusion.genetics
 
 import com.seremis.geninfusion.api.GIApiInterface
-import com.seremis.geninfusion.api.genetics.{IAncestry, IGeneData, ISoul}
+import com.seremis.geninfusion.api.genetics.{IAncestry, IChromosome, ISoul}
 import com.seremis.geninfusion.api.soulentity.IEntityMethod
 import com.seremis.geninfusion.api.util.TypedName
 
 import scala.collection.immutable.TreeMap
 
-class Soul(genome: TreeMap[TypedName[_], IGeneData[_]], ancestry: IAncestry) extends ISoul {
+class Soul(genome: TreeMap[TypedName[_], IChromosome[_]], ancestry: IAncestry) extends ISoul {
 
     checkParameters()
 
     var entityMethods: Array[IEntityMethod[_]] = _
 
     @throws[IllegalArgumentException]
-    def getValueFromMap[A](name: TypedName[A]): IGeneData[A] = {
-        genome.getOrElse(name, geneNotAvailable(name)).asInstanceOf[IGeneData[A]]
+    def getValueFromMap[A](name: TypedName[A]): IChromosome[A] = {
+        genome.getOrElse(name, geneNotAvailable(name)).asInstanceOf[IChromosome[A]]
     }
 
     /**
@@ -85,5 +85,12 @@ class Soul(genome: TreeMap[TypedName[_], IGeneData[_]], ancestry: IAncestry) ext
         }
     }
 
-    override def toString = "Soul[genome = '" + genome.values.mkString(",") + "', ancestry = '" + ancestry + "]"
+    override def toString = "Soul[genome = '" + genome.toString + "', ancestry = '" + ancestry + "]"
+
+    /**
+      * Get a TreeMap with all the typed Gene names as keys and the corresponding
+      * IGeneData.
+      * Every key-value pair has the same type parameters.
+      */
+    override def getGenome: TreeMap[TypedName[_], IChromosome[_]] = genome
 }

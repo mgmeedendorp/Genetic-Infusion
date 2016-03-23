@@ -1,11 +1,14 @@
 package com.seremis.geninfusion
 
 import com.seremis.geninfusion.api.GIApiInterface
+import com.seremis.geninfusion.api.genetics.ISoul
 import com.seremis.geninfusion.api.lib.Genes
+import com.seremis.geninfusion.api.util.TypedName
 import com.seremis.geninfusion.proxy.CommonProxy
 import com.seremis.geninfusion.register._
-import com.seremis.geninfusion.registry.{DataTypeRegistry, GeneDefaultsRegistry, GeneRegistry}
+import com.seremis.geninfusion.registry.{DataTypeRegistry, EntityMethodRegistry, GeneDefaultsRegistry, GeneRegistry}
 import net.minecraft.entity.monster.EntityZombie
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.fml.common.Mod.EventHandler
 import net.minecraftforge.fml.common.event.{FMLInitializationEvent, FMLPostInitializationEvent, FMLPreInitializationEvent}
 import net.minecraftforge.fml.common.{Mod, SidedProxy}
@@ -35,6 +38,7 @@ object GeneticInfusion {
         logger = event.getModLog
 
         GIApiInterface.dataTypeRegistry = new DataTypeRegistry
+        GIApiInterface.entityMethodRegistry = new EntityMethodRegistry
         GIApiInterface.geneDefaultsRegistry = new GeneDefaultsRegistry
         GIApiInterface.geneRegistry = new GeneRegistry
     }
@@ -50,8 +54,36 @@ object GeneticInfusion {
     def postInit(event: FMLPostInitializationEvent) {
         val geneName = Genes.GeneTest
 
+        println(geneName)
+
+
+        val compound = new NBTTagCompound
+        GIApiInterface.dataTypeRegistry.writeValueToNBT(compound, "1", classOf[TypedName[_]], geneName)
+
+        println(compound)
+
+        val out = GIApiInterface.dataTypeRegistry.readValueFromNBT(compound, "1", classOf[TypedName[_]])
+
+        println(out)
+
+        println(out == geneName)
+
         println(GIApiInterface.geneDefaultsRegistry.getDefaultValueForClass(classOf[EntityZombie], geneName))
-        println(GIApiInterface.geneDefaultsRegistry.getSoulForClass(classOf[EntityZombie]))
+
+        val soul = GIApiInterface.geneDefaultsRegistry.getSoulForClass(classOf[EntityZombie])
+        println(soul)
+
+        val nbt = new NBTTagCompound
+
+        GIApiInterface.dataTypeRegistry.writeValueToNBT(nbt, "soul", classOf[ISoul], soul)
+
+        println(nbt)
+
+        val out2 = GIApiInterface.dataTypeRegistry.readValueFromNBT(nbt, "soul", classOf[ISoul])
+
+        println(out2)
+
+        println(soul == out2)
 
         logger.log(Level.INFO, ModName + " is loaded successfully.")
     }
