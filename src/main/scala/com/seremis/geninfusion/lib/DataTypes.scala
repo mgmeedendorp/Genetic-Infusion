@@ -4,6 +4,7 @@ import com.seremis.geninfusion.api.GIApiInterface
 import com.seremis.geninfusion.api.genetics.{IAllele, IAncestry, IChromosome, ISoul}
 import com.seremis.geninfusion.api.util.{DataType, TypedName}
 import com.seremis.geninfusion.genetics._
+import com.seremis.geninfusion.soulentity.logic.FieldLogicData
 import net.minecraft.entity.EntityLiving
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
@@ -181,6 +182,38 @@ object DataTypes {
             val dominant = compound.getBoolean(name + ".dominant")
 
             new Allele(data, dominant)
+        }
+    }
+
+    val typeFieldLogic = new DataType[FieldLogicData] {
+        override def writeToNBT(compound: NBTTagCompound, name: String, data: FieldLogicData): Unit = {
+            val list = new NBTTagList
+
+            for((key, value) <- data) {
+                if(value._2) {
+                    val nbt = new NBTTagCompound
+                    GIApiInterface.dataTypeRegistry.writeValueToNBT(nbt, "key", classOf[TypedName[_]], key)
+                    GIApiInterface.dataTypeRegistry.writeValueToNBT(nbt, "val", key.clzz, value._1)
+                    list.appendTag(nbt)
+                }
+            }
+
+            compound.setTag(name, list)
+        }
+
+        override def readFromNBT(compound: NBTTagCompound, name: String): FieldLogicData = {
+            val data = new FieldLogicData()
+            val list = compound.getTagList(name, Constants.NBT.TAG_COMPOUND)
+
+            for(i <- 0 until list.tagCount()) {
+                val tag = list.getCompoundTagAt(i)
+
+                val key = GIApiInterface.dataTypeRegistry.readValueFromNBT(tag, "key", classOf[TypedName[_]])
+                val value = GIApiInterface.dataTypeRegistry.readValueFromNBT(tag, "val", key.clzz)
+
+                data += (key -> (value, true))
+            }
+            data
         }
     }
 

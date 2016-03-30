@@ -3,6 +3,7 @@ package com.seremis.geninfusion.soulentity
 import com.seremis.geninfusion.api.genetics.ISoul
 import com.seremis.geninfusion.api.soulentity.ISoulEntity
 import com.seremis.geninfusion.api.util.TypedName
+import com.seremis.geninfusion.soulentity.logic.{FieldLogic, MethodLogic}
 import com.seremis.geninfusion.util.UtilNBT
 import io.netty.buffer.ByteBuf
 import net.minecraft.entity.EntityLiving
@@ -14,6 +15,9 @@ trait SoulEntityLivingTrait extends EntityLiving with ISoulEntity with IEntityAd
 
     var soul: ISoul
     val world: World
+
+    val fieldLogic = new FieldLogic(this)
+    val methodLogic = new MethodLogic(this)
 
     override def getSoul: ISoul = soul
 
