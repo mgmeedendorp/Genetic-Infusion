@@ -6,23 +6,17 @@ import com.google.common.base.{Charsets, Splitter}
 import com.google.common.io.{Files, LineProcessor}
 import com.seremis.geninfusion.GeneticInfusion
 import net.minecraft.launchwrapper.Launch
-import net.minecraftforge.common.ForgeVersion
 
 import scala.collection.mutable.HashMap
 
 object MCPNames {
 
-    var fields: HashMap[String, String] = _
-    var methods: HashMap[String, String] = _
+   lazy val fields: HashMap[String, String] = readMappings(new File(mappingsDir + "fields.csv"))
+   lazy val methods: HashMap[String, String] = readMappings(new File(mappingsDir + "methods.csv"))
 
-    val mappingsDir = System.getProperty("user.home").replace("\\", "/") + "/.gradle/caches/minecraft/net/minecraftforge/forge/1.7.10-" + ForgeVersion.getVersion + "-1.7.10/unpacked/conf/"
+    val mappingsDir = System.getProperty("user.home").replace("\\", "/") + "/.gradle/caches/minecraft/de/oceanlabs/mcp/mcp_snapshot/20160331/"
 
     val DEV_ENV = Launch.blackboard.get("fml.deobfuscatedEnvironment").asInstanceOf[Boolean]
-
-    def init() {
-        fields = readMappings(new File(mappingsDir + "fields.csv"))
-        methods = readMappings(new File(mappingsDir + "methods.csv"))
-    }
 
     def field(srg: String): String = if(DEV_ENV) fields.getOrElse(srg, srg) else srg
 
@@ -31,7 +25,7 @@ object MCPNames {
     private def readMappings(file: File): HashMap[String, String] = {
         if(!DEV_ENV) return null
         if (!file.isFile) {
-            throw new RuntimeException("Couldn't find MCP mappings")
+            throw new RuntimeException("Couldn't find MCP mappings in location: '" + mappingsDir + "'")
         }
         GeneticInfusion.logger.info("Reading SRG->MCP mappings from " + file)
         Files.readLines(file, Charsets.UTF_8, new MCPFileParser())

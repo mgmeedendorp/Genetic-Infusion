@@ -1,6 +1,7 @@
 package com.seremis.geninfusion.registry
 
 import com.seremis.geninfusion.api.GIApiInterface.IEntityMethodRegistry
+import com.seremis.geninfusion.api.genetics.ISoul
 import com.seremis.geninfusion.api.soulentity.IEntityMethod
 import com.seremis.geninfusion.api.util.TypedName
 
@@ -19,11 +20,11 @@ class EntityMethodRegistry extends IEntityMethodRegistry {
     }
 
     @throws[IllegalArgumentException]
-    override def getMethodForName[A](name: TypedName[A]): IEntityMethod[A] = {
+    override def getMethodsForName[A](name: TypedName[A]): List[IEntityMethod[A]] = {
         val option = mappedMethods.get(name)
 
         if(option.nonEmpty) {
-            option.get
+            option.get.toList.asInstanceOf[List[IEntityMethod[A]]]
         } else {
             methodNotRegistered(name.name)
         }
@@ -36,4 +37,24 @@ class EntityMethodRegistry extends IEntityMethodRegistry {
 
     override def getAllMethodNames: Array[TypedName[_]] = mappedMethods.keys.to[Array]
     override def getAllMethods: Map[TypedName[_], ListBuffer[IEntityMethod[_]]] = mappedMethods.toMap
+
+    override def getMethodsForSoul(soul: ISoul): Map[TypedName[_], List[IEntityMethod[_]]] = {
+        val result: HashMap[TypedName[_], List[IEntityMethod[_]]] = HashMap()
+
+        for((key, value) <- mappedMethods) {
+            val methods: ListBuffer[IEntityMethod[_]] = ListBuffer()
+
+            for(method <- value) {
+                if(method.shouldCallMethodForSoul(soul)) {
+                    methods += method
+                }
+            }
+
+            if(methods.nonEmpty) {
+                result += (key -> methods.toList)
+            }
+        }
+
+        result.toMap
+    }
 }

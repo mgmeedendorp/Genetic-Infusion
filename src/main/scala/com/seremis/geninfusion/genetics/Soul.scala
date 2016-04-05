@@ -2,7 +2,6 @@ package com.seremis.geninfusion.genetics
 
 import com.seremis.geninfusion.api.GIApiInterface
 import com.seremis.geninfusion.api.genetics.{IAncestry, IChromosome, ISoul}
-import com.seremis.geninfusion.api.soulentity.IEntityMethod
 import com.seremis.geninfusion.api.util.TypedName
 
 import scala.collection.immutable.TreeMap
@@ -10,8 +9,6 @@ import scala.collection.immutable.TreeMap
 class Soul(genome: TreeMap[TypedName[_], IChromosome[_]], ancestry: IAncestry) extends ISoul {
 
     checkParameters()
-
-    var entityMethods: Array[IEntityMethod[_]] = _
 
     @throws[IllegalArgumentException]
     def getValueFromMap[A](name: TypedName[A]): IChromosome[A] = {
@@ -29,18 +26,6 @@ class Soul(genome: TreeMap[TypedName[_], IChromosome[_]], ancestry: IAncestry) e
       */
     @throws[IllegalArgumentException]
     override def getPassiveValueForGene[A](name: TypedName[A]): A = getValueFromMap(name).getPassiveAllele.getData
-
-    /**
-      * Get all the IEntityMethods from all registered that are applicable to this soul.
-      *
-      * @return all applicable IEntityMethods.
-      */
-    override def getEntityMethods: Array[IEntityMethod[_]] = {
-        if(entityMethods.isEmpty) {
-            //TODO fill
-        }
-        entityMethods
-    }
 
     /**
       * Returns the IAncestry object for this soul.

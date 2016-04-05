@@ -1,6 +1,5 @@
 package com.seremis.geninfusion.api.genetics
 
-import com.seremis.geninfusion.api.soulentity.IEntityMethod
 import com.seremis.geninfusion.api.util.{INBTTagable, TypedName}
 
 import scala.collection.immutable.TreeMap
@@ -47,12 +46,6 @@ trait ISoul extends INBTTagable {
       * Every key-value pair has the same type parameters.
       */
     def getGenome: TreeMap[TypedName[_], IChromosome[_]]
-
-    /**
-      * Get all the IEntityMethods from all registered that are applicable to this soul.
-      * @return all applicable IEntityMethods.
-      */
-    def getEntityMethods: Array[IEntityMethod[_]]
 
     /* //TODO implement this somewhere else
     /**

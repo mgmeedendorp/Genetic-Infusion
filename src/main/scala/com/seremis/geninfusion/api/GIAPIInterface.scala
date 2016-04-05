@@ -32,11 +32,13 @@ object GIApiInterface {
         def register[A](name: TypedName[A], method: IEntityMethod[A])
 
         @throws[IllegalArgumentException]
-        def getMethodForName[A](name: TypedName[A]): IEntityMethod[A]
+        def getMethodsForName[A](name: TypedName[A]): List[IEntityMethod[A]]
         def hasMethodForName(name: TypedName[_]): Boolean
 
         def getAllMethodNames: Array[TypedName[_]]
         def getAllMethods: Map[TypedName[_], ListBuffer[IEntityMethod[_]]]
+
+        def getMethodsForSoul(soul: ISoul): Map[TypedName[_], List[IEntityMethod[_]]]
     }
 
     trait IGeneDefaultsRegistry {

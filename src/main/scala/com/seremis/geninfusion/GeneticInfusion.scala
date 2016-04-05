@@ -2,11 +2,12 @@ package com.seremis.geninfusion
 
 import com.seremis.geninfusion.api.GIApiInterface
 import com.seremis.geninfusion.api.genetics.ISoul
-import com.seremis.geninfusion.api.lib.Genes
+import com.seremis.geninfusion.api.lib.{FunctionLib, Genes}
 import com.seremis.geninfusion.api.util.TypedName
 import com.seremis.geninfusion.proxy.CommonProxy
 import com.seremis.geninfusion.register._
 import com.seremis.geninfusion.registry.{DataTypeRegistry, EntityMethodRegistry, GeneDefaultsRegistry, GeneRegistry}
+import com.seremis.geninfusion.soulentity.SoulEntityLiving
 import net.minecraft.entity.monster.EntityZombie
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.fml.common.Mod.EventHandler
@@ -48,10 +49,26 @@ object GeneticInfusion {
         register(event.getSide, RegisterDataTypes, RegisterPhase.Init)
         register(event.getSide, RegisterGenes, RegisterPhase.Init)
         register(event.getSide, RegisterGeneDefaults, RegisterPhase.Init)
+        register(event.getSide, RegisterEntityMethods, RegisterPhase.Init)
     }
 
     @EventHandler
     def postInit(event: FMLPostInitializationEvent) {
+        val method = FunctionLib.FuncEntityGetEntityId
+
+        println(method)
+
+        val m = GIApiInterface.entityMethodRegistry.getMethodsForName(method)
+
+        println(m)
+
+        val entity = new SoulEntityLiving(null, GIApiInterface.geneDefaultsRegistry.getSoulForClass(classOf[EntityZombie]))
+
+        println(entity)
+
+        entity.getEntityId
+
+
         val geneName = Genes.GeneTest
 
         println(geneName)
