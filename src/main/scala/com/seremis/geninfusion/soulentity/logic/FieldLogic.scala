@@ -2,15 +2,28 @@ package com.seremis.geninfusion.soulentity.logic
 
 import com.seremis.geninfusion.api.GIApiInterface
 import com.seremis.geninfusion.api.soulentity.ISoulEntity
-import com.seremis.geninfusion.api.util.{INBTTagable, TypedName}
+import com.seremis.geninfusion.api.util.TypedName
+import com.seremis.geninfusion.util.GIReflectionHelper
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import net.minecraftforge.common.util.Constants
 
-import scala.collection.mutable.HashMap
+import scala.collection.mutable.{HashMap, ListBuffer}
 
 class FieldLogic(entity: ISoulEntity) {
 
-    val dataMap: HashMap[TypedName[_], (Any, Boolean)] = HashMap()
+    protected val dataMap: HashMap[TypedName[_], (Any, Boolean)] = HashMap()
+    protected val fields: ListBuffer[String] = {
+        var clazz: Any = entity.getClass
+        val list: ListBuffer[String] = ListBuffer()
+
+        while(clazz != null) {
+            for(field <- clazz.asInstanceOf[Class[_]].getDeclaredFields) {
+                list += field.getName
+            }
+            clazz = clazz.asInstanceOf[Class[_]].getSuperclass
+        }
+        list
+    }
 
     def makePersistent(name: TypedName[_]): Unit = {
         if(GIApiInterface.dataTypeRegistry.hasDataTypeForClass(name.clzz)) {
@@ -26,15 +39,23 @@ class FieldLogic(entity: ISoulEntity) {
     }
 
     def setVar[A](name: TypedName[A], value: A): Unit = {
-        dataMap += (name -> (value, false))
+        if(fields.contains(name.name)) {
+            GIReflectionHelper.setField(entity, name.name, value)
+        } else {
+            dataMap += (name ->(value, false))
+        }
     }
 
     def getVar[A](name: TypedName[A]): A = {
-        val option = dataMap.get(name)
-        if(option.nonEmpty) {
-            option.get._1.asInstanceOf[A]
+        if(fields.contains(name.name)) {
+            GIReflectionHelper.getField(entity, name.name).asInstanceOf[A]
         } else {
-            throw new IllegalArgumentException("Someone tried to get a variable from an entity, but the variable was never set. This should not happen.")
+            val option = dataMap.get(name)
+            if(option.nonEmpty) {
+                option.get._1.asInstanceOf[A]
+            } else {
+                throw new IllegalArgumentException("Someone tried to get a variable from an entity, but the variable was never set. This should not happen.")
+            }
         }
     }
 
@@ -71,4 +92,3 @@ class FieldLogic(entity: ISoulEntity) {
         compound
     }
 }
-class FieldLogicData extends HashMap[TypedName[_], (Any, Boolean)] with INBTTagable
