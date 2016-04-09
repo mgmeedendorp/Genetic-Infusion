@@ -1,7 +1,7 @@
 package com.seremis.geninfusion.api.lib
 
-import java.util.{Random, UUID}
 import java.{lang, util}
+import java.util.{Random, UUID}
 
 import com.seremis.geninfusion.api.util.TypedName
 import com.seremis.geninfusion.util.MCPNames._
@@ -30,6 +30,7 @@ object FunctionLib {
     final val FuncEntityAddPassenger = TypedName(method("func_184200_o"), classOf[Unit])
     final val FuncEntityAddTag = TypedName(method("func_184211_a"), classOf[Boolean])
     final val FuncEntityAddToPlayerScore = TypedName(method("func_70084_c"), classOf[Unit])
+    final val FuncEntityAddTrackingPlayer = TypedName(method("func_184178_b"), classOf[Unit])
     final val FuncEntityAddVelocity = TypedName(method("func_70024_g"), classOf[Unit])
     final val FuncEntityApplyEnchantments = TypedName(method("func_174815_a"), classOf[Unit])
     final val FuncEntityApplyEntityCollision = TypedName(method("func_70108_f"), classOf[Unit])
@@ -79,7 +80,7 @@ object FunctionLib {
     final val FuncEntityGetDataManager = TypedName(method("func_184212_Q"), classOf[EntityDataManager])
     final val FuncEntityGetDisplayName = TypedName(method("func_145748_c_"), classOf[ITextComponent])
     final val FuncEntityGetDistance = TypedName(method("func_70011_f"), classOf[Double])
-    final val FuncEntityGetDistanceSq_Coord = TypedName(method("func_70092_e"), classOf[Double])
+    final val FuncEntityGetDistanceSq_Coords = TypedName(method("func_70092_e"), classOf[Double])
     final val FuncEntityGetDistanceSq_BlockPos = TypedName(method("func_174818_b"), classOf[Double])
     final val FuncEntityGetDistanceSqToCenter = TypedName(method("func_174831_c"), classOf[Double])
     final val FuncEntityGetDistanceSqToEntity = TypedName(method("func_70068_e"), classOf[Double])
@@ -191,6 +192,7 @@ object FunctionLib {
     final val FuncEntityRemovePassenger = TypedName(method("func_184225_p"), classOf[Unit])
     final val FuncEntityRemovePassengers = TypedName(method("func_184226_ay"), classOf[Unit])
     final val FuncEntityRemoveTag = TypedName(method("func_184197_b"), classOf[Boolean])
+    final val FuncEntityRemoveTrackingPlayer = TypedName(method("func_184203_c"), classOf[Unit])
     final val FuncEntityReplaceItemInInventory = TypedName(method("func_174820_d"), classOf[Boolean])
     final val FuncEntityResetHeight = TypedName(method("func_71061_d_"), classOf[Unit])
     final val FuncEntityResetPositionToBB = TypedName(method("func_174829_m"), classOf[Unit])
@@ -199,8 +201,6 @@ object FunctionLib {
     final val FuncEntitySetAlwaysRenderNameTag = TypedName(method("func_174805_g"), classOf[Unit])
     final val FuncEntitySetAngles = TypedName(method("func_70082_c"), classOf[Unit])
     final val FuncEntitySetBeenAttacked = TypedName(method("func_70018_K"), classOf[Unit])
-    final val FuncEntitySetBossNonVisibleTo = TypedName(method("func_184203_c"), classOf[Unit])
-    final val FuncEntitySetBossVisibleTo = TypedName(method("func_184178_b"), classOf[Unit])
     final val FuncEntitySetCommandStat = TypedName(method("func_174794_a"), classOf[Unit])
     final val FuncEntitySetCommandStats = TypedName(method("func_174817_o"), classOf[Unit])
     final val FuncEntitySetCustomNameTag = TypedName(method("func_96094_a"), classOf[Unit])
@@ -422,4 +422,3 @@ object FunctionLib {
     final val FuncEntityLivingBaseUpdatePotionEffects = TypedName(method("func_70679_bo"), classOf[Unit])
     final val FuncEntityLivingBaseUpdatePotionMetadata = TypedName(method("func_175135_B"), classOf[Unit])
 }
-

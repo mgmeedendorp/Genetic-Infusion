@@ -21,9 +21,9 @@ object GeneticInfusion {
 
     final val ModId = "geninfusion"
     final val ModName = "Genetic Infusion"
-    final val ModVersion = "1.9-1.0.0"
+    final val ModVersion = "@MOD_VERSION@"
     final val ModLanguage = "scala"
-    final val ModMinecraftVersion = "1.9"
+    final val ModMinecraftVersion = "@MC_VERSION@"
     final val ModCommonProxy = "com.seremis." + ModId + ".proxy.CommonProxy"
     final val ModClientProxy = "com.seremis." + ModId + ".proxy.ClientProxy"
     final val PacketChannel = ModId

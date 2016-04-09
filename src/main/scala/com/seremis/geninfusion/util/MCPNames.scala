@@ -14,7 +14,7 @@ object MCPNames {
    lazy val fields: HashMap[String, String] = readMappings(new File(mappingsDir + "fields.csv"))
    lazy val methods: HashMap[String, String] = readMappings(new File(mappingsDir + "methods.csv"))
 
-    val mappingsDir = System.getProperty("user.home").replace("\\", "/") + "/.gradle/caches/minecraft/de/oceanlabs/mcp/mcp_snapshot/20160331/"
+    val mappingsDir = System.getProperty("user.home").replace("\\", "/") + "/.gradle/caches/minecraft/de/oceanlabs/mcp/mcp_snapshot/20160408/"
 
     val DEV_ENV = Launch.blackboard.get("fml.deobfuscatedEnvironment").asInstanceOf[Boolean]
 

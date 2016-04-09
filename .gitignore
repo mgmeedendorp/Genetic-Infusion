@@ -3,6 +3,7 @@
 build
 eclipse
 gradle
+lib
 out
 run
 projectFilesBackup
