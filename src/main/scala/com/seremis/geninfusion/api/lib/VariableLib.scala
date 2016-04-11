@@ -3,6 +3,7 @@ package com.seremis.geninfusion.api.lib
 import java.util
 import java.util._
 
+import com.seremis.geninfusion.api.util.MCPNames._
 import com.seremis.geninfusion.api.util.TypedName
 import net.minecraft.command._
 import net.minecraft.entity._
@@ -18,6 +19,7 @@ import net.minecraft.util._
 import net.minecraft.util.math._
 import net.minecraft.world._
 import org.apache.logging.log4j._
+
 
 object VariableLib {
     final val VarEntityAIR = TypedName(field("field_184241_ay"), classOf[DataParameter[Integer]])
@@ -186,9 +188,9 @@ object VariableLib {
     final val VarEntityLivingBaseRenderYawOffset = TypedName(field("field_70761_aq"), classOf[Float])
     final val VarEntityLivingBaseRevengeTimer = TypedName(field("field_70756_c"), classOf[Int])
     final val VarEntityLivingBaseRotationYawHead = TypedName(field("field_70759_as"), classOf[Float])
+    final val VarEntityLivingBaseSPRINTING_SPEED_BOOST = TypedName(field("field_110157_c"), classOf[AttributeModifier])
+    final val VarEntityLivingBaseSPRINTING_SPEED_BOOST_ID = TypedName(field("field_110156_b"), classOf[UUID])
     final val VarEntityLivingBaseScoreValue = TypedName(field("field_70744_aE"), classOf[Int])
-    final val VarEntityLivingBaseSprintingSpeedBoostModifier = TypedName(field("field_110157_c"), classOf[AttributeModifier])
-    final val VarEntityLivingBaseSprintingSpeedBoostModifierUUID = TypedName(field("field_110156_b"), classOf[UUID])
     final val VarEntityLivingBaseSwingProgress = TypedName(field("field_70733_aJ"), classOf[Float])
     final val VarEntityLivingBaseSwingProgressInt = TypedName(field("field_110158_av"), classOf[Int])
     final val VarEntityLivingBaseSwingingHand = TypedName(field("field_184622_au"), classOf[EnumHand])
