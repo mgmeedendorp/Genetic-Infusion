@@ -1,28 +1,27 @@
 package com.seremis.geninfusion.api.lib
 
 import java.{lang, util}
-import java.util.{Random, UUID}
+import java.util._
 
 import com.seremis.geninfusion.api.util.TypedName
-import com.seremis.geninfusion.util.MCPNames._
-import net.minecraft.block.material.EnumPushReaction
-import net.minecraft.command.CommandResultStats
+import net.minecraft.block.material._
+import net.minecraft.command._
 import net.minecraft.entity._
-import net.minecraft.entity.ai.attributes.{AbstractAttributeMap, IAttributeInstance}
-import net.minecraft.entity.ai.{EntityJumpHelper, EntityLookHelper, EntityMoveHelper, EntitySenses}
-import net.minecraft.entity.item.EntityItem
-import net.minecraft.item.{Item, ItemStack}
-import net.minecraft.nbt.NBTTagList
-import net.minecraft.network.datasync.EntityDataManager
-import net.minecraft.pathfinding.PathNavigate
-import net.minecraft.potion.PotionEffect
-import net.minecraft.scoreboard.Team
-import net.minecraft.server.MinecraftServer
+import net.minecraft.entity.ai._
+import net.minecraft.entity.ai.attributes._
+import net.minecraft.entity.item._
+import net.minecraft.item._
+import net.minecraft.nbt._
+import net.minecraft.network.datasync._
+import net.minecraft.pathfinding._
+import net.minecraft.potion._
+import net.minecraft.scoreboard._
+import net.minecraft.server._
 import net.minecraft.util._
-import net.minecraft.util.math.{AxisAlignedBB, BlockPos, RayTraceResult, Vec3d}
-import net.minecraft.util.text.ITextComponent
-import net.minecraft.util.text.event.HoverEvent
-import net.minecraft.world.World
+import net.minecraft.util.math._
+import net.minecraft.util.text._
+import net.minecraft.util.text.event._
+import net.minecraft.world._
 
 object FunctionLib {
     final val FuncEntityAddChatMessage = TypedName(method("func_145747_a"), classOf[Unit])
@@ -80,8 +79,8 @@ object FunctionLib {
     final val FuncEntityGetDataManager = TypedName(method("func_184212_Q"), classOf[EntityDataManager])
     final val FuncEntityGetDisplayName = TypedName(method("func_145748_c_"), classOf[ITextComponent])
     final val FuncEntityGetDistance = TypedName(method("func_70011_f"), classOf[Double])
-    final val FuncEntityGetDistanceSq_Coords = TypedName(method("func_70092_e"), classOf[Double])
-    final val FuncEntityGetDistanceSq_BlockPos = TypedName(method("func_174818_b"), classOf[Double])
+    final val FuncEntityGetDistanceSq_0 = TypedName(method("func_70092_e"), classOf[Double])
+    final val FuncEntityGetDistanceSq_1 = TypedName(method("func_174818_b"), classOf[Double])
     final val FuncEntityGetDistanceSqToCenter = TypedName(method("func_174831_c"), classOf[Double])
     final val FuncEntityGetDistanceSqToEntity = TypedName(method("func_70068_e"), classOf[Double])
     final val FuncEntityGetDistanceToEntity = TypedName(method("func_70032_d"), classOf[Float])
@@ -106,15 +105,15 @@ object FunctionLib {
     final val FuncEntityGetMountedYOffset = TypedName(method("func_70042_X"), classOf[Double])
     final val FuncEntityGetName = TypedName(method("func_70005_c_"), classOf[String])
     final val FuncEntityGetParts = TypedName(method("func_70021_al"), classOf[Array[Entity]])
-    final val FuncEntityGetPassengers = TypedName(method("func_184188_bt"), classOf[util.List[Entity]])
+    final val FuncEntityGetPassengers = TypedName(method("func_184188_bt"), classOf[List[Entity]])
     final val FuncEntityGetPortalCooldown = TypedName(method("func_82147_ab"), classOf[Int])
     final val FuncEntityGetPosition = TypedName(method("func_180425_c"), classOf[BlockPos])
     final val FuncEntityGetPositionEyes = TypedName(method("func_174824_e"), classOf[Vec3d])
     final val FuncEntityGetPositionVector = TypedName(method("func_174791_d"), classOf[Vec3d])
     final val FuncEntityGetPushReaction = TypedName(method("func_184192_z"), classOf[EnumPushReaction])
     final val FuncEntityGetRecursivePassengers = TypedName(method("func_184182_bu"), classOf[util.Collection[Entity]])
-    final val FuncEntityGetRecursivePassengersByType_Collection = TypedName(method("func_184180_b"), classOf[util.Collection[_]])
-    final val FuncEntityGetRecursivePassengersByType_Void = TypedName(method("func_184175_a"), classOf[Unit])
+    final val FuncEntityGetRecursivePassengersByType_0 = TypedName(method("func_184180_b"), classOf[util.Collection[_]])
+    final val FuncEntityGetRecursivePassengersByType_1 = TypedName(method("func_184175_a"), classOf[Unit])
     final val FuncEntityGetRenderBoundingBox = TypedName(method("func_184177_bl"), classOf[AxisAlignedBB])
     final val FuncEntityGetRidingEntity = TypedName(method("func_184187_bx"), classOf[Entity])
     final val FuncEntityGetRotatedYaw = TypedName(method("func_184229_a"), classOf[Float])
@@ -236,8 +235,8 @@ object FunctionLib {
     final val FuncEntitySetWorld = TypedName(method("func_70029_a"), classOf[Unit])
     final val FuncEntityShouldSetPosAfterLoading = TypedName(method("func_142008_O"), classOf[Boolean])
     final val FuncEntitySpawnRunningParticles = TypedName(method("func_174830_Y"), classOf[Unit])
-    final val FuncEntityStartRiding_OneParam = TypedName(method("func_184220_m"), classOf[Boolean])
-    final val FuncEntityStartRiding_TwoParam = TypedName(method("func_184205_a"), classOf[Boolean])
+    final val FuncEntityStartRiding_0 = TypedName(method("func_184220_m"), classOf[Boolean])
+    final val FuncEntityStartRiding_1 = TypedName(method("func_184205_a"), classOf[Boolean])
     final val FuncEntityToString = TypedName("toString", classOf[String])
     final val FuncEntityUpdateFallState = TypedName(method("func_184231_a"), classOf[Unit])
     final val FuncEntityUpdatePassenger = TypedName(method("func_184232_k"), classOf[Unit])

@@ -65,9 +65,8 @@ class FieldLogic(entity: ISoulEntity) {
         for((key, value) <- dataMap) {
             if(value._2) {
                 val nbt = new NBTTagCompound
-                //TODO test this
                 GIApiInterface.dataTypeRegistry.writeValueToNBT(nbt, "key", classOf[TypedName[_]], key)
-                GIApiInterface.dataTypeRegistry.writeValueToNBT(nbt, "val", classOf[Any], value._1)
+                GIApiInterface.dataTypeRegistry.writeValueToNBT(nbt, "val", key.asInstanceOf[TypedName[Any]].clzz, value._1)
                 list.appendTag(nbt)
             }
         }

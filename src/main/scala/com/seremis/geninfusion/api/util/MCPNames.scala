@@ -1,4 +1,4 @@
-package com.seremis.geninfusion.util
+package com.seremis.geninfusion.api.util
 
 import java.io.File
 
@@ -23,12 +23,14 @@ object MCPNames {
     def method(srg: String): String = if(DEV_ENV) methods.getOrElse(srg, srg) else srg
 
     private def readMappings(file: File): HashMap[String, String] = {
-        if(!DEV_ENV) return null
-        if (!file.isFile) {
-            throw new RuntimeException("Couldn't find MCP mappings in location: '" + mappingsDir + "'")
+        if(DEV_ENV) {
+            if(!file.isFile) {
+                throw new RuntimeException("Couldn't find MCP mappings in location: '" + mappingsDir + "'")
+            }
+            GeneticInfusion.logger.info("Reading SRG->MCP mappings from " + file)
+            return Files.readLines(file, Charsets.UTF_8, new MCPFileParser())
         }
-        GeneticInfusion.logger.info("Reading SRG->MCP mappings from " + file)
-        Files.readLines(file, Charsets.UTF_8, new MCPFileParser())
+        null
     }
 
     private class MCPFileParser extends LineProcessor[HashMap[String, String]] {

@@ -1,10 +1,10 @@
 package com.seremis.geninfusion.api.soulentity
 
 import com.seremis.geninfusion.api.genetics.ISoul
-import com.seremis.geninfusion.api.util.{INBTTagable, TypedName}
+import com.seremis.geninfusion.api.util.TypedName
 import net.minecraft.entity.EntityLiving
 
-trait ISoulEntity extends INBTTagable {
+trait ISoulEntity {
 
     implicit def asLiving = this.asInstanceOf[EntityLiving]
 

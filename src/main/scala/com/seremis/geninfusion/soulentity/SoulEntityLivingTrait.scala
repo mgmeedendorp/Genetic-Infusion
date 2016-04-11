@@ -2,7 +2,6 @@ package com.seremis.geninfusion.soulentity
 
 import com.seremis.geninfusion.api.GIApiInterface
 import com.seremis.geninfusion.api.genetics.ISoul
-import com.seremis.geninfusion.api.lib.FunctionLib
 import com.seremis.geninfusion.api.soulentity.ISoulEntity
 import com.seremis.geninfusion.api.util.TypedName
 import com.seremis.geninfusion.soulentity.logic.FieldLogic
@@ -51,12 +50,12 @@ trait SoulEntityLivingTrait extends EntityLiving with EntityLivingMethodOverride
     override def writeToNBT(compound: NBTTagCompound): Unit = {
         GIApiInterface.dataTypeRegistry.writeValueToNBT(compound, "soul", classOf[ISoul], soul)
         fieldLogic.writeToNBT(compound)
-        methodLogic.callMethod(FunctionLib.FuncEntityWriteToNBT, () => super.writeToNBT(compound), compound)
+        super.writeToNBT(compound)
     }
 
     override def readFromNBT(compound: NBTTagCompound): Unit = {
         soul = GIApiInterface.dataTypeRegistry.readValueFromNBT(compound, "soul", classOf[ISoul])
         fieldLogic.readFromNBT(compound)
-        methodLogic.callMethod(FunctionLib.FuncEntityReadFromNBT, () => super.readFromNBT(compound), compound)
+        super.readFromNBT(compound)
     }
 }

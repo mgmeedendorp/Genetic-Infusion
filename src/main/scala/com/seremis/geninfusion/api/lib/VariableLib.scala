@@ -1,24 +1,23 @@
 package com.seremis.geninfusion.api.lib
 
 import java.util
-import java.util.{Random, UUID}
+import java.util._
 
 import com.seremis.geninfusion.api.util.TypedName
-import com.seremis.geninfusion.util.MCPNames._
-import net.minecraft.command.CommandResultStats
+import net.minecraft.command._
+import net.minecraft.entity._
 import net.minecraft.entity.ai._
-import net.minecraft.entity.ai.attributes.{AbstractAttributeMap, AttributeModifier}
-import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.{Entity, EntityBodyHelper, EntityLivingBase}
-import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.network.datasync.{DataParameter, EntityDataManager}
-import net.minecraft.pathfinding.{PathNavigate, PathNodeType}
-import net.minecraft.potion.{Potion, PotionEffect}
-import net.minecraft.util.math.{AxisAlignedBB, BlockPos, Vec3d}
-import net.minecraft.util.{CombatTracker, EnumFacing, EnumHand, ResourceLocation}
-import net.minecraft.world.World
-import org.apache.logging.log4j.Logger
+import net.minecraft.entity.ai.attributes._
+import net.minecraft.entity.player._
+import net.minecraft.item._
+import net.minecraft.nbt._
+import net.minecraft.network.datasync._
+import net.minecraft.pathfinding._
+import net.minecraft.potion._
+import net.minecraft.util._
+import net.minecraft.util.math._
+import net.minecraft.world._
+import org.apache.logging.log4j._
 
 object VariableLib {
     final val VarEntityAIR = TypedName(field("field_184241_ay"), classOf[DataParameter[Integer]])
@@ -86,7 +85,7 @@ object VariableLib {
     final val VarEntityPreventEntitySpawning = TypedName(field("field_70156_m"), classOf[Boolean])
     final val VarEntityRand = TypedName(field("field_70146_Z"), classOf[Random])
     final val VarEntityRenderDistanceWeight = TypedName(field("field_70155_l"), classOf[Double])
-    final val VarEntityRiddenByEntities = TypedName(field("field_184244_h"), classOf[util.List[Entity]])
+    final val VarEntityRiddenByEntities = TypedName(field("field_184244_h"), classOf[List[Entity]])
     final val VarEntityRideCooldown = TypedName(field("field_184245_j"), classOf[Int])
     final val VarEntityRidingEntity = TypedName(field("field_184239_as"), classOf[Entity])
     final val VarEntityRotationPitch = TypedName(field("field_70125_A"), classOf[Float])

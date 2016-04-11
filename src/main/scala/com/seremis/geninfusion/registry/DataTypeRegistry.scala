@@ -1,7 +1,7 @@
 package com.seremis.geninfusion.registry
 
 import com.seremis.geninfusion.api.GIApiInterface.IDataTypeRegistry
-import com.seremis.geninfusion.api.util.DataType
+import com.seremis.geninfusion.api.util.{DataType, INBTTagable}
 import net.minecraft.nbt.NBTTagCompound
 
 import scala.collection.mutable.HashMap
@@ -34,5 +34,11 @@ class DataTypeRegistry extends IDataTypeRegistry {
     override def writeValueToNBT[A](compound: NBTTagCompound, name: String, dataClass: Class[A], data: A): Unit = getDataTypeForClass(dataClass).writeToNBT(compound, name, data)
 
     @throws[IllegalArgumentException]
-    def noRegisteredDataType(clzz: Class[_]) = throw new IllegalArgumentException("There is no registered DataType for class " + clzz.getName + ". Make sure to register the DataType before using it!.")
+    def noRegisteredDataType(clzz: Class[_]) = {
+        if(classOf[INBTTagable].isAssignableFrom(clzz)) {
+            throw new IllegalArgumentException("There is no registered DataType for class " + clzz.getName + ", even though there should be one, as it implements INBTTagable. Make sure the DataType is registered before using it.")
+        } else {
+            throw new IllegalArgumentException("There is no registered DataType for class " + clzz.getName + ". Make sure to register the DataType before using it.")
+        }
+    }
 }
