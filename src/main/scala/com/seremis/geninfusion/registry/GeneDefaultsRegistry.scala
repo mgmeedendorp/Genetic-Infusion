@@ -51,7 +51,7 @@ class GeneDefaultsRegistry extends IGeneDefaultsRegistry {
         val option = defaultsMap.get(clzz)
 
         if(option.nonEmpty) {
-            val ancestry = AncestryLeaf(EntityList.classToStringMapping.get(clzz), clzz)
+            val ancestry = AncestryLeaf(EntityList.CLASS_TO_NAME.get(clzz), clzz)
             var data = TreeMap.empty[TypedName[_], IChromosome[_]]
 
             val defaults = option.get
