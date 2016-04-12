@@ -1,8 +1,9 @@
 package com.seremis.geninfusion.api.lib
 
-import java.{lang, util}
 import java.util._
+import java.{lang, util}
 
+import com.seremis.geninfusion.api.util.MCPNames._
 import com.seremis.geninfusion.api.util.TypedName
 import net.minecraft.block.material._
 import net.minecraft.command._
@@ -61,7 +62,6 @@ object FunctionLib {
     final val FuncEntityEquals = TypedName("equals", classOf[Boolean])
     final val FuncEntityExtinguish = TypedName(method("func_70066_B"), classOf[Unit])
     final val FuncEntityFall = TypedName(method("func_180430_e"), classOf[Unit])
-    final val FuncEntityFunc_184213_bq = TypedName("func_184213_bq", classOf[Boolean])
     final val FuncEntityGetAdjustedHorizontalFacing = TypedName(method("func_184172_bi"), classOf[EnumFacing])
     final val FuncEntityGetAir = TypedName(method("func_70086_ai"), classOf[Int])
     final val FuncEntityGetAlwaysRenderNameTag = TypedName(method("func_174833_aM"), classOf[Boolean])
@@ -133,6 +133,7 @@ object FunctionLib {
     final val FuncEntityHasCustomName = TypedName(method("func_145818_k_"), classOf[Boolean])
     final val FuncEntityHashCode = TypedName("hashCode", classOf[Int])
     final val FuncEntityHitByEntity = TypedName(method("func_85031_j"), classOf[Boolean])
+    final val FuncEntityIgnoreItemEntityData = TypedName(method("func_184213_bq"), classOf[Boolean])
     final val FuncEntityIsBeingRidden = TypedName(method("func_184207_aI"), classOf[Boolean])
     final val FuncEntityIsBurning = TypedName(method("func_70027_ad"), classOf[Boolean])
     final val FuncEntityIsEntityAlive = TypedName(method("func_70089_S"), classOf[Boolean])
