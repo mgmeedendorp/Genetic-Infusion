@@ -20,9 +20,9 @@ class Cuboid(x: Float, y: Float, z: Float, sizeX: Float, sizeY: Float, sizeZ: Fl
 
     override def getTexturedRects: Array[ITexturedRect] = texturedRects
 
-    override def draw(buffer: VertexBuffer, scale: Float) {
+    override def draw(buffer: VertexBuffer) {
         for(rect <- texturedRects) {
-            rect.draw(buffer, scale)
+            rect.draw(buffer)
         }
     }
 

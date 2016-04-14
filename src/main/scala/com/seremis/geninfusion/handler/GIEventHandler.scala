@@ -2,7 +2,7 @@ package com.seremis.geninfusion.handler
 
 import com.seremis.geninfusion.api.GIApiInterface
 import com.seremis.geninfusion.api.genetics.ISoul
-import com.seremis.geninfusion.api.lib.{FunctionLib, Genes}
+import com.seremis.geninfusion.api.lib.Genes
 import com.seremis.geninfusion.api.util.TypedName
 import com.seremis.geninfusion.soulentity.SoulEntityLiving
 import com.seremis.geninfusion.soulentity.logic.FieldLogic
@@ -19,13 +19,13 @@ class GIEventHandler {
     def playerInteract(event: RightClickBlock) {
         if(!event.getWorld.isRemote && event.getEntityPlayer.getHeldItem(EnumHand.MAIN_HAND) == null) {
 
-            val method = FunctionLib.FuncEntityGetEntityId
+            //val method = FunctionLib.FuncEntityEntityInit
 
-            println(method)
+            //println(method)
 
-            val m = GIApiInterface.entityMethodRegistry.getMethodsForName(method)
+           // val m = GIApiInterface.entityMethodRegistry.getMethodsForName(method)
 
-            println(m)
+           // println(m)
 
             val entity = new SoulEntityLiving(event.getWorld, GIApiInterface.geneDefaultsRegistry.getSoulForClass(classOf[EntityZombie]))
 

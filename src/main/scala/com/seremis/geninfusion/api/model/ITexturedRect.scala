@@ -2,10 +2,11 @@ package com.seremis.geninfusion.api.model
 
 import java.awt.image.BufferedImage
 
+import com.seremis.geninfusion.api.util.INBTTagable
 import net.minecraft.client.renderer.VertexBuffer
 import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 
-trait ITexturedRect {
+trait ITexturedRect extends INBTTagable {
 
     def getSrcX: Int
     def getSrcY: Int
@@ -29,5 +30,5 @@ trait ITexturedRect {
     @SideOnly(Side.CLIENT)
     def getTexture: BufferedImage
 
-    def draw(buffer: VertexBuffer, scale: Float)
+    def draw(buffer: VertexBuffer)
 }

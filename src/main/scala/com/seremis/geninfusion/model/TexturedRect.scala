@@ -41,7 +41,7 @@ class TexturedRect(textureLocation: String, corners: Array[Vec3d], srcX: Int, sr
 
     override def getTextureLocation: String = textureLocation
 
-    override def draw(buffer: VertexBuffer, scale: Float) = {
+    override def draw(buffer: VertexBuffer) = {
         val vec1 = corners(1).subtract(corners(0))
         val vec2 = corners(1).subtract(corners(2))
 

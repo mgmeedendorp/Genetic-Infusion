@@ -2,7 +2,7 @@ package com.seremis.geninfusion.api.model
 
 import net.minecraft.client.renderer.VertexBuffer
 
-trait ICuboid {
+trait ICuboid extends INBTTagable {
     def getX: Float
     def getY: Float
     def getZ: Float
@@ -13,6 +13,6 @@ trait ICuboid {
 
     def getTexturedRects: Array[ITexturedRect]
 
-    def draw(buffer: VertexBuffer, scale: Float)
+    def draw(buffer: VertexBuffer)
     def mutate(): ICuboid
 }
