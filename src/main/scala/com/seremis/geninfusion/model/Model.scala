@@ -3,19 +3,23 @@ package com.seremis.geninfusion.model
 import java.awt.image.BufferedImage
 
 import com.seremis.geninfusion.api.model.animation.IAnimator
-import com.seremis.geninfusion.api.model.{IModel, IModelPart}
+import com.seremis.geninfusion.api.model.{IModel, IModelPart, ITexturedRect}
+import com.seremis.geninfusion.util.TextureHelper
+import net.minecraft.util.ResourceLocation
 import org.lwjgl.opengl.GL11
 
-class Model(parts: Array[IModelPart]) extends IModel {
+import scala.collection.mutable.ArrayBuffer
 
-    protected var texture = generateTexture()
+class Model(parts: Array[IModelPart], textureLocation: Option[String] = None) extends IModel {
 
-    def render(): Unit = render(1F/16F)
+    lazy val texture = generateTexture(textureLocation)
 
-    def render(scale: Float): Unit = {
+    override def render(): Unit = render(1F/16F)
+
+    override def render(scale: Float): Unit = {
+        getAnimator.animate()
+
         GL11.glPushMatrix()
-
-        //Bind texture
 
         GL11.glScalef(scale, scale, scale)
 
@@ -25,19 +29,59 @@ class Model(parts: Array[IModelPart]) extends IModel {
         GL11.glPopMatrix()
     }
 
-    def generateTexture(): BufferedImage = {
+    def getTexturedRects: Array[ITexturedRect] = {
+        val list: ArrayBuffer[ITexturedRect] = ArrayBuffer()
 
+        for(part <- parts) {
+            for(cuboid <- part.getCuboids) {
+                for(rect <- cuboid.getTexturedRects) {
+                    list += rect
+                }
+            }
+        }
+
+        list.toArray
     }
 
-    def copy() = new Model(parts)
+    def setTextureSize(width: Int, height: Int) {
+        for(part <- parts) {
+            for(cuboid <- part.getCuboids) {
+                for(rect <- cuboid.getTexturedRects) {
+                    rect.setDestTextureWidth(width)
+                    rect.setDestTextureHeight(height)
+                }
+            }
+        }
+    }
 
-    def getModelParts = parts
+    def generateTexture(textureLocation: Option[String]): BufferedImage = {
+        if(textureLocation.isEmpty) {
+            val rects = getTexturedRects
+            val textureSize = TextureHelper.populateTexturedRectsDestination(rects)
 
-    def mutate() = ???
+            setTextureSize(textureSize._1, textureSize._2)
 
-    def getAnimator: IAnimator = ???
+            TextureHelper.stitchTexturedRects(rects, textureSize)
+        } else {
+            val texture = TextureHelper.getBufferedImage(new ResourceLocation(textureLocation.get))
 
-    def resetInitialValues() {
+            setTextureSize(texture.getWidth, texture.getHeight)
+
+            texture
+        }
+    }
+
+    override def getTexture: BufferedImage = texture
+
+    override def copy() = new Model(parts)
+
+    override def getModelParts = parts
+
+    override def mutate() = ???
+
+    override def getAnimator: IAnimator = ???
+
+    override def resetInitialValues() {
         for(part <- parts) {
             part.resetInitialValues()
         }

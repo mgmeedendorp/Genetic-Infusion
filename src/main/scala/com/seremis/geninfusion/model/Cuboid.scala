@@ -7,7 +7,7 @@ import net.minecraft.util.math.Vec3d
 class Cuboid(x: Float, y: Float, z: Float, sizeX: Float, sizeY: Float, sizeZ: Float, texturedRects: Array[ITexturedRect]) extends ICuboid {
 
     def this(x: Float, y: Float, z: Float, sizeX: Float, sizeY: Float, sizeZ: Float, textureOffsetX: Int, textureOffsetY: Int, mirror: Boolean, textureLocation: String, textureWidth: Int, textureHeight: Int) {
-        this(x, y, z, sizeX, sizeY, sizeZ, Cuboid.textureLocationToRects(x, y, z, sizeX, sizeY, sizeZ, textureOffsetX, textureOffsetY, mirror, textureLocation, textureWidth, textureHeight).asInstanceOf[Array[ITexturedRect]])
+        this(x, y, z, sizeX, sizeY, sizeZ, Cuboid.textureLocationToRects(x, y, z, sizeX, sizeY, sizeZ, textureOffsetX, textureOffsetY, mirror, textureLocation).asInstanceOf[Array[ITexturedRect]])
     }
 
     override def getX: Float = x
@@ -30,7 +30,7 @@ class Cuboid(x: Float, y: Float, z: Float, sizeX: Float, sizeY: Float, sizeZ: Fl
 }
 
 object Cuboid {
-    def textureLocationToRects(x: Float, y: Float, z: Float, sizeX: Float, sizeY: Float, sizeZ: Float, textureOffsetX: Int, textureOffsetY: Int, mirror: Boolean, textureLocation: String, textureWidth: Int, textureHeight: Int): Array[TexturedRect] = {
+    def textureLocationToRects(x: Float, y: Float, z: Float, sizeX: Float, sizeY: Float, sizeZ: Float, textureOffsetX: Int, textureOffsetY: Int, mirror: Boolean, textureLocation: String): Array[TexturedRect] = {
         var x1 = x
         val y1 = y
         val z1 = z
@@ -59,12 +59,12 @@ object Cuboid {
         )
 
         Array(
-            new TexturedRect(textureLocation, quadCorners(0), textureOffsetX + dz + dx, textureOffsetY + dz, dz, dy, textureWidth, textureHeight),
-            new TexturedRect(textureLocation, quadCorners(1), textureOffsetX, textureOffsetY + dz, dz, dy, textureWidth, textureHeight),
-            new TexturedRect(textureLocation, quadCorners(2), textureOffsetX + dz, textureOffsetY, dx, dz, textureWidth, textureHeight),
-            new TexturedRect(textureLocation, quadCorners(3), textureOffsetX + dz + dx, textureOffsetY, dx, dz, textureWidth, textureHeight),
-            new TexturedRect(textureLocation, quadCorners(4), textureOffsetX + dz, textureOffsetY + dz, dx, dy, textureWidth, textureHeight),
-            new TexturedRect(textureLocation, quadCorners(5), textureOffsetX + dz + dx + dz, textureOffsetY + dz, dx, dy, textureWidth, textureHeight)
+            new TexturedRect(textureLocation, quadCorners(0), textureOffsetX + dz + dx, textureOffsetY + dz, dz, dy),
+            new TexturedRect(textureLocation, quadCorners(1), textureOffsetX, textureOffsetY + dz, dz, dy),
+            new TexturedRect(textureLocation, quadCorners(2), textureOffsetX + dz, textureOffsetY, dx, dz),
+            new TexturedRect(textureLocation, quadCorners(3), textureOffsetX + dz + dx, textureOffsetY, dx, dz),
+            new TexturedRect(textureLocation, quadCorners(4), textureOffsetX + dz, textureOffsetY + dz, dx, dy),
+            new TexturedRect(textureLocation, quadCorners(5), textureOffsetX + dz + dx + dz, textureOffsetY + dz, dx, dy)
         )
     }
 }

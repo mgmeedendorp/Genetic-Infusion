@@ -5,6 +5,6 @@ import net.minecraft.util.math.Vec3d
 
 trait IAttachmentPoint extends INBTTagable {
 
-    def getConnectableCuboidTypes: Array[IModelPartType]
+    def getConnectablePartTypes: Array[IModelPartType]
     def getLocation: Vec3d
 }

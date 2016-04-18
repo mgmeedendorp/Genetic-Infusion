@@ -10,10 +10,10 @@ import net.minecraft.util.ResourceLocation
 import net.minecraft.util.math.Vec3d
 import net.minecraftforge.fml.relauncher.{Side, SideOnly}
 
-class TexturedRect(textureLocation: String, corners: Array[Vec3d], srcX: Int, srcY: Int, width: Int, height: Int, textureWidth: Int, textureHeight: Int) extends ITexturedRect {
+class TexturedRect(textureLocation: String, corners: Array[Vec3d], srcX: Int, srcY: Int, width: Int, height: Int) extends ITexturedRect {
 
-    var destX = 0
-    var destY = 0
+    var destX = srcX
+    var destY = srcY
     var destTextureWidth = 0
     var destTextureHeight = 0
 
