@@ -12,6 +12,8 @@ trait IModelPart extends INBTTagable {
     def setRotateAngles(angleX: Float, angleY: Float, angleZ: Float)
     def addRotateAngles(dX: Float, dY: Float, dZ: Float)
 
+    def setScales(scaleX: Float, scaleY: Float, scaleZ: Float)
+
     def getRotationPointX: Float
     def getRotationPointY: Float
     def getRotationPointZ: Float
@@ -19,6 +21,10 @@ trait IModelPart extends INBTTagable {
     def getRotateAngleX: Float
     def getRotateAngleY: Float
     def getRotateAngleZ: Float
+
+    def getScaleX: Float
+    def getScaleY: Float
+    def getScaleZ: Float
 
     def getCuboids: Array[ICuboid]
 
@@ -28,4 +34,6 @@ trait IModelPart extends INBTTagable {
 
     def getAttachmentPoints: Array[IAttachmentPoint]
     def getPartType: IModelPartType
+
+    def getChildParts: Array[IModelPart]
 }

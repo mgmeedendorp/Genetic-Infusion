@@ -4,7 +4,7 @@ import com.seremis.geninfusion.api.model.{IAttachmentPoint, ICuboid, IModelPart,
 import net.minecraft.client.renderer.{GlStateManager, Tessellator}
 import org.lwjgl.opengl.GL11
 
-class ModelPart(cuboids: Array[ICuboid], partType: IModelPartType, attachmentPoints: Array[IAttachmentPoint], childParts: Array[ModelPart]) extends IModelPart {
+class ModelPart(cuboids: Array[ICuboid], partType: IModelPartType, attachmentPoints: Array[IAttachmentPoint], childParts: Array[IModelPart]) extends IModelPart {
 
     protected var rotationPointX = 0.0F
     protected var rotationPointY = 0.0F
@@ -13,6 +13,10 @@ class ModelPart(cuboids: Array[ICuboid], partType: IModelPartType, attachmentPoi
     protected var rotateAngleX = 0.0F
     protected var rotateAngleY = 0.0F
     protected var rotateAngleZ = 0.0F
+
+    protected var scaleX = 0.0F
+    protected var scaleY = 0.0F
+    protected var scaleZ = 0.0F
 
     protected var initialRotationPointX = 0.0F
     protected var initialRotationPointY = 0.0F
@@ -43,6 +47,8 @@ class ModelPart(cuboids: Array[ICuboid], partType: IModelPartType, attachmentPoi
         }
 
         GL11.glPushMatrix()
+
+        GL11.glScalef(scaleX, scaleY, scaleZ)
 
         GL11.glTranslatef(rotationPointX, rotationPointY, rotationPointZ)
 
@@ -99,6 +105,12 @@ class ModelPart(cuboids: Array[ICuboid], partType: IModelPartType, attachmentPoi
         }
     }
 
+    override def setScales(x: Float, y: Float, z: Float) {
+        scaleX = x
+        scaleY = y
+        scaleZ = z
+    }
+
     override def getRotationPointX: Float = rotationPointX
     override def getRotationPointY: Float = rotationPointY
     override def getRotationPointZ: Float = rotationPointZ
@@ -106,6 +118,10 @@ class ModelPart(cuboids: Array[ICuboid], partType: IModelPartType, attachmentPoi
     override def getRotateAngleX: Float = rotateAngleX
     override def getRotateAngleY: Float = rotateAngleY
     override def getRotateAngleZ: Float = rotateAngleZ
+
+    override def getScaleX: Float = scaleX
+    override def getScaleY: Float = scaleY
+    override def getScaleZ: Float = scaleZ
 
     override def getCuboids: Array[ICuboid] = cuboids
 
@@ -136,4 +152,6 @@ class ModelPart(cuboids: Array[ICuboid], partType: IModelPartType, attachmentPoi
     override def getAttachmentPoints: Array[IAttachmentPoint] = attachmentPoints
 
     override def getPartType: IModelPartType = partType
+
+    override def getChildParts: Array[IModelPart] = childParts
 }

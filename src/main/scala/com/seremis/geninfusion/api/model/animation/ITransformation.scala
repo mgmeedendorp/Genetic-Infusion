@@ -1,8 +1,11 @@
 package com.seremis.geninfusion.api.model.animation
 
 import com.seremis.geninfusion.api.model.IModelPart
+import org.apache.commons.math3.analysis.polynomials.PolynomialFunctionLagrangeForm
 
 trait ITransformation {
+
+    def getProgression: PolynomialFunctionLagrangeForm
 
     def transformPart(part: IModelPart, time: Int): IModelPart
 

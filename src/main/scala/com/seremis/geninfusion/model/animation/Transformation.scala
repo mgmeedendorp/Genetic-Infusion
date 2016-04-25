@@ -1,14 +1,15 @@
 package com.seremis.geninfusion.model.animation
 
+import com.seremis.geninfusion.api.model.IModelPart
 import com.seremis.geninfusion.api.model.animation.ITransformation
-import com.seremis.geninfusion.api.model.{ICuboid, IModelPart}
-
-import scala.collection.mutable.ArrayBuffer
+import org.apache.commons.math3.analysis.polynomials.PolynomialFunctionLagrangeForm
 
 class Transformation(length: Int, pointX: Float, pointY: Float, pointZ: Float, rotX: Float, rotY: Float, rotZ: Float, scaleX: Float, scaleY: Float, scaleZ: Float) extends ITransformation {
 
+    override def getProgression: PolynomialFunctionLagrangeForm = new PolynomialFunctionLagrangeForm(Array(0.0D, 1.0D), Array(0.0D, 1.0D))
+
     override def transformPart(part: IModelPart, time: Int): IModelPart = {
-        val multiplier = time / getLength
+        val multiplier = getProgression.value(time / getLength).toFloat
 
         val dPointX = pointX * multiplier
         val dPointY = pointY * multiplier
@@ -22,17 +23,15 @@ class Transformation(length: Int, pointX: Float, pointY: Float, pointZ: Float, r
         val dScaleY = scaleY * multiplier
         val dScaleZ = scaleZ * multiplier
 
-        val x = part.getRotationPointX + dPointX
-        val y = part.getRotationPointY + dPointY
-        val z = part.getRotationPointZ + dPointZ
+        val sX = part.getScaleX + dScaleX
+        val sY = part.getScaleY + dScaleY
+        val sZ = part.getScaleZ + dScaleZ
 
-        val rX = part.getRotationPointX + dRotX
-        val rY = part.getRotationPointY + dRotY
-        val rZ = part.getRotationPointZ + dRotZ
+        part.moveRotationPoints(dPointX, dPointY, dPointZ)
+        part.addRotateAngles(dRotX, dRotY, dRotZ)
+        part.setScales(sX, sY, sZ)
 
-        val cuboids: ArrayBuffer[ICuboid] = ArrayBuffer()
-
-        //TODO figure this out.
+        part
     }
 
     override def getLength: Int = length

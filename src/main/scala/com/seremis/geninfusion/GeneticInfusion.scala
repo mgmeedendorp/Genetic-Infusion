@@ -34,6 +34,7 @@ object GeneticInfusion {
     def preInit(event: FMLPreInitializationEvent) {
         logger = event.getModLog
 
+        GIApiInterface.animationRegistry = new AnimationRegistry
         GIApiInterface.dataTypeRegistry = new DataTypeRegistry
         GIApiInterface.entityMethodRegistry = new EntityMethodRegistry
         GIApiInterface.geneDefaultsRegistry = new GeneDefaultsRegistry
