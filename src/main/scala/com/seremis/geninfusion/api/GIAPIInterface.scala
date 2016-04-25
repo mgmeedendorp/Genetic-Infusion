@@ -1,6 +1,7 @@
 package com.seremis.geninfusion.api
 
 import com.seremis.geninfusion.api.genetics.{IChromosome, IGene, ISoul}
+import com.seremis.geninfusion.api.model.animation.IAnimation
 import com.seremis.geninfusion.api.soulentity.IEntityMethod
 import com.seremis.geninfusion.api.util.{DataType, TypedName}
 import net.minecraft.entity.EntityLiving
@@ -10,10 +11,20 @@ import scala.collection.mutable.ListBuffer
 
 object GIApiInterface {
 
+    var animationRegistry: IAnimationRegistry = _
     var dataTypeRegistry: IDataTypeRegistry = _
     var entityMethodRegistry: IEntityMethodRegistry = _
     var geneDefaultsRegistry: IGeneDefaultsRegistry = _
     var geneRegistry: IGeneRegistry = _
+
+    trait IAnimationRegistry {
+        def register(name: String, animation: IAnimation)
+
+        @throws[IllegalArgumentException]
+        def getAnimationForName(name: String): IAnimation
+
+        def getAnimations: Array[IAnimation]
+    }
 
     trait IDataTypeRegistry {
         def register[A](data: DataType[A], clzz: Class[A])
