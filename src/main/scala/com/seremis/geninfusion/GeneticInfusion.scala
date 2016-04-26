@@ -4,7 +4,7 @@ import com.seremis.geninfusion.api.GIApiInterface
 import com.seremis.geninfusion.handler.GIEventHandler
 import com.seremis.geninfusion.proxy.CommonProxy
 import com.seremis.geninfusion.register._
-import com.seremis.geninfusion.registry.{DataTypeRegistry, EntityMethodRegistry, GeneDefaultsRegistry, GeneRegistry}
+import com.seremis.geninfusion.registry._
 import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.Mod.EventHandler
 import net.minecraftforge.fml.common.event.{FMLInitializationEvent, FMLPostInitializationEvent, FMLPreInitializationEvent}
@@ -33,6 +33,8 @@ object GeneticInfusion {
     @EventHandler
     def preInit(event: FMLPreInitializationEvent) {
         logger = event.getModLog
+
+        GIApiInterface.GIModId = ModId
 
         GIApiInterface.animationRegistry = new AnimationRegistry
         GIApiInterface.dataTypeRegistry = new DataTypeRegistry

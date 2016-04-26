@@ -6,6 +6,10 @@ import scala.util.Sorting
 
 class ModelPartType(tags: Array[String]) extends IModelPartType {
 
+    def this(tag: String) {
+        this(Array(tag))
+    }
+
     Sorting.quickSort(tags)
 
     override def getTags: Array[String] = tags

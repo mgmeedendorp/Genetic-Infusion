@@ -4,7 +4,6 @@ import java.util._
 import java.{lang, util}
 
 import com.seremis.geninfusion.api.GIApiInterface
-import com.seremis.geninfusion.api.lib.FunctionLib._
 import com.seremis.geninfusion.api.soulentity.ISoulEntity
 import com.seremis.geninfusion.api.util.TypedName
 import com.seremis.geninfusion.soulentity.logic.MethodLogic

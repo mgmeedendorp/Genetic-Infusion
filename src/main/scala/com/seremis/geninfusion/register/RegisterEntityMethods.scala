@@ -1,7 +1,7 @@
 package com.seremis.geninfusion.register
 
 import com.seremis.geninfusion.api.GIApiInterface
-import com.seremis.geninfusion.api.lib.FunctionLib
+import com.seremis.geninfusion.api.lib.reflection.FunctionLib
 import com.seremis.geninfusion.soulentity.MethodInit
 
 object RegisterEntityMethods extends Register {

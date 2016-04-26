@@ -5,6 +5,8 @@ import com.seremis.geninfusion.api.soulentity.ISoulEntity
 
 trait IAnimation {
 
+    //TODO test animations
+
     def isApplicable(entity: ISoulEntity): Boolean
 
     def doesLoop(entity: ISoulEntity): Boolean
