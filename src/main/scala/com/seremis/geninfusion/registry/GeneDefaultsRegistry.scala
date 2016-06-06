@@ -4,7 +4,7 @@ import com.seremis.geninfusion.GeneticInfusion
 import com.seremis.geninfusion.api.GIApiInterface
 import com.seremis.geninfusion.api.GIApiInterface.IGeneDefaultsRegistry
 import com.seremis.geninfusion.api.genetics.{IChromosome, ISoul}
-import com.seremis.geninfusion.api.util.TypedName
+import com.seremis.geninfusion.api.util.GeneName
 import com.seremis.geninfusion.genetics.{AncestryLeaf, Soul}
 import net.minecraft.entity.{EntityList, EntityLiving}
 import org.apache.logging.log4j.Level
@@ -14,10 +14,10 @@ import scala.collection.mutable.{HashMap, ListBuffer}
 
 class GeneDefaultsRegistry extends IGeneDefaultsRegistry {
 
-    var defaultsMap: HashMap[Class[_ <: EntityLiving], ListBuffer[(TypedName[_], IChromosome[_])]] = HashMap()
+    var defaultsMap: HashMap[Class[_ <: EntityLiving], ListBuffer[(GeneName[_], IChromosome[_])]] = HashMap()
 
-    override def register[A](clzz: Class[_ <: EntityLiving], geneName: TypedName[A], defaultValue: IChromosome[A]): Unit = {
-        var list: ListBuffer[(TypedName[_], IChromosome[_])] = defaultsMap.getOrElse(clzz, ListBuffer())
+    override def register[A](clzz: Class[_ <: EntityLiving], geneName: GeneName[A], defaultValue: IChromosome[A]): Unit = {
+        var list: ListBuffer[(GeneName[_], IChromosome[_])] = defaultsMap.getOrElse(clzz, ListBuffer())
 
         list += (geneName -> defaultValue)
 
@@ -27,7 +27,7 @@ class GeneDefaultsRegistry extends IGeneDefaultsRegistry {
     override def isClassRegistered(clzz: Class[_ <: EntityLiving]): Boolean = defaultsMap.get(clzz).nonEmpty
 
     @throws[IllegalArgumentException]
-    override def getDefaultValueForClass[A](clzz: Class[_ <: EntityLiving], geneName: TypedName[A]): IChromosome[A] = {
+    override def getDefaultValueForClass[A](clzz: Class[_ <: EntityLiving], geneName: GeneName[A]): IChromosome[A] = {
         val option = defaultsMap.get(clzz)
 
         if(option.nonEmpty) {
@@ -52,7 +52,7 @@ class GeneDefaultsRegistry extends IGeneDefaultsRegistry {
 
         if(option.nonEmpty) {
             val ancestry = AncestryLeaf(EntityList.CLASS_TO_NAME.get(clzz), clzz)
-            var data = TreeMap.empty[TypedName[_], IChromosome[_]]
+            var data = TreeMap.empty[GeneName[_], IChromosome[_]]
 
             val defaults = option.get
 

@@ -1,8 +1,10 @@
 package com.seremis.geninfusion.api.lib
 
-import com.seremis.geninfusion.api.util.TypedName
+import com.seremis.geninfusion.api.util.GeneName
 
 object Genes {
 
-    final val GeneTest = TypedName("gene1", classOf[Boolean])
+    final val GeneTest = GeneName("gene1", classOf[Boolean])
 }
+
+

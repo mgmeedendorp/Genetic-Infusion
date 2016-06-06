@@ -22,3 +22,7 @@ case class TypedName[A](name: String, implicit val clzz: Class[A]) extends Order
             0
     }
 }
+
+sealed case class VariableName[A](override val name: String, override val clzz: Class[A]) extends TypedName(name, clzz)
+sealed case class FunctionName[A](override val name: String, override val clzz: Class[A]) extends TypedName(name, clzz)
+sealed case class GeneName[A](override val name: String, override val clzz: Class[A]) extends TypedName(name, clzz)

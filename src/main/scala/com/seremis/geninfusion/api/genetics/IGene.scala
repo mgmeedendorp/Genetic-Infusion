@@ -1,10 +1,10 @@
 package com.seremis.geninfusion.api.genetics
 
-import com.seremis.geninfusion.api.util.TypedName
+import com.seremis.geninfusion.api.util.GeneName
 
 trait IGene[A] {
 
-    def getGeneName: TypedName[A]
+    def getGeneName: GeneName[A]
 
     def getDefaultValue: IChromosome[A]
     def noMutations()

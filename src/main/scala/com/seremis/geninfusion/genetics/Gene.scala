@@ -1,17 +1,17 @@
 package com.seremis.geninfusion.genetics
 
 import com.seremis.geninfusion.api.genetics.{IChromosome, IGene}
-import com.seremis.geninfusion.api.util.TypedName
+import com.seremis.geninfusion.api.util.GeneName
 
 import scala.util.Random
 
-class Gene[A](geneName: TypedName[A], defaultValue: IChromosome[A]) extends IGene[A] {
+class Gene[A](geneName: GeneName[A], defaultValue: IChromosome[A]) extends IGene[A] {
 
     lazy val rand = new Random
 
     var mutate = true
 
-    override def getGeneName: TypedName[A] = geneName
+    override def getGeneName: GeneName[A] = geneName
 
     override def inherit(parent1: IChromosome[A], parent2: IChromosome[A]): IChromosome[A] = {
         val allele1 = if(rand.nextBoolean()) parent1.getActiveAllele.copy() else parent2.getActiveAllele.copy()

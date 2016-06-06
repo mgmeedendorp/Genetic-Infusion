@@ -2,7 +2,7 @@ package com.seremis.geninfusion.soulentity.logic
 
 import com.seremis.geninfusion.api.GIApiInterface
 import com.seremis.geninfusion.api.soulentity.ISoulEntity
-import com.seremis.geninfusion.api.util.TypedName
+import com.seremis.geninfusion.api.util.VariableName
 import com.seremis.geninfusion.util.GIReflectionHelper
 import net.minecraft.nbt.{NBTTagCompound, NBTTagList}
 import net.minecraftforge.common.util.Constants
@@ -11,7 +11,7 @@ import scala.collection.mutable.{HashMap, ListBuffer}
 
 class FieldLogic(entity: ISoulEntity) {
 
-    protected val dataMap: HashMap[TypedName[_], (Any, Boolean)] = HashMap()
+    protected val dataMap: HashMap[VariableName[_], (Any, Boolean)] = HashMap()
     protected val fields: ListBuffer[String] = {
         var clazz: Any = entity.getClass
         val list: ListBuffer[String] = ListBuffer()
@@ -25,7 +25,7 @@ class FieldLogic(entity: ISoulEntity) {
         list
     }
 
-    def makePersistent(name: TypedName[_]): Unit = {
+    def makePersistent(name: VariableName[_]): Unit = {
         if(GIApiInterface.dataTypeRegistry.hasDataTypeForClass(name.clzz)) {
             val option = dataMap.get(name)
             if(option.nonEmpty) {
@@ -38,7 +38,7 @@ class FieldLogic(entity: ISoulEntity) {
         }
     }
 
-    def setVar[A](name: TypedName[A], value: A): Unit = {
+    def setVar[A](name: VariableName[A], value: A): Unit = {
         if(fields.contains(name.name)) {
             GIReflectionHelper.setField(entity, name.name, value)
         } else {
@@ -46,7 +46,7 @@ class FieldLogic(entity: ISoulEntity) {
         }
     }
 
-    def getVar[A](name: TypedName[A]): A = {
+    def getVar[A](name: VariableName[A]): A = {
         if(fields.contains(name.name)) {
             GIReflectionHelper.getField(entity, name.name).asInstanceOf[A]
         } else {
@@ -65,8 +65,8 @@ class FieldLogic(entity: ISoulEntity) {
         for((key, value) <- dataMap) {
             if(value._2) {
                 val nbt = new NBTTagCompound
-                GIApiInterface.dataTypeRegistry.writeValueToNBT(nbt, "key", classOf[TypedName[_]], key)
-                GIApiInterface.dataTypeRegistry.writeValueToNBT(nbt, "val", key.asInstanceOf[TypedName[Any]].clzz, value._1)
+                GIApiInterface.dataTypeRegistry.writeValueToNBT(nbt, "key", classOf[VariableName[_]], key)
+                GIApiInterface.dataTypeRegistry.writeValueToNBT(nbt, "val", key.asInstanceOf[VariableName[Any]].clzz, value._1)
                 list.appendTag(nbt)
             }
         }
@@ -82,7 +82,7 @@ class FieldLogic(entity: ISoulEntity) {
         for(i <- 0 until list.tagCount()) {
             val tag = list.getCompoundTagAt(i)
 
-            val key = GIApiInterface.dataTypeRegistry.readValueFromNBT(tag, "key", classOf[TypedName[_]])
+            val key = GIApiInterface.dataTypeRegistry.readValueFromNBT(tag, "key", classOf[VariableName[_]])
             val value = GIApiInterface.dataTypeRegistry.readValueFromNBT(tag, "val", key.clzz)
 
             dataMap += (key -> (value, true))

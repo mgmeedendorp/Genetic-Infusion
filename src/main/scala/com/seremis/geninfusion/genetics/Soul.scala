@@ -2,16 +2,16 @@ package com.seremis.geninfusion.genetics
 
 import com.seremis.geninfusion.api.GIApiInterface
 import com.seremis.geninfusion.api.genetics.{IAncestry, IChromosome, ISoul}
-import com.seremis.geninfusion.api.util.TypedName
+import com.seremis.geninfusion.api.util.GeneName
 
 import scala.collection.immutable.TreeMap
 
-class Soul(genome: TreeMap[TypedName[_], IChromosome[_]], ancestry: IAncestry) extends ISoul {
+class Soul(genome: TreeMap[GeneName[_], IChromosome[_]], ancestry: IAncestry) extends ISoul {
 
     checkParameters()
 
     @throws[IllegalArgumentException]
-    def getValueFromMap[A](name: TypedName[A]): IChromosome[A] = {
+    def getValueFromMap[A](name: GeneName[A]): IChromosome[A] = {
         genome.getOrElse(name, geneNotAvailable(name)).asInstanceOf[IChromosome[A]]
     }
 
@@ -19,13 +19,13 @@ class Soul(genome: TreeMap[TypedName[_], IChromosome[_]], ancestry: IAncestry) e
       * Returns the value of the active IAlleleData for this gene.
       */
     @throws[IllegalArgumentException]
-    override def getActiveValueForGene[A](name: TypedName[A]): A = getValueFromMap(name).getActiveAllele.getData
+    override def getActiveValueForGene[A](name: GeneName[A]): A = getValueFromMap(name).getActiveAllele.getData
 
     /**
       * Returns the value of the inactive IAlleleData of this gene.
       */
     @throws[IllegalArgumentException]
-    override def getPassiveValueForGene[A](name: TypedName[A]): A = getValueFromMap(name).getPassiveAllele.getData
+    override def getPassiveValueForGene[A](name: GeneName[A]): A = getValueFromMap(name).getPassiveAllele.getData
 
     /**
       * Returns the IAncestry object for this soul.
@@ -33,7 +33,7 @@ class Soul(genome: TreeMap[TypedName[_], IChromosome[_]], ancestry: IAncestry) e
     override def getAncestry: IAncestry = ancestry
 
     @throws[IllegalArgumentException]
-    def geneNotAvailable(name: TypedName[_]) = throw new IllegalArgumentException("There is no registered gene called '" + name.name + "' available. Is this gene registered?")
+    def geneNotAvailable(name: GeneName[_]) = throw new IllegalArgumentException("There is no registered gene called '" + name.name + "' available. Is this gene registered?")
 
     @throws[IllegalArgumentException]
     def genomeMalformed(reason: String) = throw new IllegalArgumentException("The genome for a soul was malformed. " + reason)
@@ -77,5 +77,5 @@ class Soul(genome: TreeMap[TypedName[_], IChromosome[_]], ancestry: IAncestry) e
       * IGeneData.
       * Every key-value pair has the same type parameters.
       */
-    override def getGenome: TreeMap[TypedName[_], IChromosome[_]] = genome
+    override def getGenome: TreeMap[GeneName[_], IChromosome[_]] = genome
 }

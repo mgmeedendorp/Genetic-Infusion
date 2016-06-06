@@ -3,7 +3,7 @@ package com.seremis.geninfusion.soulentity
 import com.seremis.geninfusion.api.GIApiInterface
 import com.seremis.geninfusion.api.genetics.ISoul
 import com.seremis.geninfusion.api.soulentity.ISoulEntity
-import com.seremis.geninfusion.api.util.TypedName
+import com.seremis.geninfusion.api.util.{FunctionName, VariableName}
 import com.seremis.geninfusion.soulentity.logic.FieldLogic
 import com.seremis.geninfusion.util.UtilNBT
 import io.netty.buffer.ByteBuf
@@ -21,11 +21,11 @@ trait SoulEntityLivingTrait extends EntityLiving with EntityLivingMethodOverride
 
     override def getSoul: ISoul = soul
 
-    override def getVar[A](name: TypedName[A]): A = fieldLogic.getVar(name)
-    override def setVar[A](name: TypedName[A], value: A): Unit = fieldLogic.setVar(name, value)
-    override def makePersistent(name: TypedName[_]): Unit = fieldLogic.makePersistent(name)
+    override def getVar[A](name: VariableName[A]): A = fieldLogic.getVar(name)
+    override def setVar[A](name: VariableName[A], value: A): Unit = fieldLogic.setVar(name, value)
+    override def makePersistent(name: VariableName[_]): Unit = fieldLogic.makePersistent(name)
 
-    override def callMethod[A](name: TypedName[A], args: Any*): A = methodLogic.callMethod(name, () => null.asInstanceOf[A], args)
+    override def callMethod[A](name: FunctionName[A], args: Any*): A = methodLogic.callMethod(name, () => null.asInstanceOf[A], args)
 
 
     override def writeSpawnData(data: ByteBuf) {

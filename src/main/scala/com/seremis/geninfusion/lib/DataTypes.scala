@@ -2,7 +2,7 @@ package com.seremis.geninfusion.lib
 
 import com.seremis.geninfusion.api.GIApiInterface
 import com.seremis.geninfusion.api.genetics.{IAllele, IAncestry, IChromosome, ISoul}
-import com.seremis.geninfusion.api.util.{DataType, TypedName}
+import com.seremis.geninfusion.api.util.{DataType, GeneName, TypedName}
 import com.seremis.geninfusion.genetics._
 import net.minecraft.entity.EntityLiving
 import net.minecraft.item.ItemStack
@@ -13,7 +13,7 @@ import org.apache.commons.lang3.ClassUtils
 import scala.collection.immutable.TreeMap
 
 object DataTypes {
-
+//TODO add DataType for VariableName, FunctionName and GeneName
     val typeBoolean = new DataType[Boolean] {
         override def writeToNBT(compound: NBTTagCompound, name: String, data: Boolean): Unit = compound.setBoolean(name, data)
         override def readFromNBT(compound: NBTTagCompound, name: String): Boolean = compound.getBoolean(name)
@@ -140,10 +140,10 @@ object DataTypes {
 
             for(gene <- genome) {
                 val nbt = new NBTTagCompound
-                val geneType = gene._1.asInstanceOf[TypedName[Any]]
+                val geneType = gene._1.asInstanceOf[GeneName[Any]]
                 val chromosome = gene._2.asInstanceOf[IChromosome[Any]]
 
-                GIApiInterface.dataTypeRegistry.writeValueToNBT(nbt, name + ".key", classOf[TypedName[_]], geneType)
+                GIApiInterface.dataTypeRegistry.writeValueToNBT(nbt, name + ".key", classOf[GeneName[_]], geneType)
 
                 writeAllele(nbt, name + ".allele1", geneType, chromosome.getActiveAllele)
                 writeAllele(nbt, name + ".allele2", geneType, chromosome.getPassiveAllele)
@@ -153,7 +153,7 @@ object DataTypes {
             compound.setTag(name, tagList)
         }
 
-        def writeAllele[A](compound: NBTTagCompound, name: String, typedName: TypedName[A], data: IAllele[A]): Unit = {
+        def writeAllele[A](compound: NBTTagCompound, name: String, typedName: GeneName[A], data: IAllele[A]): Unit = {
             GIApiInterface.dataTypeRegistry.writeValueToNBT(compound, name + ".data", typedName.clzz, data.getData)
             compound.setBoolean(name + ".dominant", data.isDominant)
         }
@@ -162,12 +162,12 @@ object DataTypes {
             val ancestry = GIApiInterface.dataTypeRegistry.readValueFromNBT(compound, name + ".ancestry", classOf[IAncestry])
 
             val tagList = compound.getTagList(name, Constants.NBT.TAG_COMPOUND)
-            var genome = TreeMap.empty[TypedName[_], IChromosome[_]]
+            var genome = TreeMap.empty[GeneName[_], IChromosome[_]]
 
             for(i <- 0 until tagList.tagCount) {
                val nbt = tagList.getCompoundTagAt(i)
 
-                val geneType = GIApiInterface.dataTypeRegistry.readValueFromNBT(nbt, name + ".key", classOf[TypedName[_]])
+                val geneType = GIApiInterface.dataTypeRegistry.readValueFromNBT(nbt, name + ".key", classOf[GeneName[_]])
                 val allele1 = readAllele(nbt, name + ".allele1", geneType)
                 val allele2 = readAllele(nbt, name + ".allele2", geneType)
 
@@ -176,7 +176,7 @@ object DataTypes {
             new Soul(genome, ancestry)
         }
 
-        def readAllele[A](compound: NBTTagCompound, name: String, typedName: TypedName[A]): IAllele[A] = {
+        def readAllele[A](compound: NBTTagCompound, name: String, typedName: GeneName[A]): IAllele[A] = {
             val data = GIApiInterface.dataTypeRegistry.readValueFromNBT(compound, name + ".data", typedName.clzz)
             val dominant = compound.getBoolean(name + ".dominant")
 

@@ -1,6 +1,6 @@
 package com.seremis.geninfusion.api.genetics
 
-import com.seremis.geninfusion.api.util.{INBTTagable, TypedName}
+import com.seremis.geninfusion.api.util.{GeneName, INBTTagable}
 
 import scala.collection.immutable.TreeMap
 
@@ -17,13 +17,13 @@ trait ISoul extends INBTTagable {
       * Returns the value of the active IAlleleData for this gene.
       */
     @throws[IllegalArgumentException]
-    def getActiveValueForGene[A](geneName: TypedName[A]): A
+    def getActiveValueForGene[A](geneName: GeneName[A]): A
 
     /**
       * Returns the value of the inactive IAlleleData of this gene.
       */
     @throws[IllegalArgumentException]
-    def getPassiveValueForGene[A](geneName: TypedName[A]): A
+    def getPassiveValueForGene[A](geneName: GeneName[A]): A
 
     /*
     /**
@@ -45,7 +45,7 @@ trait ISoul extends INBTTagable {
       * IGeneData.
       * Every key-value pair has the same type parameters.
       */
-    def getGenome: TreeMap[TypedName[_], IChromosome[_]]
+    def getGenome: TreeMap[GeneName[_], IChromosome[_]]
 
     /* //TODO implement this somewhere else
     /**

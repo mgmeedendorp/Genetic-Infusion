@@ -4,7 +4,7 @@ import com.seremis.geninfusion.api.GIApiInterface.IAnimationRegistry
 import com.seremis.geninfusion.api.model.animation.IAnimation
 
 import scala.collection.mutable.HashMap
-
+//TODO change this
 class AnimationRegistry extends IAnimationRegistry {
 
     val animations: HashMap[String, IAnimation] = HashMap()

@@ -3,7 +3,7 @@ package com.seremis.geninfusion.handler
 import com.seremis.geninfusion.api.GIApiInterface
 import com.seremis.geninfusion.api.genetics.ISoul
 import com.seremis.geninfusion.api.lib.Genes
-import com.seremis.geninfusion.api.util.TypedName
+import com.seremis.geninfusion.api.util.VariableName
 import com.seremis.geninfusion.soulentity.SoulEntityLiving
 import com.seremis.geninfusion.soulentity.logic.FieldLogic
 import net.minecraft.entity.monster.EntityZombie
@@ -43,8 +43,8 @@ class GIEventHandler {
 
             val compound = new NBTTagCompound
 
-            entity.setVar(TypedName("abcdef", classOf[Int]), 100)
-            entity.makePersistent(TypedName("abcdef", classOf[Int]))
+            entity.setVar(VariableName("abcdef", classOf[Int]), 100)
+            entity.makePersistent(VariableName("abcdef", classOf[Int]))
 
             entity.asInstanceOf[SoulEntityLiving].fieldLogic.writeToNBT(compound)
 
@@ -54,7 +54,7 @@ class GIEventHandler {
 
             logicOut.readFromNBT(compound)
 
-            println(logicOut.getVar(TypedName("abcdef", classOf[Int])))
+            println(logicOut.getVar(VariableName("abcdef", classOf[Int])))
 
             println(GIApiInterface.geneDefaultsRegistry.getDefaultValueForClass(classOf[EntityZombie], geneName))
 

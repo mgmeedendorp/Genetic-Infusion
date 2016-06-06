@@ -2,7 +2,7 @@ package com.seremis.geninfusion.soulentity.logic
 
 import com.seremis.geninfusion.api.GIApiInterface
 import com.seremis.geninfusion.api.soulentity.{IEntityMethod, ISoulEntity}
-import com.seremis.geninfusion.api.util.TypedName
+import com.seremis.geninfusion.api.util.FunctionName
 
 import scala.collection.mutable.HashMap
 
@@ -10,9 +10,9 @@ class MethodLogic(entity: ISoulEntity) {
 
     val methods = GIApiInterface.entityMethodRegistry.getMethodsForSoul(entity.getSoul)
 
-    val finalMethods: HashMap[TypedName[_], (Seq[Any]) => _] = HashMap()
+    val finalMethods: HashMap[FunctionName[_], (Seq[Any]) => _] = HashMap()
 
-    def callMethod[A](name: TypedName[A], superMethod: () => A, args: Any*): A = {
+    def callMethod[A](name: FunctionName[A], superMethod: () => A, args: Any*): A = {
         val option = methods.get(name)
 
         if(option.nonEmpty) {
@@ -34,7 +34,7 @@ class MethodLogic(entity: ISoulEntity) {
         superMethod()
     }
 
-    def addFinalMethod[A](name: TypedName[A], superMethod: (Seq[Any]) => A): Unit = {
+    def addFinalMethod[A](name: FunctionName[A], superMethod: (Seq[Any]) => A): Unit = {
         finalMethods += (name -> superMethod)
     }
 }
